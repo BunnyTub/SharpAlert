@@ -72,7 +72,9 @@ namespace SharpAlert
 
                         Console.WriteLine($"[Feed Capture] {alertIndex} -> {filename}");
 
-                        if (SharpDataQueue.Any(x => x.Name == filename) || SharpDataHistory.Any(x => x.Name == filename) ||
+                        SharpDataItem item = new SharpDataItem(filename, alert.Value);
+
+                        if (SharpDataQueue.Contains(item) || SharpDataHistory.Contains(item) ||
                             (FirstRun && Settings.Default.discardFirstAlerts))
                         {
                             Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been discarded (already queued or is in history).");
@@ -122,6 +124,11 @@ namespace SharpAlert
                 }
                 catch (ThreadAbortException)
                 {
+                    return;
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("");
                     return;
                 }
                 if (FirstRun) FirstRun = false;
