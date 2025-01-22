@@ -74,15 +74,20 @@ namespace SharpAlert
 
                         SharpDataItem item = new SharpDataItem(filename, alert.Value);
 
-                        if (SharpDataQueue.Contains(item) || SharpDataHistory.Contains(item) ||
-                            (FirstRun && Settings.Default.discardFirstAlerts))
+                        lock (SharpDataQueue)
                         {
-                            Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been discarded (already queued or is in history).");
-                        }
-                        else
-                        {
-                            lock (SharpDataQueue) SharpDataQueue.Add(new SharpDataItem(filename, alert.Value));
-                            Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been saved for processing.");
+                            lock (SharpDataHistory)
+                            {
+                                if (SharpDataQueue.Contains(item) || SharpDataHistory.Contains(item) || (FirstRun && Settings.Default.discardFirstAlerts))
+                                {
+                                    Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been discarded (already queued or is in history).");
+                                }
+                                else
+                                {
+                                    SharpDataQueue.Add(new SharpDataItem(filename, alert.Value));
+                                    Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been saved for processing.");
+                                }
+                            }
                         }
                     }
 
