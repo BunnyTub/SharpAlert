@@ -1,0 +1,96 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SharpAlert.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="statusTest" Description="Allows messages with the test status when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="statusActual" Description="Allows messages with the actual status when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="messageTypeAlert" Description="Allows message types with the alert status when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="messageTypeUpdate" Description="Allows message types with the update status when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="messageTypeCancel" Description="Allows message types with the cancel status when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="messageTypeTest" Description="Allows message types with the test status when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="severityExtreme" Description="Allows extreme messages to be relayed when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="severitySevere" Description="Allows severe messages to be relayed when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="severityModerate" Description="Allows moderate messages to be relayed when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="severityMinor" Description="Allows minor messages to be relayed when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="severityUnknown" Description="Allows all unknown severity messages to be relayed when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="urgencyImmediate" Description="Allows urgent messages to be relayed when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="urgencyExpected" Description="Allows expected messages to be relayed when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="urgencyFuture" Description="Allows future messages to be relayed when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="urgencyPast" Description="Allows past messages to be relayed when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AllowedSAMELocations_Geocodes" Description="Only allows messages with one or more geocodes in the list. Leave this and UGC blank to allow all." Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
+    </Setting>
+    <Setting Name="EnforceEventBlacklist" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
+    </Setting>
+    <Setting Name="AlertCheckInterval" Description="Sets the interval between each server request in seconds." Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">45</Value>
+    </Setting>
+    <Setting Name="AllowedUGCLocations_Geocodes" Description="Only allows messages with one or more geocodes in the list. Leave this and geocodes blank to allow all." Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
+    </Setting>
+    <Setting Name="weaOnly" Description="Only allows WEA Imminent Threat CAP messages when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="discardFirstAlerts" Description="Existing alerts will be discarded for the first check when ticked." Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DiscordWebhook" Description="When this has a value, alerts will be sent to a Discord webhook. This will disable popups." Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DiscordWebhookAppend" Description="When this has a value, it will be appended to the end of the webhook message." Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="alertFullscreen" Description="Displays messages in fullscreen when ticked. Recommended for users with larger displays, such as TVs. (1280x720 resolution recommended)" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="alertFullscreenDisplay" Description="This value defines which display to show the alert on when using the fullscreen mode." Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="urgencyUnknown" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="alertFullscreenIdle" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="alertTimeout" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="alertCompatibilityMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

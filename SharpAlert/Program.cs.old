@@ -1,0 +1,583 @@
+﻿using SharpAlert.Properties;
+using System;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Media;
+using System.Net;
+using System.Net.Http;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Speech.Synthesis;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using static SharpAlert.FeedCapture;
+
+namespace SharpAlert
+{
+    internal static class VersionInfo
+    {
+        public static readonly int MajorVersion = 0;
+        public static readonly int MinorVersion = 1;
+    }
+
+    internal static class Program
+    {
+        public static object feed;
+        public static DataProcessor processor;
+        public static SoundPlayer sound;
+        public static NotifyIcon notify;
+        public static SpeechSynthesizer engine;
+        public static object AlertValuesLock = new object();
+        public static bool AlertDisplaying = false;
+
+        public enum RunnerType
+        {
+            Unknown,
+            Server,
+            Client,
+            Standalone
+        }
+
+        public static RunnerType runner = RunnerType.Unknown;
+
+        public static string AssemblyDirectory
+        {
+            get
+            {
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
+        }
+        
+        public static string AssemblyFile
+        {
+            get
+            {
+                string codeBase = Assembly.GetExecutingAssembly().Location;
+                return Path.GetDirectoryName(codeBase);
+            }
+        }
+
+        public static string[] args;
+        public static Icon icon = SystemIcons.Application;
+
+        [MTAThread]
+        static void Main()
+        {
+            args = Environment.GetCommandLineArgs();
+
+            if (args.Length == 2)
+            {
+                switch (args[1])
+                {
+                    case "--server":
+                        runner = RunnerType.Server;
+                        break;
+                    case "--client":
+                        runner = RunnerType.Client;
+                        break;
+                    case "--standalone":
+                        runner = RunnerType.Standalone;
+                        break;
+                    default:
+                        MessageBox.Show($"Invalid argument: {args[1]}\r\n" +
+                            "Please use either \"--server\", \"--client\", or \"--standalone\".");
+                        return;
+                }
+            }
+            else
+            {
+                Console.WriteLine("No arguments were specified. Using standalone.");
+                runner = RunnerType.Standalone;
+                //MessageBox.Show("Please specify \"--server\", \"--client\", or \"--standalone\".");
+            }
+
+            Application.EnableVisualStyles();
+
+            try
+            {
+                icon = Icon.ExtractAssociatedIcon(AssemblyFile);
+            }
+            catch (Exception)
+            {
+            }
+
+            switch (runner)
+            {
+                case RunnerType.Server:
+                    HttpListener listener = new HttpListener();
+                    //listener.Prefixes.Add("http://*:8095/");
+                    listener.Prefixes.Add("http://127.0.0.1:8095/");
+                    listener.Start();
+
+                    string LastData = string.Empty;
+
+                    new Thread(() =>
+                    {
+                        HttpClient client = new HttpClient
+                        {
+                            Timeout = TimeSpan.FromSeconds(60)
+                        };
+                        client.DefaultRequestHeaders.UserAgent.ParseAdd($"Mozilla/5.0 (compatible; SharpAlert)");
+
+                        while (true)
+                        {
+                            Task<string> xml = client.GetStringAsync($"https://apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/PublicWEA/recent/{DateTime.UtcNow.AddMonths(-1):yyyy-MM-ddTHH:mm:ssZ}");
+                            xml.Wait();
+                            LastData = xml.Result;
+                            Thread.Sleep(45000);
+                        }
+                    }).Start();
+
+                    while (true)
+                    {
+                        HttpListenerContext context = listener.GetContextAsync().Result;
+                        HttpListenerRequest request = context.Request;
+                        HttpListenerResponse response = context.Response;
+
+                        if (request.Url.AbsolutePath == "/")
+                        {
+                            byte[] buffer = Encoding.UTF8.GetBytes(LastData);
+
+                            response.ContentType = "application/xml";
+                            response.ContentLength64 = buffer.Length;
+
+                            response.OutputStream.WriteAsync(buffer, 0, buffer.Length).Wait(60000);
+                            response.OutputStream.Close();
+                        }
+                        else
+                        {
+                            response.StatusCode = (int)HttpStatusCode.NotFound;
+                            response.Close();
+                        }
+                    }
+                case RunnerType.Client:
+                    feed = new SharpCapture();
+                    processor = new DataProcessor();
+                    sound = new SoundPlayer(Resources.ui_alert);
+                    engine = new SpeechSynthesizer();
+                    Thread clientThread = new Thread(() => ((SharpCapture)feed).Main("127.0.0.1:8095"));
+                    clientThread.SetApartmentState(ApartmentState.MTA);
+                    clientThread.Start();
+                    Thread subProcessorThread = new Thread(() => processor.Main());
+                    subProcessorThread.SetApartmentState(ApartmentState.MTA);
+                    subProcessorThread.Start();
+                    //Thread keyboardThread = new Thread(() => KeyboardProcessor.EntryMain());
+                    //keyboardThread.SetApartmentState(ApartmentState.STA);
+                    //keyboardThread.Start();
+                    CreateNotifyIcon();
+                    Application.Run();
+                    return;
+                case RunnerType.Standalone:
+                    feed = new FeedCapture();
+                    processor = new DataProcessor();
+                    sound = new SoundPlayer(Resources.ui_alert);
+                    engine = new SpeechSynthesizer();
+                    Thread feedThread = new Thread(() => ((FeedCapture)feed).Main());
+                    feedThread.SetApartmentState(ApartmentState.MTA);
+                    feedThread.Start();
+                    Thread processorThread = new Thread(() => processor.Main());
+                    processorThread.SetApartmentState(ApartmentState.MTA);
+                    processorThread.Start();
+                    Thread keyboardThread = new Thread(() => KeyboardProcessor.EntryMain());
+                    keyboardThread.SetApartmentState(ApartmentState.MTA);
+                    keyboardThread.Start();
+                    CreateNotifyIcon();
+                    Application.Run();
+                    return;
+            }
+        }
+
+        private static void ListenerCallback(IAsyncResult result)
+        {
+            HttpListener listener = (HttpListener)result.AsyncState;
+            listener.BeginGetContext(new AsyncCallback(ListenerCallback), listener);
+            Console.WriteLine("New request.");
+
+            HttpListenerContext context = listener.EndGetContext(result);
+            HttpListenerRequest request = context.Request;
+            HttpListenerResponse response = context.Response;
+
+            byte[] page = Encoding.UTF8.GetBytes("Test");
+
+            response.ContentLength64 = page.Length;
+            Stream output = response.OutputStream;
+            output.Write(page, 0, page.Length);
+            output.Close();
+        }
+
+        private static void CreateNotifyIcon()
+        {
+            notify = new NotifyIcon
+            {
+                Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath),
+                Visible = true,
+                Text = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}"
+            };
+
+            ContextMenuStrip contextMenu = new ContextMenuStrip();
+
+            var boolProperties = typeof(Settings).GetProperties()
+                .Where(p => p.PropertyType == typeof(bool));
+
+            foreach (var property in boolProperties)
+            {
+                if (property.Name != "IsSynchronized")
+                {
+                    contextMenu.Items.Add(CreateBoolMenuItem(property));
+                }
+            }
+            
+            var stringProperties = typeof(Settings).GetProperties()
+                .Where(p => p.PropertyType == typeof(string));
+
+            foreach (var property in stringProperties)
+            {
+                if (property.Name != "SettingsKey")
+                {
+                    contextMenu.Items.Add(new ToolStripLabel(property.Name + ":"));
+                    contextMenu.Items.Add(CreateStringMenuItem(property));
+                }
+            }
+            
+            var stringCollectionProperties = typeof(Settings).GetProperties()
+                .Where(p => p.PropertyType == typeof(StringCollection));
+
+            foreach (var property in stringCollectionProperties)
+            {
+                contextMenu.Items.Add(new ToolStripLabel(property.Name + " (ENTER to separate):"));
+                contextMenu.Items.Add(CreateStringCollectionMenuItem(property));
+            }
+            
+            var integerProperties = typeof(Settings).GetProperties()
+                .Where(p => p.PropertyType == typeof(int));
+
+            foreach (var property in integerProperties)
+            {
+                contextMenu.Items.Add(new ToolStripLabel(property.Name + ":"));
+                contextMenu.Items.Add(CreateIntegerMenuItem(property));
+            }
+
+            contextMenu.Items.Add(new ToolStripSeparator());
+
+            contextMenu.Items.Add(new ToolStripMenuItem("Show Console", null, (sender, arg) =>
+            {
+                AllocateTerminal();
+            }));
+
+            contextMenu.Items.Add(new ToolStripMenuItem("Hide Console", null, (sender, arg) =>
+            {
+                MessageBox.Show("Not Implemented", "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //DestroyTerminal();
+            }));
+            
+            contextMenu.Items.Add(new ToolStripMenuItem("Import CAP Data", null, (sender, arg) =>
+            {
+                AddFileToQueue();
+            }));
+
+            contextMenu.Items.Add(new ToolStripSeparator());
+
+            contextMenu.Items.Add(new ToolStripLabel($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}", Resources.WarningApp, false)
+            {
+                ToolTipText = "Very mindful, very demure."
+            });
+
+            contextMenu.Items.Add(new ToolStripMenuItem("Save Settings", null, (sender, arg) =>
+            {
+                if (MessageBox.Show($"Do you want to save the current configuration?\r\n" +
+                    $"The application will immediately restart.",
+                    "SharpAlert",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    Settings.Default.Save();
+
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = AssemblyFile,
+                        Arguments = args[1],
+                        CreateNoWindow = false,
+                        UseShellExecute = false
+                    });
+
+                    Environment.Exit(0);
+                }
+            }));
+
+            contextMenu.Items.Add(new ToolStripMenuItem("Quit", null, (sender, arg) =>
+            {
+                if (MessageBox.Show("Are you sure you want to quit?\r\n" +
+                    "You won't receive emergency alerts while the program is not running.",
+                    "SharpAlert",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    Settings.Default.Save();
+                    Environment.Exit(0);
+                }
+            }));
+
+            notify.ContextMenuStrip = contextMenu;
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool AllocConsole();
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool FreeConsole();
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool SetStdHandle(int nStdHandle, IntPtr hHandle);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern IntPtr GetStdHandle(int nStdHandle);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern IntPtr CreateFile(
+            string lpFileName,
+            uint dwDesiredAccess,
+            uint dwShareMode,
+            IntPtr lpSecurityAttributes,
+            uint dwCreationDisposition,
+            uint dwFlagsAndAttributes,
+            IntPtr hTemplateFile);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        public const int STD_OUTPUT_HANDLE = -11;
+        public const uint GENERIC_WRITE = 0x40000000;
+        public const uint OPEN_EXISTING = 3;
+        public const uint WM_CLOSE = 0x0010;
+
+        public static void AllocateTerminal()
+        {
+            if (!AllocConsole())
+            {
+                MessageBox.Show("The console could not be allocated. It may already be visible.",
+                    "SharpAlert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            else
+            {
+                Console.Title = "SharpAlert Console Window";
+                IntPtr consoleHandle = CreateFile("CONOUT$", GENERIC_WRITE, 0, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
+                if (consoleHandle == IntPtr.Zero)
+                {
+                    throw new Win32Exception(Marshal.GetLastWin32Error());
+                }
+
+                SetStdHandle(STD_OUTPUT_HANDLE, consoleHandle);
+                var writer = new StreamWriter(Console.OpenStandardOutput())
+                {
+                    AutoFlush = true
+                };
+                Console.SetOut(writer);
+            }
+        }
+        
+        // broken
+        public static void DestroyTerminal()
+        {
+            if (!FreeConsole())
+            {
+                MessageBox.Show("The console could not be unallocated. It may already be freed.",
+                    "SharpAlert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            else
+            {
+                MessageBox.Show("COOL");
+                IntPtr consoleWindowHandle = GetConsoleWindow();
+                if (consoleWindowHandle != IntPtr.Zero)
+                {
+                    PostMessage(consoleWindowHandle, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
+                }
+
+                var defaultOutput = new StreamWriter(Console.OpenStandardOutput())
+                {
+                    AutoFlush = true
+                };
+                Console.SetOut(defaultOutput);
+            }
+        }
+
+        public static void AddFileToQueue()
+        {
+            Console.WriteLine("Opening file picker.");
+            string selectedPath = string.Empty;
+            string selectedSafePath = string.Empty;
+            var t = new Thread(() =>
+            {
+                OpenFileDialog fbd = new OpenFileDialog
+                {
+                    Filter = "CAP files (*.xml, *.cap)|*.xml;*.cap",
+                    FilterIndex = 0,
+                    CheckFileExists = true,
+                    Multiselect = false
+                };
+
+                if (fbd.ShowDialog() != DialogResult.OK)
+                {
+                    Console.WriteLine("No file chosen.");
+                    return;
+                }
+
+                selectedPath = fbd.FileName;
+                selectedSafePath = fbd.SafeFileName;
+            });
+
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+            t.Join();
+
+            if (string.IsNullOrEmpty(selectedPath)) return;
+
+            try
+            {
+                string data = File.ReadAllText(selectedPath);
+                lock (SharpDataQueue)
+                    SharpDataQueue.Add(new SharpDataItem(selectedSafePath, data));
+                Console.WriteLine("Added file to queue.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private static ToolStripMenuItem CreateBoolMenuItem(PropertyInfo property)
+        {
+            string propertyName = property.Name;
+
+            ToolStripMenuItem menuItem = new ToolStripMenuItem(propertyName)
+            {
+                CheckOnClick = true,
+                Checked = (bool)property.GetValue(Settings.Default)
+            };
+
+            menuItem.CheckedChanged += (sender, args) =>
+            {
+                if (sender is ToolStripMenuItem item)
+                {
+                    bool isChecked = item.Checked;
+                    property.SetValue(Settings.Default, isChecked);
+                    //Settings.Default.Save();
+                    Console.WriteLine($"{propertyName} set to {isChecked}");
+                }
+            };
+
+            return menuItem;
+        }
+
+        private static ToolStripTextBox CreateStringMenuItem(PropertyInfo property)
+        {
+            string propertyName = property.Name;
+
+            ToolStripTextBox menuItem = new ToolStripTextBox(propertyName)
+            {
+                Text = (string)property.GetValue(Settings.Default),
+                ToolTipText = property.Name,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+
+            menuItem.TextChanged += (sender, args) =>
+            {
+                if (sender is ToolStripTextBox item)
+                {
+                    string setString = item.Text;
+                    property.SetValue(Settings.Default, setString);
+                    //Settings.Default.Save();
+                    Console.WriteLine($"{propertyName} set to {setString}");
+                }
+            };
+
+            return menuItem;
+        }
+        
+        private static ToolStripTextBox CreateStringCollectionMenuItem(PropertyInfo property)
+        {
+            string propertyName = property.Name;
+            string propertyValue = string.Empty;
+
+            foreach (string strItem in (StringCollection)property.GetValue(Settings.Default))
+            {
+                propertyValue += strItem + "\n";
+            }
+
+            ToolStripTextBox menuItem = new ToolStripTextBox(propertyName)
+            {
+                Text = propertyValue,
+                ToolTipText = property.Name,
+                AcceptsReturn = true,
+                AcceptsTab = false,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+
+            menuItem.TextChanged += (sender, args) =>
+            {
+                if (sender is ToolStripTextBox item)
+                {
+                    StringCollection setString = new StringCollection();
+                    if (!string.IsNullOrWhiteSpace(item.Text))
+                        setString.AddRange(item.Text.Replace("\r", string.Empty).Split('\n'));
+                    else setString.Clear();
+
+                    property.SetValue(Settings.Default, setString);
+                    //Settings.Default.Save();
+                    Console.WriteLine($"{propertyName} set to {setString}");
+                }
+            };
+
+            return menuItem;
+        }
+
+        private static ToolStripControlHost CreateIntegerMenuItem(PropertyInfo property)
+        {
+            string propertyName = property.Name;
+            int propertyValue = (int)property.GetValue(Settings.Default);
+
+            NumericUpDown numericUpDown = new NumericUpDown
+            {
+                Value = propertyValue,
+                Minimum = 10,
+                Maximum = 300,
+                DecimalPlaces = 0,
+                Increment = 5
+            };
+
+            numericUpDown.ValueChanged += (sender, args) =>
+            {
+                if (sender is NumericUpDown control)
+                {
+                    int newValue = (int)control.Value;
+                    property.SetValue(Settings.Default, newValue);
+                    //Settings.Default.Save();
+                    Console.WriteLine($"{propertyName} set to {newValue}");
+                }
+            };
+
+            ToolStripControlHost menuItem = new ToolStripControlHost(numericUpDown)
+            {
+                ToolTipText = property.Name
+            };
+
+            return menuItem;
+        }
+
+    }
+}
