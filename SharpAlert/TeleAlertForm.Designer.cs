@@ -50,7 +50,7 @@
             this.MouseMoving = new System.Windows.Forms.Timer(this.components);
             this.FlashReplayStatus = new System.Windows.Forms.Timer(this.components);
             this.AutoScroller = new System.Windows.Forms.Timer(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.SpacerPanel = new System.Windows.Forms.Panel();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.AutoHideButtons = new System.Windows.Forms.Timer(this.components);
             this.TitlePanel.SuspendLayout();
@@ -178,7 +178,7 @@
             this.AlertPanel.Location = new System.Drawing.Point(0, 0);
             this.AlertPanel.Margin = new System.Windows.Forms.Padding(0);
             this.AlertPanel.Name = "AlertPanel";
-            this.AlertPanel.Size = new System.Drawing.Size(1280, 559);
+            this.AlertPanel.Size = new System.Drawing.Size(1280, 558);
             this.AlertPanel.TabIndex = 5;
             // 
             // AlertText
@@ -193,7 +193,7 @@
             this.AlertText.Multiline = true;
             this.AlertText.Name = "AlertText";
             this.AlertText.ReadOnly = true;
-            this.AlertText.Size = new System.Drawing.Size(1280, 559);
+            this.AlertText.Size = new System.Drawing.Size(1280, 558);
             this.AlertText.TabIndex = 5;
             this.AlertText.TextChanged += new System.EventHandler(this.AlertText_TextChanged);
             this.AlertText.DoubleClick += new System.EventHandler(this.AlertText_DoubleClick);
@@ -201,7 +201,7 @@
             // 
             // SubtitlePanel
             // 
-            this.SubtitlePanel.BackColor = System.Drawing.Color.Red;
+            this.SubtitlePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.SubtitlePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.SubtitlePanel.Controls.Add(this.SubtitleText);
             this.SubtitlePanel.Controls.Add(this.SubtitleSpacer);
@@ -226,7 +226,7 @@
             // 
             // SubtitleSpacer
             // 
-            this.SubtitleSpacer.BackColor = System.Drawing.Color.Red;
+            this.SubtitleSpacer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.SubtitleSpacer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.SubtitleSpacer.Dock = System.Windows.Forms.DockStyle.Left;
             this.SubtitleSpacer.ForeColor = System.Drawing.Color.White;
@@ -277,22 +277,22 @@
             this.AutoScroller.Interval = 50;
             this.AutoScroller.Tick += new System.EventHandler(this.AutoScroll_Tick);
             // 
-            // panel1
+            // SpacerPanel
             // 
-            this.panel1.BackColor = System.Drawing.Color.DarkOrange;
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 156);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1280, 5);
-            this.panel1.TabIndex = 8;
+            this.SpacerPanel.BackColor = System.Drawing.Color.DarkOrange;
+            this.SpacerPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SpacerPanel.Location = new System.Drawing.Point(0, 156);
+            this.SpacerPanel.Name = "SpacerPanel";
+            this.SpacerPanel.Size = new System.Drawing.Size(1280, 6);
+            this.SpacerPanel.TabIndex = 8;
             // 
             // MainPanel
             // 
             this.MainPanel.Controls.Add(this.AlertPanel);
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainPanel.Location = new System.Drawing.Point(0, 161);
+            this.MainPanel.Location = new System.Drawing.Point(0, 162);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(1280, 559);
+            this.MainPanel.Size = new System.Drawing.Size(1280, 558);
             this.MainPanel.TabIndex = 9;
             // 
             // AutoHideButtons
@@ -307,7 +307,7 @@
             this.ClientSize = new System.Drawing.Size(1280, 720);
             this.ControlBox = false;
             this.Controls.Add(this.MainPanel);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.SpacerPanel);
             this.Controls.Add(this.SubtitlePanel);
             this.Controls.Add(this.TitlePanel);
             this.DoubleBuffered = true;
@@ -359,7 +359,7 @@
         private System.Windows.Forms.Label ReplayModeText;
         private System.Windows.Forms.Timer FlashReplayStatus;
         private System.Windows.Forms.Timer AutoScroller;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel SpacerPanel;
         private System.Windows.Forms.Panel MainPanel;
         private System.Windows.Forms.Timer AutoHideButtons;
     }
