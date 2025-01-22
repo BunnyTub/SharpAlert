@@ -111,17 +111,14 @@ namespace SharpAlert
                 {
                     Console.WriteLine($"[Feed Capture] {e.Message}");
                     Thread.Sleep(1000);
-                    return;
                 }
                 catch (TimeoutException)
                 {
                     Console.WriteLine($"[Feed Capture] Timed out.");
-                    return;
                 }
                 catch (AggregateException e)
                 {
                     Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.InnerExceptions.FirstOrDefault().Message}");
-                    return;
                 }
                 catch (TaskCanceledException)
                 {
@@ -129,12 +126,10 @@ namespace SharpAlert
                 }
                 catch (ThreadAbortException)
                 {
-                    return;
                 }
                 catch (Exception)
                 {
                     Console.WriteLine("");
-                    return;
                 }
                 if (FirstRun) FirstRun = false;
             }
