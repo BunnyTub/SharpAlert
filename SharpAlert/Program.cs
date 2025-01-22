@@ -10,12 +10,13 @@ using System.Linq;
 using System.Media;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Speech.Synthesis;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using static SharpAlert.RegexList;
+using Amazon.Polly;
+using Amazon.Polly.Model;
 
 namespace SharpAlert
 {
@@ -53,7 +54,7 @@ namespace SharpAlert
         //public static MemoryStream memoryAudioStream;
         //public static WaveStream wav;
         public static NotifyIcon notify;
-        public static SpeechSynthesizer engine;
+        public static SynthesizeSpeechUtil engine;
         public static object AlertValuesLock = new object();
         public static bool AlertDisplaying = false;
 
@@ -114,7 +115,7 @@ namespace SharpAlert
             sound?.Stop();
             soundFinish?.Stop();
             Console.WriteLine("Stopping TTS.");
-            engine?.SpeakAsyncCancelAll();
+            engine?.SynthesizeStop();
             Console.WriteLine("All operations finished. Thank Ice Bear for his hard work... -w-");
             if (notify != null)
             {
@@ -162,7 +163,7 @@ namespace SharpAlert
             processor = new DataProcessor();
             sound = new SoundPlayer(Resources.ui_warning);
             soundFinish = new SoundPlayer(Resources.ui_end);
-            engine = new SpeechSynthesizer
+            engine = new SynthesizeSpeechRequest()
             {
                 //Volume = 80
                 Volume = 80
