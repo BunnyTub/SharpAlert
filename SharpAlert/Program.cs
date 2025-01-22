@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using static SharpAlert.RegexList;
 using Amazon.Polly;
 using Amazon.Polly.Model;
+using System.Speech.Synthesis;
 
 namespace SharpAlert
 {
@@ -54,7 +55,7 @@ namespace SharpAlert
         //public static MemoryStream memoryAudioStream;
         //public static WaveStream wav;
         public static NotifyIcon notify;
-        public static SynthesizeSpeechUtil engine;
+        public static SpeechSynthesizer engine;
         public static object AlertValuesLock = new object();
         public static bool AlertDisplaying = false;
 
@@ -115,7 +116,7 @@ namespace SharpAlert
             sound?.Stop();
             soundFinish?.Stop();
             Console.WriteLine("Stopping TTS.");
-            engine?.SynthesizeStop();
+            engine?.SpeakAsyncCancelAll();
             Console.WriteLine("All operations finished. Thank Ice Bear for his hard work... -w-");
             if (notify != null)
             {
@@ -163,7 +164,7 @@ namespace SharpAlert
             processor = new DataProcessor();
             sound = new SoundPlayer(Resources.ui_warning);
             soundFinish = new SoundPlayer(Resources.ui_end);
-            engine = new SynthesizeSpeechRequest()
+            engine = new SpeechSynthesizer()
             {
                 //Volume = 80
                 Volume = 80
