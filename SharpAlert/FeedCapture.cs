@@ -74,19 +74,19 @@ namespace SharpAlert
 
                         SharpDataItem item = new SharpDataItem(filename, alert.Value);
 
-                        lock (SharpDataQueue)
+                        if (FirstRun && Settings.Default.discardFirstAlerts)
                         {
-                            lock (SharpDataHistory)
+                            TryAddDataToHistory(item);
+                        }
+                        else
+                        {
+                            if (TryAddDataToQueue(item))
                             {
-                                if (SharpDataQueue.Contains(item) || SharpDataHistory.Contains(item) || (FirstRun && Settings.Default.discardFirstAlerts))
-                                {
-                                    Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been discarded (already queued or is in history).");
-                                }
-                                else
-                                {
-                                    SharpDataQueue.Add(new SharpDataItem(filename, alert.Value));
-                                    Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been saved for processing.");
-                                }
+                                Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been saved for processing.");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been discarded (already queued or is in history).");
                             }
                         }
                     }
@@ -132,6 +132,44 @@ namespace SharpAlert
                     Console.WriteLine("");
                 }
                 if (FirstRun) FirstRun = false;
+            }
+        }
+
+        public static bool TryAddDataToQueue(SharpDataItem item)
+        {
+            lock (SharpDataQueue)
+            {
+                lock (SharpDataHistory)
+                {
+                    if (SharpDataQueue.Any(item.Name == ) || SharpDataHistory.Contains(item))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        SharpDataQueue.Add(item);
+                        return true;
+                    }
+                }
+            }
+        }
+
+        public static bool TryAddDataToHistory(SharpDataItem item)
+        {
+            lock (SharpDataQueue)
+            {
+                lock (SharpDataHistory)
+                {
+                    if (SharpDataQueue.Contains(item) || SharpDataHistory.Contains(item))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        SharpDataQueue.Add(item);
+                        return true;
+                    }
+                }
             }
         }
     }

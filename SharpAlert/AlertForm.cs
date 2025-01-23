@@ -211,6 +211,7 @@ namespace SharpAlert
                     "SharpAlert",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
+                this.Close();
             }
         }
 

@@ -172,7 +172,6 @@ namespace SharpAlert
 
             engine.SpeakCompleted += (objective, eventArgs) =>
             {
-                Thread.Sleep(500);
                 soundFinish.Play();
             };
 
@@ -633,63 +632,73 @@ namespace SharpAlert
             {
                 Thread staThread = new Thread(() =>
                 {
-                    Console.WriteLine("Opening file picker.");
-
-                    string selectedPath = string.Empty;
-                    string selectedSafePath = string.Empty;
-
-                    OpenFileDialog fbd = new OpenFileDialog
-                    {
-                        Filter = "Common Alerting Protocol files (*.xml, *.cap)|*.xml;*.cap",
-                        FilterIndex = 0,
-                        CheckFileExists = true,
-                        Multiselect = false
-                    };
-
-                    if (fbd.ShowDialog() != DialogResult.OK)
-                    {
-                        Console.WriteLine("No file chosen.");
-                        return;
-                    }
-
-                    selectedPath = fbd.FileName;
-                    selectedSafePath = fbd.SafeFileName;
-                    fbd.Dispose();
-
-                    if (string.IsNullOrEmpty(selectedPath)) return;
-
                     try
                     {
-                        string data = File.ReadAllText(selectedPath);
+                        Console.WriteLine("Opening file picker.");
 
-                        MatchCollection alertMatches = AlertRegex.Matches(data);
-                        int alertIndex = 0;
+                        string selectedPath = string.Empty;
+                        string selectedSafePath = string.Empty;
 
-                        foreach (Match alert in alertMatches)
+                        OpenFileDialog fbd = new OpenFileDialog
                         {
-                            alertIndex++;
+                            Filter = "Common Alerting Protocol files (*.xml, *.cap)|*.xml;*.cap",
+                            FilterIndex = 0,
+                            CheckFileExists = true,
+                            Multiselect = false
+                        };
 
-                            string filename = CreateMD5(alert.Value);
-
-                            Console.WriteLine($"[File Picker] {alertIndex} -> {filename}");
-
-                            if (SharpDataQueue.Any(x => x.Name == filename) || SharpDataHistory.Any(x => x.Name == filename))
-                            {
-                                Console.WriteLine($"[File Picker] Alert {alertIndex} has been discarded (already queued or is in history).");
-                            }
-                            else
-                            {
-                                lock (SharpDataQueue) SharpDataQueue.Add(new SharpDataItem(filename, alert.Value));
-                                Console.WriteLine($"[File Picker] Alert {alertIndex} has been saved for processing.");
-                            }
+                        if (fbd.ShowDialog() != DialogResult.OK)
+                        {
+                            Console.WriteLine("No file chosen.");
+                            return;
                         }
 
-                        Console.WriteLine($"[File Picker] {alertIndex} alert(s) checked.");
-                        Console.WriteLine("Added file to queue.");
+                        selectedPath = fbd.FileName;
+                        selectedSafePath = fbd.SafeFileName;
+                        fbd.Dispose();
+
+                        if (string.IsNullOrEmpty(selectedPath)) return;
+
+                        try
+                        {
+                            string data = File.ReadAllText(selectedPath);
+
+                            MatchCollection alertMatches = AlertRegex.Matches(data);
+                            int alertIndex = 0;
+
+                            foreach (Match alert in alertMatches)
+                            {
+                                alertIndex++;
+
+                                string filename = CreateMD5(alert.Value);
+
+                                Console.WriteLine($"[File Picker] {alertIndex} -> {filename}");
+
+                                if (SharpDataQueue.Any(x => x.Name == filename) || SharpDataHistory.Any(x => x.Name == filename))
+                                {
+                                    Console.WriteLine($"[File Picker] Alert {alertIndex} has been discarded (already queued or is in history).");
+                                }
+                                else
+                                {
+                                    lock (SharpDataQueue) SharpDataQueue.Add(new SharpDataItem(filename, alert.Value));
+                                    Console.WriteLine($"[File Picker] Alert {alertIndex} has been saved for processing.");
+                                }
+                            }
+
+                            Console.WriteLine($"[File Picker] {alertIndex} alert(s) checked.");
+                            Console.WriteLine("Added file to queue.");
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.Message);
+                        MessageBox.Show($"{e.StackTrace} {e.Message}",
+                            "SharpAlert",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
                     }
                 });
                 staThread.SetApartmentState(ApartmentState.STA);
