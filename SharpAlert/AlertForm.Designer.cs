@@ -282,6 +282,62 @@
             this.SpacerPanel.Size = new System.Drawing.Size(733, 6);
             this.SpacerPanel.TabIndex = 11;
             // 
+            // MainPanel
+            // 
+            this.MainPanel.Controls.Add(this.AlertPanel);
+            this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainPanel.Location = new System.Drawing.Point(0, 98);
+            this.MainPanel.Name = "MainPanel";
+            this.MainPanel.Size = new System.Drawing.Size(741, 245);
+            this.MainPanel.TabIndex = 10;
+            // 
+            // AlertPanel
+            // 
+            this.AlertPanel.BackColor = System.Drawing.Color.Black;
+            this.AlertPanel.Controls.Add(this.AlertText);
+            this.AlertPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AlertPanel.Font = new System.Drawing.Font("Segoe UI", 18F);
+            this.AlertPanel.Location = new System.Drawing.Point(0, 0);
+            this.AlertPanel.Name = "AlertPanel";
+            this.AlertPanel.Size = new System.Drawing.Size(741, 245);
+            this.AlertPanel.TabIndex = 5;
+            // 
+            // AlertText
+            // 
+            this.AlertText.BackColor = System.Drawing.Color.Black;
+            this.AlertText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.AlertText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AlertText.Font = new System.Drawing.Font("Arial", 18F);
+            this.AlertText.ForeColor = System.Drawing.Color.White;
+            this.AlertText.Location = new System.Drawing.Point(0, 0);
+            this.AlertText.Multiline = true;
+            this.AlertText.Name = "AlertText";
+            this.AlertText.ReadOnly = true;
+            this.AlertText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.AlertText.Size = new System.Drawing.Size(741, 245);
+            this.AlertText.TabIndex = 5;
+            // 
+            // ButtonsPanel
+            // 
+            this.ButtonsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ButtonsPanel.Controls.Add(this.DismissButton);
+            this.ButtonsPanel.Controls.Add(this.SpeakerButton);
+            this.ButtonsPanel.Controls.Add(this.LinkButton);
+            this.ButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ButtonsPanel.Location = new System.Drawing.Point(0, 343);
+            this.ButtonsPanel.Name = "ButtonsPanel";
+            this.ButtonsPanel.Size = new System.Drawing.Size(741, 43);
+            this.ButtonsPanel.TabIndex = 6;
+            // 
+            // SpacerPanel
+            // 
+            this.SpacerPanel.BackColor = System.Drawing.Color.DarkOrange;
+            this.SpacerPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SpacerPanel.Location = new System.Drawing.Point(0, 92);
+            this.SpacerPanel.Name = "SpacerPanel";
+            this.SpacerPanel.Size = new System.Drawing.Size(741, 6);
+            this.SpacerPanel.TabIndex = 11;
+            // 
             // AlertForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
