@@ -232,20 +232,6 @@ namespace SharpAlert
             if (NotifyIconCalled) throw new NotSupportedException();
             NotifyIconCalled = true;
 
-            if (args.Length == 2)
-            {
-                if (args[1] == "--no-tray")
-                {
-                    ThreadPool.QueueUserWorkItem(_ =>
-                    {
-                        AltTrayForm tray = new AltTrayForm();
-                        tray.ShowDialog();
-                        Environment.Exit(0);
-                    });
-                    return;
-                }
-            }
-
             notify = new NotifyIcon
             {
                 Icon = Icon.ExtractAssociatedIcon(AssemblyFile),

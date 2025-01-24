@@ -76,7 +76,10 @@ namespace SharpAlert
 
                         if (FirstRun && Settings.Default.discardFirstAlerts)
                         {
-                            TryAddDataToHistory(item);
+                            if (TryAddDataToHistory(item))
+                            {
+                                Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been discarded (first run).");
+                            }
                         }
                         else
                         {
@@ -127,9 +130,9 @@ namespace SharpAlert
                 catch (ThreadAbortException)
                 {
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    Console.WriteLine("");
+                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
                 }
                 if (FirstRun) FirstRun = false;
             }
@@ -141,14 +144,22 @@ namespace SharpAlert
             {
                 lock (SharpDataHistory)
                 {
-                    if (SharpDataQueue.Any(item.Name == ) || SharpDataHistory.Contains(item))
+                    try
                     {
-                        return false;
+                        if (SharpDataQueue.Any(x => x.Name == item.Name) || SharpDataHistory.Any(x => x.Name == item.Name))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            SharpDataQueue.Add(item);
+                            return true;
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        SharpDataQueue.Add(item);
-                        return true;
+                        Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
+                        return false;
                     }
                 }
             }
@@ -160,14 +171,22 @@ namespace SharpAlert
             {
                 lock (SharpDataHistory)
                 {
-                    if (SharpDataQueue.Contains(item) || SharpDataHistory.Contains(item))
+                    try
                     {
-                        return false;
+                        if (SharpDataQueue.Any(x => x.Name == item.Name) || SharpDataHistory.Any(x => x.Name == item.Name))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            SharpDataHistory.Add(item);
+                            return true;
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        SharpDataQueue.Add(item);
-                        return true;
+                        Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
+                        return false;
                     }
                 }
             }

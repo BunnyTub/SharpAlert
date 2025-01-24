@@ -141,6 +141,9 @@
             // 
             // DiscordWebhookURLInput
             // 
+            this.DiscordWebhookURLInput.BackColor = System.Drawing.Color.Black;
+            this.DiscordWebhookURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.DiscordWebhookURLInput.ForeColor = System.Drawing.Color.Lime;
             this.DiscordWebhookURLInput.Location = new System.Drawing.Point(6, 58);
             this.DiscordWebhookURLInput.Name = "DiscordWebhookURLInput";
             this.DiscordWebhookURLInput.Size = new System.Drawing.Size(169, 21);
@@ -150,6 +153,9 @@
             // 
             // DiscordWebhookAppendInput
             // 
+            this.DiscordWebhookAppendInput.BackColor = System.Drawing.Color.Black;
+            this.DiscordWebhookAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.DiscordWebhookAppendInput.ForeColor = System.Drawing.Color.Lime;
             this.DiscordWebhookAppendInput.Location = new System.Drawing.Point(181, 58);
             this.DiscordWebhookAppendInput.Name = "DiscordWebhookAppendInput";
             this.DiscordWebhookAppendInput.Size = new System.Drawing.Size(460, 21);
@@ -555,11 +561,15 @@
             // 
             // AlertHistoryOutput
             // 
-            this.AlertHistoryOutput.Font = new System.Drawing.Font("Arial", 12F);
+            this.AlertHistoryOutput.BackColor = System.Drawing.Color.Black;
+            this.AlertHistoryOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AlertHistoryOutput.Font = new System.Drawing.Font("Arial", 10F);
+            this.AlertHistoryOutput.ForeColor = System.Drawing.Color.Lime;
             this.AlertHistoryOutput.Location = new System.Drawing.Point(6, 35);
             this.AlertHistoryOutput.Multiline = true;
             this.AlertHistoryOutput.Name = "AlertHistoryOutput";
             this.AlertHistoryOutput.ReadOnly = true;
+            this.AlertHistoryOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.AlertHistoryOutput.Size = new System.Drawing.Size(535, 66);
             this.AlertHistoryOutput.TabIndex = 3;
             this.AlertHistoryOutput.WordWrap = false;
@@ -604,7 +614,10 @@
             // 
             // EventBlacklistOutput
             // 
+            this.EventBlacklistOutput.BackColor = System.Drawing.Color.Black;
+            this.EventBlacklistOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.EventBlacklistOutput.Font = new System.Drawing.Font("Arial", 12F);
+            this.EventBlacklistOutput.ForeColor = System.Drawing.Color.Lime;
             this.EventBlacklistOutput.Location = new System.Drawing.Point(169, 37);
             this.EventBlacklistOutput.Multiline = true;
             this.EventBlacklistOutput.Name = "EventBlacklistOutput";
@@ -615,6 +628,9 @@
             // 
             // EventBlacklistInput
             // 
+            this.EventBlacklistInput.BackColor = System.Drawing.Color.Black;
+            this.EventBlacklistInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.EventBlacklistInput.ForeColor = System.Drawing.Color.Lime;
             this.EventBlacklistInput.Location = new System.Drawing.Point(6, 37);
             this.EventBlacklistInput.Name = "EventBlacklistInput";
             this.EventBlacklistInput.Size = new System.Drawing.Size(144, 21);
@@ -645,7 +661,10 @@
             // 
             // AreaUGCOutput
             // 
+            this.AreaUGCOutput.BackColor = System.Drawing.Color.Black;
+            this.AreaUGCOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AreaUGCOutput.Font = new System.Drawing.Font("Arial", 12F);
+            this.AreaUGCOutput.ForeColor = System.Drawing.Color.Lime;
             this.AreaUGCOutput.Location = new System.Drawing.Point(6, 76);
             this.AreaUGCOutput.Multiline = true;
             this.AreaUGCOutput.Name = "AreaUGCOutput";
@@ -656,6 +675,9 @@
             // 
             // AreaUGCInput
             // 
+            this.AreaUGCInput.BackColor = System.Drawing.Color.Black;
+            this.AreaUGCInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AreaUGCInput.ForeColor = System.Drawing.Color.Lime;
             this.AreaUGCInput.Location = new System.Drawing.Point(6, 20);
             this.AreaUGCInput.Name = "AreaUGCInput";
             this.AreaUGCInput.Size = new System.Drawing.Size(144, 21);
@@ -677,7 +699,10 @@
             // 
             // AreaSAMEOutput
             // 
+            this.AreaSAMEOutput.BackColor = System.Drawing.Color.Black;
+            this.AreaSAMEOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AreaSAMEOutput.Font = new System.Drawing.Font("Arial", 12F);
+            this.AreaSAMEOutput.ForeColor = System.Drawing.Color.Lime;
             this.AreaSAMEOutput.Location = new System.Drawing.Point(6, 76);
             this.AreaSAMEOutput.Multiline = true;
             this.AreaSAMEOutput.Name = "AreaSAMEOutput";
@@ -688,6 +713,9 @@
             // 
             // AreaSAMEInput
             // 
+            this.AreaSAMEInput.BackColor = System.Drawing.Color.Black;
+            this.AreaSAMEInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AreaSAMEInput.ForeColor = System.Drawing.Color.Lime;
             this.AreaSAMEInput.Location = new System.Drawing.Point(6, 20);
             this.AreaSAMEInput.Name = "AreaSAMEInput";
             this.AreaSAMEInput.Size = new System.Drawing.Size(144, 21);
