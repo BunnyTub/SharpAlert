@@ -56,6 +56,7 @@
             this.AlertCheckIntervalInput = new System.Windows.Forms.NumericUpDown();
             this.CacheOperationButton = new System.Windows.Forms.Button();
             this.BusyLockText = new System.Windows.Forms.Label();
+            this.statusWindowBox = new System.Windows.Forms.CheckBox();
             this.DiscordWebhookGroup = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -104,6 +105,7 @@
             this.statusActualBox = new System.Windows.Forms.CheckBox();
             this.statusTestBox = new System.Windows.Forms.CheckBox();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
+            this.alertFullscreenIdleTimeZoneUTCBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AlertCheckIntervalInput)).BeginInit();
@@ -143,7 +145,7 @@
             // 
             this.DiscordWebhookURLInput.BackColor = System.Drawing.Color.Black;
             this.DiscordWebhookURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DiscordWebhookURLInput.ForeColor = System.Drawing.Color.Lime;
+            this.DiscordWebhookURLInput.ForeColor = System.Drawing.Color.Red;
             this.DiscordWebhookURLInput.Location = new System.Drawing.Point(6, 58);
             this.DiscordWebhookURLInput.Name = "DiscordWebhookURLInput";
             this.DiscordWebhookURLInput.Size = new System.Drawing.Size(169, 21);
@@ -155,7 +157,7 @@
             // 
             this.DiscordWebhookAppendInput.BackColor = System.Drawing.Color.Black;
             this.DiscordWebhookAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DiscordWebhookAppendInput.ForeColor = System.Drawing.Color.Lime;
+            this.DiscordWebhookAppendInput.ForeColor = System.Drawing.Color.Red;
             this.DiscordWebhookAppendInput.Location = new System.Drawing.Point(181, 58);
             this.DiscordWebhookAppendInput.Name = "DiscordWebhookAppendInput";
             this.DiscordWebhookAppendInput.Size = new System.Drawing.Size(460, 21);
@@ -205,22 +207,22 @@
             this.alertFullscreenIdleBox.AutoSize = true;
             this.alertFullscreenIdleBox.Location = new System.Drawing.Point(228, 20);
             this.alertFullscreenIdleBox.Name = "alertFullscreenIdleBox";
-            this.alertFullscreenIdleBox.Size = new System.Drawing.Size(125, 19);
+            this.alertFullscreenIdleBox.Size = new System.Drawing.Size(91, 19);
             this.alertFullscreenIdleBox.TabIndex = 20;
-            this.alertFullscreenIdleBox.Text = "Show idle window";
+            this.alertFullscreenIdleBox.Text = "Idle window";
             this.ToolTipInformation.SetToolTip(this.alertFullscreenIdleBox, "Shows an idle panel on top of all content.");
             this.alertFullscreenIdleBox.UseVisualStyleBackColor = true;
             // 
             // alertFullscreenDisplayInput
             // 
-            this.alertFullscreenDisplayInput.Location = new System.Drawing.Point(421, 18);
+            this.alertFullscreenDisplayInput.Location = new System.Drawing.Point(463, 18);
             this.alertFullscreenDisplayInput.Maximum = new decimal(new int[] {
             8,
             0,
             0,
             0});
             this.alertFullscreenDisplayInput.Name = "alertFullscreenDisplayInput";
-            this.alertFullscreenDisplayInput.Size = new System.Drawing.Size(72, 21);
+            this.alertFullscreenDisplayInput.Size = new System.Drawing.Size(30, 21);
             this.alertFullscreenDisplayInput.TabIndex = 21;
             this.ToolTipInformation.SetToolTip(this.alertFullscreenDisplayInput, "The screen to display the full screen alert and idle panels on.");
             // 
@@ -432,9 +434,9 @@
             // CacheOperationButton
             // 
             this.CacheOperationButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CacheOperationButton.Location = new System.Drawing.Point(486, 602);
+            this.CacheOperationButton.Location = new System.Drawing.Point(521, 602);
             this.CacheOperationButton.Name = "CacheOperationButton";
-            this.CacheOperationButton.Size = new System.Drawing.Size(173, 23);
+            this.CacheOperationButton.Size = new System.Drawing.Size(138, 23);
             this.CacheOperationButton.TabIndex = 12;
             this.CacheOperationButton.Text = "Force Cache Reset";
             this.ToolTipInformation.SetToolTip(this.CacheOperationButton, "Re-caches information from the internet.");
@@ -453,6 +455,17 @@
             this.BusyLockText.Text = "Please wait or dismiss all alerts to configure settings.";
             this.BusyLockText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ToolTipInformation.SetToolTip(this.BusyLockText, "You\'ll need to wait for all alerts to finish before continuing.");
+            // 
+            // statusWindowBox
+            // 
+            this.statusWindowBox.AutoSize = true;
+            this.statusWindowBox.Location = new System.Drawing.Point(409, 605);
+            this.statusWindowBox.Name = "statusWindowBox";
+            this.statusWindowBox.Size = new System.Drawing.Size(106, 19);
+            this.statusWindowBox.TabIndex = 25;
+            this.statusWindowBox.Text = "Status window";
+            this.ToolTipInformation.SetToolTip(this.statusWindowBox, "Shows the status window.");
+            this.statusWindowBox.UseVisualStyleBackColor = true;
             // 
             // DiscordWebhookGroup
             // 
@@ -501,6 +514,7 @@
             // 
             // AlertAppearanceGroup
             // 
+            this.AlertAppearanceGroup.Controls.Add(this.alertFullscreenIdleTimeZoneUTCBox);
             this.AlertAppearanceGroup.Controls.Add(this.alertCompatibilityModeBox);
             this.AlertAppearanceGroup.Controls.Add(this.label9);
             this.AlertAppearanceGroup.Controls.Add(this.alertTimeoutInput);
@@ -528,7 +542,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(369, 21);
+            this.label8.Location = new System.Drawing.Point(411, 21);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(46, 15);
             this.label8.TabIndex = 11;
@@ -555,16 +569,16 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(6, 17);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(250, 15);
+            this.label2.Size = new System.Drawing.Size(281, 15);
             this.label2.TabIndex = 6;
-            this.label2.Text = "This list shows the MD5 values of each alert.";
+            this.label2.Text = "This list shows the MD5 hash values of each alert.";
             // 
             // AlertHistoryOutput
             // 
             this.AlertHistoryOutput.BackColor = System.Drawing.Color.Black;
             this.AlertHistoryOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AlertHistoryOutput.Font = new System.Drawing.Font("Arial", 10F);
-            this.AlertHistoryOutput.ForeColor = System.Drawing.Color.Lime;
+            this.AlertHistoryOutput.Font = new System.Drawing.Font("Arial", 12F);
+            this.AlertHistoryOutput.ForeColor = System.Drawing.Color.Red;
             this.AlertHistoryOutput.Location = new System.Drawing.Point(6, 35);
             this.AlertHistoryOutput.Multiline = true;
             this.AlertHistoryOutput.Name = "AlertHistoryOutput";
@@ -617,11 +631,12 @@
             this.EventBlacklistOutput.BackColor = System.Drawing.Color.Black;
             this.EventBlacklistOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.EventBlacklistOutput.Font = new System.Drawing.Font("Arial", 12F);
-            this.EventBlacklistOutput.ForeColor = System.Drawing.Color.Lime;
+            this.EventBlacklistOutput.ForeColor = System.Drawing.Color.Red;
             this.EventBlacklistOutput.Location = new System.Drawing.Point(169, 37);
             this.EventBlacklistOutput.Multiline = true;
             this.EventBlacklistOutput.Name = "EventBlacklistOutput";
             this.EventBlacklistOutput.ReadOnly = true;
+            this.EventBlacklistOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.EventBlacklistOutput.Size = new System.Drawing.Size(144, 51);
             this.EventBlacklistOutput.TabIndex = 3;
             this.EventBlacklistOutput.WordWrap = false;
@@ -630,7 +645,7 @@
             // 
             this.EventBlacklistInput.BackColor = System.Drawing.Color.Black;
             this.EventBlacklistInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.EventBlacklistInput.ForeColor = System.Drawing.Color.Lime;
+            this.EventBlacklistInput.ForeColor = System.Drawing.Color.Red;
             this.EventBlacklistInput.Location = new System.Drawing.Point(6, 37);
             this.EventBlacklistInput.Name = "EventBlacklistInput";
             this.EventBlacklistInput.Size = new System.Drawing.Size(144, 21);
@@ -664,11 +679,12 @@
             this.AreaUGCOutput.BackColor = System.Drawing.Color.Black;
             this.AreaUGCOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AreaUGCOutput.Font = new System.Drawing.Font("Arial", 12F);
-            this.AreaUGCOutput.ForeColor = System.Drawing.Color.Lime;
+            this.AreaUGCOutput.ForeColor = System.Drawing.Color.Red;
             this.AreaUGCOutput.Location = new System.Drawing.Point(6, 76);
             this.AreaUGCOutput.Multiline = true;
             this.AreaUGCOutput.Name = "AreaUGCOutput";
             this.AreaUGCOutput.ReadOnly = true;
+            this.AreaUGCOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.AreaUGCOutput.Size = new System.Drawing.Size(144, 104);
             this.AreaUGCOutput.TabIndex = 3;
             this.AreaUGCOutput.WordWrap = false;
@@ -677,7 +693,7 @@
             // 
             this.AreaUGCInput.BackColor = System.Drawing.Color.Black;
             this.AreaUGCInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AreaUGCInput.ForeColor = System.Drawing.Color.Lime;
+            this.AreaUGCInput.ForeColor = System.Drawing.Color.Red;
             this.AreaUGCInput.Location = new System.Drawing.Point(6, 20);
             this.AreaUGCInput.Name = "AreaUGCInput";
             this.AreaUGCInput.Size = new System.Drawing.Size(144, 21);
@@ -702,11 +718,12 @@
             this.AreaSAMEOutput.BackColor = System.Drawing.Color.Black;
             this.AreaSAMEOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AreaSAMEOutput.Font = new System.Drawing.Font("Arial", 12F);
-            this.AreaSAMEOutput.ForeColor = System.Drawing.Color.Lime;
+            this.AreaSAMEOutput.ForeColor = System.Drawing.Color.Red;
             this.AreaSAMEOutput.Location = new System.Drawing.Point(6, 76);
             this.AreaSAMEOutput.Multiline = true;
             this.AreaSAMEOutput.Name = "AreaSAMEOutput";
             this.AreaSAMEOutput.ReadOnly = true;
+            this.AreaSAMEOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.AreaSAMEOutput.Size = new System.Drawing.Size(144, 104);
             this.AreaSAMEOutput.TabIndex = 3;
             this.AreaSAMEOutput.WordWrap = false;
@@ -715,7 +732,7 @@
             // 
             this.AreaSAMEInput.BackColor = System.Drawing.Color.Black;
             this.AreaSAMEInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AreaSAMEInput.ForeColor = System.Drawing.Color.Lime;
+            this.AreaSAMEInput.ForeColor = System.Drawing.Color.Red;
             this.AreaSAMEInput.Location = new System.Drawing.Point(6, 20);
             this.AreaSAMEInput.Name = "AreaSAMEInput";
             this.AreaSAMEInput.Size = new System.Drawing.Size(144, 21);
@@ -997,6 +1014,7 @@
             // 
             // ConfigurationPanel
             // 
+            this.ConfigurationPanel.Controls.Add(this.statusWindowBox);
             this.ConfigurationPanel.Controls.Add(this.CacheOperationButton);
             this.ConfigurationPanel.Controls.Add(this.AlertFunctionalityGroup);
             this.ConfigurationPanel.Controls.Add(this.label10);
@@ -1011,11 +1029,22 @@
             this.ConfigurationPanel.Size = new System.Drawing.Size(671, 633);
             this.ConfigurationPanel.TabIndex = 13;
             // 
+            // alertFullscreenIdleTimeZoneUTCBox
+            // 
+            this.alertFullscreenIdleTimeZoneUTCBox.AutoSize = true;
+            this.alertFullscreenIdleTimeZoneUTCBox.Location = new System.Drawing.Point(327, 20);
+            this.alertFullscreenIdleTimeZoneUTCBox.Name = "alertFullscreenIdleTimeZoneUTCBox";
+            this.alertFullscreenIdleTimeZoneUTCBox.Size = new System.Drawing.Size(77, 19);
+            this.alertFullscreenIdleTimeZoneUTCBox.TabIndex = 25;
+            this.alertFullscreenIdleTimeZoneUTCBox.Text = "Use UTC";
+            this.ToolTipInformation.SetToolTip(this.alertFullscreenIdleTimeZoneUTCBox, "Sets the time display on the idle window to UTC instead of the system timezone.");
+            this.alertFullscreenIdleTimeZoneUTCBox.UseVisualStyleBackColor = true;
+            // 
             // ConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(25)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(671, 633);
             this.Controls.Add(this.ConfigurationPanel);
             this.Controls.Add(this.BusyLockText);
@@ -1139,5 +1168,7 @@
         private System.Windows.Forms.Button CacheOperationButton;
         private System.Windows.Forms.Panel ConfigurationPanel;
         private System.Windows.Forms.Label BusyLockText;
+        private System.Windows.Forms.CheckBox statusWindowBox;
+        private System.Windows.Forms.CheckBox alertFullscreenIdleTimeZoneUTCBox;
     }
 }

@@ -474,5 +474,29 @@ namespace SharpAlert.Properties {
                 this["alertCompatibilityMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool statusWindow {
+            get {
+                return ((bool)(this["statusWindow"]));
+            }
+            set {
+                this["statusWindow"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool alertFullscreenIdleTimeZoneUTC {
+            get {
+                return ((bool)(this["alertFullscreenIdleTimeZoneUTC"]));
+            }
+            set {
+                this["alertFullscreenIdleTimeZoneUTC"] = value;
+            }
+        }
     }
 }

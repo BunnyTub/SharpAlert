@@ -122,6 +122,9 @@ namespace SharpAlert
                 this.BringToFront();
             };
 
+            alertFullscreenIdleTimeZoneUTCBox.Checked = Settings.Default.alertFullscreenIdleTimeZoneUTC;
+            alertFullscreenIdleTimeZoneUTCBox.CheckedChanged += (a, b) => Settings.Default.alertFullscreenIdleTimeZoneUTC = ((CheckBox)a).Checked;
+
             bool alertFullscreenDisplayIgnoreInput = false;
             alertFullscreenDisplayInput.Value = Settings.Default.alertFullscreenDisplay;
             alertFullscreenDisplayInput.ValueChanged += (a, b) =>
@@ -171,6 +174,24 @@ namespace SharpAlert
 
             alertCompatibilityModeBox.Checked = Settings.Default.alertCompatibilityMode;
             alertCompatibilityModeBox.CheckedChanged += (a, b) => Settings.Default.alertCompatibilityMode = ((CheckBox)a).Checked;
+
+            statusWindowBox.Checked = Settings.Default.statusWindow;
+            statusWindowBox.CheckedChanged += (a, b) =>
+            {
+                ((CheckBox)a).Enabled = false;
+
+                if (((CheckBox)a).Checked)
+                {
+                    CreateStatusWindow();
+                }
+                else
+                {
+                    DestroyStatusWindow();
+                }
+
+                Thread.Sleep(500);
+                ((CheckBox)a).Enabled = true;
+            };
 
             string SAME_Areas = string.Empty;
             foreach (string area in Settings.Default.AllowedSAMELocations_Geocodes) SAME_Areas += area + "\r\n";

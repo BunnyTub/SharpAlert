@@ -178,6 +178,9 @@ namespace SharpAlert
                     FadeOutAnimation.Start();
                 }
             }
+            sound.Stop();
+            engine.SpeakAsyncCancelAll();
+            soundFinish.Stop();
         }
 
         IntPtr GotHandle = IntPtr.Zero;

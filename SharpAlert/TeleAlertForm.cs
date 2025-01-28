@@ -244,6 +244,9 @@ namespace SharpAlert
                     FadeOutAnimation.Start();
                 }
             }
+            sound.Stop();
+            engine.SpeakAsyncCancelAll();
+            soundFinish.Stop();
         }
 
         private void ShowAndEnableButtons()

@@ -19,6 +19,12 @@ namespace SharpAlert
             get;
             private set;
         } = 0;
+        
+        public static int AlertsRelayed
+        {
+            get;
+            private set;
+        } = 0;
 
         public enum SeverityLevel
         {
@@ -84,7 +90,6 @@ namespace SharpAlert
                 List<string> AllEvents = new List<string>();
                 List<string> AllLocations = new List<string>();
                 SeverityLevel MaxSeverity = SeverityLevel.Unknown;
-
 
                 foreach (Match infoMatch in infoMatches)
                 {
@@ -167,6 +172,14 @@ namespace SharpAlert
 
                         try
                         {
+                            if (ReplayMode)
+                            {
+                                notify.BalloonTipIcon = ToolTipIcon.Info;
+                                notify.BalloonTipTitle = $"{Sent}";
+                                notify.BalloonTipText = $"An alert with the event {EventType} was sent in replay mode.";
+                                notify.ShowBalloonTip(5000);
+                            }
+
                             //USE NOTIFYICON IF NOT QUEUEING DIALOG
                             if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
                             {
@@ -196,9 +209,9 @@ namespace SharpAlert
 
                                 string AlertCompiled;
                                 if (Settings.Default.weaOnly) AlertCompiled = "## WIRELESS EMERGENCY ALERT\r\n";
-                                else AlertCompiled = "## EMERGENCY ALERT\r\n";
+                                else AlertCompiled = "# EMERGENCY ALERT\r\n";
                                 AlertCompiled += $"**This {EventType} was sent on {sentDate:f}. It will expire on {expiresDate:f}.**\r\n\r\n" +
-                                    "--- Alert Message ---\r\n" +
+                                    "## Alert Message\r\n" +
                                     $"{AlertText}";
 
                                 //if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhookAppend))
@@ -212,12 +225,13 @@ namespace SharpAlert
                                     notify.BalloonTipTitle = $"{Sent}";
                                     notify.BalloonTipText = $"An alert with the event {EventType} was issued.";
                                     notify.ShowBalloonTip(5000);
+                                    AnyAlertRelayed = true;
                                 }
                                 else
                                 {
                                     notify.BalloonTipIcon = ToolTipIcon.Warning;
                                     notify.BalloonTipTitle = $"{Sent}";
-                                    notify.BalloonTipText = $"An alert with the event {EventType} was issued, but it couldn't be relayed through the webhook.";
+                                    notify.BalloonTipText = $"An alert with the event {EventType} was issued, but it couldn't be sent through the webhook.";
                                     notify.ShowBalloonTip(5000);
                                 }
 
@@ -321,10 +335,7 @@ namespace SharpAlert
                             Console.WriteLine($"[Alert Processor] Couldn't relay alert. {ex.Message}");
                         }
 
-                        //Console.WriteLine($"[Alert Processor] {LanguageStrings.GeneratingProductText(Settings.Default.CurrentLanguage)}");
-
-                        //Generate gen = new Generate(infoEN, MsgType, sentMatch.Groups[1].Value);
-                        //var info = gen.BroadcastInfo(lang);
+                        if (AnyAlertRelayed) AlertsRelayed++;
                     }
                     else
                     {

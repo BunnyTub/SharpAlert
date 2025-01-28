@@ -25,12 +25,12 @@ namespace SharpAlert
 
         private void ConsoleButton_Click(object sender, EventArgs e)
         {
-            Program.AllocateTerminal();
+            IceBearWorker.AllocateTerminal();
         }
 
         private void ImportButton_Click(object sender, EventArgs e)
         {
-            Program.AddFileToQueue();
+            IceBearWorker.AddFileToQueue();
         }
 
         private void OpenSettingsButton_Click(object sender, EventArgs e)

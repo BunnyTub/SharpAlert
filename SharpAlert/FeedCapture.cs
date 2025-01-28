@@ -1,6 +1,7 @@
 ﻿using SharpAlert.Properties;
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
@@ -56,7 +57,13 @@ namespace SharpAlert
                 try
                 {
                     string filename;
-                    string result = client.GetStringAsync($"{URLPrefix}://{server}").Result;
+
+                    Console.WriteLine($"[Feed Capture] Getting data from the server.");
+                    Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server}");
+                    message.Wait();
+                    message.Result.EnsureSuccessStatusCode();
+
+                    string result = message.Result.Content.ReadAsStringAsync().Result;
 
                     Console.WriteLine($"[Feed Capture] Grabbed data from the server.");
 
@@ -118,6 +125,10 @@ namespace SharpAlert
                 catch (TimeoutException)
                 {
                     Console.WriteLine($"[Feed Capture] Timed out.");
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message} {e.InnerException.Message}");
                 }
                 catch (AggregateException e)
                 {

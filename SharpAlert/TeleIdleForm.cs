@@ -14,6 +14,8 @@ namespace SharpAlert
             InitializeComponent();
         }
 
+        private bool UseUTCTimeZone = false;
+
         private void TeleIdleForm_Load(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Normal;
@@ -27,6 +29,7 @@ namespace SharpAlert
             }
             this.WindowState = FormWindowState.Maximized;
             if (Settings.Default.alertCompatibilityMode) MouseMoving.Start();
+            if (Settings.Default.alertFullscreenIdleTimeZoneUTC) UseUTCTimeZone = true;
             InfoText.Text = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Started operating: {startDT:f}";
         }
 
@@ -37,7 +40,9 @@ namespace SharpAlert
 
         private void ClockSet_Tick(object sender, EventArgs e)
         {
-            DateTime dt = DateTime.UtcNow;
+            DateTime dt;
+            if (UseUTCTimeZone) dt = DateTime.UtcNow;
+            else dt = DateTime.Now;
             IdleText.Text = $"{dt:t}\r\n{dt:d}";
         }
 

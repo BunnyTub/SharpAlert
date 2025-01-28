@@ -297,7 +297,7 @@
             // 
             // AutoHideButtons
             // 
-            this.AutoHideButtons.Interval = 5000;
+            this.AutoHideButtons.Interval = 10000;
             this.AutoHideButtons.Tick += new System.EventHandler(this.AutoHideButtons_Tick);
             // 
             // TeleAlertForm

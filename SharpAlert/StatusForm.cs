@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using static SharpAlert.Program;
 
 namespace SharpAlert
 {
@@ -19,7 +13,21 @@ namespace SharpAlert
 
         private void RefreshData_Tick(object sender, EventArgs e)
         {
-            this.Text = AlertProcessor.AlertsQueued.ToString();
+            if (CloseStatusWindow) this.Close();
+
+            DateTime now = DateTime.UtcNow;
+
+            UptimeMeterText.Text = $"{(int)(now - startDT).TotalHours} hour(s), " +
+                $"{(now - startDT).Minutes} minute(s), " +
+                $"{(now - startDT).Seconds} second(s)";
+            CAPQueueCountText.Text = SharpDataQueue.Count.ToString();
+            CAPHistoryCountText.Text = SharpDataHistory.Count.ToString();
+            AlertQueueCountText.Text = AlertProcessor.AlertsQueued.ToString();
+            AlertsRelayedText.Text = AlertProcessor.AlertsRelayed.ToString();
+        }
+
+        private void StatusForm_Load(object sender, EventArgs e)
+        {
         }
     }
 }
