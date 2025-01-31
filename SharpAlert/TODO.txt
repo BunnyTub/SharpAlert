@@ -1,0 +1,8 @@
+﻿Not Implemented:
+- Grab audio from alerts
+
+Partially Implemented:
+...
+
+Completed:
+...

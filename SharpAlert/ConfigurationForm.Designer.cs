@@ -1037,7 +1037,7 @@
             this.alertFullscreenIdleTimeZoneUTCBox.Size = new System.Drawing.Size(77, 19);
             this.alertFullscreenIdleTimeZoneUTCBox.TabIndex = 25;
             this.alertFullscreenIdleTimeZoneUTCBox.Text = "Use UTC";
-            this.ToolTipInformation.SetToolTip(this.alertFullscreenIdleTimeZoneUTCBox, "Sets the time display on the idle window to UTC instead of the system timezone.");
+            this.ToolTipInformation.SetToolTip(this.alertFullscreenIdleTimeZoneUTCBox, "Sets the time display on the idle window to UTC instead of the system time zone.");
             this.alertFullscreenIdleTimeZoneUTCBox.UseVisualStyleBackColor = true;
             // 
             // ConfigurationForm

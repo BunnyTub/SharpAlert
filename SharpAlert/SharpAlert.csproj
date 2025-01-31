@@ -259,6 +259,7 @@
     <None Include="Resources\ui_warning.wav" />
     <None Include="Resources\ui_nothing.wav" />
     <None Include="Resources\ui_end.wav" />
+    <Content Include="TODO.txt" />
     <Content Include="WarningApp.ico" />
   </ItemGroup>
   <ItemGroup>

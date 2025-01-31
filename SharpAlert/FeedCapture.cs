@@ -42,11 +42,13 @@ namespace SharpAlert
             while (Stop) Thread.Sleep(100);
         }
 
+        public static string Result { get; private set; } = string.Empty;
+
         //apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/PublicWEA/recent/{DateTime.UtcNow.AddMonths(-1):yyyy-MM-ddTHH:mm:ssZ}
         /// <summary>
-        /// Starts the Feed Capture service in the current thread.
+        /// Starts the Feed Capture service in the current thread as a client.
         /// </summary>
-        /// <param name="useHTTPS">Uses the secure version of Hypertext Transfer Protocol to connect to the target server.</param>
+        /// <param name="useHTTPS">Use the secure version of Hypertext Transfer Protocol to connect to the target server.</param>
         public void ServiceRun(bool useHTTPS)
         {
             if (Stop) return;
@@ -60,43 +62,47 @@ namespace SharpAlert
 
                     Console.WriteLine($"[Feed Capture] Getting data from the server.");
                     Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server}");
-                    message.Wait();
+                    if (!message.Wait(10000)) continue;
                     message.Result.EnsureSuccessStatusCode();
 
-                    string result = message.Result.Content.ReadAsStringAsync().Result;
+                    Result = message.Result.Content.ReadAsStringAsync().Result;
 
                     Console.WriteLine($"[Feed Capture] Grabbed data from the server.");
 
-                    MatchCollection alertMatches = AlertRegex.Matches(result);
+                    MatchCollection alertMatches = AlertRegex.Matches(Result);
                     int alertIndex = 0;
 
-                    foreach (Match alert in alertMatches)
+                    if (alertMatches != null)
                     {
-                        alertIndex++;
-
-                        string alertValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
-                        filename = CreateMD5(alert.Value);
-
-                        Console.WriteLine($"[Feed Capture] {alertIndex} -> {filename}");
-
-                        SharpDataItem item = new SharpDataItem(filename, alert.Value);
-
-                        if (FirstRun && Settings.Default.discardFirstAlerts)
+                        foreach (Match alert in alertMatches)
                         {
-                            if (TryAddDataToHistory(item))
+                            alertIndex++;
+                            if (alert.Value is null) continue;
+
+                            string alertValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
+                            filename = CreateMD5(alert.Value);
+
+                            Console.WriteLine($"[Feed Capture] {alertIndex} -> {filename}");
+
+                            SharpDataItem item = new SharpDataItem(filename, alert.Value);
+
+                            if (FirstRun && Settings.Default.discardFirstAlerts)
                             {
-                                Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been discarded (first run).");
-                            }
-                        }
-                        else
-                        {
-                            if (TryAddDataToQueue(item))
-                            {
-                                Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been saved for processing.");
+                                if (TryAddDataToHistory(item))
+                                {
+                                    Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been discarded (first run).");
+                                }
                             }
                             else
                             {
-                                Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been discarded (already queued or is in history).");
+                                if (TryAddDataToQueue(item))
+                                {
+                                    Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been saved for processing.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been discarded (already queued or is in history).");
+                                }
                             }
                         }
                     }
@@ -141,11 +147,79 @@ namespace SharpAlert
                 catch (ThreadAbortException)
                 {
                 }
+                catch (NullReferenceException e)
+                {
+                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
+                }
                 catch (Exception e)
                 {
                     Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
                 }
                 if (FirstRun) FirstRun = false;
+            }
+        }
+
+        /// <summary>
+        /// Starts the Feed Capture service in the current thread as a server instead of a client.
+        /// </summary>
+        /// <param name="useHTTPS">Use the secure version of Hypertext Transfer Protocol to connect to the target server.</param>
+        public void ServerServiceRun(bool useHTTPS)
+        {
+            if (Stop) return;
+
+            string URLPrefix = useHTTPS ? "https" : "http";
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine($"[Feed Capture] Getting data from the server.");
+                    Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server}");
+                    if (!message.Wait(10000)) continue;
+                    message.Result.EnsureSuccessStatusCode();
+
+                    Result = message.Result.Content.ReadAsStringAsync().Result;
+
+                    Console.WriteLine($"[Feed Capture] Grabbed data from the server.");
+
+                    for (int i = 0; !(i >= 30);)
+                    {
+                        if (Stop)
+                        {
+                            Stop = false;
+                            return;
+                        }
+                        Thread.Sleep(1000);
+                        i++;
+                    }
+                }
+                catch (SocketException e)
+                {
+                    Console.WriteLine($"[Feed Capture] {e.Message}");
+                    Thread.Sleep(1000);
+                }
+                catch (TimeoutException)
+                {
+                    Console.WriteLine($"[Feed Capture] Timed out.");
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message} {e.InnerException.Message}");
+                }
+                catch (AggregateException e)
+                {
+                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.InnerExceptions.FirstOrDefault().Message}");
+                }
+                catch (TaskCanceledException)
+                {
+                    Console.WriteLine("[Feed Capture] The executing task was canceled.");
+                }
+                catch (ThreadAbortException)
+                {
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
+                }
             }
         }
 

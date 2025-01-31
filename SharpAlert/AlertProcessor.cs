@@ -350,16 +350,16 @@ namespace SharpAlert
                         string EventsList = string.Empty;
                         foreach (string Event in AllEvents)
                         {
-                            EventsList += $"{Event}, ";
+                            EventsList += $"{Regex.Replace(Event.ToLower(), @"(^\w)|(\s\w)", m => m.Value.ToUpper())}, ";
                         }
-                        EventsList = EventsList.Trim().Substring(0, EventsList.Length - 1) + ".";
+                        EventsList = EventsList.Substring(0, EventsList.Length - 2) + ".";
                         
                         string LocationList = string.Empty;
                         foreach (string Location in AllLocations)
                         {
                             LocationList += $"{Location}, ";
                         }
-                        LocationList = LocationList.Trim().Substring(0, LocationList.Length - 1) + ".";
+                        LocationList = LocationList.Substring(0, LocationList.Length - 2) + ".";
                         AlertToWebhook.SendUnformattedMessage($"{MaxSeverity} Emergency Alert | Event(s): {EventsList} | Location(s): {LocationList}\r\n" + Settings.Default.DiscordWebhookAppend, Settings.Default.DiscordWebhook);
                         Console.WriteLine("[Alert Processor] Appended to Discord webhook text.");
                     }

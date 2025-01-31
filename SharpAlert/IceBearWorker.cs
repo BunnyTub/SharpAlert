@@ -8,11 +8,14 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Speech.Synthesis;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static SharpAlert.Program;
 using static SharpAlert.RegexList;
@@ -21,6 +24,9 @@ namespace SharpAlert
 {
     public static class IceBearWorker
     {
+        /// <summary>
+        /// Starts the Ice Bear Worker as a client.
+        /// </summary>
         [MTAThread]
         public static void ServiceRun()
         {
@@ -32,6 +38,11 @@ namespace SharpAlert
                 if (args[1] == "--console")
                 {
                     AllocateTerminal(false);
+                }
+                else if (args[1] == "--server")
+                {
+                    ServerServiceRun();
+                    return;
                 }
             }
 
@@ -45,7 +56,7 @@ namespace SharpAlert
             {
             }
 
-            Console.WriteLine("Ice Bear is initializing services.");
+            Console.WriteLine("[Ice Bear] Initializing services.");
 
             feed = new FeedCapture();
             cache = new CacheCapture();
@@ -55,7 +66,6 @@ namespace SharpAlert
             engine = new SpeechSynthesizer()
             {
                 //Volume = 80
-                Volume = 80
             };
 
             engine.SpeakCompleted += (objective, eventArgs) =>
@@ -77,12 +87,26 @@ namespace SharpAlert
                 lock (ChangedPropertiesList) ChangedPropertiesList.Clear();
             };
 
-            Console.WriteLine("Ice Bear will be starting services momentarily.");
+            Console.WriteLine("[Ice Bear] Starting services momentarily.");
 
-            Thread feedThread = ReturnThreadWithCatch(() => feed.ServiceRun(true));
+            bool UseHTTPS = true;
+
+            if (args.Length == 3)
+            {
+                if (args[1] == "--host")
+                {
+                    feed.server = $"{args[2]}:9792";
+                    UseHTTPS = false;
+                }
+            }
+            else
+            {
+                feed.server = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-1):yyyy-MM-ddTHH:mm:ssZ}";
+            }
+
+            Thread feedThread = ReturnThreadWithCatch(() => feed.ServiceRun(UseHTTPS));
             feedThread.SetApartmentState(ApartmentState.MTA);
             //feed.server = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/PublicWEA/recent/{DateTime.UtcNow.AddMonths(-1):yyyy-MM-ddTHH:mm:ssZ}";
-            feed.server = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-1):yyyy-MM-ddTHH:mm:ssZ}";
             feedThread.MonitorAndStart();
 
             Thread cacheThread = ReturnThreadWithCatch(() => cache.ServiceRun(true));
@@ -109,6 +133,63 @@ namespace SharpAlert
                 Application.Run();
             });
             notificationThread.MonitorAndStart();
+        }
+
+        /// <summary>
+        /// Starts the Ice Bear Worker as a server instead of a client.
+        /// </summary>
+        public static void ServerServiceRun()
+        {
+            AllocateTerminal(false);
+
+            Console.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MajorVersion} (server runner)");
+            Console.WriteLine("[Ice Bear] Initializing services.");
+
+            feed = new FeedCapture();
+            processor = new DataProcessor();
+            HttpListener listener = new HttpListener();
+            listener.Prefixes.Add("http://*:9792/");
+
+            Console.WriteLine("[Ice Bear] Starting services momentarily.");
+
+            Thread feedThread = ReturnThreadWithCatch(() => feed.ServerServiceRun(true));
+            feedThread.SetApartmentState(ApartmentState.MTA);
+            feedThread.MonitorAndStart();
+
+            listener.Start();
+            
+            CreateStatusWindow();
+
+            while (true)
+            {
+                Task<HttpListenerContext> contextAsync = listener.GetContextAsync();
+                if (!contextAsync.Wait(15000))
+                {
+                    Console.WriteLine("[Ice Bear] No new requests.");
+                    continue;
+                }
+
+                HttpListenerContext context = contextAsync.Result;
+
+                var request = context.Request;
+                Console.WriteLine($"[Ice Bear] Sending data ({request.UserAgent}).");
+
+                if (request.HttpMethod.ToUpper() == "GET")
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.OK;
+                    context.Response.ContentType = "application/xml";
+                    byte[] feed = Encoding.UTF8.GetBytes(FeedCapture.Result);
+                    context.Response.OutputStream.Write(null, 0, 0);
+                    context.Response.OutputStream.Close();
+                    Console.WriteLine($"[Ice Bear] Sent the data successfully.");
+                }
+                else
+                {
+                    Console.WriteLine($"[Ice Bear] Client did not send the request via GET.");
+                    context.Response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
+                    context.Response.OutputStream.Close();
+                }
+            }
         }
 
         private static void MonitorAndStart(this Thread thread)

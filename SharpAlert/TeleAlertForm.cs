@@ -98,7 +98,13 @@ namespace SharpAlert
             taskbarList.HrInit();
             AlertTextStr = text;
             SubtitleText.Text = alert;
-            AlertText.Text = text;
+            // Padding to prevent immediate wrap around when scrolling automatically
+            AlertText.Text = text +
+                "\r\n".PadRight(35) +
+                "\r\n".PadRight(35) +
+                "\r\n".PadRight(35) +
+                "\r\n".PadRight(35) +
+                "\r\n".PadRight(35);
             AlertText.SelectionStart = 0;
             ReplayModeText.Visible = replay;
             ReplayMode = replay;
