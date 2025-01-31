@@ -254,11 +254,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\WarningApp.png" />
-    <None Include="Resources\siren %281%29.wav" />
     <Content Include="FodyWeavers.xml" />
-    <None Include="Resources\ui_warning.wav" />
     <None Include="Resources\ui_nothing.wav" />
     <None Include="Resources\ui_end.wav" />
+    <None Include="Resources\ui_cancellation.wav" />
+    <None Include="Resources\ui_warning.wav" />
     <Content Include="TODO.txt" />
     <Content Include="WarningApp.ico" />
   </ItemGroup>

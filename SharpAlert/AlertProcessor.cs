@@ -11,9 +11,56 @@ using static SharpAlert.RegexList;
 
 namespace SharpAlert
 {
-    public static class AlertProcessor
+    public class AlertProcessor
     {
+        private AlertForm raf = null;
+        private bool rafPing = false;
+        private TeleAlertForm taf = null;
+        private bool tafPing = false;
+
+        private string DialogAlertTitle = string.Empty;
+        private string DialogAlertText = string.Empty;
+        private string DialogAlertURL = string.Empty;
+        private bool DialogAlertCancellation = false;
+
+        public AlertProcessor()
+        {
+            StartRAFCallLoop();
+            StartTAFCallLoop();
+        }
+
+        private void StartRAFCallLoop()
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                raf = new AlertForm();
+                while (true)
+                {
+                    while (!rafPing) Thread.Sleep(500);
+                    raf.UpdateFields(DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertCancellation);
+                    raf.ShowDialog(null);
+                    rafPing = false;
+                }
+            });
+        }
+        
+        private void StartTAFCallLoop()
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                taf = new TeleAlertForm();
+                while (true)
+                {
+                    while (!tafPing) Thread.Sleep(500);
+                    taf.UpdateFields(DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertCancellation);
+                    taf.ShowDialog(null);
+                    tafPing = false;
+                }
+            });
+        }
+
         public static readonly object AlertLock = new object();
+
         public static int AlertsQueued
         {
             get;
@@ -39,7 +86,7 @@ namespace SharpAlert
         /// Processes and relays the alert item.
         /// </summary>
         /// <param name="relayItem">The item to be processed.</param>
-        public static void ProcessAlertItem(SharpDataItem relayItem, bool ReplayMode)
+        public void ProcessAlertItem(SharpDataItem relayItem, bool ReplayMode)
         {
             lock (AlertLock)
             {
@@ -94,9 +141,8 @@ namespace SharpAlert
                 foreach (Match infoMatch in infoMatches)
                 {
                     infoProc++;
-                    Console.WriteLine($"[Alert Processor] Processing {infoProc} of {infoMatches.Count}");
+                    Console.WriteLine($"[Alert Processor] Processing {infoProc} of {infoMatches.Count}.");
 
-                    //string AlertInfo = $"<info>{infoMatch.Groups[1].Value}</info>";
                     string AlertInfo = $"{infoMatch.Groups[1].Value}";
 
                     string Effective = EffectiveRegex.Match(relayItem.Data).Groups[1].Value;
@@ -210,7 +256,7 @@ namespace SharpAlert
                                 string AlertCompiled;
                                 if (Settings.Default.weaOnly) AlertCompiled = "## WIRELESS EMERGENCY ALERT\r\n";
                                 else AlertCompiled = "# EMERGENCY ALERT\r\n";
-                                AlertCompiled += $"**This {EventType} was sent on {sentDate:f}. It will expire on {expiresDate:f}.**\r\n\r\n" +
+                                AlertCompiled += $"**This {EventType} was sent: {sentDate:f}**\r\n**It is set to expire: {expiresDate:f}.**\r\n\r\n" +
                                     "## Alert Message\r\n" +
                                     $"{AlertText}";
 
@@ -257,58 +303,50 @@ namespace SharpAlert
                                     }
 
                                     AlertDisplaying = true;
-
                                     AlertsQueued--;
+                                    DialogAlertTitle = EventType;
+                                    DialogAlertText = AlertText;
+                                    DialogAlertURL = URL;
+                                    if (MsgType.ToLower() == "cancel") DialogAlertCancellation = true;
+                                    else DialogAlertCancellation = false;
 
                                     if (Settings.Default.alertFullscreen)
                                     {
-                                        // attaches to the idle window if compatibility mode is enabled.
-                                        if (Settings.Default.alertFullscreenIdle & idle != null & Settings.Default.alertCompatibilityMode)
-                                        {
-                                            //bool AlertFinished = false;
+                                        tafPing = true;
+                                        while (tafPing) Thread.Sleep(500);
 
-                                            // invoke IdleContainer to use, otherwise, you'll get an InvalidOperationException.
-                                            TeleAlertForm af = null;
-
-                                            idle.IdleContainer.Invoke(new MethodInvoker(delegate
-                                            {
-                                                af = new TeleAlertForm(EventType, AlertText, URL, ReplayMode)
-                                                {
-                                                    TopLevel = false
-                                                };
-
-                                                idle.IdleContainer.Controls.Add(af);
-                                                Console.WriteLine("[Alert Processor] Added dialog to idle window.");
-                                                //AlertFinished = true;
-                                            }));
-                                            
-                                            af.ShowAndWait();
-                                            
-                                            idle.IdleContainer.Invoke(new MethodInvoker(delegate
-                                            {
-                                                idle.IdleContainer.Controls.Remove(af);
-                                                Console.WriteLine("[Alert Processor] Removed dialog from idle window.");
-                                            }));
-
-                                            //while (!AlertFinished)
-                                            //{
-                                            //    Thread.Sleep(100);
-                                            //}
-                                        }
-                                        else
-                                        {
-                                            using (TeleAlertForm af = new TeleAlertForm(EventType, AlertText, URL, ReplayMode))
-                                            {
-                                                af.ShowDialog();
-                                            }
-                                        }
+                                        //if (Settings.Default.alertFullscreenIdle & idle != null & Settings.Default.alertCompatibilityMode)
+                                        //{
+                                        //    bool AlertFinished = false;
+                                        //    below code is deprecated, the alert will no longer attach to the idle window
+                                        //     invoke IdleContainer to use, otherwise, you'll get an InvalidOperationException.
+                                        //    TeleAlertForm af = null;
+                                        //    idle.IdleContainer.Invoke(new MethodInvoker(delegate
+                                        //    {
+                                        //        af = new TeleAlertForm(EventType, AlertText, URL, ReplayMode)
+                                        //        {
+                                        //            TopLevel = false
+                                        //        };
+                                        //        idle.IdleContainer.Controls.Add(af);
+                                        //        Console.WriteLine("[Alert Processor] Added dialog to idle window.");
+                                        //        //AlertFinished = true;
+                                        //    }));
+                                        //    af.ShowAndWait();
+                                        //    idle.IdleContainer.Invoke(new MethodInvoker(delegate
+                                        //    {
+                                        //        idle.IdleContainer.Controls.Remove(af);
+                                        //        Console.WriteLine("[Alert Processor] Removed dialog from idle window.");
+                                        //    }));
+                                        //    while (!AlertFinished)
+                                        //    {
+                                        //        Thread.Sleep(100);
+                                        //    }
+                                        //}
                                     }
                                     else
                                     {
-                                        using (AlertForm af = new AlertForm(EventType, AlertText, URL))
-                                        {
-                                            af.ShowDialog();
-                                        }
+                                        rafPing = true;
+                                        while (rafPing) Thread.Sleep(500);
                                     }
 
                                     sound.Stop();
@@ -519,7 +557,7 @@ namespace SharpAlert
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"[Data Processor] {ex.Message}");
+                        Console.WriteLine($"[Alert Processor] {ex.Message}");
                     }
                 }
                 
@@ -552,7 +590,7 @@ namespace SharpAlert
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"[Data Processor] {ex.Message}");
+                        Console.WriteLine($"[Alert Processor] {ex.Message}");
                     }
                 }
 
@@ -571,7 +609,7 @@ namespace SharpAlert
         /// </summary>
         /// <param name="ParameterX">The parameter XML data to process.</param>
         /// <returns>Returns True if the caller should continue.</returns>
-        public static bool ProcessParameterX(string ParameterX)
+        public bool ProcessParameterX(string ParameterX)
         {
             Console.WriteLine("Processing ParemeterX.");
 
@@ -601,7 +639,7 @@ namespace SharpAlert
         /// <param name="MsgType">The overall message type.</param>
         /// <param name="Severity">The severity of the message.</param>
         /// <returns>Returns True if the caller should continue.</returns>
-        public static bool ProcessAlertX(string Status, string MsgType, string Severity)
+        public bool ProcessAlertX(string Status, string MsgType, string Severity)
         {
             Console.WriteLine("Processing AlertX.");
 
@@ -721,7 +759,7 @@ namespace SharpAlert
         /// <param name="MsgType">The overall message type.</param>
         /// <param name="Sent">The date and time the message was sent.</param>
         /// <returns>Returns a compiled message body.</returns>
-        public static string BroadcastInfo(string InfoData, string MsgType, string Sent, bool Replay)
+        public string BroadcastInfo(string InfoData, string MsgType, string Sent, bool Replay)
         {
             string BroadcastText = string.Empty;
 
@@ -773,7 +811,7 @@ namespace SharpAlert
                 });
             }
 
-            if (Replay) BroadcastText += SentenceAppendSpace($"This alert was sent in replay mode by SharpAlert, on {DateTime.UtcNow:f} Coordinated Universal Time.");
+            if (Replay) BroadcastText += SentenceAppendSpace($"This alert was sent in replay mode by SharpAlert, on {DateTime.UtcNow:f} UTC.");
 
             string issue = "issued";
             string update = "updated";
@@ -831,8 +869,8 @@ namespace SharpAlert
 
             //DateTime sentDate = DateTime.Parse(Sent, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal).ToUniversalTime();
 
-            string TimeZoneName = "Unknown Time Zone";
-            TimeZoneName = "Coordinated Universal Time";
+            string TimeZoneName = "Unknown TZ";
+            TimeZoneName = "UTC";
 
             string SentFormatted = $"{sentDate:HH:mm} {TimeZoneName}, {sentDate:MMMM dd}, {sentDate:yyyy}";
             string BeginFormatted = $"{effectiveDate:HH:mm} {TimeZoneName}, {effectiveDate:MMMM dd}, {effectiveDate:yyyy}";
@@ -843,11 +881,11 @@ namespace SharpAlert
             {
                 EventType = EventRegex.Match(InfoData).Groups[1].Value;
                 EventType = Regex.Replace(EventType.ToLower(), @"(^\w)|(\s\w)", m => m.Value.ToUpper());
-                EventType = $"Event type is {EventType}.";
+                EventType = $"{EventType}";
             }
             catch (Exception)
             {
-                EventType = $"Event type is not known.";
+                EventType = $"Cautionary (Unknown Event)";
             }
 
             string Coverage = "For:";
@@ -911,7 +949,7 @@ namespace SharpAlert
             }
             catch (Exception)
             {
-                SenderName = "an unknown issuer";
+                SenderName = "Governing Entity (Unknown Sender)";
             }
 
             string Description;
@@ -975,42 +1013,22 @@ namespace SharpAlert
                 Instruction = string.Empty;
             }
 
-            string Effective;
-
-            try
-            {
-                Effective = effectiveDate.ToString();
-            }
-            catch (Exception)
-            {
-                Effective = "currently";
-            }
-
-            string Expiry;
-
-            try
-            {
-                Expiry = expiryDate.ToString();
-            }
-            catch (Exception)
-            {
-                Expiry = "soon";
-            }
-
             // Effective {Effective}, and expiring {Expires}.
 
-            BroadcastText += SentenceAppendSpace(EventType);
+            BroadcastText += SentenceAppendSpace($"This alert was issued by {SenderName}. Event type is {EventType}.");
             BroadcastText += SentenceAppendSpace(Coverage);
             BroadcastText += SentenceAppendSpace(SentenceAppendEnd(AreaDesc));
 
-            if (BeginFormatted != EndFormatted)
-            {
-                BroadcastText += SentenceAppendSpace($"This alert takes effect on {BeginFormatted}, and expires on {EndFormatted}.");
-            }
-            else
-            {
-                BroadcastText += SentenceAppendSpace($"This alert takes effect starting {BeginFormatted}.");
-            }
+            //if (BeginFormatted != EndFormatted)
+            //{
+            //    BroadcastText += SentenceAppendSpace($"This alert takes goes into effect starting {BeginFormatted}, and ends {EndFormatted}.");
+            //}
+            //else
+            //{
+            //    BroadcastText += SentenceAppendSpace($"This alert takes effect starting {BeginFormatted}.");
+            //}
+
+            BroadcastText += SentenceAppendSpace($"This alert goes into effect starting {BeginFormatted}, and ending at {EndFormatted}.");
 
             BroadcastText += SentenceAppendSpace(SentenceAppendEnd(Description));
             if (Description != Instruction) BroadcastText += SentenceAppendSpace(SentenceAppendEnd(Instruction));
@@ -1043,7 +1061,7 @@ namespace SharpAlert
         /// </summary>
         /// <param name="InfoData">The info XML data to process.</param>
         /// <returns>Returns a compiled message body.</returns>
-        public static List<string> CompiledLocations(string InfoData)
+        public List<string> CompiledLocations(string InfoData)
         {
             try
             {
@@ -1094,7 +1112,7 @@ namespace SharpAlert
         /// </summary>
         /// <param name="Data"></param>
         /// <returns></returns>
-        public static string StringIntoTTSFriendly(string Data)
+        public string StringIntoTTSFriendly(string Data)
         {
             string FriendlyData = Data;
             FriendlyData = FriendlyData.Replace("EAS", "E A S").Replace("911", "9 1 1").Replace("9-1-1", "9 1 1");

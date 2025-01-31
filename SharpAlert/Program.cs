@@ -13,7 +13,7 @@ namespace SharpAlert
 {
     internal static class VersionInfo
     {
-        public static readonly int MajorVersion = 2;
+        public static readonly int MajorVersion = 3;
         public static readonly int MinorVersion = 0;
     }
 
@@ -38,6 +38,7 @@ namespace SharpAlert
         public static CacheCapture cache;
         public static DataProcessor processor;
         public static SoundPlayer sound;
+        public static SoundPlayer soundCancellation;
         public static SoundPlayer soundFinish;
         public static TeleIdleForm idle;
         public static StatusForm status;
@@ -45,9 +46,6 @@ namespace SharpAlert
         public static bool CloseStatusWindow = false;
         public static object IdleWindowLock = new object();
         public static object StatusWindowLock = new object();
-        //public static UnmanagedMemoryStream unmanagedAudioStream;
-        //public static MemoryStream memoryAudioStream;
-        //public static WaveStream wav;
         public static NotifyIcon notify;
         public static SpeechSynthesizer engine;
         public static object AlertValuesLock = new object();
@@ -100,6 +98,7 @@ namespace SharpAlert
             if (idle != null) DestroyStatusWindow();
             Console.WriteLine("Stopping sounds.");
             sound?.Stop();
+            soundCancellation?.Stop();
             soundFinish?.Stop();
             Console.WriteLine("Stopping TTS.");
             engine?.SpeakAsyncCancelAll();

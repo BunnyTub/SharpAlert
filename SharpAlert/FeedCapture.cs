@@ -43,6 +43,8 @@ namespace SharpAlert
         }
 
         public static string Result { get; private set; } = string.Empty;
+        public static int Calls { get; private set; } = 0;
+
 
         //apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/PublicWEA/recent/{DateTime.UtcNow.AddMonths(-1):yyyy-MM-ddTHH:mm:ssZ}
         /// <summary>
@@ -64,6 +66,9 @@ namespace SharpAlert
                     Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server}");
                     if (!message.Wait(10000)) continue;
                     message.Result.EnsureSuccessStatusCode();
+                    
+                    if (Calls > 100000) Calls = 0;
+                    Calls++;
 
                     Result = message.Result.Content.ReadAsStringAsync().Result;
 
@@ -105,9 +110,12 @@ namespace SharpAlert
                                 }
                             }
                         }
+                        Console.WriteLine($"[Feed Capture] {alertIndex} alert(s) checked.");
                     }
-
-                    Console.WriteLine($"[Feed Capture] {alertIndex} alert(s) checked.");
+                    else
+                    {
+                        Console.WriteLine($"[Feed Capture] No alerts to be checked.");
+                    }
 
                     // Do not show the user an alert for the first time opening the program
                     // Implement user entry for how long between each request/check
@@ -176,6 +184,9 @@ namespace SharpAlert
                     Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server}");
                     if (!message.Wait(10000)) continue;
                     message.Result.EnsureSuccessStatusCode();
+                    
+                    if (Calls > 100000) Calls = 0;
+                    Calls++;
 
                     Result = message.Result.Content.ReadAsStringAsync().Result;
 

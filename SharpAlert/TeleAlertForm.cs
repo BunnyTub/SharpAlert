@@ -12,8 +12,9 @@ namespace SharpAlert
 {
     public partial class TeleAlertForm : Form
     {
-        readonly string AlertTextStr;
-        readonly string AlertUrlStr;
+        private string AlertTextStr;
+        private string AlertUrlStr;
+        private bool AlertCancelled;
 
         private const int HWND_TOPMOST = -1;
         private const int SWP_NOMOVE = 0x0002;
@@ -90,27 +91,47 @@ namespace SharpAlert
 
         //Cursor cursor = Cursor.Current;
 
-        public TeleAlertForm(string alert, string text, string url, bool replay)
+        public TeleAlertForm()
         {
             InitializeComponent();
             // We used all this fucking P/Invoke, just to make the taskbar icon flash red!?
             taskbarList = (ITaskbarList3)new CTaskbarList();
             taskbarList.HrInit();
+            //ReplayModeText.Visible = replay;
+            //ReplayMode = replay;
+        }
+
+        public void UpdateFields(string alert, string text, string url, bool cancellation)
+        {
             AlertTextStr = text;
             SubtitleText.Text = alert;
             // Padding to prevent immediate wrap around when scrolling automatically
+            int PaddingAmount = 25;
             AlertText.Text = text +
-                "\r\n".PadRight(35) +
-                "\r\n".PadRight(35) +
-                "\r\n".PadRight(35) +
-                "\r\n".PadRight(35) +
-                "\r\n".PadRight(35);
+                "\r\n".PadRight(PaddingAmount) +
+                "\r\n".PadRight(PaddingAmount) +
+                "\r\n".PadRight(PaddingAmount) +
+                "\r\n".PadRight(PaddingAmount) +
+                "\r\n".PadRight(PaddingAmount);
             AlertText.SelectionStart = 0;
-            ReplayModeText.Visible = replay;
-            ReplayMode = replay;
             if (!string.IsNullOrWhiteSpace(url))
             {
                 AlertUrlStr = url;
+            }
+            AlertCancelled = cancellation;
+            if (!cancellation)
+            {
+                TitlePanel.BackColor = Color.Red;
+                SubtitlePanel.BackColor = Color.FromArgb(180, 0, 0);
+                SpacerPanel.BackColor = Color.DarkOrange;
+                TitleText.Text = "EMERGENCY ALERT";
+            }
+            else
+            {
+                TitlePanel.BackColor = Color.FromArgb(0, 80, 200);
+                SubtitlePanel.BackColor = Color.FromArgb(0, 50, 100);
+                SpacerPanel.BackColor = Color.FromArgb(200, 200, 200);
+                TitleText.Text = "ALERT CANCELLED";
             }
         }
 
@@ -204,7 +225,14 @@ namespace SharpAlert
 
             //if (!ShowAndWaitCall)
             {
-                sound.Play();
+                if (!AlertCancelled)
+                {
+                    sound.Play();
+                }
+                else
+                {
+                    soundCancellation.Play();
+                }
                 engine.SetOutputToDefaultAudioDevice();
             }
 

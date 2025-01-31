@@ -1,6 +1,7 @@
 ﻿using SharpAlert.Properties;
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using static SharpAlert.Program;
@@ -9,8 +10,9 @@ namespace SharpAlert
 {
     public partial class AlertForm : Form
     {
-        readonly string AlertTextStr;
-        readonly string AlertUrlStr;
+        private string AlertTextStr = string.Empty;
+        private string AlertUrlStr = string.Empty;
+        private bool AlertCancelled = false;
 
         private const int HWND_TOPMOST = -1;
         private const int SWP_NOMOVE = 0x0002;
@@ -76,12 +78,16 @@ namespace SharpAlert
             public uint dwTimeout;
         }
 
-        public AlertForm(string alert, string text, string url)
+        public AlertForm()
         {
             InitializeComponent();
             // We used all this fucking P/Invoke, just to make the taskbar icon red!?
             taskbarList = (ITaskbarList3)new CTaskbarList();
             taskbarList.HrInit();
+        }
+
+        public void UpdateFields(string alert, string text, string url, bool cancellation)
+        {
             AlertTextStr = text;
             SubtitleText.Text = alert;
             AlertText.Text = text;
@@ -89,6 +95,21 @@ namespace SharpAlert
             if (!string.IsNullOrWhiteSpace(url))
             {
                 AlertUrlStr = url;
+            }
+            AlertCancelled = cancellation;
+            if (!cancellation)
+            {
+                TitlePanel.BackColor = Color.Red;
+                SubtitlePanel.BackColor = Color.FromArgb(180, 0, 0);
+                SpacerPanel.BackColor = Color.DarkOrange;
+                TitleText.Text = "EMERGENCY ALERT";
+            }
+            else
+            {
+                TitlePanel.BackColor = Color.FromArgb(0, 80, 200);
+                SubtitlePanel.BackColor = Color.FromArgb(0, 50, 100);
+                SpacerPanel.BackColor = Color.FromArgb(200, 200, 200);
+                TitleText.Text = "ALERT CANCELLED";
             }
         }
 
@@ -135,7 +156,14 @@ namespace SharpAlert
                 LinkButton.Enabled = true;
             }
 
-            sound.Play();
+            if (!AlertCancelled)
+            {
+                sound.Play();
+            }
+            else
+            {
+                soundCancellation.Play();
+            }
             engine.SetOutputToDefaultAudioDevice();
 
             Console.WriteLine("[Alert GUI] Window shown.");

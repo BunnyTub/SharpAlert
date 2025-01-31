@@ -39,10 +39,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.AlertsRelayedText = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
+            this.ServerRequestsText = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
             this.UptimeMeterText = new System.Windows.Forms.Label();
             this.InfoText = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -141,16 +139,16 @@
             this.label8.Text = "Alerts Relayed";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label9
+            // ServerRequestsText
             // 
-            this.label9.Font = new System.Drawing.Font("Arial", 28F);
-            this.label9.Location = new System.Drawing.Point(143, 101);
-            this.label9.Margin = new System.Windows.Forms.Padding(0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(134, 52);
-            this.label9.TabIndex = 9;
-            this.label9.Text = "*";
-            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ServerRequestsText.Font = new System.Drawing.Font("Arial", 28F);
+            this.ServerRequestsText.Location = new System.Drawing.Point(143, 101);
+            this.ServerRequestsText.Margin = new System.Windows.Forms.Padding(0);
+            this.ServerRequestsText.Name = "ServerRequestsText";
+            this.ServerRequestsText.Size = new System.Drawing.Size(268, 52);
+            this.ServerRequestsText.TabIndex = 9;
+            this.ServerRequestsText.Text = "0";
+            this.ServerRequestsText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label10
             // 
@@ -158,32 +156,10 @@
             this.label10.Location = new System.Drawing.Point(143, 81);
             this.label10.Margin = new System.Windows.Forms.Padding(0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(134, 20);
+            this.label10.Size = new System.Drawing.Size(268, 20);
             this.label10.TabIndex = 8;
-            this.label10.Text = "avg. Count (hourly)";
+            this.label10.Text = "Server Requests (successful only)";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label11
-            // 
-            this.label11.Font = new System.Drawing.Font("Arial", 28F);
-            this.label11.Location = new System.Drawing.Point(277, 101);
-            this.label11.Margin = new System.Windows.Forms.Padding(0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(134, 52);
-            this.label11.TabIndex = 11;
-            this.label11.Text = "*";
-            this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label12
-            // 
-            this.label12.Font = new System.Drawing.Font("Arial", 10F);
-            this.label12.Location = new System.Drawing.Point(277, 81);
-            this.label12.Margin = new System.Windows.Forms.Padding(0);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(134, 20);
-            this.label12.TabIndex = 10;
-            this.label12.Text = "avg. Count (daily)";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // UptimeMeterText
             // 
@@ -215,9 +191,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(420, 206);
             this.Controls.Add(this.UptimeMeterText);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.label12);
-            this.Controls.Add(this.label9);
+            this.Controls.Add(this.ServerRequestsText);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.AlertsRelayedText);
             this.Controls.Add(this.label8);
@@ -230,12 +204,14 @@
             this.Controls.Add(this.InfoText);
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
             this.Name = "StatusForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert Status";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.StatusForm_Load);
             this.ResumeLayout(false);
 
@@ -252,10 +228,8 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label AlertsRelayedText;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label ServerRequestsText;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label UptimeMeterText;
         private System.Windows.Forms.Label InfoText;
     }

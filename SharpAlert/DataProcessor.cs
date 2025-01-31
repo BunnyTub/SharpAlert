@@ -11,6 +11,8 @@ namespace SharpAlert
         private bool Stop = false;
         private bool StopCalled = false;
 
+        public AlertProcessor ap = new AlertProcessor();
+
         public void ServiceStop()
         {
             if (StopCalled)
@@ -30,8 +32,8 @@ namespace SharpAlert
                 {
                     Thread.Sleep(1000);
 
-                    // trim history for memory saving
-                    if (SharpDataHistory.Count > 20)
+                    // Trim history for memory saving
+                    if (SharpDataHistory.Count > 25)
                     {
                         // use first instead of last, otherwise, recent alerts will be forgotten
                         lock (SharpDataHistory) SharpDataHistory.Remove(SharpDataHistory.First());
@@ -85,11 +87,12 @@ namespace SharpAlert
 
                             try
                             {
+                                Console.WriteLine($"[Data Processor] Adding alert to queue.");
                                 ThreadPool.QueueUserWorkItem(_ =>
                                 {
-                                    AlertProcessor.ProcessAlertItem(relayItem, ReplayMode);
+                                    ap.ProcessAlertItem(relayItem, ReplayMode);
                                 });
-                                Console.WriteLine($"[Data Processor] Alert queued.");
+                                Console.WriteLine($"[Data Processor] Added alert to queue.");
                             }
                             catch (NotSupportedException ex)
                             {

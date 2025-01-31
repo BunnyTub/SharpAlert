@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using static SharpAlert.Program;
 
@@ -24,10 +25,22 @@ namespace SharpAlert
             CAPHistoryCountText.Text = SharpDataHistory.Count.ToString();
             AlertQueueCountText.Text = AlertProcessor.AlertsQueued.ToString();
             AlertsRelayedText.Text = AlertProcessor.AlertsRelayed.ToString();
+            ServerRequestsText.Text = FeedCapture.Calls.ToString();
         }
+
+        private const int MF_BYPOSITION = 0x400;
+        [DllImport("User32")]
+        private static extern int RemoveMenu(IntPtr hMenu, int nPosition, int wFlags);
+        [DllImport("User32")]
+        private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+        [DllImport("User32")]
+        private static extern int GetMenuItemCount(IntPtr hWnd);
 
         private void StatusForm_Load(object sender, EventArgs e)
         {
+            IntPtr hMenu = GetSystemMenu(this.Handle, false);
+            int menuItemCount = GetMenuItemCount(hMenu);
+            RemoveMenu(hMenu, menuItemCount - 1, MF_BYPOSITION);
         }
     }
 }

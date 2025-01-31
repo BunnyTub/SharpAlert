@@ -62,6 +62,7 @@ namespace SharpAlert
             cache = new CacheCapture();
             processor = new DataProcessor();
             sound = new SoundPlayer(Resources.ui_warning);
+            soundCancellation = new SoundPlayer(Resources.ui_cancellation);
             soundFinish = new SoundPlayer(Resources.ui_end);
             engine = new SpeechSynthesizer()
             {
