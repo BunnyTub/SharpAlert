@@ -6,7 +6,6 @@ using static SharpAlert.Program;
 using SharpAlert.Properties;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
 
 namespace SharpAlert
 {
@@ -80,16 +79,7 @@ namespace SharpAlert
             public uint dwTimeout;
         }
 
-        //[DllImport("user32.dll", SetLastError = true)]
-        //private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
-
-        //private const byte VK_MEDIA_PLAY_PAUSE = 0xB3;
-        //private const uint KEYEVENTF_KEYDOWN = 0x0000;
-        //private const uint KEYEVENTF_KEYUP = 0x0002;
-
         private readonly bool ReplayMode = false;
-
-        //Cursor cursor = Cursor.Current;
 
         public TeleAlertForm()
         {
@@ -169,15 +159,6 @@ namespace SharpAlert
             this.WindowState = FormWindowState.Maximized;
         }
 
-        bool ShowAndWaitCall = false;
-
-        public void ShowAndWait()
-        {
-            ShowAndWaitCall = true;
-            idle.IdleContainer.Invoke(new MethodInvoker(delegate { this.Show(); this.BringToFront(); this.Focus(); }));
-            while (!FadeOutExitReady) Thread.Sleep(100);
-        }
-
         private void AutoExit_Tick(object sender, EventArgs e)
         {
             this.Close();
@@ -201,7 +182,6 @@ namespace SharpAlert
             else
             {
                 this.Opacity = 1;
-                if (ShowAndWaitCall) idle.MouseTriggered += ShowAndEnableButtons;
             }
 
             if (ReplayMode)
@@ -213,28 +193,18 @@ namespace SharpAlert
                 FlashTaskbarStatus.Start();
             }
 
-            if (!ShowAndWaitCall)
+            //idle.CursorShown = false;
+
+            if (!AlertCancelled)
             {
-                localCursorPosition = Cursor.Position;
-                Cursor.Hide();
+                sound.Play();
             }
             else
             {
-                idle.CursorShown = false;
+                soundCancellation.Play();
             }
-
-            //if (!ShowAndWaitCall)
-            {
-                if (!AlertCancelled)
-                {
-                    sound.Play();
-                }
-                else
-                {
-                    soundCancellation.Play();
-                }
-                engine.SetOutputToDefaultAudioDevice();
-            }
+            engine.SetOutputToDefaultAudioDevice();
+            AutoTTS.Start();
 
             AlertText.Focus();
             AlertText.SelectionLength = 0;
@@ -257,43 +227,18 @@ namespace SharpAlert
         {
             AutoExit.Stop();
             AutoScroller.Stop();
-            if (ShowAndWaitCall)
+            if (FadeOutExitReady)
             {
-                FadeOutExitReady = true;
-                if (ShowAndWaitCall)
-                {
-                    idle.MouseTriggered -= ShowAndEnableButtons;
-                    idle.CursorShown = false;
-                }
+                return;
             }
             else
             {
-                if (FadeOutExitReady)
-                {
-                    return;
-                }
-                else
-                {
-                    e.Cancel = true;
-                    FadeOutAnimation.Start();
-                }
+                e.Cancel = true;
+                FadeOutAnimation.Start();
             }
             sound.Stop();
             engine.SpeakAsyncCancelAll();
             soundFinish.Stop();
-        }
-
-        private void ShowAndEnableButtons()
-        {
-            idle.MouseTriggered -= ShowAndEnableButtons;
-            idle.CursorShown = true;
-            this.Invoke(new Action(() =>
-            {
-                DismissButton.Enabled = true;
-                LinkButton.Enabled = true;
-                DismissButton.Visible = true;
-                LinkButton.Visible = true;
-            }));
         }
 
         IntPtr GotHandle = IntPtr.Zero;
@@ -323,8 +268,9 @@ namespace SharpAlert
 
         private void AlertForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            FadeOutExitReady = false;
+            this.Opacity = 0;
             Console.WriteLine("[Alert GUI] Window closed.");
-            this.Dispose(true);
         }
 
         private bool FlashOne = false;
@@ -362,7 +308,7 @@ namespace SharpAlert
         private void AutoTTS_Tick(object sender, EventArgs e)
         {
             AutoTTS.Stop();
-            if (!ShowAndWaitCall) engine.SpeakAsync(AlertTextStr);
+            engine.SpeakAsync(AlertTextStr);
         }
 
         private void FadeInAnimation_Tick(object sender, EventArgs e)
@@ -372,6 +318,7 @@ namespace SharpAlert
                 FadeInAnimation.Stop();
                 DismissButton.Enabled = true;
                 LinkButton.Enabled = true;
+                ScreenshotButton.Enabled = true;
                 return;
             }
             else
@@ -382,7 +329,7 @@ namespace SharpAlert
 
         private void FadeOutAnimation_Tick(object sender, EventArgs e)
         {
-            if (ShowAndWaitCall)
+            if (Settings.Default.alertCompatibilityMode)
             {
                 FadeOutAnimation.Stop();
                 FadeOutExitReady = true;
@@ -405,41 +352,26 @@ namespace SharpAlert
 
         private void MouseMoving_Tick(object sender, EventArgs e)
         {
-            if (!ShowAndWaitCall)
-            {
-                if (Cursor.Position != localCursorPosition)
-                {
-                    MouseMoving.Stop();
-                    AutoScroller.Stop();
-                    AlertText.SelectionStart = 0;
-                    DismissButton.Visible = true;
-                    LinkButton.Visible = true;
-                    Cursor.Show();
-                    AutoHideButtons.Enabled = true;
-                }
-            }
-            else
+            if (Cursor.Position != localCursorPosition)
             {
                 MouseMoving.Stop();
-                //if (idle.cursorPosition != localCursorPosition)
-                //{
-                //    MouseMoving.Stop();
-                //    AutoScroller.Stop();
-                //    AlertText.SelectionStart = 0;
-                //    DismissButton.Visible = true;
-                //    LinkButton.Visible = true;
-                //    Cursor.Show();
-                //}
+                AutoScroller.Stop();
+                AlertText.SelectionStart = 0;
+                DismissButton.Visible = true;
+                LinkButton.Visible = true;
+                ScreenshotButton.Visible = true;
+                Cursor.Show();
+                AutoHideButtons.Enabled = true;
             }
         }
 
         [DllImport("user32.dll")]
-        static extern bool HideCaret(IntPtr hWnd);
+        private static extern bool HideCaret(IntPtr hWnd);
 
         private void AutoScroll_Tick(object sender, EventArgs e)
         {
             //AlertText.SelectionLength = 0;
-            if (AlertText.Text.Length > AlertText.SelectionStart)
+            if (AlertText.Text.Length >= AlertText.SelectionStart)
             {
                 AlertText.SelectionStart++;
             }
@@ -482,8 +414,50 @@ namespace SharpAlert
         private void AutoHideButtons_Tick(object sender, EventArgs e)
         {
             AutoHideButtons.Enabled = false;
+            DismissButton.Visible = true;
+            LinkButton.Visible = true;
+            ScreenshotButton.Visible = true;
+            MouseMoving.Start();
+        }
+
+        private void ScreenshotButton_Click(object sender, EventArgs e)
+        {
+            AutoExit.Stop();
+            FlashTaskbarStatus.Stop();
+            MouseMoving.Stop();
+            AutoHideButtons.Enabled = false;
             DismissButton.Visible = false;
             LinkButton.Visible = false;
+            ScreenshotButton.Visible = false;
+            AlertIcon.Visible = true;
+            AlertText.SelectionStart = 0;
+            AlertText.ScrollToCaret();
+            Bitmap bitmap = new Bitmap(Bounds.Width, Bounds.Height);
+            this.DrawToBitmap(bitmap, Bounds);
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                int barHeight = 30;
+                int imageWidth = bitmap.Width;
+                int imageHeight = bitmap.Height;
+
+                using (SolidBrush coolTransparency = new SolidBrush(Color.FromArgb(180, 255, 0, 0)))
+                {
+                    g.FillRectangle(coolTransparency, new Rectangle(0, imageHeight - barHeight, imageWidth, barHeight));
+                }
+
+                using (Font drawFont = new Font("Arial", 12, FontStyle.Bold))
+                using (SolidBrush drawBrush = new SolidBrush(Color.White))
+                {
+                    string text = "SharpAlert | Safety is never a non-priority.";
+                    SizeF textSize = g.MeasureString(text, drawFont);
+                    float x = (imageWidth - textSize.Width) / 2;
+                    float y = imageHeight - barHeight + (barHeight - textSize.Height) / 2;
+                    g.DrawString(text, drawFont, drawBrush, new PointF(x, y));
+                }
+            }
+            bitmap.Save($"SharpAlert-{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.bmp");
+            bitmap.Dispose();
+            this.Close();
         }
     }
 }

@@ -53,6 +53,7 @@
             this.SpacerPanel = new System.Windows.Forms.Panel();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.AutoHideButtons = new System.Windows.Forms.Timer(this.components);
+            this.ScreenshotButton = new System.Windows.Forms.Button();
             this.TitlePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlertIcon)).BeginInit();
             this.AlertPanel.SuspendLayout();
@@ -64,6 +65,7 @@
             // 
             this.TitlePanel.BackColor = System.Drawing.Color.Red;
             this.TitlePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.TitlePanel.Controls.Add(this.ScreenshotButton);
             this.TitlePanel.Controls.Add(this.DismissButton);
             this.TitlePanel.Controls.Add(this.LinkButton);
             this.TitlePanel.Controls.Add(this.ReplayModeText);
@@ -154,7 +156,7 @@
             // 
             // TitleSpacer
             // 
-            this.TitleSpacer.BackColor = System.Drawing.Color.Red;
+            this.TitleSpacer.BackColor = System.Drawing.Color.Transparent;
             this.TitleSpacer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.TitleSpacer.Dock = System.Windows.Forms.DockStyle.Left;
             this.TitleSpacer.ForeColor = System.Drawing.Color.White;
@@ -226,7 +228,7 @@
             // 
             // SubtitleSpacer
             // 
-            this.SubtitleSpacer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SubtitleSpacer.BackColor = System.Drawing.Color.Transparent;
             this.SubtitleSpacer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.SubtitleSpacer.Dock = System.Windows.Forms.DockStyle.Left;
             this.SubtitleSpacer.ForeColor = System.Drawing.Color.White;
@@ -248,8 +250,7 @@
             // 
             // AutoTTS
             // 
-            this.AutoTTS.Enabled = true;
-            this.AutoTTS.Interval = 8000;
+            this.AutoTTS.Interval = 7500;
             this.AutoTTS.Tick += new System.EventHandler(this.AutoTTS_Tick);
             // 
             // FadeInAnimation
@@ -299,6 +300,23 @@
             // 
             this.AutoHideButtons.Interval = 10000;
             this.AutoHideButtons.Tick += new System.EventHandler(this.AutoHideButtons_Tick);
+            // 
+            // ScreenshotButton
+            // 
+            this.ScreenshotButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ScreenshotButton.BackColor = System.Drawing.Color.White;
+            this.ScreenshotButton.Enabled = false;
+            this.ScreenshotButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ScreenshotButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
+            this.ScreenshotButton.ForeColor = System.Drawing.Color.Black;
+            this.ScreenshotButton.Location = new System.Drawing.Point(984, 3);
+            this.ScreenshotButton.Name = "ScreenshotButton";
+            this.ScreenshotButton.Size = new System.Drawing.Size(35, 35);
+            this.ScreenshotButton.TabIndex = 11;
+            this.ScreenshotButton.Text = "📸";
+            this.ScreenshotButton.UseVisualStyleBackColor = false;
+            this.ScreenshotButton.Visible = false;
+            this.ScreenshotButton.Click += new System.EventHandler(this.ScreenshotButton_Click);
             // 
             // TeleAlertForm
             // 
@@ -362,6 +380,7 @@
         private System.Windows.Forms.Panel SpacerPanel;
         private System.Windows.Forms.Panel MainPanel;
         private System.Windows.Forms.Timer AutoHideButtons;
+        private System.Windows.Forms.Button ScreenshotButton;
     }
 }
 

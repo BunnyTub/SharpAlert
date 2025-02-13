@@ -143,6 +143,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlertConfigurationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlertConfigurationForm.Designer.cs">
+      <DependentUpon>AlertConfigurationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AltTrayForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -156,7 +162,19 @@
     <Compile Include="CreditsForm.Designer.cs">
       <DependentUpon>CreditsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SendForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SendForm.Designer.cs">
+      <DependentUpon>SendForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="IceBearWorker.cs" />
+    <Compile Include="ServerConfigurationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerConfigurationForm.Designer.cs">
+      <DependentUpon>ServerConfigurationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="StatusForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -169,11 +187,20 @@
     <Compile Include="TeleIdleForm.Designer.cs">
       <DependentUpon>TeleIdleForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AlertConfigurationForm.resx">
+      <DependentUpon>AlertConfigurationForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AltTrayForm.resx">
       <DependentUpon>AltTrayForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CreditsForm.resx">
       <DependentUpon>CreditsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SendForm.resx">
+      <DependentUpon>SendForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerConfigurationForm.resx">
+      <DependentUpon>ServerConfigurationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StatusForm.resx">
       <DependentUpon>StatusForm.cs</DependentUpon>

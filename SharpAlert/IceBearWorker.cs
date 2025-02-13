@@ -9,8 +9,10 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -24,6 +26,11 @@ namespace SharpAlert
 {
     public static class IceBearWorker
     {
+        private static readonly HttpClient client = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(15)
+        };
+
         /// <summary>
         /// Starts the Ice Bear Worker as a client.
         /// </summary>
@@ -31,22 +38,12 @@ namespace SharpAlert
         public static void ServiceRun()
         {
             args = Environment.GetCommandLineArgs();
+            client.DefaultRequestHeaders.UserAgent.ParseAdd($"Mozilla/5.0 (compatible; SharpAlert)");
             Application.EnableVisualStyles();
 
-            if (args.Length == 2)
-            {
-                if (args[1] == "--console")
-                {
-                    AllocateTerminal(false);
-                }
-                else if (args[1] == "--server")
-                {
-                    ServerServiceRun();
-                    return;
-                }
-            }
+            if (args.Length == 2) if (args[1] == "--console") AllocateTerminal(false);
 
-            Console.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MajorVersion}");
+            Console.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority.");
 
             try
             {
@@ -54,6 +51,75 @@ namespace SharpAlert
             }
             catch (Exception)
             {
+            }
+
+            string CreateMD5FromCurrent()
+            {
+                MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+                FileStream stream = new FileStream(AssemblyFile, FileMode.Open, FileAccess.Read);
+
+                md5.ComputeHash(stream);
+
+                stream.Close();
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < md5.Hash.Length; i++)
+                    sb.Append(md5.Hash[i].ToString("x2"));
+
+                return sb.ToString().ToUpperInvariant();
+            }
+
+            Console.WriteLine("[Ice Bear] Checking application identity.");
+
+            string IdentityURL = "https://bunnytub.com";
+
+            try
+            {
+                string LocalMD5 = CreateMD5FromCurrent();
+                Console.WriteLine($"[Ice Bear] MD5 (local): {LocalMD5}");
+                
+                Task<HttpResponseMessage> message = client.GetAsync($"{IdentityURL}/SharpAlert/v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}/MD5.txt");
+                if (!message.Wait(10000))
+                {
+                    throw new TimeoutException();
+                }
+                
+                Console.WriteLine($"[Ice Bear | MD5 Request] The identity server responded with status code {message.Result.StatusCode}.");
+
+                Task<HttpResponseMessage> latest = client.GetAsync($"{IdentityURL}/SharpAlert/SharpAlert.txt");
+                if (!latest.Wait(10000))
+                {
+                    throw new TimeoutException();
+                }
+
+                Console.WriteLine($"[Ice Bear | Version Request] The identity server responded with status code {latest.Result.StatusCode}.");
+
+                string RemoteMD5 = string.Empty;
+                RemoteMD5 = message.Result.Content.ReadAsStringAsync().Result.Trim().ToUpperInvariant();
+                if (string.IsNullOrWhiteSpace(RemoteMD5) || RemoteMD5.Length == 0 || RemoteMD5.Length >= 100) RemoteMD5 = "UNKNOWN";
+                
+                string RemoteVersion = string.Empty;
+                RemoteVersion = latest.Result.Content.ReadAsStringAsync().Result.Trim();
+                if (string.IsNullOrWhiteSpace(RemoteVersion) || RemoteVersion.Length == 0 || RemoteVersion.Length >= 10) RemoteVersion = "0.0";
+
+                // implement auto-update
+
+                if (LocalMD5 == message.Result.Content.ReadAsStringAsync().Result)
+                {
+                    Console.WriteLine("[Ice Bear] You are using the latest version of SharpAlert.");
+                }
+                else
+                {
+                    Console.WriteLine($"[Ice Bear] You may be using an older (or modified) version of SharpAlert. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} =< v{RemoteVersion}");
+                    Console.WriteLine($"[Ice Bear] See https://sharpalert.bunnytub.com/ for downloads.");
+                }
+
+                Console.WriteLine($"[Ice Bear] MD5 (remote): {RemoteMD5}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Ice Bear] {ex.StackTrace} {ex.Message}");
+                Console.WriteLine($"[Ice Bear] Couldn't work with the identity server.");
             }
 
             Console.WriteLine("[Ice Bear] Initializing services.");
@@ -64,10 +130,7 @@ namespace SharpAlert
             sound = new SoundPlayer(Resources.ui_warning);
             soundCancellation = new SoundPlayer(Resources.ui_cancellation);
             soundFinish = new SoundPlayer(Resources.ui_end);
-            engine = new SpeechSynthesizer()
-            {
-                //Volume = 80
-            };
+            engine = new SpeechSynthesizer();
 
             engine.SpeakCompleted += (objective, eventArgs) =>
             {
@@ -88,35 +151,55 @@ namespace SharpAlert
                 lock (ChangedPropertiesList) ChangedPropertiesList.Clear();
             };
 
-            Console.WriteLine("[Ice Bear] Starting services momentarily.");
 
+            Console.WriteLine("[Ice Bear] Getting runner configuration.");
+            
             bool UseHTTPS = true;
 
-            if (args.Length == 3)
+            switch (Settings.Default.RunnerType)
             {
-                if (args[1] == "--host")
-                {
-                    feed.server = $"{args[2]}:9792";
+                default:
+                    Console.WriteLine("[Ice Bear] Runner type is \"Standard\".");
+                    feed.server = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}";
+                    break;
+                case 1:
+                    Console.WriteLine("[Ice Bear] Runner type is \"Server\".");
+                    ServerServiceRun();
+                    return;
+                case 2:
+                    Console.WriteLine("[Ice Bear] Runner type is \"Client\".");
                     UseHTTPS = false;
-                }
+                    feed.server = $"{Settings.Default.ClientServerURL}:9792{DateTime.UtcNow.AddDays(-1):yyyy-MM-ddTHH:mm:ssZ}";
+                    break;
             }
-            else
-            {
-                feed.server = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-1):yyyy-MM-ddTHH:mm:ssZ}";
-            }
+
+            Console.WriteLine("[Ice Bear] Starting services momentarily.");
+
+            //if (args.Length == 3)
+            //{
+            //    if (args[1] == "--host")
+            //    {
+            //        feed.server = $"{args[2]}:9792";
+            //        UseHTTPS = false;
+            //    }
+            //}
+            //else
+            //{
+            //    feed.server = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-1):yyyy-MM-ddTHH:mm:ssZ}";
+            //}
 
             Thread feedThread = ReturnThreadWithCatch(() => feed.ServiceRun(UseHTTPS));
             feedThread.SetApartmentState(ApartmentState.MTA);
             //feed.server = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/PublicWEA/recent/{DateTime.UtcNow.AddMonths(-1):yyyy-MM-ddTHH:mm:ssZ}";
-            feedThread.MonitorAndStart();
+            feedThread.MonitorAndStart("Feed Capture");
 
             Thread cacheThread = ReturnThreadWithCatch(() => cache.ServiceRun(true));
             cacheThread.SetApartmentState(ApartmentState.MTA);
-            cacheThread.MonitorAndStart();
+            cacheThread.MonitorAndStart("Cache Capture");
 
             Thread processorThread = ReturnThreadWithCatch(() => processor.ServiceRun());
             processorThread.SetApartmentState(ApartmentState.MTA);
-            processorThread.MonitorAndStart();
+            processorThread.MonitorAndStart("Data Processor");
 
             if (Settings.Default.statusWindow)
             {
@@ -133,21 +216,31 @@ namespace SharpAlert
                 CreateNotifyIcon();
                 Application.Run();
             });
-            notificationThread.MonitorAndStart();
+            notificationThread.MonitorAndStart("Notification Tray");
         }
 
         /// <summary>
         /// Starts the Ice Bear Worker as a server instead of a client.
         /// </summary>
-        public static void ServerServiceRun()
+        private static void ServerServiceRun()
         {
             AllocateTerminal(false);
 
-            Console.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MajorVersion} (server runner)");
-            Console.WriteLine("[Ice Bear] Initializing services.");
+            Thread.Sleep(1000);
 
-            feed = new FeedCapture();
-            processor = new DataProcessor();
+            if (Control.ModifierKeys == Keys.Shift)
+            {
+                Console.WriteLine("[Ice Bear] Reverting runner configuration.");
+                Settings.Default.RunnerType = 0;
+                Settings.Default.Save();
+                Console.WriteLine("[Ice Bear] The runner configuration has been reset.");
+                Thread.Sleep(5000);
+                Environment.Exit(0);
+            }
+
+            Console.WriteLine("[Ice Bear] To stop operating in server mode, hold SHIFT when the program starts.");
+            Console.WriteLine("[Ice Bear] Initializing internet services. (this may fail if you're not running this with admin privileges)");
+
             HttpListener listener = new HttpListener();
             listener.Prefixes.Add("http://*:9792/");
 
@@ -155,57 +248,55 @@ namespace SharpAlert
 
             Thread feedThread = ReturnThreadWithCatch(() => feed.ServerServiceRun(true));
             feedThread.SetApartmentState(ApartmentState.MTA);
-            feedThread.MonitorAndStart();
+            feedThread.MonitorAndStart("Feed Capture");
 
             listener.Start();
-            
             CreateStatusWindow();
+
+            Console.WriteLine("[Ice Bear] Listening for requests.");
 
             while (true)
             {
-                Task<HttpListenerContext> contextAsync = listener.GetContextAsync();
-                if (!contextAsync.Wait(15000))
-                {
-                    Console.WriteLine("[Ice Bear] No new requests.");
-                    continue;
-                }
+                Console.WriteLine("[Ice Bear] Waiting for the next request.");
+                HttpListenerContext context = listener.GetContext();
 
-                HttpListenerContext context = contextAsync.Result;
-
-                var request = context.Request;
-                Console.WriteLine($"[Ice Bear] Sending data ({request.UserAgent}).");
-
-                if (request.HttpMethod.ToUpper() == "GET")
+                ThreadPool.QueueUserWorkItem(_ =>
                 {
-                    context.Response.StatusCode = (int)HttpStatusCode.OK;
-                    context.Response.ContentType = "application/xml";
-                    byte[] feed = Encoding.UTF8.GetBytes(FeedCapture.Result);
-                    context.Response.OutputStream.Write(null, 0, 0);
-                    context.Response.OutputStream.Close();
-                    Console.WriteLine($"[Ice Bear] Sent the data successfully.");
-                }
-                else
-                {
-                    Console.WriteLine($"[Ice Bear] Client did not send the request via GET.");
-                    context.Response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
-                    context.Response.OutputStream.Close();
-                }
+                    var request = context.Request;
+                    Console.WriteLine($"[Ice Bear] Sending data ({request.UserAgent} | {request.RemoteEndPoint.Address}).");
+
+                    if (request.HttpMethod.ToUpper() == "GET")
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.OK;
+                        context.Response.ContentType = "application/xml";
+                        byte[] feed = Encoding.UTF8.GetBytes(FeedCapture.Result);
+                        context.Response.OutputStream.Write(feed, 0, feed.Length);
+                        context.Response.OutputStream.Close();
+                        Console.WriteLine($"[Ice Bear] Sent the data successfully.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[Ice Bear] Client did not send the request via GET.");
+                        context.Response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
+                        context.Response.OutputStream.Close();
+                    }
+                });
             }
         }
 
-        private static void MonitorAndStart(this Thread thread)
+        private static void MonitorAndStart(this Thread thread, string FriendlyName)
         {
             Thread sub = new Thread(() =>
             {
                 while (AllowThreadRestarts)
                 {
                     thread.Start();
-                    Console.WriteLine("[Ice Bear] Thread started.");
+                    Console.WriteLine($"[Ice Bear] {FriendlyName} started.");
                     while (thread.IsAlive) Thread.Sleep(500);
-                    Console.WriteLine("[Ice Bear] Thread has exited.");
-                    Thread.Sleep(5000);
+                    Console.WriteLine($"[Ice Bear] {FriendlyName} exited.");
+                    Thread.Sleep(500);
                 }
-                Console.WriteLine("[Ice Bear] Thread is no longer being monitored.");
+                Console.WriteLine($"[Ice Bear] Thread handling for {FriendlyName} is stopping.");
             });
             sub.Start();
         }
@@ -524,14 +615,16 @@ namespace SharpAlert
                 if (AlertDisplaying)
                 {
                     MessageBox.Show("There is an alert in progress.\r\n" +
-                        "Please let all alerts finish before trying again.\r\n\r\n" +
-                        "If you want to bypass this, hold SHIFT before opening the tray icon.");
+                        "Please let all alerts complete before quitting.",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
                     return;
                 }
 
                 if (MessageBox.Show("Do you want to quit?\r\n" +
                     "You won't receive any alerts while the program is stopped.\r\n\r\n" +
-                    "Your settings will be automatically saved.",
+                    "Your settings will be saved automatically.",
                     "SharpAlert",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) == DialogResult.Yes)

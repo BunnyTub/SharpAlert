@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Speech.Synthesis;
+using System.Diagnostics;
 
 namespace SharpAlert
 {
@@ -54,34 +55,20 @@ namespace SharpAlert
         public static List<SharpDataItem> SharpDataQueue = new List<SharpDataItem>();
         public static List<SharpDataItem> SharpDataHistory = new List<SharpDataItem>();
 
-        public static string AssemblyDirectory
-        {
-            get
-            {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
-            }
-        }
         
-        public static string AssemblyFile
-        {
-            get
-            {
-                return Assembly.GetExecutingAssembly().Location;
-            }
-        }
+        public static readonly string AssemblyFile = Process.GetCurrentProcess().MainModule.FileName;
+        public static readonly string AssemblyDirectory = Path.GetDirectoryName(AssemblyFile);
 
         public static string[] args;
         public static Icon icon = SystemIcons.Information;
 
         /// <summary>
-        /// Closes everything safely.
+        /// Stops everything safely.
         /// </summary>
         public static void SafeExit(int exitCode)
         {
             AllowThreadRestarts = false;
+            Thread.Sleep(500);
             Console.WriteLine("Feed Capture is shutting down.");
             feed?.ServiceStop();
             Console.WriteLine("Cache Capture is shutting down.");
@@ -95,7 +82,7 @@ namespace SharpAlert
             Console.WriteLine("Idle Window is shutting down.");
             if (idle != null) DestroyIdleWindow();
             Console.WriteLine("Status Window is shutting down.");
-            if (idle != null) DestroyStatusWindow();
+            if (status != null) DestroyStatusWindow();
             Console.WriteLine("Stopping sounds.");
             sound?.Stop();
             soundCancellation?.Stop();
@@ -111,9 +98,9 @@ namespace SharpAlert
                 notify.ShowBalloonTip(5000);
                 Thread.Sleep(5000);
                 notify.Visible = false;
-            } else Thread.Sleep(5000);
+            } else Thread.Sleep(1000);
             Environment.Exit(exitCode);
-        }
+        } 
 
         /// <summary>
         /// Starts everything.

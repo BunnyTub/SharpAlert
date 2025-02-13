@@ -182,7 +182,7 @@
             this.InfoText.Name = "InfoText";
             this.InfoText.Size = new System.Drawing.Size(420, 20);
             this.InfoText.TabIndex = 13;
-            this.InfoText.Text = "Fields marked with a star are not currently functional.";
+            this.InfoText.Text = "CAP History is capped (no pun intended) at 25.";
             this.InfoText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // StatusForm
@@ -204,7 +204,7 @@
             this.Controls.Add(this.InfoText);
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;

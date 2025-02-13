@@ -248,6 +248,8 @@ namespace SharpAlert
 
         private void AlertForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            FadeOutExitReady = false;
+            this.Opacity = 0;
             Console.WriteLine("[Alert GUI] Window closed.");
         }
 

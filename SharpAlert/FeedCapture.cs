@@ -1,7 +1,6 @@
 ﻿using SharpAlert.Properties;
 using System;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
@@ -56,28 +55,29 @@ namespace SharpAlert
             if (Stop) return;
 
             string URLPrefix = useHTTPS ? "https" : "http";
+
             while (true)
             {
                 try
                 {
                     string filename;
 
-                    Console.WriteLine($"[Feed Capture] Getting data from the server.");
+                    Console.WriteLine($"[Feed Capture] Getting data from URL: {URLPrefix}://{server}");
                     Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server}");
                     if (!message.Wait(10000)) continue;
                     message.Result.EnsureSuccessStatusCode();
                     
-                    if (Calls > 100000) Calls = 0;
+                    if (Calls >= 100000) Calls = 0;
                     Calls++;
 
                     Result = message.Result.Content.ReadAsStringAsync().Result;
 
-                    Console.WriteLine($"[Feed Capture] Grabbed data from the server.");
+                    Console.WriteLine($"[Feed Capture] Grabbed data.");
 
                     MatchCollection alertMatches = AlertRegex.Matches(Result);
                     int alertIndex = 0;
 
-                    if (alertMatches != null)
+                    if (alertMatches != null || alertMatches.Count != 0)
                     {
                         foreach (Match alert in alertMatches)
                         {
@@ -110,7 +110,8 @@ namespace SharpAlert
                                 }
                             }
                         }
-                        Console.WriteLine($"[Feed Capture] {alertIndex} alert(s) checked.");
+                        if (alertIndex != 0) Console.WriteLine($"[Feed Capture] {alertIndex} alert(s) checked.");
+                        else Console.WriteLine($"[Feed Capture] No alerts to be checked.");
                     }
                     else
                     {
@@ -119,17 +120,6 @@ namespace SharpAlert
 
                     // Do not show the user an alert for the first time opening the program
                     // Implement user entry for how long between each request/check
-
-                    for (int i = 0; !(i >= Settings.Default.AlertCheckInterval);)
-                    {
-                        if (Stop)
-                        {
-                            Stop = false;
-                            return;
-                        }
-                        Thread.Sleep(1000);
-                        i++;
-                    }
                 }
                 catch (SocketException e)
                 {
@@ -164,6 +154,17 @@ namespace SharpAlert
                     Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
                 }
                 if (FirstRun) FirstRun = false;
+
+                for (int i = 0; !(i >= Settings.Default.AlertCheckInterval);)
+                {
+                    if (Stop)
+                    {
+                        Stop = false;
+                        return;
+                    }
+                    Thread.Sleep(1000);
+                    i++;
+                }
             }
         }
 

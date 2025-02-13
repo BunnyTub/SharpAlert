@@ -98,5 +98,11 @@
     <Setting Name="alertFullscreenIdleTimeZoneUTC" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="RunnerType" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="ClientServerURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">example.com</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

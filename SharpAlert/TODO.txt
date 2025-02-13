@@ -1,8 +1,6 @@
 ﻿Not Implemented:
 - Grab audio from alerts
+- Send custom alerts whilst running in server mode
 
 Partially Implemented:
-...
-
-Completed:
 ...

@@ -498,5 +498,29 @@ namespace SharpAlert.Properties {
                 this["alertFullscreenIdleTimeZoneUTC"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int RunnerType {
+            get {
+                return ((int)(this["RunnerType"]));
+            }
+            set {
+                this["RunnerType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("example.com")]
+        public string ClientServerURL {
+            get {
+                return ((string)(this["ClientServerURL"]));
+            }
+            set {
+                this["ClientServerURL"] = value;
+            }
+        }
     }
 }

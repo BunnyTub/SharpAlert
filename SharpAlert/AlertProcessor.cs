@@ -122,7 +122,8 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"[Alert Processor] An incompatible or damaged XML was read, and can't be processed further. {e.Message}");
+                        Console.WriteLine($"[Alert Processor] An alert that was staged for proccessing couldn't be processed." +
+                            $"{e.StackTrace} {e.Message}");
                     }
                 }
 
@@ -905,18 +906,20 @@ namespace SharpAlert
                         AppendedAreas += area.Groups[1].Value.Replace(";", ",") + "\x20";
                     }
 
+                    // Commenting out UGC for now, since we have no way to convert them to their friendly names at the moment.
+
                     var GeocodeSAMEAreas = GeocodeSpecificAreaMessageEncodingRegex.Matches(InfoData);
-                    var GeocodeUGCAreas = GeocodeUniversalGeographicCodeRegex.Matches(InfoData);
+                    //var GeocodeUGCAreas = GeocodeUniversalGeographicCodeRegex.Matches(InfoData);
 
                     foreach (Match code in GeocodeSAMEAreas)
                     {
                         AppendedCodeAreas += $"{GetFriendlyNameFromSAMELocation(code.Groups[1].Value.Substring(1))},\x20";
                     }
 
-                    foreach (Match code in GeocodeUGCAreas)
-                    {
-                        AppendedCodeAreas += $"UGC geocode {code.Groups[1].Value},\x20";
-                    }
+                    //foreach (Match code in GeocodeUGCAreas)
+                    //{
+                    //    AppendedCodeAreas += $"UGC geocode {code.Groups[1].Value},\x20";
+                    //}
 
                     if (AppendedCodeAreas.Split(',').Length > AppendedAreas.Split(',').Length)
                     {
