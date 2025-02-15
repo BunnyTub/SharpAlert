@@ -627,6 +627,11 @@ namespace SharpAlert
             }));
 
             notify.ContextMenuStrip = contextMenu;
+
+            notify.BalloonTipTitle = "SharpAlert is running";
+            notify.BalloonTipText = "I'll be down in my tray, waiting for alerts!";
+            notify.BalloonTipIcon = ToolTipIcon.Info;
+            notify.ShowBalloonTip(5000);
         }
 
         [DllImport("kernel32.dll", SetLastError = true)]

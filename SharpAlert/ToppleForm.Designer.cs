@@ -42,7 +42,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "ToppleForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ToppleForm";
+            this.Text = "SharpAlert Crashed";
             this.TopMost = true;
             this.ResumeLayout(false);
 
