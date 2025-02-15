@@ -1,7 +1,6 @@
 ﻿using SharpAlert.Properties;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -10,7 +9,6 @@ using System.Linq;
 using System.Media;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Speech.Synthesis;
