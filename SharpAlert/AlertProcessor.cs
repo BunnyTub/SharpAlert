@@ -889,7 +889,7 @@ namespace SharpAlert
                 EventType = $"Cautionary (Unknown Event)";
             }
 
-            string Coverage = "For:";
+            string Coverage = "For the following area(s):";
             string AreaDesc = "Unspecified area(s)";
 
             try

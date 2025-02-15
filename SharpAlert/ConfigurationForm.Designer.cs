@@ -376,7 +376,7 @@
             this.label3.TabIndex = 29;
             this.label3.Text = "This piece of software is not sold in any shape or form. It is provided for free," +
     " \"as is\", by the original developers.";
-            this.ToolTipInformation.SetToolTip(this.label3, "The copyright text. Because left is not right. :\')");
+            this.ToolTipInformation.SetToolTip(this.label3, "Can\'t be too careful.");
             // 
             // DiscordWebhookGroup
             // 

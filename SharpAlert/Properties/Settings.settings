@@ -63,7 +63,7 @@
 &lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
     </Setting>
     <Setting Name="weaOnly" Description="Only allows WEA Imminent Threat CAP messages when ticked." Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="discardFirstAlerts" Description="Existing alerts will be discarded for the first check when ticked." Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

@@ -38,12 +38,13 @@ namespace SharpAlert
         public static void ServiceRun()
         {
             args = Environment.GetCommandLineArgs();
-            client.DefaultRequestHeaders.UserAgent.ParseAdd($"Mozilla/5.0 (compatible; SharpAlert)");
-            Application.EnableVisualStyles();
 
             if (args.Length == 2) if (args[1] == "--console") AllocateTerminal(false);
 
-            Console.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority.");
+            Console.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority. | https://sharpalert.bunnytub.com/");
+
+            client.DefaultRequestHeaders.UserAgent.ParseAdd($"Mozilla/5.0 (compatible; SharpAlert)");
+            Application.EnableVisualStyles();
 
             try
             {
@@ -78,7 +79,7 @@ namespace SharpAlert
                 string LocalMD5 = CreateMD5FromCurrent();
                 Console.WriteLine($"[Ice Bear] MD5 (local): {LocalMD5}");
                 
-                Task<HttpResponseMessage> message = client.GetAsync($"{IdentityURL}/SharpAlert/v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}/MD5.txt");
+                Task<HttpResponseMessage> message = client.GetAsync($"{IdentityURL}/SharpAlert/Releases/v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}/MD5.txt");
                 if (!message.Wait(10000))
                 {
                     throw new TimeoutException();
@@ -104,7 +105,7 @@ namespace SharpAlert
 
                 // implement auto-update
 
-                if (LocalMD5 == message.Result.Content.ReadAsStringAsync().Result)
+                if (LocalMD5 == RemoteMD5)
                 {
                     Console.WriteLine("[Ice Bear] You are using the latest version of SharpAlert.");
                 }
@@ -386,18 +387,9 @@ namespace SharpAlert
                 if (IgnoreRightClick)
                 {
                     b.Cancel = true;
-                    while (MessageBox.Show("Please close all windows before trying again.\r\n" +
-                        "If there are none open, hold CTRL before right-clicking.\r\n\r\n" +
-                        "Proceeding to bypass this message with open windows may cause issues.",
+                    MessageBox.Show("Please close all windows before opening the menu.",
                         "SharpAlert",
-                        MessageBoxButtons.RetryCancel) == DialogResult.Retry)
-                    {
-                        if (!IgnoreRightClick)
-                        {
-                            b.Cancel = false;
-                            break;
-                        }
-                    }
+                        MessageBoxButtons.OK);
                     if (b.Cancel) return;
                 }
             };

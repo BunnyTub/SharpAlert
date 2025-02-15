@@ -334,7 +334,7 @@ namespace SharpAlert.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsDescriptionAttribute("Only allows WEA Imminent Threat CAP messages when ticked.")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool weaOnly {
             get {
                 return ((bool)(this["weaOnly"]));
