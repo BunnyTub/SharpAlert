@@ -252,7 +252,7 @@
             this.CancelLocalMessagesButton.Name = "CancelLocalMessagesButton";
             this.CancelLocalMessagesButton.Size = new System.Drawing.Size(664, 64);
             this.CancelLocalMessagesButton.TabIndex = 2147483647;
-            this.CancelLocalMessagesButton.Text = "Cancel All Local Messages";
+            this.CancelLocalMessagesButton.Text = "Send Local Message Cancellation ";
             this.CancelLocalMessagesButton.UseMnemonic = false;
             this.CancelLocalMessagesButton.UseVisualStyleBackColor = false;
             // 

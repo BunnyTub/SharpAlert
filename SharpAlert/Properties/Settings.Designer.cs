@@ -522,5 +522,17 @@ namespace SharpAlert.Properties {
                 this["ClientServerURL"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("9792")]
+        public string ClientServerPort {
+            get {
+                return ((string)(this["ClientServerPort"]));
+            }
+            set {
+                this["ClientServerPort"] = value;
+            }
+        }
     }
 }

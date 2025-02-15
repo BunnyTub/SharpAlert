@@ -38,6 +38,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.AppTypeCombo = new System.Windows.Forms.ComboBox();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
+            this.ClientServerPortInput = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.ApplicationTypeGroup.SuspendLayout();
             this.ConfigurationPanel.SuspendLayout();
             this.SuspendLayout();
@@ -60,6 +62,8 @@
             // 
             // ApplicationTypeGroup
             // 
+            this.ApplicationTypeGroup.Controls.Add(this.label3);
+            this.ApplicationTypeGroup.Controls.Add(this.ClientServerPortInput);
             this.ApplicationTypeGroup.Controls.Add(this.label2);
             this.ApplicationTypeGroup.Controls.Add(this.ClientServerURLInput);
             this.ApplicationTypeGroup.Controls.Add(this.label1);
@@ -78,10 +82,10 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(132, 72);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(486, 30);
+            this.label2.Size = new System.Drawing.Size(459, 30);
             this.label2.TabIndex = 8;
             this.label2.Text = "Server URL (Only takes effect when the app type is \"Client\".)\r\n(Only include the " +
-    "hostname or IP address. Exclude \"http://\", \"https://\", \"/furry\", \"/paws\", etc)";
+    "hostname or IP address. No \"http://\", \"https://\", \"/furry\", \"/paws\", etc)";
             // 
             // ClientServerURLInput
             // 
@@ -92,7 +96,7 @@
             this.ClientServerURLInput.ForeColor = System.Drawing.Color.Red;
             this.ClientServerURLInput.Location = new System.Drawing.Point(135, 105);
             this.ClientServerURLInput.Name = "ClientServerURLInput";
-            this.ClientServerURLInput.Size = new System.Drawing.Size(547, 21);
+            this.ClientServerURLInput.Size = new System.Drawing.Size(456, 21);
             this.ClientServerURLInput.TabIndex = 7;
             // 
             // label1
@@ -100,7 +104,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 17);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(647, 45);
+            this.label1.Size = new System.Drawing.Size(672, 45);
             this.label1.TabIndex = 6;
             this.label1.Text = resources.GetString("label1.Text");
             // 
@@ -122,6 +126,28 @@
             this.ConfigurationPanel.Name = "ConfigurationPanel";
             this.ConfigurationPanel.Size = new System.Drawing.Size(712, 156);
             this.ConfigurationPanel.TabIndex = 9;
+            // 
+            // ClientServerPortInput
+            // 
+            this.ClientServerPortInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ClientServerPortInput.BackColor = System.Drawing.Color.Black;
+            this.ClientServerPortInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ClientServerPortInput.ForeColor = System.Drawing.Color.Red;
+            this.ClientServerPortInput.Location = new System.Drawing.Point(597, 105);
+            this.ClientServerPortInput.Name = "ClientServerPortInput";
+            this.ClientServerPortInput.Size = new System.Drawing.Size(85, 21);
+            this.ClientServerPortInput.TabIndex = 9;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(594, 72);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(88, 30);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Port\r\n(Default: 9792)";
             // 
             // ServerConfigurationForm
             // 
@@ -156,5 +182,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox AppTypeCombo;
         private System.Windows.Forms.Panel ConfigurationPanel;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox ClientServerPortInput;
     }
 }

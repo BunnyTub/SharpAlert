@@ -45,6 +45,8 @@ namespace SharpAlert
             AppTypeCombo.SelectedIndexChanged += (a, b) => Settings.Default.RunnerType = (byte)((ComboBox)a).SelectedIndex;
             ClientServerURLInput.Text = Settings.Default.ClientServerURL;
             ClientServerURLInput.TextChanged += (a, b) => Settings.Default.ClientServerURL = ((TextBox)a).Text.Trim();
+            ClientServerPortInput.Text = Settings.Default.ClientServerPort;
+            ClientServerPortInput.TextChanged += (a, b) => Settings.Default.ClientServerPort = ((TextBox)a).Text.Trim();
         }
 
         private void ServerConfigurationForm_FormClosing(object sender, FormClosingEventArgs e)

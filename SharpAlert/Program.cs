@@ -89,7 +89,7 @@ namespace SharpAlert
             soundFinish?.Stop();
             Console.WriteLine("Stopping TTS.");
             engine?.SpeakAsyncCancelAll();
-            Console.WriteLine("All operations finished. Thank Ice Bear for his hard work... -w-");
+            Console.WriteLine("Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-");
             if (notify != null)
             {
                 notify.BalloonTipTitle = "SharpAlert has stopped";

@@ -104,5 +104,8 @@
     <Setting Name="ClientServerURL" Type="System.String" Scope="User">
       <Value Profile="(Default)">example.com</Value>
     </Setting>
+    <Setting Name="ClientServerPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">9792</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
