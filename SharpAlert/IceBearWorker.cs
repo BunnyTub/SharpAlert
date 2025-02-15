@@ -266,7 +266,7 @@ namespace SharpAlert
                     var request = context.Request;
                     Console.WriteLine($"[Ice Bear] Sending data ({request.UserAgent} | {request.RemoteEndPoint.Address}).");
 
-                    if (request.HttpMethod.ToUpper() == "GET")
+                    if (request.HttpMethod.ToUpperInvariant() == "GET")
                     {
                         context.Response.StatusCode = (int)HttpStatusCode.OK;
                         context.Response.ContentType = "application/xml";
@@ -302,6 +302,8 @@ namespace SharpAlert
             sub.Start();
         }
 
+        private static readonly object ThreadErrorLockObject = new object();
+
         /// <summary>
         /// Acts as a layer for creating a Thread. The original intended code is run, but any exceptions are caught if they occur.
         /// </summary>
@@ -317,15 +319,19 @@ namespace SharpAlert
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("SharpAlert has crashed!\r\n" +
-                        $"{ex.StackTrace}\r\n" +
-                        $"{ex.Message}",
-                        "SharpAlert",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                    Environment.FailFast("SharpAlert has crashed!\r\n" +
-                        $"{ex.StackTrace}\r\n" +
-                        $"{ex.Message}");
+                    lock (ThreadErrorLockObject)
+                    {
+                        new Thread(() =>
+                        {
+                            string ExceptionCompiled = $"SharpAlert encountered an unrecoverable issue. {DateTime.UtcNow:s}\r\n" +
+                            $"{ex.Message}\r\n" +
+                            $"{ex.TargetSite}\r\n" +
+                            $"{ex.StackTrace}";
+                            ToppleForm tf = new ToppleForm(ExceptionCompiled);
+                            tf.ShowDialog();
+                            Environment.FailFast(ExceptionCompiled);
+                        }).Start();
+                    }
                 }
             });
         }
@@ -394,96 +400,6 @@ namespace SharpAlert
                 }
             };
 
-            //new ToolStripMenuItem("[Advanced] Force Quit", null, (sender, arg) =>
-            //{
-            //    // hide via name iteration
-
-            //    string ForceQuitMsg;
-
-            //    if (ChangedPropertiesList.Count == 0)
-            //    {
-            //        ForceQuitMsg = "Are you sure you want to force quit?\r\n" +
-            //        "You won't receive any alerts while the program is stopped.\r\n";
-            //    }
-            //    else
-            //    {
-            //        ForceQuitMsg = "Are you sure you want to force quit?\r\n" +
-            //        "You won't receive any alerts while the program is stopped.\r\n\r\n" +
-            //        "You have unsaved changes that will be lost if you continue.";
-            //    }
-
-            //    if (MessageBox.Show(ForceQuitMsg,
-            //        "SharpAlert",
-            //        MessageBoxButtons.YesNo,
-            //        MessageBoxIcon.Warning) == DialogResult.Yes)
-            //    {
-            //        Environment.Exit(0);
-            //    }
-            //});
-
-            //var boolProperties = typeof(Settings).GetProperties()
-            //    .Where(p => p.PropertyType == typeof(bool));
-
-            //foreach (var property in boolProperties)
-            //{
-            //    if (property.Name != "IsSynchronized")
-            //    {
-            //        DescriptionAttribute descriptionAttribute = property.GetCustomAttribute<DescriptionAttribute>();
-            //        string description = descriptionAttribute?.Description ?? "The description is unavailable for this item.";
-            //        contextMenu.Items.Add(CreateBoolMenuItem(property, description));
-            //    }
-            //}
-
-            //var stringProperties = typeof(Settings).GetProperties()
-            //    .Where(p => p.PropertyType == typeof(string));
-
-            //foreach (var property in stringProperties)
-            //{
-            //    if (property.Name != "SettingsKey")
-            //    {
-            //        DescriptionAttribute descriptionAttribute = property.GetCustomAttribute<DescriptionAttribute>();
-            //        string description = descriptionAttribute?.Description ?? "The description is unavailable for this item.";
-            //        contextMenu.Items.Add(new ToolStripLabel($"{property.Name} (No ENTER needed):")
-            //        {
-            //            ToolTipText = description,
-            //            AutoToolTip = false
-            //        });
-            //        contextMenu.Items.Add(CreateStringMenuItem(property, description));
-            //    }
-            //}
-
-            //var stringCollectionProperties = typeof(Settings).GetProperties()
-            //    .Where(p => p.PropertyType == typeof(StringCollection));
-
-            //foreach (var property in stringCollectionProperties)
-            //{
-            //    DescriptionAttribute descriptionAttribute = property.GetCustomAttribute<DescriptionAttribute>();
-            //    string description = descriptionAttribute?.Description ?? "The description is unavailable for this item.";
-            //    contextMenu.Items.Add(new ToolStripLabel($"{property.Name} (ENTER to separate):")
-            //    {
-            //        ToolTipText = description,
-            //        AutoToolTip = false
-            //    });
-            //    contextMenu.Items.Add(CreateStringCollectionMenuItem(property, description));
-            //}
-
-            //var integerProperties = typeof(Settings).GetProperties()
-            //    .Where(p => p.PropertyType == typeof(int));
-
-            //foreach (var property in integerProperties)
-            //{
-            //    DescriptionAttribute descriptionAttribute = property.GetCustomAttribute<DescriptionAttribute>();
-            //    string description = descriptionAttribute?.Description ?? "The description is unavailable for this item.";
-            //    contextMenu.Items.Add(new ToolStripLabel($"{property.Name}:")
-            //    {
-            //        ToolTipText = description,
-            //        AutoToolTip = false
-            //    });
-            //    contextMenu.Items.Add(CreateIntegerMenuItem(property, description));
-            //}
-
-            //contextMenu.Items.Add(new ToolStripSeparator());
-
             contextMenu.Items.Add(new ToolStripMenuItem("Show Console", null, (sender, arg) =>
             {
                 IgnoreRightClick = true;
@@ -518,7 +434,7 @@ namespace SharpAlert
             contextMenu.Items.Add(new ToolStripLabel($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
                 Resources.AlertIcon, true, (obj, args) =>
                 {
-                    Process.Start("https://github.com/BunnyTub");
+                    Process.Start("https://sharpalert.bunnytub.com");
                 })
             {
                 ToolTipText = "Very mindful, very demure."
@@ -581,27 +497,13 @@ namespace SharpAlert
 
             contextMenu.Items.Add(new ToolStripSeparator());
 
-            //StatusForm sf = null;
-
-            //contextMenu.Items.Add(new ToolStripMenuItem("Open Status", null, (sender, arg) =>
-            //{
-            //    if (sf != null)
-            //    {
-            //        if (!sf.IsDisposed)
-            //        {
-            //            sf.Close();
-            //        }
-            //    }
-
-            //    ThreadPool.QueueUserWorkItem(_ =>
-            //    {
-            //        sf = new StatusForm();
-            //        sf.ShowDialog();
-            //    });
-            //}));
-
-            //contextMenu.Items.Add(new ToolStripSeparator());
-
+#if DEBUG
+            contextMenu.Items.Add(new ToolStripMenuItem("Trigger Intentional Exception", null, (sender, arg) =>
+            {
+                string[] StringOfStrings = { "0", "1" };
+                string StringNumberTwo = StringOfStrings[2].Trim();
+            }));
+#endif   
             contextMenu.Items.Add(new ToolStripMenuItem("Quit", null, (sender, arg) =>
             {
                 if (AlertDisplaying)
@@ -629,7 +531,7 @@ namespace SharpAlert
             notify.ContextMenuStrip = contextMenu;
 
             notify.BalloonTipTitle = "SharpAlert is running";
-            notify.BalloonTipText = "I'll be down in my tray, waiting for alerts!";
+            notify.BalloonTipText = "I'll just be waiting right down here in my tray icon, waiting for alerts.";
             notify.BalloonTipIcon = ToolTipIcon.Info;
             notify.ShowBalloonTip(5000);
         }
@@ -804,132 +706,5 @@ namespace SharpAlert
                 staThread.Start();
             });
         }
-
-#pragma warning disable IDE0051 // Remove unused private members
-        private static ToolStripMenuItem CreateBoolMenuItem(PropertyInfo property, string description)
-        {
-            string propertyName = property.Name;
-
-            ToolStripMenuItem menuItem = new ToolStripMenuItem(propertyName)
-            {
-                CheckOnClick = true,
-                Checked = (bool)property.GetValue(Settings.Default),
-                ToolTipText = description,
-                AutoToolTip = false
-            };
-
-            menuItem.CheckedChanged += (sender, args) =>
-            {
-                if (sender is ToolStripMenuItem item)
-                {
-                    bool isChecked = item.Checked;
-                    property.SetValue(Settings.Default, isChecked);
-                    //Settings.Default.Save();
-                    Console.WriteLine($"{propertyName} set to {isChecked}");
-                }
-            };
-
-            menuItem.Tag = "config";
-            return menuItem;
-        }
-
-        private static ToolStripTextBox CreateStringMenuItem(PropertyInfo property, string description)
-        {
-            string propertyName = property.Name;
-
-            ToolStripTextBox menuItem = new ToolStripTextBox(propertyName)
-            {
-                Text = (string)property.GetValue(Settings.Default),
-                ToolTipText = description,
-                BorderStyle = BorderStyle.FixedSingle
-            };
-
-            menuItem.TextChanged += (sender, args) =>
-            {
-                if (sender is ToolStripTextBox item)
-                {
-                    string setString = item.Text;
-                    property.SetValue(Settings.Default, setString);
-                    //Settings.Default.Save();
-                    Console.WriteLine($"{propertyName} set to {setString}");
-                }
-            };
-
-            menuItem.Tag = "config";
-            return menuItem;
-        }
-
-        private static ToolStripTextBox CreateStringCollectionMenuItem(PropertyInfo property, string description)
-        {
-            string propertyName = property.Name;
-            string propertyValue = string.Empty;
-
-            foreach (string strItem in (StringCollection)property.GetValue(Settings.Default))
-            {
-                propertyValue += strItem + "\n";
-            }
-
-            ToolStripTextBox menuItem = new ToolStripTextBox(propertyName)
-            {
-                Text = propertyValue,
-                ToolTipText = description,
-                AcceptsReturn = true,
-                AcceptsTab = false,
-                BorderStyle = BorderStyle.FixedSingle
-            };
-
-            menuItem.TextChanged += (sender, args) =>
-            {
-                if (sender is ToolStripTextBox item)
-                {
-                    StringCollection setString = new StringCollection();
-                    if (!string.IsNullOrWhiteSpace(item.Text))
-                        setString.AddRange(item.Text.Replace("\r", string.Empty).Split('\n'));
-                    else setString.Clear();
-
-                    property.SetValue(Settings.Default, setString);
-                    //Settings.Default.Save();
-                    Console.WriteLine($"{propertyName} set to {setString}");
-                }
-            };
-
-            menuItem.Tag = "config";
-            return menuItem;
-        }
-
-        private static ToolStripControlHost CreateIntegerMenuItem(PropertyInfo property, string description)
-        {
-            string propertyName = property.Name;
-            int propertyValue = (int)property.GetValue(Settings.Default);
-
-            NumericUpDown numericUpDown = new NumericUpDown
-            {
-                Value = propertyValue,
-                Minimum = 10,
-                Maximum = 300,
-                DecimalPlaces = 0,
-                Increment = 5,
-            };
-
-            numericUpDown.ValueChanged += (sender, args) =>
-            {
-                if (sender is NumericUpDown control)
-                {
-                    int newValue = (int)control.Value;
-                    property.SetValue(Settings.Default, newValue);
-                    //Settings.Default.Save();
-                    Console.WriteLine($"{propertyName} set to {newValue}");
-                }
-            };
-
-            ToolStripControlHost menuItem = new ToolStripControlHost(numericUpDown)
-            {
-                ToolTipText = description,
-                Tag = "config"
-            };
-
-            return menuItem;
-        }
-#pragma warning restore IDE0051 // Remove unused private members
     }
 }

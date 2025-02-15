@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Media;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Speech.Synthesis;
 using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace SharpAlert
 {
@@ -114,13 +114,13 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                MessageBox.Show("SharpAlert has crashed!\r\n" +
+                MessageBox.Show("SharpAlert failed to start!\r\n" +
                     $"{ex.StackTrace}\r\n" +
                     $"{ex.Message}",
                     "SharpAlert",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-                Environment.FailFast("SharpAlert has crashed!\r\n" +
+                Environment.FailFast("SharpAlert failed to start!\r\n" +
                     $"{ex.StackTrace}\r\n" +
                     $"{ex.Message}");
             }
@@ -133,7 +133,7 @@ namespace SharpAlert
         /// <returns></returns>
         public static string CreateMD5(string input)
         {
-            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+            using (MD5 md5 = MD5.Create())
             {
                 byte[] inputBytes = Encoding.ASCII.GetBytes(input);
                 byte[] hashBytes = md5.ComputeHash(inputBytes);

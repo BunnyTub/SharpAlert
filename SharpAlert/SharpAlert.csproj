@@ -40,6 +40,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
@@ -295,6 +296,7 @@
     <None Include="Resources\ui_end.wav" />
     <None Include="Resources\ui_cancellation.wav" />
     <None Include="Resources\ui_warning.wav" />
+    <None Include="Resources\CrashIcon.png" />
     <Content Include="TODO.txt" />
     <Content Include="WarningApp.ico" />
   </ItemGroup>

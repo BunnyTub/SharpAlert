@@ -75,7 +75,7 @@ namespace SharpAlert
                             string Replay = ReplayedAlertRegex.Match(relayItem.Data).Groups[1].Value;
                             bool ReplayMode = false;
 
-                            if (Replay.ToLower() == "true")
+                            if (Replay.ToLowerInvariant() == "true")
                             {
                                 Console.WriteLine("[Data Processor] Detected an alert in replay mode.");
                                 ReplayMode = true;

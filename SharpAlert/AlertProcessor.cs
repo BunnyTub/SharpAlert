@@ -185,7 +185,7 @@ namespace SharpAlert
                     {
                         foreach (string EventName in Settings.Default.EnforceEventBlacklist)
                         {
-                            if (EventType.ToLower() == EventName.ToLower())
+                            if (EventType.ToLowerInvariant() == EventName.ToLowerInvariant())
                             {
                                 EventBlacklisted = true;
                                 break;
@@ -308,7 +308,7 @@ namespace SharpAlert
                                     DialogAlertTitle = EventType;
                                     DialogAlertText = AlertText;
                                     DialogAlertURL = URL;
-                                    if (MsgType.ToLower() == "cancel") DialogAlertCancellation = true;
+                                    if (MsgType.ToLowerInvariant() == "cancel") DialogAlertCancellation = true;
                                     else DialogAlertCancellation = false;
 
                                     if (Settings.Default.alertFullscreen)
@@ -389,7 +389,7 @@ namespace SharpAlert
                         string EventsList = string.Empty;
                         foreach (string Event in AllEvents)
                         {
-                            EventsList += $"{Regex.Replace(Event.ToLower(), @"(^\w)|(\s\w)", m => m.Value.ToUpper())}, ";
+                            EventsList += $"{Regex.Replace(Event.ToLowerInvariant(), @"(^\w)|(\s\w)", m => m.Value.ToUpperInvariant())}, ";
                         }
                         EventsList = EventsList.Substring(0, EventsList.Length - 2) + ".";
                         
@@ -398,7 +398,7 @@ namespace SharpAlert
                         {
                             LocationList += $"{Location}, ";
                         }
-                        LocationList = LocationList.Substring(0, LocationList.Length - 2) + ".";
+                        LocationList = LocationList.Trim().Substring(0, LocationList.Length - 1) + ".";
                         AlertToWebhook.SendUnformattedMessage($"{MaxSeverity} Emergency Alert | Event(s): {EventsList} | Location(s): {LocationList}\r\n" + Settings.Default.DiscordWebhookAppend, Settings.Default.DiscordWebhook);
                         Console.WriteLine("[Alert Processor] Appended to Discord webhook text.");
                     }
@@ -432,7 +432,7 @@ namespace SharpAlert
                 bool var2; // Urgency
                 bool var3; // MsgType
 
-                switch (Severity.ToLower())
+                switch (Severity.ToLowerInvariant())
                 {
                     case "extreme":
                         var1 = Settings.Default.severityExtreme;
@@ -454,7 +454,7 @@ namespace SharpAlert
                         break;
                 }
 
-                switch (Urgency.ToLower())
+                switch (Urgency.ToLowerInvariant())
                 {
                     case "immediate":
                         var2 = Settings.Default.urgencyImmediate;
@@ -476,7 +476,7 @@ namespace SharpAlert
                         break;
                 }
 
-                switch (MsgType.ToLower())
+                switch (MsgType.ToLowerInvariant())
                 {
                     case "alert":
                         var3 = Settings.Default.messageTypeAlert;
@@ -509,9 +509,9 @@ namespace SharpAlert
                         $"MsgType = {var3}");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.WriteLine("Severity, urgency, and message type, did not pass all checks, and completed with one or more errors.");
+                Console.WriteLine($"Severity, urgency, and message type, did not pass all checks, and completed with one or more errors. {ex.Message}");
                 Final = false;
             }
 
@@ -558,7 +558,7 @@ namespace SharpAlert
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"[Alert Processor] {ex.Message}");
+                        Console.WriteLine($"An unknown amount of locations were matches due to one or more errors. {ex.Message}");
                     }
                 }
                 
@@ -591,7 +591,7 @@ namespace SharpAlert
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"[Alert Processor] {ex.Message}");
+                        Console.WriteLine($"An unknown amount of locations were matches due to one or more errors. {ex.Message}");
                     }
                 }
 
@@ -620,9 +620,9 @@ namespace SharpAlert
 
                 if (WEAHandle.Success)
                 {
-                    switch (WEAHandle.Value)
+                    switch (WEAHandle.Value.ToUpperInvariant())
                     {
-                        case "Imminent Threat":
+                        case "IMMINENT THREAT":
                             return true;
                         default:
                             return false;
@@ -650,7 +650,7 @@ namespace SharpAlert
             // Test
             // Actual
 
-            switch (Status.ToLower())
+            switch (Status.ToLowerInvariant())
             {
                 case "test":
                     if (!Settings.Default.statusTest) return false;
@@ -680,7 +680,7 @@ namespace SharpAlert
                     bool var1; // Severity
                     bool var2; // MsgType
 
-                    switch (Severity.ToLower())
+                    switch (Severity.ToLowerInvariant())
                     {
                         case "extreme":
                             var1 = Settings.Default.severityExtreme;
@@ -702,7 +702,7 @@ namespace SharpAlert
                             break;
                     }
 
-                    switch (MsgType.ToLower())
+                    switch (MsgType.ToLowerInvariant())
                     {
                         case "alert":
                             var2 = Settings.Default.messageTypeAlert;
@@ -805,7 +805,7 @@ namespace SharpAlert
                 return TimeCorrectionRegex.Replace(value, timeMatch =>
                 {
                     string timePart = timeMatch.Groups[1].Value.PadLeft(4, '0');
-                    string meridian = timeMatch.Groups[2].Value.ToUpper();
+                    string meridian = timeMatch.Groups[2].Value.ToUpperInvariant();
 
                     return DateTime.ParseExact(timePart, "hhmm", CultureInfo.InvariantCulture)
                     .ToString("hh:mm tt", CultureInfo.InvariantCulture);
@@ -819,7 +819,7 @@ namespace SharpAlert
             string cancel = "cancelled";
 
             string MsgPrefix;
-            switch (MsgType.ToLower())
+            switch (MsgType.ToLowerInvariant())
             {
                 case "alert":
                     MsgPrefix = issue;
@@ -881,7 +881,7 @@ namespace SharpAlert
             try
             {
                 EventType = EventRegex.Match(InfoData).Groups[1].Value;
-                EventType = Regex.Replace(EventType.ToLower(), @"(^\w)|(\s\w)", m => m.Value.ToUpper());
+                EventType = Regex.Replace(EventType.ToLowerInvariant(), @"(^\w)|(\s\w)", m => m.Value.ToUpperInvariant());
                 EventType = $"{EventType}";
             }
             catch (Exception)

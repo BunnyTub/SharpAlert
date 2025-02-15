@@ -178,8 +178,8 @@ namespace SharpAlert
         {
             //foreach (var voice in Program.engine.GetInstalledVoices())
             //{
-            //    //ConsoleExt.WriteLine(voice.VoiceInfo.Culture.TwoLetterISOLanguageName.ToLower());
-            //    if (voice.VoiceInfo.Name.Contains(Settings.Default.SpeechVoice) && voice.VoiceInfo.Culture.TwoLetterISOLanguageName.ToLower() == lang)
+            //    //ConsoleExt.WriteLine(voice.VoiceInfo.Culture.TwoLetterISOLanguageName.ToLowerInvariant());
+            //    if (voice.VoiceInfo.Name.Contains(Settings.Default.SpeechVoice) && voice.VoiceInfo.Culture.TwoLetterISOLanguageName.ToLowerInvariant() == lang)
             //    {
             //        //ConsoleExt.WriteLine(voice.VoiceInfo.Name, ConsoleColor.Magenta);
             //        engine.SelectVoice(voice.VoiceInfo.Name);
