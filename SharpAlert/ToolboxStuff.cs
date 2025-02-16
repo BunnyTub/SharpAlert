@@ -9,6 +9,7 @@ namespace SharpAlert
         public class MarqueeLabel : Label
         {
             private readonly Timer scrollTimer;
+            private readonly Timer blinkTimer;
             private int textPosition = 0;
 
             public int ScrollSpeed { get; set; } = 1;
@@ -21,6 +22,13 @@ namespace SharpAlert
                 };
                 scrollTimer.Tick += new EventHandler(OnScrollTick);
                 scrollTimer.Start();
+
+                blinkTimer = new Timer()
+                {
+                    Interval = 500
+                };
+                //blinkTimer.Tick += new EventHandler(OnBlinkTick);
+                //blinkTimer.Start();
             }
 
             private bool Started = false;
@@ -48,7 +56,7 @@ namespace SharpAlert
                         break;
                     case ContentAlignment.MiddleLeft:
                         textRect = new RectangleF((this.DesignMode || ScrollSpeed == 0) ? 0 : textPosition, (this.Height - textSize.Height) / 2, textSize.Width, this.Height);
-                        e.Graphics.DrawString(this.Text, this.Font, new SolidBrush(this.ForeColor), textRect);
+                e.Graphics.DrawString(this.Text, this.Font, new SolidBrush(this.ForeColor), textRect);
                         break;
                     case ContentAlignment.BottomLeft:
                         textRect = new RectangleF((this.DesignMode || ScrollSpeed == 0) ? 0 : textPosition, this.Height - textSize.Height, textSize.Width, this.Height);
@@ -124,7 +132,14 @@ namespace SharpAlert
                         scrollTimer.Stop();
                         scrollTimer.Dispose();
                     }
+
+                    if (blinkTimer != null)
+                    {
+                        blinkTimer.Stop();
+                        blinkTimer.Dispose();
+                    }
                 }
+
                 base.Dispose(disposing);
             }
         }

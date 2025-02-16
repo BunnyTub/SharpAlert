@@ -36,6 +36,8 @@
             this.IdleText = new System.Windows.Forms.Label();
             this.InfoText = new SharpAlert.ToolboxStuff.MarqueeLabel();
             this.IdleContainer = new System.Windows.Forms.Panel();
+            this.InfoText = new System.Windows.Forms.Label();
+            this.MouseMoving = new System.Windows.Forms.Timer(this.components);
             this.IdleContainer.SuspendLayout();
             this.SuspendLayout();
             // 
