@@ -54,6 +54,7 @@
             this.messageTypeUpdateBox = new System.Windows.Forms.CheckBox();
             this.messageTypeAlertBox = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.statusExerciseBox = new System.Windows.Forms.CheckBox();
             this.statusActualBox = new System.Windows.Forms.CheckBox();
             this.statusTestBox = new System.Windows.Forms.CheckBox();
             this.LocationsAndEventsGroup = new System.Windows.Forms.GroupBox();
@@ -75,9 +76,23 @@
             this.SAMEAddButton = new System.Windows.Forms.Button();
             this.AreaSAMEInput = new System.Windows.Forms.TextBox();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.categoryOtherBox = new System.Windows.Forms.CheckBox();
+            this.categoryCBRNEBox = new System.Windows.Forms.CheckBox();
+            this.categoryInfraBox = new System.Windows.Forms.CheckBox();
+            this.categoryTransportBox = new System.Windows.Forms.CheckBox();
+            this.categoryEnvBox = new System.Windows.Forms.CheckBox();
+            this.categoryHealthBox = new System.Windows.Forms.CheckBox();
+            this.categoryFireBox = new System.Windows.Forms.CheckBox();
+            this.categoryRescueBox = new System.Windows.Forms.CheckBox();
+            this.categorySecurityBox = new System.Windows.Forms.CheckBox();
+            this.categorySafetyBox = new System.Windows.Forms.CheckBox();
+            this.categoryMetBox = new System.Windows.Forms.CheckBox();
+            this.categoryGeoBox = new System.Windows.Forms.CheckBox();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.BusyLockText = new System.Windows.Forms.Label();
             this.BusyLock = new System.Windows.Forms.Timer(this.components);
+            this.label2 = new System.Windows.Forms.Label();
             this.AlertFunctionalityGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlertCheckIntervalInput)).BeginInit();
             this.groupBox11.SuspendLayout();
@@ -90,6 +105,7 @@
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.ConfigurationPanel.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // AlertFunctionalityGroup
@@ -104,7 +120,7 @@
             this.AlertFunctionalityGroup.ForeColor = System.Drawing.Color.White;
             this.AlertFunctionalityGroup.Location = new System.Drawing.Point(12, 12);
             this.AlertFunctionalityGroup.Name = "AlertFunctionalityGroup";
-            this.AlertFunctionalityGroup.Size = new System.Drawing.Size(310, 326);
+            this.AlertFunctionalityGroup.Size = new System.Drawing.Size(310, 357);
             this.AlertFunctionalityGroup.TabIndex = 4;
             this.AlertFunctionalityGroup.TabStop = false;
             this.AlertFunctionalityGroup.Text = "Alert Functionality";
@@ -112,7 +128,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(160, 301);
+            this.label4.Location = new System.Drawing.Point(160, 332);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(84, 15);
             this.label4.TabIndex = 8;
@@ -125,7 +141,7 @@
             0,
             0,
             0});
-            this.AlertCheckIntervalInput.Location = new System.Drawing.Point(250, 299);
+            this.AlertCheckIntervalInput.Location = new System.Drawing.Point(250, 330);
             this.AlertCheckIntervalInput.Maximum = new decimal(new int[] {
             300,
             0,
@@ -151,7 +167,7 @@
             this.groupBox11.Controls.Add(this.discardFirstAlertsBox);
             this.groupBox11.Controls.Add(this.weaOnlyBox);
             this.groupBox11.ForeColor = System.Drawing.Color.White;
-            this.groupBox11.Location = new System.Drawing.Point(6, 246);
+            this.groupBox11.Location = new System.Drawing.Point(6, 277);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Size = new System.Drawing.Size(148, 74);
             this.groupBox11.TabIndex = 6;
@@ -188,9 +204,9 @@
             this.groupBox5.Controls.Add(this.urgencyExpectedBox);
             this.groupBox5.Controls.Add(this.urgencyImmediateBox);
             this.groupBox5.ForeColor = System.Drawing.Color.White;
-            this.groupBox5.Location = new System.Drawing.Point(160, 149);
+            this.groupBox5.Location = new System.Drawing.Point(160, 146);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(144, 143);
+            this.groupBox5.Size = new System.Drawing.Size(144, 178);
             this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Message Urgency";
@@ -258,9 +274,9 @@
             this.groupBox4.Controls.Add(this.severitySevereBox);
             this.groupBox4.Controls.Add(this.severityExtremeBox);
             this.groupBox4.ForeColor = System.Drawing.Color.White;
-            this.groupBox4.Location = new System.Drawing.Point(6, 94);
+            this.groupBox4.Location = new System.Drawing.Point(6, 122);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(148, 146);
+            this.groupBox4.Size = new System.Drawing.Size(148, 149);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Message Severity";
@@ -329,7 +345,7 @@
             this.groupBox2.ForeColor = System.Drawing.Color.White;
             this.groupBox2.Location = new System.Drawing.Point(160, 20);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(144, 123);
+            this.groupBox2.Size = new System.Drawing.Size(144, 120);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Message Type";
@@ -380,20 +396,32 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.statusExerciseBox);
             this.groupBox1.Controls.Add(this.statusActualBox);
             this.groupBox1.Controls.Add(this.statusTestBox);
             this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(6, 20);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(148, 68);
+            this.groupBox1.Size = new System.Drawing.Size(148, 96);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Message Status";
             // 
+            // statusExerciseBox
+            // 
+            this.statusExerciseBox.AutoSize = true;
+            this.statusExerciseBox.Location = new System.Drawing.Point(6, 45);
+            this.statusExerciseBox.Name = "statusExerciseBox";
+            this.statusExerciseBox.Size = new System.Drawing.Size(73, 19);
+            this.statusExerciseBox.TabIndex = 3;
+            this.statusExerciseBox.Text = "Exercise";
+            this.ToolTipInformation.SetToolTip(this.statusExerciseBox, "Allow messages with this status.");
+            this.statusExerciseBox.UseVisualStyleBackColor = true;
+            // 
             // statusActualBox
             // 
             this.statusActualBox.AutoSize = true;
-            this.statusActualBox.Location = new System.Drawing.Point(6, 45);
+            this.statusActualBox.Location = new System.Drawing.Point(6, 20);
             this.statusActualBox.Name = "statusActualBox";
             this.statusActualBox.Size = new System.Drawing.Size(59, 19);
             this.statusActualBox.TabIndex = 2;
@@ -404,7 +432,7 @@
             // statusTestBox
             // 
             this.statusTestBox.AutoSize = true;
-            this.statusTestBox.Location = new System.Drawing.Point(6, 20);
+            this.statusTestBox.Location = new System.Drawing.Point(6, 70);
             this.statusTestBox.Name = "statusTestBox";
             this.statusTestBox.Size = new System.Drawing.Size(49, 19);
             this.statusTestBox.TabIndex = 1;
@@ -421,7 +449,7 @@
             this.LocationsAndEventsGroup.ForeColor = System.Drawing.Color.White;
             this.LocationsAndEventsGroup.Location = new System.Drawing.Point(328, 12);
             this.LocationsAndEventsGroup.Name = "LocationsAndEventsGroup";
-            this.LocationsAndEventsGroup.Size = new System.Drawing.Size(331, 326);
+            this.LocationsAndEventsGroup.Size = new System.Drawing.Size(331, 357);
             this.LocationsAndEventsGroup.TabIndex = 5;
             this.LocationsAndEventsGroup.TabStop = false;
             this.LocationsAndEventsGroup.Text = "Locations/Events";
@@ -436,7 +464,7 @@
             this.groupBox9.ForeColor = System.Drawing.Color.White;
             this.groupBox9.Location = new System.Drawing.Point(6, 227);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(319, 93);
+            this.groupBox9.Size = new System.Drawing.Size(319, 120);
             this.groupBox9.TabIndex = 4;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "SAME Events";
@@ -461,7 +489,7 @@
             this.EventBlacklistOutput.Name = "EventBlacklistOutput";
             this.EventBlacklistOutput.ReadOnly = true;
             this.EventBlacklistOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.EventBlacklistOutput.Size = new System.Drawing.Size(144, 51);
+            this.EventBlacklistOutput.Size = new System.Drawing.Size(144, 77);
             this.EventBlacklistOutput.TabIndex = 3;
             this.EventBlacklistOutput.WordWrap = false;
             // 
@@ -630,13 +658,181 @@
             // 
             // ConfigurationPanel
             // 
+            this.ConfigurationPanel.Controls.Add(this.groupBox3);
             this.ConfigurationPanel.Controls.Add(this.AlertFunctionalityGroup);
             this.ConfigurationPanel.Controls.Add(this.LocationsAndEventsGroup);
             this.ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
             this.ConfigurationPanel.Name = "ConfigurationPanel";
-            this.ConfigurationPanel.Size = new System.Drawing.Size(671, 350);
+            this.ConfigurationPanel.Size = new System.Drawing.Size(671, 485);
             this.ConfigurationPanel.TabIndex = 6;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label2);
+            this.groupBox3.Controls.Add(this.categoryOtherBox);
+            this.groupBox3.Controls.Add(this.categoryCBRNEBox);
+            this.groupBox3.Controls.Add(this.categoryInfraBox);
+            this.groupBox3.Controls.Add(this.categoryTransportBox);
+            this.groupBox3.Controls.Add(this.categoryEnvBox);
+            this.groupBox3.Controls.Add(this.categoryHealthBox);
+            this.groupBox3.Controls.Add(this.categoryFireBox);
+            this.groupBox3.Controls.Add(this.categoryRescueBox);
+            this.groupBox3.Controls.Add(this.categorySecurityBox);
+            this.groupBox3.Controls.Add(this.categorySafetyBox);
+            this.groupBox3.Controls.Add(this.categoryMetBox);
+            this.groupBox3.Controls.Add(this.categoryGeoBox);
+            this.groupBox3.ForeColor = System.Drawing.Color.White;
+            this.groupBox3.Location = new System.Drawing.Point(12, 375);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(647, 98);
+            this.groupBox3.TabIndex = 17;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Alert Categories";
+            // 
+            // categoryOtherBox
+            // 
+            this.categoryOtherBox.AutoSize = true;
+            this.categoryOtherBox.Enabled = false;
+            this.categoryOtherBox.Location = new System.Drawing.Point(315, 70);
+            this.categoryOtherBox.Name = "categoryOtherBox";
+            this.categoryOtherBox.Size = new System.Drawing.Size(111, 19);
+            this.categoryOtherBox.TabIndex = 23;
+            this.categoryOtherBox.Text = "Other/Unknown";
+            this.ToolTipInformation.SetToolTip(this.categoryOtherBox, "Allow messages of the following category.");
+            this.categoryOtherBox.UseVisualStyleBackColor = true;
+            // 
+            // categoryCBRNEBox
+            // 
+            this.categoryCBRNEBox.AutoSize = true;
+            this.categoryCBRNEBox.Enabled = false;
+            this.categoryCBRNEBox.Location = new System.Drawing.Point(315, 45);
+            this.categoryCBRNEBox.Name = "categoryCBRNEBox";
+            this.categoryCBRNEBox.Size = new System.Drawing.Size(91, 19);
+            this.categoryCBRNEBox.TabIndex = 22;
+            this.categoryCBRNEBox.Text = "Toxic Threat";
+            this.ToolTipInformation.SetToolTip(this.categoryCBRNEBox, "Allow messages of the following category.");
+            this.categoryCBRNEBox.UseVisualStyleBackColor = true;
+            // 
+            // categoryInfraBox
+            // 
+            this.categoryInfraBox.AutoSize = true;
+            this.categoryInfraBox.Enabled = false;
+            this.categoryInfraBox.Location = new System.Drawing.Point(315, 20);
+            this.categoryInfraBox.Name = "categoryInfraBox";
+            this.categoryInfraBox.Size = new System.Drawing.Size(67, 19);
+            this.categoryInfraBox.TabIndex = 21;
+            this.categoryInfraBox.Text = "Utilities";
+            this.ToolTipInformation.SetToolTip(this.categoryInfraBox, "Allow messages of the following category.");
+            this.categoryInfraBox.UseVisualStyleBackColor = true;
+            // 
+            // categoryTransportBox
+            // 
+            this.categoryTransportBox.AutoSize = true;
+            this.categoryTransportBox.Enabled = false;
+            this.categoryTransportBox.Location = new System.Drawing.Point(204, 70);
+            this.categoryTransportBox.Name = "categoryTransportBox";
+            this.categoryTransportBox.Size = new System.Drawing.Size(106, 19);
+            this.categoryTransportBox.TabIndex = 20;
+            this.categoryTransportBox.Text = "Transportation";
+            this.ToolTipInformation.SetToolTip(this.categoryTransportBox, "Allow messages of the following category.");
+            this.categoryTransportBox.UseVisualStyleBackColor = true;
+            // 
+            // categoryEnvBox
+            // 
+            this.categoryEnvBox.AutoSize = true;
+            this.categoryEnvBox.Enabled = false;
+            this.categoryEnvBox.Location = new System.Drawing.Point(204, 45);
+            this.categoryEnvBox.Name = "categoryEnvBox";
+            this.categoryEnvBox.Size = new System.Drawing.Size(105, 19);
+            this.categoryEnvBox.TabIndex = 19;
+            this.categoryEnvBox.Text = "Environmental";
+            this.ToolTipInformation.SetToolTip(this.categoryEnvBox, "Allow messages of the following category.");
+            this.categoryEnvBox.UseVisualStyleBackColor = true;
+            // 
+            // categoryHealthBox
+            // 
+            this.categoryHealthBox.AutoSize = true;
+            this.categoryHealthBox.Enabled = false;
+            this.categoryHealthBox.Location = new System.Drawing.Point(204, 20);
+            this.categoryHealthBox.Name = "categoryHealthBox";
+            this.categoryHealthBox.Size = new System.Drawing.Size(68, 19);
+            this.categoryHealthBox.TabIndex = 18;
+            this.categoryHealthBox.Text = "Medical";
+            this.ToolTipInformation.SetToolTip(this.categoryHealthBox, "Allow messages of the following category.");
+            this.categoryHealthBox.UseVisualStyleBackColor = true;
+            // 
+            // categoryFireBox
+            // 
+            this.categoryFireBox.AutoSize = true;
+            this.categoryFireBox.Enabled = false;
+            this.categoryFireBox.Location = new System.Drawing.Point(126, 70);
+            this.categoryFireBox.Name = "categoryFireBox";
+            this.categoryFireBox.Size = new System.Drawing.Size(47, 19);
+            this.categoryFireBox.TabIndex = 17;
+            this.categoryFireBox.Text = "Fire";
+            this.ToolTipInformation.SetToolTip(this.categoryFireBox, "Allow messages of the following category.");
+            this.categoryFireBox.UseVisualStyleBackColor = true;
+            // 
+            // categoryRescueBox
+            // 
+            this.categoryRescueBox.AutoSize = true;
+            this.categoryRescueBox.Enabled = false;
+            this.categoryRescueBox.Location = new System.Drawing.Point(126, 45);
+            this.categoryRescueBox.Name = "categoryRescueBox";
+            this.categoryRescueBox.Size = new System.Drawing.Size(69, 19);
+            this.categoryRescueBox.TabIndex = 16;
+            this.categoryRescueBox.Text = "Rescue";
+            this.ToolTipInformation.SetToolTip(this.categoryRescueBox, "Allow messages of the following category.");
+            this.categoryRescueBox.UseVisualStyleBackColor = true;
+            // 
+            // categorySecurityBox
+            // 
+            this.categorySecurityBox.AutoSize = true;
+            this.categorySecurityBox.Enabled = false;
+            this.categorySecurityBox.Location = new System.Drawing.Point(126, 20);
+            this.categorySecurityBox.Name = "categorySecurityBox";
+            this.categorySecurityBox.Size = new System.Drawing.Size(69, 19);
+            this.categorySecurityBox.TabIndex = 15;
+            this.categorySecurityBox.Text = "Security";
+            this.ToolTipInformation.SetToolTip(this.categorySecurityBox, "Allow messages of the following category.");
+            this.categorySecurityBox.UseVisualStyleBackColor = true;
+            // 
+            // categorySafetyBox
+            // 
+            this.categorySafetyBox.AutoSize = true;
+            this.categorySafetyBox.Enabled = false;
+            this.categorySafetyBox.Location = new System.Drawing.Point(6, 70);
+            this.categorySafetyBox.Name = "categorySafetyBox";
+            this.categorySafetyBox.Size = new System.Drawing.Size(106, 19);
+            this.categorySafetyBox.TabIndex = 14;
+            this.categorySafetyBox.Text = "General Safety";
+            this.ToolTipInformation.SetToolTip(this.categorySafetyBox, "Allow messages of the following category.");
+            this.categorySafetyBox.UseVisualStyleBackColor = true;
+            // 
+            // categoryMetBox
+            // 
+            this.categoryMetBox.AutoSize = true;
+            this.categoryMetBox.Enabled = false;
+            this.categoryMetBox.Location = new System.Drawing.Point(6, 45);
+            this.categoryMetBox.Name = "categoryMetBox";
+            this.categoryMetBox.Size = new System.Drawing.Size(106, 19);
+            this.categoryMetBox.TabIndex = 13;
+            this.categoryMetBox.Text = "Meteorological";
+            this.ToolTipInformation.SetToolTip(this.categoryMetBox, "Allow messages of the following category.");
+            this.categoryMetBox.UseVisualStyleBackColor = true;
+            // 
+            // categoryGeoBox
+            // 
+            this.categoryGeoBox.AutoSize = true;
+            this.categoryGeoBox.Enabled = false;
+            this.categoryGeoBox.Location = new System.Drawing.Point(6, 20);
+            this.categoryGeoBox.Name = "categoryGeoBox";
+            this.categoryGeoBox.Size = new System.Drawing.Size(94, 19);
+            this.categoryGeoBox.TabIndex = 12;
+            this.categoryGeoBox.Text = "Geophysical";
+            this.ToolTipInformation.SetToolTip(this.categoryGeoBox, "Allow messages of the following category.");
+            this.categoryGeoBox.UseVisualStyleBackColor = true;
             // 
             // ToolTipInformation
             // 
@@ -655,7 +851,7 @@
             this.BusyLockText.Font = new System.Drawing.Font("Arial", 12F);
             this.BusyLockText.Location = new System.Drawing.Point(0, 0);
             this.BusyLockText.Name = "BusyLockText";
-            this.BusyLockText.Size = new System.Drawing.Size(671, 350);
+            this.BusyLockText.Size = new System.Drawing.Size(671, 485);
             this.BusyLockText.TabIndex = 15;
             this.BusyLockText.Text = "Please wait or dismiss all alerts to configure settings.";
             this.BusyLockText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -666,11 +862,23 @@
             this.BusyLock.Enabled = true;
             this.BusyLock.Tick += new System.EventHandler(this.BusyLock_Tick);
             // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Arial", 12F);
+            this.label2.Location = new System.Drawing.Point(466, 17);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(175, 36);
+            this.label2.TabIndex = 24;
+            this.label2.Text = "These options do not do\r\nanything at the moment.";
+            this.ToolTipInformation.SetToolTip(this.label2, "We\'re working on these options for a later update!");
+            // 
             // AlertConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(671, 350);
+            this.ClientSize = new System.Drawing.Size(671, 485);
             this.Controls.Add(this.ConfigurationPanel);
             this.Controls.Add(this.BusyLockText);
             this.Font = new System.Drawing.Font("Arial", 9F);
@@ -705,6 +913,8 @@
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.ConfigurationPanel.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -759,5 +969,20 @@
         private System.Windows.Forms.ToolTip ToolTipInformation;
         private System.Windows.Forms.Timer BusyLock;
         private System.Windows.Forms.Label BusyLockText;
+        private System.Windows.Forms.CheckBox statusExerciseBox;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.CheckBox categoryGeoBox;
+        private System.Windows.Forms.CheckBox categorySafetyBox;
+        private System.Windows.Forms.CheckBox categoryMetBox;
+        private System.Windows.Forms.CheckBox categorySecurityBox;
+        private System.Windows.Forms.CheckBox categoryHealthBox;
+        private System.Windows.Forms.CheckBox categoryFireBox;
+        private System.Windows.Forms.CheckBox categoryRescueBox;
+        private System.Windows.Forms.CheckBox categoryTransportBox;
+        private System.Windows.Forms.CheckBox categoryEnvBox;
+        private System.Windows.Forms.CheckBox categoryInfraBox;
+        private System.Windows.Forms.CheckBox categoryCBRNEBox;
+        private System.Windows.Forms.CheckBox categoryOtherBox;
+        private System.Windows.Forms.Label label2;
     }
 }

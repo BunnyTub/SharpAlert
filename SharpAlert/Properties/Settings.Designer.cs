@@ -534,5 +534,17 @@ namespace SharpAlert.Properties {
                 this["ClientServerPort"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool statusExercise {
+            get {
+                return ((bool)(this["statusExercise"]));
+            }
+            set {
+                this["statusExercise"] = value;
+            }
+        }
     }
 }

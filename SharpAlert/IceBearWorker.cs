@@ -1,4 +1,5 @@
-﻿using SharpAlert.Properties;
+﻿using NAudio.Wave;
+using SharpAlert.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -52,6 +53,9 @@ namespace SharpAlert
             {
             }
 
+            string RemoteMD5 = string.Empty;
+            string RemoteVersion = string.Empty;
+
             string CreateMD5FromCurrent()
             {
                 MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
@@ -93,11 +97,9 @@ namespace SharpAlert
 
                 Console.WriteLine($"[Ice Bear | Version Request] The identity server responded with status code {latest.Result.StatusCode}.");
 
-                string RemoteMD5 = string.Empty;
                 RemoteMD5 = message.Result.Content.ReadAsStringAsync().Result.Trim().ToUpperInvariant();
                 if (string.IsNullOrWhiteSpace(RemoteMD5) || RemoteMD5.Length == 0 || RemoteMD5.Length >= 100) RemoteMD5 = "UNKNOWN";
-                
-                string RemoteVersion = string.Empty;
+
                 RemoteVersion = latest.Result.Content.ReadAsStringAsync().Result.Trim();
                 if (string.IsNullOrWhiteSpace(RemoteVersion) || RemoteVersion.Length == 0 || RemoteVersion.Length >= 10) RemoteVersion = "0.0";
 
@@ -109,7 +111,7 @@ namespace SharpAlert
                 }
                 else
                 {
-                    Console.WriteLine($"[Ice Bear] You may be using an older (or modified) version of SharpAlert. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} =< v{RemoteVersion}");
+                    Console.WriteLine($"[Ice Bear] You may be using an older (or modified) version of SharpAlert. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersion}");
                     Console.WriteLine($"[Ice Bear] See https://sharpalert.bunnytub.com/ for downloads.");
                 }
 
@@ -130,6 +132,11 @@ namespace SharpAlert
             soundCancellation = new SoundPlayer(Resources.ui_cancellation);
             soundFinish = new SoundPlayer(Resources.ui_end);
             engine = new SpeechSynthesizer();
+            AudioOutput = new WasapiOut();
+            AudioOutput.PlaybackStopped += (a, b) =>
+            {
+                soundFinish.Play();
+            };
 
             engine.SpeakCompleted += (objective, eventArgs) =>
             {
@@ -212,7 +219,7 @@ namespace SharpAlert
 
             Thread notificationThread = ReturnThreadWithCatch(() =>
             {
-                CreateNotifyIcon();
+                CreateNotifyIcon(RemoteVersion);
                 Application.Run();
             });
             notificationThread.MonitorAndStart("Notification Tray");
@@ -317,6 +324,7 @@ namespace SharpAlert
                 }
                 catch (Exception ex)
                 {
+                    AllowThreadRestarts = false;
                     lock (ThreadErrorLockObject)
                     {
                         new Thread(() =>
@@ -342,7 +350,7 @@ namespace SharpAlert
         /// Creates a tray icon. Throws NotSupportedException if called more than once.
         /// </summary>
         /// <exception cref="NotSupportedException"></exception>
-        private static void CreateNotifyIcon()
+        private static void CreateNotifyIcon(string RemoteVersion)
         {
             if (NotifyIconCalled) throw new NotSupportedException();
             NotifyIconCalled = true;
@@ -528,10 +536,34 @@ namespace SharpAlert
 
             notify.ContextMenuStrip = contextMenu;
 
-            notify.BalloonTipTitle = "SharpAlert is running";
-            notify.BalloonTipText = "I'll just be waiting right down here in my tray icon, waiting for alerts.";
-            notify.BalloonTipIcon = ToolTipIcon.Info;
-            notify.ShowBalloonTip(5000);
+            string[] RemoteVersionSplit = RemoteVersion.Split('.');
+
+            if (RemoteVersionSplit.Length == 2)
+            {
+                if (RemoteVersionSplit[0] != VersionInfo.MajorVersion.ToString() ||
+                    RemoteVersionSplit[1] != VersionInfo.MinorVersion.ToString())
+                {
+                    notify.BalloonTipTitle = "SharpAlert is running";
+                    notify.BalloonTipText = $"Updates are available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                    //notify.BalloonTipText = $"You may be running an older version. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                    notify.BalloonTipIcon = ToolTipIcon.Info;
+                    notify.ShowBalloonTip(5000);
+                }
+                else
+                {
+                    notify.BalloonTipTitle = "SharpAlert is running";
+                    notify.BalloonTipText = "I'll just be waiting right down here in my tray icon. You're up to date on updates.";
+                    notify.BalloonTipIcon = ToolTipIcon.Info;
+                    notify.ShowBalloonTip(5000);
+                }
+            }
+            else
+            {
+                notify.BalloonTipTitle = "SharpAlert is running";
+                notify.BalloonTipText = "I'll just be waiting right down here in my tray icon. Can't check for updates right now.";
+                notify.BalloonTipIcon = ToolTipIcon.Info;
+                notify.ShowBalloonTip(5000);
+            }
         }
 
         [DllImport("kernel32.dll", SetLastError = true)]

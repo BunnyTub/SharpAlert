@@ -34,7 +34,7 @@
             this.IdleText = new System.Windows.Forms.Label();
             this.ClockSet = new System.Windows.Forms.Timer(this.components);
             this.IdleContainer = new System.Windows.Forms.Panel();
-            this.InfoText = new System.Windows.Forms.Label();
+            this.InfoText = new SharpAlert.ToolboxStuff.MarqueeLabel();
             this.MouseMoving = new System.Windows.Forms.Timer(this.components);
             this.IdleContainer.SuspendLayout();
             this.SuspendLayout();
@@ -79,12 +79,12 @@
             this.InfoText.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.InfoText.Font = new System.Drawing.Font("Arial", 16F, System.Drawing.FontStyle.Bold);
             this.InfoText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.InfoText.Location = new System.Drawing.Point(0, 688);
+            this.InfoText.Location = new System.Drawing.Point(0, 694);
             this.InfoText.Name = "InfoText";
-            this.InfoText.Size = new System.Drawing.Size(1280, 32);
+            this.InfoText.ScrollSpeed = 1;
+            this.InfoText.Size = new System.Drawing.Size(1280, 26);
             this.InfoText.TabIndex = 1;
             this.InfoText.Text = "SharpAlert";
-            this.InfoText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // MouseMoving
             // 
@@ -124,7 +124,7 @@
         private System.Windows.Forms.Label IdleText;
         private System.Windows.Forms.Timer ClockSet;
         public System.Windows.Forms.Panel IdleContainer;
-        private System.Windows.Forms.Label InfoText;
+        private SharpAlert.ToolboxStuff.MarqueeLabel InfoText;
         private System.Windows.Forms.Timer MouseMoving;
     }
 }

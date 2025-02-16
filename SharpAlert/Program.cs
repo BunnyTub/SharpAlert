@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Speech.Synthesis;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using NAudio.Wave;
 
 namespace SharpAlert
 {
@@ -51,6 +52,7 @@ namespace SharpAlert
         public static SpeechSynthesizer engine;
         public static object AlertValuesLock = new object();
         public static bool AlertDisplaying = false;
+        public static WasapiOut AudioOutput;
 
         public static List<SharpDataItem> SharpDataQueue = new List<SharpDataItem>();
         public static List<SharpDataItem> SharpDataHistory = new List<SharpDataItem>();

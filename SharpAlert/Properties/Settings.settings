@@ -107,5 +107,8 @@
     <Setting Name="ClientServerPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">9792</Value>
     </Setting>
+    <Setting Name="statusExercise" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

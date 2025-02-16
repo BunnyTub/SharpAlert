@@ -188,6 +188,7 @@
     <Compile Include="TeleIdleForm.Designer.cs">
       <DependentUpon>TeleIdleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ToolboxStuff.cs" />
     <Compile Include="ToppleForm.cs">
       <SubType>Form</SubType>
     </Compile>

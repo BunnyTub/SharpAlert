@@ -1,8 +1,10 @@
-﻿using SharpAlert.Properties;
+﻿using NAudio.Wave;
+using SharpAlert.Properties;
 using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using static SharpAlert.Program;
 
@@ -10,8 +12,11 @@ namespace SharpAlert
 {
     public partial class AlertForm : Form
     {
+        private string AlertSubtitleStr = string.Empty;
         private string AlertTextStr = string.Empty;
         private string AlertUrlStr = string.Empty;
+        private string AlertAudioUrlStr = string.Empty;
+        private string AlertImageUrlStr = string.Empty;
         private bool AlertCancelled = false;
 
         private const int HWND_TOPMOST = -1;
@@ -86,16 +91,17 @@ namespace SharpAlert
             taskbarList.HrInit();
         }
 
-        public void UpdateFields(string alert, string text, string url, bool cancellation)
+        public void UpdateFields(string alert, string text, string url, string audio, string image, bool cancellation)
         {
-            AlertTextStr = text;
+            AlertSubtitleStr = alert;
             SubtitleText.Text = alert;
+            AlertTextStr = text;
             AlertText.Text = text;
+            AlertUrlStr = url;
+            AlertAudioUrlStr = audio;
+            AlertImageUrlStr = image;
             AlertText.SelectionStart = 0;
-            if (!string.IsNullOrWhiteSpace(url))
-            {
-                AlertUrlStr = url;
-            }
+
             AlertCancelled = cancellation;
             if (!cancellation)
             {
@@ -176,19 +182,27 @@ namespace SharpAlert
 
         private void SpeakerButton_Click(object sender, EventArgs e)
         {
-            //foreach (var voice in Program.engine.GetInstalledVoices())
-            //{
-            //    //ConsoleExt.WriteLine(voice.VoiceInfo.Culture.TwoLetterISOLanguageName.ToLowerInvariant());
-            //    if (voice.VoiceInfo.Name.Contains(Settings.Default.SpeechVoice) && voice.VoiceInfo.Culture.TwoLetterISOLanguageName.ToLowerInvariant() == lang)
-            //    {
-            //        //ConsoleExt.WriteLine(voice.VoiceInfo.Name, ConsoleColor.Magenta);
-            //        engine.SelectVoice(voice.VoiceInfo.Name);
-            //        break;
-            //    }
-            //}
-
             SpeakerButton.Enabled = false;
-            engine.SpeakAsync(AlertTextStr);
+
+            if (!string.IsNullOrWhiteSpace(AlertAudioUrlStr))
+            {
+                try
+                {
+                    using (var mf = new MediaFoundationReader(AlertAudioUrlStr))
+                    {
+                        AudioOutput.Init(mf);
+                        AudioOutput.Play();
+                    }
+                }
+                catch (Exception)
+                {
+                    engine.SpeakAsync(AlertTextStr);
+                }
+            }
+            else
+            {
+                engine.SpeakAsync(AlertTextStr);
+            }
         }
 
         private void AlertForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -208,6 +222,7 @@ namespace SharpAlert
             }
             sound.Stop();
             engine.SpeakAsyncCancelAll();
+            AudioOutput.Stop();
             soundFinish.Stop();
         }
 

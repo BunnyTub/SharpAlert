@@ -55,6 +55,34 @@ namespace SharpAlert
 		public static readonly Regex EventRegex = new Regex(
 			@"<event>\s*(.*?)\s*</event>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex ResourceRegex = new Regex(
+            @"<resource>\s*(.*?)\s*</resource>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex ResourceDescRegex = new Regex(
+            @"<resourceDesc>\s*(.*?)\s*</resourceDesc>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex MIMETypeRegex = new Regex(
+            @"<mimeType>\s*(.*?)\s*</mimeType>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex SizeRegex = new Regex(
+            @"<size>\s*(.*?)\s*</size>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex URIRegex = new Regex(
+            @"<uri>\s*(.*?)\s*</uri>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex DerefURIRegex = new Regex(
+            @"<derefUri>\s*(.*?)\s*</derefUri>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex DigestSecureHashAlgorithmOneRegex = new Regex(
+            @"<digest>\s*(.*?)\s*</digest>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
 		public static readonly Regex SenderNameRegex = new Regex(
 			@"<senderName>\s*(.*?)\s*</senderName>",
@@ -75,15 +103,6 @@ namespace SharpAlert
 		public static readonly Regex AreaDescriptionRegex = new Regex(
 			@"<areaDesc>\s*(.*?)\s*</areaDesc>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
-		public static readonly Regex ResourceDescriptionRegex = new Regex(
-			@"<resourceDesc>\s*(.*?)\s*</resourceDesc>\s*(.*?)\s*</resource>",
-			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
-		public static readonly Regex DerefURIRegex = new Regex(
-			@"<derefUri>\s*(.*?)\s*</derefUri>",
-			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
 		public static readonly Regex TypeURIRegex = new Regex(
 			@"<uri>\s*(.*?)\s*</uri>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
