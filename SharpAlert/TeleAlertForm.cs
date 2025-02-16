@@ -6,14 +6,18 @@ using static SharpAlert.Program;
 using SharpAlert.Properties;
 using System.Drawing;
 using System.Linq;
+using NAudio.Wave;
 
 namespace SharpAlert
 {
     public partial class TeleAlertForm : Form
     {
-        private string AlertTextStr;
-        private string AlertUrlStr;
-        private bool AlertCancelled;
+        private string AlertSubtitleStr = string.Empty;
+        private string AlertTextStr = string.Empty;
+        private string AlertUrlStr = string.Empty;
+        private string AlertAudioUrlStr = string.Empty;
+        private string AlertImageUrlStr = string.Empty;
+        private bool AlertCancelled = false;
 
         private const int HWND_TOPMOST = -1;
         private const int SWP_NOMOVE = 0x0002;
@@ -91,23 +95,17 @@ namespace SharpAlert
             //ReplayMode = replay;
         }
 
-        public void UpdateFields(string alert, string text, string url, bool cancellation)
+        public void UpdateFields(string alert, string text, string url, string audio, string image, bool cancellation)
         {
+            AlertSubtitleStr = alert;
+            SubtitleText.Text = AlertSubtitleStr;
             AlertTextStr = text;
-            SubtitleText.Text = alert;
-            // Padding to prevent immediate wrap around when scrolling automatically
-            int PaddingAmount = 25;
-            AlertText.Text = text +
-                "\r\n".PadRight(PaddingAmount) +
-                "\r\n".PadRight(PaddingAmount) +
-                "\r\n".PadRight(PaddingAmount) +
-                "\r\n".PadRight(PaddingAmount) +
-                "\r\n".PadRight(PaddingAmount);
+            AlertText.Text = AlertTextStr;
+            AlertUrlStr = url;
+            AlertAudioUrlStr = audio;
+            AlertImageUrlStr = image;
             AlertText.SelectionStart = 0;
-            if (!string.IsNullOrWhiteSpace(url))
-            {
-                AlertUrlStr = url;
-            }
+
             AlertCancelled = cancellation;
             if (!cancellation)
             {
@@ -308,7 +306,26 @@ namespace SharpAlert
         private void AutoTTS_Tick(object sender, EventArgs e)
         {
             AutoTTS.Stop();
-            engine.SpeakAsync(AlertTextStr);
+
+            if (!string.IsNullOrWhiteSpace(AlertAudioUrlStr))
+            {
+                try
+                {
+                    using (var mf = new MediaFoundationReader(AlertAudioUrlStr))
+                    {
+                        AudioOutput.Init(mf);
+                        AudioOutput.Play();
+                    }
+                }
+                catch (Exception)
+                {
+                    engine.SpeakAsync(AlertTextStr);
+                }
+            }
+            else
+            {
+                engine.SpeakAsync(AlertTextStr);
+            }
         }
 
         private void FadeInAnimation_Tick(object sender, EventArgs e)
@@ -368,16 +385,22 @@ namespace SharpAlert
         [DllImport("user32.dll")]
         private static extern bool HideCaret(IntPtr hWnd);
 
+        private int PauseScroll = 0;
+
         private void AutoScroll_Tick(object sender, EventArgs e)
         {
             //AlertText.SelectionLength = 0;
-            if (AlertText.Text.Length >= AlertText.SelectionStart)
+            if (AlertText.Text.Length >= AlertText.SelectionStart & PauseScroll > 0)
             {
                 AlertText.SelectionStart++;
+                HideCaret(AlertText.Handle);
             }
             else
             {
                 AlertText.SelectionStart = 0;
+                HideCaret(AlertText.Handle);
+                if (PauseScroll <= 0) PauseScroll = 35;
+                PauseScroll--;
             }
             AlertText.ScrollToCaret();
             HideCaret(AlertText.Handle);

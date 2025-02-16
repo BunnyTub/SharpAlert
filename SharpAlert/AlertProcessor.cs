@@ -21,6 +21,8 @@ namespace SharpAlert
         private string DialogAlertTitle = string.Empty;
         private string DialogAlertText = string.Empty;
         private string DialogAlertURL = string.Empty;
+        private string DialogAlertAudioURL = string.Empty;
+        private string DialogAlertImageURL = string.Empty;
         private bool DialogAlertCancellation = false;
 
         public AlertProcessor()
@@ -33,13 +35,24 @@ namespace SharpAlert
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
+                Console.WriteLine($"[RAF Loop] Initializing call loop.");
+                Application.EnableVisualStyles();
                 raf = new AlertForm();
                 while (true)
                 {
-                    while (!rafPing) Thread.Sleep(500);
-                    raf.UpdateFields(DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertCancellation);
-                    raf.ShowDialog(null);
-                    rafPing = false;
+                    Console.WriteLine($"[RAF Loop] Waiting for the next ping.");
+                    try
+                    {
+                        while (!rafPing) Thread.Sleep(500);
+                        raf.UpdateFields(DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertAudioURL, DialogAlertImageURL, DialogAlertCancellation);
+                        Application.Run(raf);
+                        rafPing = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        rafPing = false;
+                        Console.WriteLine($"[RAF Loop] {ex.Message}");
+                    }
                 }
             });
         }
@@ -48,13 +61,24 @@ namespace SharpAlert
         {
             ThreadPool.QueueUserWorkItem(_ =>
             {
+                Console.WriteLine($"[TAF Loop] Initializing call loop.");
+                Application.EnableVisualStyles();
                 taf = new TeleAlertForm();
                 while (true)
                 {
-                    while (!tafPing) Thread.Sleep(500);
-                    taf.UpdateFields(DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertCancellation);
-                    taf.ShowDialog(null);
-                    tafPing = false;
+                    Console.WriteLine($"[TAF Loop] Waiting for the next ping.");
+                    try
+                    {
+                        while (!tafPing) Thread.Sleep(500);
+                        taf.UpdateFields(DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertAudioURL, DialogAlertImageURL, DialogAlertCancellation);
+                        Application.Run(taf);
+                        tafPing = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        tafPing = false;
+                        Console.WriteLine($"[TAF Loop] {ex.Message}");
+                    }
                 }
             });
         }
@@ -160,6 +184,90 @@ namespace SharpAlert
 
                     string Severity = SeverityRegex.Match(AlertInfo).Groups[1].Value;
                     Console.WriteLine($"Severity: {Severity}");
+
+                    List<string> AudioFiles = new List<string>();
+                    List<string> ImageFiles = new List<string>();
+
+                    int ResourceCount = 0;
+                    MatchCollection Resources = ResourceRegex.Matches(AlertInfo);
+                    foreach (Match resource in Resources)
+                    {
+                        ResourceCount++;
+                        Console.WriteLine($"Resource {ResourceCount} Value: {resource.Groups[1].Value}");
+                        Match desc = ResourceDescRegex.Match(resource.Groups[1].Value);
+                        Console.WriteLine($"Resource {ResourceCount} Description: {desc.Groups[1].Value}");
+                        Match mime = MIMETypeRegex.Match(resource.Groups[1].Value);
+                        Console.WriteLine($"Resource {ResourceCount} MIME Type: {mime.Groups[1].Value}");
+                        Match size = SizeRegex.Match(resource.Groups[1].Value);
+                        Console.WriteLine($"Resource {ResourceCount} Size (if any | not supported): {size.Groups[1].Value}");
+                        Match uri = URIRegex.Match(resource.Groups[1].Value);
+                        Console.WriteLine($"Resource {ResourceCount} URI (if any): {uri.Groups[1].Value}");
+                        Match derefUri = DerefURIRegex.Match(resource.Groups[1].Value);
+                        Console.WriteLine($"Resource {ResourceCount} Dereference URI (if any | not supported): {derefUri.Groups[1].Value}");
+                        Match digest = DigestSecureHashAlgorithmOneRegex.Match(resource.Groups[1].Value);
+                        Console.WriteLine($"Resource {ResourceCount} SHA-1 (if any | not supported): {digest.Groups[1].Value}");
+
+                        void AddAudioToList(string URI)
+                        {
+                            if (!string.IsNullOrWhiteSpace(URI))
+                            {
+                                if (URI.StartsWith("http://") || URI.StartsWith("https://")) AudioFiles.Add(URI);
+                                else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} contains an invalid URI.");
+                            }
+                            else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} contains an invalid URI.");
+                        }
+                        
+                        void AddImageToList(string URI)
+                        {
+                            if (!string.IsNullOrWhiteSpace(URI))
+                            {
+                                if (URI.StartsWith("http://") || URI.StartsWith("https://")) ImageFiles.Add(URI);
+                                else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} contains an invalid URI.");
+                            }
+                            else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} contains an invalid URI.");
+                        }
+
+                        if (uri.Groups[1].Value != null)
+                        {
+                            switch (mime.Groups[1].Value)
+                            {
+                                case "audio/ogg":
+                                    AddAudioToList(uri.Groups[1].Value);
+                                    break;
+                                case "audio/opus":
+                                    AddAudioToList(uri.Groups[1].Value);
+                                    break;
+                                case "audio/vorbis":
+                                    AddAudioToList(uri.Groups[1].Value);
+                                    break;
+                                case "audio/aac":
+                                    AddAudioToList(uri.Groups[1].Value);
+                                    break;
+                                case "audio/mpeg":
+                                    AddAudioToList(uri.Groups[1].Value);
+                                    break;
+                                case "application/x-url":
+                                    AddAudioToList(uri.Groups[1].Value);
+                                    break;
+                            }
+                            
+                            switch (mime.Groups[1].Value)
+                            {
+                                case "image/bmp":
+                                    AddImageToList(uri.Groups[1].Value);
+                                    break;
+                                case "image/gif":
+                                    AddImageToList(uri.Groups[1].Value);
+                                    break;
+                                case "image/jpeg":
+                                    AddImageToList(uri.Groups[1].Value);
+                                    break;
+                                case "image/png":
+                                    AddImageToList(uri.Groups[1].Value);
+                                    break;
+                            }
+                        }
+                    }
 
                     string URL = WebRegex.Match(AlertInfo).Groups[1].Value;
                     if (string.IsNullOrWhiteSpace(URL)) URL = string.Empty;
@@ -307,7 +415,24 @@ namespace SharpAlert
                                     AlertsQueued--;
                                     DialogAlertTitle = EventType;
                                     DialogAlertText = AlertText;
-                                    DialogAlertURL = URL;
+                                    if (!string.IsNullOrWhiteSpace(DialogAlertURL)) DialogAlertURL = URL;
+                                    else DialogAlertURL = string.Empty;
+
+                                    if (AudioFiles.Count != 0)
+                                    {
+                                        DialogAlertAudioURL = AudioFiles[0];
+                                        Console.WriteLine("[Alert Processor] Using attached alert audio.");
+                                    }
+                                    else DialogAlertAudioURL = string.Empty;
+
+                                    if (ImageFiles.Count != 0)
+                                    {
+                                        Console.WriteLine("[Alert Processor] Using attached alert image.");
+                                        // In the future, I'd like to implement some sort of image slideshow is there are multiple.
+                                        DialogAlertImageURL = ImageFiles[0];
+                                    }
+                                    else DialogAlertImageURL = string.Empty;
+
                                     if (MsgType.ToLowerInvariant() == "cancel") DialogAlertCancellation = true;
                                     else DialogAlertCancellation = false;
 
@@ -315,34 +440,6 @@ namespace SharpAlert
                                     {
                                         tafPing = true;
                                         while (tafPing) Thread.Sleep(500);
-
-                                        //if (Settings.Default.alertFullscreenIdle & idle != null & Settings.Default.alertCompatibilityMode)
-                                        //{
-                                        //    bool AlertFinished = false;
-                                        //    below code is deprecated, the alert will no longer attach to the idle window
-                                        //     invoke IdleContainer to use, otherwise, you'll get an InvalidOperationException.
-                                        //    TeleAlertForm af = null;
-                                        //    idle.IdleContainer.Invoke(new MethodInvoker(delegate
-                                        //    {
-                                        //        af = new TeleAlertForm(EventType, AlertText, URL, ReplayMode)
-                                        //        {
-                                        //            TopLevel = false
-                                        //        };
-                                        //        idle.IdleContainer.Controls.Add(af);
-                                        //        Console.WriteLine("[Alert Processor] Added dialog to idle window.");
-                                        //        //AlertFinished = true;
-                                        //    }));
-                                        //    af.ShowAndWait();
-                                        //    idle.IdleContainer.Invoke(new MethodInvoker(delegate
-                                        //    {
-                                        //        idle.IdleContainer.Controls.Remove(af);
-                                        //        Console.WriteLine("[Alert Processor] Removed dialog from idle window.");
-                                        //    }));
-                                        //    while (!AlertFinished)
-                                        //    {
-                                        //        Thread.Sleep(100);
-                                        //    }
-                                        //}
                                     }
                                     else
                                     {
@@ -372,6 +469,12 @@ namespace SharpAlert
                         catch (Exception ex)
                         {
                             Console.WriteLine($"[Alert Processor] Couldn't relay alert. {ex.Message}");
+                        }
+                        finally
+                        {
+                            AudioFiles.Clear();
+                            ImageFiles.Clear();
+                            Console.WriteLine($"[Alert Processor] Finished relaying alert.");
                         }
 
                         if (AnyAlertRelayed) AlertsRelayed++;
@@ -652,11 +755,14 @@ namespace SharpAlert
 
             switch (Status.ToLowerInvariant())
             {
-                case "test":
-                    if (!Settings.Default.statusTest) return false;
-                    break;
                 case "actual":
                     if (!Settings.Default.statusActual) return false;
+                    break;
+                case "exercise":
+                    if (!Settings.Default.statusExercise) return false;
+                    break;
+                case "test":
+                    if (!Settings.Default.statusTest) return false;
                     break;
                 default:
                     break;
@@ -849,12 +955,21 @@ namespace SharpAlert
             DateTime effectiveDate;
             try
             {
-                effectiveDate = DateTime.Parse(Sent, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+                Match effective = EffectiveRegex.Match(InfoData);
+                effectiveDate = DateTime.Parse(effective.Groups[1].Value, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e.Message);
-                effectiveDate = DateTime.UtcNow;
+                Console.WriteLine(ex.Message);
+                try
+                {
+                    effectiveDate = DateTime.Parse(Sent, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+                }
+                catch (Exception exx)
+                {
+                    Console.WriteLine(exx.Message);
+                    effectiveDate = DateTime.UtcNow;
+                }
             }
 
             DateTime expiryDate;

@@ -28,9 +28,11 @@ namespace SharpAlert
             {
             }
             this.WindowState = FormWindowState.Maximized;
-            if (Settings.Default.alertCompatibilityMode) MouseMoving.Start();
             if (Settings.Default.alertFullscreenIdleTimeZoneUTC) UseUTCTimeZone = true;
+            if (Settings.Default.alertCompatibilityMode) InfoText.ScrollSpeed = 0;
             InfoText.Text = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Started operating: {startDT:f}";
+            ClockSet_Tick(null, null);
+            MovePreventBurnIn_Tick(null, null);
         }
 
         private void WindowClosingChecker_Tick(object sender, EventArgs e)
@@ -43,7 +45,7 @@ namespace SharpAlert
             DateTime dt;
             if (UseUTCTimeZone) dt = DateTime.UtcNow;
             else dt = DateTime.Now;
-            IdleText.Text = $"{dt:t}\r\n{dt:d}";
+            IdleText.Text = $"{dt:HH}:{dt:mm}\r\n{dt:MMMM} {dt:dd}";
         }
 
         private void TeleIdleForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -61,9 +63,6 @@ namespace SharpAlert
         }
 
         public Point cursorPosition = Cursor.Position;
-
-        public delegate void IdlePanelMouse();
-        public event IdlePanelMouse MouseTriggered;
 
         private bool _CursorShown = true;
         public bool CursorShown
@@ -92,25 +91,22 @@ namespace SharpAlert
             }
         }
 
-        private bool MediumState = true;
-
-        private void MouseMoving_Tick(object sender, EventArgs e)
-        {
-            MediumState = !MediumState;
-
-            if (Cursor.Position != cursorPosition)
-            {
-                MouseTriggered?.Invoke();
-                if (MediumState) cursorPosition = Cursor.Position;
-            }
-        }
-
         private void TeleIdleForm_Shown(object sender, EventArgs e)
         {
             CursorShown = false;
         }
 
         private void IdleText_DoubleClick(object sender, EventArgs e)
+        {
+            MinimizeToTaskbar();
+        }
+
+        private void IdleContainer_DoubleClick(object sender, EventArgs e)
+        {
+            MinimizeToTaskbar();
+        }
+
+        private void MinimizeToTaskbar()
         {
             this.WindowState = FormWindowState.Minimized;
             notify.BalloonTipIcon = ToolTipIcon.Info;
@@ -120,21 +116,33 @@ namespace SharpAlert
             //notify.ContextMenuStrip.Show(Cursor.Position);
         }
 
-        //public Point cursorPosition = Cursor.Position;
+        private readonly Random RandomMovement = new Random(DateTime.Now.Millisecond);
 
-        //public void ShowCursor()
-        //{
-        //    Cursor.Show();
-        //}
+        private void MovePreventBurnIn_Tick(object sender, EventArgs e)
+        {
+            int WidthCalculated = this.Size.Width - IdleText.Width - 20;
+            int HeightCalculated = this.Size.Height - IdleText.Height - 20;
 
-        //public void HideCursor()
-        //{
-        //    Cursor.Hide();
-        //}
+            if (WidthCalculated < 20 || HeightCalculated < 20)
+            {
+                return;
+            }
+            else
+            {
+                try
+                {
+                    IdleText.Location = new Point(RandomMovement.Next(20, WidthCalculated), RandomMovement.Next(20, HeightCalculated));
+                }
+                catch (Exception)
+                {
+                    return;
+                }
+            }
+        }
 
-        //public Point GetCursorPos()
-        //{
-        //    return Cursor.Position;
-        //}
+        private void TeleIdleForm_Resize(object sender, EventArgs e)
+        {
+            MovePreventBurnIn_Tick(null, null);
+        }
     }
 }

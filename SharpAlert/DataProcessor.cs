@@ -58,7 +58,11 @@ namespace SharpAlert
                             }
                             catch (InvalidOperationException)
                             {
-                                Console.WriteLine("[Data Processor] The queue was emptied just before I could grab an item. Possible race condition?");
+                                Console.WriteLine("[Data Processor] The request to the queue failed. Possible race condition?");
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"[Data Processor] The request to the queue failed. {ex.Message}");
                             }
                             if (relayItem is null) continue;
                         }

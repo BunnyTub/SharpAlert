@@ -138,6 +138,7 @@ namespace SharpAlert
             statusWindowBox.CheckedChanged += (a, b) =>
             {
                 ((CheckBox)a).Enabled = false;
+                Settings.Default.alertCompatibilityMode = ((CheckBox)a).Checked;
 
                 if (((CheckBox)a).Checked)
                 {
@@ -181,7 +182,7 @@ namespace SharpAlert
             if (SharpDataHistory.Count != 0)
             {
                 SharpDataHistory.Clear();
-                AlertHistoryOutput.Text = "The history was cleared just now.";
+                AlertHistoryOutput.Text = "The history was cleared.";
                 MessageBox.Show("The history has been cleared.",
                     "SharpAlert",
                     MessageBoxButtons.OK,

@@ -14,10 +14,12 @@ namespace SharpAlert
 
         private void AlertConfigurationForm_Load(object sender, EventArgs e)
         {
-            statusTestBox.Checked = Settings.Default.statusTest;
-            statusTestBox.CheckedChanged += (a, b) => Settings.Default.statusTest = ((CheckBox)a).Checked;
             statusActualBox.Checked = Settings.Default.statusActual;
             statusActualBox.CheckedChanged += (a, b) => Settings.Default.statusActual = ((CheckBox)a).Checked;
+            statusExerciseBox.Checked = Settings.Default.statusExercise;
+            statusExerciseBox.CheckedChanged += (a, b) => Settings.Default.statusExercise = ((CheckBox)a).Checked;
+            statusTestBox.Checked = Settings.Default.statusTest;
+            statusTestBox.CheckedChanged += (a, b) => Settings.Default.statusTest = ((CheckBox)a).Checked;
 
             messageTypeAlertBox.Checked = Settings.Default.messageTypeAlert;
             messageTypeAlertBox.CheckedChanged += (a, b) => Settings.Default.messageTypeAlert = ((CheckBox)a).Checked;

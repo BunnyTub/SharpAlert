@@ -1,4 +1,5 @@
-﻿using SharpAlert.Properties;
+﻿using NAudio.Wave;
+using SharpAlert.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,7 +27,7 @@ namespace SharpAlert
     {
         private static readonly HttpClient client = new HttpClient
         {
-            Timeout = TimeSpan.FromSeconds(15)
+            Timeout = TimeSpan.FromSeconds(5)
         };
 
         /// <summary>
@@ -42,7 +43,9 @@ namespace SharpAlert
             Console.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority. | https://sharpalert.bunnytub.com/");
 
             client.DefaultRequestHeaders.UserAgent.ParseAdd($"Mozilla/5.0 (compatible; SharpAlert)");
+
             Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
             try
             {
@@ -51,6 +54,9 @@ namespace SharpAlert
             catch (Exception)
             {
             }
+
+            string RemoteMD5 = string.Empty;
+            string RemoteVersion = string.Empty;
 
             string CreateMD5FromCurrent()
             {
@@ -93,11 +99,9 @@ namespace SharpAlert
 
                 Console.WriteLine($"[Ice Bear | Version Request] The identity server responded with status code {latest.Result.StatusCode}.");
 
-                string RemoteMD5 = string.Empty;
                 RemoteMD5 = message.Result.Content.ReadAsStringAsync().Result.Trim().ToUpperInvariant();
                 if (string.IsNullOrWhiteSpace(RemoteMD5) || RemoteMD5.Length == 0 || RemoteMD5.Length >= 100) RemoteMD5 = "UNKNOWN";
-                
-                string RemoteVersion = string.Empty;
+
                 RemoteVersion = latest.Result.Content.ReadAsStringAsync().Result.Trim();
                 if (string.IsNullOrWhiteSpace(RemoteVersion) || RemoteVersion.Length == 0 || RemoteVersion.Length >= 10) RemoteVersion = "0.0";
 
@@ -109,7 +113,7 @@ namespace SharpAlert
                 }
                 else
                 {
-                    Console.WriteLine($"[Ice Bear] You may be using an older (or modified) version of SharpAlert. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} =< v{RemoteVersion}");
+                    Console.WriteLine($"[Ice Bear] You may be using an older (or modified) version of SharpAlert. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersion}");
                     Console.WriteLine($"[Ice Bear] See https://sharpalert.bunnytub.com/ for downloads.");
                 }
 
@@ -130,12 +134,10 @@ namespace SharpAlert
             soundCancellation = new SoundPlayer(Resources.ui_cancellation);
             soundFinish = new SoundPlayer(Resources.ui_end);
             engine = new SpeechSynthesizer();
-
-            engine.SpeakCompleted += (objective, eventArgs) =>
-            {
-                soundFinish.Play();
-            };
-
+            AudioOutput = new WasapiOut();
+            AudioOutput.PlaybackStopped += (a, b) => soundFinish.Play();
+            engine.SpeakCompleted += (objective, eventArgs) => soundFinish.Play();
+            
             Settings.Default.PropertyChanged += (objective, eventArgs) =>
             {
                 lock (ChangedPropertiesList)
@@ -174,22 +176,8 @@ namespace SharpAlert
 
             Console.WriteLine("[Ice Bear] Starting services momentarily.");
 
-            //if (args.Length == 3)
-            //{
-            //    if (args[1] == "--host")
-            //    {
-            //        feed.server = $"{args[2]}:9792";
-            //        UseHTTPS = false;
-            //    }
-            //}
-            //else
-            //{
-            //    feed.server = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-1):yyyy-MM-ddTHH:mm:ssZ}";
-            //}
-
             Thread feedThread = ReturnThreadWithCatch(() => feed.ServiceRun(UseHTTPS));
             feedThread.SetApartmentState(ApartmentState.MTA);
-            //feed.server = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/PublicWEA/recent/{DateTime.UtcNow.AddMonths(-1):yyyy-MM-ddTHH:mm:ssZ}";
             feedThread.MonitorAndStart("Feed Capture");
 
             Thread cacheThread = ReturnThreadWithCatch(() => cache.ServiceRun(true));
@@ -212,7 +200,8 @@ namespace SharpAlert
 
             Thread notificationThread = ReturnThreadWithCatch(() =>
             {
-                CreateNotifyIcon();
+                Application.EnableVisualStyles();
+                CreateNotifyIcon(RemoteVersion);
                 Application.Run();
             });
             notificationThread.MonitorAndStart("Notification Tray");
@@ -317,11 +306,12 @@ namespace SharpAlert
                 }
                 catch (Exception ex)
                 {
+                    AllowThreadRestarts = false;
                     lock (ThreadErrorLockObject)
                     {
                         new Thread(() =>
                         {
-                            string ExceptionCompiled = $"SharpAlert encountered an unrecoverable issue. {DateTime.UtcNow:s}\r\n" +
+                            string ExceptionCompiled = $"SharpAlert encountered an exception. Soon to commence self-destruct sequence. {DateTime.UtcNow:s}\r\n" +
                             $"{ex.Message}\r\n" +
                             $"{ex.TargetSite}\r\n" +
                             $"{ex.StackTrace}";
@@ -342,7 +332,7 @@ namespace SharpAlert
         /// Creates a tray icon. Throws NotSupportedException if called more than once.
         /// </summary>
         /// <exception cref="NotSupportedException"></exception>
-        private static void CreateNotifyIcon()
+        private static void CreateNotifyIcon(string RemoteVersion)
         {
             if (NotifyIconCalled) throw new NotSupportedException();
             NotifyIconCalled = true;
@@ -528,10 +518,34 @@ namespace SharpAlert
 
             notify.ContextMenuStrip = contextMenu;
 
-            notify.BalloonTipTitle = "SharpAlert is running";
-            notify.BalloonTipText = "I'll just be waiting right down here in my tray icon, waiting for alerts.";
-            notify.BalloonTipIcon = ToolTipIcon.Info;
-            notify.ShowBalloonTip(5000);
+            string[] RemoteVersionSplit = RemoteVersion.Split('.');
+
+            if (RemoteVersionSplit.Length == 2)
+            {
+                if (RemoteVersionSplit[0] != VersionInfo.MajorVersion.ToString() ||
+                    RemoteVersionSplit[1] != VersionInfo.MinorVersion.ToString())
+                {
+                    notify.BalloonTipTitle = "SharpAlert is running";
+                    notify.BalloonTipText = $"Updates are available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                    //notify.BalloonTipText = $"You may be running an older version. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                    notify.BalloonTipIcon = ToolTipIcon.Info;
+                    notify.ShowBalloonTip(5000);
+                }
+                else
+                {
+                    notify.BalloonTipTitle = "SharpAlert is running";
+                    notify.BalloonTipText = "I'll just be waiting right down here in my tray icon. You're up to date on updates.";
+                    notify.BalloonTipIcon = ToolTipIcon.Info;
+                    notify.ShowBalloonTip(5000);
+                }
+            }
+            else
+            {
+                notify.BalloonTipTitle = "SharpAlert is running";
+                notify.BalloonTipText = "I'll just be waiting right down here in my tray icon. Can't check for updates right now.";
+                notify.BalloonTipIcon = ToolTipIcon.Info;
+                notify.ShowBalloonTip(5000);
+            }
         }
 
         [DllImport("kernel32.dll", SetLastError = true)]

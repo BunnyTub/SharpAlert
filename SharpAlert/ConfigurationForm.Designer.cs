@@ -201,8 +201,7 @@
             this.alertCompatibilityModeBox.Size = new System.Drawing.Size(132, 19);
             this.alertCompatibilityModeBox.TabIndex = 24;
             this.alertCompatibilityModeBox.Text = "Compatibility mode";
-            this.ToolTipInformation.SetToolTip(this.alertCompatibilityModeBox, "Disables most animations, and when idle is used, attaches alerts to the idle pane" +
-        "l. (Better for window capturing)");
+            this.ToolTipInformation.SetToolTip(this.alertCompatibilityModeBox, "Disables most animations, and some background stuff. May help older systems.");
             this.alertCompatibilityModeBox.UseVisualStyleBackColor = true;
             // 
             // AlertHistoryClearButton

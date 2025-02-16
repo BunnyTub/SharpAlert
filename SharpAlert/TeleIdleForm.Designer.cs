@@ -31,11 +31,11 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TeleIdleForm));
             this.WindowClosingChecker = new System.Windows.Forms.Timer(this.components);
-            this.IdleText = new System.Windows.Forms.Label();
             this.ClockSet = new System.Windows.Forms.Timer(this.components);
+            this.MovePreventBurnIn = new System.Windows.Forms.Timer(this.components);
+            this.IdleText = new System.Windows.Forms.Label();
+            this.InfoText = new SharpAlert.ToolboxStuff.MarqueeLabel();
             this.IdleContainer = new System.Windows.Forms.Panel();
-            this.InfoText = new System.Windows.Forms.Label();
-            this.MouseMoving = new System.Windows.Forms.Timer(this.components);
             this.IdleContainer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,24 +45,43 @@
             this.WindowClosingChecker.Interval = 50;
             this.WindowClosingChecker.Tick += new System.EventHandler(this.WindowClosingChecker_Tick);
             // 
-            // IdleText
-            // 
-            this.IdleText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.IdleText.Font = new System.Drawing.Font("Arial", 72F, System.Drawing.FontStyle.Bold);
-            this.IdleText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.IdleText.Location = new System.Drawing.Point(0, 0);
-            this.IdleText.Name = "IdleText";
-            this.IdleText.Size = new System.Drawing.Size(1280, 720);
-            this.IdleText.TabIndex = 0;
-            this.IdleText.Text = "Initializing";
-            this.IdleText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.IdleText.DoubleClick += new System.EventHandler(this.IdleText_DoubleClick);
-            // 
             // ClockSet
             // 
             this.ClockSet.Enabled = true;
             this.ClockSet.Interval = 1000;
             this.ClockSet.Tick += new System.EventHandler(this.ClockSet_Tick);
+            // 
+            // MovePreventBurnIn
+            // 
+            this.MovePreventBurnIn.Enabled = true;
+            this.MovePreventBurnIn.Interval = 30000;
+            this.MovePreventBurnIn.Tick += new System.EventHandler(this.MovePreventBurnIn_Tick);
+            // 
+            // IdleText
+            // 
+            this.IdleText.Font = new System.Drawing.Font("Arial", 52F);
+            this.IdleText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.IdleText.Location = new System.Drawing.Point(0, 0);
+            this.IdleText.Margin = new System.Windows.Forms.Padding(0);
+            this.IdleText.Name = "IdleText";
+            this.IdleText.Size = new System.Drawing.Size(550, 200);
+            this.IdleText.TabIndex = 0;
+            this.IdleText.Text = "Please wait";
+            this.IdleText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.IdleText.DoubleClick += new System.EventHandler(this.IdleText_DoubleClick);
+            // 
+            // InfoText
+            // 
+            this.InfoText.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.InfoText.Font = new System.Drawing.Font("Arial", 16F, System.Drawing.FontStyle.Bold);
+            this.InfoText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.InfoText.Location = new System.Drawing.Point(0, 694);
+            this.InfoText.Name = "InfoText";
+            this.InfoText.ScrollSpeed = 1;
+            this.InfoText.Size = new System.Drawing.Size(1280, 26);
+            this.InfoText.TabIndex = 1;
+            this.InfoText.Text = "SharpAlert";
+            this.InfoText.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // IdleContainer
             // 
@@ -73,22 +92,7 @@
             this.IdleContainer.Name = "IdleContainer";
             this.IdleContainer.Size = new System.Drawing.Size(1280, 720);
             this.IdleContainer.TabIndex = 1;
-            // 
-            // InfoText
-            // 
-            this.InfoText.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.InfoText.Font = new System.Drawing.Font("Arial", 16F, System.Drawing.FontStyle.Bold);
-            this.InfoText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.InfoText.Location = new System.Drawing.Point(0, 688);
-            this.InfoText.Name = "InfoText";
-            this.InfoText.Size = new System.Drawing.Size(1280, 32);
-            this.InfoText.TabIndex = 1;
-            this.InfoText.Text = "SharpAlert";
-            this.InfoText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // MouseMoving
-            // 
-            this.MouseMoving.Tick += new System.EventHandler(this.MouseMoving_Tick);
+            this.IdleContainer.DoubleClick += new System.EventHandler(this.IdleContainer_DoubleClick);
             // 
             // TeleIdleForm
             // 
@@ -113,6 +117,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TeleIdleForm_FormClosed);
             this.Load += new System.EventHandler(this.TeleIdleForm_Load);
             this.Shown += new System.EventHandler(this.TeleIdleForm_Shown);
+            this.Resize += new System.EventHandler(this.TeleIdleForm_Resize);
             this.IdleContainer.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -121,10 +126,10 @@
         #endregion
 
         private System.Windows.Forms.Timer WindowClosingChecker;
-        private System.Windows.Forms.Label IdleText;
         private System.Windows.Forms.Timer ClockSet;
+        private System.Windows.Forms.Timer MovePreventBurnIn;
+        private System.Windows.Forms.Label IdleText;
+        private ToolboxStuff.MarqueeLabel InfoText;
         public System.Windows.Forms.Panel IdleContainer;
-        private System.Windows.Forms.Label InfoText;
-        private System.Windows.Forms.Timer MouseMoving;
     }
 }
