@@ -30,6 +30,8 @@ namespace SharpAlert
             Timeout = TimeSpan.FromSeconds(5)
         };
 
+        public static bool ServiceRunnerScheduled { get; private set; }
+
         /// <summary>
         /// Starts the Ice Bear Worker as a client.
         /// </summary>
@@ -54,6 +56,15 @@ namespace SharpAlert
             catch (Exception)
             {
             }
+
+            Thread startup = new Thread(() =>
+            {
+                StartupForm sf = new StartupForm();
+                sf.ShowDialog();
+                sf.Dispose();
+            });
+
+            startup.Start();
 
             string RemoteMD5 = string.Empty;
             string RemoteVersion = string.Empty;
@@ -152,7 +163,6 @@ namespace SharpAlert
                 lock (ChangedPropertiesList) ChangedPropertiesList.Clear();
             };
 
-
             Console.WriteLine("[Ice Bear] Getting runner configuration.");
             
             bool UseHTTPS = true;
@@ -170,7 +180,7 @@ namespace SharpAlert
                 case 2:
                     Console.WriteLine("[Ice Bear] Runner type is \"Client\".");
                     UseHTTPS = false;
-                    feed.server = $"{Settings.Default.ClientServerURL}:9792{DateTime.UtcNow.AddDays(-1):yyyy-MM-ddTHH:mm:ssZ}";
+                    feed.server = $"{Settings.Default.ClientServerURL}:9792{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}";
                     break;
             }
 
@@ -205,6 +215,8 @@ namespace SharpAlert
                 Application.Run();
             });
             notificationThread.MonitorAndStart("Notification Tray");
+
+            ServiceRunnerScheduled = true;
         }
 
         /// <summary>
@@ -240,6 +252,8 @@ namespace SharpAlert
 
             listener.Start();
             CreateStatusWindow();
+
+            ServiceRunnerScheduled = true;
 
             Console.WriteLine("[Ice Bear] Listening for requests.");
 
@@ -311,7 +325,7 @@ namespace SharpAlert
                     {
                         new Thread(() =>
                         {
-                            string ExceptionCompiled = $"SharpAlert encountered an exception. Soon to commence self-destruct sequence. {DateTime.UtcNow:s}\r\n" +
+                            string ExceptionCompiled = $"SharpAlert encountered an exception. Soon to commence self-destruct. {DateTime.UtcNow:s}\r\n" +
                             $"{ex.Message}\r\n" +
                             $"{ex.TargetSite}\r\n" +
                             $"{ex.StackTrace}";
@@ -419,6 +433,37 @@ namespace SharpAlert
 
             contextMenu.Items.Add(new ToolStripSeparator());
 
+            string[] RemoteVersionSplit = RemoteVersion.Split('.');
+            bool UpdatesAvailable = false;
+
+            if (RemoteVersionSplit.Length == 2)
+            {
+                if (RemoteVersionSplit[0] != VersionInfo.MajorVersion.ToString() ||
+                    RemoteVersionSplit[1] != VersionInfo.MinorVersion.ToString())
+                {
+                    notify.BalloonTipTitle = "SharpAlert is running";
+                    notify.BalloonTipText = $"Updates are available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                    //notify.BalloonTipText = $"You may be running an older version. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                    notify.BalloonTipIcon = ToolTipIcon.Info;
+                    notify.ShowBalloonTip(5000);
+                    UpdatesAvailable = true;
+                }
+                else
+                {
+                    notify.BalloonTipTitle = "SharpAlert is running";
+                    notify.BalloonTipText = "I'll just be waiting right down here in my tray icon. You're up to date.";
+                    notify.BalloonTipIcon = ToolTipIcon.Info;
+                    notify.ShowBalloonTip(5000);
+                }
+            }
+            else
+            {
+                notify.BalloonTipTitle = "SharpAlert is running";
+                notify.BalloonTipText = "I'll just be waiting right down here in my tray icon. Can't check for updates right now.";
+                notify.BalloonTipIcon = ToolTipIcon.Info;
+                notify.ShowBalloonTip(5000);
+            }
+
             contextMenu.Items.Add(new ToolStripLabel($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
                 Resources.AlertIcon, true, (obj, args) =>
                 {
@@ -427,6 +472,18 @@ namespace SharpAlert
             {
                 ToolTipText = "Very mindful, very demure."
             });
+
+            if (UpdatesAvailable)
+            {
+                contextMenu.Items.Add(new ToolStripLabel($"Click here to update!",
+                null, true, (obj, args) =>
+                {
+                    Process.Start("https://sharpalert.bunnytub.com/downloads");
+                })
+                {
+                    ToolTipText = "There's an update available for you to download!"
+                });
+            }
 
             contextMenu.Items.Add(new ToolStripMenuItem("Open Settings", null, (sender, arg) =>
             {
@@ -517,35 +574,6 @@ namespace SharpAlert
             }));
 
             notify.ContextMenuStrip = contextMenu;
-
-            string[] RemoteVersionSplit = RemoteVersion.Split('.');
-
-            if (RemoteVersionSplit.Length == 2)
-            {
-                if (RemoteVersionSplit[0] != VersionInfo.MajorVersion.ToString() ||
-                    RemoteVersionSplit[1] != VersionInfo.MinorVersion.ToString())
-                {
-                    notify.BalloonTipTitle = "SharpAlert is running";
-                    notify.BalloonTipText = $"Updates are available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
-                    //notify.BalloonTipText = $"You may be running an older version. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
-                    notify.BalloonTipIcon = ToolTipIcon.Info;
-                    notify.ShowBalloonTip(5000);
-                }
-                else
-                {
-                    notify.BalloonTipTitle = "SharpAlert is running";
-                    notify.BalloonTipText = "I'll just be waiting right down here in my tray icon. You're up to date on updates.";
-                    notify.BalloonTipIcon = ToolTipIcon.Info;
-                    notify.ShowBalloonTip(5000);
-                }
-            }
-            else
-            {
-                notify.BalloonTipTitle = "SharpAlert is running";
-                notify.BalloonTipText = "I'll just be waiting right down here in my tray icon. Can't check for updates right now.";
-                notify.BalloonTipIcon = ToolTipIcon.Info;
-                notify.ShowBalloonTip(5000);
-            }
         }
 
         [DllImport("kernel32.dll", SetLastError = true)]

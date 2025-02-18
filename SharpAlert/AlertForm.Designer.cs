@@ -70,14 +70,14 @@
             this.TitlePanel.Location = new System.Drawing.Point(0, 0);
             this.TitlePanel.Margin = new System.Windows.Forms.Padding(10);
             this.TitlePanel.Name = "TitlePanel";
-            this.TitlePanel.Size = new System.Drawing.Size(725, 60);
+            this.TitlePanel.Size = new System.Drawing.Size(717, 60);
             this.TitlePanel.TabIndex = 1;
             // 
             // AlertIcon
             // 
             this.AlertIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.AlertIcon.Image = global::SharpAlert.Properties.Resources.AlertIcon;
-            this.AlertIcon.Location = new System.Drawing.Point(665, 0);
+            this.AlertIcon.Location = new System.Drawing.Point(657, 0);
             this.AlertIcon.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.AlertIcon.Name = "AlertIcon";
             this.AlertIcon.Size = new System.Drawing.Size(60, 60);
@@ -92,10 +92,10 @@
             this.TitleText.Font = new System.Drawing.Font("Arial", 32F, System.Drawing.FontStyle.Bold);
             this.TitleText.Location = new System.Drawing.Point(4, 0);
             this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(721, 60);
+            this.TitleText.Size = new System.Drawing.Size(713, 60);
             this.TitleText.TabIndex = 3;
             this.TitleText.Text = "EMERGENCY ALERT";
-            this.TitleText.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.TitleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // TitleSpacer
             // 
@@ -122,7 +122,7 @@
             this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DismissButton.Font = new System.Drawing.Font("Arial", 18F);
             this.DismissButton.ForeColor = System.Drawing.Color.Black;
-            this.DismissButton.Location = new System.Drawing.Point(607, 2);
+            this.DismissButton.Location = new System.Drawing.Point(599, 2);
             this.DismissButton.Name = "DismissButton";
             this.DismissButton.Size = new System.Drawing.Size(115, 35);
             this.DismissButton.TabIndex = 6;
@@ -132,7 +132,7 @@
             // 
             // SubtitlePanel
             // 
-            this.SubtitlePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SubtitlePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.SubtitlePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.SubtitlePanel.Controls.Add(this.SubtitleText);
             this.SubtitlePanel.Controls.Add(this.SubtitleSpacer);
@@ -141,7 +141,7 @@
             this.SubtitlePanel.Location = new System.Drawing.Point(0, 60);
             this.SubtitlePanel.Margin = new System.Windows.Forms.Padding(10);
             this.SubtitlePanel.Name = "SubtitlePanel";
-            this.SubtitlePanel.Size = new System.Drawing.Size(725, 32);
+            this.SubtitlePanel.Size = new System.Drawing.Size(717, 32);
             this.SubtitlePanel.TabIndex = 7;
             // 
             // SubtitleText
@@ -151,7 +151,7 @@
             this.SubtitleText.Font = new System.Drawing.Font("Arial", 18F);
             this.SubtitleText.Location = new System.Drawing.Point(10, 0);
             this.SubtitleText.Name = "SubtitleText";
-            this.SubtitleText.Size = new System.Drawing.Size(715, 32);
+            this.SubtitleText.Size = new System.Drawing.Size(707, 32);
             this.SubtitleText.TabIndex = 3;
             this.SubtitleText.Text = "Short Alert Description";
             this.SubtitleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -176,7 +176,7 @@
             this.SpeakerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SpeakerButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
             this.SpeakerButton.ForeColor = System.Drawing.Color.Black;
-            this.SpeakerButton.Location = new System.Drawing.Point(566, 2);
+            this.SpeakerButton.Location = new System.Drawing.Point(558, 2);
             this.SpeakerButton.Name = "SpeakerButton";
             this.SpeakerButton.Size = new System.Drawing.Size(35, 35);
             this.SpeakerButton.TabIndex = 8;
@@ -198,7 +198,7 @@
             this.LinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LinkButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
             this.LinkButton.ForeColor = System.Drawing.Color.Black;
-            this.LinkButton.Location = new System.Drawing.Point(525, 2);
+            this.LinkButton.Location = new System.Drawing.Point(517, 2);
             this.LinkButton.Name = "LinkButton";
             this.LinkButton.Size = new System.Drawing.Size(35, 35);
             this.LinkButton.TabIndex = 9;
@@ -233,7 +233,7 @@
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainPanel.Location = new System.Drawing.Point(0, 98);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(725, 234);
+            this.MainPanel.Size = new System.Drawing.Size(717, 226);
             this.MainPanel.TabIndex = 10;
             // 
             // AlertPanel
@@ -244,7 +244,7 @@
             this.AlertPanel.Font = new System.Drawing.Font("Segoe UI", 18F);
             this.AlertPanel.Location = new System.Drawing.Point(0, 0);
             this.AlertPanel.Name = "AlertPanel";
-            this.AlertPanel.Size = new System.Drawing.Size(725, 234);
+            this.AlertPanel.Size = new System.Drawing.Size(717, 226);
             this.AlertPanel.TabIndex = 5;
             // 
             // AlertText
@@ -259,7 +259,7 @@
             this.AlertText.Name = "AlertText";
             this.AlertText.ReadOnly = true;
             this.AlertText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.AlertText.Size = new System.Drawing.Size(725, 234);
+            this.AlertText.Size = new System.Drawing.Size(717, 226);
             this.AlertText.TabIndex = 5;
             // 
             // ButtonsPanel
@@ -268,9 +268,9 @@
             this.ButtonsPanel.Controls.Add(this.SpeakerButton);
             this.ButtonsPanel.Controls.Add(this.LinkButton);
             this.ButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ButtonsPanel.Location = new System.Drawing.Point(0, 332);
+            this.ButtonsPanel.Location = new System.Drawing.Point(0, 324);
             this.ButtonsPanel.Name = "ButtonsPanel";
-            this.ButtonsPanel.Size = new System.Drawing.Size(725, 40);
+            this.ButtonsPanel.Size = new System.Drawing.Size(717, 40);
             this.ButtonsPanel.TabIndex = 6;
             // 
             // SpacerPanel
@@ -279,14 +279,15 @@
             this.SpacerPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.SpacerPanel.Location = new System.Drawing.Point(0, 92);
             this.SpacerPanel.Name = "SpacerPanel";
-            this.SpacerPanel.Size = new System.Drawing.Size(725, 6);
+            this.SpacerPanel.Size = new System.Drawing.Size(717, 6);
             this.SpacerPanel.TabIndex = 11;
             // 
             // AlertForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(725, 372);
+            this.ClientSize = new System.Drawing.Size(717, 364);
             this.ControlBox = false;
             this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.SpacerPanel);

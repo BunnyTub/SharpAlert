@@ -59,41 +59,10 @@ namespace SharpAlert
                 e.Cancel = true;
                 return;
             }
-            CursorShown = true;
-        }
-
-        public Point cursorPosition = Cursor.Position;
-
-        private bool _CursorShown = true;
-        public bool CursorShown
-        {
-            get
-            {
-                return _CursorShown;
-            }
-            set
-            {
-                if (value == _CursorShown)
-                {
-                    return;
-                }
-
-                if (value)
-                {
-                    Cursor.Show();
-                }
-                else
-                {
-                    Cursor.Hide();
-                }
-
-                _CursorShown = value;
-            }
         }
 
         private void TeleIdleForm_Shown(object sender, EventArgs e)
         {
-            CursorShown = false;
         }
 
         private void IdleText_DoubleClick(object sender, EventArgs e)
@@ -120,10 +89,12 @@ namespace SharpAlert
 
         private void MovePreventBurnIn_Tick(object sender, EventArgs e)
         {
-            int WidthCalculated = this.Size.Width - IdleText.Width - 20;
-            int HeightCalculated = this.Size.Height - IdleText.Height - 20;
+            int Spacing = 15;
 
-            if (WidthCalculated < 20 || HeightCalculated < 20)
+            int WidthCalculated = this.Size.Width - IdleText.Width - Spacing;
+            int HeightCalculated = this.Size.Height - IdleText.Height - Spacing;
+
+            if (WidthCalculated < Spacing || HeightCalculated < Spacing)
             {
                 return;
             }
@@ -131,7 +102,7 @@ namespace SharpAlert
             {
                 try
                 {
-                    IdleText.Location = new Point(RandomMovement.Next(20, WidthCalculated), RandomMovement.Next(20, HeightCalculated));
+                    IdleText.Location = new Point(RandomMovement.Next(Spacing, WidthCalculated), RandomMovement.Next(Spacing, HeightCalculated));
                 }
                 catch (Exception)
                 {

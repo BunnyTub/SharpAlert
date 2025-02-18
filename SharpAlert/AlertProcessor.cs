@@ -1,6 +1,7 @@
 ﻿using SharpAlert.Properties;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -23,7 +24,7 @@ namespace SharpAlert
         private string DialogAlertURL = string.Empty;
         private string DialogAlertAudioURL = string.Empty;
         private string DialogAlertImageURL = string.Empty;
-        private bool DialogAlertCancellation = false;
+        private string DialogAlertType = string.Empty;
 
         public AlertProcessor()
         {
@@ -44,8 +45,9 @@ namespace SharpAlert
                     try
                     {
                         while (!rafPing) Thread.Sleep(500);
-                        raf.UpdateFields(DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertAudioURL, DialogAlertImageURL, DialogAlertCancellation);
-                        Application.Run(raf);
+                        if (raf.IsDisposed) raf = new AlertForm();
+                        raf.UpdateFields(DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertAudioURL, DialogAlertImageURL, DialogAlertType);
+                        raf.ShowDialog();
                         rafPing = false;
                     }
                     catch (Exception ex)
@@ -70,8 +72,9 @@ namespace SharpAlert
                     try
                     {
                         while (!tafPing) Thread.Sleep(500);
-                        taf.UpdateFields(DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertAudioURL, DialogAlertImageURL, DialogAlertCancellation);
-                        Application.Run(taf);
+                        if (taf.IsDisposed) taf = new TeleAlertForm();
+                        taf.UpdateFields(DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertAudioURL, DialogAlertImageURL, DialogAlertType);
+                        taf.ShowDialog();
                         tafPing = false;
                     }
                     catch (Exception ex)
@@ -120,6 +123,7 @@ namespace SharpAlert
                 bool UsedDiscordHook = false;
 
                 string Sent = SentRegex.Match(relayItem.Data).Groups[1].Value;
+
                 Console.WriteLine($"Sent: {Sent}");
 
                 string Status = StatusRegex.Match(relayItem.Data).Groups[1].Value;
@@ -246,7 +250,13 @@ namespace SharpAlert
                                 case "audio/mpeg":
                                     AddAudioToList(uri.Groups[1].Value);
                                     break;
+                                case "audio/x-ipaws-audio-mp3":
+                                    AddAudioToList(uri.Groups[1].Value);
+                                    break;
                                 case "application/x-url":
+                                    AddAudioToList(uri.Groups[1].Value);
+                                    break;
+                                default:
                                     AddAudioToList(uri.Groups[1].Value);
                                     break;
                             }
@@ -433,8 +443,10 @@ namespace SharpAlert
                                     }
                                     else DialogAlertImageURL = string.Empty;
 
-                                    if (MsgType.ToLowerInvariant() == "cancel") DialogAlertCancellation = true;
-                                    else DialogAlertCancellation = false;
+                                    AudioFiles.Clear();
+                                    ImageFiles.Clear();
+
+                                    DialogAlertType = $"{MsgType.ToLowerInvariant()}";
 
                                     if (Settings.Default.alertFullscreen)
                                     {
@@ -472,8 +484,6 @@ namespace SharpAlert
                         }
                         finally
                         {
-                            AudioFiles.Clear();
-                            ImageFiles.Clear();
                             Console.WriteLine($"[Alert Processor] Finished relaying alert.");
                         }
 
@@ -635,6 +645,25 @@ namespace SharpAlert
                 // SAME
                 if (Settings.Default.AllowedSAMELocations_Geocodes.Count != 0)
                 {
+                    StringCollection locations = new StringCollection();
+                    lock (Settings.Default.AllowedSAMELocations_Geocodes)
+                    {
+                        foreach (string location in Settings.Default.AllowedSAMELocations_Geocodes)
+                        {
+                            if (!locations.Contains(location))
+                            {
+                                locations.Add(location);
+                            }
+
+                            string AllAboveLocation = location.Remove(3, 3) + "000";
+
+                            if (!locations.Contains(AllAboveLocation))
+                            {
+                                locations.Add(AllAboveLocation);
+                            }
+                        }
+                    }
+
                     try
                     {
                         MatchCollection matches = GeocodeSpecificAreaMessageEncodingRegex.Matches(InfoX);
@@ -642,7 +671,7 @@ namespace SharpAlert
                         foreach (Match match in matches)
                         {
                             string geocode = match.Groups[1].Value;
-                            if (Settings.Default.AllowedSAMELocations_Geocodes.Contains(geocode))
+                            if (locations.Contains(geocode))
                             {
                                 GeoMatch = true;
                                 break;
@@ -661,7 +690,7 @@ namespace SharpAlert
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"An unknown amount of locations were matches due to one or more errors. {ex.Message}");
+                        Console.WriteLine($"An unknown amount of locations were matched due to one or more errors. {ex.Message}");
                     }
                 }
                 

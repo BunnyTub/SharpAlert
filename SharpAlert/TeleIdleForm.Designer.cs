@@ -34,10 +34,8 @@
             this.ClockSet = new System.Windows.Forms.Timer(this.components);
             this.MovePreventBurnIn = new System.Windows.Forms.Timer(this.components);
             this.IdleText = new System.Windows.Forms.Label();
-            this.InfoText = new SharpAlert.ToolboxStuff.MarqueeLabel();
             this.IdleContainer = new System.Windows.Forms.Panel();
-            this.InfoText = new System.Windows.Forms.Label();
-            this.MouseMoving = new System.Windows.Forms.Timer(this.components);
+            this.InfoText = new SharpAlert.ToolboxStuff.MarqueeLabel();
             this.IdleContainer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -56,34 +54,21 @@
             // MovePreventBurnIn
             // 
             this.MovePreventBurnIn.Enabled = true;
-            this.MovePreventBurnIn.Interval = 30000;
+            this.MovePreventBurnIn.Interval = 15000;
             this.MovePreventBurnIn.Tick += new System.EventHandler(this.MovePreventBurnIn_Tick);
             // 
             // IdleText
             // 
             this.IdleText.Font = new System.Drawing.Font("Arial", 52F);
-            this.IdleText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.IdleText.ForeColor = System.Drawing.Color.White;
             this.IdleText.Location = new System.Drawing.Point(0, 0);
             this.IdleText.Margin = new System.Windows.Forms.Padding(0);
             this.IdleText.Name = "IdleText";
-            this.IdleText.Size = new System.Drawing.Size(550, 200);
+            this.IdleText.Size = new System.Drawing.Size(520, 160);
             this.IdleText.TabIndex = 0;
-            this.IdleText.Text = "Please wait";
+            this.IdleText.Text = "Please wait...\r\n...one moment";
             this.IdleText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.IdleText.DoubleClick += new System.EventHandler(this.IdleText_DoubleClick);
-            // 
-            // InfoText
-            // 
-            this.InfoText.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.InfoText.Font = new System.Drawing.Font("Arial", 16F, System.Drawing.FontStyle.Bold);
-            this.InfoText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.InfoText.Location = new System.Drawing.Point(0, 694);
-            this.InfoText.Name = "InfoText";
-            this.InfoText.ScrollSpeed = 1;
-            this.InfoText.Size = new System.Drawing.Size(1280, 26);
-            this.InfoText.TabIndex = 1;
-            this.InfoText.Text = "SharpAlert";
-            this.InfoText.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // IdleContainer
             // 
@@ -96,6 +81,19 @@
             this.IdleContainer.TabIndex = 1;
             this.IdleContainer.DoubleClick += new System.EventHandler(this.IdleContainer_DoubleClick);
             // 
+            // InfoText
+            // 
+            this.InfoText.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.InfoText.Font = new System.Drawing.Font("Arial", 16F, System.Drawing.FontStyle.Bold);
+            this.InfoText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.InfoText.Location = new System.Drawing.Point(0, 694);
+            this.InfoText.Name = "InfoText";
+            this.InfoText.ScrollSpeed = 2F;
+            this.InfoText.Size = new System.Drawing.Size(1280, 26);
+            this.InfoText.TabIndex = 1;
+            this.InfoText.Text = "SharpAlert";
+            this.InfoText.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
             // TeleIdleForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -103,6 +101,7 @@
             this.ClientSize = new System.Drawing.Size(1280, 720);
             this.ControlBox = false;
             this.Controls.Add(this.IdleContainer);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

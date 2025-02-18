@@ -17,7 +17,7 @@ namespace SharpAlert
         private string AlertUrlStr = string.Empty;
         private string AlertAudioUrlStr = string.Empty;
         private string AlertImageUrlStr = string.Empty;
-        private bool AlertCancelled = false;
+        private string AlertType = string.Empty;
 
         private const int HWND_TOPMOST = -1;
         private const int SWP_NOMOVE = 0x0002;
@@ -91,7 +91,7 @@ namespace SharpAlert
             taskbarList.HrInit();
         }
 
-        public void UpdateFields(string alert, string text, string url, string audio, string image, bool cancellation)
+        public void UpdateFields(string alert, string text, string url, string audio, string image, string type)
         {
             AlertSubtitleStr = alert;
             SubtitleText.Text = AlertSubtitleStr;
@@ -102,20 +102,38 @@ namespace SharpAlert
             AlertImageUrlStr = image;
             AlertText.SelectionStart = 0;
 
-            AlertCancelled = cancellation;
-            if (!cancellation)
+            switch (type)
             {
-                TitlePanel.BackColor = Color.Red;
-                SubtitlePanel.BackColor = Color.FromArgb(180, 0, 0);
-                SpacerPanel.BackColor = Color.DarkOrange;
-                TitleText.Text = "EMERGENCY ALERT";
-            }
-            else
-            {
-                TitlePanel.BackColor = Color.FromArgb(0, 80, 200);
-                SubtitlePanel.BackColor = Color.FromArgb(0, 50, 100);
-                SpacerPanel.BackColor = Color.FromArgb(200, 200, 200);
-                TitleText.Text = "ALERT CANCELLED";
+                case "alert":
+                    TitlePanel.BackColor = Color.Red;
+                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SpacerPanel.BackColor = Color.DarkOrange;
+                    TitleText.Text = "EMERGENCY ALERT";
+                    break;
+                case "update":
+                    TitlePanel.BackColor = Color.Red;
+                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SpacerPanel.BackColor = Color.DarkOrange;
+                    TitleText.Text = "ALERT UPDATE";
+                    break;
+                case "cancel":
+                    TitlePanel.BackColor = Color.FromArgb(0, 80, 200);
+                    SubtitlePanel.BackColor = Color.FromArgb(0, 50, 100);
+                    SpacerPanel.BackColor = Color.FromArgb(200, 200, 200);
+                    TitleText.Text = "ALERT CANCELLED";
+                    break;
+                case "test":
+                    TitlePanel.BackColor = Color.Red;
+                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SpacerPanel.BackColor = Color.DarkOrange;
+                    TitleText.Text = "ALERT TEST";
+                    break;
+                default:
+                    TitlePanel.BackColor = Color.Red;
+                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SpacerPanel.BackColor = Color.DarkOrange;
+                    TitleText.Text = "EMERGENCY ALERT";
+                    break;
             }
         }
 
@@ -162,7 +180,7 @@ namespace SharpAlert
                 LinkButton.Enabled = true;
             }
 
-            if (!AlertCancelled)
+            if (AlertType != "cancel")
             {
                 sound.Play();
             }
@@ -194,8 +212,9 @@ namespace SharpAlert
                         AudioOutput.Play();
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Console.WriteLine($"[Alert GUI] Failed to play remote audio. TTS will be played instead. {ex.Message}");
                     engine.SpeakAsync(AlertTextStr);
                 }
             }

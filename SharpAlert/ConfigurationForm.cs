@@ -298,5 +298,10 @@ namespace SharpAlert
         {
             acf.ShowDialog();
         }
+
+        private void InstallButton_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

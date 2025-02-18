@@ -66,6 +66,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.AlertHistoryOutput = new System.Windows.Forms.TextBox();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
+            this.InstallButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
             this.DiscordWebhookGroup.SuspendLayout();
@@ -131,11 +132,11 @@
             // SaveDiscordSettingsButton
             // 
             this.SaveDiscordSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveDiscordSettingsButton.Location = new System.Drawing.Point(537, 13);
+            this.SaveDiscordSettingsButton.Location = new System.Drawing.Point(521, 13);
             this.SaveDiscordSettingsButton.Name = "SaveDiscordSettingsButton";
-            this.SaveDiscordSettingsButton.Size = new System.Drawing.Size(104, 23);
+            this.SaveDiscordSettingsButton.Size = new System.Drawing.Size(120, 23);
             this.SaveDiscordSettingsButton.TabIndex = 12;
-            this.SaveDiscordSettingsButton.Text = "Save Webhook";
+            this.SaveDiscordSettingsButton.Text = "Modfiy Webhook";
             this.ToolTipInformation.SetToolTip(this.SaveDiscordSettingsButton, "Saves the webhook and message data.");
             this.SaveDiscordSettingsButton.UseVisualStyleBackColor = true;
             this.SaveDiscordSettingsButton.Click += new System.EventHandler(this.SaveDiscordSettingsButton_Click);
@@ -244,13 +245,13 @@
             // AlertHistoryDumpLink
             // 
             this.AlertHistoryDumpLink.AutoSize = true;
-            this.AlertHistoryDumpLink.LinkColor = System.Drawing.Color.Cyan;
-            this.AlertHistoryDumpLink.Location = new System.Drawing.Point(387, 16);
+            this.AlertHistoryDumpLink.LinkColor = System.Drawing.Color.Yellow;
+            this.AlertHistoryDumpLink.Location = new System.Drawing.Point(434, 17);
             this.AlertHistoryDumpLink.Name = "AlertHistoryDumpLink";
-            this.AlertHistoryDumpLink.Size = new System.Drawing.Size(154, 15);
+            this.AlertHistoryDumpLink.Size = new System.Drawing.Size(107, 15);
             this.AlertHistoryDumpLink.TabIndex = 9;
             this.AlertHistoryDumpLink.TabStop = true;
-            this.AlertHistoryDumpLink.Text = "Dump alert history to folder";
+            this.AlertHistoryDumpLink.Text = "Dump alert history";
             this.ToolTipInformation.SetToolTip(this.AlertHistoryDumpLink, "Dumps the entire alert history to a folder named \"dump\".");
             this.AlertHistoryDumpLink.VisitedLinkColor = System.Drawing.Color.Cyan;
             this.AlertHistoryDumpLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AlertHistoryDumpLink_LinkClicked);
@@ -360,7 +361,7 @@
             this.AlertButton.Size = new System.Drawing.Size(100, 23);
             this.AlertButton.TabIndex = 28;
             this.AlertButton.Text = "Alert Config";
-            this.ToolTipInformation.SetToolTip(this.AlertButton, "Opens the server configuration window.");
+            this.ToolTipInformation.SetToolTip(this.AlertButton, "Opens the alert configuration window.");
             this.AlertButton.UseMnemonic = false;
             this.AlertButton.UseVisualStyleBackColor = true;
             this.AlertButton.Click += new System.EventHandler(this.AlertButton_Click);
@@ -500,6 +501,7 @@
             // 
             // ConfigurationPanel
             // 
+            this.ConfigurationPanel.Controls.Add(this.InstallButton);
             this.ConfigurationPanel.Controls.Add(this.label3);
             this.ConfigurationPanel.Controls.Add(this.AlertButton);
             this.ConfigurationPanel.Controls.Add(this.label1);
@@ -516,6 +518,21 @@
             this.ConfigurationPanel.Name = "ConfigurationPanel";
             this.ConfigurationPanel.Size = new System.Drawing.Size(671, 351);
             this.ConfigurationPanel.TabIndex = 13;
+            // 
+            // InstallButton
+            // 
+            this.InstallButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.InstallButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.InstallButton.Location = new System.Drawing.Point(433, 12);
+            this.InstallButton.Name = "InstallButton";
+            this.InstallButton.Size = new System.Drawing.Size(120, 23);
+            this.InstallButton.TabIndex = 30;
+            this.InstallButton.Text = "Run Automatically";
+            this.ToolTipInformation.SetToolTip(this.InstallButton, "Opens the installation wizard.");
+            this.InstallButton.UseMnemonic = false;
+            this.InstallButton.UseVisualStyleBackColor = true;
+            this.InstallButton.Visible = false;
+            this.InstallButton.Click += new System.EventHandler(this.InstallButton_Click);
             // 
             // ConfigurationForm
             // 
@@ -586,5 +603,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button AlertButton;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button InstallButton;
     }
 }

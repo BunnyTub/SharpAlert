@@ -546,5 +546,89 @@ namespace SharpAlert.Properties {
                 this["statusExercise"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Red")]
+        public global::System.Drawing.Color AlertTitleBackColor {
+            get {
+                return ((global::System.Drawing.Color)(this["AlertTitleBackColor"]));
+            }
+            set {
+                this["AlertTitleBackColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("White")]
+        public global::System.Drawing.Color AlertTitleForeColor {
+            get {
+                return ((global::System.Drawing.Color)(this["AlertTitleForeColor"]));
+            }
+            set {
+                this["AlertTitleForeColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("140, 0, 0")]
+        public global::System.Drawing.Color AlertSubtitleBackColor {
+            get {
+                return ((global::System.Drawing.Color)(this["AlertSubtitleBackColor"]));
+            }
+            set {
+                this["AlertSubtitleBackColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("White")]
+        public global::System.Drawing.Color AlertSubtitleForeColor {
+            get {
+                return ((global::System.Drawing.Color)(this["AlertSubtitleForeColor"]));
+            }
+            set {
+                this["AlertSubtitleForeColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 80, 200")]
+        public global::System.Drawing.Color CancelTitleBackColor {
+            get {
+                return ((global::System.Drawing.Color)(this["CancelTitleBackColor"]));
+            }
+            set {
+                this["CancelTitleBackColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 50, 100")]
+        public global::System.Drawing.Color CancelTitleForeColor {
+            get {
+                return ((global::System.Drawing.Color)(this["CancelTitleForeColor"]));
+            }
+            set {
+                this["CancelTitleForeColor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseCustomColors {
+            get {
+                return ((bool)(this["UseCustomColors"]));
+            }
+            set {
+                this["UseCustomColors"] = value;
+            }
+        }
     }
 }

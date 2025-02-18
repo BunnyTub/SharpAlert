@@ -110,5 +110,26 @@
     <Setting Name="statusExercise" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="AlertTitleBackColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Red</Value>
+    </Setting>
+    <Setting Name="AlertTitleForeColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">White</Value>
+    </Setting>
+    <Setting Name="AlertSubtitleBackColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">140, 0, 0</Value>
+    </Setting>
+    <Setting Name="AlertSubtitleForeColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">White</Value>
+    </Setting>
+    <Setting Name="CancelTitleBackColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">0, 80, 200</Value>
+    </Setting>
+    <Setting Name="CancelTitleForeColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">0, 50, 100</Value>
+    </Setting>
+    <Setting Name="UseCustomColors" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

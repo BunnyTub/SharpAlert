@@ -110,8 +110,17 @@ namespace SharpAlert
         [MTAThread]
         private static void Main()
         {
+            Mutex mutex = new Mutex(false, "EASCULTURE_SharpAlert_ProtectEZ");
             try
             {
+                if (!mutex.WaitOne(0, false))
+                {
+                    MessageBox.Show("SharpAlert is already running.\r\nCheck the notification tray area on the taskbar!",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                    return;
+                }
                 IceBearWorker.ServiceRun();
             }
             catch (Exception ex)
@@ -125,6 +134,10 @@ namespace SharpAlert
                 Environment.FailFast("SharpAlert failed to start!\r\n" +
                     $"{ex.StackTrace}\r\n" +
                     $"{ex.Message}");
+            }
+            finally
+            {
+                mutex?.Close();
             }
         }
 

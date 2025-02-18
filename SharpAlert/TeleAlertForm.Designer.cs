@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.TitlePanel = new System.Windows.Forms.Panel();
+            this.ScreenshotButton = new System.Windows.Forms.Button();
             this.DismissButton = new System.Windows.Forms.Button();
             this.LinkButton = new System.Windows.Forms.Button();
             this.ReplayModeText = new System.Windows.Forms.Label();
@@ -53,7 +54,6 @@
             this.SpacerPanel = new System.Windows.Forms.Panel();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.AutoHideButtons = new System.Windows.Forms.Timer(this.components);
-            this.ScreenshotButton = new System.Windows.Forms.Button();
             this.TitlePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlertIcon)).BeginInit();
             this.AlertPanel.SuspendLayout();
@@ -79,6 +79,23 @@
             this.TitlePanel.Name = "TitlePanel";
             this.TitlePanel.Size = new System.Drawing.Size(1280, 93);
             this.TitlePanel.TabIndex = 1;
+            // 
+            // ScreenshotButton
+            // 
+            this.ScreenshotButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ScreenshotButton.BackColor = System.Drawing.Color.White;
+            this.ScreenshotButton.Enabled = false;
+            this.ScreenshotButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ScreenshotButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
+            this.ScreenshotButton.ForeColor = System.Drawing.Color.Black;
+            this.ScreenshotButton.Location = new System.Drawing.Point(984, 3);
+            this.ScreenshotButton.Name = "ScreenshotButton";
+            this.ScreenshotButton.Size = new System.Drawing.Size(35, 35);
+            this.ScreenshotButton.TabIndex = 11;
+            this.ScreenshotButton.Text = "📸";
+            this.ScreenshotButton.UseVisualStyleBackColor = false;
+            this.ScreenshotButton.Visible = false;
+            this.ScreenshotButton.Click += new System.EventHandler(this.ScreenshotButton_Click);
             // 
             // DismissButton
             // 
@@ -151,7 +168,7 @@
             this.TitleText.Size = new System.Drawing.Size(1276, 93);
             this.TitleText.TabIndex = 3;
             this.TitleText.Text = "EMERGENCY ALERT";
-            this.TitleText.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.TitleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.TitleText.DoubleClick += new System.EventHandler(this.TitleText_DoubleClick);
             // 
             // TitleSpacer
@@ -203,7 +220,7 @@
             // 
             // SubtitlePanel
             // 
-            this.SubtitlePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SubtitlePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.SubtitlePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.SubtitlePanel.Controls.Add(this.SubtitleText);
             this.SubtitlePanel.Controls.Add(this.SubtitleSpacer);
@@ -225,6 +242,7 @@
             this.SubtitleText.Size = new System.Drawing.Size(1270, 63);
             this.SubtitleText.TabIndex = 3;
             this.SubtitleText.Text = "Short Alert Description";
+            this.SubtitleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // SubtitleSpacer
             // 
@@ -301,26 +319,10 @@
             this.AutoHideButtons.Interval = 10000;
             this.AutoHideButtons.Tick += new System.EventHandler(this.AutoHideButtons_Tick);
             // 
-            // ScreenshotButton
-            // 
-            this.ScreenshotButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ScreenshotButton.BackColor = System.Drawing.Color.White;
-            this.ScreenshotButton.Enabled = false;
-            this.ScreenshotButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ScreenshotButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
-            this.ScreenshotButton.ForeColor = System.Drawing.Color.Black;
-            this.ScreenshotButton.Location = new System.Drawing.Point(984, 3);
-            this.ScreenshotButton.Name = "ScreenshotButton";
-            this.ScreenshotButton.Size = new System.Drawing.Size(35, 35);
-            this.ScreenshotButton.TabIndex = 11;
-            this.ScreenshotButton.Text = "📸";
-            this.ScreenshotButton.UseVisualStyleBackColor = false;
-            this.ScreenshotButton.Visible = false;
-            this.ScreenshotButton.Click += new System.EventHandler(this.ScreenshotButton_Click);
-            // 
             // TeleAlertForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1280, 720);
             this.ControlBox = false;

@@ -17,7 +17,7 @@ namespace SharpAlert
         private string AlertUrlStr = string.Empty;
         private string AlertAudioUrlStr = string.Empty;
         private string AlertImageUrlStr = string.Empty;
-        private bool AlertCancelled = false;
+        private string AlertType = string.Empty;
 
         private const int HWND_TOPMOST = -1;
         private const int SWP_NOMOVE = 0x0002;
@@ -95,7 +95,7 @@ namespace SharpAlert
             //ReplayMode = replay;
         }
 
-        public void UpdateFields(string alert, string text, string url, string audio, string image, bool cancellation)
+        public void UpdateFields(string alert, string text, string url, string audio, string image, string type)
         {
             AlertSubtitleStr = alert;
             SubtitleText.Text = AlertSubtitleStr;
@@ -106,20 +106,38 @@ namespace SharpAlert
             AlertImageUrlStr = image;
             AlertText.SelectionStart = 0;
 
-            AlertCancelled = cancellation;
-            if (!cancellation)
+            switch (type)
             {
-                TitlePanel.BackColor = Color.Red;
-                SubtitlePanel.BackColor = Color.FromArgb(180, 0, 0);
-                SpacerPanel.BackColor = Color.DarkOrange;
-                TitleText.Text = "EMERGENCY ALERT";
-            }
-            else
-            {
-                TitlePanel.BackColor = Color.FromArgb(0, 80, 200);
-                SubtitlePanel.BackColor = Color.FromArgb(0, 50, 100);
-                SpacerPanel.BackColor = Color.FromArgb(200, 200, 200);
-                TitleText.Text = "ALERT CANCELLED";
+                case "alert":
+                    TitlePanel.BackColor = Color.Red;
+                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SpacerPanel.BackColor = Color.DarkOrange;
+                    TitleText.Text = "EMERGENCY ALERT";
+                    break;
+                case "update":
+                    TitlePanel.BackColor = Color.Red;
+                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SpacerPanel.BackColor = Color.DarkOrange;
+                    TitleText.Text = "ALERT UPDATE";
+                    break;
+                case "cancel":
+                    TitlePanel.BackColor = Color.FromArgb(0, 80, 200);
+                    SubtitlePanel.BackColor = Color.FromArgb(0, 50, 100);
+                    SpacerPanel.BackColor = Color.FromArgb(200, 200, 200);
+                    TitleText.Text = "ALERT CANCELLED";
+                    break;
+                case "test":
+                    TitlePanel.BackColor = Color.Red;
+                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SpacerPanel.BackColor = Color.DarkOrange;
+                    TitleText.Text = "ALERT TEST";
+                    break;
+                default:
+                    TitlePanel.BackColor = Color.Red;
+                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SpacerPanel.BackColor = Color.DarkOrange;
+                    TitleText.Text = "EMERGENCY ALERT";
+                    break;
             }
         }
 
@@ -162,7 +180,7 @@ namespace SharpAlert
             this.Close();
         }
 
-        public Point localCursorPosition = new Point();
+        public Point localCursorPosition = Cursor.Position;
 
         private void AlertForm_Shown(object sender, EventArgs e)
         {
@@ -191,9 +209,7 @@ namespace SharpAlert
                 FlashTaskbarStatus.Start();
             }
 
-            //idle.CursorShown = false;
-
-            if (!AlertCancelled)
+            if (AlertType != "cancel")
             {
                 sound.Play();
             }
@@ -377,7 +393,6 @@ namespace SharpAlert
                 DismissButton.Visible = true;
                 LinkButton.Visible = true;
                 ScreenshotButton.Visible = true;
-                Cursor.Show();
                 AutoHideButtons.Enabled = true;
             }
         }
@@ -440,6 +455,7 @@ namespace SharpAlert
             DismissButton.Visible = true;
             LinkButton.Visible = true;
             ScreenshotButton.Visible = true;
+            localCursorPosition = Cursor.Position;
             MouseMoving.Start();
         }
 
@@ -463,7 +479,7 @@ namespace SharpAlert
                 int imageWidth = bitmap.Width;
                 int imageHeight = bitmap.Height;
 
-                using (SolidBrush coolTransparency = new SolidBrush(Color.FromArgb(180, 255, 0, 0)))
+                using (SolidBrush coolTransparency = new SolidBrush(Color.FromArgb(140, 255, 0, 0)))
                 {
                     g.FillRectangle(coolTransparency, new Rectangle(0, imageHeight - barHeight, imageWidth, barHeight));
                 }
