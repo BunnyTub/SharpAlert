@@ -217,6 +217,7 @@ namespace SharpAlert
             {
                 soundCancellation.Play();
             }
+
             engine.SetOutputToDefaultAudioDevice();
             AutoTTS.Start();
 
@@ -333,14 +334,15 @@ namespace SharpAlert
                         AudioOutput.Play();
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    engine.SpeakAsync(AlertTextStr);
+                    Console.WriteLine($"[Alert GUI] Failed to play remote audio. TTS will be played instead. {ex.Message}");
+                    engine.SpeakAsync(AlertProcessor.StringIntoTTSFriendly(AlertTextStr));
                 }
             }
             else
             {
-                engine.SpeakAsync(AlertTextStr);
+                engine.SpeakAsync(AlertProcessor.StringIntoTTSFriendly(AlertTextStr));
             }
         }
 

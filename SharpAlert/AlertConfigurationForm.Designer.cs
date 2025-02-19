@@ -77,6 +77,7 @@
             this.AreaSAMEInput = new System.Windows.Forms.TextBox();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.categoryOtherBox = new System.Windows.Forms.CheckBox();
             this.categoryCBRNEBox = new System.Windows.Forms.CheckBox();
             this.categoryInfraBox = new System.Windows.Forms.CheckBox();
@@ -92,7 +93,8 @@
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.BusyLockText = new System.Windows.Forms.Label();
             this.BusyLock = new System.Windows.Forms.Timer(this.components);
-            this.label2 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.VolumeTrackBar = new System.Windows.Forms.TrackBar();
             this.AlertFunctionalityGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlertCheckIntervalInput)).BeginInit();
             this.groupBox11.SuspendLayout();
@@ -106,6 +108,7 @@
             this.groupBox7.SuspendLayout();
             this.ConfigurationPanel.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.VolumeTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // AlertFunctionalityGroup
@@ -449,7 +452,7 @@
             this.LocationsAndEventsGroup.ForeColor = System.Drawing.Color.White;
             this.LocationsAndEventsGroup.Location = new System.Drawing.Point(328, 12);
             this.LocationsAndEventsGroup.Name = "LocationsAndEventsGroup";
-            this.LocationsAndEventsGroup.Size = new System.Drawing.Size(331, 357);
+            this.LocationsAndEventsGroup.Size = new System.Drawing.Size(331, 326);
             this.LocationsAndEventsGroup.TabIndex = 5;
             this.LocationsAndEventsGroup.TabStop = false;
             this.LocationsAndEventsGroup.Text = "Locations/Events";
@@ -464,7 +467,7 @@
             this.groupBox9.ForeColor = System.Drawing.Color.White;
             this.groupBox9.Location = new System.Drawing.Point(6, 227);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(319, 120);
+            this.groupBox9.Size = new System.Drawing.Size(319, 93);
             this.groupBox9.TabIndex = 4;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "SAME Events";
@@ -489,7 +492,7 @@
             this.EventBlacklistOutput.Name = "EventBlacklistOutput";
             this.EventBlacklistOutput.ReadOnly = true;
             this.EventBlacklistOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.EventBlacklistOutput.Size = new System.Drawing.Size(144, 77);
+            this.EventBlacklistOutput.Size = new System.Drawing.Size(144, 50);
             this.EventBlacklistOutput.TabIndex = 3;
             this.EventBlacklistOutput.WordWrap = false;
             // 
@@ -528,7 +531,8 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 17);
+            this.label1.Location = new System.Drawing.Point(3, 17);
+            this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(310, 15);
             this.label1.TabIndex = 5;
@@ -658,13 +662,15 @@
             // 
             // ConfigurationPanel
             // 
+            this.ConfigurationPanel.Controls.Add(this.label5);
             this.ConfigurationPanel.Controls.Add(this.groupBox3);
             this.ConfigurationPanel.Controls.Add(this.AlertFunctionalityGroup);
             this.ConfigurationPanel.Controls.Add(this.LocationsAndEventsGroup);
+            this.ConfigurationPanel.Controls.Add(this.VolumeTrackBar);
             this.ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
             this.ConfigurationPanel.Name = "ConfigurationPanel";
-            this.ConfigurationPanel.Size = new System.Drawing.Size(671, 485);
+            this.ConfigurationPanel.Size = new System.Drawing.Size(671, 483);
             this.ConfigurationPanel.TabIndex = 6;
             // 
             // groupBox3
@@ -685,10 +691,22 @@
             this.groupBox3.ForeColor = System.Drawing.Color.White;
             this.groupBox3.Location = new System.Drawing.Point(12, 375);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(647, 98);
+            this.groupBox3.Size = new System.Drawing.Size(647, 96);
             this.groupBox3.TabIndex = 17;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Alert Categories";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Arial", 12F);
+            this.label2.Location = new System.Drawing.Point(466, 17);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(175, 36);
+            this.label2.TabIndex = 24;
+            this.label2.Text = "These options do not do\r\nanything at the moment.";
+            this.ToolTipInformation.SetToolTip(this.label2, "We\'re working on these options for a later update!");
             // 
             // categoryOtherBox
             // 
@@ -851,7 +869,7 @@
             this.BusyLockText.Font = new System.Drawing.Font("Arial", 12F);
             this.BusyLockText.Location = new System.Drawing.Point(0, 0);
             this.BusyLockText.Name = "BusyLockText";
-            this.BusyLockText.Size = new System.Drawing.Size(671, 485);
+            this.BusyLockText.Size = new System.Drawing.Size(671, 483);
             this.BusyLockText.TabIndex = 15;
             this.BusyLockText.Text = "Please wait or dismiss all alerts to configure settings.";
             this.BusyLockText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -862,23 +880,32 @@
             this.BusyLock.Enabled = true;
             this.BusyLock.Tick += new System.EventHandler(this.BusyLock_Tick);
             // 
-            // label2
+            // label5
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Arial", 12F);
-            this.label2.Location = new System.Drawing.Point(466, 17);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(175, 36);
-            this.label2.TabIndex = 24;
-            this.label2.Text = "These options do not do\r\nanything at the moment.";
-            this.ToolTipInformation.SetToolTip(this.label2, "We\'re working on these options for a later update!");
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(325, 338);
+            this.label5.Margin = new System.Windows.Forms.Padding(0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(99, 30);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Program Volume\r\n(locked)";
+            // 
+            // VolumeTrackBar
+            // 
+            this.VolumeTrackBar.Enabled = false;
+            this.VolumeTrackBar.LargeChange = 1;
+            this.VolumeTrackBar.Location = new System.Drawing.Point(427, 338);
+            this.VolumeTrackBar.Name = "VolumeTrackBar";
+            this.VolumeTrackBar.Size = new System.Drawing.Size(232, 45);
+            this.VolumeTrackBar.TabIndex = 18;
+            this.ToolTipInformation.SetToolTip(this.VolumeTrackBar, "Controls the volume of sounds, including TTS.");
+            this.VolumeTrackBar.Value = 10;
             // 
             // AlertConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(671, 485);
+            this.ClientSize = new System.Drawing.Size(671, 483);
             this.Controls.Add(this.ConfigurationPanel);
             this.Controls.Add(this.BusyLockText);
             this.Font = new System.Drawing.Font("Arial", 9F);
@@ -913,8 +940,10 @@
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.ConfigurationPanel.ResumeLayout(false);
+            this.ConfigurationPanel.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.VolumeTrackBar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -984,5 +1013,7 @@
         private System.Windows.Forms.CheckBox categoryCBRNEBox;
         private System.Windows.Forms.CheckBox categoryOtherBox;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TrackBar VolumeTrackBar;
     }
 }

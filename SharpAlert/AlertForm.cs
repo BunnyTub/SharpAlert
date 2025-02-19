@@ -4,7 +4,6 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows.Forms;
 using static SharpAlert.Program;
 
@@ -215,12 +214,12 @@ namespace SharpAlert
                 catch (Exception ex)
                 {
                     Console.WriteLine($"[Alert GUI] Failed to play remote audio. TTS will be played instead. {ex.Message}");
-                    engine.SpeakAsync(AlertTextStr);
+                    engine.SpeakAsync(AlertProcessor.StringIntoTTSFriendly(AlertTextStr));
                 }
             }
             else
             {
-                engine.SpeakAsync(AlertTextStr);
+                engine.SpeakAsync(AlertProcessor.StringIntoTTSFriendly(AlertTextStr));
             }
         }
 

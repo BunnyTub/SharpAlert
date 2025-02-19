@@ -32,6 +32,37 @@ namespace SharpAlert
 
         public static bool ServiceRunnerScheduled { get; private set; }
 
+        [Obsolete]
+        public static void PlayAlert(string audio)
+        {
+            MemoryStream audioStream = new MemoryStream();
+            try
+            {
+                switch (audio.ToLowerInvariant())
+                {
+                    case "alert":
+                        Resources.ui_warning.CopyTo(audioStream);
+                        break;
+                    case "cancel":
+                        Resources.ui_warning.CopyTo(audioStream);
+                        break;
+                    default:
+                        return;
+                }
+
+                AudioOutput.Init(new WaveFileReader(audioStream));
+                AudioOutput.Play();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Audio Playback] Failed to play audio. {ex.Message}");
+            }
+            finally
+            {
+                audioStream.Dispose();
+            }
+        }
+
         /// <summary>
         /// Starts the Ice Bear Worker as a client.
         /// </summary>
@@ -145,10 +176,16 @@ namespace SharpAlert
             soundCancellation = new SoundPlayer(Resources.ui_cancellation);
             soundFinish = new SoundPlayer(Resources.ui_end);
             engine = new SpeechSynthesizer();
-            AudioOutput = new WasapiOut();
+            AudioOutput = new WasapiOut
+            {
+                //Volume = Settings.Default.alertVolume / 10f
+            };
+
             AudioOutput.PlaybackStopped += (a, b) => soundFinish.Play();
             engine.SpeakCompleted += (objective, eventArgs) => soundFinish.Play();
-            
+
+            //PlayAlert("alert");
+
             Settings.Default.PropertyChanged += (objective, eventArgs) =>
             {
                 lock (ChangedPropertiesList)
@@ -180,7 +217,7 @@ namespace SharpAlert
                 case 2:
                     Console.WriteLine("[Ice Bear] Runner type is \"Client\".");
                     UseHTTPS = false;
-                    feed.server = $"{Settings.Default.ClientServerURL}:9792{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}";
+                    feed.server = $"{Settings.Default.ClientServerURL}:{Settings.Default.ClientServerPort}/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}";
                     break;
             }
 

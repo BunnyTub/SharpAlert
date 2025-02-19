@@ -1033,8 +1033,8 @@ namespace SharpAlert
                 EventType = $"Cautionary (Unknown Event)";
             }
 
-            string Coverage = "For the following area(s):";
-            string AreaDesc = "Unspecified area(s)";
+            string Coverage = "For the following localities:";
+            string AreaDesc = "Unspecified localities";
 
             try
             {
@@ -1047,7 +1047,8 @@ namespace SharpAlert
 
                     foreach (Match area in AreaDescription)
                     {
-                        AppendedAreas += area.Groups[1].Value.Replace(";", ",") + "\x20";
+                        //AppendedAreas += area.Groups[1].Value.Replace(";", ",") + "\x20";
+                        AppendedAreas += area.Groups[1].Value + "\x20";
                     }
 
                     // Commenting out UGC for now, since we have no way to convert them to their friendly names at the moment.
@@ -1259,11 +1260,11 @@ namespace SharpAlert
         /// </summary>
         /// <param name="Data"></param>
         /// <returns></returns>
-        public string StringIntoTTSFriendly(string Data)
+        public static string StringIntoTTSFriendly(string Data)
         {
             string FriendlyData = Data;
-            FriendlyData = FriendlyData.Replace("EAS", "E A S").Replace("911", "9 1 1").Replace("9-1-1", "9 1 1");
-            FriendlyData = FriendlyData.Replace("WEA", "We a");
+            FriendlyData = FriendlyData.Replace("EAS", "Emergency Alert System").Replace("911", "9 1 1").Replace("9-1-1", "9 1 1");
+            FriendlyData = FriendlyData.Replace("WEA", "Wireless Emergency Alerts");
             return FriendlyData;
         }
 
