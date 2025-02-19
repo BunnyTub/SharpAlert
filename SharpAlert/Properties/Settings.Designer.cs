@@ -490,12 +490,12 @@ namespace SharpAlert.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool alertFullscreenIdleTimeZoneUTC {
+        public bool alertTimeZoneUTC {
             get {
-                return ((bool)(this["alertFullscreenIdleTimeZoneUTC"]));
+                return ((bool)(this["alertTimeZoneUTC"]));
             }
             set {
-                this["alertFullscreenIdleTimeZoneUTC"] = value;
+                this["alertTimeZoneUTC"] = value;
             }
         }
         

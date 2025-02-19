@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -947,6 +948,19 @@ namespace SharpAlert
                 });
             }
 
+            string LocalTimeAbbreviation()
+            {
+                return string.Concat(TimeZoneInfo.Local.StandardName.Split(' ').Select(word => word.Substring(0, 1)));
+
+                //var localTimeZone = TimeZoneInfo.Local;
+                //var isDaylight = localTimeZone.IsDaylightSavingTime(DateTime.Now);
+
+                //if (isDaylight)
+                //    return localTimeZone.DaylightName.Substring(0, 3);
+                //else
+                //    return localTimeZone.StandardName.Substring(0, 3);
+            }
+
             if (Replay) BroadcastText += SentenceAppendSpace($"This alert was sent in replay mode by SharpAlert, on {DateTime.UtcNow:f} UTC.");
 
             string issue = "issued";
@@ -985,14 +999,28 @@ namespace SharpAlert
             try
             {
                 Match effective = EffectiveRegex.Match(InfoData);
-                effectiveDate = DateTime.Parse(effective.Groups[1].Value, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+                if (Settings.Default.alertTimeZoneUTC)
+                {
+                    effectiveDate = DateTime.Parse(effective.Groups[1].Value, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+                }
+                else
+                {
+                    effectiveDate = DateTime.Parse(effective.Groups[1].Value, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal).ToLocalTime();
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 try
                 {
-                    effectiveDate = DateTime.Parse(Sent, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+                    if (Settings.Default.alertTimeZoneUTC)
+                    {
+                        effectiveDate = DateTime.Parse(Sent, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+                    }
+                    else
+                    {
+                        effectiveDate = DateTime.Parse(Sent, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal).ToLocalTime();
+                    }
                 }
                 catch (Exception exx)
                 {
@@ -1004,18 +1032,34 @@ namespace SharpAlert
             DateTime expiryDate;
             try
             {
-                expiryDate = DateTime.Parse(Sent, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+                Match expires = ExpiresRegex.Match(InfoData);
+                if (Settings.Default.alertTimeZoneUTC)
+                {
+                    expiryDate = DateTime.Parse(expires.Groups[1].Value, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+                }
+                else
+                {
+                    expiryDate = DateTime.Parse(expires.Groups[1].Value, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal).ToLocalTime();
+                }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e.Message);
-                expiryDate = DateTime.UtcNow.AddHours(1);
+                Console.WriteLine(ex.Message);
+                if (Settings.Default.alertTimeZoneUTC)
+                {
+                    expiryDate = DateTime.UtcNow.AddHours(1);
+                }
+                else
+                {
+                    expiryDate = DateTime.UtcNow.AddHours(1).ToLocalTime();
+                }
             }
 
             //DateTime sentDate = DateTime.Parse(Sent, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal).ToUniversalTime();
 
             string TimeZoneName = "Unknown TZ";
-            TimeZoneName = "UTC";
+            if (Settings.Default.alertTimeZoneUTC) TimeZoneName = "UTC";
+            else TimeZoneName = $"{LocalTimeAbbreviation()}";
 
             string SentFormatted = $"{sentDate:HH:mm} {TimeZoneName}, {sentDate:MMMM dd}, {sentDate:yyyy}";
             string BeginFormatted = $"{effectiveDate:HH:mm} {TimeZoneName}, {effectiveDate:MMMM dd}, {effectiveDate:yyyy}";
@@ -1058,7 +1102,7 @@ namespace SharpAlert
 
                     foreach (Match code in GeocodeSAMEAreas)
                     {
-                        AppendedCodeAreas += $"{GetFriendlyNameFromSAMELocation(code.Groups[1].Value.Substring(1))},\x20";
+                        AppendedCodeAreas += $"{GetFriendlyNameFromSAMELocation(code.Groups[1].Value.Substring(1))};\x20";
                     }
 
                     //foreach (Match code in GeocodeUGCAreas)
@@ -1066,14 +1110,18 @@ namespace SharpAlert
                     //    AppendedCodeAreas += $"UGC geocode {code.Groups[1].Value},\x20";
                     //}
 
-                    if (AppendedCodeAreas.Split(',').Length > AppendedAreas.Split(',').Length)
+                    //if (AppendedCodeAreas.Split(',').Length > AppendedAreas.Split(',').Length)
                     {
-                        AreaDesc = SentencePuncuationCorrection(AppendedCodeAreas.Trim() + ".");
+                        AreaDesc = SentenceAppendEnd(SentencePuncuationCorrection(AppendedCodeAreas.Trim()));
+                        if (AreaDesc.EndsWith(";."))
+                        {
+                            AreaDesc = SentenceAppendEnd(AreaDesc.Substring(0, AreaDesc.Length - 2));
+                        }
                     }
-                    else
-                    {
-                        AreaDesc = AppendedAreas + ".";
-                    }
+                    //else
+                    //{
+                    //    AreaDesc = AppendedAreas + ".";
+                    //}
 
                     //string[] areaDescMatches = AreaDescription
                     //.Cast<Match>()

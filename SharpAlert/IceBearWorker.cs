@@ -254,6 +254,8 @@ namespace SharpAlert
             notificationThread.MonitorAndStart("Notification Tray");
 
             ServiceRunnerScheduled = true;
+
+            while (AllowThreadRestarts) Thread.Sleep(100);
         }
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace SharpAlert
             {
             }
             this.WindowState = FormWindowState.Maximized;
-            if (Settings.Default.alertFullscreenIdleTimeZoneUTC) UseUTCTimeZone = true;
+            if (Settings.Default.alertTimeZoneUTC) UseUTCTimeZone = true;
             if (Settings.Default.alertCompatibilityMode) InfoText.ScrollSpeed = 0;
             InfoText.Text = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Started operating: {startDT:f}";
             ClockSet_Tick(null, null);

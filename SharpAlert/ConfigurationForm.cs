@@ -81,8 +81,8 @@ namespace SharpAlert
                 this.BringToFront();
             };
 
-            alertFullscreenIdleTimeZoneUTCBox.Checked = Settings.Default.alertFullscreenIdleTimeZoneUTC;
-            alertFullscreenIdleTimeZoneUTCBox.CheckedChanged += (a, b) => Settings.Default.alertFullscreenIdleTimeZoneUTC = ((CheckBox)a).Checked;
+            alertFullscreenIdleTimeZoneUTCBox.Checked = Settings.Default.alertTimeZoneUTC;
+            alertFullscreenIdleTimeZoneUTCBox.CheckedChanged += (a, b) => Settings.Default.alertTimeZoneUTC = ((CheckBox)a).Checked;
 
             bool alertFullscreenDisplayIgnoreInput = false;
             alertFullscreenDisplayInput.Value = Settings.Default.alertFullscreenDisplay;

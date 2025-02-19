@@ -95,7 +95,7 @@
     <Setting Name="statusWindow" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="alertFullscreenIdleTimeZoneUTC" Type="System.Boolean" Scope="User">
+    <Setting Name="alertTimeZoneUTC" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="RunnerType" Type="System.Int32" Scope="User">

@@ -263,7 +263,7 @@ namespace SharpAlert
 
         private void LinkButton_Click(object sender, EventArgs e)
         {
-            if (AlertUrlStr != null)
+            if (!string.IsNullOrWhiteSpace(AlertUrlStr))
             {
                 // let's assume this is a URL for now, we'll fix it later
                 Process.Start(AlertUrlStr);
