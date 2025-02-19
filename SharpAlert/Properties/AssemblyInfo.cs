@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SharpAlert")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Receive alerts in the background. Safety is never a non-priority.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("EAS Culture")]
 [assembly: AssemblyProduct("SharpAlert")]
-[assembly: AssemblyCopyright("BunnyTub")]
+[assembly: AssemblyCopyright("EAS Culture / BunnyTub")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
