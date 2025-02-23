@@ -549,13 +549,13 @@ namespace SharpAlert.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
-        public int alertVolume {
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int alertSoundPack {
             get {
-                return ((int)(this["alertVolume"]));
+                return ((int)(this["alertSoundPack"]));
             }
             set {
-                this["alertVolume"] = value;
+                this["alertSoundPack"] = value;
             }
         }
     }

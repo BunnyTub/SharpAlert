@@ -52,7 +52,7 @@
             // 
             // TitleText
             // 
-            this.TitleText.Font = new System.Drawing.Font("Arial", 56F);
+            this.TitleText.Font = new System.Drawing.Font("Arial", 56F, System.Drawing.FontStyle.Bold);
             this.TitleText.Location = new System.Drawing.Point(165, 8);
             this.TitleText.Name = "TitleText";
             this.TitleText.Size = new System.Drawing.Size(422, 94);
@@ -94,6 +94,7 @@
             this.ClientSize = new System.Drawing.Size(600, 172);
             this.ControlBox = false;
             this.Controls.Add(this.MainContentsPanel);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;

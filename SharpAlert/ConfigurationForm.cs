@@ -24,8 +24,8 @@ namespace SharpAlert
             DiscordWebhookURLInput.Text = Settings.Default.DiscordWebhook;
             DiscordWebhookAppendInput.Text = Settings.Default.DiscordWebhookAppend;
 
-            if (string.IsNullOrWhiteSpace(DiscordWebhookURLInput.Text)) AlertAppearanceGroup.Enabled = true;
-            else AlertAppearanceGroup.Enabled = false;
+            if (string.IsNullOrWhiteSpace(DiscordWebhookURLInput.Text)) AlertAppearanceAndSoundsGroup.Enabled = true;
+            else AlertAppearanceAndSoundsGroup.Enabled = false;
 
             alertFullscreenBox.Checked = Settings.Default.alertFullscreen;
             if (alertFullscreenBox.Checked)
@@ -133,6 +133,13 @@ namespace SharpAlert
 
             alertCompatibilityModeBox.Checked = Settings.Default.alertCompatibilityMode;
             alertCompatibilityModeBox.CheckedChanged += (a, b) => Settings.Default.alertCompatibilityMode = ((CheckBox)a).Checked;
+            
+            alertSoundPack.SelectedIndex = Settings.Default.alertSoundPack;
+            alertSoundPack.SelectedIndexChanged += (a, b) =>
+            {
+                Settings.Default.alertSoundPack = ((ComboBox)a).SelectedIndex;
+                MessageBox.Show("You'll need to restart SharpAlert to use another sound pack!");
+            };
 
             statusWindowBox.Checked = Settings.Default.statusWindow;
             statusWindowBox.CheckedChanged += (a, b) =>
@@ -244,8 +251,8 @@ namespace SharpAlert
             Settings.Default.DiscordWebhook = DiscordWebhookURLInput.Text.Trim();
             Settings.Default.DiscordWebhookAppend = DiscordWebhookAppendInput.Text.Trim();
 
-            if (string.IsNullOrWhiteSpace(DiscordWebhookURLInput.Text)) AlertAppearanceGroup.Enabled = true;
-            else AlertAppearanceGroup.Enabled = false;
+            if (string.IsNullOrWhiteSpace(DiscordWebhookURLInput.Text)) AlertAppearanceAndSoundsGroup.Enabled = true;
+            else AlertAppearanceAndSoundsGroup.Enabled = false;
         }
 
         private void CacheOperationButton_Click(object sender, EventArgs e)
@@ -259,7 +266,7 @@ namespace SharpAlert
             {
                 string directory = AssemblyDirectory + "\\dump";
                 Directory.CreateDirectory(directory);
-                lock (SharpDataHistory) foreach (var item in Program.SharpDataHistory) File.WriteAllText(directory + "\\" + item.Name + ".xml", item.Data);
+                lock (SharpDataHistory) foreach (var item in SharpDataHistory) File.WriteAllText(directory + "\\" + item.Name + ".xml", item.Data);
                 MessageBox.Show($"{SharpDataHistory.Count} item(s) saved to the dump directory.",
                     "SharpAlert",
                     MessageBoxButtons.OK,

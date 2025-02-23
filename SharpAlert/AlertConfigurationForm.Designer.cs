@@ -93,8 +93,6 @@
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.BusyLockText = new System.Windows.Forms.Label();
             this.BusyLock = new System.Windows.Forms.Timer(this.components);
-            this.label5 = new System.Windows.Forms.Label();
-            this.VolumeTrackBar = new System.Windows.Forms.TrackBar();
             this.AlertFunctionalityGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlertCheckIntervalInput)).BeginInit();
             this.groupBox11.SuspendLayout();
@@ -108,7 +106,6 @@
             this.groupBox7.SuspendLayout();
             this.ConfigurationPanel.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.VolumeTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // AlertFunctionalityGroup
@@ -662,11 +659,9 @@
             // 
             // ConfigurationPanel
             // 
-            this.ConfigurationPanel.Controls.Add(this.label5);
             this.ConfigurationPanel.Controls.Add(this.groupBox3);
             this.ConfigurationPanel.Controls.Add(this.AlertFunctionalityGroup);
             this.ConfigurationPanel.Controls.Add(this.LocationsAndEventsGroup);
-            this.ConfigurationPanel.Controls.Add(this.VolumeTrackBar);
             this.ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
             this.ConfigurationPanel.Name = "ConfigurationPanel";
@@ -880,27 +875,6 @@
             this.BusyLock.Enabled = true;
             this.BusyLock.Tick += new System.EventHandler(this.BusyLock_Tick);
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(325, 338);
-            this.label5.Margin = new System.Windows.Forms.Padding(0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(99, 30);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "Program Volume\r\n(locked)";
-            // 
-            // VolumeTrackBar
-            // 
-            this.VolumeTrackBar.Enabled = false;
-            this.VolumeTrackBar.LargeChange = 1;
-            this.VolumeTrackBar.Location = new System.Drawing.Point(427, 338);
-            this.VolumeTrackBar.Name = "VolumeTrackBar";
-            this.VolumeTrackBar.Size = new System.Drawing.Size(232, 45);
-            this.VolumeTrackBar.TabIndex = 18;
-            this.ToolTipInformation.SetToolTip(this.VolumeTrackBar, "Controls the volume of sounds, including TTS.");
-            this.VolumeTrackBar.Value = 10;
-            // 
             // AlertConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -940,10 +914,8 @@
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.ConfigurationPanel.ResumeLayout(false);
-            this.ConfigurationPanel.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.VolumeTrackBar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1013,7 +985,5 @@
         private System.Windows.Forms.CheckBox categoryCBRNEBox;
         private System.Windows.Forms.CheckBox categoryOtherBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TrackBar VolumeTrackBar;
     }
 }

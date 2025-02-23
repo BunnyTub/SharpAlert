@@ -41,10 +41,10 @@ namespace SharpAlert
                 switch (audio.ToLowerInvariant())
                 {
                     case "alert":
-                        Resources.ui_warning.CopyTo(audioStream);
+                        Resources.ui_warning_1.CopyTo(audioStream);
                         break;
                     case "cancel":
-                        Resources.ui_warning.CopyTo(audioStream);
+                        Resources.ui_warning_1.CopyTo(audioStream);
                         break;
                     default:
                         return;
@@ -172,9 +172,9 @@ namespace SharpAlert
             feed = new FeedCapture();
             cache = new CacheCapture();
             processor = new DataProcessor();
-            sound = new SoundPlayer(Resources.ui_warning);
-            soundCancellation = new SoundPlayer(Resources.ui_cancellation);
-            soundFinish = new SoundPlayer(Resources.ui_end);
+            sound = new SoundPlayer(Resources.ui_warning_1);
+            soundCancellation = new SoundPlayer(Resources.ui_cancellation_1);
+            soundFinish = new SoundPlayer(Resources.ui_end_1);
             engine = new SpeechSynthesizer();
             AudioOutput = new WasapiOut
             {
@@ -503,10 +503,24 @@ namespace SharpAlert
                 notify.ShowBalloonTip(5000);
             }
 
+            string home = "https://sharpalert.bunnytub.com";
+
             contextMenu.Items.Add(new ToolStripLabel($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
                 Resources.AlertIcon, true, (obj, args) =>
                 {
-                    Process.Start("https://sharpalert.bunnytub.com");
+                    try
+                    {
+                        Process.Start(home);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Enter the following URL in your browser:\r\n" +
+                            $"{home}\r\n\r\n" +
+                            "The link couldn't be opened.",
+                            "SharpAlert",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Exclamation);
+                    }
                 })
             {
                 ToolTipText = "Very mindful, very demure."
@@ -517,7 +531,19 @@ namespace SharpAlert
                 contextMenu.Items.Add(new ToolStripLabel($"Click here to update!",
                 null, true, (obj, args) =>
                 {
-                    Process.Start("https://sharpalert.bunnytub.com/downloads");
+                    try
+                    {
+                        Process.Start(home + "/downloads");
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Enter the following URL in your browser:\r\n" +
+                            $"{home}/downloads\r\n\r\n" +
+                            "The link couldn't be opened.",
+                            "SharpAlert",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Exclamation);
+                    }
                 })
                 {
                     ToolTipText = "There's an update available for you to download!"
@@ -588,6 +614,7 @@ namespace SharpAlert
                 string StringNumberTwo = StringOfStrings[2].Trim();
             }));
 #endif   
+            
             contextMenu.Items.Add(new ToolStripMenuItem("Quit", null, (sender, arg) =>
             {
                 if (AlertDisplaying)

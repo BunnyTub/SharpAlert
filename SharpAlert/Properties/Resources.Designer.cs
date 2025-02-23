@@ -83,36 +83,36 @@ namespace SharpAlert.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream ui_cancellation {
+        internal static System.IO.UnmanagedMemoryStream ui_cancellation_1 {
             get {
-                return ResourceManager.GetStream("ui_cancellation", resourceCulture);
+                return ResourceManager.GetStream("ui_cancellation_1", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream ui_end {
+        internal static System.IO.UnmanagedMemoryStream ui_end_1 {
             get {
-                return ResourceManager.GetStream("ui_end", resourceCulture);
+                return ResourceManager.GetStream("ui_end_1", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream ui_nothing {
+        internal static System.IO.UnmanagedMemoryStream ui_nothing_1 {
             get {
-                return ResourceManager.GetStream("ui_nothing", resourceCulture);
+                return ResourceManager.GetStream("ui_nothing_1", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream ui_warning {
+        internal static System.IO.UnmanagedMemoryStream ui_warning_1 {
             get {
-                return ResourceManager.GetStream("ui_warning", resourceCulture);
+                return ResourceManager.GetStream("ui_warning_1", resourceCulture);
             }
         }
     }

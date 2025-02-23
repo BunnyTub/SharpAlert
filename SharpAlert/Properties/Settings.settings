@@ -110,8 +110,8 @@
     <Setting Name="statusExercise" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="alertVolume" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
+    <Setting Name="alertSoundPack" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
     </Setting>
   </Settings>
 </SettingsFile>

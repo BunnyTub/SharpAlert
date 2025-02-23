@@ -16,7 +16,7 @@ namespace SharpAlert
     internal static class VersionInfo
     {
         public static readonly int MajorVersion = 4;
-        public static readonly int MinorVersion = 1;
+        public static readonly int MinorVersion = 2;
     }
 
     public class SharpDataItem
@@ -65,7 +65,7 @@ namespace SharpAlert
         public static Icon icon = SystemIcons.Information;
 
         /// <summary>
-        /// Stops everything safely.
+        /// Stops everything safely. Hopefully.
         /// </summary>
         public static void SafeExit(int exitCode)
         {
@@ -86,11 +86,25 @@ namespace SharpAlert
             Console.WriteLine("Status Window is shutting down.");
             if (status != null) DestroyStatusWindow();
             Console.WriteLine("Stopping sounds.");
-            sound?.Stop();
-            soundCancellation?.Stop();
-            soundFinish?.Stop();
+            try
+            {
+                sound?.Stop();
+                soundCancellation?.Stop();
+                soundFinish?.Stop();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Cannot stop some sounds.");
+            }
             Console.WriteLine("Stopping TTS.");
-            engine?.SpeakAsyncCancelAll();
+            try
+            {
+                engine?.SpeakAsyncCancelAll();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Cannot stop TTS.");
+            }
             Console.WriteLine("Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-");
             if (notify != null)
             {
@@ -150,7 +164,7 @@ namespace SharpAlert
         {
             using (MD5 md5 = MD5.Create())
             {
-                byte[] inputBytes = Encoding.ASCII.GetBytes(input);
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
                 byte[] hashBytes = md5.ComputeHash(inputBytes);
 
                 StringBuilder sb = new StringBuilder();
