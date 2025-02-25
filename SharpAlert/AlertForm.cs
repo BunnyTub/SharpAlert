@@ -1,11 +1,11 @@
-﻿using NAudio.Wave;
-using SharpAlert.Properties;
+﻿using SharpAlert.Properties;
 using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using static SharpAlert.Program;
+using static SharpAlert.AudioManager;
 
 namespace SharpAlert
 {
@@ -99,19 +99,20 @@ namespace SharpAlert
             AlertUrlStr = url;
             AlertAudioUrlStr = audio;
             AlertImageUrlStr = image;
+            AlertType = type;
             AlertText.SelectionStart = 0;
 
             switch (type)
             {
                 case "alert":
                     TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
                     SpacerPanel.BackColor = Color.DarkOrange;
                     TitleText.Text = "EMERGENCY ALERT";
                     break;
                 case "update":
                     TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
                     SpacerPanel.BackColor = Color.DarkOrange;
                     TitleText.Text = "ALERT UPDATE";
                     break;
@@ -123,13 +124,13 @@ namespace SharpAlert
                     break;
                 case "test":
                     TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
                     SpacerPanel.BackColor = Color.DarkOrange;
                     TitleText.Text = "ALERT TEST";
                     break;
                 default:
                     TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
                     SpacerPanel.BackColor = Color.DarkOrange;
                     TitleText.Text = "EMERGENCY ALERT";
                     break;
@@ -181,13 +182,12 @@ namespace SharpAlert
 
             if (AlertType != "cancel")
             {
-                sound.Play();
+                PlayFromUnmanagedSource(Resources.ui_warning_1);
             }
             else
             {
-                soundCancellation.Play();
+                PlayFromUnmanagedSource(Resources.ui_cancellation_1);
             }
-            engine.SetOutputToDefaultAudioDevice();
 
             Console.WriteLine("[Alert GUI] Window shown.");
         }
@@ -200,27 +200,7 @@ namespace SharpAlert
         private void SpeakerButton_Click(object sender, EventArgs e)
         {
             SpeakerButton.Enabled = false;
-
-            if (!string.IsNullOrWhiteSpace(AlertAudioUrlStr))
-            {
-                try
-                {
-                    using (var mf = new MediaFoundationReader(AlertAudioUrlStr))
-                    {
-                        AudioOutput.Init(mf);
-                        AudioOutput.Play();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[Alert GUI] Failed to play remote audio. TTS will be played instead. {ex.Message}");
-                    engine.SpeakAsync(AlertProcessor.StringIntoTTSFriendly(AlertTextStr));
-                }
-            }
-            else
-            {
-                engine.SpeakAsync(AlertProcessor.StringIntoTTSFriendly(AlertTextStr));
-            }
+            PlayWithFailoverToTTS(AlertAudioUrlStr, AlertTextStr);
         }
 
         private void AlertForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -238,10 +218,8 @@ namespace SharpAlert
                     FadeOutAnimation.Start();
                 }
             }
-            sound.Stop();
-            engine.SpeakAsyncCancelAll();
-            AudioOutput.Stop();
-            soundFinish.Stop();
+            StopAllAudioSilently();
+            PlayFromUnmanagedSourceAndWait(Resources.ui_end_1);
         }
 
         IntPtr GotHandle = IntPtr.Zero;

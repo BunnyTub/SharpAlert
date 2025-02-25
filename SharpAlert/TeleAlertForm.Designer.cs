@@ -43,7 +43,6 @@
             this.SubtitlePanel = new System.Windows.Forms.Panel();
             this.SubtitleText = new System.Windows.Forms.Label();
             this.SubtitleSpacer = new System.Windows.Forms.Panel();
-            this.EnsureTopWindow = new System.Windows.Forms.Timer(this.components);
             this.FlashTaskbarStatus = new System.Windows.Forms.Timer(this.components);
             this.AutoTTS = new System.Windows.Forms.Timer(this.components);
             this.FadeInAnimation = new System.Windows.Forms.Timer(this.components);
@@ -256,11 +255,6 @@
             this.SubtitleSpacer.Size = new System.Drawing.Size(10, 63);
             this.SubtitleSpacer.TabIndex = 2;
             // 
-            // EnsureTopWindow
-            // 
-            this.EnsureTopWindow.Interval = 500;
-            this.EnsureTopWindow.Tick += new System.EventHandler(this.EnsureTopWindow_Tick);
-            // 
             // FlashTaskbarStatus
             // 
             this.FlashTaskbarStatus.Interval = 500;
@@ -368,7 +362,6 @@
         private System.Windows.Forms.Panel SubtitlePanel;
         private System.Windows.Forms.Label SubtitleText;
         private System.Windows.Forms.Panel SubtitleSpacer;
-        private System.Windows.Forms.Timer EnsureTopWindow;
         private System.Windows.Forms.Button LinkButton;
         private System.Windows.Forms.Timer FlashTaskbarStatus;
         private System.Windows.Forms.Timer AutoTTS;

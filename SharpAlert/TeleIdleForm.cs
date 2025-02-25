@@ -29,10 +29,17 @@ namespace SharpAlert
             }
             this.WindowState = FormWindowState.Maximized;
             if (Settings.Default.alertTimeZoneUTC) UseUTCTimeZone = true;
-            if (Settings.Default.alertCompatibilityMode) InfoText.ScrollSpeed = 0;
-            InfoText.Text = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Started operating: {startDT:f}";
+            if (Settings.Default.alertCompatibilityMode)
+            {
+                InfoText.ScrollSpeed = 0;
+                IdleText.Dock = DockStyle.Fill;
+            }
+            else
+            {
+                MovePreventBurnIn_Tick(null, null);
+            }
             ClockSet_Tick(null, null);
-            MovePreventBurnIn_Tick(null, null);
+            InfoText.Text = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Started operating: {startDT:f}";
         }
 
         private void WindowClosingChecker_Tick(object sender, EventArgs e)

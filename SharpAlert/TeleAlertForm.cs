@@ -1,12 +1,12 @@
-﻿using System;
+﻿using SharpAlert.Properties;
+using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using static SharpAlert.Program;
-using SharpAlert.Properties;
-using System.Drawing;
 using System.Linq;
-using NAudio.Wave;
+using static SharpAlert.Program;
+using static SharpAlert.AudioManager;
 
 namespace SharpAlert
 {
@@ -104,19 +104,20 @@ namespace SharpAlert
             AlertUrlStr = url;
             AlertAudioUrlStr = audio;
             AlertImageUrlStr = image;
+            AlertType = type;
             AlertText.SelectionStart = 0;
 
             switch (type)
             {
                 case "alert":
                     TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
                     SpacerPanel.BackColor = Color.DarkOrange;
                     TitleText.Text = "EMERGENCY ALERT";
                     break;
                 case "update":
                     TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
                     SpacerPanel.BackColor = Color.DarkOrange;
                     TitleText.Text = "ALERT UPDATE";
                     break;
@@ -128,13 +129,13 @@ namespace SharpAlert
                     break;
                 case "test":
                     TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
                     SpacerPanel.BackColor = Color.DarkOrange;
                     TitleText.Text = "ALERT TEST";
                     break;
                 default:
                     TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
                     SpacerPanel.BackColor = Color.DarkOrange;
                     TitleText.Text = "EMERGENCY ALERT";
                     break;
@@ -211,22 +212,21 @@ namespace SharpAlert
 
             if (AlertType != "cancel")
             {
-                sound.Play();
+                PlayFromUnmanagedSource(Resources.ui_warning_1);
             }
             else
             {
-                soundCancellation.Play();
+                PlayFromUnmanagedSource(Resources.ui_cancellation_1);
             }
 
-            engine.SetOutputToDefaultAudioDevice();
             AutoTTS.Start();
-
             AlertText.Focus();
             AlertText.SelectionLength = 0;
             AutoScroller.Start();
 
             SetWindowPos(GotHandle, (IntPtr)HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
             SetForegroundWindow(GotHandle);
+            taskbarList.MarkFullscreenWindow(GotHandle, true);
 
             Console.WriteLine("[Alert GUI] Window shown.");
         }
@@ -251,18 +251,12 @@ namespace SharpAlert
                 e.Cancel = true;
                 FadeOutAnimation.Start();
             }
-            sound.Stop();
-            engine.SpeakAsyncCancelAll();
-            soundFinish.Stop();
+            StopAllAudioSilently();
+            PlayFromUnmanagedSourceAndWait(Resources.ui_end_1);
+            taskbarList.MarkFullscreenWindow(GotHandle, false);
         }
 
         IntPtr GotHandle = IntPtr.Zero;
-
-        // unused
-        private void EnsureTopWindow_Tick(object sender, EventArgs e)
-        {
-            EnsureTopWindow.Stop();
-        }
 
         private void LinkButton_Click(object sender, EventArgs e)
         {
@@ -323,27 +317,7 @@ namespace SharpAlert
         private void AutoTTS_Tick(object sender, EventArgs e)
         {
             AutoTTS.Stop();
-
-            if (!string.IsNullOrWhiteSpace(AlertAudioUrlStr))
-            {
-                try
-                {
-                    using (var mf = new MediaFoundationReader(AlertAudioUrlStr))
-                    {
-                        AudioOutput.Init(mf);
-                        AudioOutput.Play();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[Alert GUI] Failed to play remote audio. TTS will be played instead. {ex.Message}");
-                    engine.SpeakAsync(AlertProcessor.StringIntoTTSFriendly(AlertTextStr));
-                }
-            }
-            else
-            {
-                engine.SpeakAsync(AlertProcessor.StringIntoTTSFriendly(AlertTextStr));
-            }
+            PlayWithFailoverToTTS(AlertAudioUrlStr, AlertTextStr);
         }
 
         private void FadeInAnimation_Tick(object sender, EventArgs e)

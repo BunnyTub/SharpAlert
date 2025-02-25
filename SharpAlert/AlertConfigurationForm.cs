@@ -27,8 +27,6 @@ namespace SharpAlert
             messageTypeUpdateBox.CheckedChanged += (a, b) => Settings.Default.messageTypeUpdate = ((CheckBox)a).Checked;
             messageTypeCancelBox.Checked = Settings.Default.messageTypeCancel;
             messageTypeCancelBox.CheckedChanged += (a, b) => Settings.Default.messageTypeCancel = ((CheckBox)a).Checked;
-            messageTypeTestBox.Checked = Settings.Default.messageTypeTest;
-            messageTypeTestBox.CheckedChanged += (a, b) => Settings.Default.messageTypeTest = ((CheckBox)a).Checked;
 
             severityExtremeBox.Checked = Settings.Default.severityExtreme;
             severityExtremeBox.CheckedChanged += (a, b) => Settings.Default.severityExtreme = ((CheckBox)a).Checked;

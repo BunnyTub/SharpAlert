@@ -49,7 +49,6 @@
             this.severitySevereBox = new System.Windows.Forms.CheckBox();
             this.severityExtremeBox = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.messageTypeTestBox = new System.Windows.Forms.CheckBox();
             this.messageTypeCancelBox = new System.Windows.Forms.CheckBox();
             this.messageTypeUpdateBox = new System.Windows.Forms.CheckBox();
             this.messageTypeAlertBox = new System.Windows.Forms.CheckBox();
@@ -204,9 +203,9 @@
             this.groupBox5.Controls.Add(this.urgencyExpectedBox);
             this.groupBox5.Controls.Add(this.urgencyImmediateBox);
             this.groupBox5.ForeColor = System.Drawing.Color.White;
-            this.groupBox5.Location = new System.Drawing.Point(160, 146);
+            this.groupBox5.Location = new System.Drawing.Point(160, 122);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(144, 178);
+            this.groupBox5.Size = new System.Drawing.Size(144, 202);
             this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Message Urgency";
@@ -338,28 +337,16 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.messageTypeTestBox);
             this.groupBox2.Controls.Add(this.messageTypeCancelBox);
             this.groupBox2.Controls.Add(this.messageTypeUpdateBox);
             this.groupBox2.Controls.Add(this.messageTypeAlertBox);
             this.groupBox2.ForeColor = System.Drawing.Color.White;
             this.groupBox2.Location = new System.Drawing.Point(160, 20);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(144, 120);
+            this.groupBox2.Size = new System.Drawing.Size(144, 96);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Message Type";
-            // 
-            // messageTypeTestBox
-            // 
-            this.messageTypeTestBox.AutoSize = true;
-            this.messageTypeTestBox.Location = new System.Drawing.Point(6, 95);
-            this.messageTypeTestBox.Name = "messageTypeTestBox";
-            this.messageTypeTestBox.Size = new System.Drawing.Size(49, 19);
-            this.messageTypeTestBox.TabIndex = 6;
-            this.messageTypeTestBox.Text = "Test";
-            this.ToolTipInformation.SetToolTip(this.messageTypeTestBox, "Allow messages of the following type.");
-            this.messageTypeTestBox.UseVisualStyleBackColor = true;
             // 
             // messageTypeCancelBox
             // 
@@ -941,7 +928,6 @@
         private System.Windows.Forms.CheckBox severitySevereBox;
         private System.Windows.Forms.CheckBox severityExtremeBox;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox messageTypeTestBox;
         private System.Windows.Forms.CheckBox messageTypeCancelBox;
         private System.Windows.Forms.CheckBox messageTypeUpdateBox;
         private System.Windows.Forms.CheckBox messageTypeAlertBox;

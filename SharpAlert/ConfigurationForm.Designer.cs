@@ -50,27 +50,28 @@
             this.CacheOperationButton = new System.Windows.Forms.Button();
             this.BusyLockText = new System.Windows.Forms.Label();
             this.statusWindowBox = new System.Windows.Forms.CheckBox();
-            this.alertFullscreenIdleTimeZoneUTCBox = new System.Windows.Forms.CheckBox();
+            this.alertTimeZoneUTCBox = new System.Windows.Forms.CheckBox();
             this.ServerButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.AlertButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.InstallButton = new System.Windows.Forms.Button();
+            this.alertTTSonlyBox = new System.Windows.Forms.CheckBox();
+            this.volumeBar = new System.Windows.Forms.TrackBar();
             this.DiscordWebhookGroup = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.AlertAppearanceAndSoundsGroup = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.PastAlertsGroup = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.AlertHistoryOutput = new System.Windows.Forms.TextBox();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
-            this.alertSoundPack = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
             this.DiscordWebhookGroup.SuspendLayout();
             this.AlertAppearanceAndSoundsGroup.SuspendLayout();
             this.PastAlertsGroup.SuspendLayout();
@@ -261,7 +262,7 @@
             // OpenCreditsButton
             // 
             this.OpenCreditsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OpenCreditsButton.Location = new System.Drawing.Point(12, 325);
+            this.OpenCreditsButton.Location = new System.Drawing.Point(12, 342);
             this.OpenCreditsButton.Name = "OpenCreditsButton";
             this.OpenCreditsButton.Size = new System.Drawing.Size(61, 23);
             this.OpenCreditsButton.TabIndex = 9;
@@ -273,7 +274,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(79, 329);
+            this.label10.Location = new System.Drawing.Point(79, 346);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(246, 15);
             this.label10.TabIndex = 11;
@@ -283,7 +284,7 @@
             // CacheOperationButton
             // 
             this.CacheOperationButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CacheOperationButton.Location = new System.Drawing.Point(459, 325);
+            this.CacheOperationButton.Location = new System.Drawing.Point(459, 342);
             this.CacheOperationButton.Name = "CacheOperationButton";
             this.CacheOperationButton.Size = new System.Drawing.Size(94, 23);
             this.CacheOperationButton.TabIndex = 12;
@@ -299,7 +300,7 @@
             this.BusyLockText.Font = new System.Drawing.Font("Arial", 12F);
             this.BusyLockText.Location = new System.Drawing.Point(0, 0);
             this.BusyLockText.Name = "BusyLockText";
-            this.BusyLockText.Size = new System.Drawing.Size(671, 379);
+            this.BusyLockText.Size = new System.Drawing.Size(671, 396);
             this.BusyLockText.TabIndex = 14;
             this.BusyLockText.Text = "Please wait or dismiss all alerts to configure settings.";
             this.BusyLockText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -308,7 +309,7 @@
             // statusWindowBox
             // 
             this.statusWindowBox.AutoSize = true;
-            this.statusWindowBox.Location = new System.Drawing.Point(345, 328);
+            this.statusWindowBox.Location = new System.Drawing.Point(345, 345);
             this.statusWindowBox.Name = "statusWindowBox";
             this.statusWindowBox.Size = new System.Drawing.Size(106, 19);
             this.statusWindowBox.TabIndex = 25;
@@ -316,21 +317,21 @@
             this.ToolTipInformation.SetToolTip(this.statusWindowBox, "Shows the status window.");
             this.statusWindowBox.UseVisualStyleBackColor = true;
             // 
-            // alertFullscreenIdleTimeZoneUTCBox
+            // alertTimeZoneUTCBox
             // 
-            this.alertFullscreenIdleTimeZoneUTCBox.AutoSize = true;
-            this.alertFullscreenIdleTimeZoneUTCBox.Location = new System.Drawing.Point(327, 20);
-            this.alertFullscreenIdleTimeZoneUTCBox.Name = "alertFullscreenIdleTimeZoneUTCBox";
-            this.alertFullscreenIdleTimeZoneUTCBox.Size = new System.Drawing.Size(77, 19);
-            this.alertFullscreenIdleTimeZoneUTCBox.TabIndex = 25;
-            this.alertFullscreenIdleTimeZoneUTCBox.Text = "Use UTC";
-            this.ToolTipInformation.SetToolTip(this.alertFullscreenIdleTimeZoneUTCBox, "Sets the time display on the idle window to UTC instead of the system time zone.");
-            this.alertFullscreenIdleTimeZoneUTCBox.UseVisualStyleBackColor = true;
+            this.alertTimeZoneUTCBox.AutoSize = true;
+            this.alertTimeZoneUTCBox.Location = new System.Drawing.Point(327, 20);
+            this.alertTimeZoneUTCBox.Name = "alertTimeZoneUTCBox";
+            this.alertTimeZoneUTCBox.Size = new System.Drawing.Size(77, 19);
+            this.alertTimeZoneUTCBox.TabIndex = 25;
+            this.alertTimeZoneUTCBox.Text = "Use UTC";
+            this.ToolTipInformation.SetToolTip(this.alertTimeZoneUTCBox, "Sets the time display on the idle window to UTC instead of the system time zone.");
+            this.alertTimeZoneUTCBox.UseVisualStyleBackColor = true;
             // 
             // ServerButton
             // 
             this.ServerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ServerButton.Location = new System.Drawing.Point(559, 325);
+            this.ServerButton.Location = new System.Drawing.Point(559, 342);
             this.ServerButton.Name = "ServerButton";
             this.ServerButton.Size = new System.Drawing.Size(100, 23);
             this.ServerButton.TabIndex = 26;
@@ -352,7 +353,8 @@
             this.label1.Size = new System.Drawing.Size(380, 25);
             this.label1.TabIndex = 27;
             this.label1.Text = "Most settings are immediately applied.";
-            this.ToolTipInformation.SetToolTip(this.label1, "The mentioned element has moved somewhere else.");
+            this.ToolTipInformation.SetToolTip(this.label1, "Mostly everything is immediately applied. Some settings may require a program res" +
+        "tart.");
             // 
             // AlertButton
             // 
@@ -371,7 +373,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 355);
+            this.label3.Location = new System.Drawing.Point(9, 372);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(608, 15);
@@ -380,20 +382,26 @@
     " \"as is\", by the original developers.";
             this.ToolTipInformation.SetToolTip(this.label3, "Can\'t be too careful.");
             // 
-            // InstallButton
+            // alertTTSonlyBox
             // 
-            this.InstallButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.InstallButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InstallButton.Location = new System.Drawing.Point(433, 12);
-            this.InstallButton.Name = "InstallButton";
-            this.InstallButton.Size = new System.Drawing.Size(120, 23);
-            this.InstallButton.TabIndex = 30;
-            this.InstallButton.Text = "Run Automatically";
-            this.ToolTipInformation.SetToolTip(this.InstallButton, "Opens the installation wizard.");
-            this.InstallButton.UseMnemonic = false;
-            this.InstallButton.UseVisualStyleBackColor = true;
-            this.InstallButton.Visible = false;
-            this.InstallButton.Click += new System.EventHandler(this.InstallButton_Click);
+            this.alertTTSonlyBox.AutoSize = true;
+            this.alertTTSonlyBox.Location = new System.Drawing.Point(6, 45);
+            this.alertTTSonlyBox.Name = "alertTTSonlyBox";
+            this.alertTTSonlyBox.Size = new System.Drawing.Size(159, 19);
+            this.alertTTSonlyBox.TabIndex = 26;
+            this.alertTTSonlyBox.Text = "Never play remote audio";
+            this.ToolTipInformation.SetToolTip(this.alertTTSonlyBox, "Turn off requests for remote audio. Only plays TTS.");
+            this.alertTTSonlyBox.UseVisualStyleBackColor = true;
+            // 
+            // volumeBar
+            // 
+            this.volumeBar.LargeChange = 1;
+            this.volumeBar.Location = new System.Drawing.Point(235, 45);
+            this.volumeBar.Name = "volumeBar";
+            this.volumeBar.Size = new System.Drawing.Size(406, 45);
+            this.volumeBar.TabIndex = 27;
+            this.volumeBar.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.ToolTipInformation.SetToolTip(this.volumeBar, "The global volume of the application.");
             // 
             // DiscordWebhookGroup
             // 
@@ -443,8 +451,9 @@
             // AlertAppearanceAndSoundsGroup
             // 
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.label4);
-            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertSoundPack);
-            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertFullscreenIdleTimeZoneUTCBox);
+            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.volumeBar);
+            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertTTSonlyBox);
+            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertTimeZoneUTCBox);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertCompatibilityModeBox);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.label9);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertTimeoutInput);
@@ -455,10 +464,19 @@
             this.AlertAppearanceAndSoundsGroup.ForeColor = System.Drawing.Color.White;
             this.AlertAppearanceAndSoundsGroup.Location = new System.Drawing.Point(12, 130);
             this.AlertAppearanceAndSoundsGroup.Name = "AlertAppearanceAndSoundsGroup";
-            this.AlertAppearanceAndSoundsGroup.Size = new System.Drawing.Size(647, 76);
+            this.AlertAppearanceAndSoundsGroup.Size = new System.Drawing.Size(647, 93);
             this.AlertAppearanceAndSoundsGroup.TabIndex = 7;
             this.AlertAppearanceAndSoundsGroup.TabStop = false;
             this.AlertAppearanceAndSoundsGroup.Text = "Alert Appearance/Sounds";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(181, 46);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(48, 15);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "Volume";
             // 
             // label9
             // 
@@ -487,7 +505,7 @@
             this.PastAlertsGroup.Controls.Add(this.AlertHistoryOutput);
             this.PastAlertsGroup.Controls.Add(this.AlertHistoryClearButton);
             this.PastAlertsGroup.ForeColor = System.Drawing.Color.White;
-            this.PastAlertsGroup.Location = new System.Drawing.Point(12, 212);
+            this.PastAlertsGroup.Location = new System.Drawing.Point(12, 229);
             this.PastAlertsGroup.Name = "PastAlertsGroup";
             this.PastAlertsGroup.Size = new System.Drawing.Size(647, 107);
             this.PastAlertsGroup.TabIndex = 5;
@@ -520,7 +538,6 @@
             // 
             // ConfigurationPanel
             // 
-            this.ConfigurationPanel.Controls.Add(this.InstallButton);
             this.ConfigurationPanel.Controls.Add(this.label3);
             this.ConfigurationPanel.Controls.Add(this.AlertButton);
             this.ConfigurationPanel.Controls.Add(this.label1);
@@ -535,32 +552,15 @@
             this.ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
             this.ConfigurationPanel.Name = "ConfigurationPanel";
-            this.ConfigurationPanel.Size = new System.Drawing.Size(671, 379);
+            this.ConfigurationPanel.Size = new System.Drawing.Size(671, 396);
             this.ConfigurationPanel.TabIndex = 13;
-            // 
-            // alertSoundPack
-            // 
-            this.alertSoundPack.FormattingEnabled = true;
-            this.alertSoundPack.Location = new System.Drawing.Point(85, 47);
-            this.alertSoundPack.Name = "alertSoundPack";
-            this.alertSoundPack.Size = new System.Drawing.Size(126, 23);
-            this.alertSoundPack.TabIndex = 26;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 50);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(73, 15);
-            this.label4.TabIndex = 27;
-            this.label4.Text = "Sound Pack";
             // 
             // ConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(671, 379);
+            this.ClientSize = new System.Drawing.Size(671, 396);
             this.Controls.Add(this.ConfigurationPanel);
             this.Controls.Add(this.BusyLockText);
             this.Font = new System.Drawing.Font("Arial", 9F);
@@ -575,6 +575,7 @@
             this.Load += new System.EventHandler(this.ConfigurationForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).EndInit();
             this.DiscordWebhookGroup.ResumeLayout(false);
             this.DiscordWebhookGroup.PerformLayout();
             this.AlertAppearanceAndSoundsGroup.ResumeLayout(false);
@@ -619,13 +620,13 @@
         private System.Windows.Forms.Panel ConfigurationPanel;
         private System.Windows.Forms.Label BusyLockText;
         private System.Windows.Forms.CheckBox statusWindowBox;
-        private System.Windows.Forms.CheckBox alertFullscreenIdleTimeZoneUTCBox;
+        private System.Windows.Forms.CheckBox alertTimeZoneUTCBox;
         private System.Windows.Forms.Button ServerButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button AlertButton;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button InstallButton;
-        private System.Windows.Forms.ComboBox alertSoundPack;
+        private System.Windows.Forms.CheckBox alertTTSonlyBox;
+        private System.Windows.Forms.TrackBar volumeBar;
         private System.Windows.Forms.Label label4;
     }
 }

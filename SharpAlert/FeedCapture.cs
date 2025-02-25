@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using static SharpAlert.IceBearWorker;
 using static SharpAlert.Program;
 using static SharpAlert.RegexList;
 
@@ -14,18 +15,6 @@ namespace SharpAlert
     public class FeedCapture
     {
         public string server = string.Empty;
-
-        private readonly HttpClient client;
-
-        public FeedCapture()
-        {
-            client = new HttpClient
-            {
-                Timeout = TimeSpan.FromSeconds(30)
-            };
-            client.DefaultRequestHeaders.UserAgent.ParseAdd($"Mozilla/5.0 (compatible; SharpAlert)");
-        }
-
         private bool FirstRun = true;
         private bool Stop = false;
         private bool StopCalled = false;

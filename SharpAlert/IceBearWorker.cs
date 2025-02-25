@@ -25,43 +25,12 @@ namespace SharpAlert
 {
     public static class IceBearWorker
     {
-        private static readonly HttpClient client = new HttpClient
+        public static readonly HttpClient client = new HttpClient
         {
             Timeout = TimeSpan.FromSeconds(5)
         };
 
         public static bool ServiceRunnerScheduled { get; private set; }
-
-        [Obsolete]
-        public static void PlayAlert(string audio)
-        {
-            MemoryStream audioStream = new MemoryStream();
-            try
-            {
-                switch (audio.ToLowerInvariant())
-                {
-                    case "alert":
-                        Resources.ui_warning_1.CopyTo(audioStream);
-                        break;
-                    case "cancel":
-                        Resources.ui_warning_1.CopyTo(audioStream);
-                        break;
-                    default:
-                        return;
-                }
-
-                AudioOutput.Init(new WaveFileReader(audioStream));
-                AudioOutput.Play();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[Audio Playback] Failed to play audio. {ex.Message}");
-            }
-            finally
-            {
-                audioStream.Dispose();
-            }
-        }
 
         /// <summary>
         /// Starts the Ice Bear Worker as a client.
@@ -172,19 +141,7 @@ namespace SharpAlert
             feed = new FeedCapture();
             cache = new CacheCapture();
             processor = new DataProcessor();
-            sound = new SoundPlayer(Resources.ui_warning_1);
-            soundCancellation = new SoundPlayer(Resources.ui_cancellation_1);
-            soundFinish = new SoundPlayer(Resources.ui_end_1);
             engine = new SpeechSynthesizer();
-            AudioOutput = new WasapiOut
-            {
-                //Volume = Settings.Default.alertVolume / 10f
-            };
-
-            AudioOutput.PlaybackStopped += (a, b) => soundFinish.Play();
-            engine.SpeakCompleted += (objective, eventArgs) => soundFinish.Play();
-
-            //PlayAlert("alert");
 
             Settings.Default.PropertyChanged += (objective, eventArgs) =>
             {
@@ -335,9 +292,9 @@ namespace SharpAlert
                     Console.WriteLine($"[Ice Bear] {FriendlyName} started.");
                     while (thread.IsAlive) Thread.Sleep(500);
                     Console.WriteLine($"[Ice Bear] {FriendlyName} exited.");
-                    Thread.Sleep(500);
+                    Thread.Sleep(300);
                 }
-                Console.WriteLine($"[Ice Bear] Thread handling for {FriendlyName} is stopping.");
+                Console.WriteLine($"[Ice Bear] Thread handling for {FriendlyName} has stopped.");
             });
             sub.Start();
         }
@@ -490,7 +447,7 @@ namespace SharpAlert
                 else
                 {
                     notify.BalloonTipTitle = "SharpAlert is running";
-                    notify.BalloonTipText = "I'll just be waiting right down here in my tray icon. You're up to date.";
+                    notify.BalloonTipText = "I'll just be waiting right over here in my tray icon. You're up to date.";
                     notify.BalloonTipIcon = ToolTipIcon.Info;
                     notify.ShowBalloonTip(5000);
                 }
@@ -498,7 +455,7 @@ namespace SharpAlert
             else
             {
                 notify.BalloonTipTitle = "SharpAlert is running";
-                notify.BalloonTipText = "I'll just be waiting right down here in my tray icon. Can't check for updates right now.";
+                notify.BalloonTipText = "I'll just be waiting right over here in my tray icon. Can't check for updates right now.";
                 notify.BalloonTipIcon = ToolTipIcon.Info;
                 notify.ShowBalloonTip(5000);
             }
@@ -674,10 +631,26 @@ namespace SharpAlert
         public const uint GENERIC_WRITE = 0x40000000;
         public const uint OPEN_EXISTING = 3;
         public const uint WM_CLOSE = 0x0010;
+        internal const uint ENABLE_QUICK_EDIT = 0x0040;
+        internal const uint ENABLE_EXTENDED_FLAGS = 0x0080;
+        public const int STD_INPUT_HANDLE = -10;
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        internal static extern IntPtr GetStdHandle(int nStdHandle);
+
+        [DllImport("kernel32.dll")]
+        internal static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);
+
+        [DllImport("kernel32.dll")]
+        internal static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);
 
         public static void AllocateTerminal(bool Popups = true)
         {
-            if (!AllocConsole())
+            bool allocateSuccess = AllocConsole();
+
+            //IntPtr consoleHandle = GetStdHandle(STD_INPUT_HANDLE);
+
+            if (!allocateSuccess)
             {
                 if (Popups)
                     MessageBox.Show("The console could not be allocated. It may already be visible.",
@@ -692,6 +665,19 @@ namespace SharpAlert
                 if (consoleHandle == IntPtr.Zero)
                 {
                     throw new Win32Exception(Marshal.GetLastWin32Error());
+                }
+
+                if (!GetConsoleMode(consoleHandle, out uint mode))
+                {
+                    //var MarshalException = new Win32Exception(unchecked(Marshal.GetLastWin32Error()));
+                }
+
+                mode &= ~ENABLE_QUICK_EDIT;
+                mode |= ENABLE_EXTENDED_FLAGS;
+
+                if (!SetConsoleMode(consoleHandle, mode))
+                {
+                    //var MarshalException = new Win32Exception(unchecked(Marshal.GetLastWin32Error()));
                 }
 
                 SetStdHandle(STD_OUTPUT_HANDLE, consoleHandle);

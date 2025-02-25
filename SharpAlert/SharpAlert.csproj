@@ -157,6 +157,7 @@
     <Compile Include="AltTrayForm.Designer.cs">
       <DependentUpon>AltTrayForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AudioManager.cs" />
     <Compile Include="CacheCapture.cs" />
     <Compile Include="CreditsForm.cs">
       <SubType>Form</SubType>

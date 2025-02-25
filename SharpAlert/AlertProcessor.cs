@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Forms;
 using static SharpAlert.Program;
 using static SharpAlert.RegexList;
+using static SharpAlert.AudioManager;
 
 namespace SharpAlert
 {
@@ -31,6 +32,22 @@ namespace SharpAlert
         {
             StartRAFCallLoop();
             StartTAFCallLoop();
+            StartAudioCallLoop();
+        }
+
+        private void StartAudioCallLoop()
+        {
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                while (true)
+                {
+                    while (!AlertDisplaying)
+                    {
+                        StopAllAudioSilently();
+                        Thread.Sleep(50);
+                    }
+                }
+            });
         }
 
         private void StartRAFCallLoop()
@@ -45,7 +62,10 @@ namespace SharpAlert
                     Console.WriteLine($"[RAF Loop] Waiting for the next ping.");
                     try
                     {
-                        while (!rafPing) Thread.Sleep(500);
+                        while (!rafPing)
+                        {
+                            Thread.Sleep(500);
+                        }
                         if (raf.IsDisposed) raf = new AlertForm();
                         raf.UpdateFields(DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertAudioURL, DialogAlertImageURL, DialogAlertType);
                         raf.ShowDialog();
@@ -143,7 +163,7 @@ namespace SharpAlert
                 {
                     try
                     {
-                        if (ProcessInfoX(relayItem.Data, MsgType, infoMatches[ii].Groups[1].Value, urgencyMatches[ii].Groups[1].Value))
+                        if (ProcessInfoX(relayItem.Data, infoMatches[ii].Groups[1].Value, urgencyMatches[ii].Groups[1].Value))
                         {
                             final = true;
                             break;
@@ -460,9 +480,6 @@ namespace SharpAlert
                                         while (rafPing) Thread.Sleep(500);
                                     }
 
-                                    sound.Stop();
-                                    engine.SpeakAsyncCancelAll();
-
                                     lock (AlertValuesLock)
                                     {
                                         AlertDisplaying = false;
@@ -530,7 +547,7 @@ namespace SharpAlert
         /// <param name="Severity">The severity of the message.</param>
         /// <param name="Urgency">The urgency of the message.</param>
         /// <returns>Returns True if the caller should continue.</returns>
-        public static bool ProcessInfoX(string InfoX, string MsgType, string Severity, string Urgency)
+        public static bool ProcessInfoX(string InfoX, string Severity, string Urgency)
         {
             Console.WriteLine("Processing InfoX.");
             bool Final = false;
@@ -544,7 +561,6 @@ namespace SharpAlert
             {
                 bool var1; // Severity
                 bool var2; // Urgency
-                bool var3; // MsgType
 
                 switch (Severity.ToLowerInvariant())
                 {
@@ -590,42 +606,21 @@ namespace SharpAlert
                         break;
                 }
 
-                switch (MsgType.ToLowerInvariant())
-                {
-                    case "alert":
-                        var3 = Settings.Default.messageTypeAlert;
-                        break;
-                    case "update":
-                        var3 = Settings.Default.messageTypeUpdate;
-                        break;
-                    case "cancel":
-                        var3 = Settings.Default.messageTypeCancel;
-                        break;
-                    case "test":
-                        var3 = Settings.Default.messageTypeTest;
-                        break;
-                    default:
-                        var3 = false;
-                        break;
-
-                }
-
-                if (var1 && var2 && var3)
+                if (var1 && var2)
                 {
                     Final = true;
-                    Console.WriteLine("Severity, urgency, and message type, passed all checks.");
+                    Console.WriteLine("Severity, and urgency, passed all checks.");
                 }
                 else
                 {
-                    Console.WriteLine("Severity, urgency, and message type, did not pass all checks.\r\n" +
+                    Console.WriteLine("Severity, and urgency, did not pass all checks.\r\n" +
                         $"Severity = {var1}\r\n" +
-                        $"Urgency = {var2}\r\n" +
-                        $"MsgType = {var3}");
+                        $"Urgency = {var2}");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Severity, urgency, and message type, did not pass all checks, and completed with one or more errors. {ex.Message}");
+                Console.WriteLine($"Severity, and urgency, did not pass all checks, and completed with one or more errors. {ex.Message}");
                 Final = false;
             }
 
@@ -848,9 +843,6 @@ namespace SharpAlert
                             break;
                         case "cancel":
                             var2 = Settings.Default.messageTypeCancel;
-                            break;
-                        case "test":
-                            var2 = Settings.Default.messageTypeTest;
                             break;
                         default:
                             var2 = false;
@@ -1095,6 +1087,7 @@ namespace SharpAlert
                         AppendedAreas += area.Groups[1].Value + "\x20";
                     }
 
+                    AppendedAreas = AppendedAreas.Trim();
                     // Commenting out UGC for now, since we have no way to convert them to their friendly names at the moment.
 
                     var GeocodeSAMEAreas = GeocodeSpecificAreaMessageEncodingRegex.Matches(InfoData);
@@ -1112,10 +1105,17 @@ namespace SharpAlert
 
                     //if (AppendedCodeAreas.Split(',').Length > AppendedAreas.Split(',').Length)
                     {
-                        AreaDesc = SentenceAppendEnd(SentencePuncuationCorrection(AppendedCodeAreas.Trim()));
-                        if (AreaDesc.EndsWith(";."))
+                        if (!string.IsNullOrWhiteSpace(AppendedCodeAreas))
                         {
-                            AreaDesc = SentenceAppendEnd(AreaDesc.Substring(0, AreaDesc.Length - 2));
+                            AreaDesc = SentenceAppendEnd(SentencePuncuationCorrection(AppendedCodeAreas.Trim()));
+                            if (AreaDesc.EndsWith(";."))
+                            {
+                                AreaDesc = SentenceAppendEnd(AreaDesc.Substring(0, AreaDesc.Length - 2));
+                            }
+                        }
+                        else
+                        {
+                            AreaDesc = AppendedAreas + ".";
                         }
                     }
                     //else
@@ -1311,8 +1311,12 @@ namespace SharpAlert
         public static string StringIntoTTSFriendly(string Data)
         {
             string FriendlyData = Data;
-            FriendlyData = FriendlyData.Replace("EAS", "Emergency Alert System").Replace("911", "9 1 1").Replace("9-1-1", "9 1 1");
-            FriendlyData = FriendlyData.Replace("WEA", "Wireless Emergency Alerts");
+            FriendlyData = FriendlyData.Replace("EAS", "Emergency Alert System")
+                .Replace("911", "9 1 1")
+                .Replace("9-1-1", "9 1 1")
+                .Replace("WEA", "Wireless Emergency Alerts")
+                .Replace("NWS", "National Weather Service")
+                .Replace("NOAA", "National Oceanic and Atmospheric Administration");
             return FriendlyData;
         }
 

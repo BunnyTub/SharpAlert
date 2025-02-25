@@ -81,8 +81,8 @@ namespace SharpAlert
                 this.BringToFront();
             };
 
-            alertFullscreenIdleTimeZoneUTCBox.Checked = Settings.Default.alertTimeZoneUTC;
-            alertFullscreenIdleTimeZoneUTCBox.CheckedChanged += (a, b) => Settings.Default.alertTimeZoneUTC = ((CheckBox)a).Checked;
+            alertTimeZoneUTCBox.Checked = Settings.Default.alertTimeZoneUTC;
+            alertTimeZoneUTCBox.CheckedChanged += (a, b) => Settings.Default.alertTimeZoneUTC = ((CheckBox)a).Checked;
 
             bool alertFullscreenDisplayIgnoreInput = false;
             alertFullscreenDisplayInput.Value = Settings.Default.alertFullscreenDisplay;
@@ -134,12 +134,11 @@ namespace SharpAlert
             alertCompatibilityModeBox.Checked = Settings.Default.alertCompatibilityMode;
             alertCompatibilityModeBox.CheckedChanged += (a, b) => Settings.Default.alertCompatibilityMode = ((CheckBox)a).Checked;
             
-            alertSoundPack.SelectedIndex = Settings.Default.alertSoundPack;
-            alertSoundPack.SelectedIndexChanged += (a, b) =>
-            {
-                Settings.Default.alertSoundPack = ((ComboBox)a).SelectedIndex;
-                MessageBox.Show("You'll need to restart SharpAlert to use another sound pack!");
-            };
+            alertTTSonlyBox.Checked = Settings.Default.alertTTSonly;
+            alertTTSonlyBox.CheckedChanged += (a, b) => Settings.Default.alertTTSonly = ((CheckBox)a).Checked;
+            
+            volumeBar.Value = Settings.Default.alertVolume;
+            volumeBar.Scroll += (a, b) => Settings.Default.alertVolume = ((TrackBar)a).Value;
 
             statusWindowBox.Checked = Settings.Default.statusWindow;
             statusWindowBox.CheckedChanged += (a, b) =>
@@ -304,11 +303,6 @@ namespace SharpAlert
         private void AlertButton_Click(object sender, EventArgs e)
         {
             acf.ShowDialog();
-        }
-
-        private void InstallButton_Click(object sender, EventArgs e)
-        {
-            
         }
     }
 }

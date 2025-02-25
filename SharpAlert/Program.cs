@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.Speech.Synthesis;
 using System.Diagnostics;
 using System.Security.Cryptography;
-using NAudio.Wave;
+using static SharpAlert.AudioManager;
 
 namespace SharpAlert
 {
@@ -39,9 +39,6 @@ namespace SharpAlert
         public static FeedCapture feed;
         public static CacheCapture cache;
         public static DataProcessor processor;
-        public static SoundPlayer sound;
-        public static SoundPlayer soundCancellation;
-        public static SoundPlayer soundFinish;
         public static TeleIdleForm idle;
         public static StatusForm status;
         public static bool CloseIdleWindow = false;
@@ -52,11 +49,10 @@ namespace SharpAlert
         public static SpeechSynthesizer engine;
         public static object AlertValuesLock = new object();
         public static bool AlertDisplaying = false;
-        public static WasapiOut AudioOutput;
+        public static object AudioOutputLock = new object();
 
         public static List<SharpDataItem> SharpDataQueue = new List<SharpDataItem>();
         public static List<SharpDataItem> SharpDataHistory = new List<SharpDataItem>();
-
         
         public static readonly string AssemblyFile = Process.GetCurrentProcess().MainModule.FileName;
         public static readonly string AssemblyDirectory = Path.GetDirectoryName(AssemblyFile);
@@ -85,25 +81,14 @@ namespace SharpAlert
             if (idle != null) DestroyIdleWindow();
             Console.WriteLine("Status Window is shutting down.");
             if (status != null) DestroyStatusWindow();
-            Console.WriteLine("Stopping sounds.");
+            Console.WriteLine("Stopping all sounds.");
             try
             {
-                sound?.Stop();
-                soundCancellation?.Stop();
-                soundFinish?.Stop();
+                StopAllAudio(true);
             }
             catch (Exception)
             {
                 Console.WriteLine("Cannot stop some sounds.");
-            }
-            Console.WriteLine("Stopping TTS.");
-            try
-            {
-                engine?.SpeakAsyncCancelAll();
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Cannot stop TTS.");
             }
             Console.WriteLine("Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-");
             if (notify != null)

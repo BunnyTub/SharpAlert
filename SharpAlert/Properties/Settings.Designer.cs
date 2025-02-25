@@ -104,22 +104,6 @@ namespace SharpAlert.Properties {
         }
         
         /// <summary>
-        /// Allows message types with the test status when ticked.
-        /// </summary>
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Configuration.SettingsDescriptionAttribute("Allows message types with the test status when ticked.")]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool messageTypeTest {
-            get {
-                return ((bool)(this["messageTypeTest"]));
-            }
-            set {
-                this["messageTypeTest"] = value;
-            }
-        }
-        
-        /// <summary>
         /// Allows extreme messages to be relayed when ticked.
         /// </summary>
         [global::System.Configuration.UserScopedSettingAttribute()]
@@ -549,13 +533,25 @@ namespace SharpAlert.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public int alertSoundPack {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool alertTTSonly {
             get {
-                return ((int)(this["alertSoundPack"]));
+                return ((bool)(this["alertTTSonly"]));
             }
             set {
-                this["alertSoundPack"] = value;
+                this["alertTTSonly"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int alertVolume {
+            get {
+                return ((int)(this["alertVolume"]));
+            }
+            set {
+                this["alertVolume"] = value;
             }
         }
     }
