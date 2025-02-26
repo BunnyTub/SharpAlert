@@ -57,6 +57,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.alertTTSonlyBox = new System.Windows.Forms.CheckBox();
             this.volumeBar = new System.Windows.Forms.TrackBar();
+            this.alertNoGUIBox = new System.Windows.Forms.CheckBox();
             this.DiscordWebhookGroup = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -69,7 +70,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.AlertHistoryOutput = new System.Windows.Forms.TextBox();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
-            this.alertNoGUIBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
@@ -404,6 +404,17 @@
             this.volumeBar.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.ToolTipInformation.SetToolTip(this.volumeBar, "The global volume of the application.");
             // 
+            // alertNoGUIBox
+            // 
+            this.alertNoGUIBox.AutoSize = true;
+            this.alertNoGUIBox.Location = new System.Drawing.Point(6, 70);
+            this.alertNoGUIBox.Name = "alertNoGUIBox";
+            this.alertNoGUIBox.Size = new System.Drawing.Size(142, 19);
+            this.alertNoGUIBox.TabIndex = 28;
+            this.alertNoGUIBox.Text = "Never show alert GUI";
+            this.ToolTipInformation.SetToolTip(this.alertNoGUIBox, "Stops alert panels from displaying. Similar to the functionality of SharpENDEC.");
+            this.alertNoGUIBox.UseVisualStyleBackColor = true;
+            // 
             // DiscordWebhookGroup
             // 
             this.DiscordWebhookGroup.Controls.Add(this.SaveDiscordSettingsButton);
@@ -556,17 +567,6 @@
             this.ConfigurationPanel.Name = "ConfigurationPanel";
             this.ConfigurationPanel.Size = new System.Drawing.Size(671, 399);
             this.ConfigurationPanel.TabIndex = 13;
-            // 
-            // alertNoGUIBox
-            // 
-            this.alertNoGUIBox.AutoSize = true;
-            this.alertNoGUIBox.Location = new System.Drawing.Point(6, 70);
-            this.alertNoGUIBox.Name = "alertNoGUIBox";
-            this.alertNoGUIBox.Size = new System.Drawing.Size(142, 19);
-            this.alertNoGUIBox.TabIndex = 28;
-            this.alertNoGUIBox.Text = "Never show alert GUI";
-            this.ToolTipInformation.SetToolTip(this.alertNoGUIBox, "Stops alert panels from displaying.\r\nSimilar to the functionality of SharpENDEC.");
-            this.alertNoGUIBox.UseVisualStyleBackColor = true;
             // 
             // ConfigurationForm
             // 

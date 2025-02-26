@@ -15,8 +15,8 @@ namespace SharpAlert
 {
     internal static class VersionInfo
     {
-        public static readonly int MajorVersion = 4;
-        public static readonly int MinorVersion = 2;
+        public static readonly int MajorVersion = 5;
+        public static readonly int MinorVersion = 0;
     }
 
     public class SharpDataItem

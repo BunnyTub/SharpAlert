@@ -96,6 +96,7 @@ namespace SharpAlert
         }
 
         private readonly Random RandomMovement = new Random(DateTime.Now.Millisecond);
+        private int ColorCounter = 0;
 
         private void MovePreventBurnIn_Tick(object sender, EventArgs e)
         {
@@ -113,6 +114,19 @@ namespace SharpAlert
                 try
                 {
                     IdleText.Location = new Point(RandomMovement.Next(Spacing, WidthCalculated), RandomMovement.Next(Spacing, HeightCalculated));
+                    switch (ColorCounter)
+                    {
+                        case 0:
+                            IdleText.ForeColor = Color.Red;
+                            break;
+                        case 1:
+                            IdleText.ForeColor = Color.Lime;
+                            break;
+                        case 2:
+                            IdleText.ForeColor = Color.Blue;
+                            break;
+                    }
+                    ColorCounter = (ColorCounter + 1) % 3;
                 }
                 catch (Exception)
                 {
