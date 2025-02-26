@@ -85,10 +85,13 @@ namespace SharpAlert
         private void MinimizeToTaskbar()
         {
             this.WindowState = FormWindowState.Minimized;
-            notify.BalloonTipIcon = ToolTipIcon.Info;
-            notify.BalloonTipTitle = "SharpAlert minimized";
-            notify.BalloonTipText = "The idle window is on the taskbar, waiting for you to restore it anytime!";
-            notify.ShowBalloonTip(5000);
+            lock (notify)
+            {
+                notify.BalloonTipIcon = ToolTipIcon.Info;
+                notify.BalloonTipTitle = "SharpAlert minimized";
+                notify.BalloonTipText = "The idle window is on the taskbar, waiting for you to restore it anytime!";
+                notify.ShowBalloonTip(5000);
+            }
             //notify.ContextMenuStrip.Show(Cursor.Position);
         }
 

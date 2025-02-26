@@ -554,5 +554,161 @@ namespace SharpAlert.Properties {
                 this["alertVolume"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool categoryGeophysical {
+            get {
+                return ((bool)(this["categoryGeophysical"]));
+            }
+            set {
+                this["categoryGeophysical"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool categorySecurity {
+            get {
+                return ((bool)(this["categorySecurity"]));
+            }
+            set {
+                this["categorySecurity"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool categoryMedical {
+            get {
+                return ((bool)(this["categoryMedical"]));
+            }
+            set {
+                this["categoryMedical"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool categoryUtilities {
+            get {
+                return ((bool)(this["categoryUtilities"]));
+            }
+            set {
+                this["categoryUtilities"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool categoryMeterological {
+            get {
+                return ((bool)(this["categoryMeterological"]));
+            }
+            set {
+                this["categoryMeterological"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool categoryRescue {
+            get {
+                return ((bool)(this["categoryRescue"]));
+            }
+            set {
+                this["categoryRescue"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool categoryEnvironmental {
+            get {
+                return ((bool)(this["categoryEnvironmental"]));
+            }
+            set {
+                this["categoryEnvironmental"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool categoryToxicThreat {
+            get {
+                return ((bool)(this["categoryToxicThreat"]));
+            }
+            set {
+                this["categoryToxicThreat"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool categoryGeneralSafety {
+            get {
+                return ((bool)(this["categoryGeneralSafety"]));
+            }
+            set {
+                this["categoryGeneralSafety"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool categoryFire {
+            get {
+                return ((bool)(this["categoryFire"]));
+            }
+            set {
+                this["categoryFire"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool categoryTransportation {
+            get {
+                return ((bool)(this["categoryTransportation"]));
+            }
+            set {
+                this["categoryTransportation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool categoryOtherUnknown {
+            get {
+                return ((bool)(this["categoryOtherUnknown"]));
+            }
+            set {
+                this["categoryOtherUnknown"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool alertNoGUI {
+            get {
+                return ((bool)(this["alertNoGUI"]));
+            }
+            set {
+                this["alertNoGUI"] = value;
+            }
+        }
     }
 }

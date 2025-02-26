@@ -178,6 +178,16 @@ namespace SharpAlert
                     break;
             }
 
+            Thread notificationThread = ReturnThreadWithCatch(() =>
+            {
+                Application.EnableVisualStyles();
+                CreateNotifyIcon(RemoteVersion);
+                Application.Run();
+            });
+            notificationThread.MonitorAndStart("Notification Tray");
+
+            while (notify == null) Thread.Sleep(100);
+
             Console.WriteLine("[Ice Bear] Starting services momentarily.");
 
             Thread feedThread = ReturnThreadWithCatch(() => feed.ServiceRun(UseHTTPS));
@@ -201,14 +211,6 @@ namespace SharpAlert
             {
                 CreateIdleWindow();
             }
-
-            Thread notificationThread = ReturnThreadWithCatch(() =>
-            {
-                Application.EnableVisualStyles();
-                CreateNotifyIcon(RemoteVersion);
-                Application.Run();
-            });
-            notificationThread.MonitorAndStart("Notification Tray");
 
             ServiceRunnerScheduled = true;
 
@@ -426,6 +428,13 @@ namespace SharpAlert
                 AddFileToQueue();
                 IgnoreRightClick = false;
             }));
+            
+            contextMenu.Items.Add(new ToolStripMenuItem("Relay Local Test", null, (sender, arg) =>
+            {
+                IgnoreRightClick = true;
+                processor?.ap?.ProcessAlertTest();
+                IgnoreRightClick = false;
+            }));
 
             contextMenu.Items.Add(new ToolStripSeparator());
 
@@ -437,27 +446,36 @@ namespace SharpAlert
                 if (RemoteVersionSplit[0] != VersionInfo.MajorVersion.ToString() ||
                     RemoteVersionSplit[1] != VersionInfo.MinorVersion.ToString())
                 {
-                    notify.BalloonTipTitle = "SharpAlert is running";
-                    notify.BalloonTipText = $"Updates are available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
-                    //notify.BalloonTipText = $"You may be running an older version. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
-                    notify.BalloonTipIcon = ToolTipIcon.Info;
-                    notify.ShowBalloonTip(5000);
+                    lock (notify)
+                    {
+                        notify.BalloonTipTitle = "SharpAlert is running";
+                        notify.BalloonTipText = $"Updates are available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                        //notify.BalloonTipText = $"You may be running an older version. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                        notify.BalloonTipIcon = ToolTipIcon.Info;
+                        notify.ShowBalloonTip(5000);
+                    }
                     UpdatesAvailable = true;
                 }
                 else
                 {
-                    notify.BalloonTipTitle = "SharpAlert is running";
-                    notify.BalloonTipText = "I'll just be waiting right over here in my tray icon. You're up to date.";
-                    notify.BalloonTipIcon = ToolTipIcon.Info;
-                    notify.ShowBalloonTip(5000);
+                    lock (notify)
+                    {
+                        notify.BalloonTipTitle = "SharpAlert is running";
+                        notify.BalloonTipText = "I'll just be waiting right over here in my tray icon. You're up to date.";
+                        notify.BalloonTipIcon = ToolTipIcon.Info;
+                        notify.ShowBalloonTip(5000);
+                    }
                 }
             }
             else
             {
-                notify.BalloonTipTitle = "SharpAlert is running";
-                notify.BalloonTipText = "I'll just be waiting right over here in my tray icon. Can't check for updates right now.";
-                notify.BalloonTipIcon = ToolTipIcon.Info;
-                notify.ShowBalloonTip(5000);
+                lock (notify)
+                {
+                    notify.BalloonTipTitle = "SharpAlert is running";
+                    notify.BalloonTipText = "I'll just be waiting right over here in my tray icon. Couldn't check for updates.";
+                    notify.BalloonTipIcon = ToolTipIcon.Info;
+                    notify.ShowBalloonTip(5000);
+                }
             }
 
             string home = "https://sharpalert.bunnytub.com";
@@ -584,15 +602,21 @@ namespace SharpAlert
                     return;
                 }
 
-                if (MessageBox.Show("Do you want to quit?\r\n" +
-                    "You won't receive any alerts while the program is stopped.\r\n\r\n" +
-                    "Your settings will be saved automatically.",
+                switch (MessageBox.Show("Do you want to quit and save your settings?\r\n" +
+                    "You won't receive any alerts while the program is stopped.",
                     "SharpAlert",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question) == DialogResult.Yes)
+                    MessageBoxButtons.YesNoCancel,
+                    MessageBoxIcon.Question))
                 {
-                    Settings.Default.Save();
-                    SafeExit(0);
+                    case DialogResult.Yes:
+                        Settings.Default.Save();
+                        SafeExit(0);
+                        break;
+                    case DialogResult.No:
+                        SafeExit(0);
+                        break;
+                    case DialogResult.Cancel:
+                        return;
                 }
             }));
 

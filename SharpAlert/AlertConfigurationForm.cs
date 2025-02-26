@@ -57,6 +57,31 @@ namespace SharpAlert
             weaOnlyBox.CheckedChanged += (a, b) => Settings.Default.weaOnly = ((CheckBox)a).Checked;
             discardFirstAlertsBox.Checked = Settings.Default.discardFirstAlerts;
             discardFirstAlertsBox.CheckedChanged += (a, b) => Settings.Default.discardFirstAlerts = ((CheckBox)a).Checked;
+            
+            categoryGeoBox.Checked = Settings.Default.categoryGeophysical;
+            categoryGeoBox.CheckedChanged += (a, b) => Settings.Default.categoryGeophysical = ((CheckBox)a).Checked;
+            categorySecurityBox.Checked = Settings.Default.categorySecurity;
+            categorySecurityBox.CheckedChanged += (a, b) => Settings.Default.categorySecurity = ((CheckBox)a).Checked;
+            categoryHealthBox.Checked = Settings.Default.categoryMedical;
+            categoryHealthBox.CheckedChanged += (a, b) => Settings.Default.categoryMedical = ((CheckBox)a).Checked;
+            categoryInfraBox.Checked = Settings.Default.categoryUtilities;
+            categoryInfraBox.CheckedChanged += (a, b) => Settings.Default.categoryUtilities = ((CheckBox)a).Checked;
+            categoryMetBox.Checked = Settings.Default.categoryMeterological;
+            categoryMetBox.CheckedChanged += (a, b) => Settings.Default.categoryMeterological = ((CheckBox)a).Checked;
+            categoryRescueBox.Checked = Settings.Default.categoryRescue;
+            categoryRescueBox.CheckedChanged += (a, b) => Settings.Default.categoryRescue = ((CheckBox)a).Checked;
+            categoryEnvBox.Checked = Settings.Default.categoryEnvironmental;
+            categoryEnvBox.CheckedChanged += (a, b) => Settings.Default.categoryEnvironmental = ((CheckBox)a).Checked;
+            categoryCBRNEBox.Checked = Settings.Default.categoryToxicThreat;
+            categoryCBRNEBox.CheckedChanged += (a, b) => Settings.Default.categoryToxicThreat = ((CheckBox)a).Checked;
+            categorySafetyBox.Checked = Settings.Default.categoryGeneralSafety;
+            categorySafetyBox.CheckedChanged += (a, b) => Settings.Default.categoryGeneralSafety = ((CheckBox)a).Checked;
+            categoryFireBox.Checked = Settings.Default.categoryFire;
+            categoryFireBox.CheckedChanged += (a, b) => Settings.Default.categoryFire = ((CheckBox)a).Checked;
+            categoryTransportBox.Checked = Settings.Default.categoryTransportation;
+            categoryTransportBox.CheckedChanged += (a, b) => Settings.Default.categoryTransportation = ((CheckBox)a).Checked;
+            categoryOtherBox.Checked = Settings.Default.categoryOtherUnknown;
+            categoryOtherBox.CheckedChanged += (a, b) => Settings.Default.categoryOtherUnknown = ((CheckBox)a).Checked;
 
             string SAME_Areas = string.Empty;
             foreach (string area in Settings.Default.AllowedSAMELocations_Geocodes) SAME_Areas += area + "\r\n";

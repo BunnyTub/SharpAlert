@@ -158,11 +158,11 @@ namespace SharpAlert
                             {
                                 Console.WriteLine("[Audio Manager] Audio queue locked.");
                                 WasapiOut AudioOutput = new WasapiOut();
+                                Outputs.Add(AudioOutput);
                                 float volume = Settings.Default.alertVolume / 10f;
                                 AudioOutput.Init(mf);
                                 for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++) AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
                                 AudioOutput.Play();
-                                Outputs.Add(AudioOutput);
                                 while (AudioOutput.PlaybackState == PlaybackState.Playing & !HoldIt)
                                 {
                                     Thread.Sleep(50);
@@ -214,11 +214,11 @@ namespace SharpAlert
                             {
                                 Console.WriteLine("[Audio Manager] Audio queue locked.");
                                 WasapiOut AudioOutput = new WasapiOut();
+                                Outputs.Add(AudioOutput);
                                 float volume = Settings.Default.alertVolume / 10f;
                                 AudioOutput.Init(mf);
                                 for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++) AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
                                 AudioOutput.Play();
-                                Outputs.Add(AudioOutput);
                                 while (AudioOutput.PlaybackState == PlaybackState.Playing & !HoldIt)
                                 {
                                     Thread.Sleep(50);
@@ -262,11 +262,11 @@ namespace SharpAlert
                 using (var mf = new StreamMediaFoundationReader(stream))
                 {
                     WasapiOut AudioOutput = new WasapiOut();
+                    Outputs.Add(AudioOutput);
                     float volume = Settings.Default.alertVolume / 10f;
                     AudioOutput.Init(mf);
                     for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++) AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
                     AudioOutput.Play();
-                    Outputs.Add(AudioOutput);
                     while (AudioOutput.PlaybackState == PlaybackState.Playing & !HoldIt)
                     {
                         Thread.Sleep(50);
@@ -311,11 +311,11 @@ namespace SharpAlert
                             using (var mf = new StreamMediaFoundationReader(stream))
                             {
                                 WasapiOut AudioOutput = new WasapiOut();
+                                Outputs.Add(AudioOutput);
                                 float volume = Settings.Default.alertVolume / 10f;
                                 AudioOutput.Init(mf);
                                 for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++) AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
                                 AudioOutput.Play();
-                                Outputs.Add(AudioOutput);
                                 while (AudioOutput.PlaybackState == PlaybackState.Playing & !HoldIt)
                                 {
                                     Thread.Sleep(50);

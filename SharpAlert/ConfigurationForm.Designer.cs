@@ -69,6 +69,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.AlertHistoryOutput = new System.Windows.Forms.TextBox();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
+            this.alertNoGUIBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
@@ -262,7 +263,7 @@
             // OpenCreditsButton
             // 
             this.OpenCreditsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OpenCreditsButton.Location = new System.Drawing.Point(12, 342);
+            this.OpenCreditsButton.Location = new System.Drawing.Point(12, 345);
             this.OpenCreditsButton.Name = "OpenCreditsButton";
             this.OpenCreditsButton.Size = new System.Drawing.Size(61, 23);
             this.OpenCreditsButton.TabIndex = 9;
@@ -274,7 +275,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(79, 346);
+            this.label10.Location = new System.Drawing.Point(79, 349);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(246, 15);
             this.label10.TabIndex = 11;
@@ -284,7 +285,7 @@
             // CacheOperationButton
             // 
             this.CacheOperationButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CacheOperationButton.Location = new System.Drawing.Point(459, 342);
+            this.CacheOperationButton.Location = new System.Drawing.Point(459, 345);
             this.CacheOperationButton.Name = "CacheOperationButton";
             this.CacheOperationButton.Size = new System.Drawing.Size(94, 23);
             this.CacheOperationButton.TabIndex = 12;
@@ -300,7 +301,7 @@
             this.BusyLockText.Font = new System.Drawing.Font("Arial", 12F);
             this.BusyLockText.Location = new System.Drawing.Point(0, 0);
             this.BusyLockText.Name = "BusyLockText";
-            this.BusyLockText.Size = new System.Drawing.Size(671, 396);
+            this.BusyLockText.Size = new System.Drawing.Size(671, 399);
             this.BusyLockText.TabIndex = 14;
             this.BusyLockText.Text = "Please wait or dismiss all alerts to configure settings.";
             this.BusyLockText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -309,7 +310,7 @@
             // statusWindowBox
             // 
             this.statusWindowBox.AutoSize = true;
-            this.statusWindowBox.Location = new System.Drawing.Point(345, 345);
+            this.statusWindowBox.Location = new System.Drawing.Point(345, 348);
             this.statusWindowBox.Name = "statusWindowBox";
             this.statusWindowBox.Size = new System.Drawing.Size(106, 19);
             this.statusWindowBox.TabIndex = 25;
@@ -331,7 +332,7 @@
             // ServerButton
             // 
             this.ServerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ServerButton.Location = new System.Drawing.Point(559, 342);
+            this.ServerButton.Location = new System.Drawing.Point(559, 345);
             this.ServerButton.Name = "ServerButton";
             this.ServerButton.Size = new System.Drawing.Size(100, 23);
             this.ServerButton.TabIndex = 26;
@@ -373,7 +374,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 372);
+            this.label3.Location = new System.Drawing.Point(9, 375);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(608, 15);
@@ -450,6 +451,7 @@
             // 
             // AlertAppearanceAndSoundsGroup
             // 
+            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertNoGUIBox);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.label4);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.volumeBar);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertTTSonlyBox);
@@ -464,7 +466,7 @@
             this.AlertAppearanceAndSoundsGroup.ForeColor = System.Drawing.Color.White;
             this.AlertAppearanceAndSoundsGroup.Location = new System.Drawing.Point(12, 130);
             this.AlertAppearanceAndSoundsGroup.Name = "AlertAppearanceAndSoundsGroup";
-            this.AlertAppearanceAndSoundsGroup.Size = new System.Drawing.Size(647, 93);
+            this.AlertAppearanceAndSoundsGroup.Size = new System.Drawing.Size(647, 96);
             this.AlertAppearanceAndSoundsGroup.TabIndex = 7;
             this.AlertAppearanceAndSoundsGroup.TabStop = false;
             this.AlertAppearanceAndSoundsGroup.Text = "Alert Appearance/Sounds";
@@ -474,9 +476,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(181, 46);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(48, 15);
+            this.label4.Size = new System.Drawing.Size(48, 30);
             this.label4.TabIndex = 13;
-            this.label4.Text = "Volume";
+            this.label4.Text = "Global\r\nVolume";
             // 
             // label9
             // 
@@ -505,7 +507,7 @@
             this.PastAlertsGroup.Controls.Add(this.AlertHistoryOutput);
             this.PastAlertsGroup.Controls.Add(this.AlertHistoryClearButton);
             this.PastAlertsGroup.ForeColor = System.Drawing.Color.White;
-            this.PastAlertsGroup.Location = new System.Drawing.Point(12, 229);
+            this.PastAlertsGroup.Location = new System.Drawing.Point(12, 232);
             this.PastAlertsGroup.Name = "PastAlertsGroup";
             this.PastAlertsGroup.Size = new System.Drawing.Size(647, 107);
             this.PastAlertsGroup.TabIndex = 5;
@@ -552,15 +554,26 @@
             this.ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
             this.ConfigurationPanel.Name = "ConfigurationPanel";
-            this.ConfigurationPanel.Size = new System.Drawing.Size(671, 396);
+            this.ConfigurationPanel.Size = new System.Drawing.Size(671, 399);
             this.ConfigurationPanel.TabIndex = 13;
+            // 
+            // alertNoGUIBox
+            // 
+            this.alertNoGUIBox.AutoSize = true;
+            this.alertNoGUIBox.Location = new System.Drawing.Point(6, 70);
+            this.alertNoGUIBox.Name = "alertNoGUIBox";
+            this.alertNoGUIBox.Size = new System.Drawing.Size(142, 19);
+            this.alertNoGUIBox.TabIndex = 28;
+            this.alertNoGUIBox.Text = "Never show alert GUI";
+            this.ToolTipInformation.SetToolTip(this.alertNoGUIBox, "Stops alert panels from displaying.\r\nSimilar to the functionality of SharpENDEC.");
+            this.alertNoGUIBox.UseVisualStyleBackColor = true;
             // 
             // ConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(671, 396);
+            this.ClientSize = new System.Drawing.Size(671, 399);
             this.Controls.Add(this.ConfigurationPanel);
             this.Controls.Add(this.BusyLockText);
             this.Font = new System.Drawing.Font("Arial", 9F);
@@ -628,5 +641,6 @@
         private System.Windows.Forms.CheckBox alertTTSonlyBox;
         private System.Windows.Forms.TrackBar volumeBar;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox alertNoGUIBox;
     }
 }

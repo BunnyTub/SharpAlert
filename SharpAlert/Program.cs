@@ -93,12 +93,15 @@ namespace SharpAlert
             Console.WriteLine("Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-");
             if (notify != null)
             {
-                notify.BalloonTipTitle = "SharpAlert has stopped";
-                notify.BalloonTipText = "Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-";
-                notify.BalloonTipIcon = ToolTipIcon.Info;
-                notify.ShowBalloonTip(5000);
-                Thread.Sleep(5000);
-                notify.Visible = false;
+                lock (notify)
+                {
+                    notify.BalloonTipTitle = "SharpAlert has stopped";
+                    notify.BalloonTipText = "Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-";
+                    notify.BalloonTipIcon = ToolTipIcon.Info;
+                    notify.ShowBalloonTip(5000);
+                    Thread.Sleep(5000);
+                    notify.Visible = false;
+                }
             } else Thread.Sleep(1000);
             Environment.Exit(exitCode);
         } 

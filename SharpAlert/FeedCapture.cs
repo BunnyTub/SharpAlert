@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static SharpAlert.IceBearWorker;
 using static SharpAlert.Program;
 using static SharpAlert.RegexList;
@@ -118,14 +119,35 @@ namespace SharpAlert
                 catch (TimeoutException)
                 {
                     Console.WriteLine($"[Feed Capture] Timed out.");
+                    lock (notify)
+                    {
+                        notify.BalloonTipTitle = "SharpAlert is having issues";
+                        notify.BalloonTipText = "Couldn't connect to the server within a reasonable time. Check your internet connection!";
+                        notify.BalloonTipIcon = ToolTipIcon.Warning;
+                        notify.ShowBalloonTip(5000);
+                    }
                 }
                 catch (HttpRequestException e)
                 {
                     Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message} {e.InnerException.Message}");
+                    lock (notify)
+                    {
+                        notify.BalloonTipTitle = "SharpAlert is having issues";
+                        notify.BalloonTipText = "There was an issue when trying to connect to the server. Check your internet connection!";
+                        notify.BalloonTipIcon = ToolTipIcon.Warning;
+                        notify.ShowBalloonTip(5000);
+                    }
                 }
                 catch (AggregateException e)
                 {
                     Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.InnerExceptions.FirstOrDefault().Message}");
+                    lock (notify)
+                    {
+                        notify.BalloonTipTitle = "SharpAlert is having issues";
+                        notify.BalloonTipText = "There was an issue when trying to connect to the server. Check your internet connection!";
+                        notify.BalloonTipIcon = ToolTipIcon.Warning;
+                        notify.ShowBalloonTip(5000);
+                    }
                 }
                 catch (TaskCanceledException)
                 {

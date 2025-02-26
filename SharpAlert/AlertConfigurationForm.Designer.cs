@@ -683,17 +683,16 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Arial", 12F);
-            this.label2.Location = new System.Drawing.Point(466, 17);
+            this.label2.Location = new System.Drawing.Point(431, 17);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(175, 36);
+            this.label2.Size = new System.Drawing.Size(210, 18);
             this.label2.TabIndex = 24;
-            this.label2.Text = "These options do not do\r\nanything at the moment.";
+            this.label2.Text = "Categories are experimental.";
             this.ToolTipInformation.SetToolTip(this.label2, "We\'re working on these options for a later update!");
             // 
             // categoryOtherBox
             // 
             this.categoryOtherBox.AutoSize = true;
-            this.categoryOtherBox.Enabled = false;
             this.categoryOtherBox.Location = new System.Drawing.Point(315, 70);
             this.categoryOtherBox.Name = "categoryOtherBox";
             this.categoryOtherBox.Size = new System.Drawing.Size(111, 19);
@@ -705,7 +704,6 @@
             // categoryCBRNEBox
             // 
             this.categoryCBRNEBox.AutoSize = true;
-            this.categoryCBRNEBox.Enabled = false;
             this.categoryCBRNEBox.Location = new System.Drawing.Point(315, 45);
             this.categoryCBRNEBox.Name = "categoryCBRNEBox";
             this.categoryCBRNEBox.Size = new System.Drawing.Size(91, 19);
@@ -717,7 +715,6 @@
             // categoryInfraBox
             // 
             this.categoryInfraBox.AutoSize = true;
-            this.categoryInfraBox.Enabled = false;
             this.categoryInfraBox.Location = new System.Drawing.Point(315, 20);
             this.categoryInfraBox.Name = "categoryInfraBox";
             this.categoryInfraBox.Size = new System.Drawing.Size(67, 19);
@@ -729,7 +726,6 @@
             // categoryTransportBox
             // 
             this.categoryTransportBox.AutoSize = true;
-            this.categoryTransportBox.Enabled = false;
             this.categoryTransportBox.Location = new System.Drawing.Point(204, 70);
             this.categoryTransportBox.Name = "categoryTransportBox";
             this.categoryTransportBox.Size = new System.Drawing.Size(106, 19);
@@ -741,7 +737,6 @@
             // categoryEnvBox
             // 
             this.categoryEnvBox.AutoSize = true;
-            this.categoryEnvBox.Enabled = false;
             this.categoryEnvBox.Location = new System.Drawing.Point(204, 45);
             this.categoryEnvBox.Name = "categoryEnvBox";
             this.categoryEnvBox.Size = new System.Drawing.Size(105, 19);
@@ -753,7 +748,6 @@
             // categoryHealthBox
             // 
             this.categoryHealthBox.AutoSize = true;
-            this.categoryHealthBox.Enabled = false;
             this.categoryHealthBox.Location = new System.Drawing.Point(204, 20);
             this.categoryHealthBox.Name = "categoryHealthBox";
             this.categoryHealthBox.Size = new System.Drawing.Size(68, 19);
@@ -765,7 +759,6 @@
             // categoryFireBox
             // 
             this.categoryFireBox.AutoSize = true;
-            this.categoryFireBox.Enabled = false;
             this.categoryFireBox.Location = new System.Drawing.Point(126, 70);
             this.categoryFireBox.Name = "categoryFireBox";
             this.categoryFireBox.Size = new System.Drawing.Size(47, 19);
@@ -777,7 +770,6 @@
             // categoryRescueBox
             // 
             this.categoryRescueBox.AutoSize = true;
-            this.categoryRescueBox.Enabled = false;
             this.categoryRescueBox.Location = new System.Drawing.Point(126, 45);
             this.categoryRescueBox.Name = "categoryRescueBox";
             this.categoryRescueBox.Size = new System.Drawing.Size(69, 19);
@@ -789,7 +781,6 @@
             // categorySecurityBox
             // 
             this.categorySecurityBox.AutoSize = true;
-            this.categorySecurityBox.Enabled = false;
             this.categorySecurityBox.Location = new System.Drawing.Point(126, 20);
             this.categorySecurityBox.Name = "categorySecurityBox";
             this.categorySecurityBox.Size = new System.Drawing.Size(69, 19);
@@ -801,7 +792,6 @@
             // categorySafetyBox
             // 
             this.categorySafetyBox.AutoSize = true;
-            this.categorySafetyBox.Enabled = false;
             this.categorySafetyBox.Location = new System.Drawing.Point(6, 70);
             this.categorySafetyBox.Name = "categorySafetyBox";
             this.categorySafetyBox.Size = new System.Drawing.Size(106, 19);
@@ -813,7 +803,6 @@
             // categoryMetBox
             // 
             this.categoryMetBox.AutoSize = true;
-            this.categoryMetBox.Enabled = false;
             this.categoryMetBox.Location = new System.Drawing.Point(6, 45);
             this.categoryMetBox.Name = "categoryMetBox";
             this.categoryMetBox.Size = new System.Drawing.Size(106, 19);
@@ -825,7 +814,6 @@
             // categoryGeoBox
             // 
             this.categoryGeoBox.AutoSize = true;
-            this.categoryGeoBox.Enabled = false;
             this.categoryGeoBox.Location = new System.Drawing.Point(6, 20);
             this.categoryGeoBox.Name = "categoryGeoBox";
             this.categoryGeoBox.Size = new System.Drawing.Size(94, 19);

@@ -155,7 +155,6 @@ namespace SharpAlert
 
                 Console.WriteLine($"Replay (internal flag | if any): {ReplayMode}");
 
-                MatchCollection urgencyMatches = UrgencyRegex.Matches(relayItem.Data);
                 MatchCollection infoMatches = InfoRegex.Matches(relayItem.Data);
                 bool final = false;
 
@@ -163,7 +162,7 @@ namespace SharpAlert
                 {
                     try
                     {
-                        if (ProcessInfoX(relayItem.Data, infoMatches[ii].Groups[1].Value, urgencyMatches[ii].Groups[1].Value))
+                        if (ProcessInfoX(infoMatches[ii].Groups[1].Value))
                         {
                             final = true;
                             break;
@@ -171,7 +170,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"[Alert Processor] An alert that was staged for proccessing couldn't be processed." +
+                        Console.WriteLine($"[Alert Processor] An info tag couldn't processed." +
                             $"{e.StackTrace} {e.Message}");
                     }
                 }
@@ -360,10 +359,13 @@ namespace SharpAlert
                         {
                             if (ReplayMode)
                             {
-                                notify.BalloonTipIcon = ToolTipIcon.Info;
-                                notify.BalloonTipTitle = $"{Sent}";
-                                notify.BalloonTipText = $"An alert with the event {EventType} was sent in replay mode.";
-                                notify.ShowBalloonTip(5000);
+                                lock (notify)
+                                {
+                                    notify.BalloonTipIcon = ToolTipIcon.Info;
+                                    notify.BalloonTipTitle = $"{Sent}";
+                                    notify.BalloonTipText = $"An alert with the event {EventType} was sent in replay mode.";
+                                    notify.ShowBalloonTip(5000);
+                                }
                             }
 
                             //USE NOTIFYICON IF NOT QUEUEING DIALOG
@@ -407,18 +409,24 @@ namespace SharpAlert
 
                                 if (AlertToWebhook.SendUnformattedMessage(AlertCompiled, Settings.Default.DiscordWebhook))
                                 {
-                                    notify.BalloonTipIcon = ToolTipIcon.Info;
-                                    notify.BalloonTipTitle = $"{Sent}";
-                                    notify.BalloonTipText = $"An alert with the event {EventType} was issued.";
-                                    notify.ShowBalloonTip(5000);
+                                    lock (notify)
+                                    {
+                                        notify.BalloonTipIcon = ToolTipIcon.Info;
+                                        notify.BalloonTipTitle = $"{Sent}";
+                                        notify.BalloonTipText = $"An alert with the event {EventType} was issued.";
+                                        notify.ShowBalloonTip(5000);
+                                    }
                                     AnyAlertRelayed = true;
                                 }
                                 else
                                 {
-                                    notify.BalloonTipIcon = ToolTipIcon.Warning;
-                                    notify.BalloonTipTitle = $"{Sent}";
-                                    notify.BalloonTipText = $"An alert with the event {EventType} was issued, but it couldn't be sent through the webhook.";
-                                    notify.ShowBalloonTip(5000);
+                                    lock (notify)
+                                    {
+                                        notify.BalloonTipIcon = ToolTipIcon.Warning;
+                                        notify.BalloonTipTitle = $"{Sent}";
+                                        notify.BalloonTipText = $"An alert with the event {EventType} was issued, but it couldn't be sent through the webhook.";
+                                        notify.ShowBalloonTip(5000);
+                                    }
                                 }
 
                                 // Delay to prevent the webhook from being rate limited
@@ -430,63 +438,79 @@ namespace SharpAlert
                                 {
                                     AlertsQueued++;
 
-                                    Console.WriteLine("[Alert Processor] Dialog queued.");
+                                    Console.WriteLine("[Alert Processor] Relay queued.");
 
                                     lock (AlertValuesLock)
                                     {
-                                        Console.WriteLine("[Alert Processor] Dialog queue locked.");
+                                        Console.WriteLine("[Alert Processor] Relay queue locked.");
                                         while (AlertDisplaying)
                                         {
                                             Monitor.Wait(AlertValuesLock);
                                         }
-                                        Console.WriteLine("[Alert Processor] Dialog queue unlocked.");
+                                        Console.WriteLine("[Alert Processor] Relay queue unlocked.");
                                     }
 
-                                    AlertDisplaying = true;
-                                    AlertsQueued--;
-                                    DialogAlertTitle = EventType;
-                                    DialogAlertText = AlertText;
-                                    if (!string.IsNullOrWhiteSpace(DialogAlertURL)) DialogAlertURL = URL;
-                                    else DialogAlertURL = string.Empty;
-
-                                    if (AudioFiles.Count != 0)
+                                    if (Settings.Default.alertNoGUI)
                                     {
-                                        DialogAlertAudioURL = AudioFiles[0];
-                                        Console.WriteLine("[Alert Processor] Using attached alert audio.");
-                                    }
-                                    else DialogAlertAudioURL = string.Empty;
+                                        AlertDisplaying = true;
+                                        AlertsQueued--;
 
-                                    if (ImageFiles.Count != 0)
-                                    {
-                                        Console.WriteLine("[Alert Processor] Using attached alert image.");
-                                        // In the future, I'd like to implement some sort of image slideshow is there are multiple.
-                                        DialogAlertImageURL = ImageFiles[0];
-                                    }
-                                    else DialogAlertImageURL = string.Empty;
 
-                                    AudioFiles.Clear();
-                                    ImageFiles.Clear();
 
-                                    DialogAlertType = $"{MsgType.ToLowerInvariant()}";
-
-                                    if (Settings.Default.alertFullscreen)
-                                    {
-                                        tafPing = true;
-                                        while (tafPing) Thread.Sleep(500);
+                                        lock (AlertValuesLock)
+                                        {
+                                            AlertDisplaying = false;
+                                            Monitor.PulseAll(AlertValuesLock);
+                                        }
                                     }
                                     else
                                     {
-                                        rafPing = true;
-                                        while (rafPing) Thread.Sleep(500);
+                                        AlertDisplaying = true;
+                                        AlertsQueued--;
+                                        DialogAlertTitle = EventType;
+                                        DialogAlertText = AlertText;
+                                        if (!string.IsNullOrWhiteSpace(DialogAlertURL)) DialogAlertURL = URL;
+                                        else DialogAlertURL = string.Empty;
+
+                                        if (AudioFiles.Count != 0)
+                                        {
+                                            DialogAlertAudioURL = AudioFiles[0];
+                                            Console.WriteLine("[Alert Processor] Using attached alert audio.");
+                                        }
+                                        else DialogAlertAudioURL = string.Empty;
+
+                                        if (ImageFiles.Count != 0)
+                                        {
+                                            Console.WriteLine("[Alert Processor] Using attached alert image.");
+                                            // In the future, I'd like to implement some sort of image slideshow is there are multiple.
+                                            DialogAlertImageURL = ImageFiles[0];
+                                        }
+                                        else DialogAlertImageURL = string.Empty;
+
+                                        AudioFiles.Clear();
+                                        ImageFiles.Clear();
+
+                                        DialogAlertType = $"{MsgType.ToLowerInvariant()}";
+
+                                        if (Settings.Default.alertFullscreen)
+                                        {
+                                            tafPing = true;
+                                            while (tafPing) Thread.Sleep(500);
+                                        }
+                                        else
+                                        {
+                                            rafPing = true;
+                                            while (rafPing) Thread.Sleep(500);
+                                        }
+
+                                        lock (AlertValuesLock)
+                                        {
+                                            AlertDisplaying = false;
+                                            Monitor.PulseAll(AlertValuesLock);
+                                        }
                                     }
 
-                                    lock (AlertValuesLock)
-                                    {
-                                        AlertDisplaying = false;
-                                        Monitor.PulseAll(AlertValuesLock);
-                                    }
-
-                                    Console.WriteLine("[Alert Processor] Dialog released.");
+                                    Console.WriteLine("[Alert Processor] Relay released.");
                                 });
                             }
 
@@ -494,15 +518,15 @@ namespace SharpAlert
                         }
                         catch (NotSupportedException ex)
                         {
-                            Console.WriteLine($"[Alert Processor] Couldn't queue dialog. {ex.Message}");
+                            Console.WriteLine($"[Alert Processor] Couldn't relay. {ex.Message}");
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"[Alert Processor] Couldn't relay alert. {ex.Message}");
+                            Console.WriteLine($"[Alert Processor] Couldn't relay. {ex.Message}");
                         }
                         finally
                         {
-                            Console.WriteLine($"[Alert Processor] Finished relaying alert.");
+                            Console.WriteLine($"[Alert Processor] Finished relaying.");
                         }
 
                         if (AnyAlertRelayed) AlertsRelayed++;
@@ -539,6 +563,66 @@ namespace SharpAlert
             }
         }
 
+        public void ProcessAlertTest()
+        {
+            try
+            {
+                ThreadPool.QueueUserWorkItem(_ =>
+                {
+                    Console.WriteLine("[Alert Processor] Relay queued.");
+
+                    lock (AlertValuesLock)
+                    {
+                        Console.WriteLine("[Alert Processor] Relay queue locked.");
+                        while (AlertDisplaying)
+                        {
+                            Monitor.Wait(AlertValuesLock);
+                        }
+                        Console.WriteLine("[Alert Processor] Relay queue unlocked.");
+                    }
+
+                    AlertDisplaying = true;
+                    DialogAlertTitle = "Standard Test";
+                    DialogAlertText = "This is a test.";
+                    DialogAlertURL = "https://sharpalert.bunnytub.com";
+                    DialogAlertAudioURL = string.Empty;
+                    DialogAlertImageURL = string.Empty;
+                    DialogAlertType = "alert";
+
+                    if (Settings.Default.alertFullscreen)
+                    {
+                        tafPing = true;
+                        while (tafPing) Thread.Sleep(500);
+                    }
+                    else
+                    {
+                        rafPing = true;
+                        while (rafPing) Thread.Sleep(500);
+                    }
+
+                    lock (AlertValuesLock)
+                    {
+                        AlertDisplaying = false;
+                        Monitor.PulseAll(AlertValuesLock);
+                    }
+
+                    Console.WriteLine("[Alert Processor] Test released.");
+                });
+            }
+            catch (NotSupportedException ex)
+            {
+                Console.WriteLine($"[Alert Processor] Couldn't test. {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Alert Processor] Couldn't test. {ex.Message}");
+            }
+            finally
+            {
+                Console.WriteLine($"[Alert Processor] Finished test.");
+            }
+        }
+
         /// <summary>
         /// Processes the info tag, then returns a boolean depending on the configuration.
         /// </summary>
@@ -547,7 +631,7 @@ namespace SharpAlert
         /// <param name="Severity">The severity of the message.</param>
         /// <param name="Urgency">The urgency of the message.</param>
         /// <returns>Returns True if the caller should continue.</returns>
-        public static bool ProcessInfoX(string InfoX, string Severity, string Urgency)
+        public static bool ProcessInfoX(string InfoX)
         {
             Console.WriteLine("Processing InfoX.");
             bool Final = false;
@@ -559,10 +643,15 @@ namespace SharpAlert
 
             try
             {
+                Match Severity = UrgencyRegex.Match(InfoX);
+                Match Urgency = UrgencyRegex.Match(InfoX);
+                Match Category = UrgencyRegex.Match(InfoX);
+
                 bool var1; // Severity
                 bool var2; // Urgency
+                bool var3; // Category
 
-                switch (Severity.ToLowerInvariant())
+                switch (Severity.Groups[1].Value.ToLowerInvariant())
                 {
                     case "extreme":
                         var1 = Settings.Default.severityExtreme;
@@ -584,7 +673,7 @@ namespace SharpAlert
                         break;
                 }
 
-                switch (Urgency.ToLowerInvariant())
+                switch (Urgency.Groups[1].Value.ToLowerInvariant())
                 {
                     case "immediate":
                         var2 = Settings.Default.urgencyImmediate;
@@ -606,16 +695,60 @@ namespace SharpAlert
                         break;
                 }
 
-                if (var1 && var2)
+                switch (Category.Groups[1].Value.ToLowerInvariant())
+                {
+                    case "geo":
+                        var3 = Settings.Default.categoryGeophysical;
+                        break;
+                    case "met":
+                        var3 = Settings.Default.categoryMeterological;
+                        break;
+                    case "safety":
+                        var3 = Settings.Default.categoryGeneralSafety;
+                        break;
+                    case "security":
+                        var3 = Settings.Default.categorySecurity;
+                        break;
+                    case "rescue":
+                        var3 = Settings.Default.categoryRescue;
+                        break;
+                    case "fire":
+                        var3 = Settings.Default.categoryFire;
+                        break;
+                    case "health":
+                        var3 = Settings.Default.categoryMedical;
+                        break;
+                    case "env":
+                        var3 = Settings.Default.categoryEnvironmental;
+                        break;
+                    case "transport":
+                        var3 = Settings.Default.categoryTransportation;
+                        break;
+                    case "infra":
+                        var3 = Settings.Default.categoryUtilities;
+                        break;
+                    case "cbrne":
+                        var3 = Settings.Default.categoryToxicThreat;
+                        break;
+                    case "other":
+                        var3 = Settings.Default.categoryOtherUnknown;
+                        break;
+                    default:
+                        var3 = Settings.Default.categoryOtherUnknown;
+                        break;
+                }
+
+                if (var1 && var2 && var3)
                 {
                     Final = true;
-                    Console.WriteLine("Severity, and urgency, passed all checks.");
+                    Console.WriteLine("Severity, urgency, and category, passed all checks.");
                 }
                 else
                 {
-                    Console.WriteLine("Severity, and urgency, did not pass all checks.\r\n" +
+                    Console.WriteLine("Severity, urgency, and category, did not pass all checks.\r\n" +
                         $"Severity = {var1}\r\n" +
-                        $"Urgency = {var2}");
+                        $"Urgency = {var2}\r\n" +
+                        $"Category = {var3}");
                 }
             }
             catch (Exception ex)

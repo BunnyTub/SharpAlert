@@ -137,6 +137,9 @@ namespace SharpAlert
             alertTTSonlyBox.Checked = Settings.Default.alertTTSonly;
             alertTTSonlyBox.CheckedChanged += (a, b) => Settings.Default.alertTTSonly = ((CheckBox)a).Checked;
             
+            alertNoGUIBox.Checked = Settings.Default.alertNoGUI;
+            alertNoGUIBox.CheckedChanged += (a, b) => Settings.Default.alertNoGUI = ((CheckBox)a).Checked;
+            
             volumeBar.Value = Settings.Default.alertVolume;
             volumeBar.Scroll += (a, b) => Settings.Default.alertVolume = ((TrackBar)a).Value;
 
