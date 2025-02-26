@@ -53,7 +53,7 @@
 &lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
     </Setting>
     <Setting Name="AlertCheckInterval" Description="Sets the interval between each server request in seconds." Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">45</Value>
+      <Value Profile="(Default)">30</Value>
     </Setting>
     <Setting Name="AllowedUGCLocations_Geocodes" Description="Only allows messages with one or more geocodes in the list. Leave this and geocodes blank to allow all." Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
@@ -111,7 +111,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="alertVolume" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
+      <Value Profile="(Default)">8</Value>
     </Setting>
     <Setting Name="categoryGeophysical" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

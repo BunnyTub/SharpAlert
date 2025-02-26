@@ -156,7 +156,7 @@
             this.AlertCheckIntervalInput.TabIndex = 6;
             this.ToolTipInformation.SetToolTip(this.AlertCheckIntervalInput, "The amount of seconds until the next server check.");
             this.AlertCheckIntervalInput.Value = new decimal(new int[] {
-            45,
+            30,
             0,
             0,
             0});

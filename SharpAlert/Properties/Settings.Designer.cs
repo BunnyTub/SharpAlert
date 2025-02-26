@@ -284,7 +284,7 @@ namespace SharpAlert.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsDescriptionAttribute("Sets the interval between each server request in seconds.")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("45")]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
         public int AlertCheckInterval {
             get {
                 return ((int)(this["AlertCheckInterval"]));
@@ -545,7 +545,7 @@ namespace SharpAlert.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
         public int alertVolume {
             get {
                 return ((int)(this["alertVolume"]));

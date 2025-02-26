@@ -88,10 +88,6 @@ namespace SharpAlert
 			@"<senderName>\s*(.*?)\s*</senderName>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-		public static readonly Regex CoverageRegex = new Regex(
-			@"<valueName>layer:EC-MSC-SMC:1.0:Alert_Coverage</valueName>\s*<value>\s*(.*?)\s*</value>",
-			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
 		public static readonly Regex DescriptionRegex = new Regex(
 			@"<description>\s*(.*?)\s*</description>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
@@ -103,6 +99,7 @@ namespace SharpAlert
 		public static readonly Regex AreaDescriptionRegex = new Regex(
 			@"<areaDesc>\s*(.*?)\s*</areaDesc>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
 		public static readonly Regex TypeURIRegex = new Regex(
 			@"<uri>\s*(.*?)\s*</uri>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);

@@ -336,8 +336,6 @@ namespace SharpAlert
                             continue;
                         }
 
-                        // all checks passed
-
                         string AlertText = BroadcastInfo(AlertInfo, MsgType, Sent, ReplayMode);
                         List<string> LocationsText = CompiledLocations(AlertInfo);
 
@@ -455,7 +453,11 @@ namespace SharpAlert
                                         AlertDisplaying = true;
                                         AlertsQueued--;
 
+                                        Console.WriteLine($"[Alert Processor] Alert Text:\r\n{DialogAlertText}");
 
+                                        PlayFromUnmanagedSourceAndWait(Properties.Resources.ui_warning_1);
+                                        PlayFromTTSEngineAndWait(DialogAlertText);
+                                        PlayFromUnmanagedSourceAndWait(Properties.Resources.ui_end_1);
 
                                         lock (AlertValuesLock)
                                         {
@@ -583,7 +585,7 @@ namespace SharpAlert
 
                     AlertDisplaying = true;
                     DialogAlertTitle = "Standard Test";
-                    DialogAlertText = "This is a test.";
+                    DialogAlertText = "This is a test of SharpAlert's alert display.";
                     DialogAlertURL = "https://sharpalert.bunnytub.com";
                     DialogAlertAudioURL = string.Empty;
                     DialogAlertImageURL = string.Empty;

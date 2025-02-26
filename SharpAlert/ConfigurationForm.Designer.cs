@@ -530,9 +530,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(6, 17);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(281, 15);
+            this.label2.Size = new System.Drawing.Size(240, 15);
             this.label2.TabIndex = 6;
-            this.label2.Text = "This list shows the MD5 hash values of each alert.";
+            this.label2.Text = "This list shows the identifiers of each alert.";
             // 
             // AlertHistoryOutput
             // 
@@ -547,6 +547,8 @@
             this.AlertHistoryOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.AlertHistoryOutput.Size = new System.Drawing.Size(535, 66);
             this.AlertHistoryOutput.TabIndex = 3;
+            this.ToolTipInformation.SetToolTip(this.AlertHistoryOutput, "This area shows the identifiers of each alert. If an identifier couldn\'t be found" +
+        ", the identifier will be an MD5 value based on the alert\'s raw data.");
             this.AlertHistoryOutput.WordWrap = false;
             // 
             // ConfigurationPanel

@@ -291,6 +291,7 @@ namespace SharpAlert
                 }
             }
         }
+        
 
         public static void PlayFromTTSEngine(string tts)
         {
@@ -346,6 +347,51 @@ namespace SharpAlert
             catch (Exception ex)
             {
                 Console.WriteLine($"{ex.Message}");
+            }
+        }
+
+        public static void PlayFromTTSEngineAndWait(string tts)
+        {
+            try
+            {
+                Console.WriteLine("[Audio Manager] Preparing to play in the current thread.");
+                lock (AudioOutputLock)
+                {
+                    Console.WriteLine("[Audio Manager] Audio queue locked.");
+                    MemoryStream stream = new MemoryStream();
+                    engine.SetOutputToWaveStream(stream);
+                    engine.Speak(tts);
+                    using (var mf = new StreamMediaFoundationReader(stream))
+                    {
+                        WasapiOut AudioOutput = new WasapiOut();
+                        Outputs.Add(AudioOutput);
+                        float volume = Settings.Default.alertVolume / 10f;
+                        AudioOutput.Init(mf);
+                        for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++) AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
+                        AudioOutput.Play();
+                        while (AudioOutput.PlaybackState == PlaybackState.Playing & !HoldIt)
+                        {
+                            Thread.Sleep(50);
+                        }
+                        if (HoldIt)
+                        {
+                            Console.WriteLine("[Audio Manager] Audio cleared from queue and unlocked.");
+                            return;
+                        }
+                        Outputs.Remove(AudioOutput);
+                        AudioOutput.Dispose();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                lock (notify)
+                {
+                    notify.BalloonTipTitle = "SharpAlert is having issues";
+                    notify.BalloonTipText = "Audio playback is not working as expected. Please make sure your audio devices are working!";
+                    notify.BalloonTipIcon = ToolTipIcon.Warning;
+                    notify.ShowBalloonTip(5000);
+                }
             }
         }
     }

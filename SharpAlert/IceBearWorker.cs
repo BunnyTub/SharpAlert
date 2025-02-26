@@ -745,82 +745,54 @@ namespace SharpAlert
         /// </summary>
         public static void AddFileToQueue()
         {
-            ThreadPool.QueueUserWorkItem(_ =>
+            Thread staThread = new Thread(() =>
             {
-                Thread staThread = new Thread(() =>
+                try
                 {
+                    Console.WriteLine("Opening file picker.");
+
+                    string selectedPath = string.Empty;
+                    string selectedSafePath = string.Empty;
+
+                    OpenFileDialog fbd = new OpenFileDialog
+                    {
+                        Filter = "Common Alerting Protocol files (*.xml, *.cap)|*.xml;*.cap",
+                        FilterIndex = 0,
+                        CheckFileExists = true,
+                        Multiselect = false
+                    };
+
+                    if (fbd.ShowDialog() != DialogResult.OK)
+                    {
+                        Console.WriteLine("No file chosen.");
+                        return;
+                    }
+
+                    selectedPath = fbd.FileName;
+                    fbd.Dispose();
+
+                    if (string.IsNullOrEmpty(selectedPath)) return;
+
                     try
                     {
-                        Console.WriteLine("Opening file picker.");
-
-                        string selectedPath = string.Empty;
-                        string selectedSafePath = string.Empty;
-
-                        OpenFileDialog fbd = new OpenFileDialog
-                        {
-                            Filter = "Common Alerting Protocol files (*.xml, *.cap)|*.xml;*.cap",
-                            FilterIndex = 0,
-                            CheckFileExists = true,
-                            Multiselect = false
-                        };
-
-                        if (fbd.ShowDialog() != DialogResult.OK)
-                        {
-                            Console.WriteLine("No file chosen.");
-                            return;
-                        }
-
-                        selectedPath = fbd.FileName;
-                        selectedSafePath = fbd.SafeFileName;
-                        fbd.Dispose();
-
-                        if (string.IsNullOrEmpty(selectedPath)) return;
-
-                        try
-                        {
-                            string data = File.ReadAllText(selectedPath);
-
-                            MatchCollection alertMatches = AlertRegex.Matches(data);
-                            int alertIndex = 0;
-
-                            foreach (Match alert in alertMatches)
-                            {
-                                alertIndex++;
-
-                                string filename = CreateMD5(alert.Value);
-
-                                Console.WriteLine($"[File Picker] {alertIndex} -> {filename}");
-
-                                if (SharpDataQueue.Any(x => x.Name == filename) || SharpDataHistory.Any(x => x.Name == filename))
-                                {
-                                    Console.WriteLine($"[File Picker] Alert {alertIndex} has been discarded (already queued or is in history).");
-                                }
-                                else
-                                {
-                                    lock (SharpDataQueue) SharpDataQueue.Add(new SharpDataItem(filename, alert.Value));
-                                    Console.WriteLine($"[File Picker] Alert {alertIndex} has been saved for processing.");
-                                }
-                            }
-
-                            Console.WriteLine($"[File Picker] {alertIndex} alert(s) checked.");
-                            Console.WriteLine("Added file to queue.");
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message);
-                        }
+                        string data = File.ReadAllText(selectedPath);
+                        feed.EnrollAlerts(data);
                     }
                     catch (Exception e)
                     {
-                        MessageBox.Show($"{e.StackTrace} {e.Message}",
-                            "SharpAlert",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
+                        Console.WriteLine(e.Message);
                     }
-                });
-                staThread.SetApartmentState(ApartmentState.STA);
-                staThread.Start();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"{e.StackTrace} {e.Message}",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             });
+            staThread.SetApartmentState(ApartmentState.STA);
+            staThread.Start();
         }
     }
 }

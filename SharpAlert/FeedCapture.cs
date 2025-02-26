@@ -50,13 +50,11 @@ namespace SharpAlert
             {
                 try
                 {
-                    string filename;
-
                     Console.WriteLine($"[Feed Capture] Getting data from URL: {URLPrefix}://{server}");
                     Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server}");
                     if (!message.Wait(10000)) continue;
                     message.Result.EnsureSuccessStatusCode();
-                    
+
                     if (Calls >= 100000) Calls = 0;
                     Calls++;
 
@@ -64,52 +62,7 @@ namespace SharpAlert
 
                     Console.WriteLine($"[Feed Capture] Grabbed data.");
 
-                    MatchCollection alertMatches = AlertRegex.Matches(Result);
-                    int alertIndex = 0;
-
-                    if (alertMatches != null || alertMatches.Count != 0)
-                    {
-                        foreach (Match alert in alertMatches)
-                        {
-                            alertIndex++;
-                            if (alert.Value is null) continue;
-
-                            string alertValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
-                            filename = CreateMD5(alert.Value);
-
-                            Console.WriteLine($"[Feed Capture] {alertIndex} -> {filename}");
-
-                            SharpDataItem item = new SharpDataItem(filename, alert.Value);
-
-                            if (FirstRun && Settings.Default.discardFirstAlerts)
-                            {
-                                if (TryAddDataToHistory(item))
-                                {
-                                    Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been discarded (first run).");
-                                }
-                            }
-                            else
-                            {
-                                if (TryAddDataToQueue(item))
-                                {
-                                    Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been saved for processing.");
-                                }
-                                else
-                                {
-                                    Console.WriteLine($"[Feed Capture] Alert {alertIndex} has been discarded (already queued or is in history).");
-                                }
-                            }
-                        }
-                        if (alertIndex != 0) Console.WriteLine($"[Feed Capture] {alertIndex} alert(s) checked.");
-                        else Console.WriteLine($"[Feed Capture] No alerts to be checked.");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"[Feed Capture] No alerts to be checked.");
-                    }
-
-                    // Do not show the user an alert for the first time opening the program
-                    // Implement user entry for how long between each request/check
+                    EnrollAlerts(Result);
                 }
                 catch (SocketException e)
                 {
@@ -176,6 +129,72 @@ namespace SharpAlert
                     Thread.Sleep(1000);
                     i++;
                 }
+            }
+        }
+
+        public void EnrollAlerts(string data)
+        {
+            MatchCollection alertMatches = AlertRegex.Matches(data);
+            int alertIndex = 0;
+
+            if (alertMatches != null || alertMatches.Count != 0)
+            {
+                foreach (Match alert in alertMatches)
+                {
+                    try
+                    {
+                        alertIndex++;
+                        if (alert.Value is null) continue;
+
+                        string filename = string.Empty;
+
+                        Match identifier = IdentifierRegex.Match(alert.Value);
+
+                        if (identifier.Success)
+                        {
+                            filename = identifier.Groups[1].Value;
+                        }
+
+                        if (string.IsNullOrWhiteSpace(filename))
+                        {
+                            Console.WriteLine("[Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
+                            filename = CreateMD5(alert.Value);
+                        }
+
+                        Console.WriteLine($"[Feed Capture] {alertIndex} -> {filename}");
+                        string alertReplayValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
+                        SharpDataItem item = new SharpDataItem(filename, alert.Value);
+
+                        if (FirstRun && Settings.Default.discardFirstAlerts)
+                        {
+                            if (TryAddDataToHistory(item))
+                            {
+                                Console.WriteLine($"[Feed Capture] Alert {alertIndex} ({filename}) has been discarded (first run).");
+                            }
+                        }
+                        else
+                        {
+                            if (TryAddDataToQueue(item))
+                            {
+                                Console.WriteLine($"[Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"[Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
+                    }
+                }
+                if (alertIndex != 0) Console.WriteLine($"[Feed Capture] {alertIndex} alert(s) checked.");
+                else Console.WriteLine($"[Feed Capture] No alerts to be checked.");
+            }
+            else
+            {
+                Console.WriteLine($"[Feed Capture] No alerts to be checked.");
             }
         }
 

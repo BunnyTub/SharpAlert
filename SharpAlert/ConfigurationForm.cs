@@ -138,7 +138,10 @@ namespace SharpAlert
             alertTTSonlyBox.CheckedChanged += (a, b) => Settings.Default.alertTTSonly = ((CheckBox)a).Checked;
             
             alertNoGUIBox.Checked = Settings.Default.alertNoGUI;
-            alertNoGUIBox.CheckedChanged += (a, b) => Settings.Default.alertNoGUI = ((CheckBox)a).Checked;
+            alertNoGUIBox.CheckedChanged += (a, b) =>
+            {
+                Settings.Default.alertNoGUI = ((CheckBox)a).Checked;
+            };
             
             volumeBar.Value = Settings.Default.alertVolume;
             volumeBar.Scroll += (a, b) => Settings.Default.alertVolume = ((TrackBar)a).Value;
@@ -175,7 +178,7 @@ namespace SharpAlert
             if (SharpDataHistory.Count != 0)
             {
                 string DataHistory = string.Empty;
-                foreach (var item in SharpDataHistory) DataHistory += "(MD5)\x20" + item.Name + "\r\n";
+                foreach (var item in SharpDataHistory) DataHistory += "" + item.Name + "\r\n";
                 DataHistory.Trim();
                 AlertHistoryOutput.Text = DataHistory;
             }
