@@ -253,7 +253,7 @@ namespace SharpAlert
 
             ServiceRunnerScheduled = true;
 
-            Console.WriteLine("[Ice Bear] Listening for requests.");
+            Console.WriteLine("[Ice Bear] Listening for requests. (on port 9792)");
 
             while (true)
             {
