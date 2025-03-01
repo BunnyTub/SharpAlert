@@ -268,8 +268,16 @@ namespace SharpAlert
 
         private void FlashTaskbarStatus_Tick(object sender, EventArgs e)
         {
-            if (FlashOne) UpdateTaskbarProgress(TaskbarProgressState.Error, 100, 100);
-            else UpdateTaskbarProgress(TaskbarProgressState.Normal, 100, 100);
+            if (FlashOne)
+            {
+                UpdateTaskbarProgress(TaskbarProgressState.Error, 100, 100);
+                AlertIcon.Visible = true;
+            }
+            else
+            {
+                UpdateTaskbarProgress(TaskbarProgressState.Normal, 100, 100);
+                AlertIcon.Visible = false;
+            }
             FlashOne = !FlashOne;
         }
 
