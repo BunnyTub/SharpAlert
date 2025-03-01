@@ -87,7 +87,7 @@
             this.ScreenshotButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ScreenshotButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
             this.ScreenshotButton.ForeColor = System.Drawing.Color.Black;
-            this.ScreenshotButton.Location = new System.Drawing.Point(984, 3);
+            this.ScreenshotButton.Location = new System.Drawing.Point(1025, 3);
             this.ScreenshotButton.Name = "ScreenshotButton";
             this.ScreenshotButton.Size = new System.Drawing.Size(35, 35);
             this.ScreenshotButton.TabIndex = 11;
@@ -121,7 +121,7 @@
             this.LinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LinkButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
             this.LinkButton.ForeColor = System.Drawing.Color.Black;
-            this.LinkButton.Location = new System.Drawing.Point(1025, 3);
+            this.LinkButton.Location = new System.Drawing.Point(984, 3);
             this.LinkButton.Name = "LinkButton";
             this.LinkButton.Size = new System.Drawing.Size(35, 35);
             this.LinkButton.TabIndex = 9;
@@ -277,7 +277,6 @@
             // 
             // MouseMoving
             // 
-            this.MouseMoving.Enabled = true;
             this.MouseMoving.Tick += new System.EventHandler(this.MouseMoving_Tick);
             // 
             // FlashReplayStatus

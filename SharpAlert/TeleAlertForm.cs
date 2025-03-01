@@ -181,7 +181,7 @@ namespace SharpAlert
             this.Close();
         }
 
-        public Point localCursorPosition = Cursor.Position;
+        public Point localCursorPosition = new Point();
 
         private void AlertForm_Shown(object sender, EventArgs e)
         {
@@ -228,6 +228,8 @@ namespace SharpAlert
             SetForegroundWindow(GotHandle);
             taskbarList.MarkFullscreenWindow(GotHandle, true);
 
+            localCursorPosition = Cursor.Position;
+
             Console.WriteLine("[Alert GUI] Window shown.");
         }
 
@@ -240,8 +242,11 @@ namespace SharpAlert
 
         private void AlertForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            UnlockButtons(false);
             AutoExit.Stop();
             AutoScroller.Stop();
+            AutoHideButtons.Stop();
+            MouseMoving.Stop();
             if (FadeOutExitReady)
             {
                 return;
@@ -297,6 +302,13 @@ namespace SharpAlert
                 AlertIcon.Visible = false;
             }
             FlashOne = !FlashOne;
+        }
+
+        private void UnlockButtons(bool unlocked)
+        {
+            DismissButton.Enabled = unlocked;
+            ScreenshotButton.Enabled = unlocked;
+            LinkButton.Enabled = unlocked;
         }
 
         private void FlashReplayStatus_Tick(object sender, EventArgs e)
@@ -441,9 +453,7 @@ namespace SharpAlert
             FlashTaskbarStatus.Stop();
             MouseMoving.Stop();
             AutoHideButtons.Enabled = false;
-            DismissButton.Visible = false;
-            LinkButton.Visible = false;
-            ScreenshotButton.Visible = false;
+            UnlockButtons(false);
             AlertIcon.Visible = true;
             AlertText.SelectionStart = 0;
             AlertText.ScrollToCaret();

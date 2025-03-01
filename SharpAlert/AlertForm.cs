@@ -175,9 +175,7 @@ namespace SharpAlert
             else
             {
                 this.Opacity = 1;
-                DismissButton.Enabled = true;
-                SpeakerButton.Enabled = true;
-                LinkButton.Enabled = true;
+                UnlockButtons(true);
             }
 
             if (AlertType != "cancel")
@@ -203,8 +201,16 @@ namespace SharpAlert
             PlayWithFailoverToTTS(AlertAudioUrlStr, AlertTextStr);
         }
 
+        private void UnlockButtons(bool unlocked)
+        {
+            DismissButton.Enabled = unlocked;
+            SpeakerButton.Enabled = unlocked;
+            LinkButton.Enabled = unlocked;
+        }
+
         private void AlertForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            UnlockButtons(false);
             AutoExit.Stop();
             if (!Settings.Default.alertCompatibilityMode)
             {
@@ -293,9 +299,7 @@ namespace SharpAlert
             if (this.Opacity == 1)
             {
                 FadeInAnimation.Stop();
-                DismissButton.Enabled = true;
-                SpeakerButton.Enabled = true;
-                LinkButton.Enabled = true;
+                UnlockButtons(false);
                 return;
             }
             else
