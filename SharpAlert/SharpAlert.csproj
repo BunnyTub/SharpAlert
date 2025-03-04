@@ -165,6 +165,18 @@
       <DependentUpon>AltTrayForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AudioManager.cs" />
+    <Compile Include="DisplayDialogs\Panels\AlertInfoHolder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DisplayDialogs\Panels\AlertInfoHolder.Designer.cs">
+      <DependentUpon>AlertInfoHolder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ListingForm.Designer.cs">
+      <DependentUpon>ListingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SourceCapturing\CacheCapture.cs" />
     <Compile Include="ConfigurationDialogs\CreditsForm.cs">
       <SubType>Form</SubType>
@@ -228,6 +240,9 @@
     <EmbeddedResource Include="ConfigurationDialogs\ServerConfigurationForm.resx">
       <DependentUpon>ServerConfigurationForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DisplayDialogs\Panels\AlertInfoHolder.resx">
+      <DependentUpon>AlertInfoHolder.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DisplayDialogs\StartupForm.resx">
       <DependentUpon>StartupForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -236,6 +251,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DisplayDialogs\TeleIdleForm.resx">
       <DependentUpon>TeleIdleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListingForm.resx">
+      <DependentUpon>ListingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ToppleForm.resx">
       <DependentUpon>ToppleForm.cs</DependentUpon>

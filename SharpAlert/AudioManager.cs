@@ -40,8 +40,8 @@ namespace SharpAlert
                         {
                             lock (output)
                             {
-                                output.Stop();
-                                output.Dispose();
+                                //output?.Stop();
+                                output?.Dispose();
                                 lock (Outputs) Outputs.Remove(output);
                             }
                         }
@@ -89,14 +89,14 @@ namespace SharpAlert
                     {
                         lock (output)
                         {
-                            output.Stop();
-                            output.Dispose();
+                            //output?.Stop();
+                            output?.Dispose();
                             lock (Outputs) Outputs.Remove(output);
                         }
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"{ex.Message}");
+                        Console.WriteLine($"[Audio Manager] {ex.Message}");
                     }
                 }
 
@@ -122,7 +122,7 @@ namespace SharpAlert
                 {
                     try
                     {
-                        PlayFromRemoteSource(url, true);
+                        PlayFromRemoteSource(url, false);
                     }
                     catch (Exception ex)
                     {
@@ -143,7 +143,7 @@ namespace SharpAlert
 
         public static void PlayFromRemoteSource(string url, bool eom)
         {
-            throw new Exception("SharpAlert is currently undergoing an audio rewrite, so remote audio is disabled for now.");
+            //throw new Exception("SharpAlert is currently undergoing an audio rewrite, so remote audio is disabled for now.");
             try
             {
                 //IceBearWorker.client.GetByteArrayAsync(url).Result;
@@ -193,7 +193,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{ex.Message}");
+                Console.WriteLine($"[Audio Manager] {ex.Message}");
             }
         }
 
@@ -248,7 +248,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{ex.Message}");
+                Console.WriteLine($"[Audio Manager] {ex.Message}");
             }
         }
 
@@ -346,7 +346,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{ex.Message}");
+                Console.WriteLine($"[Audio Manager] {ex.Message}");
             }
         }
 

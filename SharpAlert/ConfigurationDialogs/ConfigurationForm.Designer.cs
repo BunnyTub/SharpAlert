@@ -59,6 +59,7 @@
             this.volumeBar = new System.Windows.Forms.TrackBar();
             this.alertNoGUIBox = new System.Windows.Forms.CheckBox();
             this.AlertHistoryOutput = new System.Windows.Forms.TextBox();
+            this.alertFullscreenWindowedBox = new System.Windows.Forms.CheckBox();
             this.DiscordWebhookGroup = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -70,7 +71,6 @@
             this.PastAlertsGroup = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
-            this.alertFullscreenWindowedBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
@@ -213,9 +213,9 @@
             // AlertHistoryClearButton
             // 
             this.AlertHistoryClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AlertHistoryClearButton.Location = new System.Drawing.Point(547, 78);
+            this.AlertHistoryClearButton.Location = new System.Drawing.Point(569, 78);
             this.AlertHistoryClearButton.Name = "AlertHistoryClearButton";
-            this.AlertHistoryClearButton.Size = new System.Drawing.Size(94, 23);
+            this.AlertHistoryClearButton.Size = new System.Drawing.Size(72, 23);
             this.AlertHistoryClearButton.TabIndex = 19;
             this.AlertHistoryClearButton.Text = "Clear";
             this.ToolTipInformation.SetToolTip(this.AlertHistoryClearButton, "Clears the history list.");
@@ -225,9 +225,9 @@
             // AlertHistoryRefreshButton
             // 
             this.AlertHistoryRefreshButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AlertHistoryRefreshButton.Location = new System.Drawing.Point(547, 49);
+            this.AlertHistoryRefreshButton.Location = new System.Drawing.Point(569, 49);
             this.AlertHistoryRefreshButton.Name = "AlertHistoryRefreshButton";
-            this.AlertHistoryRefreshButton.Size = new System.Drawing.Size(94, 23);
+            this.AlertHistoryRefreshButton.Size = new System.Drawing.Size(72, 23);
             this.AlertHistoryRefreshButton.TabIndex = 18;
             this.AlertHistoryRefreshButton.Text = "Refresh";
             this.ToolTipInformation.SetToolTip(this.AlertHistoryRefreshButton, "Refreshes the history list.");
@@ -237,9 +237,9 @@
             // AlertHistoryReplayRecentButton
             // 
             this.AlertHistoryReplayRecentButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AlertHistoryReplayRecentButton.Location = new System.Drawing.Point(547, 20);
+            this.AlertHistoryReplayRecentButton.Location = new System.Drawing.Point(569, 20);
             this.AlertHistoryReplayRecentButton.Name = "AlertHistoryReplayRecentButton";
-            this.AlertHistoryReplayRecentButton.Size = new System.Drawing.Size(94, 23);
+            this.AlertHistoryReplayRecentButton.Size = new System.Drawing.Size(72, 23);
             this.AlertHistoryReplayRecentButton.TabIndex = 17;
             this.AlertHistoryReplayRecentButton.Text = "Replay";
             this.ToolTipInformation.SetToolTip(this.AlertHistoryReplayRecentButton, "Immediately re-adds the most recent alert back into the queue after wiping it fro" +
@@ -251,13 +251,13 @@
             // 
             this.AlertHistoryDumpLink.AutoSize = true;
             this.AlertHistoryDumpLink.LinkColor = System.Drawing.Color.Yellow;
-            this.AlertHistoryDumpLink.Location = new System.Drawing.Point(434, 17);
+            this.AlertHistoryDumpLink.Location = new System.Drawing.Point(456, 17);
             this.AlertHistoryDumpLink.Name = "AlertHistoryDumpLink";
             this.AlertHistoryDumpLink.Size = new System.Drawing.Size(107, 15);
             this.AlertHistoryDumpLink.TabIndex = 16;
             this.AlertHistoryDumpLink.TabStop = true;
             this.AlertHistoryDumpLink.Text = "Dump alert history";
-            this.ToolTipInformation.SetToolTip(this.AlertHistoryDumpLink, "Dumps the entire alert history to a folder named \"dump\".");
+            this.ToolTipInformation.SetToolTip(this.AlertHistoryDumpLink, "Dumps the alert history to a folder named \"dump\", then opens the folder.");
             this.AlertHistoryDumpLink.VisitedLinkColor = System.Drawing.Color.Cyan;
             this.AlertHistoryDumpLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AlertHistoryDumpLink_LinkClicked);
             // 
@@ -427,11 +427,23 @@
             this.AlertHistoryOutput.Name = "AlertHistoryOutput";
             this.AlertHistoryOutput.ReadOnly = true;
             this.AlertHistoryOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.AlertHistoryOutput.Size = new System.Drawing.Size(535, 66);
+            this.AlertHistoryOutput.Size = new System.Drawing.Size(557, 66);
             this.AlertHistoryOutput.TabIndex = 15;
             this.ToolTipInformation.SetToolTip(this.AlertHistoryOutput, "This area shows the identifiers of each alert. If an identifier couldn\'t be found" +
         ", the identifier will be an MD5 value based on the alert\'s raw data.");
             this.AlertHistoryOutput.WordWrap = false;
+            // 
+            // alertFullscreenWindowedBox
+            // 
+            this.alertFullscreenWindowedBox.AutoSize = true;
+            this.alertFullscreenWindowedBox.Location = new System.Drawing.Point(6, 45);
+            this.alertFullscreenWindowedBox.Name = "alertFullscreenWindowedBox";
+            this.alertFullscreenWindowedBox.Size = new System.Drawing.Size(143, 19);
+            this.alertFullscreenWindowedBox.TabIndex = 6;
+            this.alertFullscreenWindowedBox.Text = "Force windowed view";
+            this.ToolTipInformation.SetToolTip(this.alertFullscreenWindowedBox, "Forces the full screen panel to have window controls. It can be useful if you\'re " +
+        "trying to window capture.");
+            this.alertFullscreenWindowedBox.UseVisualStyleBackColor = true;
             // 
             // DiscordWebhookGroup
             // 
@@ -571,18 +583,6 @@
             this.ConfigurationPanel.Name = "ConfigurationPanel";
             this.ConfigurationPanel.Size = new System.Drawing.Size(671, 429);
             this.ConfigurationPanel.TabIndex = 13;
-            // 
-            // alertFullscreenWindowedBox
-            // 
-            this.alertFullscreenWindowedBox.AutoSize = true;
-            this.alertFullscreenWindowedBox.Location = new System.Drawing.Point(6, 45);
-            this.alertFullscreenWindowedBox.Name = "alertFullscreenWindowedBox";
-            this.alertFullscreenWindowedBox.Size = new System.Drawing.Size(143, 19);
-            this.alertFullscreenWindowedBox.TabIndex = 6;
-            this.alertFullscreenWindowedBox.Text = "Force windowed view";
-            this.ToolTipInformation.SetToolTip(this.alertFullscreenWindowedBox, "Forces the full screen panel to have window controls. It can be useful if you\'re " +
-        "trying to window capture.");
-            this.alertFullscreenWindowedBox.UseVisualStyleBackColor = true;
             // 
             // ConfigurationForm
             // 

@@ -158,7 +158,7 @@ namespace SharpAlert
             statusWindowBox.CheckedChanged += (a, b) =>
             {
                 ((CheckBox)a).Enabled = false;
-                Settings.Default.alertCompatibilityMode = ((CheckBox)a).Checked;
+                Settings.Default.statusWindow = ((CheckBox)a).Checked;
 
                 if (((CheckBox)a).Checked)
                 {

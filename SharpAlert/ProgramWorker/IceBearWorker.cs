@@ -57,6 +57,10 @@ namespace SharpAlert
                 StartupForm sf = new StartupForm();
                 sf.ShowDialog();
                 sf.Dispose();
+                // TESTING ONLY
+                //ListingForm lf = new ListingForm();
+                //lf.ShowDialog();
+                //lf.Dispose();
             });
 
             startup.Start();
@@ -121,7 +125,7 @@ namespace SharpAlert
                 {
                     Console.WriteLine($"[Ice Bear] You may be using an older (or modified/other) version of SharpAlert. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersion}");
                     Console.WriteLine($"[Ice Bear] See https://sharpalert.bunnytub.com/ for downloads.");
-                }
+                }   
 
                 Console.WriteLine($"[Ice Bear] MD5 (remote): {RemoteMD5}");
             }
@@ -723,7 +727,7 @@ namespace SharpAlert
 
         /// <summary>
         /// Calls the file manager and requests for a file to be added to the queue.
-        /// ("The CLR has been unable to transition" is just a debugger warning!)
+        /// ("The CLR has been unable to transition" is just a debugger warning, not a fault!)
         /// </summary>
         public static void AddFileToQueue()
         {
@@ -733,7 +737,6 @@ namespace SharpAlert
                 {
                     Console.WriteLine("Opening file picker.");
 
-                    string selectedPath = string.Empty;
                     string selectedSafePath = string.Empty;
 
                     OpenFileDialog fbd = new OpenFileDialog
@@ -741,7 +744,8 @@ namespace SharpAlert
                         Filter = "Common Alerting Protocol files (*.xml, *.cap)|*.xml;*.cap",
                         FilterIndex = 0,
                         CheckFileExists = true,
-                        Multiselect = false
+                        Multiselect = true,
+                        Title = "SharpAlert - Alert Import"
                     };
 
                     if (fbd.ShowDialog() != DialogResult.OK)
@@ -750,20 +754,20 @@ namespace SharpAlert
                         return;
                     }
 
-                    selectedPath = fbd.FileName;
+                    foreach (string selectedPath in fbd.FileNames)
+                    {
+                        try
+                        {
+                            string data = File.ReadAllText(selectedPath);
+                            feed.EnrollAlerts(data);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+
                     fbd.Dispose();
-
-                    if (string.IsNullOrEmpty(selectedPath)) return;
-
-                    try
-                    {
-                        string data = File.ReadAllText(selectedPath);
-                        feed.EnrollAlerts(data);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
                 }
                 catch (Exception e)
                 {
