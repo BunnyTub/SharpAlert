@@ -138,8 +138,6 @@ namespace SharpAlert
         {
             lock (AlertLock)
             {
-                //MatchCollection alertMatches = AlertRegex.Matches(relayItem.Data);
-
                 bool AnyAlertRelayed = false;
                 bool UsedDiscordHook = false;
 
@@ -276,9 +274,6 @@ namespace SharpAlert
                                 case "application/x-url":
                                     AddAudioToList(uri.Groups[1].Value);
                                     break;
-                                default:
-                                    AddAudioToList(uri.Groups[1].Value);
-                                    break;
                             }
                             
                             switch (mime.Groups[1].Value)
@@ -336,7 +331,7 @@ namespace SharpAlert
                             continue;
                         }
 
-                        string AlertText = BroadcastInfo(AlertInfo, MsgType, Sent, ReplayMode);
+                        string AlertText = CompiledBody(AlertInfo, MsgType, Sent, ReplayMode);
                         List<string> LocationsText = CompiledLocations(AlertInfo);
 
                         if (!AllEvents.Contains(EventType)) AllEvents.Add(EventType);
@@ -517,6 +512,7 @@ namespace SharpAlert
                             }
 
                             AnyAlertRelayed = true;
+                            SharpDataRelayedNamesHistory.Add(relayItem.Name);
                         }
                         catch (NotSupportedException ex)
                         {
@@ -555,6 +551,9 @@ namespace SharpAlert
                         {
                             LocationList += $"{Location}, ";
                         }
+
+                        // LOCATIONS!!!
+
                         LocationList = LocationList.Trim().Substring(0, LocationList.Length - 1) + ".";
                         AlertToWebhook.SendUnformattedMessage($"{MaxSeverity} Emergency Alert | Event(s): {EventsList} | Location(s): {LocationList}\r\n" + Settings.Default.DiscordWebhookAppend, Settings.Default.DiscordWebhook);
                         Console.WriteLine("[Alert Processor] Appended to Discord webhook text.");
@@ -1023,72 +1022,21 @@ namespace SharpAlert
         /// <param name="MsgType">The overall message type.</param>
         /// <param name="Sent">The date and time the message was sent.</param>
         /// <returns>Returns a compiled message body.</returns>
-        public string BroadcastInfo(string InfoData, string MsgType, string Sent, bool Replay)
+        public string CompiledBody(string InfoData, string MsgType, string Sent, bool Replay)
         {
             string BroadcastText = string.Empty;
 
-            string SentenceAppendEnd(string value)
+            if (Replay)
             {
-                value = value.Trim();
-
-                if (string.IsNullOrEmpty(value))
+                if (Settings.Default.alertTimeZoneUTC)
                 {
-                    return string.Empty;
+                    BroadcastText += SentenceAppendSpace($"This alert was sent in replay mode by SharpAlert, on {DateTime.UtcNow:f} UTC.");
                 }
-
-                if (value.EndsWith(".") || value.EndsWith("!") || value.EndsWith(","))
+                else
                 {
-                    return value.Substring(0, value.Length - 1) + ".";
+                    BroadcastText += SentenceAppendSpace($"This alert was sent in replay mode by SharpAlert, on {DateTime.UtcNow:f} {LocalTimeAbbreviation()}.");
                 }
-                else return value += ".";
             }
-
-            string SentenceAppendSpace(string value)
-            {
-                value = value.Trim();
-                if (string.IsNullOrWhiteSpace(value)) return string.Empty;
-                else return value += "\x20";
-            }
-
-            string SentencePuncuationCorrection(string value)
-            {
-                value = value.Trim();
-                while (value.EndsWith("\x20.") || value.EndsWith("\x20!") || value.EndsWith("\x20,"))
-                {
-                    value = value.Substring(0, value.Length - 1);
-                }
-                value = value.Replace("...", ",").Replace("..", ".");
-                return value = SentenceAppendEnd(value.Substring(0, value.Length - 1));
-            }
-
-            string TimeCorrection(string value)
-            {
-                //Regex TimeCorrectionRegex = new Regex(@"\b(\d{1,4})\s*(AM|PM)\b", RegexOptions.IgnoreCase);
-
-                return TimeCorrectionRegex.Replace(value, timeMatch =>
-                {
-                    string timePart = timeMatch.Groups[1].Value.PadLeft(4, '0');
-                    string meridian = timeMatch.Groups[2].Value.ToUpperInvariant();
-
-                    return DateTime.ParseExact(timePart, "hhmm", CultureInfo.InvariantCulture)
-                    .ToString("hh:mm tt", CultureInfo.InvariantCulture);
-                });
-            }
-
-            string LocalTimeAbbreviation()
-            {
-                return string.Concat(TimeZoneInfo.Local.StandardName.Split(' ').Select(word => word.Substring(0, 1)));
-
-                //var localTimeZone = TimeZoneInfo.Local;
-                //var isDaylight = localTimeZone.IsDaylightSavingTime(DateTime.Now);
-
-                //if (isDaylight)
-                //    return localTimeZone.DaylightName.Substring(0, 3);
-                //else
-                //    return localTimeZone.StandardName.Substring(0, 3);
-            }
-
-            if (Replay) BroadcastText += SentenceAppendSpace($"This alert was sent in replay mode by SharpAlert, on {DateTime.UtcNow:f} UTC.");
 
             string issue = "issued";
             string update = "updated";
@@ -1186,7 +1134,7 @@ namespace SharpAlert
 
             string TimeZoneName = "Unknown TZ";
             if (Settings.Default.alertTimeZoneUTC) TimeZoneName = "UTC";
-            else TimeZoneName = $"{LocalTimeAbbreviation()}";
+            else TimeZoneName = LocalTimeAbbreviation();
 
             string SentFormatted = $"{sentDate:HH:mm} {TimeZoneName}, {sentDate:MMMM dd}, {sentDate:yyyy}";
             string BeginFormatted = $"{effectiveDate:HH:mm} {TimeZoneName}, {effectiveDate:MMMM dd}, {effectiveDate:yyyy}";
@@ -1340,39 +1288,18 @@ namespace SharpAlert
 
             if (string.IsNullOrWhiteSpace(Description) & string.IsNullOrWhiteSpace(Instruction))
             {
-                Description = "The alert information is limited or unavailable.";
+                Description = "The alert information is limited or unavailable. It may be within another info tag.";
                 Instruction = string.Empty;
             }
-
-            // Effective {Effective}, and expiring {Expires}.
 
             BroadcastText += SentenceAppendSpace($"This alert was issued by {SenderName}. Event type is {EventType}.");
             BroadcastText += SentenceAppendSpace(Coverage);
             BroadcastText += SentenceAppendSpace(SentenceAppendEnd(AreaDesc));
-
-            //if (BeginFormatted != EndFormatted)
-            //{
-            //    BroadcastText += SentenceAppendSpace($"This alert takes goes into effect starting {BeginFormatted}, and ends {EndFormatted}.");
-            //}
-            //else
-            //{
-            //    BroadcastText += SentenceAppendSpace($"This alert takes effect starting {BeginFormatted}.");
-            //}
-
             BroadcastText += SentenceAppendSpace($"This alert goes into effect starting {BeginFormatted}, and ending at {EndFormatted}.");
-
             BroadcastText += SentenceAppendSpace(SentenceAppendEnd(Description));
             if (Description != Instruction) BroadcastText += SentenceAppendSpace(SentenceAppendEnd(Instruction));
-
-            //Match match = BroadcastTextRegex.Match(InfoData);
-
-            //if (match.Success)
-            //{
-            //    BroadcastText += match.Groups[1].Value.Replace("\r\n", "\x20").Replace("\n", "\x20").Replace("\x20\x20\x20", "\x20").Replace("\x20\x20", "\x20").Trim();
-            //}
-
             BroadcastText = BroadcastText.Replace("###", string.Empty).Trim();
-            BroadcastText = BroadcastText.Replace("E A S", "EAS").Trim();
+            BroadcastText = BroadcastText.Replace("E A S", " EAS ").Trim();
             BroadcastText = SentencePuncuationCorrection(BroadcastText)
                 .Replace("* WHAT,", string.Empty)
                 .Replace("* WHERE,", string.Empty)
@@ -1400,36 +1327,63 @@ namespace SharpAlert
 
                 if (AreaDescription.Count != 0)
                 {
-                    List<string> AppendedAreas = new List<string>();
-                    List<string> AppendedCodeAreas = new List<string>();
+                    string AppendedAreas = string.Empty;
+                    string AppendedCodeAreas = string.Empty;
 
                     foreach (Match area in AreaDescription)
                     {
-                        foreach (string areaFull in area.Groups[1].Value.Replace(";", string.Empty)
-                            .Replace(",", string.Empty).Split('\x20'))
-                        {
-                            AppendedAreas.Add(areaFull);
-                        }
-
+                        //AppendedAreas += area.Groups[1].Value.Replace(";", ",") + "\x20";
+                        AppendedAreas += area.Groups[1].Value + "\x20";
                     }
 
+                    AppendedAreas = AppendedAreas.Trim();
+                    // Commenting out UGC for now, since we have no way to convert them to their friendly names at the moment.
+
                     var GeocodeSAMEAreas = GeocodeSpecificAreaMessageEncodingRegex.Matches(InfoData);
-                    var GeocodeUGCAreas = GeocodeUniversalGeographicCodeRegex.Matches(InfoData);
+                    //var GeocodeUGCAreas = GeocodeUniversalGeographicCodeRegex.Matches(InfoData);
 
                     foreach (Match code in GeocodeSAMEAreas)
                     {
-                        AppendedCodeAreas.Add($"{GetFriendlyNameFromSAMELocation(code.Groups[1].Value.Substring(1))}");
+                        AppendedCodeAreas += $"{GetFriendlyNameFromSAMELocation(code.Groups[1].Value.Substring(1))};\x20";
                     }
 
-                    foreach (Match code in GeocodeUGCAreas)
+                    //foreach (Match code in GeocodeUGCAreas)
+                    //{
+                    //    AppendedCodeAreas += $"UGC geocode {code.Groups[1].Value},\x20";
+                    //}
+
+                    string AreaDesc = string.Empty;
+
+                    //if (AppendedCodeAreas.Split(',').Length > AppendedAreas.Split(',').Length)
                     {
-                        AppendedCodeAreas.Add($"UGC area ({code.Groups[1].Value})");
+                        if (!string.IsNullOrWhiteSpace(AppendedCodeAreas))
+                        {
+                            AreaDesc = SentenceAppendEnd(SentencePuncuationCorrection(AppendedCodeAreas.Trim()));
+                            if (AreaDesc.EndsWith(";."))
+                            {
+                                AreaDesc = SentenceAppendEnd(AreaDesc.Substring(0, AreaDesc.Length - 2));
+                            }
+                        }
+                        else
+                        {
+                            AreaDesc = AppendedAreas + ".";
+                        }
                     }
+                    //else
+                    //{
+                    //    AreaDesc = AppendedAreas + ".";
+                    //}
 
-                    if (AppendedAreas.Count <= AppendedCodeAreas.Count) return AppendedCodeAreas;
-                    else return AppendedAreas;
+                    //string[] areaDescMatches = AreaDescription
+                    //.Cast<Match>()
+                    //.Select(m => m.Groups[1].Value)
+                    //.ToArray();
+
+                    //AreaDesc = string.Join(", ", areaDescMatches) + ".";
+
+                    // "For: FIPS" / "For: AffectedArea" problem
+                    return AreaDesc.Split(';').ToList();
                 }
-
                 return new List<string> { "Unparsable Location(s)" };
             }
             catch (Exception)
@@ -1481,6 +1435,67 @@ namespace SharpAlert
             }
 
             return $"Unknown Location ({code})";
+        }
+
+        string SentenceAppendEnd(string value)
+        {
+            value = value.Trim();
+
+            if (string.IsNullOrEmpty(value))
+            {
+                return string.Empty;
+            }
+
+            if (value.EndsWith(".") || value.EndsWith("!") || value.EndsWith(","))
+            {
+                return value.Substring(0, value.Length - 1) + ".";
+            }
+            else return value += ".";
+        }
+
+        string SentenceAppendSpace(string value)
+        {
+            value = value.Trim();
+            if (string.IsNullOrWhiteSpace(value)) return string.Empty;
+            else return value += "\x20";
+        }
+
+        string SentencePuncuationCorrection(string value)
+        {
+            value = value.Trim();
+            while (value.EndsWith("\x20.") || value.EndsWith("\x20!") || value.EndsWith("\x20,"))
+            {
+                value = value.Substring(0, value.Length - 1);
+            }
+            value = value.Replace("...", ",").Replace("..", ".");
+            return value = SentenceAppendEnd(value.Substring(0, value.Length - 1));
+        }
+
+        string TimeCorrection(string value)
+        {
+            //Regex TimeCorrectionRegex = new Regex(@"\b(\d{1,4})\s*(AM|PM)\b", RegexOptions.IgnoreCase);
+
+            return TimeCorrectionRegex.Replace(value, timeMatch =>
+            {
+                string timePart = timeMatch.Groups[1].Value.PadLeft(4, '0');
+                string meridian = timeMatch.Groups[2].Value.ToUpperInvariant();
+
+                return DateTime.ParseExact(timePart, "hhmm", CultureInfo.InvariantCulture)
+                .ToString("hh:mm tt", CultureInfo.InvariantCulture);
+            });
+        }
+
+        string LocalTimeAbbreviation()
+        {
+            return string.Concat(TimeZoneInfo.Local.StandardName.Split(' ').Select(word => word.Substring(0, 1)));
+
+            //var localTimeZone = TimeZoneInfo.Local;
+            //var isDaylight = localTimeZone.IsDaylightSavingTime(DateTime.Now);
+
+            //if (isDaylight)
+            //    return localTimeZone.DaylightName.Substring(0, 3);
+            //else
+            //    return localTimeZone.StandardName.Substring(0, 3);
         }
     }
 }

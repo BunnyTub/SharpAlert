@@ -121,27 +121,24 @@
     <value>17, 17</value>
   </metadata>
   <metadata name="FlashTaskbarStatus.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>269, 20</value>
+    <value>105, 18</value>
   </metadata>
   <metadata name="AutoTTS.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>421, 20</value>
+    <value>257, 18</value>
   </metadata>
   <metadata name="FadeInAnimation.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>519, 20</value>
+    <value>355, 18</value>
   </metadata>
   <metadata name="FadeOutAnimation.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>664, 20</value>
+    <value>500, 18</value>
   </metadata>
   <metadata name="MouseMoving.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>819, 20</value>
-  </metadata>
-  <metadata name="FlashReplayStatus.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>950, 20</value>
+    <value>655, 18</value>
   </metadata>
   <metadata name="AutoScroller.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1098, 20</value>
+    <value>792, 18</value>
   </metadata>
   <metadata name="AutoHideButtons.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1217, 20</value>
+    <value>911, 18</value>
   </metadata>
 </root>

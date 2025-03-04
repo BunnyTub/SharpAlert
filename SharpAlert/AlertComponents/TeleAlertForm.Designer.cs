@@ -33,7 +33,6 @@
             this.ScreenshotButton = new System.Windows.Forms.Button();
             this.DismissButton = new System.Windows.Forms.Button();
             this.LinkButton = new System.Windows.Forms.Button();
-            this.ReplayModeText = new System.Windows.Forms.Label();
             this.AlertIcon = new System.Windows.Forms.PictureBox();
             this.TitleText = new System.Windows.Forms.Label();
             this.TitleSpacer = new System.Windows.Forms.Panel();
@@ -48,7 +47,6 @@
             this.FadeInAnimation = new System.Windows.Forms.Timer(this.components);
             this.FadeOutAnimation = new System.Windows.Forms.Timer(this.components);
             this.MouseMoving = new System.Windows.Forms.Timer(this.components);
-            this.FlashReplayStatus = new System.Windows.Forms.Timer(this.components);
             this.AutoScroller = new System.Windows.Forms.Timer(this.components);
             this.SpacerPanel = new System.Windows.Forms.Panel();
             this.MainPanel = new System.Windows.Forms.Panel();
@@ -67,7 +65,6 @@
             this.TitlePanel.Controls.Add(this.ScreenshotButton);
             this.TitlePanel.Controls.Add(this.DismissButton);
             this.TitlePanel.Controls.Add(this.LinkButton);
-            this.TitlePanel.Controls.Add(this.ReplayModeText);
             this.TitlePanel.Controls.Add(this.AlertIcon);
             this.TitlePanel.Controls.Add(this.TitleText);
             this.TitlePanel.Controls.Add(this.TitleSpacer);
@@ -90,7 +87,7 @@
             this.ScreenshotButton.Location = new System.Drawing.Point(1025, 3);
             this.ScreenshotButton.Name = "ScreenshotButton";
             this.ScreenshotButton.Size = new System.Drawing.Size(35, 35);
-            this.ScreenshotButton.TabIndex = 11;
+            this.ScreenshotButton.TabIndex = 1;
             this.ScreenshotButton.Text = "📸";
             this.ScreenshotButton.UseVisualStyleBackColor = false;
             this.ScreenshotButton.Visible = false;
@@ -107,7 +104,7 @@
             this.DismissButton.Location = new System.Drawing.Point(1066, 3);
             this.DismissButton.Name = "DismissButton";
             this.DismissButton.Size = new System.Drawing.Size(115, 35);
-            this.DismissButton.TabIndex = 6;
+            this.DismissButton.TabIndex = 0;
             this.DismissButton.Text = "Dismiss";
             this.DismissButton.UseVisualStyleBackColor = false;
             this.DismissButton.Visible = false;
@@ -124,25 +121,11 @@
             this.LinkButton.Location = new System.Drawing.Point(984, 3);
             this.LinkButton.Name = "LinkButton";
             this.LinkButton.Size = new System.Drawing.Size(35, 35);
-            this.LinkButton.TabIndex = 9;
+            this.LinkButton.TabIndex = 2;
             this.LinkButton.Text = "🔗";
             this.LinkButton.UseVisualStyleBackColor = false;
             this.LinkButton.Visible = false;
             this.LinkButton.Click += new System.EventHandler(this.LinkButton_Click);
-            // 
-            // ReplayModeText
-            // 
-            this.ReplayModeText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ReplayModeText.AutoSize = true;
-            this.ReplayModeText.BackColor = System.Drawing.Color.Transparent;
-            this.ReplayModeText.Font = new System.Drawing.Font("Arial", 12F);
-            this.ReplayModeText.ForeColor = System.Drawing.Color.Black;
-            this.ReplayModeText.Location = new System.Drawing.Point(1076, 8);
-            this.ReplayModeText.Name = "ReplayModeText";
-            this.ReplayModeText.Size = new System.Drawing.Size(100, 18);
-            this.ReplayModeText.TabIndex = 4;
-            this.ReplayModeText.Text = "Replay Mode";
-            this.ReplayModeText.Visible = false;
             // 
             // AlertIcon
             // 
@@ -212,7 +195,7 @@
             this.AlertText.Name = "AlertText";
             this.AlertText.ReadOnly = true;
             this.AlertText.Size = new System.Drawing.Size(1280, 558);
-            this.AlertText.TabIndex = 5;
+            this.AlertText.TabIndex = 3;
             this.AlertText.TextChanged += new System.EventHandler(this.AlertText_TextChanged);
             this.AlertText.DoubleClick += new System.EventHandler(this.AlertText_DoubleClick);
             this.AlertText.Enter += new System.EventHandler(this.AlertText_Enter);
@@ -279,11 +262,6 @@
             // 
             this.MouseMoving.Tick += new System.EventHandler(this.MouseMoving_Tick);
             // 
-            // FlashReplayStatus
-            // 
-            this.FlashReplayStatus.Interval = 500;
-            this.FlashReplayStatus.Tick += new System.EventHandler(this.FlashReplayStatus_Tick);
-            // 
             // AutoScroller
             // 
             this.AutoScroller.Interval = 50;
@@ -339,7 +317,6 @@
             this.Load += new System.EventHandler(this.AlertForm_Load);
             this.Shown += new System.EventHandler(this.AlertForm_Shown);
             this.TitlePanel.ResumeLayout(false);
-            this.TitlePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlertIcon)).EndInit();
             this.AlertPanel.ResumeLayout(false);
             this.AlertPanel.PerformLayout();
@@ -368,8 +345,6 @@
         private System.Windows.Forms.Timer FadeInAnimation;
         private System.Windows.Forms.Timer FadeOutAnimation;
         private System.Windows.Forms.Timer MouseMoving;
-        private System.Windows.Forms.Label ReplayModeText;
-        private System.Windows.Forms.Timer FlashReplayStatus;
         private System.Windows.Forms.Timer AutoScroller;
         private System.Windows.Forms.Panel SpacerPanel;
         private System.Windows.Forms.Panel MainPanel;

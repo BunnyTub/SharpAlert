@@ -4,13 +4,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Linq;
-using static SharpAlert.Program;
 using static SharpAlert.AudioManager;
 
 namespace SharpAlert
 {
-    public partial class TeleAlertForm : Form
+    public partial class AlertForm : Form
     {
         private string AlertSubtitleStr = string.Empty;
         private string AlertTextStr = string.Empty;
@@ -83,16 +81,12 @@ namespace SharpAlert
             public uint dwTimeout;
         }
 
-        private readonly bool ReplayMode = false;
-
-        public TeleAlertForm()
+        public AlertForm()
         {
             InitializeComponent();
-            // We used all this fucking P/Invoke, just to make the taskbar icon flash red!?
+            // We used all this fucking P/Invoke, just to make the taskbar icon red!?
             taskbarList = (ITaskbarList3)new CTaskbarList();
             taskbarList.HrInit();
-            //ReplayModeText.Visible = replay;
-            //ReplayMode = replay;
         }
 
         public void UpdateFields(string alert, string text, string url, string audio, string image, string type)
@@ -155,25 +149,8 @@ namespace SharpAlert
             }
         }
 
-
         private void AlertForm_Load(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Normal;
-            try
-            {
-                if (!(Settings.Default.alertFullscreenDisplay >= Screen.AllScreens.Count()))
-                {
-                    this.Location = Screen.AllScreens[Settings.Default.alertFullscreenDisplay].Bounds.Location;
-                }
-                else
-                {
-                    this.Location = Screen.PrimaryScreen.Bounds.Location;
-                }
-            }
-            catch (Exception)
-            {
-            }
-            this.WindowState = FormWindowState.Maximized;
         }
 
         private void AutoExit_Tick(object sender, EventArgs e)
@@ -181,33 +158,26 @@ namespace SharpAlert
             this.Close();
         }
 
-        public Point localCursorPosition = new Point();
-
         private void AlertForm_Shown(object sender, EventArgs e)
         {
             AutoExit.Interval = Settings.Default.alertTimeout * 60000;
             AutoExit.Start();
 
-            AlertText.HideSelection = false;
-
+            this.Text = $"SharpAlert - {DateTime.Now:f}";
+            UpdateTaskbarProgress(TaskbarProgressState.Error, 100, 100);
             GotHandle = this.Handle;
 
             if (!Settings.Default.alertCompatibilityMode)
             {
                 FadeInAnimation.Start();
-            }
-            else
-            {
-                this.Opacity = 1;
-            }
-
-            if (ReplayMode)
-            {
-                FlashReplayStatus.Start();
-            }
-            else
-            {
                 FlashTaskbarStatus.Start();
+            }
+            else
+            {
+                FlashTaskbarStatus.Stop();
+                UpdateTaskbarProgress(TaskbarProgressState.NoProgress, 0, 0);
+                this.Opacity = 1;
+                UnlockButtons(true);
             }
 
             if (AlertType != "cancel")
@@ -219,17 +189,6 @@ namespace SharpAlert
                 PlayFromUnmanagedSource(Resources.ui_cancellation_1);
             }
 
-            AutoTTS.Start();
-            AlertText.Focus();
-            AlertText.SelectionLength = 0;
-            AutoScroller.Start();
-
-            SetWindowPos(GotHandle, (IntPtr)HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
-            SetForegroundWindow(GotHandle);
-            taskbarList.MarkFullscreenWindow(GotHandle, true);
-
-            localCursorPosition = Cursor.Position;
-
             Console.WriteLine("[Alert GUI] Window shown.");
         }
 
@@ -238,30 +197,55 @@ namespace SharpAlert
             this.Close();
         }
 
-        private bool FadeOutExitReady = false;
+        private void SpeakerButton_Click(object sender, EventArgs e)
+        {
+            SpeakerButton.Enabled = false;
+            PlayWithFailoverToTTS(AlertAudioUrlStr, AlertTextStr);
+        }
+
+        private void UnlockButtons(bool unlocked)
+        {
+            DismissButton.Enabled = unlocked;
+            SpeakerButton.Enabled = unlocked;
+            LinkButton.Enabled = unlocked;
+        }
 
         private void AlertForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             UnlockButtons(false);
             AutoExit.Stop();
-            AutoScroller.Stop();
-            AutoHideButtons.Stop();
-            MouseMoving.Stop();
-            if (FadeOutExitReady)
+            if (!Settings.Default.alertCompatibilityMode)
             {
-                return;
-            }
-            else
-            {
-                e.Cancel = true;
-                FadeOutAnimation.Start();
+                if (FadeOutExitReady)
+                {
+                    return;
+                }
+                else
+                {
+                    e.Cancel = true;
+                    FadeOutAnimation.Start();
+                }
             }
             StopAllAudioSilently();
             PlayFromUnmanagedSourceAndWait(Resources.ui_end_1);
-            taskbarList.MarkFullscreenWindow(GotHandle, false);
         }
 
         IntPtr GotHandle = IntPtr.Zero;
+
+        private int EnsureForTick = 5;
+
+        private void EnsureTopWindow_Tick(object sender, EventArgs e)
+        {
+            SetWindowPos(GotHandle, (IntPtr)HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+            SetForegroundWindow(GotHandle);
+            EnsureForTick--;
+
+            if (EnsureForTick == 0)
+            {
+                EnsureTopWindow.Stop();
+                return;
+            }
+        }
 
         private void LinkButton_Click(object sender, EventArgs e)
         {
@@ -277,6 +261,7 @@ namespace SharpAlert
                     "SharpAlert",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
+                this.Close();
             }
         }
 
@@ -304,42 +289,19 @@ namespace SharpAlert
             FlashOne = !FlashOne;
         }
 
-        private void UnlockButtons(bool unlocked)
-        {
-            DismissButton.Enabled = unlocked;
-            ScreenshotButton.Enabled = unlocked;
-            LinkButton.Enabled = unlocked;
-        }
-
-        private void FlashReplayStatus_Tick(object sender, EventArgs e)
-        {
-            if (FlashOne)
-            {
-                AlertIcon.Visible = true;
-                ReplayModeText.Visible = true;
-            }
-            else
-            {
-                AlertIcon.Visible = false;
-                ReplayModeText.Visible = false;
-            }
-            FlashOne = !FlashOne;
-        }
-
         private void AutoTTS_Tick(object sender, EventArgs e)
         {
             AutoTTS.Stop();
-            PlayWithFailoverToTTS(AlertAudioUrlStr, AlertTextStr);
         }
+
+        private bool FadeOutExitReady = false;
 
         private void FadeInAnimation_Tick(object sender, EventArgs e)
         {
             if (this.Opacity == 1)
             {
                 FadeInAnimation.Stop();
-                DismissButton.Enabled = true;
-                LinkButton.Enabled = true;
-                ScreenshotButton.Enabled = true;
+                UnlockButtons(true);
                 return;
             }
             else
@@ -350,139 +312,18 @@ namespace SharpAlert
 
         private void FadeOutAnimation_Tick(object sender, EventArgs e)
         {
-            if (Settings.Default.alertCompatibilityMode)
-            {
-                FadeOutAnimation.Stop();
-                FadeOutExitReady = true;
-                this.Close();
-            }
-
             if (this.Opacity == 0)
             {
                 FadeOutAnimation.Stop();
                 FadeOutExitReady = true;
                 this.Hide();
-                engine.SpeakAsyncCancelAll();
                 this.Close();
             }
             else
             {
+                FadeInAnimation.Stop();
                 this.Opacity -= 0.01;
             }
-        }
-
-        private void MouseMoving_Tick(object sender, EventArgs e)
-        {
-            if (Cursor.Position != localCursorPosition)
-            {
-                MouseMoving.Stop();
-                AutoScroller.Stop();
-                AlertText.SelectionStart = 0;
-                DismissButton.Visible = true;
-                LinkButton.Visible = true;
-                ScreenshotButton.Visible = true;
-                AutoHideButtons.Enabled = true;
-            }
-        }
-
-        [DllImport("user32.dll")]
-        private static extern bool HideCaret(IntPtr hWnd);
-
-        private int PauseScroll = 0;
-
-        private void AutoScroll_Tick(object sender, EventArgs e)
-        {
-            //AlertText.SelectionLength = 0;
-            if (AlertText.Text.Length >= AlertText.SelectionStart & PauseScroll > 0)
-            {
-                AlertText.SelectionStart++;
-                HideCaret(AlertText.Handle);
-            }
-            else
-            {
-                AlertText.SelectionStart = 0;
-                HideCaret(AlertText.Handle);
-                if (PauseScroll <= 0) PauseScroll = 35;
-                PauseScroll--;
-            }
-            AlertText.ScrollToCaret();
-            HideCaret(AlertText.Handle);
-        }
-
-        private void AlertIcon_Click(object sender, EventArgs e)
-        {
-            if (DismissButton.Enabled)
-            {
-                this.Close();
-            }
-        }
-
-        private void AlertText_TextChanged(object sender, EventArgs e)
-        {
-            HideCaret(AlertText.Handle);
-        }
-
-        private void AlertText_Enter(object sender, EventArgs e)
-        {
-            HideCaret(AlertText.Handle);
-        }
-
-        private void TitleText_DoubleClick(object sender, EventArgs e)
-        {
-            AlertText.Font = new Font("Arial", 56F);
-        }
-
-        private void AlertText_DoubleClick(object sender, EventArgs e)
-        {
-            AlertText.ScrollBars = ScrollBars.Both;
-        }
-
-        private void AutoHideButtons_Tick(object sender, EventArgs e)
-        {
-            AutoHideButtons.Enabled = false;
-            DismissButton.Visible = true;
-            LinkButton.Visible = true;
-            ScreenshotButton.Visible = true;
-            localCursorPosition = Cursor.Position;
-            MouseMoving.Start();
-        }
-
-        private void ScreenshotButton_Click(object sender, EventArgs e)
-        {
-            AutoExit.Stop();
-            FlashTaskbarStatus.Stop();
-            MouseMoving.Stop();
-            AutoHideButtons.Enabled = false;
-            UnlockButtons(false);
-            AlertIcon.Visible = true;
-            AlertText.SelectionStart = 0;
-            AlertText.ScrollToCaret();
-            Bitmap bitmap = new Bitmap(Bounds.Width, Bounds.Height);
-            this.DrawToBitmap(bitmap, Bounds);
-            using (Graphics g = Graphics.FromImage(bitmap))
-            {
-                int barHeight = 30;
-                int imageWidth = bitmap.Width;
-                int imageHeight = bitmap.Height;
-
-                using (SolidBrush coolTransparency = new SolidBrush(Color.FromArgb(140, 255, 0, 0)))
-                {
-                    g.FillRectangle(coolTransparency, new Rectangle(0, imageHeight - barHeight, imageWidth, barHeight));
-                }
-
-                using (Font drawFont = new Font("Arial", 12, FontStyle.Bold))
-                using (SolidBrush drawBrush = new SolidBrush(Color.White))
-                {
-                    string text = "SharpAlert | Safety is never a non-priority.";
-                    SizeF textSize = g.MeasureString(text, drawFont);
-                    float x = (imageWidth - textSize.Width) / 2;
-                    float y = imageHeight - barHeight + (barHeight - textSize.Height) / 2;
-                    g.DrawString(text, drawFont, drawBrush, new PointF(x, y));
-                }
-            }
-            bitmap.Save($"SharpAlert-{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.bmp");
-            bitmap.Dispose();
-            this.Close();
         }
     }
 }

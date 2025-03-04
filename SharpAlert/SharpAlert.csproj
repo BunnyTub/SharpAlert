@@ -145,125 +145,133 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlertConfigurationForm.cs">
+    <Compile Include="ConfigurationDialogs\AlertConfigurationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AlertConfigurationForm.Designer.cs">
+    <Compile Include="ConfigurationDialogs\AlertConfigurationForm.Designer.cs">
       <DependentUpon>AlertConfigurationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="AltTrayForm.cs">
+    <Compile Include="DataProcessing\HistoryProcessor.cs" />
+    <Compile Include="AlertComponents\InfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AltTrayForm.Designer.cs">
+    <Compile Include="AlertComponents\InfoForm.Designer.cs">
+      <DependentUpon>InfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DisplayDialogs\AltTrayForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DisplayDialogs\AltTrayForm.Designer.cs">
       <DependentUpon>AltTrayForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AudioManager.cs" />
-    <Compile Include="CacheCapture.cs" />
-    <Compile Include="CreditsForm.cs">
+    <Compile Include="SourceCapturing\CacheCapture.cs" />
+    <Compile Include="ConfigurationDialogs\CreditsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CreditsForm.Designer.cs">
+    <Compile Include="ConfigurationDialogs\CreditsForm.Designer.cs">
       <DependentUpon>CreditsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SendForm.cs">
+    <Compile Include="AlertComponents\SendForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SendForm.Designer.cs">
+    <Compile Include="AlertComponents\SendForm.Designer.cs">
       <DependentUpon>SendForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="IceBearWorker.cs" />
-    <Compile Include="ServerConfigurationForm.cs">
+    <Compile Include="ProgramWorker\IceBearWorker.cs" />
+    <Compile Include="ConfigurationDialogs\ServerConfigurationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ServerConfigurationForm.Designer.cs">
+    <Compile Include="ConfigurationDialogs\ServerConfigurationForm.Designer.cs">
       <DependentUpon>ServerConfigurationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="StartupForm.cs">
+    <Compile Include="DisplayDialogs\StartupForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StartupForm.Designer.cs">
+    <Compile Include="DisplayDialogs\StartupForm.Designer.cs">
       <DependentUpon>StartupForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="StatusForm.cs">
+    <Compile Include="DisplayDialogs\StatusForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StatusForm.Designer.cs">
+    <Compile Include="DisplayDialogs\StatusForm.Designer.cs">
       <DependentUpon>StatusForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="TeleIdleForm.cs">
+    <Compile Include="DisplayDialogs\TeleIdleForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TeleIdleForm.Designer.cs">
+    <Compile Include="DisplayDialogs\TeleIdleForm.Designer.cs">
       <DependentUpon>TeleIdleForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ToolboxStuff.cs" />
+    <Compile Include="WinFormsControls\ToolboxStuff.cs" />
     <Compile Include="ToppleForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ToppleForm.Designer.cs">
       <DependentUpon>ToppleForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="AlertConfigurationForm.resx">
+    <EmbeddedResource Include="ConfigurationDialogs\AlertConfigurationForm.resx">
       <DependentUpon>AlertConfigurationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AltTrayForm.resx">
+    <EmbeddedResource Include="AlertComponents\InfoForm.resx">
+      <DependentUpon>InfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DisplayDialogs\AltTrayForm.resx">
       <DependentUpon>AltTrayForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CreditsForm.resx">
+    <EmbeddedResource Include="ConfigurationDialogs\CreditsForm.resx">
       <DependentUpon>CreditsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SendForm.resx">
+    <EmbeddedResource Include="AlertComponents\SendForm.resx">
       <DependentUpon>SendForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ServerConfigurationForm.resx">
+    <EmbeddedResource Include="ConfigurationDialogs\ServerConfigurationForm.resx">
       <DependentUpon>ServerConfigurationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StartupForm.resx">
+    <EmbeddedResource Include="DisplayDialogs\StartupForm.resx">
       <DependentUpon>StartupForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StatusForm.resx">
+    <EmbeddedResource Include="DisplayDialogs\StatusForm.resx">
       <DependentUpon>StatusForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TeleIdleForm.resx">
+    <EmbeddedResource Include="DisplayDialogs\TeleIdleForm.resx">
       <DependentUpon>TeleIdleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ToppleForm.resx">
       <DependentUpon>ToppleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Program.cs.old" />
-    <Compile Include="ConfigurationForm.cs">
+    <Compile Include="ConfigurationDialogs\ConfigurationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConfigurationForm.Designer.cs">
+    <Compile Include="ConfigurationDialogs\ConfigurationForm.Designer.cs">
       <DependentUpon>ConfigurationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="TeleAlertForm.cs">
+    <Compile Include="AlertComponents\TeleAlertForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TeleAlertForm.Designer.cs">
+    <Compile Include="AlertComponents\TeleAlertForm.Designer.cs">
       <DependentUpon>TeleAlertForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="AlertProcessor.cs" />
-    <Compile Include="AlertToWebhook.cs" />
-    <Compile Include="DataProcessor.cs" />
-    <Compile Include="FeedCapture.cs" />
-    <Compile Include="AlertForm.cs">
+    <Compile Include="AlertComponents\AlertProcessor.cs" />
+    <Compile Include="AlertComponents\AlertToWebhook.cs" />
+    <Compile Include="DataProcessing\DataProcessor.cs" />
+    <Compile Include="SourceCapturing\FeedCapture.cs" />
+    <Compile Include="AlertComponents\AlertForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AlertForm.Designer.cs">
+    <Compile Include="AlertComponents\AlertForm.Designer.cs">
       <DependentUpon>AlertForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="ProgramWorker\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="TaskbarProgress.cs" />
-    <EmbeddedResource Include="ConfigurationForm.resx">
+    <EmbeddedResource Include="ConfigurationDialogs\ConfigurationForm.resx">
       <DependentUpon>ConfigurationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TeleAlertForm.resx">
+    <EmbeddedResource Include="AlertComponents\TeleAlertForm.resx">
       <DependentUpon>TeleAlertForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AlertForm.resx">
+    <EmbeddedResource Include="AlertComponents\AlertForm.resx">
       <DependentUpon>AlertForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -324,6 +332,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Confuser.MSBuild.1.6.0\build\Confuser.MSBuild.targets" Condition="Exists('..\packages\Confuser.MSBuild.1.6.0\build\Confuser.MSBuild.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

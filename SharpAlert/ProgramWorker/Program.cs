@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Media;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -16,7 +15,7 @@ namespace SharpAlert
     internal static class VersionInfo
     {
         public static readonly int MajorVersion = 5;
-        public static readonly int MinorVersion = 0;
+        public static readonly int MinorVersion = 1;
     }
 
     public class SharpDataItem
@@ -38,7 +37,8 @@ namespace SharpAlert
         public static bool AllowThreadRestarts = true;
         public static FeedCapture feed;
         public static CacheCapture cache;
-        public static DataProcessor processor;
+        public static DataProcessor dataproc;
+        public static HistoryProcessor historyproc;
         public static TeleIdleForm idle;
         public static StatusForm status;
         public static bool CloseIdleWindow = false;
@@ -53,6 +53,7 @@ namespace SharpAlert
 
         public static List<SharpDataItem> SharpDataQueue = new List<SharpDataItem>();
         public static List<SharpDataItem> SharpDataHistory = new List<SharpDataItem>();
+        public static List<string> SharpDataRelayedNamesHistory = new List<string>();
         
         public static readonly string AssemblyFile = Process.GetCurrentProcess().MainModule.FileName;
         public static readonly string AssemblyDirectory = Path.GetDirectoryName(AssemblyFile);
@@ -72,7 +73,7 @@ namespace SharpAlert
             Console.WriteLine("Cache Capture is shutting down.");
             cache?.ServiceStop();
             Console.WriteLine("Data Processor is shutting down.");
-            processor?.ServiceStop();
+            dataproc?.ServiceStop();
             Console.WriteLine("Alert Processor is shutting down.");
             lock (AlertProcessor.AlertLock)
             {

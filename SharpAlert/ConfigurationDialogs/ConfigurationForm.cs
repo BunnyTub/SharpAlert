@@ -57,6 +57,9 @@ namespace SharpAlert
                 ((CheckBox)a).Enabled = true;
             };
 
+            alertFullscreenWindowedBox.Checked = Settings.Default.alertFullscreenWindowed;
+            alertFullscreenWindowedBox.CheckedChanged += (a, b) => Settings.Default.alertFullscreenWindowed = ((CheckBox)a).Checked;
+
             alertTimeoutInput.Value = Settings.Default.alertTimeout;
             alertTimeoutInput.ValueChanged += (a, b) => Settings.Default.alertTimeout = (int)((NumericUpDown)a).Value;
 
@@ -141,6 +144,11 @@ namespace SharpAlert
             alertNoGUIBox.CheckedChanged += (a, b) =>
             {
                 Settings.Default.alertNoGUI = ((CheckBox)a).Checked;
+                MessageBox.Show("Alerts will be played out with no prompt.\r\n" +
+                    "Turn this off if this isn't your intention.",
+                    "SharpAlert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
             };
             
             volumeBar.Value = Settings.Default.alertVolume;
@@ -216,6 +224,8 @@ namespace SharpAlert
 
         private void AlertHistoryReplayRecentButton_Click(object sender, EventArgs e)
         {
+            AlertHistoryReplayRecentButton.Enabled = false;
+            Thread.Sleep(500);
             RefreshAlertHistory();
             if (SharpDataHistory.Count != 0)
             {
@@ -238,6 +248,8 @@ namespace SharpAlert
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation);
             }
+            Thread.Sleep(500);
+            AlertHistoryReplayRecentButton.Enabled = true;
         }
 
         private void NS_UnhideSecureBox_CheckedChanged(object sender, EventArgs e)

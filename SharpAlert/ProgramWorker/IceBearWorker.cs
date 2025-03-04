@@ -1,25 +1,20 @@
-﻿using NAudio.Wave;
-using SharpAlert.Properties;
+﻿using SharpAlert.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Media;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Speech.Synthesis;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static SharpAlert.Program;
-using static SharpAlert.RegexList;
 
 namespace SharpAlert
 {
@@ -124,7 +119,7 @@ namespace SharpAlert
                 }
                 else
                 {
-                    Console.WriteLine($"[Ice Bear] You may be using an older (or modified) version of SharpAlert. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersion}");
+                    Console.WriteLine($"[Ice Bear] You may be using an older (or modified/other) version of SharpAlert. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersion}");
                     Console.WriteLine($"[Ice Bear] See https://sharpalert.bunnytub.com/ for downloads.");
                 }
 
@@ -140,7 +135,8 @@ namespace SharpAlert
 
             feed = new FeedCapture();
             cache = new CacheCapture();
-            processor = new DataProcessor();
+            dataproc = new DataProcessor();
+            historyproc = new HistoryProcessor();
             engine = new SpeechSynthesizer();
 
             Settings.Default.PropertyChanged += (objective, eventArgs) =>
@@ -164,15 +160,15 @@ namespace SharpAlert
             switch (Settings.Default.RunnerType)
             {
                 default:
-                    Console.WriteLine("[Ice Bear] Runner type is \"Standard\".");
+                    Console.WriteLine("[Ice Bear] Runner type is Standard.");
                     feed.server = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}";
                     break;
                 case 1:
-                    Console.WriteLine("[Ice Bear] Runner type is \"Server\".");
+                    Console.WriteLine("[Ice Bear] Runner type is Server.");
                     ServerServiceRun();
                     return;
                 case 2:
-                    Console.WriteLine("[Ice Bear] Runner type is \"Client\".");
+                    Console.WriteLine("[Ice Bear] Runner type is Client.");
                     UseHTTPS = false;
                     feed.server = $"{Settings.Default.ClientServerURL}:{Settings.Default.ClientServerPort}/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}";
                     break;
@@ -198,9 +194,13 @@ namespace SharpAlert
             cacheThread.SetApartmentState(ApartmentState.MTA);
             cacheThread.MonitorAndStart("Cache Capture");
 
-            Thread processorThread = ReturnThreadWithCatch(() => processor.ServiceRun());
-            processorThread.SetApartmentState(ApartmentState.MTA);
-            processorThread.MonitorAndStart("Data Processor");
+            Thread dataProcThread = ReturnThreadWithCatch(() => dataproc.ServiceRun());
+            dataProcThread.SetApartmentState(ApartmentState.MTA);
+            dataProcThread.MonitorAndStart("Data Processor");
+            
+            Thread historyProcThread = ReturnThreadWithCatch(() => historyproc.ServiceRun());
+            historyProcThread.SetApartmentState(ApartmentState.MTA);
+            historyProcThread.MonitorAndStart("History Processor");
 
             if (Settings.Default.statusWindow)
             {
@@ -323,7 +323,7 @@ namespace SharpAlert
                     {
                         new Thread(() =>
                         {
-                            string ExceptionCompiled = $"SharpAlert encountered an exception. Soon to commence self-destruct. {DateTime.UtcNow:s}\r\n" +
+                            string ExceptionCompiled = $"SharpAlert encountered an exception. {DateTime.UtcNow:s}\r\n" +
                             $"{ex.Message}\r\n" +
                             $"{ex.TargetSite}\r\n" +
                             $"{ex.StackTrace}";
@@ -356,8 +356,6 @@ namespace SharpAlert
                 Text = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}"
             };
 
-            //Settings.Default.PropertyChanged
-
             ContextMenuStrip contextMenu = new ContextMenuStrip();
 
             contextMenu.Opening += (a, b) =>
@@ -385,7 +383,7 @@ namespace SharpAlert
                     return;
                 }
 
-                if (Control.ModifierKeys == Keys.ControlKey)
+                if (Control.ModifierKeys == Keys.ShiftKey)
                 {
                     IgnoreRightClick = false;
                 }
@@ -403,11 +401,11 @@ namespace SharpAlert
             contextMenu.Items.Add(new ToolStripMenuItem("Show Console", null, (sender, arg) =>
             {
                 IgnoreRightClick = true;
-                if (MessageBox.Show("Are you sure you want to show the console?\r\n" +
+                if (MessageBox.Show("Do you want to show the console?\r\n" +
                     "Closing the console will terminate the program.",
                     "SharpAlert",
                     MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning) == DialogResult.Yes)
+                    MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     AllocateTerminal();
                 }
@@ -432,7 +430,7 @@ namespace SharpAlert
             contextMenu.Items.Add(new ToolStripMenuItem("Relay Local Test", null, (sender, arg) =>
             {
                 IgnoreRightClick = true;
-                processor?.ap?.ProcessAlertTest();
+                dataproc?.ap?.ProcessAlertTest();
                 IgnoreRightClick = false;
             }));
 
@@ -503,25 +501,9 @@ namespace SharpAlert
 
             if (UpdatesAvailable)
             {
-                contextMenu.Items.Add(new ToolStripLabel($"Click here to update!",
-                null, true, (obj, args) =>
+                contextMenu.Items.Add(new ToolStripLabel($"Click above to update!")
                 {
-                    try
-                    {
-                        Process.Start(home + "/downloads");
-                    }
-                    catch (Exception)
-                    {
-                        MessageBox.Show("Enter the following URL in your browser:\r\n" +
-                            $"{home}/downloads\r\n\r\n" +
-                            "The link couldn't be opened.",
-                            "SharpAlert",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Exclamation);
-                    }
-                })
-                {
-                    ToolTipText = "There's an update available for you to download!"
+                    ToolTipText = "There's an update available for you to download."
                 });
             }
 

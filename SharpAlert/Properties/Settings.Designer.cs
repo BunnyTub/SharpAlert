@@ -710,5 +710,17 @@ namespace SharpAlert.Properties {
                 this["alertNoGUI"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool alertFullscreenWindowed {
+            get {
+                return ((bool)(this["alertFullscreenWindowed"]));
+            }
+            set {
+                this["alertFullscreenWindowed"] = value;
+            }
+        }
     }
 }
