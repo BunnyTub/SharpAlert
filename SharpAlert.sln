@@ -8,9 +8,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{94FA9E13-FF59-4F05-92C4-E15739E6A056}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		SharpAlert\SendForm.cs = SharpAlert\SendForm.cs
-		SharpAlert\SendForm.Designer.cs = SharpAlert\SendForm.Designer.cs
-		SharpAlert\SendForm.resx = SharpAlert\SendForm.resx
 	EndProjectSection
 EndProject
 Global
