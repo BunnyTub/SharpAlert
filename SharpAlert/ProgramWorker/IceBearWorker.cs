@@ -745,7 +745,7 @@ namespace SharpAlert
                         FilterIndex = 0,
                         CheckFileExists = true,
                         Multiselect = true,
-                        Title = "SharpAlert - Alert Import"
+                        Title = "SharpAlert - Alert Importing"
                     };
 
                     if (fbd.ShowDialog() != DialogResult.OK)

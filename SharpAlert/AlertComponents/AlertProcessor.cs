@@ -389,9 +389,9 @@ namespace SharpAlert
                                 }
 
                                 string AlertCompiled;
-                                if (Settings.Default.weaOnly) AlertCompiled = "## WIRELESS EMERGENCY ALERT\r\n";
-                                else AlertCompiled = "# EMERGENCY ALERT\r\n";
-                                AlertCompiled += $"**This {EventType} was sent: {sentDate:f}**\r\n**It is set to expire: {expiresDate:f}.**\r\n\r\n" +
+                                //if (Settings.Default.weaOnly) AlertCompiled = "## WIRELESS EMERGENCY ALERT\r\n";
+                                //else AlertCompiled = "# EMERGENCY ALERT\r\n";
+                                AlertCompiled = $"**Alert sent: {sentDate:f}**\r\n**Alert expiry: {expiresDate:f}.**\r\n\r\n" +
                                     "## Alert Message\r\n" +
                                     $"{AlertText}";
 
@@ -400,7 +400,7 @@ namespace SharpAlert
                                 //    AlertCompiled += $"\r\n\r\n{Settings.Default.DiscordWebhookAppend}";
                                 //}
 
-                                if (AlertToWebhook.SendUnformattedMessage(AlertCompiled, Settings.Default.DiscordWebhook))
+                                if (AlertToWebhook.SendEmbeddedMessage($"{MaxSeverity} Emergency Alert", AlertCompiled, Settings.Default.DiscordWebhook))
                                 {
                                     lock (notify)
                                     {
@@ -544,17 +544,16 @@ namespace SharpAlert
                         {
                             EventsList += $"{Regex.Replace(Event.ToLowerInvariant(), @"(^\w)|(\s\w)", m => m.Value.ToUpperInvariant())}, ";
                         }
-                        EventsList = EventsList.Substring(0, EventsList.Length - 2) + ".";
+                        EventsList = EventsList.Substring(0, EventsList.Length - 2);
                         
                         string LocationList = string.Empty;
                         foreach (string Location in AllLocations)
                         {
-                            LocationList += $"{Location}, ";
+                            foreach (string loc in Location.Split(';')) LocationList += $"{loc.Trim()}; ";
                         }
 
-                        // LOCATIONS!!!
-
-                        LocationList = LocationList.Trim().Substring(0, LocationList.Length - 1) + ".";
+                        LocationList = LocationList.Trim().Substring(0, LocationList.Length - 2).Trim();
+                        if (LocationList.EndsWith(";")) LocationList = LocationList.Substring(0, LocationList.Length - 1);
                         AlertToWebhook.SendUnformattedMessage($"{MaxSeverity} Emergency Alert | Event(s): {EventsList} | Location(s): {LocationList}\r\n" + Settings.Default.DiscordWebhookAppend, Settings.Default.DiscordWebhook);
                         Console.WriteLine("[Alert Processor] Appended to Discord webhook text.");
                     }
@@ -1358,15 +1357,18 @@ namespace SharpAlert
                     {
                         if (!string.IsNullOrWhiteSpace(AppendedCodeAreas))
                         {
-                            AreaDesc = SentenceAppendEnd(SentencePuncuationCorrection(AppendedCodeAreas.Trim()));
-                            if (AreaDesc.EndsWith(";."))
+                            //AreaDesc = SentenceAppendEnd(SentencePuncuationCorrection(AppendedCodeAreas.Trim()));
+                            AreaDesc = SentencePuncuationRemoval(AppendedCodeAreas.Trim());
+                            if (AreaDesc.EndsWith(""))
                             {
-                                AreaDesc = SentenceAppendEnd(AreaDesc.Substring(0, AreaDesc.Length - 2));
+                                //AreaDesc = SentenceAppendEnd(AreaDesc.Substring(0, AreaDesc.Length - 2));
+                                //AreaDesc = AreaDesc.Substring(0, AreaDesc.Length - 2);
                             }
                         }
                         else
                         {
-                            AreaDesc = AppendedAreas + ".";
+                            //AreaDesc = AppendedAreas + ".";
+                            AreaDesc = AppendedAreas;
                         }
                     }
                     //else
@@ -1468,7 +1470,17 @@ namespace SharpAlert
                 value = value.Substring(0, value.Length - 1);
             }
             value = value.Replace("...", ",").Replace("..", ".");
-            return value = SentenceAppendEnd(value.Substring(0, value.Length - 1));
+            return SentenceAppendEnd(value.Substring(0, value.Length - 1));
+        }
+        
+        string SentencePuncuationRemoval(string value)
+        {
+            value = value.Trim();
+            while (value.EndsWith(".") || value.EndsWith("!") || value.EndsWith(","))
+            {
+                value = value.Substring(0, value.Length - 1);
+            }
+            return value;
         }
 
         string TimeCorrection(string value)

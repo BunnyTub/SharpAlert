@@ -24,5 +24,40 @@ namespace SharpAlert
                 return false;
             }
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0037:Use inferred member name", Justification = "<Pending>")]
+        public static bool SendEmbeddedMessage(string title, string description, string webhook)
+        {
+            try
+            {
+                var payloadObject = new
+                {
+                    embeds = new[]
+                    {
+                        new
+                        {
+                            author = new
+                            {
+                                name = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
+                                url = "https://sharpalert.bunnytub.com",
+                                iron_url = "https://bunnytub.com/media/SharpAlert.png"
+                            },
+                            title = title,
+                            description = description,
+                            color = 16711680
+                        }
+                    }
+                };
+
+                string payloadJson = JsonSerializer.Serialize(payloadObject);
+                client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
+                client.UploadData(webhook, Encoding.UTF8.GetBytes(payloadJson));
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }
