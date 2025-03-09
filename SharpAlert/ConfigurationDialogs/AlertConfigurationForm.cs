@@ -83,6 +83,9 @@ namespace SharpAlert
             categoryOtherBox.Checked = Settings.Default.categoryOtherUnknown;
             categoryOtherBox.CheckedChanged += (a, b) => Settings.Default.categoryOtherUnknown = ((CheckBox)a).Checked;
 
+            storedMaxSizeInput.Value = Settings.Default.storedMaxSize;
+            storedMaxSizeInput.ValueChanged += (a, b) => Settings.Default.storedMaxSize = (int)((NumericUpDown)a).Value;
+
             string SAME_Areas = string.Empty;
             foreach (string area in Settings.Default.AllowedSAMELocations_Geocodes) SAME_Areas += area + "\r\n";
             SAME_Areas = SAME_Areas.Trim();

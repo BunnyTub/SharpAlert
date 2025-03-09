@@ -37,9 +37,8 @@ namespace SharpAlert.DisplayDialogs.Panels
 
         public static string FirstCharToUpper(string input)
         {
-            if (String.IsNullOrEmpty(input))
-                throw new ArgumentException("ARGH!");
-            return input.First().ToString().ToUpper() + String.Join("", input.Skip(1));
+            if (string.IsNullOrEmpty(input)) return string.Empty;
+            else return input.First().ToString().ToUpper() + string.Join("", input.Skip(1));
         }
     }
 }

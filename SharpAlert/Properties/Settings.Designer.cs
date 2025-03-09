@@ -722,5 +722,17 @@ namespace SharpAlert.Properties {
                 this["alertFullscreenWindowed"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("25")]
+        public int storedMaxSize {
+            get {
+                return ((int)(this["storedMaxSize"]));
+            }
+            set {
+                this["storedMaxSize"] = value;
+            }
+        }
     }
 }

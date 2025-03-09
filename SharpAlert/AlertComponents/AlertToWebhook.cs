@@ -38,7 +38,7 @@ namespace SharpAlert
                         {
                             author = new
                             {
-                                name = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
+                                name = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority",
                                 url = "https://sharpalert.bunnytub.com",
                                 iron_url = "https://bunnytub.com/media/SharpAlert.png"
                             },

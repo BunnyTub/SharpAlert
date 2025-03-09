@@ -75,7 +75,9 @@
             this.SAMEAddButton = new System.Windows.Forms.Button();
             this.AreaSAMEInput = new System.Windows.Forms.TextBox();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.storedMaxSizeInput = new System.Windows.Forms.NumericUpDown();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.categoryOtherBox = new System.Windows.Forms.CheckBox();
@@ -105,6 +107,8 @@
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.ConfigurationPanel.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.storedMaxSizeInput)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -120,7 +124,7 @@
             this.AlertFunctionalityGroup.ForeColor = System.Drawing.Color.White;
             this.AlertFunctionalityGroup.Location = new System.Drawing.Point(12, 12);
             this.AlertFunctionalityGroup.Name = "AlertFunctionalityGroup";
-            this.AlertFunctionalityGroup.Size = new System.Drawing.Size(310, 357);
+            this.AlertFunctionalityGroup.Size = new System.Drawing.Size(310, 353);
             this.AlertFunctionalityGroup.TabIndex = 4;
             this.AlertFunctionalityGroup.TabStop = false;
             this.AlertFunctionalityGroup.Text = "Alert Functionality";
@@ -128,7 +132,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(160, 332);
+            this.label4.Location = new System.Drawing.Point(160, 306);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(84, 15);
             this.label4.TabIndex = 8;
@@ -136,12 +140,13 @@
             // 
             // AlertCheckIntervalInput
             // 
+            this.AlertCheckIntervalInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AlertCheckIntervalInput.Increment = new decimal(new int[] {
             5,
             0,
             0,
             0});
-            this.AlertCheckIntervalInput.Location = new System.Drawing.Point(250, 330);
+            this.AlertCheckIntervalInput.Location = new System.Drawing.Point(250, 304);
             this.AlertCheckIntervalInput.Maximum = new decimal(new int[] {
             300,
             0,
@@ -169,7 +174,7 @@
             this.groupBox11.ForeColor = System.Drawing.Color.White;
             this.groupBox11.Location = new System.Drawing.Point(6, 277);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(148, 74);
+            this.groupBox11.Size = new System.Drawing.Size(148, 70);
             this.groupBox11.TabIndex = 6;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Message Extras";
@@ -206,7 +211,7 @@
             this.groupBox5.ForeColor = System.Drawing.Color.White;
             this.groupBox5.Location = new System.Drawing.Point(160, 122);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(144, 202);
+            this.groupBox5.Size = new System.Drawing.Size(144, 176);
             this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Message Urgency";
@@ -437,7 +442,7 @@
             this.LocationsAndEventsGroup.ForeColor = System.Drawing.Color.White;
             this.LocationsAndEventsGroup.Location = new System.Drawing.Point(328, 12);
             this.LocationsAndEventsGroup.Name = "LocationsAndEventsGroup";
-            this.LocationsAndEventsGroup.Size = new System.Drawing.Size(331, 326);
+            this.LocationsAndEventsGroup.Size = new System.Drawing.Size(331, 298);
             this.LocationsAndEventsGroup.TabIndex = 5;
             this.LocationsAndEventsGroup.TabStop = false;
             this.LocationsAndEventsGroup.Text = "Locations/Events";
@@ -450,7 +455,7 @@
             this.groupBox9.Controls.Add(this.EventAddButton);
             this.groupBox9.Controls.Add(this.EventBlacklistInput);
             this.groupBox9.ForeColor = System.Drawing.Color.White;
-            this.groupBox9.Location = new System.Drawing.Point(6, 227);
+            this.groupBox9.Location = new System.Drawing.Point(6, 200);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(319, 93);
             this.groupBox9.TabIndex = 4;
@@ -532,7 +537,7 @@
             this.groupBox8.ForeColor = System.Drawing.Color.White;
             this.groupBox8.Location = new System.Drawing.Point(169, 35);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(156, 186);
+            this.groupBox8.Size = new System.Drawing.Size(156, 159);
             this.groupBox8.TabIndex = 4;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "UGC Locations";
@@ -548,7 +553,7 @@
             this.AreaUGCOutput.Name = "AreaUGCOutput";
             this.AreaUGCOutput.ReadOnly = true;
             this.AreaUGCOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.AreaUGCOutput.Size = new System.Drawing.Size(144, 104);
+            this.AreaUGCOutput.Size = new System.Drawing.Size(144, 77);
             this.AreaUGCOutput.TabIndex = 3;
             this.AreaUGCOutput.WordWrap = false;
             // 
@@ -593,7 +598,7 @@
             this.groupBox7.ForeColor = System.Drawing.Color.White;
             this.groupBox7.Location = new System.Drawing.Point(6, 35);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(156, 186);
+            this.groupBox7.Size = new System.Drawing.Size(156, 159);
             this.groupBox7.TabIndex = 3;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "SAME Locations";
@@ -609,7 +614,7 @@
             this.AreaSAMEOutput.Name = "AreaSAMEOutput";
             this.AreaSAMEOutput.ReadOnly = true;
             this.AreaSAMEOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.AreaSAMEOutput.Size = new System.Drawing.Size(144, 104);
+            this.AreaSAMEOutput.Size = new System.Drawing.Size(144, 77);
             this.AreaSAMEOutput.TabIndex = 3;
             this.AreaSAMEOutput.WordWrap = false;
             // 
@@ -647,26 +652,60 @@
             // 
             // ConfigurationPanel
             // 
-            this.ConfigurationPanel.Controls.Add(this.checkBox1);
+            this.ConfigurationPanel.Controls.Add(this.groupBox6);
             this.ConfigurationPanel.Controls.Add(this.groupBox3);
             this.ConfigurationPanel.Controls.Add(this.AlertFunctionalityGroup);
             this.ConfigurationPanel.Controls.Add(this.LocationsAndEventsGroup);
             this.ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
             this.ConfigurationPanel.Name = "ConfigurationPanel";
-            this.ConfigurationPanel.Size = new System.Drawing.Size(671, 483);
+            this.ConfigurationPanel.Size = new System.Drawing.Size(671, 478);
             this.ConfigurationPanel.TabIndex = 6;
             // 
-            // checkBox1
+            // groupBox6
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(327, 344);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(194, 19);
-            this.checkBox1.TabIndex = 19;
-            this.checkBox1.Text = "Expand data size from 25 to 50";
-            this.ToolTipInformation.SetToolTip(this.checkBox1, "Store more alerts, at the cost of using more resources and memory.");
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.groupBox6.Controls.Add(this.label5);
+            this.groupBox6.Controls.Add(this.storedMaxSizeInput);
+            this.groupBox6.ForeColor = System.Drawing.Color.White;
+            this.groupBox6.Location = new System.Drawing.Point(328, 316);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(331, 49);
+            this.groupBox6.TabIndex = 17;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Message Miscellaneous";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 22);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(58, 15);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Data size";
+            // 
+            // storedMaxSizeInput
+            // 
+            this.storedMaxSizeInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.storedMaxSizeInput.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.storedMaxSizeInput.Location = new System.Drawing.Point(70, 20);
+            this.storedMaxSizeInput.Minimum = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
+            this.storedMaxSizeInput.Name = "storedMaxSizeInput";
+            this.storedMaxSizeInput.Size = new System.Drawing.Size(54, 21);
+            this.storedMaxSizeInput.TabIndex = 9;
+            this.ToolTipInformation.SetToolTip(this.storedMaxSizeInput, "Store more alerts, at the expense of more resources. Affects trimming.");
+            this.storedMaxSizeInput.Value = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
             // 
             // groupBox3
             // 
@@ -684,9 +723,9 @@
             this.groupBox3.Controls.Add(this.categoryMetBox);
             this.groupBox3.Controls.Add(this.categoryGeoBox);
             this.groupBox3.ForeColor = System.Drawing.Color.White;
-            this.groupBox3.Location = new System.Drawing.Point(12, 375);
+            this.groupBox3.Location = new System.Drawing.Point(12, 371);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(647, 96);
+            this.groupBox3.Size = new System.Drawing.Size(647, 95);
             this.groupBox3.TabIndex = 17;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Alert Categories";
@@ -852,7 +891,7 @@
             this.BusyLockText.Font = new System.Drawing.Font("Arial", 12F);
             this.BusyLockText.Location = new System.Drawing.Point(0, 0);
             this.BusyLockText.Name = "BusyLockText";
-            this.BusyLockText.Size = new System.Drawing.Size(671, 483);
+            this.BusyLockText.Size = new System.Drawing.Size(671, 478);
             this.BusyLockText.TabIndex = 15;
             this.BusyLockText.Text = "Please wait or dismiss all alerts to configure settings.";
             this.BusyLockText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -867,7 +906,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(671, 483);
+            this.ClientSize = new System.Drawing.Size(671, 478);
             this.Controls.Add(this.ConfigurationPanel);
             this.Controls.Add(this.BusyLockText);
             this.Font = new System.Drawing.Font("Arial", 9F);
@@ -902,7 +941,9 @@
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.ConfigurationPanel.ResumeLayout(false);
-            this.ConfigurationPanel.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.storedMaxSizeInput)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
@@ -973,6 +1014,8 @@
         private System.Windows.Forms.CheckBox categoryCBRNEBox;
         private System.Windows.Forms.CheckBox categoryOtherBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.NumericUpDown storedMaxSizeInput;
+        private System.Windows.Forms.Label label5;
     }
 }

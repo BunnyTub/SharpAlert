@@ -39,7 +39,7 @@ namespace SharpAlert
                 {
                     Thread.Sleep(60 * 1000);
 
-                    if (SharpDataRelayedNamesHistory.Count > 25)
+                    if (SharpDataRelayedNamesHistory.Count > Settings.Default.storedMaxSize)
                     {
                         // use first instead of last, otherwise, recent alerts will be forgotten
                         lock (SharpDataRelayedNamesHistory) SharpDataRelayedNamesHistory.Remove(SharpDataRelayedNamesHistory.First());
