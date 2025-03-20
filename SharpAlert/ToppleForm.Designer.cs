@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ToppleForm));
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.TitleText = new System.Windows.Forms.Label();
             this.SubtitleText = new System.Windows.Forms.Label();
             this.ProblemDetailsText = new System.Windows.Forms.TextBox();
@@ -39,18 +38,11 @@
             this.ReportButton = new System.Windows.Forms.Button();
             this.AutoTerminate = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::SharpAlert.Properties.Resources.CrashIcon;
-            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(96, 128);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
             // 
             // TitleText
             // 
@@ -59,9 +51,9 @@
             this.TitleText.Location = new System.Drawing.Point(111, 12);
             this.TitleText.Margin = new System.Windows.Forms.Padding(0);
             this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(349, 49);
+            this.TitleText.Size = new System.Drawing.Size(511, 49);
             this.TitleText.TabIndex = 1;
-            this.TitleText.Text = "Something broke";
+            this.TitleText.Text = "Tripped over a loose cord";
             // 
             // SubtitleText
             // 
@@ -70,20 +62,24 @@
             this.SubtitleText.Location = new System.Drawing.Point(115, 61);
             this.SubtitleText.Margin = new System.Windows.Forms.Padding(0);
             this.SubtitleText.Name = "SubtitleText";
-            this.SubtitleText.Size = new System.Drawing.Size(405, 54);
+            this.SubtitleText.Size = new System.Drawing.Size(510, 54);
             this.SubtitleText.TabIndex = 2;
-            this.SubtitleText.Text = "SharpAlert will terminate to prevent\r\nany further instability from occurring.";
+            this.SubtitleText.Text = "SharpAlert has logged the current issue inside\r\nof the Windows event logs. Sorry " +
+    "about that.";
             // 
             // ProblemDetailsText
             // 
+            this.ProblemDetailsText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ProblemDetailsText.BackColor = System.Drawing.Color.Black;
             this.ProblemDetailsText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ProblemDetailsText.ForeColor = System.Drawing.Color.White;
-            this.ProblemDetailsText.Location = new System.Drawing.Point(120, 149);
+            this.ProblemDetailsText.Location = new System.Drawing.Point(12, 161);
             this.ProblemDetailsText.Multiline = true;
             this.ProblemDetailsText.Name = "ProblemDetailsText";
             this.ProblemDetailsText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ProblemDetailsText.Size = new System.Drawing.Size(412, 271);
+            this.ProblemDetailsText.Size = new System.Drawing.Size(398, 259);
             this.ProblemDetailsText.TabIndex = 3;
             this.ProblemDetailsText.Text = "We\'re gathering information about the problem.";
             // 
@@ -91,7 +87,7 @@
             // 
             this.ProblemTitleText.AutoSize = true;
             this.ProblemTitleText.Font = new System.Drawing.Font("Arial", 9F);
-            this.ProblemTitleText.Location = new System.Drawing.Point(117, 131);
+            this.ProblemTitleText.Location = new System.Drawing.Point(9, 143);
             this.ProblemTitleText.Margin = new System.Windows.Forms.Padding(0);
             this.ProblemTitleText.Name = "ProblemTitleText";
             this.ProblemTitleText.Size = new System.Drawing.Size(96, 15);
@@ -100,14 +96,16 @@
             // 
             // CloseButton
             // 
-            this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.CloseButton.BackColor = System.Drawing.Color.White;
+            this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CloseButton.BackColor = System.Drawing.Color.OrangeRed;
+            this.CloseButton.FlatAppearance.BorderSize = 2;
             this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CloseButton.Font = new System.Drawing.Font("Arial", 18F);
-            this.CloseButton.ForeColor = System.Drawing.Color.Black;
-            this.CloseButton.Location = new System.Drawing.Point(417, 426);
+            this.CloseButton.Font = new System.Drawing.Font("Arial", 16F, System.Drawing.FontStyle.Bold);
+            this.CloseButton.ForeColor = System.Drawing.Color.White;
+            this.CloseButton.Location = new System.Drawing.Point(243, 426);
             this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(115, 35);
+            this.CloseButton.Size = new System.Drawing.Size(225, 35);
             this.CloseButton.TabIndex = 7;
             this.CloseButton.Text = "Close";
             this.CloseButton.UseVisualStyleBackColor = false;
@@ -115,14 +113,15 @@
             // 
             // ReportButton
             // 
-            this.ReportButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ReportButton.BackColor = System.Drawing.Color.White;
+            this.ReportButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ReportButton.BackColor = System.Drawing.Color.OrangeRed;
+            this.ReportButton.FlatAppearance.BorderSize = 2;
             this.ReportButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ReportButton.Font = new System.Drawing.Font("Arial", 18F);
-            this.ReportButton.ForeColor = System.Drawing.Color.Black;
-            this.ReportButton.Location = new System.Drawing.Point(296, 426);
+            this.ReportButton.Font = new System.Drawing.Font("Arial", 16F, System.Drawing.FontStyle.Bold);
+            this.ReportButton.ForeColor = System.Drawing.Color.White;
+            this.ReportButton.Location = new System.Drawing.Point(12, 426);
             this.ReportButton.Name = "ReportButton";
-            this.ReportButton.Size = new System.Drawing.Size(115, 35);
+            this.ReportButton.Size = new System.Drawing.Size(225, 35);
             this.ReportButton.TabIndex = 8;
             this.ReportButton.Text = "Report";
             this.ReportButton.UseVisualStyleBackColor = false;
@@ -138,26 +137,50 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Font = new System.Drawing.Font("Arial", 18F);
-            this.label1.Location = new System.Drawing.Point(12, 426);
+            this.label1.Location = new System.Drawing.Point(346, 429);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(278, 35);
             this.label1.TabIndex = 9;
             this.label1.Text = "0s";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::SharpAlert.Properties.Resources.CrashIcon;
+            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(96, 128);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox2.Image = global::SharpAlert.Properties.Resources.Topple;
+            this.pictureBox2.Location = new System.Drawing.Point(209, 149);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(442, 290);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 11;
+            this.pictureBox2.TabStop = false;
+            // 
             // ToppleForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(544, 473);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(636, 473);
             this.Controls.Add(this.ReportButton);
             this.Controls.Add(this.CloseButton);
-            this.Controls.Add(this.ProblemTitleText);
             this.Controls.Add(this.ProblemDetailsText);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.ProblemTitleText);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.SubtitleText);
             this.Controls.Add(this.TitleText);
+            this.Controls.Add(this.pictureBox2);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -173,6 +196,7 @@
             this.Load += new System.EventHandler(this.ToppleForm_Load);
             this.Shown += new System.EventHandler(this.ToppleForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -189,5 +213,6 @@
         private System.Windows.Forms.Button ReportButton;
         private System.Windows.Forms.Timer AutoTerminate;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }

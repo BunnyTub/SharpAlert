@@ -215,6 +215,7 @@ namespace SharpAlert
                     this.Size = new Size(Screen.PrimaryScreen.Bounds.Width - 100,
                         Screen.PrimaryScreen.Bounds.Height - 100);
                 }
+                // fixme
                 this.CenterToScreen();
             }
             else

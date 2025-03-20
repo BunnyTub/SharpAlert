@@ -2,10 +2,11 @@
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using static SharpAlert.IceBearWorker;
 
 namespace SharpAlert
 {
-    public static class AlertToWebhook
+    public static class DiscordWebhook
     {
         private static readonly WebClient client = new WebClient();
 
@@ -13,14 +14,19 @@ namespace SharpAlert
         {
             try
             {
-                var payloadObject = new { content = message };
-                string payloadJson = JsonSerializer.Serialize(payloadObject);
-                client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
-                client.UploadData(webhook, Encoding.UTF8.GetBytes(payloadJson));
+                lock (client)
+                {
+                    var payloadObject = new { content = message };
+                    string payloadJson = JsonSerializer.Serialize(payloadObject);
+                    client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
+                    client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
+                    client.UploadData(webhook, Encoding.UTF8.GetBytes(payloadJson));
+                }
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }
@@ -30,9 +36,11 @@ namespace SharpAlert
         {
             try
             {
-                var payloadObject = new
+                lock (client)
                 {
-                    embeds = new[]
+                    var payloadObject = new
+                    {
+                        embeds = new[]
                     {
                         new
                         {
@@ -47,11 +55,13 @@ namespace SharpAlert
                             color = 16711680
                         }
                     }
-                };
+                    };
 
-                string payloadJson = JsonSerializer.Serialize(payloadObject);
-                client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
-                client.UploadData(webhook, Encoding.UTF8.GetBytes(payloadJson));
+                    string payloadJson = JsonSerializer.Serialize(payloadObject);
+                    client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
+                    client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
+                    client.UploadData(webhook, Encoding.UTF8.GetBytes(payloadJson));
+                }
                 return true;
             }
             catch (Exception)

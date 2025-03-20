@@ -71,6 +71,8 @@
             this.PastAlertsGroup = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
+            this.WindowLocationCombo = new System.Windows.Forms.ComboBox();
+            this.label11 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
@@ -264,7 +266,7 @@
             // OpenCreditsButton
             // 
             this.OpenCreditsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.OpenCreditsButton.Location = new System.Drawing.Point(12, 375);
+            this.OpenCreditsButton.Location = new System.Drawing.Point(12, 385);
             this.OpenCreditsButton.Name = "OpenCreditsButton";
             this.OpenCreditsButton.Size = new System.Drawing.Size(61, 23);
             this.OpenCreditsButton.TabIndex = 20;
@@ -276,7 +278,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(79, 379);
+            this.label10.Location = new System.Drawing.Point(79, 389);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(246, 15);
             this.label10.TabIndex = 11;
@@ -286,7 +288,7 @@
             // CacheOperationButton
             // 
             this.CacheOperationButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CacheOperationButton.Location = new System.Drawing.Point(459, 375);
+            this.CacheOperationButton.Location = new System.Drawing.Point(459, 385);
             this.CacheOperationButton.Name = "CacheOperationButton";
             this.CacheOperationButton.Size = new System.Drawing.Size(94, 23);
             this.CacheOperationButton.TabIndex = 22;
@@ -302,7 +304,7 @@
             this.BusyLockText.Font = new System.Drawing.Font("Arial", 12F);
             this.BusyLockText.Location = new System.Drawing.Point(0, 0);
             this.BusyLockText.Name = "BusyLockText";
-            this.BusyLockText.Size = new System.Drawing.Size(671, 429);
+            this.BusyLockText.Size = new System.Drawing.Size(671, 439);
             this.BusyLockText.TabIndex = 14;
             this.BusyLockText.Text = "Please wait or dismiss all alerts to configure settings.";
             this.BusyLockText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -311,7 +313,7 @@
             // statusWindowBox
             // 
             this.statusWindowBox.AutoSize = true;
-            this.statusWindowBox.Location = new System.Drawing.Point(345, 378);
+            this.statusWindowBox.Location = new System.Drawing.Point(345, 388);
             this.statusWindowBox.Name = "statusWindowBox";
             this.statusWindowBox.Size = new System.Drawing.Size(106, 19);
             this.statusWindowBox.TabIndex = 21;
@@ -333,7 +335,7 @@
             // ServerButton
             // 
             this.ServerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ServerButton.Location = new System.Drawing.Point(559, 375);
+            this.ServerButton.Location = new System.Drawing.Point(559, 385);
             this.ServerButton.Name = "ServerButton";
             this.ServerButton.Size = new System.Drawing.Size(100, 23);
             this.ServerButton.TabIndex = 23;
@@ -375,7 +377,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 405);
+            this.label3.Location = new System.Drawing.Point(9, 415);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(608, 15);
@@ -492,6 +494,8 @@
             // 
             // AlertAppearanceAndSoundsGroup
             // 
+            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.label11);
+            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.WindowLocationCombo);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertFullscreenWindowedBox);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertNoGUIBox);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.label4);
@@ -508,7 +512,7 @@
             this.AlertAppearanceAndSoundsGroup.ForeColor = System.Drawing.Color.White;
             this.AlertAppearanceAndSoundsGroup.Location = new System.Drawing.Point(12, 130);
             this.AlertAppearanceAndSoundsGroup.Name = "AlertAppearanceAndSoundsGroup";
-            this.AlertAppearanceAndSoundsGroup.Size = new System.Drawing.Size(647, 126);
+            this.AlertAppearanceAndSoundsGroup.Size = new System.Drawing.Size(647, 136);
             this.AlertAppearanceAndSoundsGroup.TabIndex = 7;
             this.AlertAppearanceAndSoundsGroup.TabStop = false;
             this.AlertAppearanceAndSoundsGroup.Text = "Alert Appearance/Sounds";
@@ -549,7 +553,7 @@
             this.PastAlertsGroup.Controls.Add(this.AlertHistoryOutput);
             this.PastAlertsGroup.Controls.Add(this.AlertHistoryClearButton);
             this.PastAlertsGroup.ForeColor = System.Drawing.Color.White;
-            this.PastAlertsGroup.Location = new System.Drawing.Point(12, 262);
+            this.PastAlertsGroup.Location = new System.Drawing.Point(12, 272);
             this.PastAlertsGroup.Name = "PastAlertsGroup";
             this.PastAlertsGroup.Size = new System.Drawing.Size(647, 107);
             this.PastAlertsGroup.TabIndex = 5;
@@ -581,15 +585,33 @@
             this.ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
             this.ConfigurationPanel.Name = "ConfigurationPanel";
-            this.ConfigurationPanel.Size = new System.Drawing.Size(671, 429);
+            this.ConfigurationPanel.Size = new System.Drawing.Size(671, 439);
             this.ConfigurationPanel.TabIndex = 13;
+            // 
+            // WindowLocationCombo
+            // 
+            this.WindowLocationCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.WindowLocationCombo.FormattingEnabled = true;
+            this.WindowLocationCombo.Location = new System.Drawing.Point(241, 96);
+            this.WindowLocationCombo.Name = "WindowLocationCombo";
+            this.WindowLocationCombo.Size = new System.Drawing.Size(117, 23);
+            this.WindowLocationCombo.TabIndex = 23;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(181, 93);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(54, 30);
+            this.label11.TabIndex = 24;
+            this.label11.Text = "Window\r\nLocation";
             // 
             // ConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(671, 429);
+            this.ClientSize = new System.Drawing.Size(671, 439);
             this.Controls.Add(this.ConfigurationPanel);
             this.Controls.Add(this.BusyLockText);
             this.Font = new System.Drawing.Font("Arial", 9F);
@@ -659,5 +681,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox alertNoGUIBox;
         private System.Windows.Forms.CheckBox alertFullscreenWindowedBox;
+        private System.Windows.Forms.ComboBox WindowLocationCombo;
+        private System.Windows.Forms.Label label11;
     }
 }

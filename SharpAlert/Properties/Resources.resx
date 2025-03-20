@@ -117,15 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="ui_end_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ui_end.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="ui_nothing_1" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAEAQAAABZTeXN0ZW0uSU8uTWVtb3J5U3RyZWFtCgAAAAdfYnVmZmVyB19v
+        cmlnaW4JX3Bvc2l0aW9uB19sZW5ndGgJX2NhcGFjaXR5C19leHBhbmRhYmxlCV93cml0YWJsZQpfZXhw
+        b3NhYmxlB19pc09wZW4dTWFyc2hhbEJ5UmVmT2JqZWN0K19faWRlbnRpdHkHAAAAAAAAAAACAggICAgB
+        AQEBCQIAAAAAAAAAPAAAADwAAAA8AAAAAAEAAQoPAgAAADwAAAACUklGRjQAAABXQVZFZm10IBAAAAAB
+        AAEAQB8AAIA+AAACABAAZGF0YRAAAAAAAAAAAAAAAAEA/v8CAP7/Cw==
+</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="AlertIcon" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAABDgAAAQ4CAYAAADsEGyPAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vQAADr0BR/uQrQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAGG2SURBVHhe7d15
+        vAAADrwBlbxySQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAGG2SURBVHhe7d15
         uF5VeTf+NwlTAUVRxAGsVEUUaqljHbBi0arVYiu0jqhFEbGUV9Tir1oVWykOtaZ1omhFnCrWAcW+oiBa
         qCIGMOc8+zkJSZgJhCkJU0Km/dvnEOLJkzsDJGetZ+39+eNzpf32ut5Xs9a11rq/cM7+P3VdAwAAABQt
         DAEAAABKEoYAAAAAJQlDAAAAgJKEIQAAAEBJwhAAAACgJGEIAAAAUJIwBAAAAChJGAIAAACUJAwBAAAA
@@ -546,22 +551,20 @@
         RK5CYII=
 </value>
   </data>
-  <data name="ui_cancellation_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ui_cancellation.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="ui_nothing_1" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAEAQAAABZTeXN0ZW0uSU8uTWVtb3J5U3RyZWFtCgAAAAdfYnVmZmVyB19v
-        cmlnaW4JX3Bvc2l0aW9uB19sZW5ndGgJX2NhcGFjaXR5C19leHBhbmRhYmxlCV93cml0YWJsZQpfZXhw
-        b3NhYmxlB19pc09wZW4dTWFyc2hhbEJ5UmVmT2JqZWN0K19faWRlbnRpdHkHAAAAAAAAAAACAggICAgB
-        AQEBCQIAAAAAAAAAPAAAADwAAAA8AAAAAAEAAQoPAgAAADwAAAACUklGRjQAAABXQVZFZm10IBAAAAAB
-        AAEAQB8AAIA+AAACABAAZGF0YRAAAAAAAAAAAAAAAAEA/v8CAP7/Cw==
-</value>
-  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ui_warning_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ui_warning.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="ui_end_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ui_end.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ui_cancellation_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ui_cancellation.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="CrashIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CrashIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Topple" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Topple.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

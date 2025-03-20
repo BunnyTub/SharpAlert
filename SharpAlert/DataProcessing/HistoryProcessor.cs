@@ -86,7 +86,8 @@ namespace SharpAlert
                                         {
                                             SharpDataRelayedNamesHistory.Remove(name);
                                             Console.WriteLine($"[History Processor] Alert {alertIndex} is expired.");
-                                            CompiledString += $"An alert with the event type {historicResult.Item2} has recently expired.\x20";
+                                            //expired,type,sent,effective,expiry
+                                            CompiledString += $"The alert {historicResult.Item2}, effective {historicResult.Item3}, has recently expired at {historicResult.Item4}.\x20";
                                             Expired = true;
                                         }
                                         else
@@ -111,7 +112,7 @@ namespace SharpAlert
                                 CompiledString = CompiledString.Trim();
                                 if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
                                 {
-                                    if (AlertToWebhook.SendUnformattedMessage(CompiledString, Settings.Default.DiscordWebhook))
+                                    if (DiscordWebhook.SendUnformattedMessage(CompiledString, Settings.Default.DiscordWebhook))
                                     {
                                         lock (notify)
                                         {
@@ -164,8 +165,8 @@ namespace SharpAlert
         /// Tests the input for expiry.
         /// </summary>
         /// <param name="relayItem"></param>
-        /// <returns>True if the alert is expired.</returns>
-        public (bool, string) ProcessHistoricItem(SharpDataItem relayItem)
+        /// <returns>True if the alert provided is expired. Also provides the alert type.</returns>
+        public (bool, string, string, string, string) ProcessHistoricItem(SharpDataItem relayItem)
         {
             lock (AlertLock)
             {
@@ -201,15 +202,27 @@ namespace SharpAlert
 
                     if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
                     {
-                        return (true, EventType);
+                        return (true,
+                            EventType,
+                            Sent,
+                            Effective,
+                            Expiry);
                     }
                     else
                     {
-                        return (false, EventType);
+                        return (false,
+                            EventType,
+                            Sent,
+                            Effective,
+                            Expiry);
                     }
                 }
 
-                return (true, "Cautionary (Unknown Event)");
+                return (true,
+                    "Cautionary (Unknown Event)",
+                    "Unknown Date Time",
+                    "Unknown Date Time",
+                    "Unknown Date Time");
             }
         }
     }

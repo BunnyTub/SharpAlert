@@ -150,7 +150,38 @@ namespace SharpAlert
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation);
             };
-            
+
+            WindowLocationCombo.DataSource = new ComboItem[] {
+                new ComboItem
+                {
+                    // 0
+                    FriendlyName = "Centered",
+                },
+                new ComboItem
+                {
+                    // 1
+                    FriendlyName = "Top Left",
+                },
+                new ComboItem
+                {
+                    // 2
+                    FriendlyName = "Top Right"
+                },
+                new ComboItem
+                {
+                    // 3
+                    FriendlyName = "Bottom Left"
+                },
+                new ComboItem
+                {
+                    // 4
+                    FriendlyName = "Bottom Right"
+                },
+            };
+
+            WindowLocationCombo.SelectedIndex = Settings.Default.WindowLocation;
+            WindowLocationCombo.SelectedIndexChanged += (a, b) => Settings.Default.WindowLocation = (byte)((ComboBox)a).SelectedIndex;
+
             volumeBar.Value = Settings.Default.alertVolume;
             volumeBar.Scroll += (a, b) => Settings.Default.alertVolume = ((TrackBar)a).Value;
 
@@ -174,6 +205,16 @@ namespace SharpAlert
             };
 
             RefreshAlertHistory();
+        }
+
+        class ComboItem
+        {
+            public override string ToString()
+            {
+                return FriendlyName;
+            }
+
+            public string FriendlyName { get; set; }
         }
 
         private void AlertHistoryClearButton_Click(object sender, EventArgs e)

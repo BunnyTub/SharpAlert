@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using static SharpAlert.AudioManager;
@@ -187,6 +188,65 @@ namespace SharpAlert
             else
             {
                 PlayFromUnmanagedSource(Resources.ui_cancellation_1);
+            }
+
+            int LocationMargin = 10;
+
+            switch (Settings.Default.WindowLocation)
+            {
+                default:
+                    if (!(Settings.Default.alertFullscreenDisplay >= Screen.AllScreens.Count()))
+                    {
+                        this.Location = new Point(
+                            (Screen.AllScreens[Settings.Default.alertFullscreenDisplay].WorkingArea.Width - this.Width) / 2,
+                            (Screen.AllScreens[Settings.Default.alertFullscreenDisplay].WorkingArea.Height - this.Height) / 2
+                        );
+                    }
+                    else
+                    {
+                        this.Location = new Point(
+                            (Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2,
+                            (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2
+                        );
+                    }
+                    break;
+                case 1:
+                    if (!(Settings.Default.alertFullscreenDisplay >= Screen.AllScreens.Count()))
+                    {
+                        this.Location = new Point(
+                            Screen.AllScreens[Settings.Default.alertFullscreenDisplay].WorkingArea.Location.X + LocationMargin,
+                            Screen.AllScreens[Settings.Default.alertFullscreenDisplay].WorkingArea.Location.Y + LocationMargin
+                        );
+                    }
+                    else
+                    {
+                        this.Location = new Point(
+                            LocationMargin,
+                            LocationMargin
+                        );
+                    }
+                    break;
+                case 2:
+                    // unfinished
+                    this.Location = new Point(
+                        Screen.PrimaryScreen.WorkingArea.Width - this.Width - LocationMargin,
+                        LocationMargin
+                    );
+                    break;
+                case 3:
+                    // unfinished
+                    this.Location = new Point(
+                        LocationMargin,
+                        Screen.PrimaryScreen.WorkingArea.Height - this.Height - LocationMargin
+                    );
+                    break;
+                case 4:
+                    // unfinished
+                    this.Location = new Point(
+                        Screen.PrimaryScreen.WorkingArea.Width - this.Width - LocationMargin,
+                        Screen.PrimaryScreen.WorkingArea.Height - this.Height - LocationMargin
+                    );
+                    break;
             }
 
             Console.WriteLine("[Alert GUI] Window shown.");

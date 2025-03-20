@@ -32,6 +32,7 @@
             this.TitlePanel = new System.Windows.Forms.Panel();
             this.TitleText = new System.Windows.Forms.Label();
             this.TitleSpacer = new System.Windows.Forms.Panel();
+            this.DismissButton = new System.Windows.Forms.Button();
             this.AutoExit = new System.Windows.Forms.Timer(this.components);
             this.SubtitlePanel = new System.Windows.Forms.Panel();
             this.SubtitleText = new SharpAlert.ToolboxStuff.MarqueeLabel();
@@ -48,6 +49,7 @@
             this.TitlePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.TitlePanel.Controls.Add(this.TitleText);
             this.TitlePanel.Controls.Add(this.TitleSpacer);
+            this.TitlePanel.Controls.Add(this.DismissButton);
             this.TitlePanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.TitlePanel.ForeColor = System.Drawing.Color.White;
             this.TitlePanel.Location = new System.Drawing.Point(0, 0);
@@ -63,7 +65,7 @@
             this.TitleText.Font = new System.Drawing.Font("Arial", 32F, System.Drawing.FontStyle.Bold);
             this.TitleText.Location = new System.Drawing.Point(4, 0);
             this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(1020, 60);
+            this.TitleText.Size = new System.Drawing.Size(905, 60);
             this.TitleText.TabIndex = 3;
             this.TitleText.Text = "ALERT INFORMATION";
             this.TitleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -79,6 +81,22 @@
             this.TitleSpacer.Name = "TitleSpacer";
             this.TitleSpacer.Size = new System.Drawing.Size(4, 60);
             this.TitleSpacer.TabIndex = 2;
+            // 
+            // DismissButton
+            // 
+            this.DismissButton.BackColor = System.Drawing.Color.White;
+            this.DismissButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DismissButton.Enabled = false;
+            this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DismissButton.Font = new System.Drawing.Font("Arial", 18F);
+            this.DismissButton.ForeColor = System.Drawing.Color.Black;
+            this.DismissButton.Location = new System.Drawing.Point(909, 0);
+            this.DismissButton.Name = "DismissButton";
+            this.DismissButton.Size = new System.Drawing.Size(115, 60);
+            this.DismissButton.TabIndex = 4;
+            this.DismissButton.Text = "Dismiss";
+            this.DismissButton.UseVisualStyleBackColor = false;
+            this.DismissButton.Click += new System.EventHandler(this.DismissButton_Click);
             // 
             // AutoExit
             // 
@@ -170,6 +188,7 @@
         private System.Windows.Forms.Timer EnsureTopWindow;
         private System.Windows.Forms.Timer FadeInAnimation;
         private System.Windows.Forms.Timer FadeOutAnimation;
+        private System.Windows.Forms.Button DismissButton;
     }
 }
 

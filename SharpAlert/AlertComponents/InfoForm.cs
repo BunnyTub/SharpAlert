@@ -52,10 +52,16 @@ namespace SharpAlert
             }
             else
             {
-                this.Opacity = 0.75;
+                this.Opacity = 0.8;
+                UnlockButtons(true);
             }
 
             Console.WriteLine("[Alert GUI] Window shown.");
+        }
+
+        private void UnlockButtons(bool unlocked)
+        {
+            DismissButton.Enabled = unlocked;
         }
 
         private void DismissButton_Click(object sender, EventArgs e)
@@ -65,6 +71,7 @@ namespace SharpAlert
 
         private void AlertForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            UnlockButtons(false);
             AutoExit.Stop();
             if (!Settings.Default.alertCompatibilityMode)
             {
@@ -104,10 +111,11 @@ namespace SharpAlert
 
         private void FadeInAnimation_Tick(object sender, EventArgs e)
         {
-            if (this.Opacity > 0.75)
+            if (this.Opacity > 0.8)
             {
                 FadeInAnimation.Stop();
-                this.Opacity = 0.75;
+                this.Opacity = 0.8;
+                UnlockButtons(true);
                 return;
             }
             else

@@ -27,6 +27,8 @@ namespace SharpAlert
 
         public static bool ServiceRunnerScheduled { get; private set; }
 
+        public static readonly string SelfUserAgent = "Mozilla/5.0 (compatible; SharpAlert)";
+
         /// <summary>
         /// Starts the Ice Bear Worker as a client.
         /// </summary>
@@ -36,10 +38,11 @@ namespace SharpAlert
             args = Environment.GetCommandLineArgs();
 
             if (args.Length == 2) if (args[1] == "--console") AllocateTerminal(false);
+            //if (args.Length == 2) if (args[1] == "--finish-update") AllocateTerminal(false);
 
             Console.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority. | https://sharpalert.bunnytub.com/");
 
-            client.DefaultRequestHeaders.UserAgent.ParseAdd($"Mozilla/5.0 (compatible; SharpAlert)");
+            client.DefaultRequestHeaders.UserAgent.ParseAdd(SelfUserAgent);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -65,41 +68,41 @@ namespace SharpAlert
 
             startup.Start();
 
-            string RemoteMD5 = string.Empty;
+            //string RemoteMD5 = string.Empty;
             string RemoteVersion = string.Empty;
 
-            string CreateMD5FromCurrent()
-            {
-                MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-                FileStream stream = new FileStream(AssemblyFile, FileMode.Open, FileAccess.Read);
+            //string CreateMD5FromCurrent()
+            //{
+            //    MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            //    FileStream stream = new FileStream(AssemblyFile, FileMode.Open, FileAccess.Read);
 
-                md5.ComputeHash(stream);
+            //    md5.ComputeHash(stream);
 
-                stream.Close();
+            //    stream.Close();
 
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < md5.Hash.Length; i++)
-                    sb.Append(md5.Hash[i].ToString("x2"));
+            //    StringBuilder sb = new StringBuilder();
+            //    for (int i = 0; i < md5.Hash.Length; i++)
+            //        sb.Append(md5.Hash[i].ToString("x2"));
 
-                return sb.ToString().ToUpperInvariant();
-            }
+            //    return sb.ToString().ToUpperInvariant();
+            //}
 
-            Console.WriteLine("[Ice Bear] Checking application identity.");
+            Console.WriteLine("[Ice Bear] Checking application version.");
 
             string IdentityURL = "https://bunnytub.com";
 
             try
             {
-                string LocalMD5 = CreateMD5FromCurrent();
-                Console.WriteLine($"[Ice Bear] MD5 (local): {LocalMD5}");
+                //string LocalMD5 = CreateMD5FromCurrent();
+                //Console.WriteLine($"[Ice Bear] MD5 (local): {LocalMD5}");
                 
-                Task<HttpResponseMessage> message = client.GetAsync($"{IdentityURL}/SharpAlert/Releases/v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}/MD5.txt");
-                if (!message.Wait(10000))
-                {
-                    throw new TimeoutException();
-                }
+                //Task<HttpResponseMessage> message = client.GetAsync($"{IdentityURL}/SharpAlert/Releases/v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}/MD5.txt");
+                //if (!message.Wait(10000))
+                //{
+                //    throw new TimeoutException();
+                //}
                 
-                Console.WriteLine($"[Ice Bear | MD5 Request] The identity server responded with status code {message.Result.StatusCode}.");
+                //Console.WriteLine($"[Ice Bear | MD5 Request] The server responded with status code {message.Result.StatusCode}.");
 
                 Task<HttpResponseMessage> latest = client.GetAsync($"{IdentityURL}/SharpAlert/SharpAlert.txt");
                 if (!latest.Wait(10000))
@@ -107,32 +110,30 @@ namespace SharpAlert
                     throw new TimeoutException();
                 }
 
-                Console.WriteLine($"[Ice Bear | Version Request] The identity server responded with status code {latest.Result.StatusCode}.");
+                Console.WriteLine($"[Ice Bear | Version Request] The server responded with status code {latest.Result.StatusCode}.");
 
-                RemoteMD5 = message.Result.Content.ReadAsStringAsync().Result.Trim().ToUpperInvariant();
-                if (string.IsNullOrWhiteSpace(RemoteMD5) || RemoteMD5.Length == 0 || RemoteMD5.Length >= 100) RemoteMD5 = "UNKNOWN";
+                //RemoteMD5 = message.Result.Content.ReadAsStringAsync().Result.Trim().ToUpperInvariant();
+                //if (string.IsNullOrWhiteSpace(RemoteMD5) || RemoteMD5.Length == 0 || RemoteMD5.Length >= 100) RemoteMD5 = "UNKNOWN";
 
                 RemoteVersion = latest.Result.Content.ReadAsStringAsync().Result.Trim();
                 if (string.IsNullOrWhiteSpace(RemoteVersion) || RemoteVersion.Length == 0 || RemoteVersion.Length >= 10) RemoteVersion = "0.0";
 
-                // implement auto-update
+                //if (LocalMD5 == RemoteMD5)
+                //{
+                //    Console.WriteLine("[Ice Bear] You are using the latest version of SharpAlert.");
+                //}
+                //else
+                //{
+                //    Console.WriteLine($"[Ice Bear] You may be using an older (or modified/other) version of SharpAlert. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersion}");
+                //    Console.WriteLine($"[Ice Bear] See https://sharpalert.bunnytub.com/ for downloads.");
+                //}   
 
-                if (LocalMD5 == RemoteMD5)
-                {
-                    Console.WriteLine("[Ice Bear] You are using the latest version of SharpAlert.");
-                }
-                else
-                {
-                    Console.WriteLine($"[Ice Bear] You may be using an older (or modified/other) version of SharpAlert. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersion}");
-                    Console.WriteLine($"[Ice Bear] See https://sharpalert.bunnytub.com/ for downloads.");
-                }   
-
-                Console.WriteLine($"[Ice Bear] MD5 (remote): {RemoteMD5}");
+                //Console.WriteLine($"[Ice Bear] MD5 (remote): {RemoteMD5}");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[Ice Bear] {ex.StackTrace} {ex.Message}");
-                Console.WriteLine($"[Ice Bear] Couldn't work with the identity server.");
+                Console.WriteLine($"[Ice Bear] Couldn't work with the server.");
             }
 
             Console.WriteLine("[Ice Bear] Initializing services.");
@@ -183,28 +184,33 @@ namespace SharpAlert
                 Application.EnableVisualStyles();
                 CreateNotifyIcon(RemoteVersion);
                 Application.Run();
-            });
-            notificationThread.MonitorAndStart("Notification Tray");
+            }, false);
+            //notificationThread.MonitorAndStart("Notification Tray");
+            notificationThread.Start();
 
             while (notify == null) Thread.Sleep(100);
 
             Console.WriteLine("[Ice Bear] Starting services momentarily.");
 
-            Thread feedThread = ReturnThreadWithCatch(() => feed.ServiceRun(UseHTTPS));
+            Thread feedThread = ReturnThreadWithCatch(() => feed.ServiceRun(UseHTTPS), true);
             feedThread.SetApartmentState(ApartmentState.MTA);
-            feedThread.MonitorAndStart("Feed Capture");
+            //feedThread.MonitorAndStart("Feed Capture");
+            feedThread.Start();
 
-            Thread cacheThread = ReturnThreadWithCatch(() => cache.ServiceRun(true));
+            Thread cacheThread = ReturnThreadWithCatch(() => cache.ServiceRun(true), true);
             cacheThread.SetApartmentState(ApartmentState.MTA);
-            cacheThread.MonitorAndStart("Cache Capture");
+            //cacheThread.MonitorAndStart("Cache Capture");
+            cacheThread.Start();
 
-            Thread dataProcThread = ReturnThreadWithCatch(() => dataproc.ServiceRun());
+            Thread dataProcThread = ReturnThreadWithCatch(() => dataproc.ServiceRun(), true);
             dataProcThread.SetApartmentState(ApartmentState.MTA);
-            dataProcThread.MonitorAndStart("Data Processor");
+            //dataProcThread.MonitorAndStart("Data Processor");
+            dataProcThread.Start();
             
-            Thread historyProcThread = ReturnThreadWithCatch(() => historyproc.ServiceRun());
+            Thread historyProcThread = ReturnThreadWithCatch(() => historyproc.ServiceRun(), true);
             historyProcThread.SetApartmentState(ApartmentState.MTA);
-            historyProcThread.MonitorAndStart("History Processor");
+            //historyProcThread.MonitorAndStart("History Processor");
+            historyProcThread.Start();
 
             if (Settings.Default.statusWindow)
             {
@@ -248,9 +254,10 @@ namespace SharpAlert
 
             Console.WriteLine("[Ice Bear] Starting services momentarily.");
 
-            Thread feedThread = ReturnThreadWithCatch(() => feed.ServerServiceRun(true));
+            Thread feedThread = ReturnThreadWithCatch(() => feed.ServerServiceRun(true), true);
             feedThread.SetApartmentState(ApartmentState.MTA);
-            feedThread.MonitorAndStart("Feed Capture");
+            //feedThread.MonitorAndStart("Feed Capture");
+            feedThread.Start();
 
             listener.Start();
             CreateStatusWindow();
@@ -288,22 +295,22 @@ namespace SharpAlert
             }
         }
 
-        private static void MonitorAndStart(this Thread thread, string FriendlyName)
-        {
-            Thread sub = new Thread(() =>
-            {
-                while (AllowThreadRestarts)
-                {
-                    thread.Start();
-                    Console.WriteLine($"[Ice Bear] {FriendlyName} started.");
-                    while (thread.IsAlive) Thread.Sleep(500);
-                    Console.WriteLine($"[Ice Bear] {FriendlyName} exited.");
-                    Thread.Sleep(300);
-                }
-                Console.WriteLine($"[Ice Bear] Thread handling for {FriendlyName} has stopped.");
-            });
-            sub.Start();
-        }
+        //private static void MonitorAndStart(this Thread thread, string FriendlyName)
+        //{
+        //    Thread sub = new Thread(() =>
+        //    {
+        //        while (AllowThreadRestarts)
+        //        {
+        //            thread.Start();
+        //            Console.WriteLine($"[Ice Bear] {FriendlyName} started.");
+        //            while (thread.IsAlive) Thread.Sleep(500);
+        //            Console.WriteLine($"[Ice Bear] {FriendlyName} exited.");
+        //            Thread.Sleep(300);
+        //        }
+        //        Console.WriteLine($"[Ice Bear] Thread handling for {FriendlyName} has stopped.");
+        //    });
+        //    sub.Start();
+        //}
 
         private static readonly object ThreadErrorLockObject = new object();
 
@@ -312,29 +319,51 @@ namespace SharpAlert
         /// </summary>
         /// <param name="action"></param>
         /// <returns>Try-catch Thread</returns>
-        private static Thread ReturnThreadWithCatch(Action action)
+        private static Thread ReturnThreadWithCatch(Action action, bool restartable)
         {
             return new Thread(() =>
             {
-                try
+                while (AllowThreadRestarts)
                 {
-                    action.Invoke();
-                }
-                catch (Exception ex)
-                {
-                    AllowThreadRestarts = false;
-                    lock (ThreadErrorLockObject)
+                    try
                     {
-                        new Thread(() =>
+                        action.Invoke();
+                    }
+                    catch (Exception ex)
+                    {
+                        lock (ThreadErrorLockObject)
                         {
-                            string ExceptionCompiled = $"SharpAlert encountered an exception. {DateTime.UtcNow:s}\r\n" +
-                            $"{ex.Message}\r\n" +
-                            $"{ex.TargetSite}\r\n" +
-                            $"{ex.StackTrace}";
-                            ToppleForm tf = new ToppleForm(ExceptionCompiled);
-                            tf.ShowDialog();
-                            Environment.FailFast(ExceptionCompiled);
-                        }).Start();
+                            if (!restartable)
+                            {
+                                AllowThreadRestarts = false;
+                                string ExceptionCompiled = $"SharpAlert encountered an exception. {DateTime.UtcNow:s}\r\n" +
+                                $"{ex.Message}\r\n" +
+                                $"{ex.TargetSite}\r\n" +
+                                $"{ex.StackTrace}";
+
+                                ToppleForm tf = new ToppleForm(ExceptionCompiled);
+                                tf.ShowDialog();
+
+                                using (EventLog log = new EventLog("Application"))
+                                {
+                                    log.Source = "Application";
+                                    log.WriteEntry(ExceptionCompiled, EventLogEntryType.Error);
+                                }
+                                Environment.FailFast(ExceptionCompiled);
+                                return;
+                            }
+                            else
+                            {
+                                lock (notify)
+                                {
+                                    notify.BalloonTipTitle = "SharpAlert is having issues";
+                                    notify.BalloonTipText = "Check the event log using a tool such as Event Viewer for more information!";
+                                    notify.BalloonTipIcon = ToolTipIcon.Warning;
+                                    notify.ShowBalloonTip(5000);
+                                }
+                            }
+                        }
+                        Thread.Sleep(500);
                     }
                 }
             });

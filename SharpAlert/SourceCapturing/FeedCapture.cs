@@ -44,12 +44,11 @@ namespace SharpAlert
         {
             if (Stop) return;
 
-            string URLPrefix = useHTTPS ? "https" : "http";
-
             while (true)
             {
                 try
                 {
+                    string URLPrefix = useHTTPS ? "https" : "http";
                     Console.WriteLine($"[Feed Capture] Getting data from URL: {URLPrefix}://{server}");
                     Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server}");
                     if (!message.Wait(10000)) continue;
@@ -106,8 +105,9 @@ namespace SharpAlert
                 {
                     Console.WriteLine("[Feed Capture] The executing task was canceled.");
                 }
-                catch (ThreadAbortException)
+                catch (ThreadAbortException e)
                 {
+                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
                 }
                 catch (NullReferenceException e)
                 {
@@ -119,15 +119,22 @@ namespace SharpAlert
                 }
                 if (FirstRun) FirstRun = false;
 
-                for (int i = 0; !(i >= Settings.Default.AlertCheckInterval);)
+                try
                 {
-                    if (Stop)
+                    for (int i = 0; !(i >= Settings.Default.AlertCheckInterval);)
                     {
-                        Stop = false;
-                        return;
+                        if (Stop)
+                        {
+                            Stop = false;
+                            return;
+                        }
+                        Thread.Sleep(1000);
+                        i++;
                     }
-                    Thread.Sleep(1000);
-                    i++;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
                 }
             }
         }
