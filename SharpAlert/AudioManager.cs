@@ -51,7 +51,6 @@ namespace SharpAlert
                         }
                     }
 
-                    // ensure all audio threads stop before resetting this value
                     Thread.Sleep(1000);
                     HoldIt = false;
 

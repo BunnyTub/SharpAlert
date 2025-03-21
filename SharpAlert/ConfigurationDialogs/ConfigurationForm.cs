@@ -243,6 +243,7 @@ namespace SharpAlert
             if (SharpDataHistory.Count != 0)
             {
                 SharpDataHistory.Clear();
+                SharpDataRelayedNamesHistory.Clear();
                 AlertHistoryOutput.Text = "The history was cleared.";
                 MessageBox.Show("The history has been cleared.",
                     "SharpAlert",

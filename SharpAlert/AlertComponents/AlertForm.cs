@@ -90,8 +90,9 @@ namespace SharpAlert
             taskbarList.HrInit();
         }
 
-        public void UpdateFields(string alert, string text, string url, string audio, string image, string type)
+        public void UpdateFields(string id, string alert, string text, string url, string audio, string image, string type)
         {
+            this.Text = $"SharpAlert - {id}";
             AlertSubtitleStr = alert;
             SubtitleText.Text = AlertSubtitleStr;
             AlertTextStr = text;

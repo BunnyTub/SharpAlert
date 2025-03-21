@@ -125,5 +125,15 @@ namespace SharpAlert.Properties {
                 return ResourceManager.GetStream("ui_warning_1", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WarningApp {
+            get {
+                object obj = ResourceManager.GetObject("WarningApp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

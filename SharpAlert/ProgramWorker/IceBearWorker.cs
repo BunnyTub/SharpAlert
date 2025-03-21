@@ -8,7 +8,6 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
@@ -22,7 +21,7 @@ namespace SharpAlert
     {
         public static readonly HttpClient client = new HttpClient
         {
-            Timeout = TimeSpan.FromSeconds(5)
+            Timeout = TimeSpan.FromSeconds(15)
         };
 
         public static bool ServiceRunnerScheduled { get; private set; }
@@ -321,6 +320,7 @@ namespace SharpAlert
         /// <returns>Try-catch Thread</returns>
         private static Thread ReturnThreadWithCatch(Action action, bool restartable)
         {
+            Console.WriteLine($"[Ice Bear] Returning thread. (action = {action.Method.Name}, restartable = {restartable})");
             return new Thread(() =>
             {
                 while (AllowThreadRestarts)
@@ -333,22 +333,23 @@ namespace SharpAlert
                     {
                         lock (ThreadErrorLockObject)
                         {
-                            if (!restartable)
-                            {
-                                AllowThreadRestarts = false;
-                                string ExceptionCompiled = $"SharpAlert encountered an exception. {DateTime.UtcNow:s}\r\n" +
+                            string ExceptionCompiled = $"SharpAlert encountered an exception. {DateTime.UtcNow:s}\r\n" +
                                 $"{ex.Message}\r\n" +
                                 $"{ex.TargetSite}\r\n" +
                                 $"{ex.StackTrace}";
 
-                                ToppleForm tf = new ToppleForm(ExceptionCompiled);
-                                tf.ShowDialog();
+                            ToppleForm tf = new ToppleForm(ExceptionCompiled);
+                            tf.ShowDialog();
 
-                                using (EventLog log = new EventLog("Application"))
-                                {
-                                    log.Source = "Application";
-                                    log.WriteEntry(ExceptionCompiled, EventLogEntryType.Error);
-                                }
+                            using (EventLog log = new EventLog("Application"))
+                            {
+                                log.Source = "Application";
+                                log.WriteEntry(ExceptionCompiled, EventLogEntryType.Error);
+                            }
+
+                            if (!restartable)
+                            {
+                                AllowThreadRestarts = false;
                                 Environment.FailFast(ExceptionCompiled);
                                 return;
                             }
@@ -358,7 +359,7 @@ namespace SharpAlert
                                 {
                                     notify.BalloonTipTitle = "SharpAlert is having issues";
                                     notify.BalloonTipText = "Check the event log using a tool such as Event Viewer for more information!";
-                                    notify.BalloonTipIcon = ToolTipIcon.Warning;
+                                    notify.BalloonTipIcon = ToolTipIcon.Error;
                                     notify.ShowBalloonTip(5000);
                                 }
                             }

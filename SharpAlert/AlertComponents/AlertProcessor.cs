@@ -11,7 +11,6 @@ using System.Windows.Forms;
 using static SharpAlert.Program;
 using static SharpAlert.RegexList;
 using static SharpAlert.AudioManager;
-using NAudio.CoreAudioApi;
 
 namespace SharpAlert
 {
@@ -24,6 +23,7 @@ namespace SharpAlert
         private RelayController relay = null;
         private bool relayPing = false;
 
+        private string DialogAlertID = string.Empty;
         private string DialogAlertTitle = string.Empty;
         private string DialogAlertText = string.Empty;
         private string DialogAlertURL = string.Empty;
@@ -124,7 +124,7 @@ namespace SharpAlert
                             Thread.Sleep(500);
                         }
                         if (raf.IsDisposed) raf = new AlertForm();
-                        raf.UpdateFields(DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertAudioURL, DialogAlertImageURL, DialogAlertType);
+                        raf.UpdateFields(DialogAlertID, DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertAudioURL, DialogAlertImageURL, DialogAlertType);
                         relayPing = true;
                         raf.ShowDialog();
                         rafPing = false;
@@ -152,7 +152,7 @@ namespace SharpAlert
                     {
                         while (!tafPing) Thread.Sleep(500);
                         if (taf.IsDisposed) taf = new TeleAlertForm();
-                        taf.UpdateFields(DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertAudioURL, DialogAlertImageURL, DialogAlertType);
+                        taf.UpdateFields(DialogAlertID, DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertAudioURL, DialogAlertImageURL, DialogAlertType);
                         relayPing = true;
                         taf.ShowDialog();
                         tafPing = false;
@@ -465,7 +465,7 @@ namespace SharpAlert
                                 //    AlertCompiled += $"\r\n\r\n{Settings.Default.DiscordWebhookAppend}";
                                 //}
 
-                                if (DiscordWebhook.SendEmbeddedMessage($"{MaxSeverity} Emergency Alert", AlertCompiled, Settings.Default.DiscordWebhook))
+                                if (DiscordWebhook.SendEmbeddedMessage($"{MaxSeverity} Emergency Alert", AlertCompiled, relayItem, Settings.Default.DiscordWebhook))
                                 {
                                     lock (notify)
                                     {
@@ -488,7 +488,7 @@ namespace SharpAlert
                                 }
 
                                 // Delay to prevent the webhook from being rate limited
-                                Thread.Sleep(2000);
+                                Thread.Sleep(1000);
                             }
                             else
                             {
@@ -529,6 +529,7 @@ namespace SharpAlert
                                     {
                                         AlertDisplaying = true;
                                         AlertsQueued--;
+                                        DialogAlertID = relayItem.Name;
                                         DialogAlertTitle = EventType;
                                         DialogAlertText = AlertText;
                                         if (!string.IsNullOrWhiteSpace(DialogAlertURL)) DialogAlertURL = URL;
@@ -620,7 +621,7 @@ namespace SharpAlert
                         LocationList = LocationList.Trim().Substring(0, LocationList.Length - 2).Trim();
                         if (LocationList.EndsWith(";")) LocationList = LocationList.Substring(0, LocationList.Length - 1);
 
-                        string CompiledMessage = $"{MaxSeverity} Emergency Alert | Event(s): {EventsList} | Location(s): {LocationList}";
+                        string CompiledMessage = $"{MaxSeverity} Emergency Alert | Event(s): {EventsList} | Location(s): {LocationList}\r\n**Identifier: {relayItem.Name}**";
                         if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhookAppend)) CompiledMessage += "\r\n" + Settings.Default.DiscordWebhookAppend;
                         DiscordWebhook.SendUnformattedMessage(CompiledMessage, Settings.Default.DiscordWebhook);
 

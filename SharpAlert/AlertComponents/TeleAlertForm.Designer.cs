@@ -130,7 +130,7 @@
             // AlertIcon
             // 
             this.AlertIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.AlertIcon.Image = global::SharpAlert.Properties.Resources.AlertIcon;
+            this.AlertIcon.Image = global::SharpAlert.Properties.Resources.WarningApp;
             this.AlertIcon.Location = new System.Drawing.Point(1187, 0);
             this.AlertIcon.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.AlertIcon.Name = "AlertIcon";

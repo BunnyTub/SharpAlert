@@ -92,8 +92,9 @@ namespace SharpAlert
             //ReplayMode = replay;
         }
 
-        public void UpdateFields(string alert, string text, string url, string audio, string image, string type)
+        public void UpdateFields(string id, string alert, string text, string url, string audio, string image, string type)
         {
+            this.Text = $"SharpAlert - {id}";
             AlertSubtitleStr = alert;
             SubtitleText.Text = AlertSubtitleStr;
             AlertTextStr = text;
@@ -453,31 +454,38 @@ namespace SharpAlert
             AlertIcon.Visible = true;
             AlertText.SelectionStart = 0;
             AlertText.ScrollToCaret();
-            Bitmap bitmap = new Bitmap(Bounds.Width, Bounds.Height);
-            this.DrawToBitmap(bitmap, Bounds);
-            using (Graphics g = Graphics.FromImage(bitmap))
+            try
             {
-                int barHeight = 30;
-                int imageWidth = bitmap.Width;
-                int imageHeight = bitmap.Height;
-
-                using (SolidBrush coolTransparency = new SolidBrush(Color.FromArgb(140, 255, 0, 0)))
+                Bitmap bitmap = new Bitmap(this.ClientSize.Width, this.ClientSize.Height);
+                this.DrawToBitmap(bitmap, Bounds);
+                using (Graphics g = Graphics.FromImage(bitmap))
                 {
-                    g.FillRectangle(coolTransparency, new Rectangle(0, imageHeight - barHeight, imageWidth, barHeight));
-                }
+                    int barHeight = 30;
+                    int imageWidth = bitmap.Width;
+                    int imageHeight = bitmap.Height;
 
-                using (Font drawFont = new Font("Arial", 12, FontStyle.Bold))
-                using (SolidBrush drawBrush = new SolidBrush(Color.White))
-                {
-                    string text = "SharpAlert | Safety is never a non-priority. | https://sharpalert.bunnytub.com/";
-                    SizeF textSize = g.MeasureString(text, drawFont);
-                    float x = (imageWidth - textSize.Width) / 2;
-                    float y = imageHeight - barHeight + (barHeight - textSize.Height) / 2;
-                    g.DrawString(text, drawFont, drawBrush, new PointF(x, y));
+                    using (SolidBrush coolTransparency = new SolidBrush(Color.FromArgb(140, 255, 0, 0)))
+                    {
+                        g.FillRectangle(coolTransparency, new Rectangle(0, imageHeight - barHeight, imageWidth, barHeight));
+                    }
+
+                    using (Font drawFont = new Font("Arial", 12, FontStyle.Bold))
+                    using (SolidBrush drawBrush = new SolidBrush(Color.White))
+                    {
+                        string text = "SharpAlert | Safety is never a non-priority. | https://sharpalert.bunnytub.com/";
+                        SizeF textSize = g.MeasureString(text, drawFont);
+                        float x = (imageWidth - textSize.Width) / 2;
+                        float y = imageHeight - barHeight + (barHeight - textSize.Height) / 2;
+                        g.DrawString(text, drawFont, drawBrush, new PointF(x, y));
+                    }
                 }
+                bitmap.Save($"SharpAlert-{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.bmp");
+                bitmap.Dispose();
             }
-            bitmap.Save($"SharpAlert-{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.bmp");
-            bitmap.Dispose();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "SharpAlert");
+            }
             this.Close();
         }
     }

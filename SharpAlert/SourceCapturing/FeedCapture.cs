@@ -50,23 +50,17 @@ namespace SharpAlert
                 {
                     string URLPrefix = useHTTPS ? "https" : "http";
                     Console.WriteLine($"[Feed Capture] Getting data from URL: {URLPrefix}://{server}");
-                    Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server}");
-                    if (!message.Wait(10000)) continue;
-                    message.Result.EnsureSuccessStatusCode();
+                    HttpResponseMessage message = client.GetAsync($"{URLPrefix}://{server}").Result;
+                    message.EnsureSuccessStatusCode();
 
                     if (Calls >= 100000) Calls = 0;
                     Calls++;
 
-                    Result = message.Result.Content.ReadAsStringAsync().Result;
+                    Result = message.Content.ReadAsStringAsync().Result;
 
                     Console.WriteLine($"[Feed Capture] Grabbed data.");
 
                     EnrollAlerts(Result);
-                }
-                catch (SocketException e)
-                {
-                    Console.WriteLine($"[Feed Capture] {e.Message}");
-                    Thread.Sleep(1000);
                 }
                 catch (TimeoutException)
                 {
@@ -78,10 +72,11 @@ namespace SharpAlert
                         notify.BalloonTipIcon = ToolTipIcon.Warning;
                         notify.ShowBalloonTip(5000);
                     }
+                    Thread.Sleep(30000);
                 }
                 catch (HttpRequestException e)
                 {
-                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message} {e.InnerException.Message}");
+                    Console.WriteLine($"[Feed Capture] {e.Message}");
                     lock (notify)
                     {
                         notify.BalloonTipTitle = "SharpAlert is having issues";
@@ -92,7 +87,7 @@ namespace SharpAlert
                 }
                 catch (AggregateException e)
                 {
-                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.InnerExceptions.FirstOrDefault().Message}");
+                    Console.WriteLine($"[Feed Capture] {e.Message}");
                     lock (notify)
                     {
                         notify.BalloonTipTitle = "SharpAlert is having issues";
@@ -101,27 +96,16 @@ namespace SharpAlert
                         notify.ShowBalloonTip(5000);
                     }
                 }
-                catch (TaskCanceledException)
-                {
-                    Console.WriteLine("[Feed Capture] The executing task was canceled.");
-                }
-                catch (ThreadAbortException e)
-                {
-                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
-                }
-                catch (NullReferenceException e)
-                {
-                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
-                }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
+                    Console.WriteLine($"[Feed Capture] {e.Message}");
                 }
                 if (FirstRun) FirstRun = false;
 
                 try
                 {
-                    for (int i = 0; !(i >= Settings.Default.AlertCheckInterval);)
+                    int CheckInterval = Settings.Default.AlertCheckInterval;
+                    for (int i = 0; !(i >= CheckInterval);)
                     {
                         if (Stop)
                         {
