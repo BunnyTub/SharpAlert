@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using static SharpAlert.Program;
+using static SharpAlert.MainEntryPoint;
 using static SharpAlert.RegexList;
 using static SharpAlert.AudioManager;
 
@@ -33,7 +33,7 @@ namespace SharpAlert
 
         public AlertProcessor()
         {
-            //StartRelayCallLoop();
+            StartRelayCallLoop();
             StartAudioCallLoop();
             StartRAFCallLoop();
             StartTAFCallLoop();
@@ -44,47 +44,47 @@ namespace SharpAlert
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 relay = new RelayController();
-                relay?.GetHidUSBRelay();
-                relay?.OpenDevice();
-                relay?.OffAll();
-                relay?.CloseDevice();
+                Console.WriteLine("[Relay Ping] Getting HID USB relay.");
+                if (relay.GetHidUSBRelay())
+                {
+                    Console.WriteLine("[Relay Ping] Device found.");
+                }
+                else
+                {
+                    Console.WriteLine("[Relay Ping] Device not found.");
+                }
                 while (true)
                 {
                     if (relayPing)
                     {
                         relayPing = false;
-                        Console.WriteLine("[Relay Ping] Getting HID USB relay.");
 
-                        if (relay.GetHidUSBRelay())
-                        {
-                            Console.WriteLine("[Relay Ping] Device found.");
-                        }
-                        else
-                        {
-                            Console.WriteLine("[Relay Ping] Device not found.");
-                            continue;
-                        }
-
-                        if (relay.OpenDevice())
-                        {
-                            Console.WriteLine("[Relay Ping] Device ready.");
-                        }
-                        else
-                        {
-                            Console.WriteLine("[Relay Ping] Device not ready.");
-                            continue;
-                        }
+                        Thread.Sleep(1000);
 
                         Console.WriteLine("[Relay Ping] Triggering relay.");
 
-                        for (int i = 0; i < 5; i++)
+                        if (!relay.OffAll())
+                        {
+                            if (relay.GetHidUSBRelay())
+                            {
+                                Console.WriteLine("[Relay Ping] Device found.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("[Relay Ping] Device not found.");
+                                continue;
+                            }
+                        }
+
+                        Thread.Sleep(500);
+
+                        for (int i = 0; i < 8; i++)
                         {
                             relay.OnAll();
                             Thread.Sleep(500);
                             relay.OffAll();
+                            Thread.Sleep(500);
                         }
-
-                        relay.CloseDevice();
                     }
                     Thread.Sleep(10);
                 }
@@ -197,8 +197,10 @@ namespace SharpAlert
         {
             lock (AlertLock)
             {
+                DateTime startProc = DateTime.UtcNow;
+
                 if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
-                    DiscordWebhook.SendUnformattedMessage($"Processing incoming alert item.", Settings.Default.DiscordWebhook);
+                    DiscordWebhook.SendUnformattedMessage($"Processing incoming alert item. ({startProc:O} UTC)", Settings.Default.DiscordWebhook);
 
                 bool AnyAlertRelayed = false;
                 bool UsedDiscordHook = false;
@@ -239,7 +241,7 @@ namespace SharpAlert
                 {
                     Console.WriteLine($"[Alert Processor] Alert discarded due to user preferences or invalidity.");
                     if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
-                        DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded.", Settings.Default.DiscordWebhook);
+                        DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)", Settings.Default.DiscordWebhook);
                     return;
                 }
 
@@ -366,7 +368,7 @@ namespace SharpAlert
                     {
                         if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
                         {
-                            Console.WriteLine($"[Alert Processor] Alert discarded because it has expired.");
+                            Console.WriteLine($"[Alert Processor] Info tag discarded because it has expired.");
                             continue;
                         }
                     }
@@ -465,7 +467,23 @@ namespace SharpAlert
                                 //    AlertCompiled += $"\r\n\r\n{Settings.Default.DiscordWebhookAppend}";
                                 //}
 
-                                if (DiscordWebhook.SendEmbeddedMessage($"{MaxSeverity} Emergency Alert", AlertCompiled, relayItem, Settings.Default.DiscordWebhook))
+                                int color = 16777215;
+
+                                switch (MsgType.ToLowerInvariant())
+                                {
+                                    case "alert":
+                                        color = 16711680;
+                                        break;
+                                    case "update":
+                                        color = 16711935;
+                                        color = 16711935;
+                                        break;
+                                    case "cancel":
+                                        color = 10079487;
+                                        break;
+                                }
+
+                                if (DiscordWebhook.SendEmbeddedMessage($"{MaxSeverity} Emergency Alert", AlertCompiled, relayItem, Settings.Default.DiscordWebhook, color))
                                 {
                                     lock (notify)
                                     {
@@ -621,7 +639,7 @@ namespace SharpAlert
                         LocationList = LocationList.Trim().Substring(0, LocationList.Length - 2).Trim();
                         if (LocationList.EndsWith(";")) LocationList = LocationList.Substring(0, LocationList.Length - 1);
 
-                        string CompiledMessage = $"{MaxSeverity} Emergency Alert | Event(s): {EventsList} | Location(s): {LocationList}\r\n**Identifier: {relayItem.Name}**";
+                        string CompiledMessage = $"{EventsList} | {MaxSeverity} | Location(s): {LocationList}\r\n-# Identifier: {relayItem.Name}\r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms";
                         if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhookAppend)) CompiledMessage += "\r\n" + Settings.Default.DiscordWebhookAppend;
                         DiscordWebhook.SendUnformattedMessage(CompiledMessage, Settings.Default.DiscordWebhook);
 
@@ -631,10 +649,10 @@ namespace SharpAlert
                 else
                 {
                     if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
-                        DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded.", Settings.Default.DiscordWebhook);
+                        DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)", Settings.Default.DiscordWebhook);
                 }
 
-                Console.WriteLine("[Alert Processor] Processed all available entries.");
+                Console.WriteLine($"[Alert Processor] Processed all available entries. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
             }
         }
 
@@ -657,6 +675,7 @@ namespace SharpAlert
                     }
 
                     AlertDisplaying = true;
+                    DialogAlertID = "TEST";
                     DialogAlertTitle = "Standard Test";
                     DialogAlertText = "This is a test of SharpAlert's alert display.\r\n" +
                     $"{string.Join("", Enumerable.Range(32, 512).Select(i => (char)i))}";
@@ -1099,14 +1118,7 @@ namespace SharpAlert
 
             if (Replay)
             {
-                if (Settings.Default.alertTimeZoneUTC)
-                {
-                    BroadcastText += ($"This alert was sent in replay mode by SharpAlert, on {DateTime.UtcNow:f} UTC.\r\n");
-                }
-                else
-                {
-                    BroadcastText += ($"This alert was sent in replay mode by SharpAlert, on {DateTime.UtcNow:f} {LocalTimeAbbreviation()}.\r\n");
-                }
+                BroadcastText += $"This is a replay of the most recent alert.\r\n";
             }
 
             string issue = "issued";
@@ -1475,12 +1487,12 @@ namespace SharpAlert
         {
             string FriendlyData = Data;
             FriendlyData = FriendlyData.Replace("\r", string.Empty).Replace("\n", ".");
-            //FriendlyData = FriendlyData.Replace("EAS", "Emergency Alert System")
-            FriendlyData = FriendlyData.Replace("911", "9 1 1")
-                .Replace("9-1-1", "9 1 1")
-                .Replace("WEA", "W E A")
-                .Replace("NWS", "N W S")
-                .Replace("NOAA", "N O A A");
+            FriendlyData = FriendlyData.Replace(" EAS ", " Emergency Alert System ");
+            FriendlyData = FriendlyData.Replace(" 911 ", " 9 1 1 ")
+                .Replace(" 9-1-1 ", " 9 1 1 ")
+                .Replace(" WEA ", " W E A ")
+                .Replace(" NWS ", " N W S ")
+                .Replace(" NOAA ", " N O A A ");
                 //.Replace("WEA", "Wireless Emergency Alerts")
                 //.Replace("NWS", "National Weather Service")
                 //.Replace("NOAA", "National Oceanic and Atmospheric Administration");

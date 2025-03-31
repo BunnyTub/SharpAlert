@@ -1,4 +1,5 @@
-﻿using SharpAlert.Properties;
+﻿using Microsoft.Win32;
+using SharpAlert.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,9 +12,9 @@ using System.Runtime.InteropServices;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static SharpAlert.Program;
+using static SharpAlert.MainEntryPoint;
+using static SharpAlert.ServiceThreads;
 
 namespace SharpAlert
 {
@@ -52,6 +53,20 @@ namespace SharpAlert
             }
             catch (Exception)
             {
+                icon = SystemIcons.Application;
+            }
+
+            if (!Settings.Default.DisclaimerShown)
+            {
+                MessageBox.Show("Just a reminder...\r\n" +
+                    "SharpAlert is still in development! Expect bugs here and there.\r\n" +
+                    "If you find any, please report them, so they can be fixed.\r\n\r\n" +
+                    "Thanks for using SharpAlert!",
+                    "SharpAlert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+                Settings.Default.DisclaimerShown = true;
+                Settings.Default.Save();
             }
 
             Thread startup = new Thread(() =>
@@ -59,32 +74,11 @@ namespace SharpAlert
                 StartupForm sf = new StartupForm();
                 sf.ShowDialog();
                 sf.Dispose();
-                // TESTING ONLY
-                //ListingForm lf = new ListingForm();
-                //lf.ShowDialog();
-                //lf.Dispose();
             });
 
             startup.Start();
 
-            //string RemoteMD5 = string.Empty;
             string RemoteVersion = string.Empty;
-
-            //string CreateMD5FromCurrent()
-            //{
-            //    MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-            //    FileStream stream = new FileStream(AssemblyFile, FileMode.Open, FileAccess.Read);
-
-            //    md5.ComputeHash(stream);
-
-            //    stream.Close();
-
-            //    StringBuilder sb = new StringBuilder();
-            //    for (int i = 0; i < md5.Hash.Length; i++)
-            //        sb.Append(md5.Hash[i].ToString("x2"));
-
-            //    return sb.ToString().ToUpperInvariant();
-            //}
 
             Console.WriteLine("[Ice Bear] Checking application version.");
 
@@ -92,42 +86,12 @@ namespace SharpAlert
 
             try
             {
-                //string LocalMD5 = CreateMD5FromCurrent();
-                //Console.WriteLine($"[Ice Bear] MD5 (local): {LocalMD5}");
-                
-                //Task<HttpResponseMessage> message = client.GetAsync($"{IdentityURL}/SharpAlert/Releases/v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}/MD5.txt");
-                //if (!message.Wait(10000))
-                //{
-                //    throw new TimeoutException();
-                //}
-                
-                //Console.WriteLine($"[Ice Bear | MD5 Request] The server responded with status code {message.Result.StatusCode}.");
+                HttpResponseMessage latest = client.GetAsync($"{IdentityURL}/SharpAlert/SharpAlert.txt").Result;
 
-                Task<HttpResponseMessage> latest = client.GetAsync($"{IdentityURL}/SharpAlert/SharpAlert.txt");
-                if (!latest.Wait(10000))
-                {
-                    throw new TimeoutException();
-                }
+                Console.WriteLine($"[Ice Bear | Version Request] The server responded with status code {latest.StatusCode}.");
 
-                Console.WriteLine($"[Ice Bear | Version Request] The server responded with status code {latest.Result.StatusCode}.");
-
-                //RemoteMD5 = message.Result.Content.ReadAsStringAsync().Result.Trim().ToUpperInvariant();
-                //if (string.IsNullOrWhiteSpace(RemoteMD5) || RemoteMD5.Length == 0 || RemoteMD5.Length >= 100) RemoteMD5 = "UNKNOWN";
-
-                RemoteVersion = latest.Result.Content.ReadAsStringAsync().Result.Trim();
+                RemoteVersion = latest.Content.ReadAsStringAsync().Result.Trim();
                 if (string.IsNullOrWhiteSpace(RemoteVersion) || RemoteVersion.Length == 0 || RemoteVersion.Length >= 10) RemoteVersion = "0.0";
-
-                //if (LocalMD5 == RemoteMD5)
-                //{
-                //    Console.WriteLine("[Ice Bear] You are using the latest version of SharpAlert.");
-                //}
-                //else
-                //{
-                //    Console.WriteLine($"[Ice Bear] You may be using an older (or modified/other) version of SharpAlert. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersion}");
-                //    Console.WriteLine($"[Ice Bear] See https://sharpalert.bunnytub.com/ for downloads.");
-                //}   
-
-                //Console.WriteLine($"[Ice Bear] MD5 (remote): {RemoteMD5}");
             }
             catch (Exception ex)
             {
@@ -158,7 +122,7 @@ namespace SharpAlert
             };
 
             Console.WriteLine("[Ice Bear] Getting runner configuration.");
-            
+
             bool UseHTTPS = true;
 
             switch (Settings.Default.RunnerType)
@@ -178,11 +142,71 @@ namespace SharpAlert
                     break;
             }
 
-            Thread notificationThread = ReturnThreadWithCatch(() =>
+            notificationThread = ReturnThreadWithCatch(() =>
             {
                 Application.EnableVisualStyles();
-                CreateNotifyIcon(RemoteVersion);
-                Application.Run();
+                SystemEvents.PowerModeChanged += (a, b) =>
+                {
+                    if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                    {
+                        switch (b.Mode)
+                        {
+                            //case PowerModes.Resume:
+                            //    DiscordWebhook.SendFormattedMessage("The host is resuming from sleep.", Settings.Default.DiscordWebhook);
+                            //    break;
+                            //case PowerModes.Suspend:
+                            //    DiscordWebhook.SendFormattedMessage("The host is entering into sleep.", Settings.Default.DiscordWebhook);
+                            //    break;
+                            case PowerModes.StatusChange:
+                                var powerStatus = SystemInformation.PowerStatus;
+
+                                if (powerStatus.BatteryLifePercent == -1)
+                                {
+                                    return;
+                                }
+
+                                float batteryLevel = powerStatus.BatteryLifePercent * 100;
+                                bool batteryCharging = powerStatus.PowerLineStatus == PowerLineStatus.Online;
+
+                                if (batteryCharging)
+                                {
+                                    DiscordWebhook.SendFormattedMessage($"The host is charging. ({(int)batteryLevel}%)", Settings.Default.DiscordWebhook, 60928);
+                                }
+                                else
+                                {
+                                    DiscordWebhook.SendFormattedMessage($"The host is discharging. ({(int)batteryLevel}%)", Settings.Default.DiscordWebhook, 39423);
+                                }
+                                break;
+                        }
+                    }
+                };
+
+                SystemEvents.SessionEnding += (a, b) =>
+                {
+                    if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                    {
+                        switch (b.Reason)
+                        {
+                            case SessionEndReasons.SystemShutdown:
+                                DiscordWebhook.SendFormattedMessage("The host is shutting down.", Settings.Default.DiscordWebhook);
+                                break;
+                            case SessionEndReasons.Logoff:
+                                DiscordWebhook.SendFormattedMessage("The host is logging off.", Settings.Default.DiscordWebhook);
+                                break;
+                        }
+                    }
+                    SafeExit(0);
+                };
+
+                try
+                {
+                    CreateNotifyIcon(RemoteVersion);
+                    Application.Run();
+                }
+                catch (Exception ex)
+                {
+                    UnsafeFault(ex, true);
+                }
             }, false);
             //notificationThread.MonitorAndStart("Notification Tray");
             notificationThread.Start();
@@ -191,22 +215,22 @@ namespace SharpAlert
 
             Console.WriteLine("[Ice Bear] Starting services momentarily.");
 
-            Thread feedThread = ReturnThreadWithCatch(() => feed.ServiceRun(UseHTTPS), true);
+            feedThread = ReturnThreadWithCatch(() => feed.ServiceRun(UseHTTPS), true);
             feedThread.SetApartmentState(ApartmentState.MTA);
             //feedThread.MonitorAndStart("Feed Capture");
             feedThread.Start();
 
-            Thread cacheThread = ReturnThreadWithCatch(() => cache.ServiceRun(true), true);
+            cacheThread = ReturnThreadWithCatch(() => cache.ServiceRun(true), true);
             cacheThread.SetApartmentState(ApartmentState.MTA);
             //cacheThread.MonitorAndStart("Cache Capture");
             cacheThread.Start();
 
-            Thread dataProcThread = ReturnThreadWithCatch(() => dataproc.ServiceRun(), true);
+            dataProcThread = ReturnThreadWithCatch(() => dataproc.ServiceRun(), true);
             dataProcThread.SetApartmentState(ApartmentState.MTA);
             //dataProcThread.MonitorAndStart("Data Processor");
             dataProcThread.Start();
-            
-            Thread historyProcThread = ReturnThreadWithCatch(() => historyproc.ServiceRun(), true);
+
+            historyProcThread = ReturnThreadWithCatch(() => historyproc.ServiceRun(), true);
             historyProcThread.SetApartmentState(ApartmentState.MTA);
             //historyProcThread.MonitorAndStart("History Processor");
             historyProcThread.Start();
@@ -221,9 +245,61 @@ namespace SharpAlert
                 CreateIdleWindow();
             }
 
+            if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+            {
+                if (DiscordWebhook.SendFormattedMessage("SharpAlert has started.", Settings.Default.DiscordWebhook))
+                {
+                    lock (notify)
+                    {
+                        notify.BalloonTipIcon = ToolTipIcon.Info;
+                        notify.BalloonTipTitle = $"SharpAlert says hello";
+                        notify.BalloonTipText = "Sent a start message to the webhook.";
+                        notify.ShowBalloonTip(5000);
+                    }
+                }
+                else
+                {
+                    lock (notify)
+                    {
+                        notify.BalloonTipIcon = ToolTipIcon.Warning;
+                        notify.BalloonTipTitle = $"SharpAlert says hello";
+                        notify.BalloonTipText = "Couldn't send a message to the webhook.";
+                        notify.ShowBalloonTip(5000);
+                    }
+                }
+            }
+
             ServiceRunnerScheduled = true;
 
-            while (AllowThreadRestarts) Thread.Sleep(100);
+            new Thread(() =>
+            {
+                while (AllowThreadRestarts)
+                {
+                    var powerStatus = SystemInformation.PowerStatus;
+
+                    if (powerStatus.BatteryLifePercent == -1)
+                    {
+                        return;
+                    }
+
+                    float batteryLevel = powerStatus.BatteryLifePercent * 100;
+                    bool batteryCharging = powerStatus.PowerLineStatus == PowerLineStatus.Online;
+
+                    if (!batteryCharging && (int)batteryLevel < 10)
+                    {
+                        DiscordWebhook.SendFormattedMessage($"The host is running critically low on battery power. ({(int)batteryLevel}%)\r\nPerformance may be impacted.", Settings.Default.DiscordWebhook, 16711680);
+                    }
+                    else
+                    {
+                        if (!batteryCharging && (int)batteryLevel < 20)
+                        {
+                            DiscordWebhook.SendFormattedMessage($"The host is running low on battery power. ({(int)batteryLevel}%)\r\nPerformance may be impacted.", Settings.Default.DiscordWebhook, 16776960);
+                        }
+                    }
+
+                    Thread.Sleep(1000 * 60);
+                }
+            }).Start();
         }
 
         /// <summary>
@@ -329,42 +405,13 @@ namespace SharpAlert
                     {
                         action.Invoke();
                     }
+                    catch (ThreadAbortException)
+                    {
+                        return;
+                    }
                     catch (Exception ex)
                     {
-                        lock (ThreadErrorLockObject)
-                        {
-                            string ExceptionCompiled = $"SharpAlert encountered an exception. {DateTime.UtcNow:s}\r\n" +
-                                $"{ex.Message}\r\n" +
-                                $"{ex.TargetSite}\r\n" +
-                                $"{ex.StackTrace}";
-
-                            ToppleForm tf = new ToppleForm(ExceptionCompiled);
-                            tf.ShowDialog();
-
-                            using (EventLog log = new EventLog("Application"))
-                            {
-                                log.Source = "Application";
-                                log.WriteEntry(ExceptionCompiled, EventLogEntryType.Error);
-                            }
-
-                            if (!restartable)
-                            {
-                                AllowThreadRestarts = false;
-                                Environment.FailFast(ExceptionCompiled);
-                                return;
-                            }
-                            else
-                            {
-                                lock (notify)
-                                {
-                                    notify.BalloonTipTitle = "SharpAlert is having issues";
-                                    notify.BalloonTipText = "Check the event log using a tool such as Event Viewer for more information!";
-                                    notify.BalloonTipIcon = ToolTipIcon.Error;
-                                    notify.ShowBalloonTip(5000);
-                                }
-                            }
-                        }
-                        Thread.Sleep(500);
+                        UnsafeFault(ex, !restartable);
                     }
                 }
             });
@@ -385,7 +432,7 @@ namespace SharpAlert
 
             notify = new NotifyIcon
             {
-                Icon = Icon.ExtractAssociatedIcon(AssemblyFile),
+                Icon = icon,
                 Visible = true,
                 Text = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}"
             };
@@ -585,7 +632,7 @@ namespace SharpAlert
             contextMenu.Items.Add(new ToolStripMenuItem("Reset Settings", null, (sender, arg) =>
             {
                 if (MessageBox.Show("Are you sure you want to reset all settings?\r\n" +
-                    "SharpAlert will start shutting down now if you continue.",
+                    "SharpAlert will close if you continue.",
                     "SharpAlert",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) == DialogResult.Yes)
@@ -608,35 +655,66 @@ namespace SharpAlert
             
             contextMenu.Items.Add(new ToolStripMenuItem("Quit", null, (sender, arg) =>
             {
-                if (AlertDisplaying)
-                {
-                    MessageBox.Show("There is an alert in progress.\r\n" +
-                        "Please let all alerts complete before quitting.",
-                        "SharpAlert",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation);
-                    return;
-                }
-
-                switch (MessageBox.Show("Do you want to quit and save your settings?\r\n" +
-                    "You won't receive any alerts while the program is stopped.",
-                    "SharpAlert",
-                    MessageBoxButtons.YesNoCancel,
-                    MessageBoxIcon.Question))
-                {
-                    case DialogResult.Yes:
-                        Settings.Default.Save();
-                        SafeExit(0);
-                        break;
-                    case DialogResult.No:
-                        SafeExit(0);
-                        break;
-                    case DialogResult.Cancel:
-                        return;
-                }
+                TryExit();
             }));
 
             notify.ContextMenuStrip = contextMenu;
+        }
+
+        public static void UnsafeFault(Exception exception, bool terminate)
+        {
+            new Thread(() =>
+            {
+                lock (ThreadErrorLockObject)
+                {
+                    string ExceptionCompiled = LogFault(exception);
+
+                    if (terminate)
+                    {
+                        AllowThreadRestarts = false;
+                        try { feedThread?.Abort(); } catch (Exception) { }
+                        try { cacheThread?.Abort(); } catch (Exception) { }
+                        try { dataProcThread?.Abort(); } catch (Exception) { }
+                        try { historyProcThread?.Abort(); } catch (Exception) { }
+                        try { notificationThread?.Abort(); } catch (Exception) { }
+                        ToppleForm tf = new ToppleForm(ExceptionCompiled);
+                        tf.ShowDialog();
+                        //new Thread(() => SafeExit(0)).Start();
+                        //Thread.Sleep(5000);
+                        Environment.Exit(0);
+                        return;
+                    }
+                    else
+                    {
+                        if (notify != null)
+                        {
+                            lock (notify)
+                            {
+                                notify.BalloonTipTitle = "SharpAlert is having issues";
+                                notify.BalloonTipText = "The problem has been logged. Check the event log for more information!";
+                                notify.BalloonTipIcon = ToolTipIcon.Error;
+                                notify.ShowBalloonTip(5000);
+                            }
+                        }
+                    }
+                }
+            }).Start();
+        }
+
+        public static string LogFault(Exception ex)
+        {
+            string ExceptionCompiled = $"SharpAlert encountered an exception. {DateTime.UtcNow:s}\r\n" +
+                    $"{ex.Message}\r\n" +
+                    $"{ex.TargetSite}\r\n" +
+                    $"{ex.StackTrace}";
+
+            using (EventLog log = new EventLog("Application"))
+            {
+                log.Source = "Application";
+                log.WriteEntry(ExceptionCompiled, EventLogEntryType.Error);
+            }
+
+            return ExceptionCompiled;
         }
 
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -684,11 +762,55 @@ namespace SharpAlert
         [DllImport("kernel32.dll")]
         internal static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);
 
+        private delegate bool ConsoleCtrlDelegate(CtrlTypes ctrlType);
+
+        [DllImport("Kernel32")]
+        private static extern bool SetConsoleCtrlHandler(ConsoleCtrlDelegate handler, bool add);
+
+        private static ConsoleCtrlDelegate _handler;
+
+        private enum CtrlTypes
+        {
+            CTRL_C_EVENT = 0,
+            CTRL_BREAK_EVENT = 1,
+            CTRL_CLOSE_EVENT = 2,
+            CTRL_LOGOFF_EVENT = 5,
+            CTRL_SHUTDOWN_EVENT = 6
+        }
+
+        public static void TryExit()
+        {
+            if (AlertDisplaying)
+            {
+                MessageBox.Show("There is an alert in progress.\r\n" +
+                    "Please let all alerts complete before quitting.",
+                    "SharpAlert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            switch (MessageBox.Show("Do you want to quit and save your settings?\r\n" +
+                "You won't receive any alerts while the program is stopped.",
+                "SharpAlert",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Question))
+            {
+                case DialogResult.Yes:
+                    Settings.Default.Save();
+                    SafeExit(0);
+                    break;
+                case DialogResult.No:
+                    SafeExit(0);
+                    break;
+                case DialogResult.Cancel:
+                    return;
+            }
+        }
+
         public static void AllocateTerminal(bool Popups = true)
         {
             bool allocateSuccess = AllocConsole();
-
-            //IntPtr consoleHandle = GetStdHandle(STD_INPUT_HANDLE);
 
             if (!allocateSuccess)
             {
@@ -707,7 +829,7 @@ namespace SharpAlert
                     throw new Win32Exception(Marshal.GetLastWin32Error());
                 }
 
-                if (!GetConsoleMode(consoleHandle, out uint mode))
+                if (!GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE), out uint mode))
                 {
                     //var MarshalException = new Win32Exception(unchecked(Marshal.GetLastWin32Error()));
                 }
@@ -726,6 +848,19 @@ namespace SharpAlert
                     AutoFlush = true
                 };
                 Console.SetOut(writer);
+
+                object LockObject = new object();
+
+                //Console.CancelKeyPress += (a, b) => SafeExit(0);
+                _handler += new ConsoleCtrlDelegate(_ => {
+                    lock (LockObject)
+                    {
+                        SafeExit(0);
+                        return true;
+                    }
+                });
+                SetConsoleCtrlHandler(_handler, true);
+                Console.Beep();
             }
         }
 

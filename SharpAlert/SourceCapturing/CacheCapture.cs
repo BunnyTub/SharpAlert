@@ -48,7 +48,14 @@ namespace SharpAlert
                     SAME_US_JSON = client.GetStringAsync($"{SAME_US_URL}").Result;
                     Console.WriteLine($"[Cache Capture | SAME-US] Grabbed data.");
                 }
-                catch (Exception ex) { Console.WriteLine($"[Cache Capture | SAME-US] {ex.Message}"); }
+                catch (ThreadAbortException)
+                {
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Cache Capture | SAME-US] {ex.Message}");
+                }
 
                 if (!loop)
                 {

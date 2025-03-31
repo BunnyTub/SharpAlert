@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using static SharpAlert.IceBearWorker;
@@ -31,9 +30,75 @@ namespace SharpAlert
                 return false;
             }
         }
+        
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0037:Use inferred member name", Justification = "<Pending>")]
+        public static bool SendFormattedMessage(string message, string webhook, int color = 16777215)
+        {
+            try
+            {
+                lock (client)
+                {
+                    var payloadObject = new
+                    {
+                        embeds = new[]
+                        {
+                            new
+                            {
+                                title = message,
+                                color = color
+                            }
+                        }
+                    };
+                    string payloadJson = JsonSerializer.Serialize(payloadObject);
+                    client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
+                    client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
+                    client.UploadData(webhook, Encoding.UTF8.GetBytes(payloadJson));
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+        
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0037:Use inferred member name", Justification = "<Pending>")]
+        public static bool SendFormattedMessage(string message, string description, string normal, string webhook, int color = 16777215)
+        {
+            try
+            {
+                lock (client)
+                {
+                    var payloadObject = new
+                    {
+                        embeds = new[]
+                        {
+                            new
+                            {
+                                title = message,
+                                description = description,
+                                color = color
+                            }
+                        },
+                        content = normal
+                    };
+                    string payloadJson = JsonSerializer.Serialize(payloadObject);
+                    client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
+                    client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
+                    client.UploadData(webhook, Encoding.UTF8.GetBytes(payloadJson));
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0037:Use inferred member name", Justification = "<Pending>")]
-        public static bool SendEmbeddedMessage(string title, string description, SharpDataItem item, string webhook)
+        public static bool SendEmbeddedMessage(string title, string description, SharpDataItem item, string webhook, int color = 16711680)
         {
             try
             {
@@ -43,7 +108,6 @@ namespace SharpAlert
                     client.Headers.Set(HttpRequestHeader.ContentType, $"multipart/form-data; boundary={boundary}");
                     client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
 
-                    // Construct the JSON payload (embed)
                     var payloadObject = new
                     {
                         embeds = new[]
@@ -58,7 +122,7 @@ namespace SharpAlert
                                 },
                                 title = title,
                                 description = description,
-                                color = 16711680
+                                color = color
                             }
                         }
                     };
@@ -75,7 +139,7 @@ namespace SharpAlert
                     if (!string.IsNullOrEmpty(item.Name) && !string.IsNullOrEmpty(item.Data))
                     {
                         requestBody.AppendLine($"--{boundary}");
-                        requestBody.AppendLine($"Content-Disposition: form-data; name=\"file\"; filename=\"{item.Name}.xml\"");
+                        requestBody.AppendLine($"Content-Disposition: form-data; name=\"file\"; filename=\"{item.Name}.cap\"");
                         requestBody.AppendLine("Content-Type: application/octet-stream");
                         requestBody.AppendLine();
                         requestBody.AppendLine(item.Data);

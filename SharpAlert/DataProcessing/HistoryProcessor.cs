@@ -1,5 +1,5 @@
 ﻿using System;
-using static SharpAlert.Program;
+using static SharpAlert.MainEntryPoint;
 using static SharpAlert.RegexList;
 using System.Linq;
 using System.Threading;
@@ -63,14 +63,18 @@ namespace SharpAlert
                             Console.WriteLine("[History Processor] Checking timestamps.");
                             string CompiledString = string.Empty;
                             bool Expired = false;
-                            List<string> names = new List<string>();
+                            List<string> Names = new List<string>();
+                            List<string> ExpiredNames = new List<string>();
 
-                            foreach (string name in SharpDataRelayedNamesHistory)
+                            lock (SharpDataRelayedNamesHistory)
                             {
-                                names.Add(name);
+                                foreach (string name in SharpDataRelayedNamesHistory)
+                                {
+                                    Names.Add(name);
+                                }
                             }
 
-                            foreach (string name in names)
+                            foreach (string name in Names)
                             {
                                 alertIndex++;
                                 Console.WriteLine($"[History Processor] {alertIndex} -> {name}");
@@ -85,7 +89,8 @@ namespace SharpAlert
                                         if (historicResult.Item1)
                                         {
                                             SharpDataRelayedNamesHistory.Remove(name);
-                                            Console.WriteLine($"[History Processor] Alert {alertIndex} is expired.");
+                                            ExpiredNames.Add(name);
+                                            Console.WriteLine($"[History Processor] Alert {alertIndex} ({historicItem.Name}) is expired.");
                                             //expired,type,sent,effective,expiry
                                             CompiledString += $"The alert {historicResult.Item2}, effective {historicResult.Item3}, has recently expired at {historicResult.Item4}.\x20";
                                             Expired = true;
@@ -112,7 +117,19 @@ namespace SharpAlert
                                 CompiledString = CompiledString.Trim();
                                 if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
                                 {
-                                    if (DiscordWebhook.SendUnformattedMessage(CompiledString, Settings.Default.DiscordWebhook))
+                                    string FullNames = string.Empty;
+                                    
+                                    foreach (string name in ExpiredNames)
+                                    {
+                                        FullNames += $"{name};\x20";
+                                    }
+
+                                    FullNames = FullNames.Trim().Substring(0, FullNames.Length - 1);
+                                    FullNames = FullNames.Substring(0, FullNames.Length - 1);
+
+                                    if (DiscordWebhook.SendFormattedMessage(CompiledString,
+                                        "An alert expiring sometimes doesn't mean an alert is finished completely.",
+                                        $"-# Identifier(s): {FullNames}", Settings.Default.DiscordWebhook))
                                     {
                                         lock (notify)
                                         {
@@ -152,6 +169,10 @@ namespace SharpAlert
                             }
                         }
                     }
+                }
+                catch (ThreadAbortException)
+                {
+                    return;
                 }
                 catch (Exception ex)
                 {

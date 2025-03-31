@@ -9,13 +9,14 @@ using System.Speech.Synthesis;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using static SharpAlert.AudioManager;
+using SharpAlert.Properties;
 
 namespace SharpAlert
 {
     internal static class VersionInfo
     {
-        public static readonly int MajorVersion = 5;
-        public static readonly int MinorVersion = 1;
+        public static readonly int MajorVersion = 6;
+        public static readonly int MinorVersion = 0;
     }
 
     public class SharpDataItem
@@ -31,7 +32,7 @@ namespace SharpAlert
         }
     }
 
-    internal static class Program
+    internal static class MainEntryPoint
     {
         public static readonly DateTime startDT = DateTime.UtcNow;
         public static bool AllowThreadRestarts = true;
@@ -68,42 +69,78 @@ namespace SharpAlert
         {
             AllowThreadRestarts = false;
             Thread.Sleep(500);
-            Console.WriteLine("Feed Capture is shutting down.");
-            feed?.ServiceStop();
-            Console.WriteLine("Cache Capture is shutting down.");
-            cache?.ServiceStop();
-            Console.WriteLine("Data Processor is shutting down.");
-            dataproc?.ServiceStop();
-            Console.WriteLine("Alert Processor is shutting down.");
-            lock (AlertProcessor.AlertLock)
+
+            bool Finished = false;
+            new Thread(() =>
             {
-            }
-            Console.WriteLine("Idle Window is shutting down.");
-            if (idle != null) DestroyIdleWindow();
-            Console.WriteLine("Status Window is shutting down.");
-            if (status != null) DestroyStatusWindow();
-            Console.WriteLine("Stopping all sounds.");
-            try
+                Console.WriteLine("Feed Capture is shutting down.");
+                feed?.ServiceStop();
+                Console.WriteLine("Cache Capture is shutting down.");
+                cache?.ServiceStop();
+                Console.WriteLine("Data Processor is shutting down.");
+                dataproc?.ServiceStop();
+                Console.WriteLine("Alert Processor is shutting down.");
+                lock (AlertProcessor.AlertLock)
+                {
+                }
+                Console.WriteLine("Idle Window is shutting down.");
+                if (idle != null) DestroyIdleWindow();
+                Console.WriteLine("Status Window is shutting down.");
+                if (status != null) DestroyStatusWindow();
+                Console.WriteLine("Stopping all sounds.");
+                try
+                {
+                    StopAllAudio(true);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Cannot stop some sounds.");
+                }
+                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                {
+                    DiscordWebhook.SendFormattedMessage("SharpAlert has stopped.", Settings.Default.DiscordWebhook);
+                }
+                Finished = true;
+            }).Start();
+
+            for (int i = 0; !(i >= 15);)
             {
-                StopAllAudio(true);
+                if (Finished)
+                {
+                    Console.WriteLine("Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-");
+                    if (notify != null)
+                    {
+                        lock (notify)
+                        {
+                            notify.BalloonTipTitle = "SharpAlert has stopped";
+                            notify.BalloonTipText = "Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-";
+                            notify.BalloonTipIcon = ToolTipIcon.Info;
+                            notify.ShowBalloonTip(5000);
+                            Thread.Sleep(2500);
+                            notify.Visible = false;
+                        }
+                    }
+                    else Thread.Sleep(1000);
+                    Environment.Exit(exitCode);
+                }
+                Thread.Sleep(1000);
+                i++;
             }
-            catch (Exception)
-            {
-                Console.WriteLine("Cannot stop some sounds.");
-            }
-            Console.WriteLine("Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-");
+
+            Console.WriteLine("Shutdown timed out. Say thanks to Ice Bear for his hard work... -w-");
             if (notify != null)
             {
                 lock (notify)
                 {
                     notify.BalloonTipTitle = "SharpAlert has stopped";
-                    notify.BalloonTipText = "Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-";
+                    notify.BalloonTipText = "Shutdown timed out. Say thanks to Ice Bear for his hard work... -w-";
                     notify.BalloonTipIcon = ToolTipIcon.Info;
                     notify.ShowBalloonTip(5000);
-                    Thread.Sleep(5000);
+                    Thread.Sleep(2500);
                     notify.Visible = false;
                 }
-            } else Thread.Sleep(1000);
+            }
+            else Thread.Sleep(1000);
             Environment.Exit(exitCode);
         } 
 
@@ -113,11 +150,16 @@ namespace SharpAlert
         [MTAThread]
         private static void Main()
         {
-            Mutex mutex = new Mutex(false, "EASCULTURE_SharpAlert_ProtectEZ");
+            Mutex mutex = new Mutex(false, "BUNNYTUB_EASCULTURE_SharpAlert_ProtectEZ");
             try
             {
                 if (!mutex.WaitOne(0, false))
                 {
+                    new Thread(() =>
+                    {
+                        Thread.Sleep(1000 * 30);
+                        Environment.Exit(0);
+                    }).Start();
                     MessageBox.Show("SharpAlert is already running.\r\nCheck the notification tray area on the taskbar!",
                         "SharpAlert",
                         MessageBoxButtons.OK,

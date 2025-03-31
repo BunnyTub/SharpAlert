@@ -1,5 +1,5 @@
 ﻿using System;
-using static SharpAlert.Program;
+using static SharpAlert.MainEntryPoint;
 using static SharpAlert.RegexList;
 using System.Linq;
 using System.Threading;
@@ -49,9 +49,9 @@ namespace SharpAlert
                         return;
                     }
 
-                    if (SharpDataQueue.Any())
+                    lock (SharpDataQueue)
                     {
-                        lock (SharpDataQueue)
+                        if (SharpDataQueue.Any())
                         {
                             try
                             {
@@ -67,11 +67,8 @@ namespace SharpAlert
                             }
                             if (relayItem is null) continue;
                         }
-                    }
-                    else continue;
+                        else continue;
 
-                    lock (SharpDataQueue)
-                    {
                         if (!SharpDataQueue.Contains(relayItem)) continue;
                         else
                         {
@@ -88,7 +85,7 @@ namespace SharpAlert
                             }
 
                             lock (SharpDataHistory) SharpDataHistory.Add(relayItem);
-                            lock (SharpDataQueue) SharpDataQueue.Remove(relayItem);
+                            SharpDataQueue.Remove(relayItem);
 
                             try
                             {
@@ -103,8 +100,12 @@ namespace SharpAlert
                             {
                                 Console.WriteLine($"[Alert Processor] Couldn't queue alert. {ex.Message}");
                             }
-                        }
+                        }   
                     }
+                }
+                catch (ThreadAbortException)
+                {
+                    return;
                 }
                 catch (Exception e)
                 {

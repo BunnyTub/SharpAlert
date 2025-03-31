@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using static SharpAlert.Program;
+using static SharpAlert.MainEntryPoint;
 
 namespace SharpAlert
 {
@@ -144,13 +144,16 @@ namespace SharpAlert
             alertNoGUIBox.CheckedChanged += (a, b) =>
             {
                 Settings.Default.alertNoGUI = ((CheckBox)a).Checked;
-                MessageBox.Show("Alerts will be played out with no prompt.\r\n" +
+                if (((CheckBox)a).Checked) MessageBox.Show("Alerts will be played out with no prompt.\r\n" +
                     "Turn this off if this isn't your intention.",
                     "SharpAlert",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation);
             };
 
+            alertNoRelayBox.Checked = Settings.Default.alertNoRelay;
+            alertNoRelayBox.CheckedChanged += (a, b) => Settings.Default.alertNoRelay = ((CheckBox)a).Checked;
+            
             WindowLocationCombo.DataSource = new ComboItem[] {
                 new ComboItem
                 {

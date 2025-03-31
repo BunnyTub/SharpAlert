@@ -1,7 +1,7 @@
 ﻿using SharpAlert.Properties;
 using System;
 using System.Windows.Forms;
-using static SharpAlert.Program;
+using static SharpAlert.MainEntryPoint;
 
 namespace SharpAlert
 {

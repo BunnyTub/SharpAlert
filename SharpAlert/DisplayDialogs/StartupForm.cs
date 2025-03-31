@@ -29,5 +29,10 @@ namespace SharpAlert
         {
             e.Cancel = !AllowClose;
         }
+
+        private void IconBox_Click(object sender, EventArgs e)
+        {
+            IceBearWorker.UnsafeFault(new Exception("User initiated failure manually."), true);
+        }
     }
 }

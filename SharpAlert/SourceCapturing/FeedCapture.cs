@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static SharpAlert.IceBearWorker;
-using static SharpAlert.Program;
+using static SharpAlert.MainEntryPoint;
 using static SharpAlert.RegexList;
 
 namespace SharpAlert
@@ -96,6 +96,10 @@ namespace SharpAlert
                         notify.ShowBalloonTip(5000);
                     }
                 }
+                catch (ThreadAbortException)
+                {
+                    return;
+                }
                 catch (Exception e)
                 {
                     Console.WriteLine($"[Feed Capture] {e.Message}");
@@ -115,6 +119,10 @@ namespace SharpAlert
                         Thread.Sleep(1000);
                         i++;
                     }
+                }
+                catch (ThreadAbortException)
+                {
+                    return;
                 }
                 catch (Exception e)
                 {

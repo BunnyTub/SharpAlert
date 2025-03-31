@@ -746,5 +746,29 @@ namespace SharpAlert.Properties {
                 this["WindowLocation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DisclaimerShown {
+            get {
+                return ((bool)(this["DisclaimerShown"]));
+            }
+            set {
+                this["DisclaimerShown"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool alertNoRelay {
+            get {
+                return ((bool)(this["alertNoRelay"]));
+            }
+            set {
+                this["alertNoRelay"] = value;
+            }
+        }
     }
 }

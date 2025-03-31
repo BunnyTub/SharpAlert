@@ -1,9 +1,6 @@
 ﻿using HidLibrary;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SharpAlert
 {
@@ -23,7 +20,6 @@ namespace SharpAlert
             var devices = HidDevices.Enumerate(USB_CFG_VENDOR_ID, USB_CFG_DEVICE_ID).ToList();
             if (devices.Count == 0)
             {
-                Console.WriteLine("No HID device found!");
                 return false;
             }
             device = devices.First();
@@ -41,12 +37,12 @@ namespace SharpAlert
                 Console.WriteLine("Device not found. Please check the connection.");
                 return false;
             }
-            if (!device.IsConnected)
+            if (!device.IsOpen)
             {
-                Console.WriteLine("Device is not active.");
+                device.OpenDevice();
+                if (!device.IsOpen) Console.WriteLine("Device is not active.");
                 return false;
             }
-            device.OpenDevice();
             return true;
         }
 
@@ -71,7 +67,7 @@ namespace SharpAlert
             if (device == null || !device.IsConnected)
             {
                 Console.WriteLine("Device is not active. Cannot read report.");
-                lastRowStatus = new byte[] { 0, 0, 1, 0, 0, 0, 0, 0, 0, 3 };
+                lastRowStatus = new byte[] { 0, 1, 0, 0, 0, 0, 0, 0, 3 };
                 return lastRowStatus;
             }
 
@@ -98,16 +94,16 @@ namespace SharpAlert
         {
             if (device != null && device.IsConnected)
             {
-                bool success = device.Write(buffer);
+                bool success = device.WriteFeatureData(buffer);
                 if (!success)
                 {
-                    Console.WriteLine("Error writing to device.");
+                    Console.WriteLine("[Relay Controller] There was a problem using the relay.");
                 }
                 return success;
             }
             else
             {
-                Console.WriteLine("Cannot write to device. Check if it's connected.");
+                Console.WriteLine("[Relay Controller] There was a problem using the relay. It may not be connected.");
                 return false;
             }
         }
@@ -119,14 +115,15 @@ namespace SharpAlert
         /// <returns>An integer result of the bitwise AND between relayNumber and report[8].</returns>
         public int ReadRelayStatus(int relayNumber)
         {
-            byte[] buffer = ReadStatusRow();
-            if (buffer.Length < 9)
-            {
-                Console.WriteLine("Invalid report length.");
-                return 0;
-            }
-            // Bitwise AND the relay number with buffer[8] (as in the Python code)
-            return relayNumber & buffer[8];
+            return int.MaxValue - relayNumber;
+            //byte[] buffer = ReadStatusRow();
+            //if (buffer.Length < 9)
+            //{
+            //    Console.WriteLine("Invalid report length.");
+            //    return 0;
+            //}
+            //// Bitwise AND the relay number with buffer[8] (as in the Python code)
+            //return relayNumber & buffer[8];
         }
 
         /// <summary>
@@ -135,14 +132,14 @@ namespace SharpAlert
         /// <returns>True if the command appears successful; otherwise, false.</returns>
         public bool OnAll()
         {
-            byte[] buffer = new byte[] { 0, 0, 0xFE, 0, 0, 0, 0, 0, 0, 1 };
+            byte[] buffer = new byte[] { 0, 0xFE, 0, 0, 0, 0, 0, 0, 1 };
             if (WriteRowData(buffer))
             {
-                return ReadRelayStatus(3) > 0;
+                return true;
             }
             else
             {
-                Console.WriteLine("Cannot turn ON all relays.");
+                Console.WriteLine("[Relay Controller] Couldn't turn on all contacts.");
                 return false;
             }
         }
@@ -153,14 +150,14 @@ namespace SharpAlert
         /// <returns>True if the command appears successful; otherwise, false.</returns>
         public bool OffAll()
         {
-            byte[] buffer = new byte[] { 0, 0, 0xFC, 0, 0, 0, 0, 0, 0, 1 };
+            byte[] buffer = new byte[] { 0, 0xFC, 0, 0, 0, 0, 0, 0, 1 };
             if (WriteRowData(buffer))
             {
-                return ReadRelayStatus(3) == 0;
+                return true;
             }
             else
             {
-                Console.WriteLine("Cannot turn OFF all relays.");
+                Console.WriteLine("[Relay Controller] Couldn't turn off all contacts.");
                 return false;
             }
         }
@@ -172,14 +169,14 @@ namespace SharpAlert
         /// <returns>True if the command appears successful; otherwise, false.</returns>
         public bool OnRelay(int relayNumber)
         {
-            byte[] buffer = new byte[] { 0, 0, 0xFF, (byte)relayNumber, 0, 0, 0, 0, 0, 1 };
+            byte[] buffer = new byte[] { 0, 0xFF, (byte)relayNumber, 0, 0, 0, 0, 0, 1 };
             if (WriteRowData(buffer))
             {
-                return ReadRelayStatus(relayNumber) > 0;
+                return true;
             }
             else
             {
-                Console.WriteLine($"Cannot turn ON relay number {relayNumber}.");
+                Console.WriteLine($"[Relay Controller] Couldn't turn on contact {relayNumber}.");
                 return false;
             }
         }
@@ -191,14 +188,14 @@ namespace SharpAlert
         /// <returns>True if the command appears successful; otherwise, false.</returns>
         public bool OffRelay(int relayNumber)
         {
-            byte[] buffer = new byte[] { 0, 0, 0xFD, (byte)relayNumber, 0, 0, 0, 0, 0, 1 };
+            byte[] buffer = new byte[] { 0, 0xFD, (byte)relayNumber, 0, 0, 0, 0, 0, 1 };
             if (WriteRowData(buffer))
             {
-                return ReadRelayStatus(relayNumber) == 0;
+                return true;
             }
             else
             {
-                Console.WriteLine($"Cannot turn OFF relay number {relayNumber}.");
+                Console.WriteLine($"[Relay Controller] Couldn't turn off contact {relayNumber}.");
                 return false;
             }
         }

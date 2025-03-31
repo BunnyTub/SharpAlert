@@ -22,8 +22,8 @@ namespace SharpAlert
         {
             foreach (Control control in flowLayoutPanel1.Controls) control.Dispose();
             flowLayoutPanel1.Controls.Clear();
-            lock (Program.SharpDataHistory)
-            foreach (SharpDataItem item in Program.SharpDataHistory)
+            lock (MainEntryPoint.SharpDataHistory)
+            foreach (SharpDataItem item in MainEntryPoint.SharpDataHistory)
             flowLayoutPanel1.Controls.Add(new AlertInfoHolder
             {
                 AlertIdentifier = item.Name

@@ -32,7 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StartupForm));
             this.IconBox = new System.Windows.Forms.PictureBox();
             this.TitleText = new System.Windows.Forms.Label();
-            this.SubtitleText = new System.Windows.Forms.Label();
             this.AutoClose = new System.Windows.Forms.Timer(this.components);
             this.MainContentsPanel = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.IconBox)).BeginInit();
@@ -41,34 +40,28 @@
             // 
             // IconBox
             // 
-            this.IconBox.Image = global::SharpAlert.Properties.Resources.AlertIcon;
+            this.IconBox.Image = global::SharpAlert.Properties.Resources.WarningApp;
             this.IconBox.Location = new System.Drawing.Point(8, 8);
             this.IconBox.Margin = new System.Windows.Forms.Padding(0);
             this.IconBox.Name = "IconBox";
-            this.IconBox.Size = new System.Drawing.Size(154, 154);
+            this.IconBox.Size = new System.Drawing.Size(128, 128);
             this.IconBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.IconBox.TabIndex = 0;
             this.IconBox.TabStop = false;
+            this.IconBox.Click += new System.EventHandler(this.IconBox_Click);
             // 
             // TitleText
             // 
-            this.TitleText.Font = new System.Drawing.Font("Arial", 56F, System.Drawing.FontStyle.Bold);
-            this.TitleText.Location = new System.Drawing.Point(165, 8);
+            this.TitleText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TitleText.Font = new System.Drawing.Font("Arial", 62F, System.Drawing.FontStyle.Bold);
+            this.TitleText.Location = new System.Drawing.Point(139, 8);
             this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(422, 94);
+            this.TitleText.Size = new System.Drawing.Size(468, 128);
             this.TitleText.TabIndex = 1;
             this.TitleText.Text = "SharpAlert";
             this.TitleText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // SubtitleText
-            // 
-            this.SubtitleText.Font = new System.Drawing.Font("Arial", 20F);
-            this.SubtitleText.Location = new System.Drawing.Point(165, 102);
-            this.SubtitleText.Name = "SubtitleText";
-            this.SubtitleText.Size = new System.Drawing.Size(422, 60);
-            this.SubtitleText.TabIndex = 2;
-            this.SubtitleText.Text = "Safety is never a non-priority.";
-            this.SubtitleText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // AutoClose
             // 
@@ -77,21 +70,21 @@
             // 
             // MainContentsPanel
             // 
+            this.MainContentsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.MainContentsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainContentsPanel.Controls.Add(this.SubtitleText);
             this.MainContentsPanel.Controls.Add(this.TitleText);
             this.MainContentsPanel.Controls.Add(this.IconBox);
             this.MainContentsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainContentsPanel.Location = new System.Drawing.Point(0, 0);
             this.MainContentsPanel.Name = "MainContentsPanel";
-            this.MainContentsPanel.Size = new System.Drawing.Size(600, 172);
+            this.MainContentsPanel.Size = new System.Drawing.Size(620, 146);
             this.MainContentsPanel.TabIndex = 3;
             // 
             // StartupForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.ClientSize = new System.Drawing.Size(600, 172);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ClientSize = new System.Drawing.Size(620, 146);
             this.ControlBox = false;
             this.Controls.Add(this.MainContentsPanel);
             this.DoubleBuffered = true;
@@ -102,7 +95,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "StartupForm";
-            this.Opacity = 0.9D;
+            this.Opacity = 0.8D;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -120,7 +113,6 @@
 
         private System.Windows.Forms.PictureBox IconBox;
         private System.Windows.Forms.Label TitleText;
-        private System.Windows.Forms.Label SubtitleText;
         private System.Windows.Forms.Timer AutoClose;
         private System.Windows.Forms.Panel MainContentsPanel;
     }
