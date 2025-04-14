@@ -43,10 +43,11 @@
             this.label5.Location = new System.Drawing.Point(9, 9);
             this.label5.Margin = new System.Windows.Forms.Padding(0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(510, 15);
+            this.label5.Size = new System.Drawing.Size(462, 15);
             this.label5.TabIndex = 7;
-            this.label5.Text = "SharpAlert was created by BunnyTub. The source of which code derrives from SharpE" +
-    "NDEC.";
+            this.label5.Text = "SharpAlert is a project made by BunnyTub. Big thanks to ApatheticDELL for his hel" +
+    "p!";
+            this.label5.DoubleClick += new System.EventHandler(this.label5_DoubleClick);
             // 
             // label1
             // 
@@ -66,9 +67,9 @@
             this.label2.Location = new System.Drawing.Point(9, 54);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(105, 60);
+            this.label2.Size = new System.Drawing.Size(216, 60);
             this.label2.TabIndex = 9;
-            this.label2.Text = "Confuser.MSBuild\r\nCostura.Fody\r\nFody\r\nNAudio";
+            this.label2.Text = "Confuser.MSBuild (usage deprecated)\r\nCostura.Fody\r\nFody\r\nNAudio";
             // 
             // linkLabel1
             // 
@@ -89,9 +90,9 @@
             this.label3.Location = new System.Drawing.Point(9, 24);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(221, 15);
+            this.label3.Size = new System.Drawing.Size(363, 15);
             this.label3.TabIndex = 12;
-            this.label3.Text = "FEMA IPAWS OPEN is used for alerting.";
+            this.label3.Text = "FEMA IPAWS OPEN is used as the primary incoming alert source.";
             // 
             // linkLabel2
             // 
@@ -110,7 +111,7 @@
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(25)))));
-            this.ClientSize = new System.Drawing.Size(548, 159);
+            this.ClientSize = new System.Drawing.Size(548, 153);
             this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.linkLabel1);

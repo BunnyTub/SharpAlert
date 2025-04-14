@@ -1,5 +1,6 @@
 ﻿using SharpAlert.Properties;
 using System;
+using System.Threading;
 using System.Windows.Forms;
 using static SharpAlert.MainEntryPoint;
 
@@ -14,6 +15,12 @@ namespace SharpAlert
 
         private void AlertConfigurationForm_Load(object sender, EventArgs e)
         {
+            AudioTinkeringFileDialog.Filter = "Audio Files (*.mp3, *.wav)|*.mp3;*.wav";
+            AudioTinkeringFileDialog.FilterIndex = 0;
+            AudioTinkeringFileDialog.CheckFileExists = true;
+            AudioTinkeringFileDialog.Multiselect = false;
+            AudioTinkeringFileDialog.Title = "SharpAlert - Audio Selection";
+
             statusActualBox.Checked = Settings.Default.statusActual;
             statusActualBox.CheckedChanged += (a, b) => Settings.Default.statusActual = ((CheckBox)a).Checked;
             statusExerciseBox.Checked = Settings.Default.statusExercise;
@@ -196,6 +203,78 @@ namespace SharpAlert
                 ConfigurationPanel.Visible = true;
                 BusyLockText.SendToBack();
             }
+        }
+
+        private void ChangeStartButton_Click(object sender, EventArgs e)
+        {
+            Thread staThread = new Thread(() =>
+            {
+                try
+                {
+                    lock (AudioTinkeringFileDialog)
+                    {
+                        if (AudioTinkeringFileDialog.ShowDialog() != DialogResult.OK)
+                        {
+                            Settings.Default.StartToneLocation = string.Empty;
+                            MessageBox.Show("Reverted to default audio.",
+                                "SharpAlert",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                            return;
+                        }
+                        Settings.Default.StartToneLocation = AudioTinkeringFileDialog.FileName;
+                        MessageBox.Show("Using linked audio.",
+                                "SharpAlert",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"{ex.StackTrace} {ex.Message}",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            });
+            staThread.SetApartmentState(ApartmentState.STA);
+            staThread.Start();
+        }
+
+        private void ChangeEndButton_Click(object sender, EventArgs e)
+        {
+            Thread staThread = new Thread(() =>
+            {
+                try
+                {
+                    lock (AudioTinkeringFileDialog)
+                    {
+                        if (AudioTinkeringFileDialog.ShowDialog() != DialogResult.OK)
+                        {
+                            Settings.Default.EndToneLocation = string.Empty;
+                            MessageBox.Show("Reverted to default audio.",
+                                "SharpAlert",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                            return;
+                        }
+                        Settings.Default.EndToneLocation = AudioTinkeringFileDialog.FileName;
+                        MessageBox.Show("Using linked audio.",
+                                "SharpAlert",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"{ex.StackTrace} {ex.Message}",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            });
+            staThread.SetApartmentState(ApartmentState.STA);
+            staThread.Start();
         }
     }
 }

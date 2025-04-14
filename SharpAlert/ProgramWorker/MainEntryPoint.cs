@@ -9,13 +9,18 @@ using System.Speech.Synthesis;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using static SharpAlert.AudioManager;
+using static SharpAlert.IceBearWorker;
 using SharpAlert.Properties;
+using System.Linq;
+using System.Runtime.InteropServices;
+using NAudio.Utils;
+using System.ComponentModel;
 
 namespace SharpAlert
 {
     internal static class VersionInfo
     {
-        public static readonly int MajorVersion = 6;
+        public static readonly int MajorVersion = 7;
         public static readonly int MinorVersion = 0;
     }
 
@@ -63,9 +68,9 @@ namespace SharpAlert
         public static Icon icon = SystemIcons.Information;
 
         /// <summary>
-        /// Stops everything safely. Hopefully.
+        /// Stops everything safely. Hopefully. exitCode is unused.
         /// </summary>
-        public static void SafeExit(int exitCode)
+        public static void SafeExit()
         {
             AllowThreadRestarts = false;
             Thread.Sleep(500);
@@ -98,7 +103,7 @@ namespace SharpAlert
                 }
                 if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
                 {
-                    DiscordWebhook.SendFormattedMessage("SharpAlert has stopped.", Settings.Default.DiscordWebhook);
+                    DiscordWebhook.SendFormattedMessage("SharpAlert has stopped.");
                 }
                 Finished = true;
             }).Start();
@@ -121,7 +126,7 @@ namespace SharpAlert
                         }
                     }
                     else Thread.Sleep(1000);
-                    Environment.Exit(exitCode);
+                    Environment.Exit(0);
                 }
                 Thread.Sleep(1000);
                 i++;
@@ -141,7 +146,7 @@ namespace SharpAlert
                 }
             }
             else Thread.Sleep(1000);
-            Environment.Exit(exitCode);
+            Environment.Exit(0);
         } 
 
         /// <summary>
@@ -150,41 +155,180 @@ namespace SharpAlert
         [MTAThread]
         private static void Main()
         {
-            Mutex mutex = new Mutex(false, "BUNNYTUB_EASCULTURE_SharpAlert_ProtectEZ");
-            try
+            //watchdog self-child process
+            string[] args = Environment.GetCommandLineArgs();
+
+            if (args.Length >= 2)
             {
-                if (!mutex.WaitOne(0, false))
+                if (args.Contains("--monitored"))
                 {
-                    new Thread(() =>
+                    Mutex mutex = new Mutex(false, "BUNNYTUB_EASCULTURE_SharpAlert_ProtectEZ");
+                    try
                     {
-                        Thread.Sleep(1000 * 30);
-                        Environment.Exit(0);
-                    }).Start();
-                    MessageBox.Show("SharpAlert is already running.\r\nCheck the notification tray area on the taskbar!",
-                        "SharpAlert",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation);
+                        if (!mutex.WaitOne(0, false))
+                        {
+                            new Thread(() =>
+                            {
+                                Thread.Sleep(1000 * 30);
+                                Environment.Exit(0);
+                            }).Start();
+                            MessageBox.Show("SharpAlert is already running.\r\nCheck the notification tray area on the taskbar!",
+                                "SharpAlert",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Exclamation);
+                            Environment.Exit(0);
+                        }
+
+                        new Thread(() => ServiceRun()).Start();
+
+                        try
+                        {
+                            Process parentProc = GetParentProcess();
+
+                            if (GetParentProcess().MainModule.FileName == AssemblyFile)
+                            {
+                                GetParentProcess().WaitForExit();
+                                SafeExit();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            LogFault(new Exception("Couldn't identify the parent process. This may limit the ability for SharpAlert to recover from a problem.", ex));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("SharpAlert failed to start!\r\n" +
+                            $"{ex.StackTrace}\r\n" +
+                            $"{ex.Message}\r\n" +
+                            $"Please report this.\r\n" +
+                            $"If this is your first time running SharpAlert,\r\n" +
+                            $"check that you have .NET Framework 4.8.1 installed.\r\n" +
+                            $"Make sure no compatibility options are enabled.\r\b",
+                            "SharpAlert",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+                        LogFault(ex);
+                        Environment.Exit(1);
+                    }
+                    finally
+                    {
+                        mutex?.Close();
+                    }
                     return;
                 }
-                IceBearWorker.ServiceRun();
             }
-            catch (Exception ex)
+
+            bool restartable = true;
+            while (restartable)
             {
-                MessageBox.Show("SharpAlert failed to start!\r\n" +
-                    $"{ex.StackTrace}\r\n" +
-                    $"{ex.Message}",
-                    "SharpAlert",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                Environment.FailFast("SharpAlert failed to start!\r\n" +
-                    $"{ex.StackTrace}\r\n" +
-                    $"{ex.Message}");
-            }
-            finally
-            {
-                mutex?.Close();
+                ProcessStartInfo self = new ProcessStartInfo
+                {
+                    FileName = AssemblyFile,
+                    ErrorDialog = false
+                };
+
+                string arguments = "--monitored";
+                foreach (string arg in args)
+                {
+                    arguments += $"\x20{arg}";
+                }
+                self.Arguments = arguments;
+
+                Process monitorSelf = new Process
+                {
+                    StartInfo = self
+                };
+
+                monitorSelf.Start();
+                monitorSelf.WaitForExit();
+            
+                switch (unchecked(monitorSelf.ExitCode))
+                {
+                    case 0:
+                        restartable = false;
+                        Environment.Exit(0);
+                        return;
+                    case -1073741510:
+                        restartable = false;
+                        Environment.Exit(0);
+                        return;
+                    default:
+                        restartable = true;
+                        Settings.Default.Reload();
+                        if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                        {
+                            DiscordWebhook.SendFormattedMessage($"SharpAlert has terminated unexpectedly. ({monitorSelf.ExitCode})");
+                        }
+                        string Details = $"SharpAlert closed with a non-zero exit code. ({unchecked(monitorSelf.ExitCode)})\r\n" +
+                            $"{new Win32Exception(unchecked(monitorSelf.ExitCode)).Message}";
+                        LogFault(new Exception(Details));
+                        ToppleForm tf = new ToppleForm(Details);
+                        tf.ShowDialog();
+                        break;
+                }
+
+                monitorSelf.Dispose();
             }
         }
+
+        private static Process GetParentProcess()
+        {
+            int iParentPid = 0;
+            int iCurrentPid = Process.GetCurrentProcess().Id;
+
+            IntPtr oHnd = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+
+            if (oHnd == IntPtr.Zero)
+                return null;
+
+            PROCESSENTRY32 oProcInfo = new PROCESSENTRY32();
+
+            oProcInfo.dwSize =
+            (uint)Marshal.SizeOf(typeof(PROCESSENTRY32));
+
+            if (Process32First(oHnd, ref oProcInfo) == false)
+                return null;
+
+            do
+            {
+                if (iCurrentPid == oProcInfo.th32ProcessID)
+                    iParentPid = (int)oProcInfo.th32ParentProcessID;
+            }
+            while (iParentPid == 0 && Process32Next(oHnd, ref oProcInfo));
+
+            if (iParentPid > 0)
+                return Process.GetProcessById(iParentPid);
+            else
+                return null;
+        }
+
+        static uint TH32CS_SNAPPROCESS = 2;
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct PROCESSENTRY32
+        {
+            public uint dwSize;
+            public uint cntUsage;
+            public uint th32ProcessID;
+            public IntPtr th32DefaultHeapID;
+            public uint th32ModuleID;
+            public uint cntThreads;
+            public uint th32ParentProcessID;
+            public int pcPriClassBase;
+            public uint dwFlags;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+            public string szExeFile;
+        };
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern IntPtr CreateToolhelp32Snapshot(uint dwFlags, uint th32ProcessID);
+
+        [DllImport("kernel32.dll")]
+        static extern bool Process32First(IntPtr hSnapshot, ref PROCESSENTRY32 lppe);
+
+        [DllImport("kernel32.dll")]
+        static extern bool Process32Next(IntPtr hSnapshot, ref PROCESSENTRY32 lppe);
 
         /// <summary>
         /// Returns an MD5 value of the input string.

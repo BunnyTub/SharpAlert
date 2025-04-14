@@ -74,7 +74,7 @@ namespace SharpAlert
                         {
                             Console.WriteLine($"[Data Processor] Processing data queue.");
 
-                            string Replay = ReplayedAlertRegex.Match(relayItem.Data).Groups[1].Value;
+                            string Replay = ReplayedAlertRegex.MatchOrDefault(relayItem.Data, "false");
                             bool ReplayMode = false;
 
                             if (Replay.ToLowerInvariant() == "true")

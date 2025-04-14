@@ -74,6 +74,7 @@
             this.PastAlertsGroup = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
+            this.alertIncreaseSizeBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
@@ -451,7 +452,7 @@
             // alertNoRelayBox
             // 
             this.alertNoRelayBox.AutoSize = true;
-            this.alertNoRelayBox.Location = new System.Drawing.Point(6, 120);
+            this.alertNoRelayBox.Location = new System.Drawing.Point(437, 98);
             this.alertNoRelayBox.Name = "alertNoRelayBox";
             this.alertNoRelayBox.Size = new System.Drawing.Size(143, 19);
             this.alertNoRelayBox.TabIndex = 25;
@@ -506,6 +507,7 @@
             // 
             // AlertAppearanceAndSoundsGroup
             // 
+            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertIncreaseSizeBox);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertNoRelayBox);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.label11);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.WindowLocationCombo);
@@ -619,6 +621,17 @@
             this.ConfigurationPanel.Size = new System.Drawing.Size(671, 449);
             this.ConfigurationPanel.TabIndex = 13;
             // 
+            // alertIncreaseSizeBox
+            // 
+            this.alertIncreaseSizeBox.AutoSize = true;
+            this.alertIncreaseSizeBox.Location = new System.Drawing.Point(6, 120);
+            this.alertIncreaseSizeBox.Name = "alertIncreaseSizeBox";
+            this.alertIncreaseSizeBox.Size = new System.Drawing.Size(106, 19);
+            this.alertIncreaseSizeBox.TabIndex = 26;
+            this.alertIncreaseSizeBox.Text = "Large font size";
+            this.ToolTipInformation.SetToolTip(this.alertIncreaseSizeBox, "Increases the font size of alert text.");
+            this.alertIncreaseSizeBox.UseVisualStyleBackColor = true;
+            // 
             // ConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -697,5 +710,6 @@
         private System.Windows.Forms.ComboBox WindowLocationCombo;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.CheckBox alertNoRelayBox;
+        private System.Windows.Forms.CheckBox alertIncreaseSizeBox;
     }
 }

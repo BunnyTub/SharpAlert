@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
@@ -37,7 +38,7 @@ namespace SharpAlert
         {
             args = Environment.GetCommandLineArgs();
 
-            if (args.Length == 2) if (args[1] == "--console") AllocateTerminal(false);
+            if (args.Length >= 2) if (args.Contains("--console")) AllocateTerminal(false);
             //if (args.Length == 2) if (args[1] == "--finish-update") AllocateTerminal(false);
 
             Console.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority. | https://sharpalert.bunnytub.com/");
@@ -170,11 +171,11 @@ namespace SharpAlert
 
                                 if (batteryCharging)
                                 {
-                                    DiscordWebhook.SendFormattedMessage($"The host is charging. ({(int)batteryLevel}%)", Settings.Default.DiscordWebhook, 60928);
+                                    DiscordWebhook.SendFormattedMessage($"The host is charging. ({(int)batteryLevel}%)", 60928);
                                 }
                                 else
                                 {
-                                    DiscordWebhook.SendFormattedMessage($"The host is discharging. ({(int)batteryLevel}%)", Settings.Default.DiscordWebhook, 39423);
+                                    DiscordWebhook.SendFormattedMessage($"The host is discharging. ({(int)batteryLevel}%)", 39423);
                                 }
                                 break;
                         }
@@ -188,14 +189,14 @@ namespace SharpAlert
                         switch (b.Reason)
                         {
                             case SessionEndReasons.SystemShutdown:
-                                DiscordWebhook.SendFormattedMessage("The host is shutting down.", Settings.Default.DiscordWebhook);
+                                DiscordWebhook.SendFormattedMessage("The host is shutting down.");
                                 break;
                             case SessionEndReasons.Logoff:
-                                DiscordWebhook.SendFormattedMessage("The host is logging off.", Settings.Default.DiscordWebhook);
+                                DiscordWebhook.SendFormattedMessage("The host is logging off.");
                                 break;
                         }
                     }
-                    SafeExit(0);
+                    SafeExit();
                 };
 
                 try
@@ -215,7 +216,7 @@ namespace SharpAlert
 
             Console.WriteLine("[Ice Bear] Starting services momentarily.");
 
-            feedThread = ReturnThreadWithCatch(() => feed.ServiceRun(UseHTTPS), true);
+            feedThread = ReturnThreadWithCatch(() => feed.ServiceRun(UseHTTPS), false);
             feedThread.SetApartmentState(ApartmentState.MTA);
             //feedThread.MonitorAndStart("Feed Capture");
             feedThread.Start();
@@ -247,7 +248,7 @@ namespace SharpAlert
 
             if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
             {
-                if (DiscordWebhook.SendFormattedMessage("SharpAlert has started.", Settings.Default.DiscordWebhook))
+                if (DiscordWebhook.SendFormattedMessage("SharpAlert has started."))
                 {
                     lock (notify)
                     {
@@ -287,13 +288,13 @@ namespace SharpAlert
 
                     if (!batteryCharging && (int)batteryLevel < 10)
                     {
-                        DiscordWebhook.SendFormattedMessage($"The host is running critically low on battery power. ({(int)batteryLevel}%)\r\nPerformance may be impacted.", Settings.Default.DiscordWebhook, 16711680);
+                        DiscordWebhook.SendFormattedMessage($"The host is running critically low on battery power. ({(int)batteryLevel}%)\r\nPerformance may be impacted.", 16711680);
                     }
                     else
                     {
                         if (!batteryCharging && (int)batteryLevel < 20)
                         {
-                            DiscordWebhook.SendFormattedMessage($"The host is running low on battery power. ({(int)batteryLevel}%)\r\nPerformance may be impacted.", Settings.Default.DiscordWebhook, 16776960);
+                            DiscordWebhook.SendFormattedMessage($"The host is running low on battery power. ({(int)batteryLevel}%)\r\nPerformance may be impacted.", 16776960);
                         }
                     }
 
@@ -432,7 +433,7 @@ namespace SharpAlert
 
             notify = new NotifyIcon
             {
-                Icon = icon,
+                Icon = Resources.TrayLightIcon,
                 Visible = true,
                 Text = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}"
             };
@@ -522,25 +523,40 @@ namespace SharpAlert
 
             if (RemoteVersionSplit.Length == 2)
             {
-                if (RemoteVersionSplit[0] != VersionInfo.MajorVersion.ToString() ||
-                    RemoteVersionSplit[1] != VersionInfo.MinorVersion.ToString())
+                try
                 {
-                    lock (notify)
+                    if (int.Parse(RemoteVersionSplit[0]) > VersionInfo.MajorVersion ||
+                        int.Parse(RemoteVersionSplit[1]) > VersionInfo.MinorVersion)
                     {
-                        notify.BalloonTipTitle = "SharpAlert is running";
-                        notify.BalloonTipText = $"Updates are available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
-                        //notify.BalloonTipText = $"You may be running an older version. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
-                        notify.BalloonTipIcon = ToolTipIcon.Info;
-                        notify.ShowBalloonTip(5000);
+                        lock (notify)
+                        {
+                            notify.BalloonTipTitle = "SharpAlert is running";
+                            notify.BalloonTipText = $"Update available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                            //notify.BalloonTipText = $"You may be running an older version. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                            notify.BalloonTipIcon = ToolTipIcon.Info;
+                            notify.ShowBalloonTip(5000);
+                        }
+                        UpdatesAvailable = true;
                     }
-                    UpdatesAvailable = true;
+                    else
+                    {
+                        if (int.Parse(RemoteVersionSplit[0]) < VersionInfo.MajorVersion ||
+                            int.Parse(RemoteVersionSplit[1]) < VersionInfo.MinorVersion)
+                            lock (notify)
+                        {
+                            notify.BalloonTipTitle = "SharpAlert is running";
+                            notify.BalloonTipText = $"Downgrade available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                            notify.BalloonTipIcon = ToolTipIcon.Info;
+                            notify.ShowBalloonTip(5000);
+                        }
+                    }
                 }
-                else
+                catch (Exception)
                 {
                     lock (notify)
                     {
                         notify.BalloonTipTitle = "SharpAlert is running";
-                        notify.BalloonTipText = "I'll just be waiting right over here in my tray icon. You're up to date.";
+                        notify.BalloonTipText = "I'll just be waiting right over here in my tray icon. Couldn't check for updates.";
                         notify.BalloonTipIcon = ToolTipIcon.Info;
                         notify.ShowBalloonTip(5000);
                     }
@@ -639,7 +655,7 @@ namespace SharpAlert
                 {
                     Settings.Default.Reset();
                     Settings.Default.Save();
-                    SafeExit(0);
+                    SafeExit();
                 }
             }));
 
@@ -714,6 +730,7 @@ namespace SharpAlert
                 log.WriteEntry(ExceptionCompiled, EventLogEntryType.Error);
             }
 
+            Console.WriteLine(ExceptionCompiled);
             return ExceptionCompiled;
         }
 
@@ -798,10 +815,10 @@ namespace SharpAlert
             {
                 case DialogResult.Yes:
                     Settings.Default.Save();
-                    SafeExit(0);
+                    SafeExit();
                     break;
                 case DialogResult.No:
-                    SafeExit(0);
+                    SafeExit();
                     break;
                 case DialogResult.Cancel:
                     return;
@@ -855,7 +872,7 @@ namespace SharpAlert
                 _handler += new ConsoleCtrlDelegate(_ => {
                     lock (LockObject)
                     {
-                        SafeExit(0);
+                        SafeExit();
                         return true;
                     }
                 });

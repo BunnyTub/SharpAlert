@@ -44,6 +44,8 @@ namespace SharpAlert
         {
             if (Stop) return;
 
+            bool LastConnectionSuccessful = true;
+
             while (true)
             {
                 try
@@ -58,6 +60,18 @@ namespace SharpAlert
 
                     Result = message.Content.ReadAsStringAsync().Result;
 
+                    if (!LastConnectionSuccessful)
+                    {
+                        lock (notify)
+                        {
+                            notify.BalloonTipTitle = "SharpAlert has reconnected";
+                            notify.BalloonTipText = "Successfully reconnected to the server after an ongoing connection disruption or problem.";
+                            notify.BalloonTipIcon = ToolTipIcon.Info;
+                            notify.ShowBalloonTip(5000);
+                        }
+                        LastConnectionSuccessful = true;
+                    }
+
                     Console.WriteLine($"[Feed Capture] Grabbed data.");
 
                     EnrollAlerts(Result);
@@ -65,36 +79,18 @@ namespace SharpAlert
                 catch (TimeoutException)
                 {
                     Console.WriteLine($"[Feed Capture] Timed out.");
-                    lock (notify)
+                    if (LastConnectionSuccessful)
                     {
-                        notify.BalloonTipTitle = "SharpAlert is having issues";
-                        notify.BalloonTipText = "Couldn't connect to the server within a reasonable time. Check your internet connection!";
-                        notify.BalloonTipIcon = ToolTipIcon.Warning;
-                        notify.ShowBalloonTip(5000);
+                        lock (notify)
+                        {
+                            notify.BalloonTipTitle = "SharpAlert is having issues";
+                            notify.BalloonTipText = "Couldn't connect to the server within a reasonable time. Check your internet connection!";
+                            notify.BalloonTipIcon = ToolTipIcon.Warning;
+                            notify.ShowBalloonTip(5000);
+                        }
                     }
                     Thread.Sleep(30000);
-                }
-                catch (HttpRequestException e)
-                {
-                    Console.WriteLine($"[Feed Capture] {e.Message}");
-                    lock (notify)
-                    {
-                        notify.BalloonTipTitle = "SharpAlert is having issues";
-                        notify.BalloonTipText = "There was an issue when trying to connect to the server. Check your internet connection!";
-                        notify.BalloonTipIcon = ToolTipIcon.Warning;
-                        notify.ShowBalloonTip(5000);
-                    }
-                }
-                catch (AggregateException e)
-                {
-                    Console.WriteLine($"[Feed Capture] {e.Message}");
-                    lock (notify)
-                    {
-                        notify.BalloonTipTitle = "SharpAlert is having issues";
-                        notify.BalloonTipText = "There was an issue when trying to connect to the server. Check your internet connection!";
-                        notify.BalloonTipIcon = ToolTipIcon.Warning;
-                        notify.ShowBalloonTip(5000);
-                    }
+                    LastConnectionSuccessful = false;
                 }
                 catch (ThreadAbortException)
                 {
@@ -103,6 +99,19 @@ namespace SharpAlert
                 catch (Exception e)
                 {
                     Console.WriteLine($"[Feed Capture] {e.Message}");
+                    if (e.InnerException != null) Console.WriteLine($"[Feed Capture] {e.InnerException.Message}");
+                    if (LastConnectionSuccessful)
+                    {
+                        lock (notify)
+                        {
+                            notify.BalloonTipTitle = "SharpAlert is having issues";
+                            notify.BalloonTipText = "There was an issue when trying to connect to the server. Check your internet connection!";
+                            notify.BalloonTipIcon = ToolTipIcon.Warning;
+                            notify.ShowBalloonTip(5000);
+                        }
+                    }
+                    LastConnectionSuccessful = false;
+                    Thread.Sleep(30000);
                 }
                 if (FirstRun) FirstRun = false;
 
@@ -145,20 +154,13 @@ namespace SharpAlert
                         alertIndex++;
                         if (alert.Value is null) continue;
 
-                        string filename = string.Empty;
+                        string filename = IdentifierRegex.MatchOrDefault(alert.Value, CreateMD5(alert.Value));
 
-                        Match identifier = IdentifierRegex.Match(alert.Value);
-
-                        if (identifier.Success)
-                        {
-                            filename = identifier.Groups[1].Value;
-                        }
-
-                        if (string.IsNullOrWhiteSpace(filename))
-                        {
-                            Console.WriteLine("[Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
-                            filename = CreateMD5(alert.Value);
-                        }
+                        //if (string.IsNullOrWhiteSpace(filename))
+                        //{
+                        //    Console.WriteLine("[Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
+                        //    filename = CreateMD5(alert.Value);
+                        //}
 
                         Console.WriteLine($"[Feed Capture] {alertIndex} -> {filename}");
                         string alertReplayValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
@@ -244,11 +246,11 @@ namespace SharpAlert
                 }
                 catch (HttpRequestException e)
                 {
-                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message} {e.InnerException.Message}");
+                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message} {e.Message}");
                 }
                 catch (AggregateException e)
                 {
-                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.InnerExceptions.FirstOrDefault().Message}");
+                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
                 }
                 catch (TaskCanceledException)
                 {

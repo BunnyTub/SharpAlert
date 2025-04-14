@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpAlert.Properties;
+using System;
 using System.Net;
 using System.Text;
 using System.Text.Json;
@@ -10,143 +11,162 @@ namespace SharpAlert
     {
         private static readonly WebClient client = new WebClient();
 
-        public static bool SendUnformattedMessage(string message, string webhook)
+        public static bool SendUnformattedMessage(string message)
         {
             try
             {
-                lock (client)
+                string webhook = $"{Settings.Default.DiscordWebhook}";
+                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
                 {
-                    var payloadObject = new { content = message };
-                    string payloadJson = JsonSerializer.Serialize(payloadObject);
-                    client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
-                    client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
-                    client.UploadData(webhook, Encoding.UTF8.GetBytes(payloadJson));
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-        }
-        
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0037:Use inferred member name", Justification = "<Pending>")]
-        public static bool SendFormattedMessage(string message, string webhook, int color = 16777215)
-        {
-            try
-            {
-                lock (client)
-                {
-                    var payloadObject = new
+                    lock (client)
                     {
-                        embeds = new[]
-                        {
-                            new
-                            {
-                                title = message,
-                                color = color
-                            }
-                        }
-                    };
-                    string payloadJson = JsonSerializer.Serialize(payloadObject);
-                    client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
-                    client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
-                    client.UploadData(webhook, Encoding.UTF8.GetBytes(payloadJson));
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-        }
-        
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0037:Use inferred member name", Justification = "<Pending>")]
-        public static bool SendFormattedMessage(string message, string description, string normal, string webhook, int color = 16777215)
-        {
-            try
-            {
-                lock (client)
-                {
-                    var payloadObject = new
-                    {
-                        embeds = new[]
-                        {
-                            new
-                            {
-                                title = message,
-                                description = description,
-                                color = color
-                            }
-                        },
-                        content = normal
-                    };
-                    string payloadJson = JsonSerializer.Serialize(payloadObject);
-                    client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
-                    client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
-                    client.UploadData(webhook, Encoding.UTF8.GetBytes(payloadJson));
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0037:Use inferred member name", Justification = "<Pending>")]
-        public static bool SendEmbeddedMessage(string title, string description, SharpDataItem item, string webhook, int color = 16711680)
-        {
-            try
-            {
-                lock (client)
-                {
-                    string boundary = "----SharpBoundary" + DateTime.Now.Ticks;
-                    client.Headers.Set(HttpRequestHeader.ContentType, $"multipart/form-data; boundary={boundary}");
-                    client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
-
-                    var payloadObject = new
-                    {
-                        embeds = new[]
-                        {
-                            new
-                            {
-                                author = new
-                                {
-                                    name = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority",
-                                    url = "https://sharpalert.bunnytub.com",
-                                    icon_url = "https://bunnytub.com/media/SharpAlert.png"
-                                },
-                                title = title,
-                                description = description,
-                                color = color
-                            }
-                        }
-                    };
-
-                    string payloadJson = JsonSerializer.Serialize(payloadObject);
-                    StringBuilder requestBody = new StringBuilder();
-
-                    requestBody.AppendLine($"--{boundary}");
-                    requestBody.AppendLine("Content-Disposition: form-data; name=\"payload_json\"");
-                    requestBody.AppendLine("Content-Type: application/json");
-                    requestBody.AppendLine();
-                    requestBody.AppendLine(payloadJson);
-
-                    if (!string.IsNullOrEmpty(item.Name) && !string.IsNullOrEmpty(item.Data))
-                    {
-                        requestBody.AppendLine($"--{boundary}");
-                        requestBody.AppendLine($"Content-Disposition: form-data; name=\"file\"; filename=\"{item.Name}.cap\"");
-                        requestBody.AppendLine("Content-Type: application/octet-stream");
-                        requestBody.AppendLine();
-                        requestBody.AppendLine(item.Data);
+                        var payloadObject = new { content = message };
+                        string payloadJson = JsonSerializer.Serialize(payloadObject);
+                        client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
+                        client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
+                        client.UploadData(webhook, Encoding.UTF8.GetBytes(payloadJson));
                     }
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+        
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0037:Use inferred member name", Justification = "<Pending>")]
+        public static bool SendFormattedMessage(string message, int color = 16777215)
+        {
+            try
+            {
+                string webhook = $"{Settings.Default.DiscordWebhook}";
+                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                {
+                    lock (client)
+                    {
+                        var payloadObject = new
+                        {
+                            embeds = new[]
+                            {
+                            new
+                            {
+                                title = message,
+                                color = color
+                            }
+                        }
+                        };
+                        string payloadJson = JsonSerializer.Serialize(payloadObject);
+                        client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
+                        client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
+                        client.UploadData(webhook, Encoding.UTF8.GetBytes(payloadJson));
+                    }
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
+        
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0037:Use inferred member name", Justification = "<Pending>")]
+        public static bool SendFormattedMessage(string message, string description, string normal, int color = 16777215)
+        {
+            try
+            {
+                string webhook = $"{Settings.Default.DiscordWebhook}";
+                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                {
+                    lock (client)
+                    {
+                        var payloadObject = new
+                        {
+                            embeds = new[]
+                            {
+                                new
+                                {
+                                    title = message,
+                                    description = description,
+                                    color = color
+                                }
+                            },
+                            content = normal
+                        };
+                        string payloadJson = JsonSerializer.Serialize(payloadObject);
+                        client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
+                        client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
+                        client.UploadData(webhook, Encoding.UTF8.GetBytes(payloadJson));
+                    }
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+        }
 
-                    requestBody.AppendLine($"--{boundary}--");
-                    client.UploadData(webhook, Encoding.UTF8.GetBytes(requestBody.ToString()));
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0037:Use inferred member name", Justification = "<Pending>")]
+        public static bool SendEmbeddedMessage(string title, string description, SharpDataItem item, int color = 16711680)
+        {
+            try
+            {
+                string webhook = $"{Settings.Default.DiscordWebhook}";
+                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                {
+                    lock (client)
+                    {
+                        string boundary = "----SharpBoundary" + DateTime.Now.Ticks;
+                        client.Headers.Set(HttpRequestHeader.ContentType, $"multipart/form-data; boundary={boundary}");
+                        client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
+
+                        var payloadObject = new
+                        {
+                            embeds = new[]
+                            {
+                                new
+                                {
+                                    author = new
+                                    {
+                                        name = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority",
+                                        url = "https://sharpalert.bunnytub.com",
+                                        icon_url = "https://bunnytub.com/media/SharpAlert.png"
+                                    },
+                                    title = title,
+                                    description = description,
+                                    color = color
+                                }
+                            }
+                        };
+
+                        string payloadJson = JsonSerializer.Serialize(payloadObject);
+                        StringBuilder requestBody = new StringBuilder();
+
+                        requestBody.AppendLine($"--{boundary}");
+                        requestBody.AppendLine("Content-Disposition: form-data; name=\"payload_json\"");
+                        requestBody.AppendLine("Content-Type: application/json");
+                        requestBody.AppendLine();
+                        requestBody.AppendLine(payloadJson);
+
+                        if (!string.IsNullOrEmpty(item.Name) && !string.IsNullOrEmpty(item.Data))
+                        {
+                            requestBody.AppendLine($"--{boundary}");
+                            requestBody.AppendLine($"Content-Disposition: form-data; name=\"file\"; filename=\"{item.Name}.cap\"");
+                            requestBody.AppendLine("Content-Type: application/octet-stream");
+                            requestBody.AppendLine();
+                            requestBody.AppendLine(item.Data);
+                        }
+
+                        requestBody.AppendLine($"--{boundary}--");
+                        client.UploadData(webhook, Encoding.UTF8.GetBytes(requestBody.ToString()));
+                    }
                 }
                 return true;
             }

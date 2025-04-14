@@ -81,12 +81,56 @@ namespace SharpAlert.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to According to all known laws of aviation, there is no way a bee should be able to fly.
+        ///Its wings are too small to get its fat little body off the ground.
+        ///The bee, of course, flies anyway because bees don&apos;t care what humans think is impossible.
+        ///Yellow, black. Yellow, black. Yellow, black. Yellow, black.
+        ///Ooh, black and yellow!
+        ///Let&apos;s shake it up a little.
+        ///Barry! Breakfast is ready!
+        ///Coming!
+        ///Hang on a second.
+        ///Hello?
+        ///Barry?
+        ///Adam?
+        ///Can you believe this is happening?
+        ///I can&apos;t.
+        ///I&apos;ll pick you up.
+        ///Looking  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string TestScript {
+            get {
+                return ResourceManager.GetString("TestScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Topple {
             get {
                 object obj = ResourceManager.GetObject("Topple", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon TrayAlertIcon {
+            get {
+                object obj = ResourceManager.GetObject("TrayAlertIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon TrayLightIcon {
+            get {
+                object obj = ResourceManager.GetObject("TrayLightIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         

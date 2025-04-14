@@ -25,7 +25,7 @@ namespace SharpAlert
 
         private string DialogAlertID = string.Empty;
         private string DialogAlertTitle = string.Empty;
-        private string DialogAlertText = string.Empty;
+        private (string Intro, string Body) DialogAlertText = (string.Empty, string.Empty);
         private string DialogAlertURL = string.Empty;
         private string DialogAlertAudioURL = string.Empty;
         private string DialogAlertImageURL = string.Empty;
@@ -47,17 +47,19 @@ namespace SharpAlert
                 Console.WriteLine("[Relay Ping] Getting HID USB relay.");
                 if (relay.GetHidUSBRelay())
                 {
-                    Console.WriteLine("[Relay Ping] Device found.");
+                    Console.WriteLine("[Relay Ping] Device connected.");
                 }
                 else
                 {
-                    Console.WriteLine("[Relay Ping] Device not found.");
+                    Console.WriteLine("[Relay Ping] Device not connected.");
                 }
                 while (true)
                 {
                     if (relayPing)
                     {
                         relayPing = false;
+
+                        if (Settings.Default.alertNoRelay) continue;
 
                         Thread.Sleep(1000);
 
@@ -67,11 +69,11 @@ namespace SharpAlert
                         {
                             if (relay.GetHidUSBRelay())
                             {
-                                Console.WriteLine("[Relay Ping] Device found.");
+                                Console.WriteLine("[Relay Ping] Device connected.");
                             }
                             else
                             {
-                                Console.WriteLine("[Relay Ping] Device not found.");
+                                Console.WriteLine("[Relay Ping] Device not connected.");
                                 continue;
                             }
                         }
@@ -119,15 +121,14 @@ namespace SharpAlert
                     Console.WriteLine($"[RAF Loop] Waiting for the next ping.");
                     try
                     {
-                        while (!rafPing)
-                        {
-                            Thread.Sleep(500);
-                        }
+                        while (!rafPing) Thread.Sleep(500);
                         if (raf.IsDisposed) raf = new AlertForm();
-                        raf.UpdateFields(DialogAlertID, DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertAudioURL, DialogAlertImageURL, DialogAlertType);
+                        raf.UpdateFields(DialogAlertID, DialogAlertTitle, DialogAlertText.Intro, DialogAlertText.Body, DialogAlertURL, DialogAlertAudioURL, DialogAlertImageURL, DialogAlertType);
                         relayPing = true;
+                        notify.Icon = Resources.TrayAlertIcon;
                         raf.ShowDialog();
                         rafPing = false;
+                        notify.Icon = Resources.TrayLightIcon;
                     }
                     catch (Exception ex)
                     {
@@ -152,10 +153,12 @@ namespace SharpAlert
                     {
                         while (!tafPing) Thread.Sleep(500);
                         if (taf.IsDisposed) taf = new TeleAlertForm();
-                        taf.UpdateFields(DialogAlertID, DialogAlertTitle, DialogAlertText, DialogAlertURL, DialogAlertAudioURL, DialogAlertImageURL, DialogAlertType);
+                        taf.UpdateFields(DialogAlertID, DialogAlertTitle, DialogAlertText.Intro, DialogAlertText.Body, DialogAlertURL, DialogAlertAudioURL, DialogAlertImageURL, DialogAlertType);
                         relayPing = true;
+                        notify.Icon = Resources.TrayAlertIcon;
                         taf.ShowDialog();
                         tafPing = false;
+                        notify.Icon = Resources.TrayLightIcon;
                     }
                     catch (Exception ex)
                     {
@@ -199,23 +202,22 @@ namespace SharpAlert
             {
                 DateTime startProc = DateTime.UtcNow;
 
-                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
-                    DiscordWebhook.SendUnformattedMessage($"Processing incoming alert item. ({startProc:O} UTC)", Settings.Default.DiscordWebhook);
+                DiscordWebhook.SendUnformattedMessage($"Processing incoming alert item. ({startProc:O} UTC)");
 
                 bool AnyAlertRelayed = false;
                 bool UsedDiscordHook = false;
 
-                string Sent = SentRegex.Match(relayItem.Data).Groups[1].Value;
+                string Sent = SentRegex.MatchOrDefault(relayItem.Data, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
 
                 Console.WriteLine($"Sent: {Sent}");
 
-                string Status = StatusRegex.Match(relayItem.Data).Groups[1].Value;
+                string Status = StatusRegex.MatchOrDefault(relayItem.Data, "actual");
                 Console.WriteLine($"Status: {Status}");
 
-                string MsgType = MessageTypeRegex.Match(relayItem.Data).Groups[1].Value;
+                string MsgType = MessageTypeRegex.MatchOrDefault(relayItem.Data, "alert");
                 Console.WriteLine($"Message Type: {MsgType}");
 
-                Console.WriteLine($"Replay (internal flag | if any): {ReplayMode}");
+                Console.WriteLine($"Replay (internal flag): {ReplayMode}");
 
                 MatchCollection infoMatches = InfoRegex.Matches(relayItem.Data);
                 bool final = false;
@@ -240,8 +242,7 @@ namespace SharpAlert
                 if (!final)
                 {
                     Console.WriteLine($"[Alert Processor] Alert discarded due to user preferences or invalidity.");
-                    if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
-                        DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)", Settings.Default.DiscordWebhook);
+                    DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
                     return;
                 }
 
@@ -258,27 +259,27 @@ namespace SharpAlert
 
                     string AlertInfo = $"{infoMatch.Groups[1].Value}";
 
-                    string Effective = EffectiveRegex.Match(relayItem.Data).Groups[1].Value;
+                    string Effective = EffectiveRegex.MatchOrDefault(relayItem.Data, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
                     Console.WriteLine($"Effective: {Effective}");
 
-                    string Expiry = ExpiresRegex.Match(relayItem.Data).Groups[1].Value;
+                    string Expiry = ExpiresRegex.MatchOrDefault(relayItem.Data, DateTime.UtcNow.AddHours(1).ToString("O", CultureInfo.InvariantCulture));
                     Console.WriteLine($"Expires: {Expiry}");
 
-                    string EventType = EventRegex.Match(AlertInfo).Groups[1].Value;
-                    Console.WriteLine($"Event Type: {EventType}");
+                    string EventName = EventRegex.MatchOrDefault(AlertInfo, "Cautionary (Unknown Event)");
+                    Console.WriteLine($"Event Type: {EventName}");
 
-                    string Urgency = UrgencyRegex.Match(AlertInfo).Groups[1].Value;
+                    string Urgency = UrgencyRegex.MatchOrDefault(AlertInfo, "Unknown");
                     Console.WriteLine($"Urgency: {Urgency}");
 
-                    string Severity = SeverityRegex.Match(AlertInfo).Groups[1].Value;
+                    string Severity = SeverityRegex.MatchOrDefault(AlertInfo, "Unknown");
                     Console.WriteLine($"Severity: {Severity}");
 
                     List<string> AudioFiles = new List<string>();
                     List<string> ImageFiles = new List<string>();
 
                     int ResourceCount = 0;
-                    MatchCollection Resources = ResourceRegex.Matches(AlertInfo);
-                    foreach (Match resource in Resources)
+                    MatchCollection MatchedResources = ResourceRegex.Matches(AlertInfo);
+                    foreach (Match resource in MatchedResources)
                     {
                         ResourceCount++;
                         Console.WriteLine($"Resource {ResourceCount} Value: {resource.Groups[1].Value}");
@@ -360,8 +361,7 @@ namespace SharpAlert
                         }
                     }
 
-                    string URL = WebRegex.Match(AlertInfo).Groups[1].Value;
-                    if (string.IsNullOrWhiteSpace(URL)) URL = string.Empty;
+                    string URL = WebRegex.MatchOrDefault(AlertInfo, string.Empty);
                     Console.WriteLine($"Associated URL (if any): {URL}");
 
                     if (!ReplayMode)
@@ -382,9 +382,9 @@ namespace SharpAlert
                     if (ProcessParameterX(AlertInfo) &&
                         ProcessAlertX(Status, MsgType, Severity))
                     {
-                        foreach (string EventName in Settings.Default.EnforceEventBlacklist)
+                        foreach (string Event in Settings.Default.EnforceEventBlacklist)
                         {
-                            if (EventType.ToLowerInvariant() == EventName.ToLowerInvariant())
+                            if (EventName.ToLowerInvariant().Contains(Event.ToLowerInvariant()))
                             {
                                 EventBlacklisted = true;
                                 break;
@@ -393,15 +393,16 @@ namespace SharpAlert
 
                         if (EventBlacklisted)
                         {
-                            Console.WriteLine($"[Alert Processor] Alert discarded due to blacklist (event).");
+                            Console.WriteLine($"[Alert Processor] Info tag discarded due to blacklist (event).");
                             continue;
                         }
 
-                        string AlertText = CompiledBody(AlertInfo, MsgType, Sent, ReplayMode);
-                        Console.WriteLine(AlertText);
+                        var AlertText = CompiledBody(AlertInfo, MsgType, Sent, ReplayMode);
+
+                        Console.WriteLine($"{AlertText.Intro} {AlertText.Body}");
                         List<string> LocationsText = CompiledLocations(AlertInfo);
 
-                        if (!AllEvents.Contains(EventType)) AllEvents.Add(EventType);
+                        if (!AllEvents.Contains(EventName)) AllEvents.Add(EventName);
                         foreach (string location in LocationsText)
                         {
                             if (!AllLocations.Contains(location)) AllLocations.Add(location);
@@ -423,7 +424,7 @@ namespace SharpAlert
                                 {
                                     notify.BalloonTipIcon = ToolTipIcon.Info;
                                     notify.BalloonTipTitle = $"{Sent}";
-                                    notify.BalloonTipText = $"An alert with the event {EventType} was sent in replay mode.";
+                                    notify.BalloonTipText = $"An alert with the event {EventName} was sent in replay mode.";
                                     notify.ShowBalloonTip(5000);
                                 }
                             }
@@ -460,7 +461,7 @@ namespace SharpAlert
                                 //else AlertCompiled = "# EMERGENCY ALERT\r\n";
                                 AlertCompiled = $"**Sent: {sentDate:f}**\r\n**Expiry: {expiresDate:f}.**\r\n\r\n" +
                                     "## Alert Message\r\n" +
-                                    $"{AlertText}";
+                                    $"{AlertText.Intro}\r\n{AlertText.Body}";
 
                                 //if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhookAppend))
                                 //{
@@ -476,20 +477,22 @@ namespace SharpAlert
                                         break;
                                     case "update":
                                         color = 16711935;
-                                        color = 16711935;
                                         break;
                                     case "cancel":
                                         color = 10079487;
                                         break;
                                 }
 
-                                if (DiscordWebhook.SendEmbeddedMessage($"{MaxSeverity} Emergency Alert", AlertCompiled, relayItem, Settings.Default.DiscordWebhook, color))
+                                if (DiscordWebhook.SendEmbeddedMessage($"{MaxSeverity} Emergency Alert | {MsgType.First().ToString().ToUpper() + MsgType.Substring(1)}",
+                                    AlertCompiled,
+                                    relayItem,
+                                    color))
                                 {
                                     lock (notify)
                                     {
                                         notify.BalloonTipIcon = ToolTipIcon.Info;
                                         notify.BalloonTipTitle = $"{Sent}";
-                                        notify.BalloonTipText = $"An alert with the event {EventType} was issued.";
+                                        notify.BalloonTipText = $"An alert with the event {EventName} was issued.";
                                         notify.ShowBalloonTip(5000);
                                     }
                                     AnyAlertRelayed = true;
@@ -500,7 +503,7 @@ namespace SharpAlert
                                     {
                                         notify.BalloonTipIcon = ToolTipIcon.Warning;
                                         notify.BalloonTipTitle = $"{Sent}";
-                                        notify.BalloonTipText = $"An alert with the event {EventType} was issued, but it couldn't be sent through the webhook.";
+                                        notify.BalloonTipText = $"An alert with the event {EventName} was issued, but it couldn't be sent through the webhook.";
                                         notify.ShowBalloonTip(5000);
                                     }
                                 }
@@ -531,11 +534,22 @@ namespace SharpAlert
                                         AlertDisplaying = true;
                                         AlertsQueued--;
 
-                                        Console.WriteLine($"[Alert Processor] Alert Text:\r\n{DialogAlertText}");
+                                        DialogAlertID = relayItem.Name;
+                                        DialogAlertTitle = EventName;
+                                        DialogAlertText = AlertText;
+                                        if (!string.IsNullOrWhiteSpace(DialogAlertURL)) DialogAlertURL = URL;
+                                        else DialogAlertURL = string.Empty;
 
-                                        PlayFromUnmanagedSourceAndWait(Properties.Resources.ui_warning_1);
-                                        PlayFromTTSEngineAndWait(DialogAlertText);
-                                        PlayFromUnmanagedSourceAndWait(Properties.Resources.ui_end_1);
+                                        Console.WriteLine($"[Alert Processor] Alert Text:\r\n{DialogAlertText.Intro} {DialogAlertText.Body}");
+
+                                        notify.Icon = Resources.TrayAlertIcon;
+
+                                        PlayStartToneFile();
+                                        PlayFromTTSEngineAndWait(DialogAlertText.Intro);
+                                        PlayFromTTSEngineAndWait(DialogAlertText.Body);
+                                        PlayEndToneFile();
+
+                                        notify.Icon = Resources.TrayLightIcon;
 
                                         lock (AlertValuesLock)
                                         {
@@ -547,8 +561,9 @@ namespace SharpAlert
                                     {
                                         AlertDisplaying = true;
                                         AlertsQueued--;
+
                                         DialogAlertID = relayItem.Name;
-                                        DialogAlertTitle = EventType;
+                                        DialogAlertTitle = EventName;
                                         DialogAlertText = AlertText;
                                         if (!string.IsNullOrWhiteSpace(DialogAlertURL)) DialogAlertURL = URL;
                                         else DialogAlertURL = string.Empty;
@@ -641,15 +656,14 @@ namespace SharpAlert
 
                         string CompiledMessage = $"{EventsList} | {MaxSeverity} | Location(s): {LocationList}\r\n-# Identifier: {relayItem.Name}\r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms";
                         if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhookAppend)) CompiledMessage += "\r\n" + Settings.Default.DiscordWebhookAppend;
-                        DiscordWebhook.SendUnformattedMessage(CompiledMessage, Settings.Default.DiscordWebhook);
+                        DiscordWebhook.SendUnformattedMessage(CompiledMessage);
 
                         Console.WriteLine("[Alert Processor] Sent finalizing text to the Discord webhook.");
                     }
                 }
                 else
                 {
-                    if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
-                        DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)", Settings.Default.DiscordWebhook);
+                    DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
                 }
 
                 Console.WriteLine($"[Alert Processor] Processed all available entries. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
@@ -677,8 +691,8 @@ namespace SharpAlert
                     AlertDisplaying = true;
                     DialogAlertID = "TEST";
                     DialogAlertTitle = "Standard Test";
-                    DialogAlertText = "This is a test of SharpAlert's alert display.\r\n" +
-                    $"{string.Join("", Enumerable.Range(32, 512).Select(i => (char)i))}";
+                    DialogAlertText.Intro = "This is a test of SharpAlert's alert display.";
+                    DialogAlertText.Body = Resources.TestScript.Replace("\r", string.Empty).Replace("\n", "\x20").Trim();
                     DialogAlertURL = "https://sharpalert.bunnytub.com";
                     DialogAlertAudioURL = string.Empty;
                     DialogAlertImageURL = string.Empty;
@@ -734,15 +748,15 @@ namespace SharpAlert
 
             try
             {
-                Match Severity = UrgencyRegex.Match(InfoX);
-                Match Urgency = UrgencyRegex.Match(InfoX);
-                Match Category = UrgencyRegex.Match(InfoX);
+                string Severity = SeverityRegex.MatchOrDefault(InfoX, "Moderate").ToLowerInvariant();
+                string Urgency = UrgencyRegex.MatchOrDefault(InfoX, "Immediate").ToLowerInvariant();
+                string Category = CategoryRegex.MatchOrDefault(InfoX, "Other").ToLowerInvariant();
 
                 bool var1; // Severity
                 bool var2; // Urgency
                 bool var3; // Category
 
-                switch (Severity.Groups[1].Value.ToLowerInvariant())
+                switch (Severity)
                 {
                     case "extreme":
                         var1 = Settings.Default.severityExtreme;
@@ -764,7 +778,7 @@ namespace SharpAlert
                         break;
                 }
 
-                switch (Urgency.Groups[1].Value.ToLowerInvariant())
+                switch (Urgency)
                 {
                     case "immediate":
                         var2 = Settings.Default.urgencyImmediate;
@@ -786,7 +800,7 @@ namespace SharpAlert
                         break;
                 }
 
-                switch (Category.Groups[1].Value.ToLowerInvariant())
+                switch (Category)
                 {
                     case "geo":
                         var3 = Settings.Default.categoryGeophysical;
@@ -972,9 +986,9 @@ namespace SharpAlert
 
                 if (WEAHandle.Success)
                 {
-                    switch (WEAHandle.Value.ToUpperInvariant())
+                    switch (WEAHandle.Value.ToLowerInvariant())
                     {
-                        case "IMMINENT THREAT":
+                        case "imminent threat":
                             return true;
                         default:
                             return false;
@@ -1112,13 +1126,13 @@ namespace SharpAlert
         /// <param name="MsgType">The overall message type.</param>
         /// <param name="Sent">The date and time the message was sent.</param>
         /// <returns>Returns a compiled message body.</returns>
-        public string CompiledBody(string InfoData, string MsgType, string Sent, bool Replay)
+        public (string Intro, string Body) CompiledBody(string InfoData, string MsgType, string Sent, bool Replay)
         {
             string BroadcastText = string.Empty;
 
             if (Replay)
             {
-                BroadcastText += $"This is a replay of the most recent alert.\r\n";
+                BroadcastText += $"This is a replay of the most recent alert.\x20";
             }
 
             string issue = "issued";
@@ -1306,7 +1320,7 @@ namespace SharpAlert
 
             try
             {
-                SenderName = SenderNameRegex.Match(InfoData).Groups[1].Value;
+                SenderName = SenderNameRegex.MatchOrDefault(InfoData, "Governing Entity (Unknown Sender)").Replace(",", ",\x20");
             }
             catch (Exception)
             {
@@ -1374,13 +1388,15 @@ namespace SharpAlert
                 Instruction = string.Empty;
             }
 
-            BroadcastText += $"Issuer: {SenderName}\r\nEvent: {EventType}\r\n";
-            BroadcastText += $"Coverage: {SentenceAppendEnd(AreaDesc)}\r\n\r\n";
-            BroadcastText += SentenceAppendSpace($"This alert goes into effect starting {BeginFormatted}, and ending at {EndFormatted}.");
+            string IntroText = string.Empty;
+
+            IntroText += SentenceAppendSpace($"This alert goes into effect starting {BeginFormatted}, and ends at {EndFormatted}.");
+            IntroText += $"Issued by {SenderName}. Event type is {EventType}. Covering the following areas, {SentenceAppendEnd(AreaDesc)}";
             BroadcastText += NewLineRemoval(SentenceAppendSpace(SentenceAppendEnd(Description)));
             if (Description != Instruction) BroadcastText += NewLineRemoval(SentenceAppendSpace(SentenceAppendEnd(Instruction)));
             BroadcastText = BroadcastText.Replace("###", string.Empty);
             BroadcastText = BroadcastText.Replace("E A S", " EAS ");
+            BroadcastText = BroadcastText.Replace("9 1 1", " 9-1-1 ");
             BroadcastText = SentencePuncuationCorrection(BroadcastText)
                 .Replace("* WHAT,", string.Empty)
                 .Replace("* WHERE,", string.Empty)
@@ -1389,7 +1405,7 @@ namespace SharpAlert
             BroadcastText = SentenceAppendEnd(BroadcastText);
             BroadcastText = TimeCorrection(BroadcastText);
             BroadcastText = string.Join(" ", BroadcastText.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries));
-            return BroadcastText;
+            return (IntroText, BroadcastText);
         }
 
         string NewLineRemoval(string input)

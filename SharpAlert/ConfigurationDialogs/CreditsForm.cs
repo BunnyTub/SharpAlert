@@ -25,6 +25,11 @@ namespace SharpAlert
         {
             Process.Start("https://www.youtube.com/channel/UCyEsuDNsAPqMAGMtxL8V1Vw?feature=applinks");
         }
+
+        private void label5_DoubleClick(object sender, EventArgs e)
+        {
+            Process.Start("https://www.youtube.com/watch?v=1KC-2_DnhQg");
+        }
 #pragma warning restore IDE1006 // Naming Styles
     }
 }

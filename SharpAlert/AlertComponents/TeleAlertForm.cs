@@ -12,6 +12,7 @@ namespace SharpAlert
     public partial class TeleAlertForm : Form
     {
         private string AlertSubtitleStr = string.Empty;
+        private string AlertIntroTextStr = string.Empty;
         private string AlertTextStr = string.Empty;
         private string AlertUrlStr = string.Empty;
         private string AlertAudioUrlStr = string.Empty;
@@ -92,13 +93,14 @@ namespace SharpAlert
             //ReplayMode = replay;
         }
 
-        public void UpdateFields(string id, string alert, string text, string url, string audio, string image, string type)
+        public void UpdateFields(string id, string alert, string intro, string text, string url, string audio, string image, string type)
         {
             this.Text = $"SharpAlert - {id}";
             AlertSubtitleStr = alert;
             SubtitleText.Text = AlertSubtitleStr;
+            AlertIntroTextStr = intro;
             AlertTextStr = text;
-            AlertText.Text = AlertTextStr;
+            AlertText.Text = $"{AlertIntroTextStr} {AlertTextStr}";
             AlertUrlStr = url;
             AlertAudioUrlStr = audio;
             AlertImageUrlStr = image;
@@ -189,7 +191,7 @@ namespace SharpAlert
 
             if (AlertType != "cancel")
             {
-                PlayFromUnmanagedSource(Resources.ui_warning_1);
+                PlayStartToneFile();
             }
             else
             {
@@ -237,6 +239,15 @@ namespace SharpAlert
                 }
                 this.FormBorderStyle = FormBorderStyle.None;
                 this.WindowState = FormWindowState.Maximized;
+            }
+
+            if (Settings.Default.alertIncreaseSize)
+            {
+                AlertText.Font = new Font("Arial", 52F);
+            }
+            else
+            {
+                AlertText.Font = new Font("Arial", 34F);
             }
 
             //SetWindowPos(GotHandle, (IntPtr)HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
@@ -329,7 +340,9 @@ namespace SharpAlert
 
         private void AutoTTS_Tick(object sender, EventArgs e)
         {
+            if (!ToneDone) return;
             AutoTTS.Stop();
+            PlayFromTTSEngine(AlertIntroTextStr);
             PlayWithFailoverToTTS(AlertAudioUrlStr, AlertTextStr);
         }
 
@@ -427,7 +440,6 @@ namespace SharpAlert
 
         private void TitleText_DoubleClick(object sender, EventArgs e)
         {
-            AlertText.Font = new Font("Arial", 56F);
         }
 
         private void AlertText_DoubleClick(object sender, EventArgs e)

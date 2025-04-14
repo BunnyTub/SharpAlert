@@ -11,7 +11,9 @@ namespace SharpAlert
 {
     public partial class AlertForm : Form
     {
+        private string AlertIDStr = string.Empty;
         private string AlertSubtitleStr = string.Empty;
+        private string AlertIntroTextStr = string.Empty;
         private string AlertTextStr = string.Empty;
         private string AlertUrlStr = string.Empty;
         private string AlertAudioUrlStr = string.Empty;
@@ -90,13 +92,15 @@ namespace SharpAlert
             taskbarList.HrInit();
         }
 
-        public void UpdateFields(string id, string alert, string text, string url, string audio, string image, string type)
+        public void UpdateFields(string id, string alert, string intro, string text, string url, string audio, string image, string type)
         {
-            this.Text = $"SharpAlert - {id}";
+            AlertIDStr = id;
+            this.Text = $"SharpAlert - {AlertIDStr}";
             AlertSubtitleStr = alert;
             SubtitleText.Text = AlertSubtitleStr;
+            AlertIntroTextStr = intro;
             AlertTextStr = text;
-            AlertText.Text = AlertTextStr;
+            AlertText.Text = $"{AlertIntroTextStr} {AlertTextStr}";
             AlertUrlStr = url;
             AlertAudioUrlStr = audio;
             AlertImageUrlStr = image;
@@ -184,7 +188,9 @@ namespace SharpAlert
 
             if (AlertType != "cancel")
             {
-                PlayFromUnmanagedSource(Resources.ui_warning_1);
+                //PlayFromManagedSource(GenerateFSKStream($"{AlertIDStr}|{DateTime.UtcNow:s)}|{AlertType}|{AlertSubtitleStr.Replace("|", "_")}"));
+                //PlayFromUnmanagedSource(Resources.ui_warning_1);
+                PlayStartToneFile();
             }
             else
             {
@@ -250,6 +256,15 @@ namespace SharpAlert
                     break;
             }
 
+            if (Settings.Default.alertIncreaseSize)
+            {
+                AlertText.Font = new Font("Arial", 24F);
+            }
+            else
+            {
+                AlertText.Font = new Font("Arial", 18F);
+            }
+
             Console.WriteLine("[Alert GUI] Window shown.");
         }
 
@@ -261,6 +276,7 @@ namespace SharpAlert
         private void SpeakerButton_Click(object sender, EventArgs e)
         {
             SpeakerButton.Enabled = false;
+            PlayFromTTSEngine(AlertIntroTextStr);
             PlayWithFailoverToTTS(AlertAudioUrlStr, AlertTextStr);
         }
 

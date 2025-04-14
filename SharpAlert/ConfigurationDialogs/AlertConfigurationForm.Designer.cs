@@ -79,7 +79,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.storedMaxSizeInput = new System.Windows.Forms.NumericUpDown();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.categoryOtherBox = new System.Windows.Forms.CheckBox();
             this.categoryCBRNEBox = new System.Windows.Forms.CheckBox();
             this.categoryInfraBox = new System.Windows.Forms.CheckBox();
@@ -95,6 +94,12 @@
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.BusyLockText = new System.Windows.Forms.Label();
             this.BusyLock = new System.Windows.Forms.Timer(this.components);
+            this.label6 = new System.Windows.Forms.Label();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.ChangeStartButton = new System.Windows.Forms.Button();
+            this.ChangeEndButton = new System.Windows.Forms.Button();
+            this.AudioTinkeringFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.label2 = new System.Windows.Forms.Label();
             this.AlertFunctionalityGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlertCheckIntervalInput)).BeginInit();
             this.groupBox11.SuspendLayout();
@@ -110,6 +115,7 @@
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.storedMaxSizeInput)).BeginInit();
             this.groupBox3.SuspendLayout();
+            this.groupBox10.SuspendLayout();
             this.SuspendLayout();
             // 
             // AlertFunctionalityGroup
@@ -449,6 +455,7 @@
             // 
             // groupBox9
             // 
+            this.groupBox9.Controls.Add(this.label6);
             this.groupBox9.Controls.Add(this.label3);
             this.groupBox9.Controls.Add(this.EventBlacklistOutput);
             this.groupBox9.Controls.Add(this.EventClearButton);
@@ -460,7 +467,7 @@
             this.groupBox9.Size = new System.Drawing.Size(319, 93);
             this.groupBox9.TabIndex = 4;
             this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "SAME Events";
+            this.groupBox9.Text = "Named Events";
             // 
             // label3
             // 
@@ -469,7 +476,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(240, 15);
             this.label3.TabIndex = 6;
-            this.label3.Text = "You can add SAME events to blacklist here.";
+            this.label3.Text = "You can add event names to blacklist here.";
             // 
             // EventBlacklistOutput
             // 
@@ -652,6 +659,7 @@
             // 
             // ConfigurationPanel
             // 
+            this.ConfigurationPanel.Controls.Add(this.groupBox10);
             this.ConfigurationPanel.Controls.Add(this.groupBox6);
             this.ConfigurationPanel.Controls.Add(this.groupBox3);
             this.ConfigurationPanel.Controls.Add(this.AlertFunctionalityGroup);
@@ -692,6 +700,11 @@
             0,
             0});
             this.storedMaxSizeInput.Location = new System.Drawing.Point(70, 20);
+            this.storedMaxSizeInput.Maximum = new decimal(new int[] {
+            150,
+            0,
+            0,
+            0});
             this.storedMaxSizeInput.Minimum = new decimal(new int[] {
             25,
             0,
@@ -709,7 +722,6 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.categoryOtherBox);
             this.groupBox3.Controls.Add(this.categoryCBRNEBox);
             this.groupBox3.Controls.Add(this.categoryInfraBox);
@@ -725,27 +737,15 @@
             this.groupBox3.ForeColor = System.Drawing.Color.White;
             this.groupBox3.Location = new System.Drawing.Point(12, 371);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(647, 95);
+            this.groupBox3.Size = new System.Drawing.Size(431, 95);
             this.groupBox3.TabIndex = 17;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Alert Categories";
             // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Arial", 12F);
-            this.label2.Location = new System.Drawing.Point(431, 17);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(210, 18);
-            this.label2.TabIndex = 24;
-            this.label2.Text = "Categories are experimental.";
-            this.ToolTipInformation.SetToolTip(this.label2, "We\'re working on these options for a later update!");
-            // 
             // categoryOtherBox
             // 
             this.categoryOtherBox.AutoSize = true;
-            this.categoryOtherBox.Location = new System.Drawing.Point(315, 70);
+            this.categoryOtherBox.Location = new System.Drawing.Point(309, 70);
             this.categoryOtherBox.Name = "categoryOtherBox";
             this.categoryOtherBox.Size = new System.Drawing.Size(111, 19);
             this.categoryOtherBox.TabIndex = 23;
@@ -756,7 +756,7 @@
             // categoryCBRNEBox
             // 
             this.categoryCBRNEBox.AutoSize = true;
-            this.categoryCBRNEBox.Location = new System.Drawing.Point(315, 45);
+            this.categoryCBRNEBox.Location = new System.Drawing.Point(309, 45);
             this.categoryCBRNEBox.Name = "categoryCBRNEBox";
             this.categoryCBRNEBox.Size = new System.Drawing.Size(91, 19);
             this.categoryCBRNEBox.TabIndex = 22;
@@ -767,7 +767,7 @@
             // categoryInfraBox
             // 
             this.categoryInfraBox.AutoSize = true;
-            this.categoryInfraBox.Location = new System.Drawing.Point(315, 20);
+            this.categoryInfraBox.Location = new System.Drawing.Point(309, 20);
             this.categoryInfraBox.Name = "categoryInfraBox";
             this.categoryInfraBox.Size = new System.Drawing.Size(67, 19);
             this.categoryInfraBox.TabIndex = 21;
@@ -778,7 +778,7 @@
             // categoryTransportBox
             // 
             this.categoryTransportBox.AutoSize = true;
-            this.categoryTransportBox.Location = new System.Drawing.Point(204, 70);
+            this.categoryTransportBox.Location = new System.Drawing.Point(198, 70);
             this.categoryTransportBox.Name = "categoryTransportBox";
             this.categoryTransportBox.Size = new System.Drawing.Size(106, 19);
             this.categoryTransportBox.TabIndex = 20;
@@ -789,7 +789,7 @@
             // categoryEnvBox
             // 
             this.categoryEnvBox.AutoSize = true;
-            this.categoryEnvBox.Location = new System.Drawing.Point(204, 45);
+            this.categoryEnvBox.Location = new System.Drawing.Point(198, 45);
             this.categoryEnvBox.Name = "categoryEnvBox";
             this.categoryEnvBox.Size = new System.Drawing.Size(105, 19);
             this.categoryEnvBox.TabIndex = 19;
@@ -800,7 +800,7 @@
             // categoryHealthBox
             // 
             this.categoryHealthBox.AutoSize = true;
-            this.categoryHealthBox.Location = new System.Drawing.Point(204, 20);
+            this.categoryHealthBox.Location = new System.Drawing.Point(198, 20);
             this.categoryHealthBox.Name = "categoryHealthBox";
             this.categoryHealthBox.Size = new System.Drawing.Size(68, 19);
             this.categoryHealthBox.TabIndex = 18;
@@ -811,7 +811,7 @@
             // categoryFireBox
             // 
             this.categoryFireBox.AutoSize = true;
-            this.categoryFireBox.Location = new System.Drawing.Point(126, 70);
+            this.categoryFireBox.Location = new System.Drawing.Point(122, 70);
             this.categoryFireBox.Name = "categoryFireBox";
             this.categoryFireBox.Size = new System.Drawing.Size(47, 19);
             this.categoryFireBox.TabIndex = 17;
@@ -822,7 +822,7 @@
             // categoryRescueBox
             // 
             this.categoryRescueBox.AutoSize = true;
-            this.categoryRescueBox.Location = new System.Drawing.Point(126, 45);
+            this.categoryRescueBox.Location = new System.Drawing.Point(122, 45);
             this.categoryRescueBox.Name = "categoryRescueBox";
             this.categoryRescueBox.Size = new System.Drawing.Size(69, 19);
             this.categoryRescueBox.TabIndex = 16;
@@ -833,7 +833,7 @@
             // categorySecurityBox
             // 
             this.categorySecurityBox.AutoSize = true;
-            this.categorySecurityBox.Location = new System.Drawing.Point(126, 20);
+            this.categorySecurityBox.Location = new System.Drawing.Point(122, 20);
             this.categorySecurityBox.Name = "categorySecurityBox";
             this.categorySecurityBox.Size = new System.Drawing.Size(69, 19);
             this.categorySecurityBox.TabIndex = 15;
@@ -902,6 +902,61 @@
             this.BusyLock.Enabled = true;
             this.BusyLock.Tick += new System.EventHandler(this.BusyLock_Tick);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.Color.Yellow;
+            this.label6.Location = new System.Drawing.Point(250, 17);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(63, 15);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "Hover me!";
+            this.ToolTipInformation.SetToolTip(this.label6, resources.GetString("label6.ToolTip"));
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.label2);
+            this.groupBox10.Controls.Add(this.ChangeEndButton);
+            this.groupBox10.Controls.Add(this.ChangeStartButton);
+            this.groupBox10.ForeColor = System.Drawing.Color.White;
+            this.groupBox10.Location = new System.Drawing.Point(449, 371);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(210, 95);
+            this.groupBox10.TabIndex = 18;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "Audio Tinkering";
+            // 
+            // ChangeStartButton
+            // 
+            this.ChangeStartButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ChangeStartButton.Location = new System.Drawing.Point(6, 37);
+            this.ChangeStartButton.Name = "ChangeStartButton";
+            this.ChangeStartButton.Size = new System.Drawing.Size(198, 23);
+            this.ChangeStartButton.TabIndex = 2;
+            this.ChangeStartButton.Text = "Change Start Tone Location";
+            this.ChangeStartButton.UseVisualStyleBackColor = true;
+            this.ChangeStartButton.Click += new System.EventHandler(this.ChangeStartButton_Click);
+            // 
+            // ChangeEndButton
+            // 
+            this.ChangeEndButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ChangeEndButton.Location = new System.Drawing.Point(6, 66);
+            this.ChangeEndButton.Name = "ChangeEndButton";
+            this.ChangeEndButton.Size = new System.Drawing.Size(198, 23);
+            this.ChangeEndButton.TabIndex = 3;
+            this.ChangeEndButton.Text = "Change End Tone Location";
+            this.ChangeEndButton.UseVisualStyleBackColor = true;
+            this.ChangeEndButton.Click += new System.EventHandler(this.ChangeEndButton_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 17);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(195, 15);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "To clear, click change, then cancel.";
+            // 
             // AlertConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -946,6 +1001,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.storedMaxSizeInput)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1013,9 +1070,14 @@
         private System.Windows.Forms.CheckBox categoryInfraBox;
         private System.Windows.Forms.CheckBox categoryCBRNEBox;
         private System.Windows.Forms.CheckBox categoryOtherBox;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.NumericUpDown storedMaxSizeInput;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.Button ChangeEndButton;
+        private System.Windows.Forms.Button ChangeStartButton;
+        private System.Windows.Forms.OpenFileDialog AudioTinkeringFileDialog;
+        private System.Windows.Forms.Label label2;
     }
 }

@@ -151,6 +151,9 @@ namespace SharpAlert
                     MessageBoxIcon.Exclamation);
             };
 
+            alertIncreaseSizeBox.Checked = Settings.Default.alertIncreaseSize;
+            alertIncreaseSizeBox.CheckedChanged += (a, b) => Settings.Default.alertIncreaseSize = ((CheckBox)a).Checked;
+
             alertNoRelayBox.Checked = Settings.Default.alertNoRelay;
             alertNoRelayBox.CheckedChanged += (a, b) => Settings.Default.alertNoRelay = ((CheckBox)a).Checked;
             

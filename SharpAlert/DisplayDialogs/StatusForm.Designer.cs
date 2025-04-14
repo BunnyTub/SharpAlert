@@ -42,7 +42,6 @@
             this.ServerRequestsText = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.UptimeMeterText = new System.Windows.Forms.Label();
-            this.InfoText = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // RefreshData
@@ -173,23 +172,11 @@
             this.UptimeMeterText.Text = "Up time: OwO";
             this.UptimeMeterText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // InfoText
-            // 
-            this.InfoText.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.InfoText.Font = new System.Drawing.Font("Arial", 10F);
-            this.InfoText.Location = new System.Drawing.Point(0, 186);
-            this.InfoText.Margin = new System.Windows.Forms.Padding(0);
-            this.InfoText.Name = "InfoText";
-            this.InfoText.Size = new System.Drawing.Size(420, 20);
-            this.InfoText.TabIndex = 13;
-            this.InfoText.Text = "CAP History is capped (no pun intended) at 25.";
-            this.InfoText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // StatusForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(420, 206);
+            this.ClientSize = new System.Drawing.Size(420, 186);
             this.Controls.Add(this.UptimeMeterText);
             this.Controls.Add(this.ServerRequestsText);
             this.Controls.Add(this.label10);
@@ -201,7 +188,6 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.CAPQueueCountText);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.InfoText);
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -231,6 +217,5 @@
         private System.Windows.Forms.Label ServerRequestsText;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label UptimeMeterText;
-        private System.Windows.Forms.Label InfoText;
     }
 }

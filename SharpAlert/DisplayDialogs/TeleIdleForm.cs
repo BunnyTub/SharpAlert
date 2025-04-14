@@ -39,7 +39,7 @@ namespace SharpAlert
                 MovePreventBurnIn_Tick(null, null);
             }
             ClockSet_Tick(null, null);
-            InfoText.Text = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Started operating: {startDT:f}";
+            InfoText.Text = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority. | Started operating: {startDT:f}";
         }
 
         private void WindowClosingChecker_Tick(object sender, EventArgs e)
@@ -100,38 +100,45 @@ namespace SharpAlert
 
         private void MovePreventBurnIn_Tick(object sender, EventArgs e)
         {
-            int Spacing = 15;
-
-            int WidthCalculated = this.Size.Width - IdleText.Width - Spacing;
-            int HeightCalculated = this.Size.Height - IdleText.Height - Spacing;
-
-            if (WidthCalculated < Spacing || HeightCalculated < Spacing)
+            try
             {
-                return;
-            }
-            else
-            {
-                try
-                {
-                    IdleText.Location = new Point(RandomMovement.Next(Spacing, WidthCalculated), RandomMovement.Next(Spacing, HeightCalculated));
-                    switch (ColorCounter)
-                    {
-                        case 0:
-                            IdleText.ForeColor = Color.Red;
-                            break;
-                        case 1:
-                            IdleText.ForeColor = Color.Lime;
-                            break;
-                        case 2:
-                            IdleText.ForeColor = Color.Blue;
-                            break;
-                    }
-                    ColorCounter = (ColorCounter + 1) % 3;
-                }
-                catch (Exception)
+                int Spacing = 15;
+
+                int WidthCalculated = this.Size.Width - IdleText.Width - Spacing;
+                int HeightCalculated = this.Size.Height - IdleText.Height - Spacing;
+
+                if (WidthCalculated < Spacing || HeightCalculated < Spacing)
                 {
                     return;
                 }
+                else
+                {
+                    try
+                    {
+                        IdleText.Location = new Point(RandomMovement.Next(Spacing, WidthCalculated), RandomMovement.Next(Spacing, HeightCalculated));
+                        switch (ColorCounter)
+                        {
+                            case 0:
+                                IdleText.ForeColor = Color.Red;
+                                break;
+                            case 1:
+                                IdleText.ForeColor = Color.Lime;
+                                break;
+                            case 2:
+                                IdleText.ForeColor = Color.Blue;
+                                break;
+                        }
+                        ColorCounter = (ColorCounter + 1) % 3;
+                    }
+                    catch (Exception)
+                    {
+                        return;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return;
             }
         }
 

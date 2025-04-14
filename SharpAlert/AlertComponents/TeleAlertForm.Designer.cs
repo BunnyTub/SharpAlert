@@ -245,7 +245,7 @@
             // 
             // AutoTTS
             // 
-            this.AutoTTS.Interval = 7500;
+            this.AutoTTS.Interval = 50;
             this.AutoTTS.Tick += new System.EventHandler(this.AutoTTS_Tick);
             // 
             // FadeInAnimation

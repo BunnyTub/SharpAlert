@@ -1,14 +1,24 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace SharpAlert
 {
 	public static class RegexList
 	{
-		//public static readonly Regex ValueNameRegex = new Regex(
-		//    @"<valueName>([^<]+)</valueName>\s*<value>([^<]+)</value>",
-		//    RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+        public static string MatchOrDefault(this Regex regex, string input, string defaultValue = "")
+        {
+            if (regex == null) throw new ArgumentNullException(nameof(regex));
+            if (input == null) return defaultValue;
 
-		public static readonly Regex ReplayedAlertRegex = new Regex(
+            var match = regex.Match(input);
+            return match.Success ? match.Groups[1].Value : defaultValue;
+        }
+
+        //public static readonly Regex ValueNameRegex = new Regex(
+        //    @"<valueName>([^<]+)</valueName>\s*<value>([^<]+)</value>",
+        //    RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+        public static readonly Regex ReplayedAlertRegex = new Regex(
             @"<SharpAlertReplay>\s*(.*?)\s*</SharpAlertReplay>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
@@ -29,6 +39,10 @@ namespace SharpAlert
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
 		public static readonly Regex UrgencyRegex = new Regex(
+			@"<urgency>\s*(.*?)\s*</urgency>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+		public static readonly Regex CategoryRegex = new Regex(
 			@"<urgency>\s*(.*?)\s*</urgency>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 

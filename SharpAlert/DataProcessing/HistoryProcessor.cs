@@ -129,7 +129,7 @@ namespace SharpAlert
 
                                     if (DiscordWebhook.SendFormattedMessage(CompiledString,
                                         "An alert expiring sometimes doesn't mean an alert is finished completely.",
-                                        $"-# Identifier(s): {FullNames}", Settings.Default.DiscordWebhook))
+                                        $"-# Identifier(s): {FullNames}"))
                                     {
                                         lock (notify)
                                         {

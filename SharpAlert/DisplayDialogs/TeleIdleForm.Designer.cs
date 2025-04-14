@@ -59,12 +59,12 @@
             // 
             // IdleText
             // 
-            this.IdleText.Font = new System.Drawing.Font("Arial", 52F);
+            this.IdleText.Font = new System.Drawing.Font("Arial", 56F);
             this.IdleText.ForeColor = System.Drawing.Color.White;
             this.IdleText.Location = new System.Drawing.Point(0, 0);
             this.IdleText.Margin = new System.Windows.Forms.Padding(0);
             this.IdleText.Name = "IdleText";
-            this.IdleText.Size = new System.Drawing.Size(520, 160);
+            this.IdleText.Size = new System.Drawing.Size(520, 170);
             this.IdleText.TabIndex = 0;
             this.IdleText.Text = "Please wait...\r\n...one moment";
             this.IdleText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
