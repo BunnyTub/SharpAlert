@@ -202,7 +202,7 @@ namespace SharpAlert
             {
                 DateTime startProc = DateTime.UtcNow;
 
-                DiscordWebhook.SendUnformattedMessage($"Processing incoming alert item. ({startProc:O} UTC)");
+                //DiscordWebhook.SendUnformattedMessage($"Processing incoming alert item. ({startProc:O} UTC)");
 
                 bool AnyAlertRelayed = false;
                 bool UsedDiscordHook = false;
@@ -232,17 +232,17 @@ namespace SharpAlert
                             break;
                         }
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
-                        Console.WriteLine($"[Alert Processor] An info tag couldn't processed." +
-                            $"{e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[Alert Processor] An info tag couldn't processed.");
+                        IceBearWorker.LogFault(ex);
                     }
                 }
 
                 if (!final)
                 {
                     Console.WriteLine($"[Alert Processor] Alert discarded due to user preferences or invalidity.");
-                    DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
+                    //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
                     return;
                 }
 
@@ -663,7 +663,7 @@ namespace SharpAlert
                 }
                 else
                 {
-                    DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
+                    //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
                 }
 
                 Console.WriteLine($"[Alert Processor] Processed all available entries. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");

@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>SharpAlert</RootNamespace>
     <AssemblyName>SharpAlert</AssemblyName>
-    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -195,6 +195,7 @@
     <Compile Include="ListingForm.Designer.cs">
       <DependentUpon>ListingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProgramWorker\HeartbeatWorker.cs" />
     <Compile Include="ProgramWorker\ServiceThreads.cs" />
     <Compile Include="RelayController.cs" />
     <Compile Include="ConfigurationDialogs\SoundConfigurationForm.cs">

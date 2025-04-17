@@ -270,6 +270,11 @@ namespace SharpAlert
                 }
             }
 
+            heartbeatThread = ReturnThreadWithCatch(() => HeartbeatWorker.ServiceRun(), true);
+            heartbeatThread.SetApartmentState(ApartmentState.MTA);
+            //historyProcThread.MonitorAndStart("Heartbeat");
+            heartbeatThread.Start();
+
             ServiceRunnerScheduled = true;
 
             new Thread(() =>
@@ -294,7 +299,7 @@ namespace SharpAlert
                     {
                         if (!batteryCharging && (int)batteryLevel < 20)
                         {
-                            DiscordWebhook.SendFormattedMessage($"The host is running low on battery power. ({(int)batteryLevel}%)\r\nPerformance may be impacted.", 16776960);
+                            DiscordWebhook.SendFormattedMessage($"The host is running low on battery power. ({(int)batteryLevel}%)", 16776960);
                         }
                     }
 
@@ -724,10 +729,27 @@ namespace SharpAlert
                     $"{ex.TargetSite}\r\n" +
                     $"{ex.StackTrace}";
 
-            using (EventLog log = new EventLog("Application"))
+            try
             {
-                log.Source = "Application";
-                log.WriteEntry(ExceptionCompiled, EventLogEntryType.Error);
+                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                {
+                    DiscordWebhook.SendUnformattedMessage(ExceptionCompiled + "\r\n\r\nPlease report this issue to my owner!\r\nIf you are the owner, contact <@603429346736341013> (bunnytub.com/SharpAlert.html) for help.");
+                }
+            }
+            catch (Exception)
+            {
+            }
+            
+            try
+            {
+                using (EventLog log = new EventLog("Application"))
+                {
+                    log.Source = "Application";
+                    log.WriteEntry(ExceptionCompiled, EventLogEntryType.Error);
+                }
+            }
+            catch (Exception)
+            {
             }
 
             Console.WriteLine(ExceptionCompiled);

@@ -58,6 +58,7 @@
             this.statusTestBox = new System.Windows.Forms.CheckBox();
             this.LocationsAndEventsGroup = new System.Windows.Forms.GroupBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.EventBlacklistOutput = new System.Windows.Forms.TextBox();
             this.EventClearButton = new System.Windows.Forms.Button();
@@ -75,6 +76,10 @@
             this.SAMEAddButton = new System.Windows.Forms.Button();
             this.AreaSAMEInput = new System.Windows.Forms.TextBox();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ChangeEndButton = new System.Windows.Forms.Button();
+            this.ChangeStartButton = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.storedMaxSizeInput = new System.Windows.Forms.NumericUpDown();
@@ -94,12 +99,7 @@
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.BusyLockText = new System.Windows.Forms.Label();
             this.BusyLock = new System.Windows.Forms.Timer(this.components);
-            this.label6 = new System.Windows.Forms.Label();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.ChangeStartButton = new System.Windows.Forms.Button();
-            this.ChangeEndButton = new System.Windows.Forms.Button();
             this.AudioTinkeringFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.label2 = new System.Windows.Forms.Label();
             this.AlertFunctionalityGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlertCheckIntervalInput)).BeginInit();
             this.groupBox11.SuspendLayout();
@@ -112,10 +112,10 @@
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.ConfigurationPanel.SuspendLayout();
+            this.groupBox10.SuspendLayout();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.storedMaxSizeInput)).BeginInit();
             this.groupBox3.SuspendLayout();
-            this.groupBox10.SuspendLayout();
             this.SuspendLayout();
             // 
             // AlertFunctionalityGroup
@@ -138,7 +138,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(160, 306);
+            this.label4.Location = new System.Drawing.Point(160, 279);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(84, 15);
             this.label4.TabIndex = 8;
@@ -152,7 +152,7 @@
             0,
             0,
             0});
-            this.AlertCheckIntervalInput.Location = new System.Drawing.Point(250, 304);
+            this.AlertCheckIntervalInput.Location = new System.Drawing.Point(250, 277);
             this.AlertCheckIntervalInput.Maximum = new decimal(new int[] {
             300,
             0,
@@ -217,7 +217,7 @@
             this.groupBox5.ForeColor = System.Drawing.Color.White;
             this.groupBox5.Location = new System.Drawing.Point(160, 122);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(144, 176);
+            this.groupBox5.Size = new System.Drawing.Size(144, 149);
             this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Message Urgency";
@@ -469,6 +469,17 @@
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Named Events";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.Color.Yellow;
+            this.label6.Location = new System.Drawing.Point(250, 17);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(63, 15);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "Hover me!";
+            this.ToolTipInformation.SetToolTip(this.label6, resources.GetString("label6.ToolTip"));
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -670,6 +681,50 @@
             this.ConfigurationPanel.Size = new System.Drawing.Size(671, 478);
             this.ConfigurationPanel.TabIndex = 6;
             // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.label2);
+            this.groupBox10.Controls.Add(this.ChangeEndButton);
+            this.groupBox10.Controls.Add(this.ChangeStartButton);
+            this.groupBox10.ForeColor = System.Drawing.Color.White;
+            this.groupBox10.Location = new System.Drawing.Point(449, 371);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(210, 95);
+            this.groupBox10.TabIndex = 18;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "Program Sounds";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 17);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(195, 15);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "To clear, click change, then cancel.";
+            // 
+            // ChangeEndButton
+            // 
+            this.ChangeEndButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ChangeEndButton.Location = new System.Drawing.Point(6, 66);
+            this.ChangeEndButton.Name = "ChangeEndButton";
+            this.ChangeEndButton.Size = new System.Drawing.Size(198, 23);
+            this.ChangeEndButton.TabIndex = 3;
+            this.ChangeEndButton.Text = "Select End Tone Location";
+            this.ChangeEndButton.UseVisualStyleBackColor = true;
+            this.ChangeEndButton.Click += new System.EventHandler(this.ChangeEndButton_Click);
+            // 
+            // ChangeStartButton
+            // 
+            this.ChangeStartButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ChangeStartButton.Location = new System.Drawing.Point(6, 37);
+            this.ChangeStartButton.Name = "ChangeStartButton";
+            this.ChangeStartButton.Size = new System.Drawing.Size(198, 23);
+            this.ChangeStartButton.TabIndex = 2;
+            this.ChangeStartButton.Text = "Select Start Tone Location";
+            this.ChangeStartButton.UseVisualStyleBackColor = true;
+            this.ChangeStartButton.Click += new System.EventHandler(this.ChangeStartButton_Click);
+            // 
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.label5);
@@ -745,7 +800,7 @@
             // categoryOtherBox
             // 
             this.categoryOtherBox.AutoSize = true;
-            this.categoryOtherBox.Location = new System.Drawing.Point(309, 70);
+            this.categoryOtherBox.Location = new System.Drawing.Point(311, 70);
             this.categoryOtherBox.Name = "categoryOtherBox";
             this.categoryOtherBox.Size = new System.Drawing.Size(111, 19);
             this.categoryOtherBox.TabIndex = 23;
@@ -756,7 +811,7 @@
             // categoryCBRNEBox
             // 
             this.categoryCBRNEBox.AutoSize = true;
-            this.categoryCBRNEBox.Location = new System.Drawing.Point(309, 45);
+            this.categoryCBRNEBox.Location = new System.Drawing.Point(311, 45);
             this.categoryCBRNEBox.Name = "categoryCBRNEBox";
             this.categoryCBRNEBox.Size = new System.Drawing.Size(91, 19);
             this.categoryCBRNEBox.TabIndex = 22;
@@ -767,7 +822,7 @@
             // categoryInfraBox
             // 
             this.categoryInfraBox.AutoSize = true;
-            this.categoryInfraBox.Location = new System.Drawing.Point(309, 20);
+            this.categoryInfraBox.Location = new System.Drawing.Point(311, 20);
             this.categoryInfraBox.Name = "categoryInfraBox";
             this.categoryInfraBox.Size = new System.Drawing.Size(67, 19);
             this.categoryInfraBox.TabIndex = 21;
@@ -778,7 +833,7 @@
             // categoryTransportBox
             // 
             this.categoryTransportBox.AutoSize = true;
-            this.categoryTransportBox.Location = new System.Drawing.Point(198, 70);
+            this.categoryTransportBox.Location = new System.Drawing.Point(199, 70);
             this.categoryTransportBox.Name = "categoryTransportBox";
             this.categoryTransportBox.Size = new System.Drawing.Size(106, 19);
             this.categoryTransportBox.TabIndex = 20;
@@ -789,7 +844,7 @@
             // categoryEnvBox
             // 
             this.categoryEnvBox.AutoSize = true;
-            this.categoryEnvBox.Location = new System.Drawing.Point(198, 45);
+            this.categoryEnvBox.Location = new System.Drawing.Point(199, 45);
             this.categoryEnvBox.Name = "categoryEnvBox";
             this.categoryEnvBox.Size = new System.Drawing.Size(105, 19);
             this.categoryEnvBox.TabIndex = 19;
@@ -800,7 +855,7 @@
             // categoryHealthBox
             // 
             this.categoryHealthBox.AutoSize = true;
-            this.categoryHealthBox.Location = new System.Drawing.Point(198, 20);
+            this.categoryHealthBox.Location = new System.Drawing.Point(199, 20);
             this.categoryHealthBox.Name = "categoryHealthBox";
             this.categoryHealthBox.Size = new System.Drawing.Size(68, 19);
             this.categoryHealthBox.TabIndex = 18;
@@ -811,7 +866,7 @@
             // categoryFireBox
             // 
             this.categoryFireBox.AutoSize = true;
-            this.categoryFireBox.Location = new System.Drawing.Point(122, 70);
+            this.categoryFireBox.Location = new System.Drawing.Point(119, 70);
             this.categoryFireBox.Name = "categoryFireBox";
             this.categoryFireBox.Size = new System.Drawing.Size(47, 19);
             this.categoryFireBox.TabIndex = 17;
@@ -822,7 +877,7 @@
             // categoryRescueBox
             // 
             this.categoryRescueBox.AutoSize = true;
-            this.categoryRescueBox.Location = new System.Drawing.Point(122, 45);
+            this.categoryRescueBox.Location = new System.Drawing.Point(119, 45);
             this.categoryRescueBox.Name = "categoryRescueBox";
             this.categoryRescueBox.Size = new System.Drawing.Size(69, 19);
             this.categoryRescueBox.TabIndex = 16;
@@ -833,7 +888,7 @@
             // categorySecurityBox
             // 
             this.categorySecurityBox.AutoSize = true;
-            this.categorySecurityBox.Location = new System.Drawing.Point(122, 20);
+            this.categorySecurityBox.Location = new System.Drawing.Point(119, 20);
             this.categorySecurityBox.Name = "categorySecurityBox";
             this.categorySecurityBox.Size = new System.Drawing.Size(69, 19);
             this.categorySecurityBox.TabIndex = 15;
@@ -902,61 +957,6 @@
             this.BusyLock.Enabled = true;
             this.BusyLock.Tick += new System.EventHandler(this.BusyLock_Tick);
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.ForeColor = System.Drawing.Color.Yellow;
-            this.label6.Location = new System.Drawing.Point(250, 17);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(63, 15);
-            this.label6.TabIndex = 7;
-            this.label6.Text = "Hover me!";
-            this.ToolTipInformation.SetToolTip(this.label6, resources.GetString("label6.ToolTip"));
-            // 
-            // groupBox10
-            // 
-            this.groupBox10.Controls.Add(this.label2);
-            this.groupBox10.Controls.Add(this.ChangeEndButton);
-            this.groupBox10.Controls.Add(this.ChangeStartButton);
-            this.groupBox10.ForeColor = System.Drawing.Color.White;
-            this.groupBox10.Location = new System.Drawing.Point(449, 371);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(210, 95);
-            this.groupBox10.TabIndex = 18;
-            this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "Audio Tinkering";
-            // 
-            // ChangeStartButton
-            // 
-            this.ChangeStartButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ChangeStartButton.Location = new System.Drawing.Point(6, 37);
-            this.ChangeStartButton.Name = "ChangeStartButton";
-            this.ChangeStartButton.Size = new System.Drawing.Size(198, 23);
-            this.ChangeStartButton.TabIndex = 2;
-            this.ChangeStartButton.Text = "Change Start Tone Location";
-            this.ChangeStartButton.UseVisualStyleBackColor = true;
-            this.ChangeStartButton.Click += new System.EventHandler(this.ChangeStartButton_Click);
-            // 
-            // ChangeEndButton
-            // 
-            this.ChangeEndButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ChangeEndButton.Location = new System.Drawing.Point(6, 66);
-            this.ChangeEndButton.Name = "ChangeEndButton";
-            this.ChangeEndButton.Size = new System.Drawing.Size(198, 23);
-            this.ChangeEndButton.TabIndex = 3;
-            this.ChangeEndButton.Text = "Change End Tone Location";
-            this.ChangeEndButton.UseVisualStyleBackColor = true;
-            this.ChangeEndButton.Click += new System.EventHandler(this.ChangeEndButton_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 17);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(195, 15);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "To clear, click change, then cancel.";
-            // 
             // AlertConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -996,13 +996,13 @@
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.ConfigurationPanel.ResumeLayout(false);
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.storedMaxSizeInput)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox10.ResumeLayout(false);
-            this.groupBox10.PerformLayout();
             this.ResumeLayout(false);
 
         }

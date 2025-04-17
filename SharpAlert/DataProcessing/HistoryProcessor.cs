@@ -128,7 +128,7 @@ namespace SharpAlert
                                     FullNames = FullNames.Substring(0, FullNames.Length - 1);
 
                                     if (DiscordWebhook.SendFormattedMessage(CompiledString,
-                                        "An alert expiring sometimes doesn't mean an alert is finished completely.",
+                                        "Expiry may not mean that the event is over completely.",
                                         $"-# Identifier(s): {FullNames}"))
                                     {
                                         lock (notify)
@@ -192,7 +192,6 @@ namespace SharpAlert
             lock (AlertLock)
             {
                 string Sent = SentRegex.Match(relayItem.Data).Groups[1].Value;
-
                 Console.WriteLine($"Sent: {Sent}");
 
                 string Status = StatusRegex.Match(relayItem.Data).Groups[1].Value;
@@ -210,32 +209,39 @@ namespace SharpAlert
                     infoProc++;
                     Console.WriteLine($"[History Processor] Processing {infoProc} of {infoMatches.Count}.");
 
-                    string AlertInfo = $"{infoMatch.Groups[1].Value}";
-
-                    string Effective = EffectiveRegex.Match(relayItem.Data).Groups[1].Value;
-                    Console.WriteLine($"Effective: {Effective}");
-
-                    string Expiry = ExpiresRegex.Match(relayItem.Data).Groups[1].Value;
-                    Console.WriteLine($"Expires: {Expiry}");
-
-                    string EventType = EventRegex.Match(AlertInfo).Groups[1].Value;
-                    Console.WriteLine($"Event Type: {EventType}");
-
-                    if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
+                    try
                     {
-                        return (true,
-                            EventType,
-                            Sent,
-                            Effective,
-                            Expiry);
+                        string AlertInfo = $"{infoMatch.Groups[1].Value}";
+
+                        string Effective = EffectiveRegex.MatchOrDefault(relayItem.Data, $"{DateTime.UtcNow.AddHours(-1):f}");
+                        Console.WriteLine($"Effective: {Effective}");
+
+                        string Expiry = ExpiresRegex.MatchOrDefault(relayItem.Data, $"Unknown Date Time");
+                        Console.WriteLine($"Expires: {Expiry}");
+
+                        string EventType = EventRegex.MatchOrDefault(AlertInfo, "Cautionary (Unknown Event)");
+                        Console.WriteLine($"Event Type: {EventType}");
+
+                        if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
+                        {
+                            return (true,
+                                EventType,
+                                Sent,
+                                Effective,
+                                Expiry);
+                        }
+                        else
+                        {
+                            return (false,
+                                EventType,
+                                Sent,
+                                Effective,
+                                Expiry);
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        return (false,
-                            EventType,
-                            Sent,
-                            Effective,
-                            Expiry);
+                        IceBearWorker.LogFault(ex);
                     }
                 }
 

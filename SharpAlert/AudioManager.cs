@@ -41,10 +41,10 @@ namespace SharpAlert
                         {
                             lock (output)
                             {
-                                //output?.Stop();
-                                output?.Dispose();
-                                lock (Outputs) Outputs.Remove(output);
+                                output?.Stop();
+                                //output?.Dispose();
                             }
+                            lock (Outputs) Outputs.Remove(output);
                         }
                         catch (Exception ex)
                         {
@@ -90,10 +90,10 @@ namespace SharpAlert
                     {
                         lock (output)
                         {
-                            //output?.Stop();
-                            output?.Dispose();
-                            lock (Outputs) Outputs.Remove(output);
+                            output?.Stop();
+                            //output?.Dispose();
                         }
+                        lock (Outputs) Outputs.Remove(output);
                     }
                     catch (Exception ex)
                     {
@@ -124,7 +124,7 @@ namespace SharpAlert
                 {
                     try
                     {
-                        PlayFromRemoteSource(url, false);
+                        PlayFromRemoteSource(url);
                     }
                     catch (Exception ex)
                     {
@@ -143,7 +143,7 @@ namespace SharpAlert
             }
         }
 
-        public static void PlayFromRemoteSource(string url, bool eom)
+        public static void PlayFromRemoteSource(string url)
         {
             //throw new Exception("SharpAlert is currently undergoing an audio rewrite, so remote audio is disabled for now.");
             try

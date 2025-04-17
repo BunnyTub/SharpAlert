@@ -1,5 +1,6 @@
 ﻿using SharpAlert.Properties;
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Forms;
 using static SharpAlert.MainEntryPoint;
@@ -15,6 +16,8 @@ namespace SharpAlert
 
         private void AlertConfigurationForm_Load(object sender, EventArgs e)
         {
+            CheckForIllegalCrossThreadCalls = false;
+
             AudioTinkeringFileDialog.Filter = "Audio Files (*.mp3, *.wav)|*.mp3;*.wav";
             AudioTinkeringFileDialog.FilterIndex = 0;
             AudioTinkeringFileDialog.CheckFileExists = true;
@@ -102,6 +105,11 @@ namespace SharpAlert
             foreach (string area in Settings.Default.AllowedUGCLocations_Geocodes) UGC_Areas += area + "\r\n";
             UGC_Areas = UGC_Areas.Trim();
             AreaUGCOutput.Text = UGC_Areas;
+
+            string Events = string.Empty;
+            foreach (string SAME_event in Settings.Default.EnforceEventBlacklist) Events += SAME_event + "\r\n";
+            Events = Events.Trim();
+            EventBlacklistOutput.Text = Events;
         }
 
         private void SAMEAddButton_Click(object sender, EventArgs e)
@@ -128,7 +136,7 @@ namespace SharpAlert
         {
             if (!string.IsNullOrWhiteSpace(AreaUGCInput.Text))
             {
-                Settings.Default.AllowedSAMELocations_Geocodes.Add(AreaUGCInput.Text);
+                Settings.Default.AllowedUGCLocations_Geocodes.Add(AreaUGCInput.Text);
                 string UGC_Areas = string.Empty;
                 foreach (string area in Settings.Default.AllowedUGCLocations_Geocodes) UGC_Areas += area + "\r\n";
                 UGC_Areas = UGC_Areas.Trim();
@@ -216,14 +224,15 @@ namespace SharpAlert
                         if (AudioTinkeringFileDialog.ShowDialog() != DialogResult.OK)
                         {
                             Settings.Default.StartToneLocation = string.Empty;
-                            MessageBox.Show("Reverted to default audio.",
+                            MessageBox.Show(this,
+                                "Reverted to default audio.",
                                 "SharpAlert",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
                             return;
                         }
                         Settings.Default.StartToneLocation = AudioTinkeringFileDialog.FileName;
-                        MessageBox.Show("Using linked audio.",
+                        MessageBox.Show(this, "Using linked audio.",
                                 "SharpAlert",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
@@ -231,7 +240,8 @@ namespace SharpAlert
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"{ex.StackTrace} {ex.Message}",
+                    MessageBox.Show(this,
+                        $"{ex.StackTrace} {ex.Message}",
                         "SharpAlert",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
@@ -252,14 +262,16 @@ namespace SharpAlert
                         if (AudioTinkeringFileDialog.ShowDialog() != DialogResult.OK)
                         {
                             Settings.Default.EndToneLocation = string.Empty;
-                            MessageBox.Show("Reverted to default audio.",
+                            MessageBox.Show(this,
+                                "Reverted to default audio.",
                                 "SharpAlert",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
                             return;
                         }
                         Settings.Default.EndToneLocation = AudioTinkeringFileDialog.FileName;
-                        MessageBox.Show("Using linked audio.",
+                        MessageBox.Show(this,
+                                "Using linked audio.",
                                 "SharpAlert",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Information);
@@ -267,7 +279,8 @@ namespace SharpAlert
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"{ex.StackTrace} {ex.Message}",
+                    MessageBox.Show(this,
+                        $"{ex.StackTrace} {ex.Message}",
                         "SharpAlert",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);

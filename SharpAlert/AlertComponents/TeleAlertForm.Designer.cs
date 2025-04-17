@@ -51,6 +51,7 @@
             this.SpacerPanel = new System.Windows.Forms.Panel();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.AutoHideButtons = new System.Windows.Forms.Timer(this.components);
+            this.InfoTip = new System.Windows.Forms.ToolTip(this.components);
             this.TitlePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlertIcon)).BeginInit();
             this.AlertPanel.SuspendLayout();
@@ -89,6 +90,7 @@
             this.ScreenshotButton.Size = new System.Drawing.Size(35, 35);
             this.ScreenshotButton.TabIndex = 1;
             this.ScreenshotButton.Text = "📸";
+            this.InfoTip.SetToolTip(this.ScreenshotButton, "Takes a screenshot of the alert window, and saves the image to the disk.");
             this.ScreenshotButton.UseVisualStyleBackColor = false;
             this.ScreenshotButton.Visible = false;
             this.ScreenshotButton.Click += new System.EventHandler(this.ScreenshotButton_Click);
@@ -106,6 +108,7 @@
             this.DismissButton.Size = new System.Drawing.Size(115, 35);
             this.DismissButton.TabIndex = 0;
             this.DismissButton.Text = "Dismiss";
+            this.InfoTip.SetToolTip(this.DismissButton, "Closes the alert.");
             this.DismissButton.UseVisualStyleBackColor = false;
             this.DismissButton.Visible = false;
             this.DismissButton.Click += new System.EventHandler(this.DismissButton_Click);
@@ -123,6 +126,7 @@
             this.LinkButton.Size = new System.Drawing.Size(35, 35);
             this.LinkButton.TabIndex = 2;
             this.LinkButton.Text = "🔗";
+            this.InfoTip.SetToolTip(this.LinkButton, "Opens the alert URL if there is one included.");
             this.LinkButton.UseVisualStyleBackColor = false;
             this.LinkButton.Visible = false;
             this.LinkButton.Click += new System.EventHandler(this.LinkButton_Click);
@@ -290,6 +294,17 @@
             this.AutoHideButtons.Interval = 10000;
             this.AutoHideButtons.Tick += new System.EventHandler(this.AutoHideButtons_Tick);
             // 
+            // InfoTip
+            // 
+            this.InfoTip.AutomaticDelay = 250;
+            this.InfoTip.AutoPopDelay = 15000;
+            this.InfoTip.BackColor = System.Drawing.Color.White;
+            this.InfoTip.ForeColor = System.Drawing.Color.Black;
+            this.InfoTip.InitialDelay = 250;
+            this.InfoTip.IsBalloon = true;
+            this.InfoTip.ReshowDelay = 50;
+            this.InfoTip.ToolTipTitle = "What does this do?";
+            // 
             // TeleAlertForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -350,6 +365,7 @@
         private System.Windows.Forms.Panel MainPanel;
         private System.Windows.Forms.Timer AutoHideButtons;
         private System.Windows.Forms.Button ScreenshotButton;
+        private System.Windows.Forms.ToolTip InfoTip;
     }
 }
 

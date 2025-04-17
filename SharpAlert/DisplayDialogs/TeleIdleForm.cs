@@ -144,7 +144,7 @@ namespace SharpAlert
 
         private void TeleIdleForm_Resize(object sender, EventArgs e)
         {
-            MovePreventBurnIn_Tick(null, null);
+            //MovePreventBurnIn_Tick(null, null);
         }
     }
 }

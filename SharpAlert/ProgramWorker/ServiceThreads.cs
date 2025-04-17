@@ -9,5 +9,6 @@ namespace SharpAlert
         public static Thread dataProcThread;
         public static Thread historyProcThread;
         public static Thread notificationThread;
+        public static Thread heartbeatThread;
     }
 }

@@ -282,10 +282,11 @@ namespace SharpAlert
             if (oHnd == IntPtr.Zero)
                 return null;
 
-            PROCESSENTRY32 oProcInfo = new PROCESSENTRY32();
-
-            oProcInfo.dwSize =
-            (uint)Marshal.SizeOf(typeof(PROCESSENTRY32));
+            PROCESSENTRY32 oProcInfo = new PROCESSENTRY32
+            {
+                dwSize =
+                (uint)Marshal.SizeOf(typeof(PROCESSENTRY32))
+            };
 
             if (Process32First(oHnd, ref oProcInfo) == false)
                 return null;
@@ -303,7 +304,7 @@ namespace SharpAlert
                 return null;
         }
 
-        static uint TH32CS_SNAPPROCESS = 2;
+        private static readonly uint TH32CS_SNAPPROCESS = 2;
 
         [StructLayout(LayoutKind.Sequential)]
         public struct PROCESSENTRY32
