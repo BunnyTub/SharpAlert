@@ -1,0 +1,2 @@
+﻿EASEncoder Fusion is provided as is without warranty. This project is open-source, and is a fork of wolf20482's EASEncoderEnhanced project.
+This is the actual code that does all the encoding. You must compile this project as a Class Library (in Output Type).

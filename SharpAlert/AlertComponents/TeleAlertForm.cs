@@ -107,39 +107,34 @@ namespace SharpAlert
             AlertType = type;
             AlertText.SelectionStart = 0;
 
-            switch (type)
-            {
-                case "alert":
-                    TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-                    SpacerPanel.BackColor = Color.DarkOrange;
-                    TitleText.Text = "EMERGENCY ALERT";
-                    break;
-                case "update":
-                    TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-                    SpacerPanel.BackColor = Color.DarkOrange;
-                    TitleText.Text = "ALERT UPDATE";
-                    break;
-                case "cancel":
-                    TitlePanel.BackColor = Color.FromArgb(0, 80, 200);
-                    SubtitlePanel.BackColor = Color.FromArgb(0, 50, 100);
-                    SpacerPanel.BackColor = Color.FromArgb(200, 200, 200);
-                    TitleText.Text = "ALERT CANCELLED";
-                    break;
-                case "test":
-                    TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-                    SpacerPanel.BackColor = Color.DarkOrange;
-                    TitleText.Text = "ALERT TEST";
-                    break;
-                default:
-                    TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-                    SpacerPanel.BackColor = Color.DarkOrange;
-                    TitleText.Text = "EMERGENCY ALERT";
-                    break;
-            }
+            //switch (type)
+            //{
+            //    case "alert":
+            //        TitleText.BackColor = Color.Red;
+            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
+            //        TitleText.Text = "EMERGENCY ALERT";
+            //        break;
+            //    case "update":
+            //        TitleText.BackColor = Color.Red;
+            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
+            //        TitleText.Text = "ALERT UPDATE";
+            //        break;
+            //    case "cancel":
+            //        TitleText.BackColor = Color.FromArgb(0, 80, 200);
+            //        SubtitlePanel.BackColor = Color.FromArgb(0, 50, 100);
+            //        TitleText.Text = "ALERT CANCELLED";
+            //        break;
+            //    case "test":
+            //        TitleText.BackColor = Color.Red;
+            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
+            //        TitleText.Text = "ALERT TEST";
+            //        break;
+            //    default:
+            //        TitleText.BackColor = Color.Red;
+            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
+            //        TitleText.Text = "EMERGENCY ALERT";
+            //        break;
+            //}
         }
 
         private void UpdateTaskbarProgress(TaskbarProgressState state, ulong completed, ulong total)
@@ -189,9 +184,11 @@ namespace SharpAlert
                 UnlockButtons(true);
             }
 
+            StopAllAudioSilently();
+
             if (AlertType != "cancel")
             {
-                PlayStartToneFile();
+                PlayStartToneFile(false);
             }
             else
             {
@@ -205,8 +202,9 @@ namespace SharpAlert
 
             this.WindowState = FormWindowState.Normal;
 
-            if (Settings.Default.alertFullscreenWindowed)
+            if (Settings.Default.alertTitlebarControls)
             {
+                taskbarList.MarkFullscreenWindow(GotHandle, false);
                 this.FormBorderStyle = FormBorderStyle.Sizable;
                 if (!(Settings.Default.alertFullscreenDisplay >= Screen.AllScreens.Count()))
                 {
@@ -223,6 +221,7 @@ namespace SharpAlert
             }
             else
             {
+                taskbarList.MarkFullscreenWindow(GotHandle, true);
                 try
                 {
                     if (!(Settings.Default.alertFullscreenDisplay >= Screen.AllScreens.Count()))
@@ -252,10 +251,12 @@ namespace SharpAlert
 
             //SetWindowPos(GotHandle, (IntPtr)HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
             SetForegroundWindow(GotHandle);
-            taskbarList.MarkFullscreenWindow(GotHandle, true);
 
             localCursorPosition = Cursor.Position;
             MouseMoving.Start();
+
+            FlashTwo = false;
+            WindowFlash.Start();
 
             Console.WriteLine("[Alert GUI] Window shown.");
         }
@@ -269,23 +270,28 @@ namespace SharpAlert
 
         private void AlertForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (!MainEntryPoint.AllowThreadRestarts) return;
             UnlockButtons(false);
             AutoExit.Stop();
-            AutoScroller.Stop();
-            AutoHideButtons.Stop();
-            MouseMoving.Stop();
-            if (FadeOutExitReady)
+            StopAllAudioSilently();
+            if (!Settings.Default.alertCompatibilityMode)
             {
-                return;
+                if (FadeOutExitReady)
+                {
+                    return;
+                }
+                else
+                {
+                    e.Cancel = true;
+                    FadeOutAnimation.Start();
+                }
+                PlayEndToneFile(false);
             }
             else
             {
-                e.Cancel = true;
-                FadeOutAnimation.Start();
+                WindowFlash.Stop();
+                PlayEndToneFile(true);
             }
-            StopAllAudioSilently();
-            PlayFromUnmanagedSourceAndWait(Resources.ui_end_1);
-            taskbarList.MarkFullscreenWindow(GotHandle, false);
         }
 
         IntPtr GotHandle = IntPtr.Zero;
@@ -297,6 +303,7 @@ namespace SharpAlert
                 // let's assume this is a URL for now, we'll fix it later
                 Process.Start(AlertUrlStr);
                 this.Close();
+                // he said happily a few months ago
             }
             else
             {
@@ -321,12 +328,12 @@ namespace SharpAlert
             if (FlashOne)
             {
                 UpdateTaskbarProgress(TaskbarProgressState.Error, 100, 100);
-                AlertIcon.Visible = true;
+                //AlertIcon.Visible = true;
             }
             else
             {
                 UpdateTaskbarProgress(TaskbarProgressState.Normal, 100, 100);
-                AlertIcon.Visible = false;
+                //AlertIcon.Visible = false;
             }
             FlashOne = !FlashOne;
         }
@@ -337,13 +344,22 @@ namespace SharpAlert
             ScreenshotButton.Enabled = unlocked;
             LinkButton.Enabled = unlocked;
         }
+        
+        private void ShowButtons(bool shown)
+        {
+            DismissButton.Visible = shown;
+            ScreenshotButton.Visible = shown;
+            LinkButton.Visible = shown;
+        }
 
         private void AutoTTS_Tick(object sender, EventArgs e)
         {
-            if (!ToneDone) return;
-            AutoTTS.Stop();
-            PlayFromTTSEngine(AlertIntroTextStr);
-            PlayWithFailoverToTTS(AlertAudioUrlStr, AlertTextStr);
+            if (ToneDone)
+            {
+                AutoTTS.Stop();
+                PlayFromTTSEngine(AlertIntroTextStr, false);
+                PlayWithFailoverToTTS(AlertAudioUrlStr, AlertTextStr);
+            }
         }
 
         private void FadeInAnimation_Tick(object sender, EventArgs e)
@@ -362,17 +378,11 @@ namespace SharpAlert
 
         private void FadeOutAnimation_Tick(object sender, EventArgs e)
         {
-            if (Settings.Default.alertCompatibilityMode)
-            {
-                FadeOutAnimation.Stop();
-                FadeOutExitReady = true;
-                this.Close();
-            }
-
             if (this.Opacity == 0)
             {
                 FadeOutAnimation.Stop();
                 FadeOutExitReady = true;
+                WindowFlash.Stop();
                 this.Hide();
                 this.Close();
             }
@@ -389,9 +399,7 @@ namespace SharpAlert
                 MouseMoving.Stop();
                 AutoScroller.Stop();
                 AlertText.SelectionStart = 0;
-                DismissButton.Visible = true;
-                LinkButton.Visible = true;
-                ScreenshotButton.Visible = true;
+                ShowButtons(true);
                 AutoHideButtons.Start();
             }
         }
@@ -450,9 +458,7 @@ namespace SharpAlert
         private void AutoHideButtons_Tick(object sender, EventArgs e)
         {
             AutoHideButtons.Stop();
-            DismissButton.Visible = true;
-            LinkButton.Visible = true;
-            ScreenshotButton.Visible = true;
+            ShowButtons(false);
             localCursorPosition = Cursor.Position;
             MouseMoving.Start();
         }
@@ -463,7 +469,7 @@ namespace SharpAlert
             MouseMoving.Stop();
             AutoHideButtons.Stop();
             UnlockButtons(false);
-            AlertIcon.Visible = true;
+            //AlertIcon.Visible = true;
             AlertText.SelectionStart = 0;
             AlertText.ScrollToCaret();
             try
@@ -499,6 +505,43 @@ namespace SharpAlert
                 MessageBox.Show(ex.Message, "SharpAlert");
             }
             this.Close();
+        }
+
+        private void TerminateSelf_Tick(object sender, EventArgs e)
+        {
+            if (!MainEntryPoint.AllowThreadRestarts)
+            {
+                FadeOutExitReady = true;
+                this.Close();
+            }
+        }
+
+        private bool FlashTwo = false;
+
+        private void WindowFlash_Tick(object sender, EventArgs e)
+        {
+            if (FlashTwo)
+            {
+                TitleText.BackColor = Color.Red;
+                LeftOutlinePanel.BackColor = Color.Red;
+                RightOutlinePanel.BackColor = Color.Red;
+                BottomOutlinePanel.BackColor = Color.Red;
+                SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+            }
+            else
+            {
+                TitleText.BackColor = Color.SlateGray;
+                LeftOutlinePanel.BackColor = Color.SlateGray;
+                RightOutlinePanel.BackColor = Color.SlateGray;
+                BottomOutlinePanel.BackColor = Color.SlateGray;
+                SubtitlePanel.BackColor = Color.DarkSlateGray;
+            }
+            FlashTwo = !FlashTwo;
+        }
+
+        private void EnsureTopWindow_Tick(object sender, EventArgs e)
+        {
+            this.TopMost = false;
         }
     }
 }

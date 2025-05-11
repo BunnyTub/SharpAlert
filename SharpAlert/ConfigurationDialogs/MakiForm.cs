@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SharpAlert
+namespace SharpAlert.ConfigurationDialogs
 {
-    public partial class SoundConfigurationForm : Form
+    public partial class MakiForm : Form
     {
-        public SoundConfigurationForm()
+        public MakiForm()
         {
             InitializeComponent();
         }

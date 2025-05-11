@@ -41,19 +41,23 @@ namespace SharpAlert
 
         private void ServerConfigurationForm_Load(object sender, EventArgs e)
         {
-            AppTypeCombo.SelectedIndex = Settings.Default.RunnerType;
-            AppTypeCombo.SelectedIndexChanged += (a, b) => Settings.Default.RunnerType = (byte)((ComboBox)a).SelectedIndex;
-            ClientServerURLInput.Text = Settings.Default.ClientServerURL;
-            ClientServerURLInput.TextChanged += (a, b) => Settings.Default.ClientServerURL = ((TextBox)a).Text.Trim();
-            ClientServerPortInput.Text = Settings.Default.ClientServerPort;
-            ClientServerPortInput.TextChanged += (a, b) => Settings.Default.ClientServerPort = ((TextBox)a).Text.Trim();
+            //AppTypeCombo.SelectedIndex = Settings.Default.RunnerType;
+            //AppTypeCombo.SelectedIndexChanged += (a, b) => Settings.Default.RunnerType = (byte)((ComboBox)a).SelectedIndex;
+            //ClientServerURLInput.Text = Settings.Default.ClientServerURL;
+            //ClientServerURLInput.TextChanged += (a, b) => Settings.Default.ClientServerURL = ((TextBox)a).Text.Trim();
+            //ClientServerPortInput.Text = Settings.Default.ClientServerPort;
+            //ClientServerPortInput.TextChanged += (a, b) => Settings.Default.ClientServerPort = ((TextBox)a).Text.Trim();
+            this.Close();
         }
 
         private void ServerConfigurationForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            MessageBox.Show("Your changes have been saved. SharpAlert will now close.");
-            Settings.Default.Save();
-            Environment.Exit(0);
+            MessageBox.Show("Server settings have been deprecated.",
+                "SharpAlert",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Exclamation);
+            //Settings.Default.Save();
+            //Environment.Exit(0);
         }
 
         private void BusyLock_Tick(object sender, EventArgs e)

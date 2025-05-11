@@ -158,6 +158,7 @@ namespace SharpAlert
                                     if (Settings.Default.alertNoGUI) continue;
                                     else
                                     {
+                                        if (!Settings.Default.showExpiryMessages) continue;
                                         info.UpdateFields(CompiledString);
                                         info.ShowDialog();
                                     }
@@ -207,7 +208,7 @@ namespace SharpAlert
                 foreach (Match infoMatch in infoMatches)
                 {
                     infoProc++;
-                    Console.WriteLine($"[History Processor] Processing {infoProc} of {infoMatches.Count}.");
+                    Console.WriteLine($"[History Processor] Processing info tag.");
 
                     try
                     {

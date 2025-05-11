@@ -29,186 +29,43 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.TitlePanel = new System.Windows.Forms.Panel();
-            this.AlertIcon = new System.Windows.Forms.PictureBox();
-            this.TitleText = new System.Windows.Forms.Label();
-            this.TitleSpacer = new System.Windows.Forms.Panel();
             this.AutoExit = new System.Windows.Forms.Timer(this.components);
-            this.DismissButton = new System.Windows.Forms.Button();
-            this.SubtitlePanel = new System.Windows.Forms.Panel();
-            this.SubtitleText = new System.Windows.Forms.Label();
-            this.SubtitleSpacer = new System.Windows.Forms.Panel();
-            this.SpeakerButton = new System.Windows.Forms.Button();
             this.EnsureTopWindow = new System.Windows.Forms.Timer(this.components);
-            this.LinkButton = new System.Windows.Forms.Button();
             this.FlashTaskbarStatus = new System.Windows.Forms.Timer(this.components);
             this.AutoTTS = new System.Windows.Forms.Timer(this.components);
             this.FadeInAnimation = new System.Windows.Forms.Timer(this.components);
             this.FadeOutAnimation = new System.Windows.Forms.Timer(this.components);
-            this.MainPanel = new System.Windows.Forms.Panel();
-            this.AlertPanel = new System.Windows.Forms.Panel();
-            this.AlertText = new System.Windows.Forms.TextBox();
-            this.ButtonsPanel = new System.Windows.Forms.Panel();
-            this.SpacerPanel = new System.Windows.Forms.Panel();
             this.InfoTip = new System.Windows.Forms.ToolTip(this.components);
-            this.TitlePanel.SuspendLayout();
+            this.LinkButton = new System.Windows.Forms.Button();
+            this.SpeakerButton = new System.Windows.Forms.Button();
+            this.DismissButton = new System.Windows.Forms.Button();
+            this.AlertIcon = new System.Windows.Forms.PictureBox();
+            this.SubtitlePanel = new System.Windows.Forms.Panel();
+            this.SubtitleText = new System.Windows.Forms.Label();
+            this.SubtitleSpacer = new System.Windows.Forms.Panel();
+            this.OutlineContainerPanel = new SharpAlert.ToolboxStuff.BorderPanel();
+            this.AlertLinkText = new System.Windows.Forms.LinkLabel();
+            this.AlertText = new System.Windows.Forms.TextBox();
+            this.TitleText = new System.Windows.Forms.Label();
+            this.ResizeBottomRight = new System.Windows.Forms.Panel();
+            this.WindowFlash = new System.Windows.Forms.Timer(this.components);
+            this.TerminateSelf = new System.Windows.Forms.Timer(this.components);
+            this.ChildFollowsParent = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.AlertIcon)).BeginInit();
             this.SubtitlePanel.SuspendLayout();
-            this.MainPanel.SuspendLayout();
-            this.AlertPanel.SuspendLayout();
-            this.ButtonsPanel.SuspendLayout();
+            this.OutlineContainerPanel.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // TitlePanel
-            // 
-            this.TitlePanel.BackColor = System.Drawing.Color.Red;
-            this.TitlePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.TitlePanel.Controls.Add(this.AlertIcon);
-            this.TitlePanel.Controls.Add(this.TitleText);
-            this.TitlePanel.Controls.Add(this.TitleSpacer);
-            this.TitlePanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.TitlePanel.ForeColor = System.Drawing.Color.White;
-            this.TitlePanel.Location = new System.Drawing.Point(0, 0);
-            this.TitlePanel.Margin = new System.Windows.Forms.Padding(10);
-            this.TitlePanel.Name = "TitlePanel";
-            this.TitlePanel.Size = new System.Drawing.Size(724, 60);
-            this.TitlePanel.TabIndex = 1;
-            // 
-            // AlertIcon
-            // 
-            this.AlertIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.AlertIcon.Image = global::SharpAlert.Properties.Resources.WarningApp;
-            this.AlertIcon.Location = new System.Drawing.Point(664, 0);
-            this.AlertIcon.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.AlertIcon.Name = "AlertIcon";
-            this.AlertIcon.Size = new System.Drawing.Size(60, 60);
-            this.AlertIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.AlertIcon.TabIndex = 2;
-            this.AlertIcon.TabStop = false;
-            // 
-            // TitleText
-            // 
-            this.TitleText.BackColor = System.Drawing.Color.Transparent;
-            this.TitleText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TitleText.Font = new System.Drawing.Font("Arial", 32F, System.Drawing.FontStyle.Bold);
-            this.TitleText.Location = new System.Drawing.Point(4, 0);
-            this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(720, 60);
-            this.TitleText.TabIndex = 3;
-            this.TitleText.Text = "EMERGENCY ALERT";
-            this.TitleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // TitleSpacer
-            // 
-            this.TitleSpacer.BackColor = System.Drawing.Color.Transparent;
-            this.TitleSpacer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.TitleSpacer.Dock = System.Windows.Forms.DockStyle.Left;
-            this.TitleSpacer.ForeColor = System.Drawing.Color.White;
-            this.TitleSpacer.Location = new System.Drawing.Point(0, 0);
-            this.TitleSpacer.Margin = new System.Windows.Forms.Padding(10);
-            this.TitleSpacer.Name = "TitleSpacer";
-            this.TitleSpacer.Size = new System.Drawing.Size(4, 60);
-            this.TitleSpacer.TabIndex = 2;
             // 
             // AutoExit
             // 
             this.AutoExit.Interval = 300000;
             this.AutoExit.Tick += new System.EventHandler(this.AutoExit_Tick);
             // 
-            // DismissButton
-            // 
-            this.DismissButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.DismissButton.BackColor = System.Drawing.Color.White;
-            this.DismissButton.Enabled = false;
-            this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DismissButton.Font = new System.Drawing.Font("Arial", 18F);
-            this.DismissButton.ForeColor = System.Drawing.Color.Black;
-            this.DismissButton.Location = new System.Drawing.Point(606, 2);
-            this.DismissButton.Name = "DismissButton";
-            this.DismissButton.Size = new System.Drawing.Size(115, 35);
-            this.DismissButton.TabIndex = 0;
-            this.DismissButton.Text = "Dismiss";
-            this.InfoTip.SetToolTip(this.DismissButton, "Closes the alert.");
-            this.DismissButton.UseVisualStyleBackColor = false;
-            this.DismissButton.Click += new System.EventHandler(this.DismissButton_Click);
-            // 
-            // SubtitlePanel
-            // 
-            this.SubtitlePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SubtitlePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.SubtitlePanel.Controls.Add(this.SubtitleText);
-            this.SubtitlePanel.Controls.Add(this.SubtitleSpacer);
-            this.SubtitlePanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.SubtitlePanel.ForeColor = System.Drawing.Color.White;
-            this.SubtitlePanel.Location = new System.Drawing.Point(0, 60);
-            this.SubtitlePanel.Margin = new System.Windows.Forms.Padding(10);
-            this.SubtitlePanel.Name = "SubtitlePanel";
-            this.SubtitlePanel.Size = new System.Drawing.Size(724, 32);
-            this.SubtitlePanel.TabIndex = 7;
-            // 
-            // SubtitleText
-            // 
-            this.SubtitleText.BackColor = System.Drawing.Color.Transparent;
-            this.SubtitleText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SubtitleText.Font = new System.Drawing.Font("Arial", 18F);
-            this.SubtitleText.Location = new System.Drawing.Point(10, 0);
-            this.SubtitleText.Name = "SubtitleText";
-            this.SubtitleText.Size = new System.Drawing.Size(714, 32);
-            this.SubtitleText.TabIndex = 3;
-            this.SubtitleText.Text = "Short Alert Description";
-            this.SubtitleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // SubtitleSpacer
-            // 
-            this.SubtitleSpacer.BackColor = System.Drawing.Color.Transparent;
-            this.SubtitleSpacer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.SubtitleSpacer.Dock = System.Windows.Forms.DockStyle.Left;
-            this.SubtitleSpacer.ForeColor = System.Drawing.Color.White;
-            this.SubtitleSpacer.Location = new System.Drawing.Point(0, 0);
-            this.SubtitleSpacer.Margin = new System.Windows.Forms.Padding(10);
-            this.SubtitleSpacer.Name = "SubtitleSpacer";
-            this.SubtitleSpacer.Size = new System.Drawing.Size(10, 32);
-            this.SubtitleSpacer.TabIndex = 2;
-            // 
-            // SpeakerButton
-            // 
-            this.SpeakerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.SpeakerButton.BackColor = System.Drawing.Color.White;
-            this.SpeakerButton.Enabled = false;
-            this.SpeakerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SpeakerButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
-            this.SpeakerButton.ForeColor = System.Drawing.Color.Black;
-            this.SpeakerButton.Location = new System.Drawing.Point(565, 2);
-            this.SpeakerButton.Name = "SpeakerButton";
-            this.SpeakerButton.Size = new System.Drawing.Size(35, 35);
-            this.SpeakerButton.TabIndex = 1;
-            this.SpeakerButton.Text = "🔊";
-            this.InfoTip.SetToolTip(this.SpeakerButton, "Uses text to speech to read the text out loud.");
-            this.SpeakerButton.UseVisualStyleBackColor = false;
-            this.SpeakerButton.Click += new System.EventHandler(this.SpeakerButton_Click);
-            // 
             // EnsureTopWindow
             // 
             this.EnsureTopWindow.Enabled = true;
             this.EnsureTopWindow.Interval = 1000;
             this.EnsureTopWindow.Tick += new System.EventHandler(this.EnsureTopWindow_Tick);
-            // 
-            // LinkButton
-            // 
-            this.LinkButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.LinkButton.BackColor = System.Drawing.Color.White;
-            this.LinkButton.Enabled = false;
-            this.LinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LinkButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
-            this.LinkButton.ForeColor = System.Drawing.Color.Black;
-            this.LinkButton.Location = new System.Drawing.Point(524, 2);
-            this.LinkButton.Name = "LinkButton";
-            this.LinkButton.Size = new System.Drawing.Size(35, 35);
-            this.LinkButton.TabIndex = 2;
-            this.LinkButton.Text = "🔗";
-            this.InfoTip.SetToolTip(this.LinkButton, "Opens the alert URL if there is one included.");
-            this.LinkButton.UseVisualStyleBackColor = false;
-            this.LinkButton.Click += new System.EventHandler(this.LinkButton_Click);
             // 
             // FlashTaskbarStatus
             // 
@@ -230,61 +87,6 @@
             this.FadeOutAnimation.Interval = 6;
             this.FadeOutAnimation.Tick += new System.EventHandler(this.FadeOutAnimation_Tick);
             // 
-            // MainPanel
-            // 
-            this.MainPanel.Controls.Add(this.AlertPanel);
-            this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainPanel.Location = new System.Drawing.Point(0, 98);
-            this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(724, 237);
-            this.MainPanel.TabIndex = 10;
-            // 
-            // AlertPanel
-            // 
-            this.AlertPanel.BackColor = System.Drawing.Color.Black;
-            this.AlertPanel.Controls.Add(this.AlertText);
-            this.AlertPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AlertPanel.Font = new System.Drawing.Font("Segoe UI", 18F);
-            this.AlertPanel.Location = new System.Drawing.Point(0, 0);
-            this.AlertPanel.Name = "AlertPanel";
-            this.AlertPanel.Size = new System.Drawing.Size(724, 237);
-            this.AlertPanel.TabIndex = 5;
-            // 
-            // AlertText
-            // 
-            this.AlertText.BackColor = System.Drawing.Color.Black;
-            this.AlertText.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.AlertText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AlertText.Font = new System.Drawing.Font("Arial", 18F);
-            this.AlertText.ForeColor = System.Drawing.Color.White;
-            this.AlertText.Location = new System.Drawing.Point(0, 0);
-            this.AlertText.Multiline = true;
-            this.AlertText.Name = "AlertText";
-            this.AlertText.ReadOnly = true;
-            this.AlertText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.AlertText.Size = new System.Drawing.Size(724, 237);
-            this.AlertText.TabIndex = 3;
-            // 
-            // ButtonsPanel
-            // 
-            this.ButtonsPanel.Controls.Add(this.DismissButton);
-            this.ButtonsPanel.Controls.Add(this.SpeakerButton);
-            this.ButtonsPanel.Controls.Add(this.LinkButton);
-            this.ButtonsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ButtonsPanel.Location = new System.Drawing.Point(0, 335);
-            this.ButtonsPanel.Name = "ButtonsPanel";
-            this.ButtonsPanel.Size = new System.Drawing.Size(724, 40);
-            this.ButtonsPanel.TabIndex = 6;
-            // 
-            // SpacerPanel
-            // 
-            this.SpacerPanel.BackColor = System.Drawing.Color.DarkOrange;
-            this.SpacerPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.SpacerPanel.Location = new System.Drawing.Point(0, 92);
-            this.SpacerPanel.Name = "SpacerPanel";
-            this.SpacerPanel.Size = new System.Drawing.Size(724, 6);
-            this.SpacerPanel.TabIndex = 11;
-            // 
             // InfoTip
             // 
             this.InfoTip.AutomaticDelay = 250;
@@ -296,22 +98,222 @@
             this.InfoTip.ReshowDelay = 50;
             this.InfoTip.ToolTipTitle = "What does this do?";
             // 
+            // LinkButton
+            // 
+            this.LinkButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.LinkButton.BackColor = System.Drawing.Color.White;
+            this.LinkButton.Enabled = false;
+            this.LinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LinkButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
+            this.LinkButton.ForeColor = System.Drawing.Color.Black;
+            this.LinkButton.Location = new System.Drawing.Point(516, 329);
+            this.LinkButton.Name = "LinkButton";
+            this.LinkButton.Size = new System.Drawing.Size(35, 35);
+            this.LinkButton.TabIndex = 2;
+            this.LinkButton.Text = "🔗";
+            this.InfoTip.SetToolTip(this.LinkButton, "Opens the alert URL if there is one included.");
+            this.LinkButton.UseVisualStyleBackColor = false;
+            this.LinkButton.Visible = false;
+            this.LinkButton.Click += new System.EventHandler(this.LinkButton_Click);
+            // 
+            // SpeakerButton
+            // 
+            this.SpeakerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.SpeakerButton.BackColor = System.Drawing.Color.White;
+            this.SpeakerButton.Enabled = false;
+            this.SpeakerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SpeakerButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
+            this.SpeakerButton.ForeColor = System.Drawing.Color.Black;
+            this.SpeakerButton.Location = new System.Drawing.Point(557, 329);
+            this.SpeakerButton.Name = "SpeakerButton";
+            this.SpeakerButton.Size = new System.Drawing.Size(35, 35);
+            this.SpeakerButton.TabIndex = 1;
+            this.SpeakerButton.Text = "🔊";
+            this.InfoTip.SetToolTip(this.SpeakerButton, "Uses text to speech to read the text out loud.");
+            this.SpeakerButton.UseVisualStyleBackColor = false;
+            this.SpeakerButton.Click += new System.EventHandler(this.SpeakerButton_Click);
+            // 
+            // DismissButton
+            // 
+            this.DismissButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.DismissButton.BackColor = System.Drawing.Color.White;
+            this.DismissButton.Enabled = false;
+            this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DismissButton.Font = new System.Drawing.Font("Arial", 18F);
+            this.DismissButton.ForeColor = System.Drawing.Color.Black;
+            this.DismissButton.Location = new System.Drawing.Point(598, 329);
+            this.DismissButton.Name = "DismissButton";
+            this.DismissButton.Size = new System.Drawing.Size(115, 35);
+            this.DismissButton.TabIndex = 0;
+            this.DismissButton.Text = "Dismiss";
+            this.InfoTip.SetToolTip(this.DismissButton, "Closes the alert.");
+            this.DismissButton.UseVisualStyleBackColor = false;
+            this.DismissButton.Click += new System.EventHandler(this.DismissButton_Click);
+            // 
+            // AlertIcon
+            // 
+            this.AlertIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.AlertIcon.BackColor = System.Drawing.Color.Red;
+            this.AlertIcon.Image = global::SharpAlert.Properties.Resources.WarningApp;
+            this.AlertIcon.Location = new System.Drawing.Point(665, 4);
+            this.AlertIcon.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.AlertIcon.Name = "AlertIcon";
+            this.AlertIcon.Size = new System.Drawing.Size(48, 48);
+            this.AlertIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.AlertIcon.TabIndex = 2;
+            this.AlertIcon.TabStop = false;
+            this.AlertIcon.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AlertIcon_MouseDown);
+            // 
+            // SubtitlePanel
+            // 
+            this.SubtitlePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SubtitlePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.SubtitlePanel.Controls.Add(this.SubtitleText);
+            this.SubtitlePanel.Controls.Add(this.SubtitleSpacer);
+            this.SubtitlePanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SubtitlePanel.ForeColor = System.Drawing.Color.White;
+            this.SubtitlePanel.Location = new System.Drawing.Point(4, 54);
+            this.SubtitlePanel.Margin = new System.Windows.Forms.Padding(10);
+            this.SubtitlePanel.Name = "SubtitlePanel";
+            this.SubtitlePanel.Size = new System.Drawing.Size(712, 32);
+            this.SubtitlePanel.TabIndex = 7;
+            // 
+            // SubtitleText
+            // 
+            this.SubtitleText.BackColor = System.Drawing.Color.Transparent;
+            this.SubtitleText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SubtitleText.Font = new System.Drawing.Font("Arial", 18F);
+            this.SubtitleText.Location = new System.Drawing.Point(8, 0);
+            this.SubtitleText.Name = "SubtitleText";
+            this.SubtitleText.Size = new System.Drawing.Size(704, 32);
+            this.SubtitleText.TabIndex = 3;
+            this.SubtitleText.Text = "Short Alert Description";
+            this.SubtitleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.SubtitleText.DoubleClick += new System.EventHandler(this.SubtitleText_DoubleClick);
+            // 
+            // SubtitleSpacer
+            // 
+            this.SubtitleSpacer.BackColor = System.Drawing.Color.Transparent;
+            this.SubtitleSpacer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.SubtitleSpacer.Dock = System.Windows.Forms.DockStyle.Left;
+            this.SubtitleSpacer.ForeColor = System.Drawing.Color.White;
+            this.SubtitleSpacer.Location = new System.Drawing.Point(0, 0);
+            this.SubtitleSpacer.Margin = new System.Windows.Forms.Padding(10);
+            this.SubtitleSpacer.Name = "SubtitleSpacer";
+            this.SubtitleSpacer.Size = new System.Drawing.Size(8, 32);
+            this.SubtitleSpacer.TabIndex = 2;
+            // 
+            // OutlineContainerPanel
+            // 
+            this.OutlineContainerPanel.BorderColor = System.Drawing.Color.Red;
+            this.OutlineContainerPanel.BorderThickness = 4;
+            this.OutlineContainerPanel.Controls.Add(this.DismissButton);
+            this.OutlineContainerPanel.Controls.Add(this.SpeakerButton);
+            this.OutlineContainerPanel.Controls.Add(this.LinkButton);
+            this.OutlineContainerPanel.Controls.Add(this.AlertLinkText);
+            this.OutlineContainerPanel.Controls.Add(this.AlertIcon);
+            this.OutlineContainerPanel.Controls.Add(this.AlertText);
+            this.OutlineContainerPanel.Controls.Add(this.SubtitlePanel);
+            this.OutlineContainerPanel.Controls.Add(this.TitleText);
+            this.OutlineContainerPanel.Controls.Add(this.ResizeBottomRight);
+            this.OutlineContainerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.OutlineContainerPanel.Location = new System.Drawing.Point(0, 0);
+            this.OutlineContainerPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.OutlineContainerPanel.Name = "OutlineContainerPanel";
+            this.OutlineContainerPanel.Padding = new System.Windows.Forms.Padding(4);
+            this.OutlineContainerPanel.Size = new System.Drawing.Size(720, 371);
+            this.OutlineContainerPanel.TabIndex = 12;
+            this.OutlineContainerPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.OutlineContainerPanel_Paint);
+            // 
+            // AlertLinkText
+            // 
+            this.AlertLinkText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.AlertLinkText.BackColor = System.Drawing.Color.Transparent;
+            this.AlertLinkText.Font = new System.Drawing.Font("Arial", 12F);
+            this.AlertLinkText.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
+            this.AlertLinkText.Location = new System.Drawing.Point(9, 329);
+            this.AlertLinkText.Margin = new System.Windows.Forms.Padding(0);
+            this.AlertLinkText.Name = "AlertLinkText";
+            this.AlertLinkText.Size = new System.Drawing.Size(504, 35);
+            this.AlertLinkText.TabIndex = 11;
+            this.AlertLinkText.TabStop = true;
+            this.AlertLinkText.Text = "https://sharpalert.bunnytub.com/";
+            this.AlertLinkText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.AlertLinkText.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AlertLinkText_LinkClicked);
+            // 
+            // AlertText
+            // 
+            this.AlertText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.AlertText.BackColor = System.Drawing.Color.Black;
+            this.AlertText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.AlertText.Font = new System.Drawing.Font("Arial", 18F);
+            this.AlertText.ForeColor = System.Drawing.Color.White;
+            this.AlertText.Location = new System.Drawing.Point(4, 85);
+            this.AlertText.Multiline = true;
+            this.AlertText.Name = "AlertText";
+            this.AlertText.ReadOnly = true;
+            this.AlertText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.AlertText.Size = new System.Drawing.Size(711, 242);
+            this.AlertText.TabIndex = 8;
+            // 
+            // TitleText
+            // 
+            this.TitleText.BackColor = System.Drawing.Color.Red;
+            this.TitleText.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TitleText.Font = new System.Drawing.Font("Arial", 32F, System.Drawing.FontStyle.Bold);
+            this.TitleText.Location = new System.Drawing.Point(4, 4);
+            this.TitleText.Name = "TitleText";
+            this.TitleText.Size = new System.Drawing.Size(712, 50);
+            this.TitleText.TabIndex = 9;
+            this.TitleText.Text = "EMERGENCY ALERT";
+            this.TitleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.TitleText.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TitleText_MouseDown);
+            // 
+            // ResizeBottomRight
+            // 
+            this.ResizeBottomRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ResizeBottomRight.BackColor = System.Drawing.Color.Transparent;
+            this.ResizeBottomRight.Cursor = System.Windows.Forms.Cursors.SizeNWSE;
+            this.ResizeBottomRight.Location = new System.Drawing.Point(704, 355);
+            this.ResizeBottomRight.Name = "ResizeBottomRight";
+            this.ResizeBottomRight.Size = new System.Drawing.Size(16, 16);
+            this.ResizeBottomRight.TabIndex = 10;
+            this.ResizeBottomRight.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ResizableThingPanel_MouseDown);
+            this.ResizeBottomRight.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ResizableThingPanel_MouseMove);
+            this.ResizeBottomRight.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ResizableThingPanel_MouseUp);
+            // 
+            // WindowFlash
+            // 
+            this.WindowFlash.Interval = 1000;
+            this.WindowFlash.Tick += new System.EventHandler(this.WindowFlash_Tick);
+            // 
+            // TerminateSelf
+            // 
+            this.TerminateSelf.Enabled = true;
+            this.TerminateSelf.Interval = 500;
+            this.TerminateSelf.Tick += new System.EventHandler(this.TerminateSelf_Tick);
+            // 
+            // ChildFollowsParent
+            // 
+            this.ChildFollowsParent.Enabled = true;
+            this.ChildFollowsParent.Interval = 75;
+            this.ChildFollowsParent.Tick += new System.EventHandler(this.ChildFollowsParent_Tick);
+            // 
             // AlertForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(724, 375);
+            this.ClientSize = new System.Drawing.Size(720, 371);
             this.ControlBox = false;
-            this.Controls.Add(this.MainPanel);
-            this.Controls.Add(this.SpacerPanel);
-            this.Controls.Add(this.SubtitlePanel);
-            this.Controls.Add(this.TitlePanel);
-            this.Controls.Add(this.ButtonsPanel);
+            this.Controls.Add(this.OutlineContainerPanel);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AlertForm";
@@ -324,41 +326,37 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AlertForm_FormClosed);
             this.Load += new System.EventHandler(this.AlertForm_Load);
             this.Shown += new System.EventHandler(this.AlertForm_Shown);
-            this.TitlePanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.AlertIcon)).EndInit();
             this.SubtitlePanel.ResumeLayout(false);
-            this.MainPanel.ResumeLayout(false);
-            this.AlertPanel.ResumeLayout(false);
-            this.AlertPanel.PerformLayout();
-            this.ButtonsPanel.ResumeLayout(false);
+            this.OutlineContainerPanel.ResumeLayout(false);
+            this.OutlineContainerPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel TitlePanel;
-        private System.Windows.Forms.PictureBox AlertIcon;
         private System.Windows.Forms.Timer AutoExit;
-        private System.Windows.Forms.Label TitleText;
-        private System.Windows.Forms.Panel TitleSpacer;
-        private System.Windows.Forms.Button DismissButton;
-        private System.Windows.Forms.Panel SubtitlePanel;
-        private System.Windows.Forms.Label SubtitleText;
-        private System.Windows.Forms.Panel SubtitleSpacer;
-        private System.Windows.Forms.Button SpeakerButton;
         private System.Windows.Forms.Timer EnsureTopWindow;
-        private System.Windows.Forms.Button LinkButton;
         private System.Windows.Forms.Timer FlashTaskbarStatus;
         private System.Windows.Forms.Timer AutoTTS;
         private System.Windows.Forms.Timer FadeInAnimation;
         private System.Windows.Forms.Timer FadeOutAnimation;
-        private System.Windows.Forms.Panel MainPanel;
-        private System.Windows.Forms.Panel AlertPanel;
-        private System.Windows.Forms.Panel ButtonsPanel;
-        private System.Windows.Forms.TextBox AlertText;
-        private System.Windows.Forms.Panel SpacerPanel;
         private System.Windows.Forms.ToolTip InfoTip;
+        private System.Windows.Forms.PictureBox AlertIcon;
+        private System.Windows.Forms.Panel SubtitlePanel;
+        private System.Windows.Forms.Label SubtitleText;
+        private System.Windows.Forms.Panel SubtitleSpacer;
+        private ToolboxStuff.BorderPanel OutlineContainerPanel;
+        private System.Windows.Forms.TextBox AlertText;
+        private System.Windows.Forms.Label TitleText;
+        private System.Windows.Forms.Timer WindowFlash;
+        private System.Windows.Forms.Timer TerminateSelf;
+        private System.Windows.Forms.Button DismissButton;
+        private System.Windows.Forms.Button SpeakerButton;
+        private System.Windows.Forms.Button LinkButton;
+        private System.Windows.Forms.Panel ResizeBottomRight;
+        private System.Windows.Forms.LinkLabel AlertLinkText;
+        private System.Windows.Forms.Timer ChildFollowsParent;
     }
 }
 

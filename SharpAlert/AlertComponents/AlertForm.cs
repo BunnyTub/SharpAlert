@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using static SharpAlert.AudioManager;
+using static SharpAlert.MainEntryPoint;
 
 namespace SharpAlert
 {
@@ -107,39 +108,55 @@ namespace SharpAlert
             AlertType = type;
             AlertText.SelectionStart = 0;
 
-            switch (type)
+            if (string.IsNullOrWhiteSpace(AlertUrlStr))
             {
-                case "alert":
-                    TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-                    SpacerPanel.BackColor = Color.DarkOrange;
-                    TitleText.Text = "EMERGENCY ALERT";
-                    break;
-                case "update":
-                    TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-                    SpacerPanel.BackColor = Color.DarkOrange;
-                    TitleText.Text = "ALERT UPDATE";
-                    break;
-                case "cancel":
-                    TitlePanel.BackColor = Color.FromArgb(0, 80, 200);
-                    SubtitlePanel.BackColor = Color.FromArgb(0, 50, 100);
-                    SpacerPanel.BackColor = Color.FromArgb(200, 200, 200);
-                    TitleText.Text = "ALERT CANCELLED";
-                    break;
-                case "test":
-                    TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-                    SpacerPanel.BackColor = Color.DarkOrange;
-                    TitleText.Text = "ALERT TEST";
-                    break;
-                default:
-                    TitlePanel.BackColor = Color.Red;
-                    SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-                    SpacerPanel.BackColor = Color.DarkOrange;
-                    TitleText.Text = "EMERGENCY ALERT";
-                    break;
+                AlertLinkText.Enabled = false;
+                AlertLinkText.Text = string.Empty;
             }
+            else
+            {
+                AlertLinkText.Enabled = true;
+                AlertLinkText.Text = AlertUrlStr;
+            }
+
+            if (!string.IsNullOrWhiteSpace(AlertImageUrlStr))
+            {
+
+            }
+
+            //switch (type)
+            //{
+            //    case "alert":
+            //        TitleText.BackColor = Color.Red;
+            //        OutlineContainerPanel.BorderColor = Color.Red;
+            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
+            //        TitleText.Text = "EMERGENCY ALERT";
+            //        break;
+            //    case "update":
+            //        TitleText.BackColor = Color.Red;
+            //        OutlineContainerPanel.BorderColor = Color.Red;
+            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
+            //        TitleText.Text = "ALERT UPDATE";
+            //        break;
+            //    case "cancel":
+            //        TitleText.BackColor = Color.FromArgb(0, 80, 200);
+            //        OutlineContainerPanel.BorderColor = Color.FromArgb(0, 80, 200);
+            //        SubtitlePanel.BackColor = Color.FromArgb(0, 50, 100);
+            //        TitleText.Text = "ALERT CANCELLED";
+            //        break;
+            //    case "test":
+            //        TitleText.BackColor = Color.Red;
+            //        OutlineContainerPanel.BorderColor = Color.Red;
+            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
+            //        TitleText.Text = "ALERT TEST";
+            //        break;
+            //    default:
+            //        TitleText.BackColor = Color.Red;
+            //        OutlineContainerPanel.BorderColor = Color.Red;
+            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
+            //        TitleText.Text = "EMERGENCY ALERT";
+            //        break;
+            //}
         }
 
         private void UpdateTaskbarProgress(TaskbarProgressState state, ulong completed, ulong total)
@@ -164,12 +181,17 @@ namespace SharpAlert
             this.Close();
         }
 
+        private readonly Color ColorTitleAndBordersOne = Color.Red;
+        private readonly Color ColorSubtitleOnlyOne = Color.FromArgb(140, 0, 0);
+        private readonly Color ColorTitleAndBordersTwo = Color.SlateGray;
+        private readonly Color ColorSubtitleOnlyTwo = Color.DarkSlateGray;
+
         private void AlertForm_Shown(object sender, EventArgs e)
         {
             AutoExit.Interval = Settings.Default.alertTimeout * 60000;
             AutoExit.Start();
 
-            this.Text = $"SharpAlert - {DateTime.Now:f}";
+            this.Text = $"SharpAlert - {AlertSubtitleStr}";
             UpdateTaskbarProgress(TaskbarProgressState.Error, 100, 100);
             GotHandle = this.Handle;
 
@@ -186,6 +208,8 @@ namespace SharpAlert
                 UnlockButtons(true);
             }
 
+            StopAllAudioSilently();
+
             if (AlertType != "cancel")
             {
                 //PlayFromManagedSource(GenerateFSKStream($"{AlertIDStr}|{DateTime.UtcNow:s)}|{AlertType}|{AlertSubtitleStr.Replace("|", "_")}"));
@@ -195,6 +219,15 @@ namespace SharpAlert
             else
             {
                 PlayFromUnmanagedSource(Resources.ui_cancellation_1);
+            }
+
+            if (Settings.Default.alertTitlebarControls)
+            {
+                this.FormBorderStyle = FormBorderStyle.Sizable;
+            }
+            else
+            {
+                this.FormBorderStyle = FormBorderStyle.None;
             }
 
             int LocationMargin = 10;
@@ -265,6 +298,18 @@ namespace SharpAlert
                 AlertText.Font = new Font("Arial", 18F);
             }
 
+            FlashTwo = false;
+
+            OutlineContainerPanel.BorderColor = ColorTitleAndBordersOne;
+            TitleText.BackColor = ColorTitleAndBordersOne;
+            AlertIcon.BackColor = ColorTitleAndBordersOne;
+            SubtitlePanel.BackColor = ColorSubtitleOnlyOne;
+
+            if (!Settings.Default.alertCompatibilityMode)
+            {
+                WindowFlash.Start();
+            }
+
             Console.WriteLine("[Alert GUI] Window shown.");
         }
 
@@ -276,7 +321,7 @@ namespace SharpAlert
         private void SpeakerButton_Click(object sender, EventArgs e)
         {
             SpeakerButton.Enabled = false;
-            PlayFromTTSEngine(AlertIntroTextStr);
+            PlayFromTTSEngine(AlertIntroTextStr, false);
             PlayWithFailoverToTTS(AlertAudioUrlStr, AlertTextStr);
         }
 
@@ -285,10 +330,13 @@ namespace SharpAlert
             DismissButton.Enabled = unlocked;
             SpeakerButton.Enabled = unlocked;
             LinkButton.Enabled = unlocked;
+            AlertLinkText.Enabled = unlocked;
         }
 
         private void AlertForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            HideImage();
+            if (!AllowThreadRestarts) return;
             UnlockButtons(false);
             AutoExit.Stop();
             if (!Settings.Default.alertCompatibilityMode)
@@ -302,9 +350,14 @@ namespace SharpAlert
                     e.Cancel = true;
                     FadeOutAnimation.Start();
                 }
+                PlayEndToneFile(false);
             }
-            StopAllAudioSilently();
-            PlayFromUnmanagedSourceAndWait(Resources.ui_end_1);
+            else
+            {
+                WindowFlash.Stop();
+                PlayEndToneFile(true);
+            }
+
         }
 
         IntPtr GotHandle = IntPtr.Zero;
@@ -356,12 +409,12 @@ namespace SharpAlert
             if (FlashOne)
             {
                 UpdateTaskbarProgress(TaskbarProgressState.Error, 100, 100);
-                AlertIcon.Visible = true;
+                //AlertIcon.Visible = true;
             }
             else
             {
                 UpdateTaskbarProgress(TaskbarProgressState.Normal, 100, 100);
-                AlertIcon.Visible = false;
+                //AlertIcon.Visible = false;
             }
             FlashOne = !FlashOne;
         }
@@ -393,6 +446,7 @@ namespace SharpAlert
             {
                 FadeOutAnimation.Stop();
                 FadeOutExitReady = true;
+                WindowFlash.Stop();
                 this.Hide();
                 this.Close();
             }
@@ -400,6 +454,183 @@ namespace SharpAlert
             {
                 FadeInAnimation.Stop();
                 this.Opacity -= 0.01;
+            }
+        }
+
+        [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
+        private extern static void ReleaseCapture();
+
+        [DllImport("user32.DLL", EntryPoint = "SendMessage")]
+        private extern static void SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
+
+        private void TitleText_MouseDown(object sender, MouseEventArgs e)
+        {
+            ReleaseCapture();
+            SendMessage(this.Handle, 0x112, 0xf012, 0);
+        }
+
+        private void OutlineContainerPanel_Paint(object sender, PaintEventArgs e)
+        {
+        }
+
+        private bool FlashTwo = false;
+
+        private void WindowFlash_Tick(object sender, EventArgs e)
+        {
+            if (FlashTwo)
+            {
+                OutlineContainerPanel.BorderColor = ColorTitleAndBordersOne;
+                TitleText.BackColor = ColorTitleAndBordersOne;
+                AlertIcon.BackColor = ColorTitleAndBordersOne;
+                SubtitlePanel.BackColor = ColorSubtitleOnlyOne;
+            }
+            else
+            {
+                OutlineContainerPanel.BorderColor = ColorTitleAndBordersTwo;
+                TitleText.BackColor = ColorTitleAndBordersTwo;
+                AlertIcon.BackColor = ColorTitleAndBordersTwo;
+                SubtitlePanel.BackColor = ColorSubtitleOnlyTwo;
+            }
+            FlashTwo = !FlashTwo;
+        }
+
+        private void TerminateSelf_Tick(object sender, EventArgs e)
+        {
+            if (!MainEntryPoint.AllowThreadRestarts)
+            {
+                FadeOutExitReady = true;
+                this.Close();
+            }
+        }
+
+        private int BottomRightMx;
+        private int BottomRightMy;
+        private int BottomRightSw;
+        private int BottomRightSh;
+        private bool BottomRightMov;
+
+        private void ResizableThingPanel_MouseDown(object sender, MouseEventArgs e)
+        {
+            BottomRightMov = true;
+            BottomRightMx = MousePosition.X;
+            BottomRightMy = MousePosition.Y;
+            BottomRightSw = Width;
+            BottomRightSh = Height;
+        }
+
+        private void ResizableThingPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (BottomRightMov)
+            {
+                Width = MousePosition.X - BottomRightMx + BottomRightSw;
+                Height = MousePosition.Y - BottomRightMy + BottomRightSh;
+            }
+        }
+
+        private void ResizableThingPanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            BottomRightMov = false;
+        }
+
+        private int BottomLeftMx;
+        private int BottomLeftMy;
+        private int BottomLeftSw;
+        private int BottomLeftSh;
+        private bool BottomLeftMov;
+
+        private void ResizeBottomLeft_MouseDown(object sender, MouseEventArgs e)
+        {
+            BottomLeftMov = true;
+            BottomLeftMx = MousePosition.X;
+            BottomLeftMy = MousePosition.Y;
+            BottomLeftSw = Width;
+            BottomLeftSh = Height;
+        }
+
+        private void ResizeBottomLeft_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (BottomLeftMov)
+            {
+                //SetDesktopLocation(MousePosition.X, Location.Y);
+                Width = MousePosition.X - Width;
+                Height = MousePosition.Y - BottomLeftMy + BottomLeftSh;
+            }
+        }
+
+        private void ResizeBottomLeft_MouseUp(object sender, MouseEventArgs e)
+        {
+            BottomLeftMov = false;
+        }
+
+        private void AlertIcon_MouseDown(object sender, MouseEventArgs e)
+        {
+            ReleaseCapture();
+            SendMessage(this.Handle, 0x112, 0xf012, 0);
+        }
+
+        private void AlertLinkText_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (FunOnABun)
+            {
+                Process.Start("https://e926.net/posts/4773074");
+                return;
+            }
+
+            if (!string.IsNullOrWhiteSpace(AlertUrlStr))
+            {
+                // let's assume this is a URL for now, we'll fix it later
+                Process.Start(AlertUrlStr);
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("This alert has no accompanying website.",
+                    "SharpAlert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                this.Close();
+            }
+        }
+
+        private readonly AlertFormImage afi = new AlertFormImage();
+
+        private void SubtitleText_DoubleClick(object sender, EventArgs e)
+        {
+            // DEBUG THING --- REMEMBER TO REMOVE
+            ShowImage();
+        }
+
+        private void ShowImage()
+        {
+            afi.Show();
+            try
+            {
+                afi.Location = new Point(this.Location.X + this.Size.Width + 5, this.Location.Y);
+            }
+            catch (Exception)
+            {
+            }
+            afi.AttemptLoadImage(AlertImageUrlStr);
+            //afi.AttemptLoadImage("https://cdn.discordapp.com/attachments/1199589026362052619/1366494987352801380/I_turned_into_a_dragon.jpg?ex=68112721&is=680fd5a1&hm=6a775bdbf87370da25bdf0ba71763d521b6183ecb4ce36d57ad88a2f867425ae&");
+            afi.Opacity = 0.90;
+            ChildFollowsParent.Start();
+        }
+
+        private void HideImage()
+        {
+            ChildFollowsParent.Stop();
+            afi.Opacity = 0;
+            afi.Hide();
+        }
+
+        private void ChildFollowsParent_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                afi.Location = new Point(this.Location.X + this.Size.Width + 5, this.Location.Y);
+            }
+            catch (Exception)
+            {
             }
         }
     }

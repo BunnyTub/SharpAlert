@@ -45,7 +45,7 @@
             // 
             // TitlePanel
             // 
-            this.TitlePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(180)))), ((int)(((byte)(0)))));
+            this.TitlePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.TitlePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.TitlePanel.Controls.Add(this.TitleText);
             this.TitlePanel.Controls.Add(this.TitleSpacer);
@@ -65,7 +65,7 @@
             this.TitleText.Font = new System.Drawing.Font("Arial", 32F, System.Drawing.FontStyle.Bold);
             this.TitleText.Location = new System.Drawing.Point(4, 0);
             this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(905, 60);
+            this.TitleText.Size = new System.Drawing.Size(960, 60);
             this.TitleText.TabIndex = 3;
             this.TitleText.Text = "ALERT INFORMATION";
             this.TitleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -88,13 +88,13 @@
             this.DismissButton.Dock = System.Windows.Forms.DockStyle.Right;
             this.DismissButton.Enabled = false;
             this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DismissButton.Font = new System.Drawing.Font("Arial", 18F);
+            this.DismissButton.Font = new System.Drawing.Font("Segoe UI Emoji", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DismissButton.ForeColor = System.Drawing.Color.Black;
-            this.DismissButton.Location = new System.Drawing.Point(909, 0);
+            this.DismissButton.Location = new System.Drawing.Point(964, 0);
             this.DismissButton.Name = "DismissButton";
-            this.DismissButton.Size = new System.Drawing.Size(115, 60);
+            this.DismissButton.Size = new System.Drawing.Size(60, 60);
             this.DismissButton.TabIndex = 4;
-            this.DismissButton.Text = "Dismiss";
+            this.DismissButton.Text = "❌";
             this.DismissButton.UseVisualStyleBackColor = false;
             this.DismissButton.Click += new System.EventHandler(this.DismissButton_Click);
             // 
@@ -105,7 +105,7 @@
             // 
             // SubtitlePanel
             // 
-            this.SubtitlePanel.BackColor = System.Drawing.Color.DarkGreen;
+            this.SubtitlePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.SubtitlePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.SubtitlePanel.Controls.Add(this.SubtitleText);
             this.SubtitlePanel.Dock = System.Windows.Forms.DockStyle.Top;

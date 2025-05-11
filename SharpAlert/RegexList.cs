@@ -14,6 +14,15 @@ namespace SharpAlert
             return match.Success ? match.Groups[1].Value : defaultValue;
         }
 
+        //public static string[] MatchesOrDefault(this Regex regex, string input, string defaultValue = "")
+        //{
+        //    if (regex == null) throw new ArgumentNullException(nameof(regex));
+        //    if (input == null) return defaultValue;
+
+        //    var match = regex.Match(input);
+        //    return match.Success ? match.Groups[1].Value : defaultValue;
+        //}
+
         //public static readonly Regex ValueNameRegex = new Regex(
         //    @"<valueName>([^<]+)</valueName>\s*<value>([^<]+)</value>",
         //    RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
@@ -43,7 +52,11 @@ namespace SharpAlert
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
 		public static readonly Regex CategoryRegex = new Regex(
-			@"<urgency>\s*(.*?)\s*</urgency>",
+			@"<category>\s*(.*?)\s*</category>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex WirelessImmediateRegex = new Regex(
+            @"<parameter><valueName>layer:SOREM:2\.0:WirelessImmediate</valueName><value>\s*(.*?)\s*</value></parameter>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
 		public static readonly Regex SeverityRegex = new Regex(
@@ -52,6 +65,10 @@ namespace SharpAlert
 
 		public static readonly Regex InfoRegex = new Regex(
 			@"<info>\s*(.*?)\s*</info>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex URLRegex = new Regex(
+			@"<url>\s*(.*?)\s*</url>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 		
 		public static readonly Regex WebRegex = new Regex(
@@ -68,6 +85,14 @@ namespace SharpAlert
 
 		public static readonly Regex EventRegex = new Regex(
 			@"<event>\s*(.*?)\s*</event>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex EventCodeRegex = new Regex(
+            @"<eventcode><valueName>SAME</valueName><value>\s*(.*?)\s*</value></eventcode>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex BroadcastImmediatelyRegex = new Regex(
+            @"<parameter><valueName>layer:SOREM:1\.0:Broadcast_Immediately</valueName><value>\s*(.*?)\s*</value></parameter>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 		
 		public static readonly Regex ResourceRegex = new Regex(
@@ -101,6 +126,10 @@ namespace SharpAlert
 		public static readonly Regex SenderNameRegex = new Regex(
 			@"<senderName>\s*(.*?)\s*</senderName>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex SenderRegex = new Regex(
+			@"<sender>\s*(.*?)\s*</sender>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
 		public static readonly Regex DescriptionRegex = new Regex(
 			@"<description>\s*(.*?)\s*</description>",
@@ -110,7 +139,15 @@ namespace SharpAlert
 			@"<instruction>\s*(.*?)\s*</instruction>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-		public static readonly Regex AreaDescriptionRegex = new Regex(
+        public static readonly Regex BroadcastTextRegex = new Regex(
+            @"<parameter><valueName>layer:SOREM:1\.0:Broadcast_Text</valueName><value>\s*(.*?)\s*</value></parameter>",
+            RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex WirelessTextRegex = new Regex(
+            @"<parameter><valueName>layer:SOREM:2\.0:WirelessText</valueName><value>\s*(.*?)\s*</value></parameter>",
+            RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+        public static readonly Regex AreaDescriptionRegex = new Regex(
 			@"<areaDesc>\s*(.*?)\s*</areaDesc>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 

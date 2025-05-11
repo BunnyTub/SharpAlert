@@ -384,30 +384,13 @@ namespace SharpAlert.Properties {
         [global::System.Configuration.SettingsDescriptionAttribute("Displays messages in fullscreen when ticked. Recommended for users with larger di" +
             "splays, such as TVs. (1280x720 resolution recommended)")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool alertFullscreen {
-            get {
-                return ((bool)(this["alertFullscreen"]));
-            }
-            set {
-                this["alertFullscreen"] = value;
-            }
-        }
-        
-        /// <summary>
-        /// This value defines which display to show the alert on when using the fullscreen mode.
-        /// </summary>
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Configuration.SettingsDescriptionAttribute("This value defines which display to show the alert on when using the fullscreen m" +
-            "ode.")]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int alertFullscreenDisplay {
+        public int alertDisplayType {
             get {
-                return ((int)(this["alertFullscreenDisplay"]));
+                return ((int)(this["alertDisplayType"]));
             }
             set {
-                this["alertFullscreenDisplay"] = value;
+                this["alertDisplayType"] = value;
             }
         }
         
@@ -714,12 +697,12 @@ namespace SharpAlert.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool alertFullscreenWindowed {
+        public bool alertTitlebarControls {
             get {
-                return ((bool)(this["alertFullscreenWindowed"]));
+                return ((bool)(this["alertTitlebarControls"]));
             }
             set {
-                this["alertFullscreenWindowed"] = value;
+                this["alertTitlebarControls"] = value;
             }
         }
         
@@ -804,6 +787,144 @@ namespace SharpAlert.Properties {
             }
             set {
                 this["alertIncreaseSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsd=\"http://www.w3." +
+            "org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" />")]
+        public global::System.Collections.Specialized.StringCollection EnforceSAMEEventBlacklist {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["EnforceSAMEEventBlacklist"]));
+            }
+            set {
+                this["EnforceSAMEEventBlacklist"] = value;
+            }
+        }
+        
+        /// <summary>
+        /// This value defines which display to show the alert on when using the fullscreen mode.
+        /// </summary>
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsDescriptionAttribute("This value defines which display to show the alert on when using the fullscreen m" +
+            "ode.")]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int alertFullscreenDisplay {
+            get {
+                return ((int)(this["alertFullscreenDisplay"]));
+            }
+            set {
+                this["alertFullscreenDisplay"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int AlertDeadInterval {
+            get {
+                return ((int)(this["AlertDeadInterval"]));
+            }
+            set {
+                this["AlertDeadInterval"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool showExpiryMessages {
+            get {
+                return ((bool)(this["showExpiryMessages"]));
+            }
+            set {
+                this["showExpiryMessages"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool alertPlayEndTone {
+            get {
+                return ((bool)(this["alertPlayEndTone"]));
+            }
+            set {
+                this["alertPlayEndTone"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RegionUnitedStates {
+            get {
+                return ((bool)(this["RegionUnitedStates"]));
+            }
+            set {
+                this["RegionUnitedStates"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RegionCanada {
+            get {
+                return ((bool)(this["RegionCanada"]));
+            }
+            set {
+                this["RegionCanada"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RegionShown {
+            get {
+                return ((bool)(this["RegionShown"]));
+            }
+            set {
+                this["RegionShown"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ProgramVoice {
+            get {
+                return ((string)(this["ProgramVoice"]));
+            }
+            set {
+                this["ProgramVoice"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public string MakiVersion {
+            get {
+                return ((string)(this["MakiVersion"]));
+            }
+            set {
+                this["MakiVersion"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool alertArchiving {
+            get {
+                return ((bool)(this["alertArchiving"]));
+            }
+            set {
+                this["alertArchiving"] = value;
             }
         }
     }

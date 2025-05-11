@@ -36,7 +36,6 @@
             this.DiscordWebhookAppendInput = new System.Windows.Forms.TextBox();
             this.NS_UnhideSecureBox = new System.Windows.Forms.CheckBox();
             this.SaveDiscordSettingsButton = new System.Windows.Forms.Button();
-            this.alertFullscreenBox = new System.Windows.Forms.CheckBox();
             this.alertFullscreenIdleBox = new System.Windows.Forms.CheckBox();
             this.alertFullscreenDisplayInput = new System.Windows.Forms.NumericUpDown();
             this.alertTimeoutInput = new System.Windows.Forms.NumericUpDown();
@@ -51,7 +50,7 @@
             this.BusyLockText = new System.Windows.Forms.Label();
             this.statusWindowBox = new System.Windows.Forms.CheckBox();
             this.alertTimeZoneUTCBox = new System.Windows.Forms.CheckBox();
-            this.ServerButton = new System.Windows.Forms.Button();
+            this.TTSButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.AlertButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -61,11 +60,14 @@
             this.AlertHistoryOutput = new System.Windows.Forms.TextBox();
             this.alertFullscreenWindowedBox = new System.Windows.Forms.CheckBox();
             this.alertNoRelayBox = new System.Windows.Forms.CheckBox();
+            this.alertIncreaseSizeBox = new System.Windows.Forms.CheckBox();
+            this.alertPlayEndToneBox = new System.Windows.Forms.CheckBox();
             this.DiscordWebhookGroup = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.AlertAppearanceAndSoundsGroup = new System.Windows.Forms.GroupBox();
+            this.AlertFullscreenCombo = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
             this.WindowLocationCombo = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -74,7 +76,6 @@
             this.PastAlertsGroup = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
-            this.alertIncreaseSizeBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
@@ -104,7 +105,7 @@
             // 
             this.DiscordWebhookURLInput.BackColor = System.Drawing.Color.Black;
             this.DiscordWebhookURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DiscordWebhookURLInput.ForeColor = System.Drawing.Color.Red;
+            this.DiscordWebhookURLInput.ForeColor = System.Drawing.Color.White;
             this.DiscordWebhookURLInput.Location = new System.Drawing.Point(6, 58);
             this.DiscordWebhookURLInput.Name = "DiscordWebhookURLInput";
             this.DiscordWebhookURLInput.Size = new System.Drawing.Size(169, 21);
@@ -116,7 +117,7 @@
             // 
             this.DiscordWebhookAppendInput.BackColor = System.Drawing.Color.Black;
             this.DiscordWebhookAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DiscordWebhookAppendInput.ForeColor = System.Drawing.Color.Red;
+            this.DiscordWebhookAppendInput.ForeColor = System.Drawing.Color.White;
             this.DiscordWebhookAppendInput.Location = new System.Drawing.Point(181, 58);
             this.DiscordWebhookAppendInput.Name = "DiscordWebhookAppendInput";
             this.DiscordWebhookAppendInput.Size = new System.Drawing.Size(460, 21);
@@ -140,35 +141,25 @@
             // 
             // SaveDiscordSettingsButton
             // 
-            this.SaveDiscordSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SaveDiscordSettingsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.SaveDiscordSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.SaveDiscordSettingsButton.Location = new System.Drawing.Point(521, 13);
             this.SaveDiscordSettingsButton.Name = "SaveDiscordSettingsButton";
             this.SaveDiscordSettingsButton.Size = new System.Drawing.Size(120, 23);
             this.SaveDiscordSettingsButton.TabIndex = 1;
             this.SaveDiscordSettingsButton.Text = "Modfiy Webhook";
             this.ToolTipInformation.SetToolTip(this.SaveDiscordSettingsButton, "Saves the webhook and message data.");
-            this.SaveDiscordSettingsButton.UseVisualStyleBackColor = true;
+            this.SaveDiscordSettingsButton.UseVisualStyleBackColor = false;
             this.SaveDiscordSettingsButton.Click += new System.EventHandler(this.SaveDiscordSettingsButton_Click);
-            // 
-            // alertFullscreenBox
-            // 
-            this.alertFullscreenBox.AutoSize = true;
-            this.alertFullscreenBox.Location = new System.Drawing.Point(6, 20);
-            this.alertFullscreenBox.Name = "alertFullscreenBox";
-            this.alertFullscreenBox.Size = new System.Drawing.Size(87, 19);
-            this.alertFullscreenBox.TabIndex = 5;
-            this.alertFullscreenBox.Text = "Full screen";
-            this.ToolTipInformation.SetToolTip(this.alertFullscreenBox, "Shows alerts in full screen (1280x720 recommended) instead of in a window.");
-            this.alertFullscreenBox.UseVisualStyleBackColor = true;
             // 
             // alertFullscreenIdleBox
             // 
             this.alertFullscreenIdleBox.AutoSize = true;
             this.alertFullscreenIdleBox.Location = new System.Drawing.Point(228, 20);
             this.alertFullscreenIdleBox.Name = "alertFullscreenIdleBox";
-            this.alertFullscreenIdleBox.Size = new System.Drawing.Size(91, 19);
+            this.alertFullscreenIdleBox.Size = new System.Drawing.Size(80, 19);
             this.alertFullscreenIdleBox.TabIndex = 10;
-            this.alertFullscreenIdleBox.Text = "Idle window";
+            this.alertFullscreenIdleBox.Text = "Idle panel";
             this.ToolTipInformation.SetToolTip(this.alertFullscreenIdleBox, "Shows an idle panel on top of all content.");
             this.alertFullscreenIdleBox.UseVisualStyleBackColor = true;
             // 
@@ -216,31 +207,34 @@
             // 
             // AlertHistoryClearButton
             // 
-            this.AlertHistoryClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AlertHistoryClearButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.AlertHistoryClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.AlertHistoryClearButton.Location = new System.Drawing.Point(569, 78);
             this.AlertHistoryClearButton.Name = "AlertHistoryClearButton";
             this.AlertHistoryClearButton.Size = new System.Drawing.Size(72, 23);
             this.AlertHistoryClearButton.TabIndex = 19;
             this.AlertHistoryClearButton.Text = "Clear";
             this.ToolTipInformation.SetToolTip(this.AlertHistoryClearButton, "Clears the history list.");
-            this.AlertHistoryClearButton.UseVisualStyleBackColor = true;
+            this.AlertHistoryClearButton.UseVisualStyleBackColor = false;
             this.AlertHistoryClearButton.Click += new System.EventHandler(this.AlertHistoryClearButton_Click);
             // 
             // AlertHistoryRefreshButton
             // 
-            this.AlertHistoryRefreshButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AlertHistoryRefreshButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.AlertHistoryRefreshButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.AlertHistoryRefreshButton.Location = new System.Drawing.Point(569, 49);
             this.AlertHistoryRefreshButton.Name = "AlertHistoryRefreshButton";
             this.AlertHistoryRefreshButton.Size = new System.Drawing.Size(72, 23);
             this.AlertHistoryRefreshButton.TabIndex = 18;
             this.AlertHistoryRefreshButton.Text = "Refresh";
             this.ToolTipInformation.SetToolTip(this.AlertHistoryRefreshButton, "Refreshes the history list.");
-            this.AlertHistoryRefreshButton.UseVisualStyleBackColor = true;
+            this.AlertHistoryRefreshButton.UseVisualStyleBackColor = false;
             this.AlertHistoryRefreshButton.Click += new System.EventHandler(this.AlertHistoryRefreshButton_Click);
             // 
             // AlertHistoryReplayRecentButton
             // 
-            this.AlertHistoryReplayRecentButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AlertHistoryReplayRecentButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.AlertHistoryReplayRecentButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.AlertHistoryReplayRecentButton.Location = new System.Drawing.Point(569, 20);
             this.AlertHistoryReplayRecentButton.Name = "AlertHistoryReplayRecentButton";
             this.AlertHistoryReplayRecentButton.Size = new System.Drawing.Size(72, 23);
@@ -248,7 +242,7 @@
             this.AlertHistoryReplayRecentButton.Text = "Replay";
             this.ToolTipInformation.SetToolTip(this.AlertHistoryReplayRecentButton, "Immediately re-adds the most recent alert back into the queue after wiping it fro" +
         "m the history.");
-            this.AlertHistoryReplayRecentButton.UseVisualStyleBackColor = true;
+            this.AlertHistoryReplayRecentButton.UseVisualStyleBackColor = false;
             this.AlertHistoryReplayRecentButton.Click += new System.EventHandler(this.AlertHistoryReplayRecentButton_Click);
             // 
             // AlertHistoryDumpLink
@@ -267,14 +261,15 @@
             // 
             // OpenCreditsButton
             // 
-            this.OpenCreditsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.OpenCreditsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.OpenCreditsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.OpenCreditsButton.Location = new System.Drawing.Point(12, 395);
             this.OpenCreditsButton.Name = "OpenCreditsButton";
             this.OpenCreditsButton.Size = new System.Drawing.Size(61, 23);
             this.OpenCreditsButton.TabIndex = 20;
             this.OpenCreditsButton.Text = "Credits";
             this.ToolTipInformation.SetToolTip(this.OpenCreditsButton, "Ice Bear definitely helped here :3 (This is a dialog, not a link)");
-            this.OpenCreditsButton.UseVisualStyleBackColor = true;
+            this.OpenCreditsButton.UseVisualStyleBackColor = false;
             this.OpenCreditsButton.Click += new System.EventHandler(this.OpenCreditsButton_Click);
             // 
             // label10
@@ -289,7 +284,8 @@
             // 
             // CacheOperationButton
             // 
-            this.CacheOperationButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CacheOperationButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.CacheOperationButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.CacheOperationButton.Location = new System.Drawing.Point(459, 395);
             this.CacheOperationButton.Name = "CacheOperationButton";
             this.CacheOperationButton.Size = new System.Drawing.Size(94, 23);
@@ -297,7 +293,7 @@
             this.CacheOperationButton.Text = "Reset Cache";
             this.ToolTipInformation.SetToolTip(this.CacheOperationButton, "Re-caches information from the internet.");
             this.CacheOperationButton.UseMnemonic = false;
-            this.CacheOperationButton.UseVisualStyleBackColor = true;
+            this.CacheOperationButton.UseVisualStyleBackColor = false;
             this.CacheOperationButton.Click += new System.EventHandler(this.CacheOperationButton_Click);
             // 
             // BusyLockText
@@ -326,26 +322,27 @@
             // alertTimeZoneUTCBox
             // 
             this.alertTimeZoneUTCBox.AutoSize = true;
-            this.alertTimeZoneUTCBox.Location = new System.Drawing.Point(327, 20);
+            this.alertTimeZoneUTCBox.Location = new System.Drawing.Point(322, 20);
             this.alertTimeZoneUTCBox.Name = "alertTimeZoneUTCBox";
             this.alertTimeZoneUTCBox.Size = new System.Drawing.Size(77, 19);
             this.alertTimeZoneUTCBox.TabIndex = 11;
             this.alertTimeZoneUTCBox.Text = "Use UTC";
-            this.ToolTipInformation.SetToolTip(this.alertTimeZoneUTCBox, "Sets the time display on the idle window to UTC instead of the system time zone.");
+            this.ToolTipInformation.SetToolTip(this.alertTimeZoneUTCBox, "Uses UTC visually everywhere instead of the system time zone.");
             this.alertTimeZoneUTCBox.UseVisualStyleBackColor = true;
             // 
-            // ServerButton
+            // TTSButton
             // 
-            this.ServerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ServerButton.Location = new System.Drawing.Point(559, 395);
-            this.ServerButton.Name = "ServerButton";
-            this.ServerButton.Size = new System.Drawing.Size(100, 23);
-            this.ServerButton.TabIndex = 23;
-            this.ServerButton.Text = "Server Config";
-            this.ToolTipInformation.SetToolTip(this.ServerButton, "Opens the server configuration window.");
-            this.ServerButton.UseMnemonic = false;
-            this.ServerButton.UseVisualStyleBackColor = true;
-            this.ServerButton.Click += new System.EventHandler(this.ServerButton_Click);
+            this.TTSButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.TTSButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.TTSButton.Location = new System.Drawing.Point(559, 395);
+            this.TTSButton.Name = "TTSButton";
+            this.TTSButton.Size = new System.Drawing.Size(100, 23);
+            this.TTSButton.TabIndex = 23;
+            this.TTSButton.Text = "TTS Config";
+            this.ToolTipInformation.SetToolTip(this.TTSButton, "Opens the server configuration window.");
+            this.TTSButton.UseMnemonic = false;
+            this.TTSButton.UseVisualStyleBackColor = false;
+            this.TTSButton.Click += new System.EventHandler(this.TTSButton_Click);
             // 
             // label1
             // 
@@ -365,7 +362,8 @@
             // AlertButton
             // 
             this.AlertButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.AlertButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AlertButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.AlertButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.AlertButton.Location = new System.Drawing.Point(559, 12);
             this.AlertButton.Name = "AlertButton";
             this.AlertButton.Size = new System.Drawing.Size(100, 23);
@@ -373,7 +371,7 @@
             this.AlertButton.Text = "Alert Config";
             this.ToolTipInformation.SetToolTip(this.AlertButton, "Opens the alert configuration window.");
             this.AlertButton.UseMnemonic = false;
-            this.AlertButton.UseVisualStyleBackColor = true;
+            this.AlertButton.UseVisualStyleBackColor = false;
             this.AlertButton.Click += new System.EventHandler(this.AlertButton_Click);
             // 
             // label3
@@ -382,10 +380,10 @@
             this.label3.Location = new System.Drawing.Point(9, 425);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(608, 15);
+            this.label3.Size = new System.Drawing.Size(616, 15);
             this.label3.TabIndex = 29;
             this.label3.Text = "This piece of software is not sold in any shape or form. It is provided for free," +
-    " \"as is\", by the original developers.";
+    " \"as is\", by the original developer(s).";
             this.ToolTipInformation.SetToolTip(this.label3, "Can\'t be too careful.");
             // 
             // alertTTSonlyBox
@@ -414,10 +412,11 @@
             this.alertNoGUIBox.AutoSize = true;
             this.alertNoGUIBox.Location = new System.Drawing.Point(6, 95);
             this.alertNoGUIBox.Name = "alertNoGUIBox";
-            this.alertNoGUIBox.Size = new System.Drawing.Size(142, 19);
+            this.alertNoGUIBox.Size = new System.Drawing.Size(104, 19);
             this.alertNoGUIBox.TabIndex = 8;
-            this.alertNoGUIBox.Text = "Never show alert GUI";
-            this.ToolTipInformation.SetToolTip(this.alertNoGUIBox, "Stops alert panels from displaying. Similar to the functionality of SharpENDEC.");
+            this.alertNoGUIBox.Text = "ENDEC mode";
+            this.ToolTipInformation.SetToolTip(this.alertNoGUIBox, "All alert functions are done through the console, and no dialogs are shown.\r\nAler" +
+        "ts in ENDEC mode cannot be interrupted or cancelled.");
             this.alertNoGUIBox.UseVisualStyleBackColor = true;
             // 
             // AlertHistoryOutput
@@ -425,7 +424,7 @@
             this.AlertHistoryOutput.BackColor = System.Drawing.Color.Black;
             this.AlertHistoryOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AlertHistoryOutput.Font = new System.Drawing.Font("Arial", 12F);
-            this.AlertHistoryOutput.ForeColor = System.Drawing.Color.Red;
+            this.AlertHistoryOutput.ForeColor = System.Drawing.Color.White;
             this.AlertHistoryOutput.Location = new System.Drawing.Point(6, 35);
             this.AlertHistoryOutput.Multiline = true;
             this.AlertHistoryOutput.Name = "AlertHistoryOutput";
@@ -445,20 +444,41 @@
             this.alertFullscreenWindowedBox.Size = new System.Drawing.Size(143, 19);
             this.alertFullscreenWindowedBox.TabIndex = 6;
             this.alertFullscreenWindowedBox.Text = "Force windowed view";
-            this.ToolTipInformation.SetToolTip(this.alertFullscreenWindowedBox, "Forces the full screen panel to have window controls. It can be useful if you\'re " +
-        "trying to window capture.");
+            this.ToolTipInformation.SetToolTip(this.alertFullscreenWindowedBox, "Forces all alerts to include window controls.");
             this.alertFullscreenWindowedBox.UseVisualStyleBackColor = true;
             // 
             // alertNoRelayBox
             // 
             this.alertNoRelayBox.AutoSize = true;
-            this.alertNoRelayBox.Location = new System.Drawing.Point(437, 98);
+            this.alertNoRelayBox.Location = new System.Drawing.Point(470, 98);
             this.alertNoRelayBox.Name = "alertNoRelayBox";
-            this.alertNoRelayBox.Size = new System.Drawing.Size(143, 19);
+            this.alertNoRelayBox.Size = new System.Drawing.Size(98, 19);
             this.alertNoRelayBox.TabIndex = 25;
-            this.alertNoRelayBox.Text = "Disable relay support";
+            this.alertNoRelayBox.Text = "Disable relay";
             this.ToolTipInformation.SetToolTip(this.alertNoRelayBox, "Stops USB relays from being triggered when alerts are being relayed.");
             this.alertNoRelayBox.UseVisualStyleBackColor = true;
+            // 
+            // alertIncreaseSizeBox
+            // 
+            this.alertIncreaseSizeBox.AutoSize = true;
+            this.alertIncreaseSizeBox.Location = new System.Drawing.Point(6, 120);
+            this.alertIncreaseSizeBox.Name = "alertIncreaseSizeBox";
+            this.alertIncreaseSizeBox.Size = new System.Drawing.Size(106, 19);
+            this.alertIncreaseSizeBox.TabIndex = 26;
+            this.alertIncreaseSizeBox.Text = "Large font size";
+            this.ToolTipInformation.SetToolTip(this.alertIncreaseSizeBox, "Increases the font size of alert text.");
+            this.alertIncreaseSizeBox.UseVisualStyleBackColor = true;
+            // 
+            // alertPlayEndToneBox
+            // 
+            this.alertPlayEndToneBox.AutoSize = true;
+            this.alertPlayEndToneBox.Location = new System.Drawing.Point(368, 98);
+            this.alertPlayEndToneBox.Name = "alertPlayEndToneBox";
+            this.alertPlayEndToneBox.Size = new System.Drawing.Size(100, 19);
+            this.alertPlayEndToneBox.TabIndex = 28;
+            this.alertPlayEndToneBox.Text = "Play end tone";
+            this.ToolTipInformation.SetToolTip(this.alertPlayEndToneBox, "Plays an auditory tone when an alert is closed.");
+            this.alertPlayEndToneBox.UseVisualStyleBackColor = true;
             // 
             // DiscordWebhookGroup
             // 
@@ -507,6 +527,8 @@
             // 
             // AlertAppearanceAndSoundsGroup
             // 
+            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertPlayEndToneBox);
+            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.AlertFullscreenCombo);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertIncreaseSizeBox);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertNoRelayBox);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.label11);
@@ -523,7 +545,6 @@
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.label8);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertFullscreenDisplayInput);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertFullscreenIdleBox);
-            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertFullscreenBox);
             this.AlertAppearanceAndSoundsGroup.ForeColor = System.Drawing.Color.White;
             this.AlertAppearanceAndSoundsGroup.Location = new System.Drawing.Point(12, 130);
             this.AlertAppearanceAndSoundsGroup.Name = "AlertAppearanceAndSoundsGroup";
@@ -531,6 +552,18 @@
             this.AlertAppearanceAndSoundsGroup.TabIndex = 7;
             this.AlertAppearanceAndSoundsGroup.TabStop = false;
             this.AlertAppearanceAndSoundsGroup.Text = "Alert Appearance/Sounds";
+            // 
+            // AlertFullscreenCombo
+            // 
+            this.AlertFullscreenCombo.BackColor = System.Drawing.Color.Black;
+            this.AlertFullscreenCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AlertFullscreenCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AlertFullscreenCombo.ForeColor = System.Drawing.Color.White;
+            this.AlertFullscreenCombo.FormattingEnabled = true;
+            this.AlertFullscreenCombo.Location = new System.Drawing.Point(6, 17);
+            this.AlertFullscreenCombo.Name = "AlertFullscreenCombo";
+            this.AlertFullscreenCombo.Size = new System.Drawing.Size(88, 23);
+            this.AlertFullscreenCombo.TabIndex = 27;
             // 
             // label11
             // 
@@ -543,7 +576,10 @@
             // 
             // WindowLocationCombo
             // 
+            this.WindowLocationCombo.BackColor = System.Drawing.Color.Black;
+            this.WindowLocationCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.WindowLocationCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.WindowLocationCombo.ForeColor = System.Drawing.Color.White;
             this.WindowLocationCombo.FormattingEnabled = true;
             this.WindowLocationCombo.Location = new System.Drawing.Point(241, 96);
             this.WindowLocationCombo.Name = "WindowLocationCombo";
@@ -553,7 +589,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(181, 46);
+            this.label4.Location = new System.Drawing.Point(181, 50);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(48, 30);
             this.label4.TabIndex = 13;
@@ -607,7 +643,7 @@
             this.ConfigurationPanel.Controls.Add(this.label3);
             this.ConfigurationPanel.Controls.Add(this.AlertButton);
             this.ConfigurationPanel.Controls.Add(this.label1);
-            this.ConfigurationPanel.Controls.Add(this.ServerButton);
+            this.ConfigurationPanel.Controls.Add(this.TTSButton);
             this.ConfigurationPanel.Controls.Add(this.statusWindowBox);
             this.ConfigurationPanel.Controls.Add(this.CacheOperationButton);
             this.ConfigurationPanel.Controls.Add(this.label10);
@@ -621,21 +657,9 @@
             this.ConfigurationPanel.Size = new System.Drawing.Size(671, 449);
             this.ConfigurationPanel.TabIndex = 13;
             // 
-            // alertIncreaseSizeBox
-            // 
-            this.alertIncreaseSizeBox.AutoSize = true;
-            this.alertIncreaseSizeBox.Location = new System.Drawing.Point(6, 120);
-            this.alertIncreaseSizeBox.Name = "alertIncreaseSizeBox";
-            this.alertIncreaseSizeBox.Size = new System.Drawing.Size(106, 19);
-            this.alertIncreaseSizeBox.TabIndex = 26;
-            this.alertIncreaseSizeBox.Text = "Large font size";
-            this.ToolTipInformation.SetToolTip(this.alertIncreaseSizeBox, "Increases the font size of alert text.");
-            this.alertIncreaseSizeBox.UseVisualStyleBackColor = true;
-            // 
             // ConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(671, 449);
             this.Controls.Add(this.ConfigurationPanel);
@@ -683,7 +707,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown alertFullscreenDisplayInput;
         private System.Windows.Forms.CheckBox alertFullscreenIdleBox;
-        private System.Windows.Forms.CheckBox alertFullscreenBox;
         private System.Windows.Forms.GroupBox PastAlertsGroup;
         private System.Windows.Forms.LinkLabel AlertHistoryDumpLink;
         private System.Windows.Forms.Button AlertHistoryReplayRecentButton;
@@ -698,7 +721,7 @@
         private System.Windows.Forms.Label BusyLockText;
         private System.Windows.Forms.CheckBox statusWindowBox;
         private System.Windows.Forms.CheckBox alertTimeZoneUTCBox;
-        private System.Windows.Forms.Button ServerButton;
+        private System.Windows.Forms.Button TTSButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button AlertButton;
         private System.Windows.Forms.Label label3;
@@ -711,5 +734,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.CheckBox alertNoRelayBox;
         private System.Windows.Forms.CheckBox alertIncreaseSizeBox;
+        private System.Windows.Forms.ComboBox AlertFullscreenCombo;
+        private System.Windows.Forms.CheckBox alertPlayEndToneBox;
     }
 }

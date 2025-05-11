@@ -129,5 +129,49 @@ namespace SharpAlert
                 base.Dispose(disposing);
             }
         }
+
+        public class BorderPanel : Panel
+        {
+            private Color _BorderColor = Color.Black;
+
+            public Color BorderColor
+            {
+                get
+                {
+                    return _BorderColor;
+                }
+                set
+                {
+                    _BorderColor = value;
+                    this.Invalidate();
+                }
+            }
+
+            public int BorderThickness { get; set; } = 2;
+
+            public BorderPanel()
+            {
+                // Redraw when resized or repainted
+                this.DoubleBuffered = true;
+                this.ResizeRedraw = true;
+            }
+
+            protected override void OnPaint(PaintEventArgs e)
+            {
+                base.OnPaint(e);
+
+                using (var pen = new Pen(_BorderColor, BorderThickness))
+                {
+                    pen.Alignment = System.Drawing.Drawing2D.PenAlignment.Outset;
+                    int offset = BorderThickness / 2;
+                    var rect = new Rectangle(
+                        offset,
+                        offset,
+                        this.Width - BorderThickness,
+                        this.Height - BorderThickness);
+                    e.Graphics.DrawRectangle(pen, rect);
+                }
+            }
+        }
     }
 }

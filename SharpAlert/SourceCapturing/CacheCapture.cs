@@ -12,7 +12,7 @@ namespace SharpAlert
         {
             client = new HttpClient
             {
-                Timeout = TimeSpan.FromSeconds(30)
+                Timeout = TimeSpan.FromSeconds(15)
             };
             client.DefaultRequestHeaders.UserAgent.ParseAdd($"Mozilla/5.0 (compatible; SharpAlert)");
         }
@@ -59,11 +59,9 @@ namespace SharpAlert
 
                 if (!loop)
                 {
-                    Console.WriteLine($"[Cache Capture] The cache has been filled.");
+                    Console.WriteLine($"[Cache Capture] Attempted to re-fill the cache.");
                     return;
                 }
-
-                Console.WriteLine($"[Cache Capture] The cache has been filled automatically.");
 
                 for (int i = 0; !(i >= 1800);)
                 {

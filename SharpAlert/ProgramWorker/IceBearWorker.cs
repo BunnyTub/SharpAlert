@@ -2,16 +2,13 @@
 using SharpAlert.Properties;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Speech.Synthesis;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using static SharpAlert.MainEntryPoint;
@@ -39,7 +36,7 @@ namespace SharpAlert
             args = Environment.GetCommandLineArgs();
 
             if (args.Length >= 2) if (args.Contains("--console")) AllocateTerminal(false);
-            //if (args.Length == 2) if (args[1] == "--finish-update") AllocateTerminal(false);
+            if (Settings.Default.alertNoGUI) AllocateTerminal(false);
 
             Console.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority. | https://sharpalert.bunnytub.com/");
 
@@ -57,27 +54,30 @@ namespace SharpAlert
                 icon = SystemIcons.Application;
             }
 
-            if (!Settings.Default.DisclaimerShown)
-            {
-                MessageBox.Show("Just a reminder...\r\n" +
-                    "SharpAlert is still in development! Expect bugs here and there.\r\n" +
-                    "If you find any, please report them, so they can be fixed.\r\n\r\n" +
-                    "Thanks for using SharpAlert!",
-                    "SharpAlert",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
-                Settings.Default.DisclaimerShown = true;
-                Settings.Default.Save();
-            }
-
             Thread startup = new Thread(() =>
             {
                 StartupForm sf = new StartupForm();
                 sf.ShowDialog();
                 sf.Dispose();
+                if (!Settings.Default.DisclaimerShown)
+                {
+                    MessageBox.Show("Just a reminder...\r\n\r\n" +
+                        "SharpAlert is still in development! Expect bugs here and there.\r\n" +
+                        "If you find any, please report them, so they can be fixed.\r\n" +
+                        "Please do not use this app as your only alert source.\r\n" +
+                        "Remember to check other sources such as local media.\r\n\r\n" +
+                        "Thanks for downloading SharpAlert!",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                    Settings.Default.DisclaimerShown = true;
+                    Settings.Default.Save();
+                }
             });
 
             startup.Start();
+
+            CheckSettingsCorrect();
 
             string RemoteVersion = string.Empty;
 
@@ -103,9 +103,11 @@ namespace SharpAlert
             Console.WriteLine("[Ice Bear] Initializing services.");
 
             feed = new FeedCapture();
+            directfeed = new DirectFeedCapture();
             cache = new CacheCapture();
             dataproc = new DataProcessor();
             historyproc = new HistoryProcessor();
+            hyper = new HyperServer();
             engine = new SpeechSynthesizer();
 
             Settings.Default.PropertyChanged += (objective, eventArgs) =>
@@ -121,31 +123,31 @@ namespace SharpAlert
             {
                 lock (ChangedPropertiesList) ChangedPropertiesList.Clear();
             };
+            
+            feed.servers.Add($"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}");
+            feed.servers.Add($"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/PublicWEA/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}");
+            directfeed.servers.Add(new DirectFeedCapture.RemoteTCPServer { Address = "streaming1.naad-adna.pelmorex.com", Port = 8080 });
+            directfeed.servers.Add(new DirectFeedCapture.RemoteTCPServer { Address = "streaming2.naad-adna.pelmorex.com", Port = 8080 });
 
-            Console.WriteLine("[Ice Bear] Getting runner configuration.");
-
-            bool UseHTTPS = true;
-
-            switch (Settings.Default.RunnerType)
-            {
-                default:
-                    Console.WriteLine("[Ice Bear] Runner type is Standard.");
-                    feed.server = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}";
-                    break;
-                case 1:
-                    Console.WriteLine("[Ice Bear] Runner type is Server.");
-                    ServerServiceRun();
-                    return;
-                case 2:
-                    Console.WriteLine("[Ice Bear] Runner type is Client.");
-                    UseHTTPS = false;
-                    feed.server = $"{Settings.Default.ClientServerURL}:{Settings.Default.ClientServerPort}/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}";
-                    break;
-            }
+            //switch (Settings.Default.RunnerType)
+            //{
+            //    default:
+            //        Console.WriteLine("[Ice Bear] Runner type is Standard.");
+            //        feed.server = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}";
+            //        break;
+            //    case 1:
+            //        Console.WriteLine("[Ice Bear] Runner type is Server.");
+            //        ServerServiceRun();
+            //        return;
+            //    case 2:
+            //        Console.WriteLine("[Ice Bear] Runner type is Client.");
+            //        UseHTTPS = false;
+            //        feed.server = $"{Settings.Default.ClientServerURL}:{Settings.Default.ClientServerPort}/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}";
+            //        break;
+            //}
 
             notificationThread = ReturnThreadWithCatch(() =>
             {
-                Application.EnableVisualStyles();
                 SystemEvents.PowerModeChanged += (a, b) =>
                 {
                     if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
@@ -216,10 +218,30 @@ namespace SharpAlert
 
             Console.WriteLine("[Ice Bear] Starting services momentarily.");
 
-            feedThread = ReturnThreadWithCatch(() => feed.ServiceRun(UseHTTPS), false);
-            feedThread.SetApartmentState(ApartmentState.MTA);
-            //feedThread.MonitorAndStart("Feed Capture");
-            feedThread.Start();
+            bool AnyFeedStarted = false;
+
+            if (Settings.Default.RegionUnitedStates)
+            {
+                feedThread = ReturnThreadWithCatch(() => feed.ServiceRun(true), false);
+                feedThread.SetApartmentState(ApartmentState.MTA);
+                //feedThread.MonitorAndStart("Feed Capture");
+                feedThread.Start();
+                AnyFeedStarted = true;
+            }
+
+            if (Settings.Default.RegionCanada)
+            {
+                directfeedThread = new Thread(() => directfeed.ServiceRun());
+                directfeedThread.SetApartmentState(ApartmentState.MTA);
+                //directfeedThread.MonitorAndStart("Direct Feed Capture");
+                directfeedThread.Start();
+                AnyFeedStarted = true;
+            }
+
+            if (!AnyFeedStarted)
+            {
+                //write
+            }    
 
             cacheThread = ReturnThreadWithCatch(() => cache.ServiceRun(true), true);
             cacheThread.SetApartmentState(ApartmentState.MTA);
@@ -235,6 +257,11 @@ namespace SharpAlert
             historyProcThread.SetApartmentState(ApartmentState.MTA);
             //historyProcThread.MonitorAndStart("History Processor");
             historyProcThread.Start();
+
+            serverThread = ReturnThreadWithCatch(async () => await hyper.ServiceRun(), true);
+            serverThread.SetApartmentState(ApartmentState.MTA);
+            //serverThread.MonitorAndStart("Hyper Server");
+            serverThread.Start();
 
             if (Settings.Default.statusWindow)
             {
@@ -308,73 +335,78 @@ namespace SharpAlert
             }).Start();
         }
 
+        private static void CheckSettingsCorrect()
+        {
+            // idk man
+        }
+
         /// <summary>
         /// Starts the Ice Bear Worker as a server instead of a client.
         /// </summary>
-        private static void ServerServiceRun()
-        {
-            AllocateTerminal(false);
+        //private static void ServerServiceRun()
+        //{
+        //    AllocateTerminal(false);
 
-            Thread.Sleep(1000);
+        //    Thread.Sleep(1000);
 
-            if (Control.ModifierKeys == Keys.Shift)
-            {
-                Console.WriteLine("[Ice Bear] Reverting runner configuration.");
-                Settings.Default.RunnerType = 0;
-                Settings.Default.Save();
-                Console.WriteLine("[Ice Bear] The runner configuration has been reset.");
-                Thread.Sleep(5000);
-                Environment.Exit(0);
-            }
+        //    if (Control.ModifierKeys == Keys.Shift)
+        //    {
+        //        Console.WriteLine("[Ice Bear] Reverting runner configuration.");
+        //        Settings.Default.RunnerType = 0;
+        //        Settings.Default.Save();
+        //        Console.WriteLine("[Ice Bear] The runner configuration has been reset.");
+        //        Thread.Sleep(5000);
+        //        Environment.Exit(0);
+        //    }
 
-            Console.WriteLine("[Ice Bear] To stop operating in server mode, hold SHIFT when the program starts.");
-            Console.WriteLine("[Ice Bear] Initializing internet services. (this may fail if you're not running this with admin privileges)");
+        //    Console.WriteLine("[Ice Bear] To stop operating in server mode, hold SHIFT when the program starts.");
+        //    Console.WriteLine("[Ice Bear] Initializing internet services. (this may fail if you're not running this with admin privileges)");
 
-            HttpListener listener = new HttpListener();
-            listener.Prefixes.Add("http://*:9792/");
+        //    HttpListener listener = new HttpListener();
+        //    listener.Prefixes.Add("http://*:9792/");
 
-            Console.WriteLine("[Ice Bear] Starting services momentarily.");
+        //    Console.WriteLine("[Ice Bear] Starting services momentarily.");
 
-            Thread feedThread = ReturnThreadWithCatch(() => feed.ServerServiceRun(true), true);
-            feedThread.SetApartmentState(ApartmentState.MTA);
-            //feedThread.MonitorAndStart("Feed Capture");
-            feedThread.Start();
+        //    Thread feedThread = ReturnThreadWithCatch(() => feed.ServerServiceRun(true), true);
+        //    feedThread.SetApartmentState(ApartmentState.MTA);
+        //    //feedThread.MonitorAndStart("Feed Capture");
+        //    feedThread.Start();
 
-            listener.Start();
-            CreateStatusWindow();
+        //    listener.Start();
+        //    CreateStatusWindow();
 
-            ServiceRunnerScheduled = true;
+        //    ServiceRunnerScheduled = true;
 
-            Console.WriteLine("[Ice Bear] Listening for requests. (on port 9792)");
+        //    Console.WriteLine("[Ice Bear] Listening for requests. (on port 9792)");
 
-            while (true)
-            {
-                Console.WriteLine("[Ice Bear] Waiting for the next request.");
-                HttpListenerContext context = listener.GetContext();
+        //    while (true)
+        //    {
+        //        Console.WriteLine("[Ice Bear] Waiting for the next request.");
+        //        HttpListenerContext context = listener.GetContext();
 
-                ThreadPool.QueueUserWorkItem(_ =>
-                {
-                    var request = context.Request;
-                    Console.WriteLine($"[Ice Bear] Sending data ({request.UserAgent} | {request.RemoteEndPoint.Address}).");
+        //        ThreadPool.QueueUserWorkItem(_ =>
+        //        {
+        //            var request = context.Request;
+        //            Console.WriteLine($"[Ice Bear] Sending data ({request.UserAgent} | {request.RemoteEndPoint.Address}).");
 
-                    if (request.HttpMethod.ToUpperInvariant() == "GET")
-                    {
-                        context.Response.StatusCode = (int)HttpStatusCode.OK;
-                        context.Response.ContentType = "application/xml";
-                        byte[] feed = Encoding.UTF8.GetBytes(FeedCapture.Result);
-                        context.Response.OutputStream.Write(feed, 0, feed.Length);
-                        context.Response.OutputStream.Close();
-                        Console.WriteLine($"[Ice Bear] Sent the data successfully.");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"[Ice Bear] Client did not send the request via GET.");
-                        context.Response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
-                        context.Response.OutputStream.Close();
-                    }
-                });
-            }
-        }
+        //            if (request.HttpMethod.ToUpperInvariant() == "GET")
+        //            {
+        //                context.Response.StatusCode = (int)HttpStatusCode.OK;
+        //                context.Response.ContentType = "application/xml";
+        //                byte[] feed = Encoding.UTF8.GetBytes(FeedCapture.Result);
+        //                context.Response.OutputStream.Write(feed, 0, feed.Length);
+        //                context.Response.OutputStream.Close();
+        //                Console.WriteLine($"[Ice Bear] Sent the data successfully.");
+        //            }
+        //            else
+        //            {
+        //                Console.WriteLine($"[Ice Bear] Client did not send the request via GET.");
+        //                context.Response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
+        //                context.Response.OutputStream.Close();
+        //            }
+        //        });
+        //    }
+        //}
 
         //private static void MonitorAndStart(this Thread thread, string FriendlyName)
         //{
@@ -547,12 +579,24 @@ namespace SharpAlert
                     {
                         if (int.Parse(RemoteVersionSplit[0]) < VersionInfo.MajorVersion ||
                             int.Parse(RemoteVersionSplit[1]) < VersionInfo.MinorVersion)
-                            lock (notify)
                         {
-                            notify.BalloonTipTitle = "SharpAlert is running";
-                            notify.BalloonTipText = $"Downgrade available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
-                            notify.BalloonTipIcon = ToolTipIcon.Info;
-                            notify.ShowBalloonTip(5000);
+                            lock (notify)
+                            {
+                                notify.BalloonTipTitle = "SharpAlert is running";
+                                notify.BalloonTipText = $"Downgrade available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                                notify.BalloonTipIcon = ToolTipIcon.Info;
+                                notify.ShowBalloonTip(5000);
+                            }
+                        }
+                        else
+                        {
+                            lock (notify)
+                            {
+                                notify.BalloonTipTitle = "SharpAlert is running";
+                                notify.BalloonTipText = $"I'll just be waiting right over here in my tray icon. You're up to date.";
+                                notify.BalloonTipIcon = ToolTipIcon.Info;
+                                notify.ShowBalloonTip(5000);
+                            }
                         }
                     }
                 }
@@ -829,22 +873,8 @@ namespace SharpAlert
                 return;
             }
 
-            switch (MessageBox.Show("Do you want to quit and save your settings?\r\n" +
-                "You won't receive any alerts while the program is stopped.",
-                "SharpAlert",
-                MessageBoxButtons.YesNoCancel,
-                MessageBoxIcon.Question))
-            {
-                case DialogResult.Yes:
-                    Settings.Default.Save();
-                    SafeExit();
-                    break;
-                case DialogResult.No:
-                    SafeExit();
-                    break;
-                case DialogResult.Cancel:
-                    return;
-            }
+            Settings.Default.Save();
+            SafeExit();
         }
 
         public static void AllocateTerminal(bool Popups = true)
@@ -854,10 +884,12 @@ namespace SharpAlert
             if (!allocateSuccess)
             {
                 if (Popups)
+                {
                     MessageBox.Show("The console could not be allocated. It may already be visible.",
                         "SharpAlert",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
+                }
             }
             else
             {
@@ -865,7 +897,8 @@ namespace SharpAlert
                 IntPtr consoleHandle = CreateFile("CONOUT$", GENERIC_WRITE, 0, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
                 if (consoleHandle == IntPtr.Zero)
                 {
-                    throw new Win32Exception(Marshal.GetLastWin32Error());
+                    //throw new Win32Exception(Marshal.GetLastWin32Error());
+                    return;
                 }
 
                 if (!GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE), out uint mode))
@@ -899,7 +932,7 @@ namespace SharpAlert
                     }
                 });
                 SetConsoleCtrlHandler(_handler, true);
-                Console.Beep();
+                Console.Beep(1000, 200);
             }
         }
 

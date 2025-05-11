@@ -1,6 +1,7 @@
 ﻿using SharpAlert.Properties;
 using System;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using static SharpAlert.MainEntryPoint;
@@ -60,8 +61,18 @@ namespace SharpAlert
             urgencyUnknownBox.Checked = Settings.Default.urgencyUnknown;
             urgencyUnknownBox.CheckedChanged += (a, b) => Settings.Default.urgencyUnknown = ((CheckBox)a).Checked;
 
-            AlertCheckIntervalInput.Value = Settings.Default.AlertCheckInterval;
+            if (AlertCheckIntervalInput.Value <= 10)
+            {
+                AlertCheckIntervalInput.Enabled = false;
+            }
+            else
+            {
+                AlertCheckIntervalInput.Value = Settings.Default.AlertCheckInterval;
+            }
             AlertCheckIntervalInput.ValueChanged += (a, b) => Settings.Default.AlertCheckInterval = (int)((NumericUpDown)a).Value;
+
+            AlertDeadIntervalInput.Value = Settings.Default.AlertDeadInterval;
+            AlertDeadIntervalInput.ValueChanged += (a, b) => Settings.Default.AlertDeadInterval = (int)((NumericUpDown)a).Value;
 
             weaOnlyBox.Checked = Settings.Default.weaOnly;
             weaOnlyBox.CheckedChanged += (a, b) => Settings.Default.weaOnly = ((CheckBox)a).Checked;
@@ -95,11 +106,14 @@ namespace SharpAlert
 
             storedMaxSizeInput.Value = Settings.Default.storedMaxSize;
             storedMaxSizeInput.ValueChanged += (a, b) => Settings.Default.storedMaxSize = (int)((NumericUpDown)a).Value;
+            showExpiryMessagesBox.Checked = Settings.Default.showExpiryMessages;
+            showExpiryMessagesBox.CheckedChanged += (a, b) => Settings.Default.showExpiryMessages = ((CheckBox)a).Checked;
 
-            string SAME_Areas = string.Empty;
-            foreach (string area in Settings.Default.AllowedSAMELocations_Geocodes) SAME_Areas += area + "\r\n";
-            SAME_Areas = SAME_Areas.Trim();
-            AreaSAMEOutput.Text = SAME_Areas;
+            ListAreaSAMEOutput.Items.Clear();
+            foreach (string area in Settings.Default.AllowedSAMELocations_Geocodes)
+            {
+                ListAreaSAMEOutput.Items.Add(area, true);
+            }
 
             string UGC_Areas = string.Empty;
             foreach (string area in Settings.Default.AllowedUGCLocations_Geocodes) UGC_Areas += area + "\r\n";
@@ -116,12 +130,41 @@ namespace SharpAlert
         {
             if (!string.IsNullOrWhiteSpace(AreaSAMEInput.Text))
             {
-                Settings.Default.AllowedSAMELocations_Geocodes.Add(AreaSAMEInput.Text);
-                string SAME_Areas = string.Empty;
-                foreach (string area in Settings.Default.AllowedSAMELocations_Geocodes) SAME_Areas += area + "\r\n";
-                SAME_Areas = SAME_Areas.Trim();
-                AreaSAMEOutput.Text = SAME_Areas;
-                AreaSAMEInput.Clear();
+                if (!(AreaSAMEInput.Text.Length >= 5))
+                {
+                    MessageBox.Show("The SAME location must be at least 5-6 characters.",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                    AreaSAMEInput.Clear();
+                    return;
+                }
+
+                if (Settings.Default.AllowedSAMELocations_Geocodes.Contains(AreaSAMEInput.Text))
+                {
+                    var removal = MessageBox.Show("The SAME location is already in the list. Remove it?",
+                        "SharpAlert",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+                    if (removal == DialogResult.Yes) Settings.Default.AllowedSAMELocations_Geocodes.Remove(AreaSAMEInput.Text);
+                    ListAreaSAMEOutput.Items.Clear();
+                    foreach (string area in Settings.Default.AllowedSAMELocations_Geocodes)
+                    {
+                        ListAreaSAMEOutput.Items.Add(area);
+                    }
+                    AreaSAMEInput.Clear();
+                    return;
+                }
+                else
+                {
+                    Settings.Default.AllowedSAMELocations_Geocodes.Add(AreaSAMEInput.Text);
+                    ListAreaSAMEOutput.Items.Clear();
+                    foreach (string area in Settings.Default.AllowedSAMELocations_Geocodes)
+                    {
+                        ListAreaSAMEOutput.Items.Add(area);
+                    }
+                    AreaSAMEInput.Clear();
+                }
             }
             else
             {
@@ -165,7 +208,7 @@ namespace SharpAlert
             }
             else
             {
-                MessageBox.Show("Enter a SAME event value to add it.",
+                MessageBox.Show("Enter an event value to add it.",
                     "SharpAlert",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation);
@@ -174,16 +217,22 @@ namespace SharpAlert
 
         private void SAMEClearButton_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Clear SAME location data?", "SharpAlert", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Clear SAME location data?",
+                "SharpAlert",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 Settings.Default.AllowedSAMELocations_Geocodes.Clear();
-                AreaSAMEOutput.Text = string.Empty;
+                ListAreaSAMEOutput.Items.Clear();
             }
         }
 
         private void UGCClearButton_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Clear UGC location data?", "SharpAlert", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Clear UGC location data?",
+                "SharpAlert",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 Settings.Default.AllowedUGCLocations_Geocodes.Clear();
                 AreaUGCOutput.Text = string.Empty;
@@ -192,7 +241,10 @@ namespace SharpAlert
 
         private void EventClearButton_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Clear SAME event blacklist data?", "SharpAlert", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Clear event blacklist data?",
+                "SharpAlert",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 Settings.Default.EnforceEventBlacklist.Clear();
                 EventBlacklistOutput.Text = string.Empty;
@@ -288,6 +340,84 @@ namespace SharpAlert
             });
             staThread.SetApartmentState(ApartmentState.STA);
             staThread.Start();
+        }
+
+        private void AlertCheckIntervalLabel_Click(object sender, EventArgs e)
+        {
+        }
+
+        //Double-click to toggle 5 second polling. This is not recommended on lower end hardware, or networks with bad/unstable connections.
+        private void AlertCheckIntervalLabel_DoubleClick(object sender, EventArgs e)
+        {
+            //if (AlertCheckIntervalInput.Enabled)
+            //{
+            //    AlertCheckIntervalInput.Enabled = false;
+            //    Settings.Default.AlertCheckInterval = 5;
+            //}
+            //else
+            //{
+            //    AlertCheckIntervalInput.Enabled = true;
+            //    AlertCheckIntervalInput.Value = 30;
+            //}
+        }
+
+        private readonly LocationsAdditionForm laf = new LocationsAdditionForm();
+
+        private void SAMESelectButton_Click(object sender, EventArgs e)
+        {
+            var result = laf.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                string lefted = $"{laf.SelectedState.Id.ToString().PadLeft(3, '0')}";
+                string righted = $"{laf.SelectedCounty.Id.ToString().PadLeft(3, '0')}";
+                AreaSAMEInput.Enabled = false;
+                AreaSAMEInput.Text = lefted + righted;
+                SAMEAddButton.PerformClick();
+                AreaSAMEInput.Enabled = true;
+            }
+        }
+
+        private readonly EventsAdditionForm eaf = new EventsAdditionForm();
+
+        private void EventSelectButton_Click(object sender, EventArgs e)
+        {
+            var result = eaf.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                string lefted = $"{eaf.SelectedState.Id.ToString().PadLeft(3, '0')}";
+                string righted = $"{eaf.SelectedCounty.Id.ToString().PadLeft(3, '0')}";
+                EventBlacklistInput.Enabled = false;
+                EventBlacklistInput.Text = lefted + righted;
+                EventAddButton.PerformClick();
+                EventBlacklistInput.Enabled = true;
+            }
+        }
+
+        private void ListAreaSAMEOutput_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (e.NewValue == CheckState.Checked) return;
+
+            if (MessageBox.Show("Remove this location?",
+                "SharpAlert",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Settings.Default.AllowedSAMELocations_Geocodes.RemoveAt(e.Index);
+                ListAreaSAMEOutput.Items.Clear();
+                foreach (string area in Settings.Default.AllowedSAMELocations_Geocodes)
+                {
+                    ListAreaSAMEOutput.Items.Add(area);
+                }
+            }
+
+            e.NewValue = CheckState.Checked;
+        }
+
+        //int[] states = (AlertDetails.States.OrderBy(x => x.Id).Select(x => x.Id).ToArray());
+
+        private void ListAreaSAMEOutput_Format(object sender, ListControlConvertEventArgs e)
+        {
+            e.Value = AlertProcessor.GetFriendlyNameFromSAMELocation((string)e.Value);
         }
     }
 }

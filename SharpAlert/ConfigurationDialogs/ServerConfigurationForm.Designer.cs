@@ -33,13 +33,13 @@
             this.BusyLock = new System.Windows.Forms.Timer(this.components);
             this.BusyLockText = new System.Windows.Forms.Label();
             this.ApplicationTypeGroup = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.ClientServerPortInput = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ClientServerURLInput = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.AppTypeCombo = new System.Windows.Forms.ComboBox();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
-            this.ClientServerPortInput = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.ApplicationTypeGroup.SuspendLayout();
             this.ConfigurationPanel.SuspendLayout();
             this.SuspendLayout();
@@ -68,6 +68,7 @@
             this.ApplicationTypeGroup.Controls.Add(this.ClientServerURLInput);
             this.ApplicationTypeGroup.Controls.Add(this.label1);
             this.ApplicationTypeGroup.Controls.Add(this.AppTypeCombo);
+            this.ApplicationTypeGroup.Enabled = false;
             this.ApplicationTypeGroup.ForeColor = System.Drawing.Color.White;
             this.ApplicationTypeGroup.Location = new System.Drawing.Point(12, 12);
             this.ApplicationTypeGroup.Name = "ApplicationTypeGroup";
@@ -75,6 +76,28 @@
             this.ApplicationTypeGroup.TabIndex = 2;
             this.ApplicationTypeGroup.TabStop = false;
             this.ApplicationTypeGroup.Text = "Application Type";
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(594, 72);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(88, 30);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Port\r\n(Default: 9792)";
+            // 
+            // ClientServerPortInput
+            // 
+            this.ClientServerPortInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ClientServerPortInput.BackColor = System.Drawing.Color.Black;
+            this.ClientServerPortInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ClientServerPortInput.ForeColor = System.Drawing.Color.Red;
+            this.ClientServerPortInput.Location = new System.Drawing.Point(597, 105);
+            this.ClientServerPortInput.Name = "ClientServerPortInput";
+            this.ClientServerPortInput.Size = new System.Drawing.Size(85, 21);
+            this.ClientServerPortInput.TabIndex = 9;
             // 
             // label2
             // 
@@ -111,7 +134,9 @@
             // AppTypeCombo
             // 
             this.AppTypeCombo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.AppTypeCombo.BackColor = System.Drawing.Color.Black;
             this.AppTypeCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AppTypeCombo.ForeColor = System.Drawing.Color.White;
             this.AppTypeCombo.FormattingEnabled = true;
             this.AppTypeCombo.Location = new System.Drawing.Point(6, 103);
             this.AppTypeCombo.Name = "AppTypeCombo";
@@ -126,28 +151,6 @@
             this.ConfigurationPanel.Name = "ConfigurationPanel";
             this.ConfigurationPanel.Size = new System.Drawing.Size(712, 156);
             this.ConfigurationPanel.TabIndex = 9;
-            // 
-            // ClientServerPortInput
-            // 
-            this.ClientServerPortInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ClientServerPortInput.BackColor = System.Drawing.Color.Black;
-            this.ClientServerPortInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ClientServerPortInput.ForeColor = System.Drawing.Color.Red;
-            this.ClientServerPortInput.Location = new System.Drawing.Point(597, 105);
-            this.ClientServerPortInput.Name = "ClientServerPortInput";
-            this.ClientServerPortInput.Size = new System.Drawing.Size(85, 21);
-            this.ClientServerPortInput.TabIndex = 9;
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(594, 72);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(88, 30);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Port\r\n(Default: 9792)";
             // 
             // ServerConfigurationForm
             // 

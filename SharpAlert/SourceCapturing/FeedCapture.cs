@@ -1,8 +1,8 @@
 ﻿using SharpAlert.Properties;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +15,7 @@ namespace SharpAlert
 {
     public class FeedCapture
     {
-        public string server = string.Empty;
+        public List<string> servers = new List<string>();
         private bool FirstRun = true;
         private bool Stop = false;
         private bool StopCalled = false;
@@ -28,14 +28,22 @@ namespace SharpAlert
             }
             StopCalled = true;
             Stop = true;
-            while (Stop) Thread.Sleep(100);
+
+            for (int i = 0; i < 5; i++)
+            {
+                if (!Stop) return;
+                Thread.Sleep(1000);
+            }
+
+            //while (Stop)
+            //{
+            //    Thread.Sleep(500);
+            //}
         }
 
         public static string Result { get; private set; } = string.Empty;
         public static int Calls { get; private set; } = 0;
 
-
-        //apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/PublicWEA/recent/{DateTime.UtcNow.AddMonths(-1):yyyy-MM-ddTHH:mm:ssZ}
         /// <summary>
         /// Starts the Feed Capture service in the current thread as a client.
         /// </summary>
@@ -45,40 +53,64 @@ namespace SharpAlert
             if (Stop) return;
 
             bool LastConnectionSuccessful = true;
+            bool AllConnectionsSuccessful = true;
 
             while (true)
             {
                 try
                 {
                     string URLPrefix = useHTTPS ? "https" : "http";
-                    Console.WriteLine($"[Feed Capture] Getting data from URL: {URLPrefix}://{server}");
-                    HttpResponseMessage message = client.GetAsync($"{URLPrefix}://{server}").Result;
-                    message.EnsureSuccessStatusCode();
-
-                    if (Calls >= 100000) Calls = 0;
-                    Calls++;
-
-                    Result = message.Content.ReadAsStringAsync().Result;
-
-                    if (!LastConnectionSuccessful)
+                    lock (servers)
                     {
-                        lock (notify)
+                        int count = servers.Count;
+                        foreach (string server in servers)
                         {
-                            notify.BalloonTipTitle = "SharpAlert has reconnected";
-                            notify.BalloonTipText = "Successfully reconnected to the server after an ongoing connection disruption or problem.";
-                            notify.BalloonTipIcon = ToolTipIcon.Info;
-                            notify.ShowBalloonTip(5000);
+                            try
+                            {
+                                count--;
+                                Console.WriteLine($"[Feed Capture | IPAWS] Getting data from URL: {URLPrefix}://{server}");
+                                HttpResponseMessage message = client.GetAsync($"{URLPrefix}://{server}").Result;
+                                message.EnsureSuccessStatusCode();
+
+                                if (Calls >= 100000) Calls = 0;
+                                Calls++;
+
+                                Result = message.Content.ReadAsStringAsync().Result;
+
+                                EnrollAlerts(Result);
+                            }
+                            catch (Exception ex)
+                            {
+                                count++;
+                                AllConnectionsSuccessful = false;
+                                Console.WriteLine($"[Feed Capture | IPAWS] {ex.Message}");
+                            }
                         }
-                        LastConnectionSuccessful = true;
+
+                        if (count == servers.Count)
+                        {
+                            LastConnectionSuccessful = false;
+                        }
                     }
 
-                    Console.WriteLine($"[Feed Capture] Grabbed data.");
+                    if (AllConnectionsSuccessful) Console.WriteLine($"[Feed Capture | IPAWS] Fetched from all feeds successfully.");
+                    else Console.WriteLine("[Feed Capture | IPAWS] Not all feeds were fetched from successfully.");
 
-                    EnrollAlerts(Result);
+                    //if (LastConnectionSuccessful)
+                    //{
+                    //    lock (notify)
+                    //    {
+                    //        notify.BalloonTipTitle = "SharpAlert has reconnected";
+                    //        notify.BalloonTipText = "Successfully reconnected to the server after an ongoing connection disruption or problem.";
+                    //        notify.BalloonTipIcon = ToolTipIcon.Info;
+                    //        notify.ShowBalloonTip(5000);
+                    //    }
+                    //    LastConnectionSuccessful = true;
+                    //}
                 }
                 catch (TimeoutException)
                 {
-                    Console.WriteLine($"[Feed Capture] Timed out.");
+                    Console.WriteLine($"[Feed Capture | IPAWS] Timed out.");
                     if (LastConnectionSuccessful)
                     {
                         lock (notify)
@@ -98,8 +130,8 @@ namespace SharpAlert
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"[Feed Capture] {e.Message}");
-                    if (e.InnerException != null) Console.WriteLine($"[Feed Capture] {e.InnerException.Message}");
+                    Console.WriteLine($"[Feed Capture | IPAWS] {e.Message}");
+                    if (e.InnerException != null) Console.WriteLine($"[Feed Capture | IPAWS] {e.InnerException.Message}");
                     if (LastConnectionSuccessful)
                     {
                         lock (notify)
@@ -110,7 +142,7 @@ namespace SharpAlert
                             notify.ShowBalloonTip(5000);
                         }
                     }
-                    LastConnectionSuccessful = false;
+                    //LastConnectionSuccessful = false;
                     Thread.Sleep(30000);
                 }
                 if (FirstRun) FirstRun = false;
@@ -135,67 +167,72 @@ namespace SharpAlert
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
+                    Console.WriteLine($"[Feed Capture | IPAWS] {e.StackTrace} {e.Message}");
                 }
             }
         }
 
+        private readonly object EnrollObject = new object();
+
         public void EnrollAlerts(string data)
         {
-            MatchCollection alertMatches = AlertRegex.Matches(data);
-            int alertIndex = 0;
-
-            if (alertMatches != null || alertMatches.Count != 0)
+            lock (EnrollObject)
             {
-                foreach (Match alert in alertMatches)
+                MatchCollection alertMatches = AlertRegex.Matches(data);
+                int alertIndex = 0;
+
+                if (alertMatches != null || alertMatches.Count != 0)
                 {
-                    try
+                    foreach (Match alert in alertMatches)
                     {
-                        alertIndex++;
-                        if (alert.Value is null) continue;
-
-                        string filename = IdentifierRegex.MatchOrDefault(alert.Value, CreateMD5(alert.Value));
-
-                        //if (string.IsNullOrWhiteSpace(filename))
-                        //{
-                        //    Console.WriteLine("[Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
-                        //    filename = CreateMD5(alert.Value);
-                        //}
-
-                        Console.WriteLine($"[Feed Capture] {alertIndex} -> {filename}");
-                        string alertReplayValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
-                        SharpDataItem item = new SharpDataItem(filename, alert.Value);
-
-                        if (FirstRun && Settings.Default.discardFirstAlerts)
+                        try
                         {
-                            if (TryAddDataToHistory(item))
+                            alertIndex++;
+                            if (alert.Value is null) continue;
+
+                            string filename = IdentifierRegex.MatchOrDefault(alert.Value, CreateMD5(alert.Value));
+
+                            //if (string.IsNullOrWhiteSpace(filename))
+                            //{
+                            //    Console.WriteLine("[Feed Capture | IPAWS] Identifier not found. An MD5 value will be assigned to this alert instead.");
+                            //    filename = CreateMD5(alert.Value);
+                            //}
+
+                            Console.WriteLine($"[Feed Capture | IPAWS] {alertIndex} -> {filename}");
+                            string alertReplayValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
+                            SharpDataItem item = new SharpDataItem(filename, alert.Value);
+
+                            if (FirstRun && Settings.Default.discardFirstAlerts)
                             {
-                                Console.WriteLine($"[Feed Capture] Alert {alertIndex} ({filename}) has been discarded (first run).");
-                            }
-                        }
-                        else
-                        {
-                            if (TryAddDataToQueue(item))
-                            {
-                                Console.WriteLine($"[Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
+                                if (TryAddDataToHistory(item))
+                                {
+                                    Console.WriteLine($"[Feed Capture | IPAWS] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
+                                }
                             }
                             else
                             {
-                                Console.WriteLine($"[Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
+                                if (TryAddDataToQueue(item))
+                                {
+                                    Console.WriteLine($"[Feed Capture | IPAWS] Alert {alertIndex} ({filename}) has been saved for processing.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"[Feed Capture | IPAWS] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
+                                }
                             }
                         }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"[Feed Capture | IPAWS] Couldn't check the data for alert {alertIndex}. {ex.Message}");
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"[Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
-                    }
+                    if (alertIndex != 0) Console.WriteLine($"[Feed Capture | IPAWS] {alertIndex} alert(s) checked.");
+                    else Console.WriteLine($"[Feed Capture | IPAWS] No alerts were checked.");
                 }
-                if (alertIndex != 0) Console.WriteLine($"[Feed Capture] {alertIndex} alert(s) checked.");
-                else Console.WriteLine($"[Feed Capture] No alerts to be checked.");
-            }
-            else
-            {
-                Console.WriteLine($"[Feed Capture] No alerts to be checked.");
+                else
+                {
+                    Console.WriteLine("[Feed Capture | IPAWS] There are no alerts to enroll.");
+                }
             }
         }
 
@@ -203,68 +240,68 @@ namespace SharpAlert
         /// Starts the Feed Capture service in the current thread as a server instead of a client.
         /// </summary>
         /// <param name="useHTTPS">Use the secure version of Hypertext Transfer Protocol to connect to the target server.</param>
-        public void ServerServiceRun(bool useHTTPS)
-        {
-            if (Stop) return;
+        //public void ServerServiceRun(bool useHTTPS)
+        //{
+        //    if (Stop) return;
 
-            string URLPrefix = useHTTPS ? "https" : "http";
-            while (true)
-            {
-                try
-                {
-                    Console.WriteLine($"[Feed Capture] Getting data from the server.");
-                    Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server}");
-                    if (!message.Wait(10000)) continue;
-                    message.Result.EnsureSuccessStatusCode();
-                    
-                    if (Calls > 100000) Calls = 0;
-                    Calls++;
+        //    string URLPrefix = useHTTPS ? "https" : "http";
+        //    while (true)
+        //    {
+        //        try
+        //        {
+        //            Console.WriteLine($"[Feed Capture | IPAWS] Getting data from the server.");
+        //            Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server}");
+        //            if (!message.Wait(10000)) continue;
+        //            message.Result.EnsureSuccessStatusCode();
 
-                    Result = message.Result.Content.ReadAsStringAsync().Result;
+        //            if (Calls > 100000) Calls = 0;
+        //            Calls++;
 
-                    Console.WriteLine($"[Feed Capture] Grabbed data from the server.");
+        //            Result = message.Result.Content.ReadAsStringAsync().Result;
 
-                    for (int i = 0; !(i >= 30);)
-                    {
-                        if (Stop)
-                        {
-                            Stop = false;
-                            return;
-                        }
-                        Thread.Sleep(1000);
-                        i++;
-                    }
-                }
-                catch (SocketException e)
-                {
-                    Console.WriteLine($"[Feed Capture] {e.Message}");
-                    Thread.Sleep(1000);
-                }
-                catch (TimeoutException)
-                {
-                    Console.WriteLine($"[Feed Capture] Timed out.");
-                }
-                catch (HttpRequestException e)
-                {
-                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message} {e.Message}");
-                }
-                catch (AggregateException e)
-                {
-                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
-                }
-                catch (TaskCanceledException)
-                {
-                    Console.WriteLine("[Feed Capture] The executing task was canceled.");
-                }
-                catch (ThreadAbortException)
-                {
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
-                }
-            }
-        }
+        //            Console.WriteLine($"[Feed Capture | IPAWS] Grabbed data from the server.");
+
+        //            for (int i = 0; !(i >= 30);)
+        //            {
+        //                if (Stop)
+        //                {
+        //                    Stop = false;
+        //                    return;
+        //                }
+        //                Thread.Sleep(1000);
+        //                i++;
+        //            }
+        //        }
+        //        catch (SocketException e)
+        //        {
+        //            Console.WriteLine($"[Feed Capture | IPAWS] {e.Message}");
+        //            Thread.Sleep(1000);
+        //        }
+        //        catch (TimeoutException)
+        //        {
+        //            Console.WriteLine($"[Feed Capture | IPAWS] Timed out.");
+        //        }
+        //        catch (HttpRequestException e)
+        //        {
+        //            Console.WriteLine($"[Feed Capture | IPAWS] {e.StackTrace} {e.Message} {e.Message}");
+        //        }
+        //        catch (AggregateException e)
+        //        {
+        //            Console.WriteLine($"[Feed Capture | IPAWS] {e.StackTrace} {e.Message}");
+        //        }
+        //        catch (TaskCanceledException)
+        //        {
+        //            Console.WriteLine("[Feed Capture | IPAWS] The executing task was canceled.");
+        //        }
+        //        catch (ThreadAbortException)
+        //        {
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            Console.WriteLine($"[Feed Capture | IPAWS] {e.StackTrace} {e.Message}");
+        //        }
+        //    }
+        //}
 
         public static bool TryAddDataToQueue(SharpDataItem item)
         {
@@ -286,7 +323,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[Feed Capture | IPAWS] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }
@@ -313,7 +350,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"[Feed Capture] {e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[Feed Capture | IPAWS] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }

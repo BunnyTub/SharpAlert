@@ -13,14 +13,13 @@ using static SharpAlert.IceBearWorker;
 using SharpAlert.Properties;
 using System.Linq;
 using System.Runtime.InteropServices;
-using NAudio.Utils;
 using System.ComponentModel;
 
 namespace SharpAlert
 {
     internal static class VersionInfo
     {
-        public static readonly int MajorVersion = 7;
+        public static readonly int MajorVersion = 8;
         public static readonly int MinorVersion = 0;
     }
 
@@ -42,6 +41,7 @@ namespace SharpAlert
         public static readonly DateTime startDT = DateTime.UtcNow;
         public static bool AllowThreadRestarts = true;
         public static FeedCapture feed;
+        public static DirectFeedCapture directfeed;
         public static CacheCapture cache;
         public static DataProcessor dataproc;
         public static HistoryProcessor historyproc;
@@ -52,9 +52,24 @@ namespace SharpAlert
         public static object IdleWindowLock = new object();
         public static object StatusWindowLock = new object();
         public static NotifyIcon notify;
+        public static HyperServer hyper;
         public static SpeechSynthesizer engine;
         public static object AlertValuesLock = new object();
-        public static bool AlertDisplaying = false;
+        private static bool _AlertDisplaying = false;
+        public static DateTime AlertDisplayingBeginTime { get; private set; } = DateTime.MinValue;
+
+        public static bool AlertDisplaying
+        {
+            get
+            {
+                return _AlertDisplaying;
+            }
+            set
+            {
+                _AlertDisplaying = value;
+                AlertDisplayingBeginTime = DateTime.UtcNow;
+            }
+        }
         public static object AudioOutputLock = new object();
 
         public static List<SharpDataItem> SharpDataQueue = new List<SharpDataItem>();
@@ -72,14 +87,19 @@ namespace SharpAlert
         /// </summary>
         public static void SafeExit()
         {
+            Console.WriteLine("Preparing for termination.");
             AllowThreadRestarts = false;
             Thread.Sleep(500);
 
             bool Finished = false;
             new Thread(() =>
             {
+                Console.WriteLine("Hyper Server is shutting down.");
+                hyper?.ServiceStop();
                 Console.WriteLine("Feed Capture is shutting down.");
                 feed?.ServiceStop();
+                Console.WriteLine("Direct Feed Capture is shutting down.");
+                directfeed?.ServiceStop();
                 Console.WriteLine("Cache Capture is shutting down.");
                 cache?.ServiceStop();
                 Console.WriteLine("Data Processor is shutting down.");
@@ -95,7 +115,7 @@ namespace SharpAlert
                 Console.WriteLine("Stopping all sounds.");
                 try
                 {
-                    StopAllAudio(true);
+                    StopAllAudioSilently();
                 }
                 catch (Exception)
                 {
@@ -147,7 +167,9 @@ namespace SharpAlert
             }
             else Thread.Sleep(1000);
             Environment.Exit(0);
-        } 
+        }
+
+        public static bool FunOnABun = false;
 
         /// <summary>
         /// Starts everything.
@@ -160,23 +182,41 @@ namespace SharpAlert
 
             if (args.Length >= 2)
             {
+                if (args.Contains("--i-want-to-be-fucked-up-the-ass-like-a-gay-little-bunny-boy"))
+                {
+                    for (int i = 0; i < 20; i++)
+                    {
+                        Process.Start(AssemblyFile, "--monitored --ignore-duplicates --wattpad");
+                        Thread.Sleep(300);
+                    }
+                    return; 
+                }
+
+                if (args.Contains("--wattpad"))
+                {
+                    FunOnABun = true;
+                }
+
                 if (args.Contains("--monitored"))
                 {
                     Mutex mutex = new Mutex(false, "BUNNYTUB_EASCULTURE_SharpAlert_ProtectEZ");
                     try
                     {
-                        if (!mutex.WaitOne(0, false))
+                        if (!args.Contains("--ignore-duplicates"))
                         {
-                            new Thread(() =>
+                            if (!mutex.WaitOne(0, false))
                             {
-                                Thread.Sleep(1000 * 30);
+                                new Thread(() =>
+                                {
+                                    Thread.Sleep(1000 * 30);
+                                    Environment.Exit(0);
+                                }).Start();
+                                MessageBox.Show("SharpAlert is already running.\r\nCheck the notification tray area on the taskbar!",
+                                    "SharpAlert",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Exclamation);
                                 Environment.Exit(0);
-                            }).Start();
-                            MessageBox.Show("SharpAlert is already running.\r\nCheck the notification tray area on the taskbar!",
-                                "SharpAlert",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Exclamation);
-                            Environment.Exit(0);
+                            }
                         }
 
                         new Thread(() => ServiceRun()).Start();
@@ -188,6 +228,7 @@ namespace SharpAlert
                             if (GetParentProcess().MainModule.FileName == AssemblyFile)
                             {
                                 GetParentProcess().WaitForExit();
+                                Settings.Default.Save();
                                 SafeExit();
                             }
                         }
@@ -203,13 +244,13 @@ namespace SharpAlert
                             $"{ex.Message}\r\n" +
                             $"Please report this.\r\n" +
                             $"If this is your first time running SharpAlert,\r\n" +
-                            $"check that you have .NET Framework 4.8.1 installed.\r\n" +
+                            $"check that you have .NET Framework 4.8 installed.\r\n" +
                             $"Make sure no compatibility options are enabled.\r\b",
                             "SharpAlert",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
                         LogFault(ex);
-                        Environment.Exit(1);
+                        try { Environment.Exit(unchecked(ex.HResult)); } catch (Exception) { Environment.Exit(1); }
                     }
                     finally
                     {

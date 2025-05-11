@@ -6,12 +6,14 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using static SharpAlert.MainEntryPoint;
+using static SharpAlert.IceBearWorker;
+using System.Net.Http;
 
 namespace SharpAlert
 {
     public partial class ConfigurationForm : Form
     {
-        private readonly ServerConfigurationForm scf = new ServerConfigurationForm();
+        //private readonly ServerConfigurationForm scf = new ServerConfigurationForm();
         private readonly AlertConfigurationForm acf = new AlertConfigurationForm();
 
         public ConfigurationForm()
@@ -27,38 +29,63 @@ namespace SharpAlert
             if (string.IsNullOrWhiteSpace(DiscordWebhookURLInput.Text)) AlertAppearanceAndSoundsGroup.Enabled = true;
             else AlertAppearanceAndSoundsGroup.Enabled = false;
 
-            alertFullscreenBox.Checked = Settings.Default.alertFullscreen;
-            if (alertFullscreenBox.Checked)
-            {
-                alertFullscreenIdleBox.Enabled = true;
-                alertFullscreenDisplayInput.Enabled = true;
-            }
-            else
-            {
-                alertFullscreenIdleBox.Enabled = false;
-                alertFullscreenDisplayInput.Enabled = false;
-            }
-            alertFullscreenBox.CheckedChanged += (a, b) =>
-            {
-                ((CheckBox)a).Enabled = false;
-                Settings.Default.alertFullscreen = ((CheckBox)a).Checked;
-                if (((CheckBox)a).Checked)
-                {
-                    alertFullscreenIdleBox.Enabled = true;
-                    alertFullscreenDisplayInput.Enabled = true;
-                }
-                else
-                {
-                    alertFullscreenIdleBox.Enabled = false;
-                    alertFullscreenIdleBox.Checked = false;
-                    alertFullscreenDisplayInput.Enabled = false;
-                }
-                Thread.Sleep(500);
-                ((CheckBox)a).Enabled = true;
-            };
+            //alertFullscreenBox.Checked = Settings.Default.alertDisplayType;
+            //if (alertFullscreenBox.Checked)
+            //{
+            //    alertFullscreenIdleBox.Enabled = true;
+            //    alertFullscreenDisplayInput.Enabled = true;
+            //}
+            //else
+            //{
+            //    alertFullscreenIdleBox.Enabled = false;
+            //    alertFullscreenDisplayInput.Enabled = false;
+            //}
+            //alertFullscreenBox.CheckedChanged += (a, b) =>
+            //{
+            //    ((CheckBox)a).Enabled = false;
+            //    Settings.Default.alertDisplayType = ((CheckBox)a).Checked;
+            //    if (((CheckBox)a).Checked)
+            //    {
+            //        alertFullscreenIdleBox.Enabled = true;
+            //        alertFullscreenDisplayInput.Enabled = true;
+            //    }
+            //    else
+            //    {
+            //        alertFullscreenIdleBox.Enabled = false;
+            //        alertFullscreenIdleBox.Checked = false;
+            //        alertFullscreenDisplayInput.Enabled = false;
+            //    }
+            //    Thread.Sleep(500);
+            //    ((CheckBox)a).Enabled = true;
+            //};
 
-            alertFullscreenWindowedBox.Checked = Settings.Default.alertFullscreenWindowed;
-            alertFullscreenWindowedBox.CheckedChanged += (a, b) => Settings.Default.alertFullscreenWindowed = ((CheckBox)a).Checked;
+            AlertFullscreenCombo.DataSource = new ComboItem[] {
+                new ComboItem
+                {
+                    // 0
+                    FriendlyName = "Windowed",
+                },
+                new ComboItem
+                {
+                    // 1
+                    FriendlyName = "Minified",
+                },
+                new ComboItem
+                {
+                    // 2
+                    FriendlyName = "Full screen"
+                },
+                new ComboItem
+                {
+                    // 2
+                    FriendlyName = "Full scroll"
+                },
+            };
+            AlertFullscreenCombo.SelectedIndex = Settings.Default.alertDisplayType;
+            AlertFullscreenCombo.SelectedIndexChanged += (a, b) => Settings.Default.alertDisplayType = (byte)((ComboBox)a).SelectedIndex;
+
+            alertFullscreenWindowedBox.Checked = Settings.Default.alertTitlebarControls;
+            alertFullscreenWindowedBox.CheckedChanged += (a, b) => Settings.Default.alertTitlebarControls = ((CheckBox)a).Checked;
 
             alertTimeoutInput.Value = Settings.Default.alertTimeout;
             alertTimeoutInput.ValueChanged += (a, b) => Settings.Default.alertTimeout = (int)((NumericUpDown)a).Value;
@@ -144,11 +171,21 @@ namespace SharpAlert
             alertNoGUIBox.CheckedChanged += (a, b) =>
             {
                 Settings.Default.alertNoGUI = ((CheckBox)a).Checked;
-                if (((CheckBox)a).Checked) MessageBox.Show("Alerts will be played out with no prompt.\r\n" +
-                    "Turn this off if this isn't your intention.",
+                if (((CheckBox)a).Checked)
+                {
+                    MessageBox.Show("The console will now be opened.",
                     "SharpAlert",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
+                    MessageBoxIcon.Information);
+                    IceBearWorker.AllocateTerminal(false);
+                }
+                else
+                {
+                    MessageBox.Show("Restart the program to hide the console.",
+                    "SharpAlert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                }
             };
 
             alertIncreaseSizeBox.Checked = Settings.Default.alertIncreaseSize;
@@ -156,6 +193,9 @@ namespace SharpAlert
 
             alertNoRelayBox.Checked = Settings.Default.alertNoRelay;
             alertNoRelayBox.CheckedChanged += (a, b) => Settings.Default.alertNoRelay = ((CheckBox)a).Checked;
+            
+            alertPlayEndToneBox.Checked = Settings.Default.alertPlayEndTone;
+            alertPlayEndToneBox.CheckedChanged += (a, b) => Settings.Default.alertPlayEndTone = ((CheckBox)a).Checked;
             
             WindowLocationCombo.DataSource = new ComboItem[] {
                 new ComboItem
@@ -184,7 +224,6 @@ namespace SharpAlert
                     FriendlyName = "Bottom Right"
                 },
             };
-
             WindowLocationCombo.SelectedIndex = Settings.Default.WindowLocation;
             WindowLocationCombo.SelectedIndexChanged += (a, b) => Settings.Default.WindowLocation = (byte)((ComboBox)a).SelectedIndex;
 
@@ -361,9 +400,62 @@ namespace SharpAlert
             }
         }
 
-        private void ServerButton_Click(object sender, EventArgs e)
+        private void TTSButton_Click(object sender, EventArgs e)
         {
-            scf.ShowDialog();
+            Process.Start("C:\\Windows\\system32\\rundll32.exe", "shell32.dll,Control_RunDLL C:\\Windows\\system32\\speech\\speechux\\sapi.cpl");
+            return;
+
+            string IdentityURL = "https://bunnytub.com";
+            string RemoteVersion = string.Empty;
+            
+            try
+            {
+                HttpResponseMessage latest = client.GetAsync($"{IdentityURL}/Maki/Maki.txt").Result;
+
+                Console.WriteLine($"[Configuration Dialog | Version Request] The server responded with status code {latest.StatusCode}.");
+
+                RemoteVersion = latest.Content.ReadAsStringAsync().Result.Trim();
+                if (string.IsNullOrWhiteSpace(RemoteVersion) || RemoteVersion.Length == 0 || RemoteVersion.Length >= 10) RemoteVersion = "0";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Configuration Dialog] {ex.StackTrace} {ex.Message}");
+                Console.WriteLine($"[Configuration Dialog] Couldn't work with the server.");
+            }
+
+            if (Settings.Default.MakiVersion == "0")
+            {
+                var result = MessageBox.Show("Maki TTS can help manage 32-bit TTS voices.\r\n" +
+                "Do you want to use it when needed?",
+                "SharpAlert - Download Request",
+                MessageBoxButtons.YesNo);
+
+                if (result == DialogResult.Yes)
+                {
+                    try
+                    {
+                        byte[] latest = client.GetByteArrayAsync($"{IdentityURL}/Maki/Maki.txt").Result;
+
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+                //else
+                //{
+                //    Process.Start("C:\\Windows\\system32\\rundll32.exe", "shell32.dll,Control_RunDLL C:\\Windows\\system32\\speech\\speechux\\sapi.cpl");
+                //}
+            }
+            else
+            {
+                if (RemoteVersion != "0")
+                {
+
+                }
+            }
+
+            //scf.ShowDialog();
         }
 
         private void AlertButton_Click(object sender, EventArgs e)

@@ -71,10 +71,7 @@
     <Setting Name="DiscordWebhookAppend" Description="When this has a value, it will be appended to the end of the webhook message." Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="alertFullscreen" Description="Displays messages in fullscreen when ticked. Recommended for users with larger displays, such as TVs. (1280x720 resolution recommended)" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="alertFullscreenDisplay" Description="This value defines which display to show the alert on when using the fullscreen mode." Type="System.Int32" Scope="User">
+    <Setting Name="alertDisplayType" Description="Displays messages in fullscreen when ticked. Recommended for users with larger displays, such as TVs. (1280x720 resolution recommended)" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="urgencyUnknown" Type="System.Boolean" Scope="User">
@@ -152,7 +149,7 @@
     <Setting Name="alertNoGUI" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="alertFullscreenWindowed" Type="System.Boolean" Scope="User">
+    <Setting Name="alertTitlebarControls" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="storedMaxSize" Type="System.Int32" Scope="User">
@@ -174,6 +171,40 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="alertIncreaseSize" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="EnforceSAMEEventBlacklist" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
+    </Setting>
+    <Setting Name="alertFullscreenDisplay" Description="This value defines which display to show the alert on when using the fullscreen mode." Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="AlertDeadInterval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="showExpiryMessages" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="alertPlayEndTone" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="RegionUnitedStates" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="RegionCanada" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="RegionShown" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ProgramVoice" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MakiVersion" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="alertArchiving" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
