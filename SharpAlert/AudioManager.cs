@@ -10,6 +10,8 @@ using static SharpAlert.AlertProcessor;
 using static SharpAlert.IceBearWorker;
 using System.Diagnostics;
 using System.Text;
+using System.Speech.Synthesis;
+using System.Threading.Tasks;
 
 namespace SharpAlert
 {
@@ -337,7 +339,7 @@ namespace SharpAlert
                 ToneDone = true;
             }
         }
-        
+
         public static void PlayEndToneFile(bool wait = false)
         {
             StopAllAudioSilently();
@@ -415,7 +417,7 @@ namespace SharpAlert
             }
         }
 
-        public static void PlayFromUnmanagedSource(UnmanagedMemoryStream unmanaged)
+        public static void PlayFromUnmanagedSource(UnmanagedMemoryStream unmanaged, bool ignoreinterrupt = false)
         {
             try
             {
@@ -438,7 +440,7 @@ namespace SharpAlert
                                     AudioOutput.Init(mf);
                                     for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++) AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
                                     AudioOutput.Play();
-                                    while (AudioOutput.PlaybackState == PlaybackState.Playing & !HoldIt)
+                                    while (AudioOutput.PlaybackState == PlaybackState.Playing & !(HoldIt & ignoreinterrupt))
                                     {
                                         Thread.Sleep(50);
                                     }
@@ -533,7 +535,7 @@ namespace SharpAlert
             }
         }
 
-        public static void PlayFromUnmanagedSourceAndWait(UnmanagedMemoryStream unmanaged, bool ignoreinterrupt)
+        public static void PlayFromUnmanagedSourceAndWait(UnmanagedMemoryStream unmanaged, bool ignoreinterrupt = false)
         {
             try
             {
@@ -678,6 +680,134 @@ namespace SharpAlert
             catch (Exception ex)
             {
                 Console.WriteLine($"[Audio Manager] {ex.Message}");
+            }
+        }
+
+        //public static MemoryStream ReturnStartToneAndRemoteAudioWithFailoverToTTS(string url, string text)
+        //{
+        //    try
+        //    {
+        //        Console.WriteLine("[Audio Manager] Preparing to create.");
+        //        using (MemoryStream stream = new MemoryStream())
+        //        {
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"[Audio Manager] {ex.Message}");
+        //        lock (notify)
+        //        {
+        //            notify.BalloonTipTitle = "SharpAlert is having issues";
+        //            notify.BalloonTipText = "Audio creation is not working as expected. Please make sure your audio devices are working!";
+        //            notify.BalloonTipIcon = ToolTipIcon.Warning;
+        //            notify.ShowBalloonTip(5000);
+        //        }
+        //    }
+        //}
+
+        public static MemoryStream CreateCombinedAudio(string url, string intro, string body)
+        {
+            var outputStream = new MemoryStream();
+            var targetFormat = new WaveFormat(16000, 16, 1); // 16kHz Mono
+
+            var writer = new WaveFileWriter(outputStream, targetFormat);
+            {
+                // Step 1: Load and resample ui_warning_1.wav
+                using (var warningReader = new WaveFileReader(Resources.ui_warning_1))
+                using (var resampledWarning = new MediaFoundationResampler(warningReader, targetFormat))
+                {
+                    resampledWarning.ResamplerQuality = 60;
+                    WriteWaveProviderToWriter(resampledWarning, writer);
+                }
+
+                // Step 2: Add 1 second of silence
+                int silenceDurationMs = 1000;
+                int bytesPerMillisecond = targetFormat.AverageBytesPerSecond / 1000;
+                int silenceBytes = silenceDurationMs * bytesPerMillisecond;
+                byte[] silenceBuffer = new byte[silenceBytes];
+                writer.Write(silenceBuffer, 0, silenceBuffer.Length);
+
+                // Step 3: Synthesize speech and resample
+                using (var ttsStreamOne = new MemoryStream())
+                {
+                    lock (engine)
+                    {
+                        engine.SetOutputToWaveStream(ttsStreamOne);
+                        engine.Speak(intro);
+                    }
+
+                    ttsStreamOne.Position = 0;
+                    using (var ttsReader = new WaveFileReader(ttsStreamOne))
+                    using (var resampledTTS = new MediaFoundationResampler(ttsReader, targetFormat))
+                    {
+                        resampledTTS.ResamplerQuality = 60;
+                        WriteWaveProviderToWriter(resampledTTS, writer);
+                    }
+                }
+
+                writer.Write(silenceBuffer, 0, silenceBuffer.Length);
+
+                try
+                {
+                    Task<byte[]> task = client.GetByteArrayAsync(url);
+                    if (task.IsFaulted) throw task.Exception;
+
+                    var audio = new MemoryStream(task.Result)
+                    {
+                        Position = 0
+                    };
+
+                    using (var ttsReader = new WaveFileReader(audio))
+                    using (var resampledTTS = new MediaFoundationResampler(ttsReader, targetFormat))
+                    {
+                        resampledTTS.ResamplerQuality = 60;
+                        WriteWaveProviderToWriter(resampledTTS, writer);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Audio Manager] {ex.Message}");
+                    using (var ttsStreamTwo = new MemoryStream())
+                    {
+                        lock (engine)
+                        {
+                            engine.SetOutputToWaveStream(ttsStreamTwo);
+                            engine.Speak(body);
+                        }
+
+                        ttsStreamTwo.Position = 0;
+                        using (var ttsReader = new WaveFileReader(ttsStreamTwo))
+                        using (var resampledTTS = new MediaFoundationResampler(ttsReader, targetFormat))
+                        {
+                            resampledTTS.ResamplerQuality = 60;
+                            WriteWaveProviderToWriter(resampledTTS, writer);
+                        }
+                    }
+                }
+
+                writer.Write(silenceBuffer, 0, silenceBuffer.Length);
+
+                using (var warningReader = new WaveFileReader(Resources.ui_end_1))
+                using (var resampledWarning = new MediaFoundationResampler(warningReader, targetFormat))
+                {
+                    resampledWarning.ResamplerQuality = 60;
+                    WriteWaveProviderToWriter(resampledWarning, writer);
+                }
+
+                writer.Flush();
+            }
+
+            return outputStream;
+        }
+
+        private static void WriteWaveProviderToWriter(IWaveProvider provider, WaveFileWriter writer)
+        {
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = provider.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                writer.Write(buffer, 0, bytesRead);
             }
         }
 

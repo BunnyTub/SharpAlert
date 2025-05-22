@@ -79,8 +79,8 @@
     <Reference Include="HidLibrary, Version=3.2.49.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\hidlibrary.3.3.40\lib\net45\HidLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.2\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.4\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Registry.5.0.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
@@ -110,9 +110,10 @@
     <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.IO.Pipelines, Version=9.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Pipelines.9.0.2\lib\net462\System.IO.Pipelines.dll</HintPath>
+    <Reference Include="System.IO.Pipelines, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.9.0.4\lib\net462\System.IO.Pipelines.dll</HintPath>
     </Reference>
     <Reference Include="System.Management" />
     <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -128,18 +129,15 @@
     <Reference Include="System.Security.AccessControl, Version=6.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.AccessControl.6.0.1\lib\net461\System.Security.AccessControl.dll</HintPath>
     </Reference>
-    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
-    </Reference>
     <Reference Include="System.Speech" />
-    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Encodings.Web.9.0.2\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.9.0.4\lib\net462\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
-    <Reference Include="System.Text.Json, Version=9.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Json.9.0.2\lib\net462\System.Text.Json.dll</HintPath>
+    <Reference Include="System.Text.Json, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.9.0.4\lib\net462\System.Text.Json.dll</HintPath>
     </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.6.0\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -159,6 +157,12 @@
     <Compile Include="AlertComponents\AlertFormImage.Designer.cs">
       <DependentUpon>AlertFormImage.cs</DependentUpon>
     </Compile>
+    <Compile Include="AlertComponents\ManualAlertRelayForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlertComponents\ManualAlertRelayForm.Designer.cs">
+      <DependentUpon>ManualAlertRelayForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AlertComponents\MiniAlertForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -171,6 +175,12 @@
     </Compile>
     <Compile Include="AlertComponents\ScrollAlertForm.Designer.cs">
       <DependentUpon>ScrollAlertForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AlertComponents\ImmediateAlertForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlertComponents\ImmediateAlertForm.Designer.cs">
+      <DependentUpon>ImmediateAlertForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ConfigurationDialogs\AlertConfigurationForm.cs">
       <SubType>Form</SubType>
@@ -195,6 +205,12 @@
     </Compile>
     <Compile Include="ConfigurationDialogs\MakiForm.Designer.cs">
       <DependentUpon>MakiForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationDialogs\QuickAccessForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigurationDialogs\QuickAccessForm.Designer.cs">
+      <DependentUpon>QuickAccessForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DataProcessing\HistoryProcessor.cs" />
     <Compile Include="AlertComponents\InfoForm.cs">
@@ -223,6 +239,18 @@
     <Compile Include="ListingForm.Designer.cs">
       <DependentUpon>ListingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProgramWorker\ChooseOwnershipForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgramWorker\ChooseOwnershipForm.Designer.cs">
+      <DependentUpon>ChooseOwnershipForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProgramWorker\ChooseStyleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgramWorker\ChooseStyleForm.Designer.cs">
+      <DependentUpon>ChooseStyleForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProgramWorker\ChooseRegionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -231,6 +259,18 @@
     </Compile>
     <Compile Include="ProgramWorker\HeartbeatWorker.cs" />
     <Compile Include="ProgramWorker\ServiceThreads.cs" />
+    <Compile Include="ProgramWorker\SetupDoneForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgramWorker\SetupDoneForm.Designer.cs">
+      <DependentUpon>SetupDoneForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProgramWorker\SetupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgramWorker\SetupForm.Designer.cs">
+      <DependentUpon>SetupForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="RelayController.cs" />
     <Compile Include="SourceCapturing\CacheCapture.cs" />
     <Compile Include="ConfigurationDialogs\CreditsForm.cs">
@@ -282,11 +322,17 @@
     <EmbeddedResource Include="AlertComponents\AlertFormImage.resx">
       <DependentUpon>AlertFormImage.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AlertComponents\ManualAlertRelayForm.resx">
+      <DependentUpon>ManualAlertRelayForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AlertComponents\MiniAlertForm.resx">
       <DependentUpon>MiniAlertForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AlertComponents\ScrollAlertForm.resx">
       <DependentUpon>ScrollAlertForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AlertComponents\ImmediateAlertForm.resx">
+      <DependentUpon>ImmediateAlertForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationDialogs\AlertConfigurationForm.resx">
       <DependentUpon>AlertConfigurationForm.cs</DependentUpon>
@@ -299,6 +345,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationDialogs\LocationsAdditionForm.resx">
       <DependentUpon>LocationsAdditionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationDialogs\QuickAccessForm.resx">
+      <DependentUpon>QuickAccessForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DisplayDialogs\AltTrayForm.resx">
       <DependentUpon>AltTrayForm.cs</DependentUpon>
@@ -327,8 +376,20 @@
     <EmbeddedResource Include="ListingForm.resx">
       <DependentUpon>ListingForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ProgramWorker\ChooseOwnershipForm.resx">
+      <DependentUpon>ChooseOwnershipForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgramWorker\ChooseStyleForm.resx">
+      <DependentUpon>ChooseStyleForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProgramWorker\ChooseRegionForm.resx">
       <DependentUpon>ChooseRegionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgramWorker\SetupDoneForm.resx">
+      <DependentUpon>SetupDoneForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgramWorker\SetupForm.resx">
+      <DependentUpon>SetupForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ToppleForm.resx">
       <DependentUpon>ToppleForm.cs</DependentUpon>
@@ -406,6 +467,11 @@
     <None Include="Resources\WarningApp1.png" />
     <None Include="Resources\AlertIcon.ico" />
     <None Include="Resources\LightIcon.ico" />
+    <None Include="Resources\ui_shakewarning.wav" />
+    <None Include="Resources\jnjnjnjn.png" />
+    <None Include="Resources\ui_beep.wav" />
+    <None Include="Resources\WarningApp_Splash.png" />
+    <None Include="Resources\WarningApp Splash.png" />
     <Content Include="WarningApp.ico" />
     <None Include="Resources\WarningApp.png" />
     <Content Include="FodyWeavers.xml" />
@@ -437,6 +503,7 @@
     <Error Condition="!Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props'))" />
     <Error Condition="!Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets'))" />
     <Error Condition="!Exists('..\packages\Fody.6.9.2\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.9.2\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
   </Target>
   <PropertyGroup>
     <Obfuscate>true</Obfuscate>
@@ -451,4 +518,5 @@
 del /s /q /f *.xml</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Fody.6.9.2\build\Fody.targets" Condition="Exists('..\packages\Fody.6.9.2\build\Fody.targets')" />
+  <Import Project="..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
 </Project>

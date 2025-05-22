@@ -36,7 +36,7 @@
             this.FadeInAnimation = new System.Windows.Forms.Timer(this.components);
             this.FadeOutAnimation = new System.Windows.Forms.Timer(this.components);
             this.InfoTip = new System.Windows.Forms.ToolTip(this.components);
-            this.LinkButton = new System.Windows.Forms.Button();
+            this.DismissAllButton = new System.Windows.Forms.Button();
             this.SpeakerButton = new System.Windows.Forms.Button();
             this.DismissButton = new System.Windows.Forms.Button();
             this.AlertIcon = new System.Windows.Forms.PictureBox();
@@ -98,23 +98,23 @@
             this.InfoTip.ReshowDelay = 50;
             this.InfoTip.ToolTipTitle = "What does this do?";
             // 
-            // LinkButton
+            // DismissAllButton
             // 
-            this.LinkButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.LinkButton.BackColor = System.Drawing.Color.White;
-            this.LinkButton.Enabled = false;
-            this.LinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LinkButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
-            this.LinkButton.ForeColor = System.Drawing.Color.Black;
-            this.LinkButton.Location = new System.Drawing.Point(516, 329);
-            this.LinkButton.Name = "LinkButton";
-            this.LinkButton.Size = new System.Drawing.Size(35, 35);
-            this.LinkButton.TabIndex = 2;
-            this.LinkButton.Text = "🔗";
-            this.InfoTip.SetToolTip(this.LinkButton, "Opens the alert URL if there is one included.");
-            this.LinkButton.UseVisualStyleBackColor = false;
-            this.LinkButton.Visible = false;
-            this.LinkButton.Click += new System.EventHandler(this.LinkButton_Click);
+            this.DismissAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.DismissAllButton.BackColor = System.Drawing.Color.White;
+            this.DismissAllButton.Enabled = false;
+            this.DismissAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DismissAllButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
+            this.DismissAllButton.ForeColor = System.Drawing.Color.Black;
+            this.DismissAllButton.Location = new System.Drawing.Point(516, 329);
+            this.DismissAllButton.Name = "DismissAllButton";
+            this.DismissAllButton.Size = new System.Drawing.Size(35, 35);
+            this.DismissAllButton.TabIndex = 2;
+            this.DismissAllButton.Text = "⚫";
+            this.InfoTip.SetToolTip(this.DismissAllButton, "Dismisses all queued alerts.");
+            this.DismissAllButton.UseVisualStyleBackColor = false;
+            this.DismissAllButton.Visible = false;
+            this.DismissAllButton.Click += new System.EventHandler(this.LinkButton_Click);
             // 
             // SpeakerButton
             // 
@@ -209,7 +209,7 @@
             this.OutlineContainerPanel.BorderThickness = 4;
             this.OutlineContainerPanel.Controls.Add(this.DismissButton);
             this.OutlineContainerPanel.Controls.Add(this.SpeakerButton);
-            this.OutlineContainerPanel.Controls.Add(this.LinkButton);
+            this.OutlineContainerPanel.Controls.Add(this.DismissAllButton);
             this.OutlineContainerPanel.Controls.Add(this.AlertLinkText);
             this.OutlineContainerPanel.Controls.Add(this.AlertIcon);
             this.OutlineContainerPanel.Controls.Add(this.AlertText);
@@ -353,7 +353,7 @@
         private System.Windows.Forms.Timer TerminateSelf;
         private System.Windows.Forms.Button DismissButton;
         private System.Windows.Forms.Button SpeakerButton;
-        private System.Windows.Forms.Button LinkButton;
+        private System.Windows.Forms.Button DismissAllButton;
         private System.Windows.Forms.Panel ResizeBottomRight;
         private System.Windows.Forms.LinkLabel AlertLinkText;
         private System.Windows.Forms.Timer ChildFollowsParent;

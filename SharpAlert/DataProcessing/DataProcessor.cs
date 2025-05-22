@@ -4,6 +4,8 @@ using static SharpAlert.RegexList;
 using System.Linq;
 using System.Threading;
 using SharpAlert.Properties;
+using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace SharpAlert
 {
@@ -31,7 +33,7 @@ namespace SharpAlert
             {
                 try
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(100);
 
                     // Trim history for memory saving
                     if (SharpDataHistory.Count > Settings.Default.storedMaxSize)
@@ -41,7 +43,9 @@ namespace SharpAlert
                         Console.WriteLine($"[Data Processor] Trimmed data history.");
                     }
 
-                    SharpDataItem relayItem = null;
+                    List<SharpDataItem> LocalDataQueue = new List<SharpDataItem>();
+
+                    //SharpDataItem relayItem = null;
 
                     if (Stop)
                     {
@@ -55,50 +59,64 @@ namespace SharpAlert
                         {
                             try
                             {
-                                relayItem = SharpDataQueue.First();
-                            }
-                            catch (InvalidOperationException)
-                            {
-                                Console.WriteLine("[Data Processor] The request to the queue failed. Possible race condition?");
+                                LocalDataQueue.AddRange(SharpDataQueue);
+                                //relayItem = SharpDataQueue.First();
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine($"[Data Processor] The request to the queue failed. {ex.Message}");
+                                Console.WriteLine($"[Data Processor] {ex.Message}");
+                                continue;
                             }
-                            if (relayItem is null) continue;
+                            //if (relayItem is null) continue;
                         }
-                        else continue;
-
-                        if (!SharpDataQueue.Contains(relayItem)) continue;
                         else
                         {
-                            Console.WriteLine($"[Data Processor] Processing data queue.");
+                            //Console.WriteLine("[Data Processor] There are no items in the queue yet.");
+                            continue;
+                        }
 
-                            string Replay = ReplayedAlertRegex.MatchOrDefault(relayItem.Data, "false");
-                            bool ReplayMode = false;
-
-                            if (Replay.ToLowerInvariant() == "true")
+                        lock (LocalDataQueue)
+                        {
+                            foreach (var relayItem in LocalDataQueue)
                             {
-                                Console.WriteLine("[Data Processor] Detected an alert in replay mode.");
-                                ReplayMode = true;
-                                relayItem.Data = relayItem.Data.Replace("<SharpAlertReplay>true</SharpAlertReplay>", "<SharpAlertReplay>false</SharpAlertReplay>");
-                            }
-
-                            lock (SharpDataHistory) SharpDataHistory.Add(relayItem);
-                            SharpDataQueue.Remove(relayItem);
-
-                            try
-                            {
-                                Console.WriteLine($"[Data Processor] Adding alert to queue.");
-                                ThreadPool.QueueUserWorkItem(_ =>
+                                try
                                 {
-                                    ap.ProcessAlertItem(relayItem, ReplayMode);
-                                });
-                                Console.WriteLine($"[Data Processor] Added alert to queue.");
-                            }
-                            catch (NotSupportedException ex)
-                            {
-                                Console.WriteLine($"[Alert Processor] Couldn't queue alert. {ex.Message}");
+                                    Console.WriteLine($"[Data Processor] Processing queued item.");
+
+                                    string Replay = ReplayedAlertRegex.MatchOrDefault(relayItem.Data, "false");
+                                    bool ReplayMode = false;
+
+                                    if (Replay.ToLowerInvariant() == "true")
+                                    {
+                                        Console.WriteLine("[Data Processor] Detected an alert in replay mode.");
+                                        ReplayMode = true;
+                                        relayItem.Data = relayItem.Data.Replace("<SharpAlertReplay>true</SharpAlertReplay>", "<SharpAlertReplay>false</SharpAlertReplay>");
+                                    }
+
+                                    lock (SharpDataHistory) SharpDataHistory.Add(relayItem);
+                                    SharpDataQueue.Remove(relayItem);
+
+                                    try
+                                    {
+                                        ThreadPool.QueueUserWorkItem(_ =>
+                                        {
+                                            //if (MessageBox.Show($"Process {relayItem.Name}?\r\n\r\n" +
+                                            //    $"{relayItem.Data}",
+                                            //    "SharpAlert",
+                                            //    MessageBoxButtons.YesNo) == DialogResult.Yes)
+                                            ap.ProcessAlertItem(relayItem, ReplayMode);
+                                        });
+                                        Console.WriteLine($"[Data Processor] The item is being processed by the Alert Processor.");
+                                    }
+                                    catch (NotSupportedException ex)
+                                    {
+                                        Console.WriteLine($"[Data Processor] The item couldn't be sent to the Alert Processor. {ex.Message}");
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine($"[Data Processor] The item couldn't be processed. {ex.Message}");
+                                }
                             }
                         }   
                     }

@@ -57,7 +57,13 @@ namespace SharpAlert
                 var methods = GetType().GetMethods();
                 foreach (var method in methods)
                 {
-                    Console.WriteLine($"{method.Name}");
+                    foreach (var attrib in method.GetCustomAttributes())
+                    {
+                        if (attrib.TypeId.ToString() == "HyperServerMapping")
+                        {
+                            Console.WriteLine($"{((Mapping)attrib).Map}");
+                        }
+                    }
                 }
 
                 Started = true;
@@ -191,6 +197,11 @@ namespace SharpAlert
             public Mapping(string s)
             {
                 Map = s;
+            }
+
+            public override object TypeId
+            {
+                get { return "HyperServerMapping"; }
             }
         }
 

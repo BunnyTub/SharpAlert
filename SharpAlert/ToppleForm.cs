@@ -1,17 +1,25 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using SharpAlert.Properties;
 
 namespace SharpAlert
 {
     public partial class ToppleForm : Form
     {
         private readonly string ToppleReason = string.Empty;
+        bool HostProcessOfSubProcess = false;
 
-        public ToppleForm(string Reason)
+        public ToppleForm(string Reason, bool _HostProcessOfSubProcess)
         {
             InitializeComponent();
             ToppleReason = Reason;
+            HostProcessOfSubProcess = _HostProcessOfSubProcess;
+            if (!HostProcessOfSubProcess)
+            {
+                DebuggerButton.Enabled = false;
+                DebuggerButton.Text = "Debugger Unavailable";
+            }
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
@@ -53,6 +61,24 @@ namespace SharpAlert
 
         private void ToppleForm_Load(object sender, EventArgs e)
         {
+        }
+
+        private void TerminateButton_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(-1);
+        }
+
+        private void ResetButton_Click(object sender, EventArgs e)
+        {
+            Settings.Default.Reset();
+            Settings.Default.Upgrade();
+            Settings.Default.Save();
+        }
+
+        private void DebuggerButton_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Yes;
+            this.Close();
         }
     }
 }

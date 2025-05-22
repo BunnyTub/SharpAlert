@@ -1,10 +1,9 @@
 ﻿using SharpAlert.Properties;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using static SharpAlert.MainEntryPoint;
+using static SharpAlert.AlertProcessor;
 
 namespace SharpAlert
 {
@@ -38,6 +37,8 @@ namespace SharpAlert
             messageTypeUpdateBox.CheckedChanged += (a, b) => Settings.Default.messageTypeUpdate = ((CheckBox)a).Checked;
             messageTypeCancelBox.Checked = Settings.Default.messageTypeCancel;
             messageTypeCancelBox.CheckedChanged += (a, b) => Settings.Default.messageTypeCancel = ((CheckBox)a).Checked;
+            messageTypeTestBox.Checked = Settings.Default.messageTypeTest;
+            messageTypeTestBox.CheckedChanged += (a, b) => Settings.Default.messageTypeTest = ((CheckBox)a).Checked;
 
             severityExtremeBox.Checked = Settings.Default.severityExtreme;
             severityExtremeBox.CheckedChanged += (a, b) => Settings.Default.severityExtreme = ((CheckBox)a).Checked;
@@ -61,7 +62,7 @@ namespace SharpAlert
             urgencyUnknownBox.Checked = Settings.Default.urgencyUnknown;
             urgencyUnknownBox.CheckedChanged += (a, b) => Settings.Default.urgencyUnknown = ((CheckBox)a).Checked;
 
-            if (AlertCheckIntervalInput.Value <= 10)
+            if (AlertCheckIntervalInput.Value < 5)
             {
                 AlertCheckIntervalInput.Enabled = false;
             }
@@ -115,10 +116,11 @@ namespace SharpAlert
                 ListAreaSAMEOutput.Items.Add(area, true);
             }
 
-            string UGC_Areas = string.Empty;
-            foreach (string area in Settings.Default.AllowedUGCLocations_Geocodes) UGC_Areas += area + "\r\n";
-            UGC_Areas = UGC_Areas.Trim();
-            AreaUGCOutput.Text = UGC_Areas;
+            ListAreaCAPCPOutput.Items.Clear();
+            foreach (string area in Settings.Default.AllowedCAPCPLocations_Geocodes)
+            {
+                ListAreaCAPCPOutput.Items.Add(area, true);
+            }
 
             string Events = string.Empty;
             foreach (string SAME_event in Settings.Default.EnforceEventBlacklist) Events += SAME_event + "\r\n";
@@ -177,18 +179,47 @@ namespace SharpAlert
 
         private void UGCAddButton_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(AreaUGCInput.Text))
+            if (!string.IsNullOrWhiteSpace(AreaCAPCPInput.Text))
             {
-                Settings.Default.AllowedUGCLocations_Geocodes.Add(AreaUGCInput.Text);
-                string UGC_Areas = string.Empty;
-                foreach (string area in Settings.Default.AllowedUGCLocations_Geocodes) UGC_Areas += area + "\r\n";
-                UGC_Areas = UGC_Areas.Trim();
-                AreaUGCOutput.Text = UGC_Areas;
-                AreaUGCInput.Clear();
+                if (!(AreaCAPCPInput.Text.Length >= 5))
+                {
+                    MessageBox.Show("The CAP-CP location must be at least 5-6 characters.",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                    AreaCAPCPInput.Clear();
+                    return;
+                }
+
+                if (Settings.Default.AllowedCAPCPLocations_Geocodes.Contains(AreaCAPCPInput.Text))
+                {
+                    var removal = MessageBox.Show("The CAP-CP location is already in the list. Remove it?",
+                        "SharpAlert",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+                    if (removal == DialogResult.Yes) Settings.Default.AllowedCAPCPLocations_Geocodes.Remove(AreaCAPCPInput.Text);
+                    ListAreaCAPCPOutput.Items.Clear();
+                    foreach (string area in Settings.Default.AllowedCAPCPLocations_Geocodes)
+                    {
+                        ListAreaSAMEOutput.Items.Add(area);
+                    }
+                    AreaCAPCPInput.Clear();
+                    return;
+                }
+                else
+                {
+                    Settings.Default.AllowedCAPCPLocations_Geocodes.Add(AreaCAPCPInput.Text);
+                    ListAreaCAPCPOutput.Items.Clear();
+                    foreach (string area in Settings.Default.AllowedCAPCPLocations_Geocodes)
+                    {
+                        ListAreaCAPCPOutput.Items.Add(area);
+                    }
+                    AreaCAPCPInput.Clear();
+                }
             }
             else
             {
-                MessageBox.Show("Enter a UGC location value to add it.",
+                MessageBox.Show("Enter a CAP-CP location value to add it.",
                     "SharpAlert",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation);
@@ -229,13 +260,13 @@ namespace SharpAlert
 
         private void UGCClearButton_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Clear UGC location data?",
+            if (MessageBox.Show("Clear CAP-CP location data?",
                 "SharpAlert",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                Settings.Default.AllowedUGCLocations_Geocodes.Clear();
-                AreaUGCOutput.Text = string.Empty;
+                Settings.Default.AllowedCAPCPLocations_Geocodes.Clear();
+                ListAreaCAPCPOutput.Items.Clear();
             }
         }
 
@@ -397,7 +428,7 @@ namespace SharpAlert
         {
             if (e.NewValue == CheckState.Checked) return;
 
-            if (MessageBox.Show("Remove this location?",
+            if (MessageBox.Show("Remove this location from the SAME location list?",
                 "SharpAlert",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question) == DialogResult.Yes)
@@ -417,7 +448,55 @@ namespace SharpAlert
 
         private void ListAreaSAMEOutput_Format(object sender, ListControlConvertEventArgs e)
         {
-            e.Value = AlertProcessor.GetFriendlyNameFromSAMELocation((string)e.Value);
+            e.Value = GetFriendlyNameFromSAMELocation((string)e.Value);
+        }
+
+        private void ListAreaCAPCPOutput_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (e.NewValue == CheckState.Checked) return;
+
+            if (MessageBox.Show("Remove this location from the CAP-CP location list?",
+                "SharpAlert",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Settings.Default.AllowedCAPCPLocations_Geocodes.RemoveAt(e.Index);
+                ListAreaCAPCPOutput.Items.Clear();
+                foreach (string area in Settings.Default.AllowedCAPCPLocations_Geocodes)
+                {
+                    ListAreaCAPCPOutput.Items.Add(area);
+                }
+            }
+
+            e.NewValue = CheckState.Checked;
+        }
+
+        private void LanguageButton_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("By default, alerts are only relayed if they have an English version.\r\n" +
+                "Do you want to allow alerts of all languages to be relayed?\r\n\r\n" +
+                $"AllowNonEnglishLanguages is currently set to {Settings.Default.AllowNonEnglishAlerts}.",
+                "SharpAlert",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            switch (result)
+            {
+                case DialogResult.Yes:
+                    Settings.Default.AllowNonEnglishAlerts = true;
+                    break;
+                case DialogResult.No:
+                    Settings.Default.AllowNonEnglishAlerts = false;
+                    break;
+            }
+        }
+
+        private ChooseOwnershipForm cof = null;
+
+        private void StationButton_Click(object sender, EventArgs e)
+        {
+            if (cof == null || cof.IsDisposed) cof = new ChooseOwnershipForm(false);
+            cof.ShowDialog();
         }
     }
 }

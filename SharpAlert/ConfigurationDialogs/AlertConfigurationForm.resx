@@ -127,7 +127,11 @@
     <value>This feature has changed from the previously name SAME Event blacklist.
 If the event of the alert matches any blacklisted events, it will be discarded. (case-insensitive)
 
-For example, if "Practice" is in the list, any event names with "Practice" inside are discarded.</value>
+For example, if "Practice" is in the list, any event names with "Practice" inside are discarded.
+Another example, is using "Required Weekly Test", NOT "RWT" (it will match words with "RWT" inside).
+
+This feature was changed, because not all alerts will have the included SAME event codes required for matching to work properly.
+It is more flexible to name events by their full name, as even without the SAME event codes included, events can be named.</value>
   </data>
   <metadata name="BusyLock.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>168, 15</value>

@@ -40,6 +40,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.TerminateButton = new System.Windows.Forms.Button();
+            this.ResetButton = new System.Windows.Forms.Button();
+            this.DebuggerButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -78,8 +81,9 @@
             this.ProblemDetailsText.Location = new System.Drawing.Point(12, 161);
             this.ProblemDetailsText.Multiline = true;
             this.ProblemDetailsText.Name = "ProblemDetailsText";
+            this.ProblemDetailsText.ReadOnly = true;
             this.ProblemDetailsText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ProblemDetailsText.Size = new System.Drawing.Size(398, 259);
+            this.ProblemDetailsText.Size = new System.Drawing.Size(398, 218);
             this.ProblemDetailsText.TabIndex = 3;
             this.ProblemDetailsText.Text = "We\'re gathering information about the problem.";
             // 
@@ -96,18 +100,17 @@
             // 
             // CloseButton
             // 
-            this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.CloseButton.BackColor = System.Drawing.Color.OrangeRed;
             this.CloseButton.FlatAppearance.BorderSize = 2;
             this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CloseButton.Font = new System.Drawing.Font("Arial", 16F, System.Drawing.FontStyle.Bold);
+            this.CloseButton.Font = new System.Drawing.Font("Arial", 16F);
             this.CloseButton.ForeColor = System.Drawing.Color.White;
-            this.CloseButton.Location = new System.Drawing.Point(243, 426);
+            this.CloseButton.Location = new System.Drawing.Point(143, 385);
             this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(225, 35);
+            this.CloseButton.Size = new System.Drawing.Size(125, 35);
             this.CloseButton.TabIndex = 7;
-            this.CloseButton.Text = "Close";
+            this.CloseButton.Text = "Restart";
             this.CloseButton.UseVisualStyleBackColor = false;
             this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
             // 
@@ -117,11 +120,11 @@
             this.ReportButton.BackColor = System.Drawing.Color.OrangeRed;
             this.ReportButton.FlatAppearance.BorderSize = 2;
             this.ReportButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ReportButton.Font = new System.Drawing.Font("Arial", 16F, System.Drawing.FontStyle.Bold);
+            this.ReportButton.Font = new System.Drawing.Font("Arial", 16F);
             this.ReportButton.ForeColor = System.Drawing.Color.White;
-            this.ReportButton.Location = new System.Drawing.Point(12, 426);
+            this.ReportButton.Location = new System.Drawing.Point(12, 385);
             this.ReportButton.Name = "ReportButton";
-            this.ReportButton.Size = new System.Drawing.Size(225, 35);
+            this.ReportButton.Size = new System.Drawing.Size(125, 35);
             this.ReportButton.TabIndex = 8;
             this.ReportButton.Text = "Report";
             this.ReportButton.UseVisualStyleBackColor = false;
@@ -166,11 +169,64 @@
             this.pictureBox2.TabIndex = 11;
             this.pictureBox2.TabStop = false;
             // 
+            // TerminateButton
+            // 
+            this.TerminateButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TerminateButton.BackColor = System.Drawing.Color.OrangeRed;
+            this.TerminateButton.FlatAppearance.BorderSize = 2;
+            this.TerminateButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.TerminateButton.Font = new System.Drawing.Font("Arial", 16F);
+            this.TerminateButton.ForeColor = System.Drawing.Color.White;
+            this.TerminateButton.Location = new System.Drawing.Point(274, 385);
+            this.TerminateButton.Name = "TerminateButton";
+            this.TerminateButton.Size = new System.Drawing.Size(125, 35);
+            this.TerminateButton.TabIndex = 12;
+            this.TerminateButton.Text = "Close";
+            this.TerminateButton.UseVisualStyleBackColor = false;
+            this.TerminateButton.Click += new System.EventHandler(this.TerminateButton_Click);
+            // 
+            // ResetButton
+            // 
+            this.ResetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ResetButton.BackColor = System.Drawing.Color.Green;
+            this.ResetButton.FlatAppearance.BorderSize = 2;
+            this.ResetButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ResetButton.Font = new System.Drawing.Font("Arial", 12F);
+            this.ResetButton.ForeColor = System.Drawing.Color.White;
+            this.ResetButton.Location = new System.Drawing.Point(12, 426);
+            this.ResetButton.Name = "ResetButton";
+            this.ResetButton.Size = new System.Drawing.Size(256, 35);
+            this.ResetButton.TabIndex = 13;
+            this.ResetButton.Text = "Reset Settings";
+            this.ResetButton.UseVisualStyleBackColor = false;
+            this.ResetButton.Click += new System.EventHandler(this.ResetButton_Click);
+            // 
+            // DebuggerButton
+            // 
+            this.DebuggerButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DebuggerButton.BackColor = System.Drawing.Color.Green;
+            this.DebuggerButton.FlatAppearance.BorderSize = 2;
+            this.DebuggerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DebuggerButton.Font = new System.Drawing.Font("Arial", 12F);
+            this.DebuggerButton.ForeColor = System.Drawing.Color.White;
+            this.DebuggerButton.Location = new System.Drawing.Point(274, 426);
+            this.DebuggerButton.Name = "DebuggerButton";
+            this.DebuggerButton.Size = new System.Drawing.Size(256, 35);
+            this.DebuggerButton.TabIndex = 14;
+            this.DebuggerButton.Text = "Launch Debugger";
+            this.DebuggerButton.UseVisualStyleBackColor = false;
+            this.DebuggerButton.Click += new System.EventHandler(this.DebuggerButton_Click);
+            // 
             // ToppleForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(636, 473);
+            this.Controls.Add(this.DebuggerButton);
+            this.Controls.Add(this.ResetButton);
+            this.Controls.Add(this.TerminateButton);
             this.Controls.Add(this.ReportButton);
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.ProblemDetailsText);
@@ -214,5 +270,8 @@
         private System.Windows.Forms.Timer AutoTerminate;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Button TerminateButton;
+        private System.Windows.Forms.Button ResetButton;
+        private System.Windows.Forms.Button DebuggerButton;
     }
 }

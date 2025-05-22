@@ -20,28 +20,35 @@ namespace SharpAlert
             {
             }
 
-            int LastAlertCount = AlertProcessor.AlertsRelayed;
             int WarningCount = 0;
 
             while (true)
             {
                 try
                 {
+                    int LastAlertCount = AlertProcessor.AlertsRelayed;
+
+                    // wait
                     Thread.Sleep(TimeSpan.FromHours(2));
-                    if (LastAlertCount != AlertProcessor.AlertsRelayed)
+
+                    if (LastAlertCount == AlertProcessor.AlertsRelayed)
                     {
-                        LastAlertCount = AlertProcessor.AlertsRelayed;
-                        WarningCount = 0;
-                        DiscordWebhook.SendUnformattedMessage($"My heart is still beating. (uptime: {(int)(DateTime.UtcNow - MainEntryPoint.startDT).TotalHours}h)");
-                    }
-                    else
-                    {
+                        // if there haven't been any relayed alerts, send heartbeat message
                         WarningCount++;
                         if (WarningCount > 12)
                         {
-                            DiscordWebhook.SendUnformattedMessage($"There hasn't been an alert queued within the past 24+ hours. (uptime: {(int)(DateTime.UtcNow - MainEntryPoint.startDT).TotalHours}h)");
+                            DiscordWebhook.SendUnformattedMessage($"There hasn't been any alerts queued recently. (uptime: {(int)(DateTime.UtcNow - MainEntryPoint.startDT).TotalHours}h)");
                             WarningCount = 0;
                         }
+                        else
+                        {
+                            DiscordWebhook.SendUnformattedMessage($"My heart is still beating. (uptime: {(int)(DateTime.UtcNow - MainEntryPoint.startDT).TotalHours}h)");
+                        }
+                        // idk
+                    }
+                    else
+                    {
+                        WarningCount = 0;
                     }
                 }
                 catch (Exception ex)

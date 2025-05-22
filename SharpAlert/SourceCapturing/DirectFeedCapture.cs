@@ -20,14 +20,14 @@ namespace SharpAlert
 {
     public class DirectFeedCapture
     {
-        public class RemoteTCPServer
+        public class TCPServerInfo
         {
-            public string Address { get; set; }
-            public int Port { get; set; }
+            public string ServerName { get; set; }
+            public string ServerAddress { get; set; }
+            public int ServerPort { get; set; }
         }
 
-        public List<RemoteTCPServer> servers = new List<RemoteTCPServer>();
-        private bool FirstRun = true;
+        public List<TCPServerInfo> servers = new List<TCPServerInfo>();
         private bool Stop = false;
         private bool StopCalled = false;
 
@@ -56,15 +56,12 @@ namespace SharpAlert
         public static int Calls { get; private set; } = 0;
 
         /// <summary>
-        /// Starts the Direct Feed Capture service in the current thread as a client.
+        /// Starts the TCP Feed Capture service in the current thread as a client.
         /// </summary>
         /// <param name="useHTTPS">Use the secure version of Hypertext Transfer Protocol to connect to the target server.</param>
         public void ServiceRun()
         {
             if (Stop) return;
-
-            bool LastConnectionSuccessful = true;
-            //bool AllConnectionsSuccessful = true;
 
             try
             {
@@ -78,22 +75,29 @@ namespace SharpAlert
                             {
                                 while (true)
                                 {
-                                    if (AllowThreadRestarts & !Stop)
+                                    try
                                     {
-                                        ServiceReceive(server.Address, server.Port);
-                                        Thread.Sleep(5 * 1000);
+                                        if (AllowThreadRestarts & !Stop)
+                                        {
+                                            ServiceReceive(server.ServerName, server.ServerAddress, server.ServerPort);
+                                            Thread.Sleep(5 * 1000);
+                                        }
+                                        else
+                                        {
+                                            Stop = false;
+                                            return;
+                                        }
                                     }
-                                    else
+                                    catch (Exception ex)
                                     {
-                                        Stop = false;
-                                        return;
+                                        Console.WriteLine($"[TCP Feed Capture] Exception caught in {server.ServerName}. {ex.Message}");
                                     }
 
-                                    Console.WriteLine($"[Feed Capture | NAADs] Connection closed: {server.Address} on port {server.Port}");
+                                    Console.WriteLine($"[TCP Feed Capture] The connection was closed for {server.ServerName}.");
                                 }
 
                             }).Start();
-                            //Console.WriteLine($"[Feed Capture | NAADs] Getting data from URL: {URLPrefix}://{server}");
+                            //Console.WriteLine($"[TCP Feed Capture] Getting data from URL: {URLPrefix}://{server}");
                             //HttpResponseMessage message = client.GetAsync($"{URLPrefix}://{server}").Result;
                             //message.EnsureSuccessStatusCode();
 
@@ -106,83 +110,27 @@ namespace SharpAlert
                         catch (Exception ex)
                         {
                             //AllConnectionsSuccessful = false;
-                            Console.WriteLine($"[Feed Capture | NAADs] {ex.Message}");
+                            Console.WriteLine($"[TCP Feed Capture] {ex.Message}");
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[Feed Capture | NAADs] {ex.Message}");
+                Console.WriteLine($"[TCP Feed Capture] {ex.Message}");
             }
 
             while (true)
             {
-                try
-                {
-                    //if (AllConnectionsSuccessful) Console.WriteLine($"[Feed Capture | NAADs] Fetched from all feeds successfully.");
-                    //else Console.WriteLine("[Feed Capture | NAADs] Not all feeds were fetched from successfully.");
-
-                    //if (LastConnectionSuccessful)
-                    //{
-                    //    lock (notify)
-                    //    {
-                    //        notify.BalloonTipTitle = "SharpAlert has reconnected";
-                    //        notify.BalloonTipText = "Successfully reconnected to the server after an ongoing connection disruption or problem.";
-                    //        notify.BalloonTipIcon = ToolTipIcon.Info;
-                    //        notify.ShowBalloonTip(5000);
-                    //    }
-                    //    LastConnectionSuccessful = true;
-                    //}
-                }
-                catch (TimeoutException)
-                {
-                    Console.WriteLine($"[Feed Capture | NAADs] Timed out.");
-                    if (LastConnectionSuccessful)
-                    {
-                        lock (notify)
-                        {
-                            notify.BalloonTipTitle = "SharpAlert is having issues";
-                            notify.BalloonTipText = "Couldn't connect to the server within a reasonable time. Check your internet connection!";
-                            notify.BalloonTipIcon = ToolTipIcon.Warning;
-                            notify.ShowBalloonTip(5000);
-                        }
-                    }
-                    Thread.Sleep(30000);
-                    LastConnectionSuccessful = false;
-                }
-                catch (ThreadAbortException)
-                {
-                    return;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"[Feed Capture | NAADs] {e.Message}");
-                    if (e.InnerException != null) Console.WriteLine($"[Feed Capture | NAADs] {e.InnerException.Message}");
-                    if (LastConnectionSuccessful)
-                    {
-                        lock (notify)
-                        {
-                            notify.BalloonTipTitle = "SharpAlert is having issues";
-                            notify.BalloonTipText = "There was an issue when trying to connect to the server. Check your internet connection!";
-                            notify.BalloonTipIcon = ToolTipIcon.Warning;
-                            notify.ShowBalloonTip(5000);
-                        }
-                    }
-                    LastConnectionSuccessful = false;
-                    Thread.Sleep(30000);
-                }
-                if (FirstRun) FirstRun = false;
-
-                if ((DateTime.UtcNow - LastHeartbeat).TotalMinutes >= 15)
-                {
-                    DiscordWebhook.SendFormattedMessage("No heartbeats have been received for 15+ minutes.\r\n" +
-                        "The capturing service", 16776960);
-                }
-                else if ((DateTime.UtcNow - LastHeartbeat).TotalMinutes >= 10)
-                {
-                    DiscordWebhook.SendFormattedMessage("No heartbeats have been received for 10+ minutes.", 16776960);
-                }
+                //if ((DateTime.UtcNow - LastHeartbeat).TotalMinutes >= 15)
+                //{
+                //    DiscordWebhook.SendFormattedMessage("No heartbeats have been received for 15+ minutes.\r\n" +
+                //        "The capturing service", 16776960);
+                //}
+                //else if ((DateTime.UtcNow - LastHeartbeat).TotalMinutes >= 10)
+                //{
+                //    DiscordWebhook.SendFormattedMessage("No heartbeats have been received for 10+ minutes.", 16776960);
+                //}
 
                 try
                 {
@@ -202,16 +150,18 @@ namespace SharpAlert
                 {
                     return;
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Console.WriteLine($"[Feed Capture | NAADs] {e.StackTrace} {e.Message}");
+                    Console.WriteLine($"[TCP Feed Capture] {ex.StackTrace} {ex.Message}");
                 }
             }
         }
 
         public DateTime LastHeartbeat { get; private set; } = DateTime.UtcNow;
 
-        private void ServiceReceive(string host, int port)
+        private bool FirstRun = true;
+
+        private void ServiceReceive(string name, string host, int port)
         {
             string delimiter = "</alert>";
 
@@ -223,9 +173,9 @@ namespace SharpAlert
                     {
                         tcp.Connect(host, port);
                         NetworkStream stream = tcp.GetStream();
-                        stream.ReadTimeout = 120 * 1000;
+                        stream.ReadTimeout = 300 * 1000;
                         stream.WriteTimeout = 10 * 1000;
-                        Console.WriteLine($"[{host}:{port}] Connected to the server.");
+                        Console.WriteLine($"[TCP Feed Capture] Connected to {name}.");
                         string dataReceived = string.Empty;
                         
                         List<byte> data = new List<byte>();
@@ -235,19 +185,19 @@ namespace SharpAlert
                             while (!stream.DataAvailable)
                             {
                                 if (Stop) return;
-                                try
-                                {
-                                    stream.WriteByte(0);
-                                }
-                                catch (IOException)
-                                {
-                                    return;
-                                }
+                                //try
+                                //{
+                                stream.WriteByte(0);
+                                //}
+                                //catch (IOException)
+                                //{
+                                //    return;
+                                //}
                                 Thread.Sleep(1000);
                             }
                             data.Clear();
                             DateTime now = DateTime.UtcNow;
-                            Console.WriteLine($"[{host}:{port}] Processing stream.");
+                            Console.WriteLine($"[TCP Feed Capture] Getting data from {name}. TCP -> {host}:{port}");
 
                             while (stream.DataAvailable)
                             {
@@ -258,7 +208,7 @@ namespace SharpAlert
                                 }
                             }
 
-                            Console.WriteLine($"[{host}:{port}] Stream retrieved. | Size: {data.Count} | Time: {(int)(DateTime.UtcNow - now).TotalMilliseconds}");
+                            Console.WriteLine($"[TCP Feed Capture] Processing data from {name}.");
                             string chunk = Encoding.UTF8.GetString(data.ToArray(), 0, data.Count);
 
                             dataReceived += chunk;
@@ -275,18 +225,20 @@ namespace SharpAlert
                                 string capturedIdent = IdentifierRegex.MatchOrDefault(dataReceived);
                                 string naadsFilename = $"{capturedSent}I{capturedIdent}";
 
-                                if (capturedStatus.ToLowerInvariant() == "system" & capturedSender.Contains("NAADS-Heartbeat"))
+                                if (capturedStatus.ToLowerInvariant() == "system" & capturedSender.ToLowerInvariant().Contains("naads-heartbeat"))
                                 {
-                                    Console.WriteLine($"[{host}:{port}] Heartbeat detected.");
-                                    EnrollHeartbeat(dataReceived);
+                                    Console.WriteLine($"[TCP Feed Capture] Heartbeat detected from {name}.");
+                                    EnrollHeartbeat(dataReceived, FirstRun);
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"[{host}:{port}] Alert detected.");
-                                    EnrollAlerts(dataReceived);
+                                    Console.WriteLine($"[TCP Feed Capture] Alert detected from {name}.");
+                                    EnrollAlerts(dataReceived, FirstRun);
                                 }
 
-                                Console.WriteLine($"[{host}:{port}] Saved data.");
+                                FirstRun = false;
+
+                                Console.WriteLine($"[TCP Feed Capture] Saved data from {name}. TCP -> {host}:{port}");
 
                                 dataReceived = string.Empty;
                             }
@@ -295,11 +247,11 @@ namespace SharpAlert
                 }
                 catch (TimeoutException)
                 {
-                    Console.WriteLine($"[{host}:{port}] Timed out.");
+                    Console.WriteLine($"[TCP Feed Capture] Timed out from {name}.");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[{host}:{port}] {ex.Message} {ex.StackTrace}");
+                    Console.WriteLine($"[TCP Feed Capture] Exception caught in {name}. {ex.Message}");
                 }
                 Thread.Sleep(15 * 1000);
             }
@@ -307,7 +259,7 @@ namespace SharpAlert
 
         private readonly object EnrollObject = new object();
 
-        public void EnrollAlerts(string data)
+        public void EnrollAlerts(string data, bool FirstRunner)
         {
             lock (EnrollObject)
             {
@@ -327,49 +279,49 @@ namespace SharpAlert
 
                             //if (string.IsNullOrWhiteSpace(filename))
                             //{
-                            //    Console.WriteLine("[Feed Capture | NAADs] Identifier not found. An MD5 value will be assigned to this alert instead.");
+                            //    Console.WriteLine("[TCP Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
                             //    filename = CreateMD5(alert.Value);
                             //}
 
-                            Console.WriteLine($"[Feed Capture | NAADs] {alertIndex} -> {filename}");
+                            Console.WriteLine($"[TCP Feed Capture] {alertIndex} -> {filename}");
                             string alertReplayValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
                             SharpDataItem item = new SharpDataItem(filename, alert.Value);
 
-                            if (FirstRun && Settings.Default.discardFirstAlerts)
+                            if (FirstRunner && Settings.Default.discardFirstAlerts)
                             {
                                 if (TryAddDataToHistory(item))
                                 {
-                                    Console.WriteLine($"[Feed Capture | NAADs] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
+                                    Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
                                 }
                             }
                             else
                             {
                                 if (TryAddDataToQueue(item))
                                 {
-                                    Console.WriteLine($"[Feed Capture | NAADs] Alert {alertIndex} ({filename}) has been saved for processing.");
+                                    Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"[Feed Capture | NAADs] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
+                                    Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"[Feed Capture | NAADs] Couldn't check the data for alert {alertIndex}. {ex.Message}");
+                            Console.WriteLine($"[TCP Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
                         }
                     }
-                    if (alertIndex != 0) Console.WriteLine($"[Feed Capture | NAADs] {alertIndex} alert(s) checked.");
-                    else Console.WriteLine($"[Feed Capture | NAADs] No alerts were checked.");
+                    if (alertIndex != 0) Console.WriteLine($"[TCP Feed Capture] {alertIndex} alert(s) checked.");
+                    else Console.WriteLine($"[TCP Feed Capture] No alerts were checked.");
                 }
                 else
                 {
-                    Console.WriteLine("[Feed Capture | NAADs] There are no alerts to enroll.");
+                    Console.WriteLine("[TCP Feed Capture] There are no alerts to enroll.");
                 }
             }
         }
 
-        public void EnrollHeartbeat(string data)
+        public void EnrollHeartbeat(string data, bool FirstRunner)
         {
             lock (EnrollObject)
             {
@@ -389,18 +341,18 @@ namespace SharpAlert
 
                             //if (string.IsNullOrWhiteSpace(filename))
                             //{
-                            //    Console.WriteLine("[Feed Capture | NAADs] Identifier not found. An MD5 value will be assigned to this alert instead.");
+                            //    Console.WriteLine("[TCP Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
                             //    filename = CreateMD5(alert.Value);
                             //}
 
-                            Console.WriteLine($"[Feed Capture | NAADs] {alertIndex} -> {filename} (NAADs Heartbeat)");
+                            Console.WriteLine($"[TCP Feed Capture] {alertIndex} -> {filename} (NAADs Heartbeat)");
                             SharpDataItem item = new SharpDataItem(filename, alert.Value);
 
                             if (FirstRun && Settings.Default.discardFirstAlerts)
                             {
                                 if (TryAddDataToHistory(item))
                                 {
-                                    Console.WriteLine($"[Feed Capture | NAADs] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
+                                    Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
                                 }
                             }
                             else
@@ -414,7 +366,7 @@ namespace SharpAlert
                                     //    $"{AssemblyDirectory}\\XMLqueue",
                                     //    $"{AssemblyDirectory}\\XMLhistory");
 
-                                    Console.WriteLine($"[Feed Capture | NAADs] Downloading alerts from heartbeat.");
+                                    Console.WriteLine($"[TCP Feed Capture] Downloading alerts from heartbeat.");
                                     string[] ReferencesList = references.Split('\x20');
                                     //int FilesMatched = 0;
                                     int Found = 0;
@@ -447,7 +399,7 @@ namespace SharpAlert
 
                                         try
                                         {
-                                            Console.WriteLine($"[Feed Capture | NAADs] {Found} -> {name} ({url1})", ConsoleColor.Yellow);
+                                            Console.WriteLine($"[TCP Feed Capture] {Found} -> {name} ({url1})", ConsoleColor.Yellow);
                                             Task<string> xml = client.GetStringAsync(url1);
                                             xml.Wait();
                                             result = xml.Result;
@@ -457,8 +409,8 @@ namespace SharpAlert
                                         {
                                             try
                                             {
-                                                Console.WriteLine($"[Feed Capture | NAADs] Stage 1 failed. {e1.Message}");
-                                                Console.WriteLine($"[Feed Capture | NAADs] {Found} -> {name} ({url2}) (retrying)");
+                                                Console.WriteLine($"[TCP Feed Capture] Stage 1 failed. {e1.Message}");
+                                                Console.WriteLine($"[TCP Feed Capture] {Found} -> {name} ({url2}) (retrying)");
                                                 Task<string> xml = client.GetStringAsync(url2);
                                                 xml.Wait();
                                                 result = xml.Result;
@@ -466,13 +418,13 @@ namespace SharpAlert
                                             }
                                             catch (Exception e2)
                                             {
-                                                Console.WriteLine($"[Feed Capture | NAADs] Stage 2 failed. {e2.Message}", ConsoleColor.Red);
-                                                Console.WriteLine($"[Feed Capture | NAADs] Failed to capture the data.", ConsoleColor.Red);
+                                                Console.WriteLine($"[TCP Feed Capture] Stage 2 failed. {e2.Message}", ConsoleColor.Red);
+                                                Console.WriteLine($"[TCP Feed Capture] Failed to capture the data.", ConsoleColor.Red);
                                                 HeartbeatFailure = true;
                                             }
                                         }
 
-                                        if (!string.IsNullOrWhiteSpace(result)) EnrollAlerts(result);
+                                        if (!string.IsNullOrWhiteSpace(result)) EnrollAlerts(result, FirstRunner);
                                     }
                                     
                                     if (!HeartbeatFailure) LastHeartbeat = DateTime.UtcNow;
@@ -480,31 +432,31 @@ namespace SharpAlert
 
                                 //if (TryAddDataToQueue(item))
                                 //{
-                                //    Console.WriteLine($"[Feed Capture | NAADs] Alert {alertIndex} ({filename}) has been saved for processing.");
+                                //    Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
                                 //}
                                 //else
                                 //{
-                                //    Console.WriteLine($"[Feed Capture | NAADs] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
+                                //    Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
                                 //}
                             }
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"[Feed Capture | NAADs] Couldn't check the data for alert {alertIndex}. {ex.Message}");
+                            Console.WriteLine($"[TCP Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
                         }
                     }
-                    if (alertIndex != 0) Console.WriteLine($"[Feed Capture | NAADs] {alertIndex} alert(s) checked.");
-                    else Console.WriteLine($"[Feed Capture | NAADs] No alerts were checked.");
+                    if (alertIndex != 0) Console.WriteLine($"[TCP Feed Capture] {alertIndex} alert(s) checked.");
+                    else Console.WriteLine($"[TCP Feed Capture] No alerts were checked.");
                 }
                 else
                 {
-                    Console.WriteLine("[Feed Capture | NAADs] There are no alerts to enroll.");
+                    Console.WriteLine("[TCP Feed Capture] There are no alerts to enroll.");
                 }
             }
         }
 
         /// <summary>
-        /// Starts the Direct Feed Capture service in the current thread as a server instead of a client.
+        /// Starts the TCP Feed Capture service in the current thread as a server instead of a client.
         /// </summary>
         /// <param name="useHTTPS">Use the secure version of Hypertext Transfer Protocol to connect to the target server.</param>
         //public void ServerServiceRun(bool useHTTPS)
@@ -516,7 +468,7 @@ namespace SharpAlert
         //    {
         //        try
         //        {
-        //            Console.WriteLine($"[Feed Capture | NAADs] Getting data from the server.");
+        //            Console.WriteLine($"[TCP Feed Capture] Getting data from the server.");
         //            Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server}");
         //            if (!message.Wait(10000)) continue;
         //            message.Result.EnsureSuccessStatusCode();
@@ -526,7 +478,7 @@ namespace SharpAlert
 
         //            Result = message.Result.Content.ReadAsStringAsync().Result;
 
-        //            Console.WriteLine($"[Feed Capture | NAADs] Grabbed data from the server.");
+        //            Console.WriteLine($"[TCP Feed Capture] Grabbed data from the server.");
 
         //            for (int i = 0; !(i >= 30);)
         //            {
@@ -541,31 +493,31 @@ namespace SharpAlert
         //        }
         //        catch (SocketException e)
         //        {
-        //            Console.WriteLine($"[Feed Capture | NAADs] {e.Message}");
+        //            Console.WriteLine($"[TCP Feed Capture] {e.Message}");
         //            Thread.Sleep(1000);
         //        }
         //        catch (TimeoutException)
         //        {
-        //            Console.WriteLine($"[Feed Capture | NAADs] Timed out.");
+        //            Console.WriteLine($"[TCP Feed Capture] Timed out.");
         //        }
         //        catch (HttpRequestException e)
         //        {
-        //            Console.WriteLine($"[Feed Capture | NAADs] {e.StackTrace} {e.Message} {e.Message}");
+        //            Console.WriteLine($"[TCP Feed Capture] {e.StackTrace} {e.Message} {e.Message}");
         //        }
         //        catch (AggregateException e)
         //        {
-        //            Console.WriteLine($"[Feed Capture | NAADs] {e.StackTrace} {e.Message}");
+        //            Console.WriteLine($"[TCP Feed Capture] {e.StackTrace} {e.Message}");
         //        }
         //        catch (TaskCanceledException)
         //        {
-        //            Console.WriteLine("[Feed Capture | NAADs] The executing task was canceled.");
+        //            Console.WriteLine("[TCP Feed Capture] The executing task was canceled.");
         //        }
         //        catch (ThreadAbortException)
         //        {
         //        }
         //        catch (Exception e)
         //        {
-        //            Console.WriteLine($"[Feed Capture | NAADs] {e.StackTrace} {e.Message}");
+        //            Console.WriteLine($"[TCP Feed Capture] {e.StackTrace} {e.Message}");
         //        }
         //    }
         //}
@@ -590,7 +542,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"[Feed Capture | NAADs] {e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[TCP Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }
@@ -617,7 +569,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"[Feed Capture | NAADs] {e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[TCP Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }

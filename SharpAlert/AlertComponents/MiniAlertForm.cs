@@ -99,7 +99,8 @@ namespace SharpAlert
             AlertText.Text = AlertSubtitleStr;
             AlertIntroTextStr = intro;
             AlertTextStr = text;
-            AlertText.Text += $"\x20| {AlertIntroTextStr} {AlertTextStr}";
+            //AlertText.Text += $"\x20| {AlertIntroTextStr} {AlertTextStr}";
+            AlertText.Text += $"\x20| {AlertIntroTextStr.Replace("\r\n", "\x20".Trim())} {AlertTextStr.Replace("\r\n", "\x20".Trim())}";
             AlertUrlStr = url;
             AlertAudioUrlStr = audio;
             AlertImageUrlStr = image;

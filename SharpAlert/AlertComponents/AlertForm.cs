@@ -101,11 +101,12 @@ namespace SharpAlert
             SubtitleText.Text = AlertSubtitleStr;
             AlertIntroTextStr = intro;
             AlertTextStr = text;
-            AlertText.Text = $"{AlertIntroTextStr} {AlertTextStr}";
+            AlertText.Text = $"{AlertIntroTextStr}\r\n\r\n{AlertTextStr}";
             AlertUrlStr = url;
             AlertAudioUrlStr = audio;
             AlertImageUrlStr = image;
             AlertType = type;
+            AlertText.SelectionLength = 0;
             AlertText.SelectionStart = 0;
 
             if (string.IsNullOrWhiteSpace(AlertUrlStr))
@@ -329,7 +330,7 @@ namespace SharpAlert
         {
             DismissButton.Enabled = unlocked;
             SpeakerButton.Enabled = unlocked;
-            LinkButton.Enabled = unlocked;
+            DismissAllButton.Enabled = unlocked;
             AlertLinkText.Enabled = unlocked;
         }
 
@@ -360,7 +361,7 @@ namespace SharpAlert
 
         }
 
-        IntPtr GotHandle = IntPtr.Zero;
+        private IntPtr GotHandle = IntPtr.Zero;
 
         private int EnsureForTick = 5;
 

@@ -46,16 +46,16 @@
             this.LinkButton = new System.Windows.Forms.Button();
             this.TerminateSelf = new System.Windows.Forms.Timer(this.components);
             this.OutlineContainerPanel = new System.Windows.Forms.Panel();
-            this.SubtitlePanel = new System.Windows.Forms.Panel();
-            this.SubtitleText = new System.Windows.Forms.Label();
-            this.LeftSubtitleSpacer = new System.Windows.Forms.Panel();
-            this.RightSubtitleSpacer = new System.Windows.Forms.Panel();
             this.TitleText = new System.Windows.Forms.Label();
             this.RightOutlinePanel = new System.Windows.Forms.Panel();
             this.LeftOutlinePanel = new System.Windows.Forms.Panel();
             this.BottomOutlinePanel = new System.Windows.Forms.Panel();
             this.WindowFlash = new System.Windows.Forms.Timer(this.components);
             this.EnsureTopWindow = new System.Windows.Forms.Timer(this.components);
+            this.RightSubtitleSpacer = new System.Windows.Forms.Panel();
+            this.LeftSubtitleSpacer = new System.Windows.Forms.Panel();
+            this.SubtitleText = new System.Windows.Forms.Label();
+            this.SubtitlePanel = new System.Windows.Forms.Panel();
             this.AlertPanel.SuspendLayout();
             this.MainPanel.SuspendLayout();
             this.OutlineContainerPanel.SuspendLayout();
@@ -228,57 +228,6 @@
             this.OutlineContainerPanel.Size = new System.Drawing.Size(1280, 720);
             this.OutlineContainerPanel.TabIndex = 10;
             // 
-            // SubtitlePanel
-            // 
-            this.SubtitlePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SubtitlePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.SubtitlePanel.Controls.Add(this.SubtitleText);
-            this.SubtitlePanel.Controls.Add(this.LeftSubtitleSpacer);
-            this.SubtitlePanel.Controls.Add(this.RightSubtitleSpacer);
-            this.SubtitlePanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.SubtitlePanel.ForeColor = System.Drawing.Color.White;
-            this.SubtitlePanel.Location = new System.Drawing.Point(8, 90);
-            this.SubtitlePanel.Margin = new System.Windows.Forms.Padding(10);
-            this.SubtitlePanel.Name = "SubtitlePanel";
-            this.SubtitlePanel.Size = new System.Drawing.Size(1264, 63);
-            this.SubtitlePanel.TabIndex = 14;
-            // 
-            // SubtitleText
-            // 
-            this.SubtitleText.BackColor = System.Drawing.Color.Transparent;
-            this.SubtitleText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SubtitleText.Font = new System.Drawing.Font("Arial", 36F);
-            this.SubtitleText.Location = new System.Drawing.Point(8, 0);
-            this.SubtitleText.Name = "SubtitleText";
-            this.SubtitleText.Size = new System.Drawing.Size(1248, 63);
-            this.SubtitleText.TabIndex = 3;
-            this.SubtitleText.Text = "Short Alert Description";
-            this.SubtitleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // LeftSubtitleSpacer
-            // 
-            this.LeftSubtitleSpacer.BackColor = System.Drawing.Color.Transparent;
-            this.LeftSubtitleSpacer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.LeftSubtitleSpacer.Dock = System.Windows.Forms.DockStyle.Left;
-            this.LeftSubtitleSpacer.ForeColor = System.Drawing.Color.White;
-            this.LeftSubtitleSpacer.Location = new System.Drawing.Point(0, 0);
-            this.LeftSubtitleSpacer.Margin = new System.Windows.Forms.Padding(10);
-            this.LeftSubtitleSpacer.Name = "LeftSubtitleSpacer";
-            this.LeftSubtitleSpacer.Size = new System.Drawing.Size(8, 63);
-            this.LeftSubtitleSpacer.TabIndex = 2;
-            // 
-            // RightSubtitleSpacer
-            // 
-            this.RightSubtitleSpacer.BackColor = System.Drawing.Color.Transparent;
-            this.RightSubtitleSpacer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.RightSubtitleSpacer.Dock = System.Windows.Forms.DockStyle.Right;
-            this.RightSubtitleSpacer.ForeColor = System.Drawing.Color.White;
-            this.RightSubtitleSpacer.Location = new System.Drawing.Point(1256, 0);
-            this.RightSubtitleSpacer.Margin = new System.Windows.Forms.Padding(10);
-            this.RightSubtitleSpacer.Name = "RightSubtitleSpacer";
-            this.RightSubtitleSpacer.Size = new System.Drawing.Size(8, 63);
-            this.RightSubtitleSpacer.TabIndex = 4;
-            // 
             // TitleText
             // 
             this.TitleText.BackColor = System.Drawing.Color.Red;
@@ -338,6 +287,57 @@
             this.EnsureTopWindow.Interval = 1000;
             this.EnsureTopWindow.Tick += new System.EventHandler(this.EnsureTopWindow_Tick);
             // 
+            // RightSubtitleSpacer
+            // 
+            this.RightSubtitleSpacer.BackColor = System.Drawing.Color.Transparent;
+            this.RightSubtitleSpacer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.RightSubtitleSpacer.Dock = System.Windows.Forms.DockStyle.Right;
+            this.RightSubtitleSpacer.ForeColor = System.Drawing.Color.White;
+            this.RightSubtitleSpacer.Location = new System.Drawing.Point(1256, 0);
+            this.RightSubtitleSpacer.Margin = new System.Windows.Forms.Padding(10);
+            this.RightSubtitleSpacer.Name = "RightSubtitleSpacer";
+            this.RightSubtitleSpacer.Size = new System.Drawing.Size(8, 63);
+            this.RightSubtitleSpacer.TabIndex = 4;
+            // 
+            // LeftSubtitleSpacer
+            // 
+            this.LeftSubtitleSpacer.BackColor = System.Drawing.Color.Transparent;
+            this.LeftSubtitleSpacer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.LeftSubtitleSpacer.Dock = System.Windows.Forms.DockStyle.Left;
+            this.LeftSubtitleSpacer.ForeColor = System.Drawing.Color.White;
+            this.LeftSubtitleSpacer.Location = new System.Drawing.Point(0, 0);
+            this.LeftSubtitleSpacer.Margin = new System.Windows.Forms.Padding(10);
+            this.LeftSubtitleSpacer.Name = "LeftSubtitleSpacer";
+            this.LeftSubtitleSpacer.Size = new System.Drawing.Size(8, 63);
+            this.LeftSubtitleSpacer.TabIndex = 2;
+            // 
+            // SubtitleText
+            // 
+            this.SubtitleText.BackColor = System.Drawing.Color.Transparent;
+            this.SubtitleText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SubtitleText.Font = new System.Drawing.Font("Arial", 36F);
+            this.SubtitleText.Location = new System.Drawing.Point(8, 0);
+            this.SubtitleText.Name = "SubtitleText";
+            this.SubtitleText.Size = new System.Drawing.Size(1248, 63);
+            this.SubtitleText.TabIndex = 3;
+            this.SubtitleText.Text = "Short Alert Description";
+            this.SubtitleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // SubtitlePanel
+            // 
+            this.SubtitlePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(140)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SubtitlePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.SubtitlePanel.Controls.Add(this.SubtitleText);
+            this.SubtitlePanel.Controls.Add(this.LeftSubtitleSpacer);
+            this.SubtitlePanel.Controls.Add(this.RightSubtitleSpacer);
+            this.SubtitlePanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SubtitlePanel.ForeColor = System.Drawing.Color.White;
+            this.SubtitlePanel.Location = new System.Drawing.Point(8, 90);
+            this.SubtitlePanel.Margin = new System.Windows.Forms.Padding(10);
+            this.SubtitlePanel.Name = "SubtitlePanel";
+            this.SubtitlePanel.Size = new System.Drawing.Size(1264, 63);
+            this.SubtitlePanel.TabIndex = 14;
+            // 
             // TeleAlertForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -389,16 +389,16 @@
         private System.Windows.Forms.Button ScreenshotButton;
         private System.Windows.Forms.Button DismissButton;
         private System.Windows.Forms.Button LinkButton;
-        private System.Windows.Forms.Panel SubtitlePanel;
-        private System.Windows.Forms.Label SubtitleText;
-        private System.Windows.Forms.Panel LeftSubtitleSpacer;
         private System.Windows.Forms.Label TitleText;
-        private System.Windows.Forms.Panel RightSubtitleSpacer;
         private System.Windows.Forms.Panel BottomOutlinePanel;
         private System.Windows.Forms.Panel RightOutlinePanel;
         private System.Windows.Forms.Panel LeftOutlinePanel;
         private System.Windows.Forms.Timer WindowFlash;
         private System.Windows.Forms.Timer EnsureTopWindow;
+        private System.Windows.Forms.Panel SubtitlePanel;
+        private System.Windows.Forms.Label SubtitleText;
+        private System.Windows.Forms.Panel LeftSubtitleSpacer;
+        private System.Windows.Forms.Panel RightSubtitleSpacer;
     }
 }
 

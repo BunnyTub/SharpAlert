@@ -34,6 +34,8 @@
             this.TitleText = new System.Windows.Forms.Label();
             this.AutoClose = new System.Windows.Forms.Timer(this.components);
             this.MainContentsPanel = new System.Windows.Forms.Panel();
+            this.FadeInAnimation = new System.Windows.Forms.Timer(this.components);
+            this.FadeOutAnimation = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.IconBox)).BeginInit();
             this.MainContentsPanel.SuspendLayout();
             this.SuspendLayout();
@@ -65,7 +67,7 @@
             // 
             // AutoClose
             // 
-            this.AutoClose.Enabled = true;
+            this.AutoClose.Interval = 2000;
             this.AutoClose.Tick += new System.EventHandler(this.AutoClose_Tick);
             // 
             // MainContentsPanel
@@ -79,11 +81,22 @@
             this.MainContentsPanel.Name = "MainContentsPanel";
             this.MainContentsPanel.Size = new System.Drawing.Size(620, 146);
             this.MainContentsPanel.TabIndex = 3;
+            this.MainContentsPanel.Visible = false;
+            // 
+            // FadeInAnimation
+            // 
+            this.FadeInAnimation.Interval = 2;
+            this.FadeInAnimation.Tick += new System.EventHandler(this.FadeInAnimation_Tick);
+            // 
+            // FadeOutAnimation
+            // 
+            this.FadeOutAnimation.Interval = 2;
+            this.FadeOutAnimation.Tick += new System.EventHandler(this.FadeOutAnimation_Tick);
             // 
             // StartupForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BackColor = System.Drawing.Color.Red;
             this.ClientSize = new System.Drawing.Size(620, 146);
             this.ControlBox = false;
             this.Controls.Add(this.MainContentsPanel);
@@ -95,14 +108,13 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "StartupForm";
-            this.Opacity = 0.8D;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert Splash Window";
-            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.StartupForm_FormClosing);
             this.Load += new System.EventHandler(this.StartupForm_Load);
+            this.Shown += new System.EventHandler(this.StartupForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.IconBox)).EndInit();
             this.MainContentsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -115,5 +127,7 @@
         private System.Windows.Forms.Label TitleText;
         private System.Windows.Forms.Timer AutoClose;
         private System.Windows.Forms.Panel MainContentsPanel;
+        private System.Windows.Forms.Timer FadeInAnimation;
+        private System.Windows.Forms.Timer FadeOutAnimation;
     }
 }

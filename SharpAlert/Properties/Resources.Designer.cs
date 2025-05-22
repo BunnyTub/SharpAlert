@@ -81,6 +81,16 @@ namespace SharpAlert.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap jnjnjnjn {
+            get {
+                object obj = ResourceManager.GetObject("jnjnjnjn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to According to all known laws of aviation, there is no way a bee should be able to fly.
         ///Its wings are too small to get its fat little body off the ground.
         ///The bee, of course, flies anyway because bees don&apos;t care what humans think is impossible.
@@ -137,6 +147,15 @@ namespace SharpAlert.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream ui_beep_1 {
+            get {
+                return ResourceManager.GetStream("ui_beep_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream ui_cancellation_1 {
             get {
                 return ResourceManager.GetStream("ui_cancellation_1", resourceCulture);
@@ -164,6 +183,15 @@ namespace SharpAlert.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream ui_shakewarning_1 {
+            get {
+                return ResourceManager.GetStream("ui_shakewarning_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream ui_warning_1 {
             get {
                 return ResourceManager.GetStream("ui_warning_1", resourceCulture);
@@ -176,6 +204,16 @@ namespace SharpAlert.Properties {
         internal static System.Drawing.Bitmap WarningApp {
             get {
                 object obj = ResourceManager.GetObject("WarningApp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WarningApp_Splash {
+            get {
+                object obj = ResourceManager.GetObject("WarningApp_Splash", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

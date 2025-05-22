@@ -27,6 +27,8 @@ namespace SharpAlert
         //    @"<valueName>([^<]+)</valueName>\s*<value>([^<]+)</value>",
         //    RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
+		// for some reason, the Regex engine ignores forward slashes as syntax. It does make things a little cleaner though.
+
         public static readonly Regex ReplayedAlertRegex = new Regex(
             @"<SharpAlertReplay>\s*(.*?)\s*</SharpAlertReplay>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
@@ -86,6 +88,7 @@ namespace SharpAlert
 		public static readonly Regex EventRegex = new Regex(
 			@"<event>\s*(.*?)\s*</event>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
 		
 		public static readonly Regex EventCodeRegex = new Regex(
             @"<eventcode><valueName>SAME</valueName><value>\s*(.*?)\s*</value></eventcode>",

@@ -94,36 +94,47 @@ namespace SharpAlert
             bool Finished = false;
             new Thread(() =>
             {
-                Console.WriteLine("Hyper Server is shutting down.");
-                hyper?.ServiceStop();
-                Console.WriteLine("Feed Capture is shutting down.");
-                feed?.ServiceStop();
-                Console.WriteLine("Direct Feed Capture is shutting down.");
-                directfeed?.ServiceStop();
-                Console.WriteLine("Cache Capture is shutting down.");
-                cache?.ServiceStop();
-                Console.WriteLine("Data Processor is shutting down.");
-                dataproc?.ServiceStop();
-                Console.WriteLine("Alert Processor is shutting down.");
-                lock (AlertProcessor.AlertLock)
+                while (!ServiceRunnerScheduled)
                 {
+                    LogFault(new Exception("The program cannot exit safely, because the service runner hasn't indicated a successful startup."));
+                    Thread.Sleep(2500);
+                    Finished = true;
+                    return;
                 }
-                Console.WriteLine("Idle Window is shutting down.");
-                if (idle != null) DestroyIdleWindow();
-                Console.WriteLine("Status Window is shutting down.");
-                if (status != null) DestroyStatusWindow();
-                Console.WriteLine("Stopping all sounds.");
-                try
+
+                //if (ServiceRunnerScheduled)
                 {
-                    StopAllAudioSilently();
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Cannot stop some sounds.");
-                }
-                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
-                {
-                    DiscordWebhook.SendFormattedMessage("SharpAlert has stopped.");
+                    Console.WriteLine("Hyper Server is shutting down.");
+                    hyper?.ServiceStop();
+                    Console.WriteLine("Feed Capture is shutting down.");
+                    feed?.ServiceStop();
+                    Console.WriteLine("Direct Feed Capture is shutting down.");
+                    directfeed?.ServiceStop();
+                    Console.WriteLine("Cache Capture is shutting down.");
+                    cache?.ServiceStop();
+                    Console.WriteLine("Data Processor is shutting down.");
+                    dataproc?.ServiceStop();
+                    Console.WriteLine("Alert Processor is shutting down.");
+                    lock (AlertProcessor.AlertLock)
+                    {
+                    }
+                    Console.WriteLine("Idle Window is shutting down.");
+                    if (idle != null) DestroyIdleWindow();
+                    Console.WriteLine("Status Window is shutting down.");
+                    if (status != null) DestroyStatusWindow();
+                    Console.WriteLine("Stopping all sounds.");
+                    try
+                    {
+                        StopAllAudioSilently();
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Cannot stop some sounds.");
+                    }
+                    if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                    {
+                        DiscordWebhook.SendFormattedMessage("SharpAlert has stopped.");
+                    }
                 }
                 Finished = true;
             }).Start();
@@ -182,20 +193,22 @@ namespace SharpAlert
 
             if (args.Length >= 2)
             {
-                if (args.Contains("--i-want-to-be-fucked-up-the-ass-like-a-gay-little-bunny-boy"))
-                {
-                    for (int i = 0; i < 20; i++)
-                    {
-                        Process.Start(AssemblyFile, "--monitored --ignore-duplicates --wattpad");
-                        Thread.Sleep(300);
-                    }
-                    return; 
-                }
+                //if (args.Contains("--i-want-to-be-fucked-up-the-ass-like-a-gay-little-bunny-boy"))
+                //{
+                //    for (int i = 0; i < 20; i++)
+                //    {
+                //        Process.Start(AssemblyFile, "--monitored --ignore-duplicates --wattpad");
+                //        Thread.Sleep(300);
+                //    }
+                //    return; 
+                //}
+                
+                //FunOnABun = true;
 
-                if (args.Contains("--wattpad"))
-                {
-                    FunOnABun = true;
-                }
+                ////if (args.Contains("--call-debugger"))
+                ////{
+                ////    if (Debugger.Launch()) Debugger.NotifyOfCrossThreadDependency();
+                ////}
 
                 if (args.Contains("--monitored"))
                 {
@@ -261,6 +274,8 @@ namespace SharpAlert
             }
 
             bool restartable = true;
+            bool debuggable = false;
+
             while (restartable)
             {
                 ProcessStartInfo self = new ProcessStartInfo
@@ -274,6 +289,13 @@ namespace SharpAlert
                 {
                     arguments += $"\x20{arg}";
                 }
+
+                if (debuggable)
+                {
+                    arguments += $"\x20--call-debugger";
+                    debuggable = false;
+                }
+
                 self.Arguments = arguments;
 
                 Process monitorSelf = new Process
@@ -304,8 +326,10 @@ namespace SharpAlert
                         string Details = $"SharpAlert closed with a non-zero exit code. ({unchecked(monitorSelf.ExitCode)})\r\n" +
                             $"{new Win32Exception(unchecked(monitorSelf.ExitCode)).Message}";
                         LogFault(new Exception(Details));
-                        ToppleForm tf = new ToppleForm(Details);
+                        ToppleForm tf = new ToppleForm(Details, true);
                         tf.ShowDialog();
+                        if (tf.DialogResult == DialogResult.Yes) debuggable = true;
+                        else debuggable = false;
                         break;
                 }
 

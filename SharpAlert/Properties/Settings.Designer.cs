@@ -303,12 +303,12 @@ namespace SharpAlert.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsd=\"http://www.w3." +
             "org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" />")]
-        public global::System.Collections.Specialized.StringCollection AllowedUGCLocations_Geocodes {
+        public global::System.Collections.Specialized.StringCollection AllowedCAPCPLocations_Geocodes {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["AllowedUGCLocations_Geocodes"]));
+                return ((global::System.Collections.Specialized.StringCollection)(this["AllowedCAPCPLocations_Geocodes"]));
             }
             set {
-                this["AllowedUGCLocations_Geocodes"] = value;
+                this["AllowedCAPCPLocations_Geocodes"] = value;
             }
         }
         
@@ -468,37 +468,37 @@ namespace SharpAlert.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int RunnerType {
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool messageTypeTest {
             get {
-                return ((int)(this["RunnerType"]));
+                return ((bool)(this["messageTypeTest"]));
             }
             set {
-                this["RunnerType"] = value;
+                this["messageTypeTest"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("example.com")]
-        public string ClientServerURL {
+        public string UserServerURL {
             get {
-                return ((string)(this["ClientServerURL"]));
+                return ((string)(this["UserServerURL"]));
             }
             set {
-                this["ClientServerURL"] = value;
+                this["UserServerURL"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("9792")]
-        public string ClientServerPort {
+        public string UserServerPort {
             get {
-                return ((string)(this["ClientServerPort"]));
+                return ((string)(this["UserServerPort"]));
             }
             set {
-                this["ClientServerPort"] = value;
+                this["UserServerPort"] = value;
             }
         }
         
@@ -858,7 +858,7 @@ namespace SharpAlert.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool RegionUnitedStates {
             get {
                 return ((bool)(this["RegionUnitedStates"]));
@@ -883,12 +883,12 @@ namespace SharpAlert.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool RegionShown {
+        public bool RegionMexico {
             get {
-                return ((bool)(this["RegionShown"]));
+                return ((bool)(this["RegionMexico"]));
             }
             set {
-                this["RegionShown"] = value;
+                this["RegionMexico"] = value;
             }
         }
         
@@ -919,12 +919,96 @@ namespace SharpAlert.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool alertArchiving {
+        public bool DiscordWebhookConfirmAlerts {
             get {
-                return ((bool)(this["alertArchiving"]));
+                return ((bool)(this["DiscordWebhookConfirmAlerts"]));
             }
             set {
-                this["alertArchiving"] = value;
+                this["DiscordWebhookConfirmAlerts"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SetupExperienceComplete {
+            get {
+                return ((bool)(this["SetupExperienceComplete"]));
+            }
+            set {
+                this["SetupExperienceComplete"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UsingStationInfo {
+            get {
+                return ((bool)(this["UsingStationInfo"]));
+            }
+            set {
+                this["UsingStationInfo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StationIdentifier {
+            get {
+                return ((string)(this["StationIdentifier"]));
+            }
+            set {
+                this["StationIdentifier"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StationName {
+            get {
+                return ((string)(this["StationName"]));
+            }
+            set {
+                this["StationName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AllowNonEnglishAlerts {
+            get {
+                return ((bool)(this["AllowNonEnglishAlerts"]));
+            }
+            set {
+                this["AllowNonEnglishAlerts"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DiscordWebhookRelayLocally {
+            get {
+                return ((bool)(this["DiscordWebhookRelayLocally"]));
+            }
+            set {
+                this["DiscordWebhookRelayLocally"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool alertUseTitleAsSubtitle {
+            get {
+                return ((bool)(this["alertUseTitleAsSubtitle"]));
+            }
+            set {
+                this["alertUseTitleAsSubtitle"] = value;
             }
         }
     }

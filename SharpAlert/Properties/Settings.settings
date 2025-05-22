@@ -55,7 +55,7 @@
     <Setting Name="AlertCheckInterval" Description="Sets the interval between each server request in seconds." Type="System.Int32" Scope="User">
       <Value Profile="(Default)">30</Value>
     </Setting>
-    <Setting Name="AllowedUGCLocations_Geocodes" Description="Only allows messages with one or more geocodes in the list. Leave this and geocodes blank to allow all." Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="AllowedCAPCPLocations_Geocodes" Description="Only allows messages with one or more geocodes in the list. Leave this and geocodes blank to allow all." Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" /&gt;</Value>
     </Setting>
@@ -92,13 +92,13 @@
     <Setting Name="alertTimeZoneUTC" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="RunnerType" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+    <Setting Name="messageTypeTest" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ClientServerURL" Type="System.String" Scope="User">
+    <Setting Name="UserServerURL" Type="System.String" Scope="User">
       <Value Profile="(Default)">example.com</Value>
     </Setting>
-    <Setting Name="ClientServerPort" Type="System.String" Scope="User">
+    <Setting Name="UserServerPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">9792</Value>
     </Setting>
     <Setting Name="statusExercise" Type="System.Boolean" Scope="User">
@@ -190,12 +190,12 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="RegionUnitedStates" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="RegionCanada" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="RegionShown" Type="System.Boolean" Scope="User">
+    <Setting Name="RegionMexico" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ProgramVoice" Type="System.String" Scope="User">
@@ -204,7 +204,28 @@
     <Setting Name="MakiVersion" Type="System.String" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="alertArchiving" Type="System.Boolean" Scope="User">
+    <Setting Name="DiscordWebhookConfirmAlerts" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SetupExperienceComplete" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="UsingStationInfo" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="StationIdentifier" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="StationName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AllowNonEnglishAlerts" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DiscordWebhookRelayLocally" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="alertUseTitleAsSubtitle" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
