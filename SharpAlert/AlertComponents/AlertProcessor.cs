@@ -12,7 +12,6 @@ using static SharpAlert.MainEntryPoint;
 using static SharpAlert.RegexList;
 using static SharpAlert.AudioManager;
 using SharpAlert.AlertComponents;
-using System.Management.Instrumentation;
 
 namespace SharpAlert
 {
@@ -135,6 +134,8 @@ namespace SharpAlert
         {
             lock (PopupLock)
             {
+                if (!AllowThreadRestarts) return;
+
                 // determine the dialog to use
 
                 if (DialogAlertURL.Contains("sasmex.net"))
@@ -189,6 +190,7 @@ namespace SharpAlert
                         Console.WriteLine($"[Alert Processor] Pausing alerts for {DeadTime} second(s) to fill dead time.");
                         Thread.Sleep(DeadTime * 1000);
                     }
+                    else Thread.Sleep(100);
                 }
             }
         }
@@ -445,7 +447,9 @@ namespace SharpAlert
                 SeverityLevel MaxSeverity = SeverityLevel.Unknown;
 
                 List<string> AudioFiles = new List<string>();
+                List<string> DerefAudioFiles = new List<string>();
                 List<string> ImageFiles = new List<string>();
+                List<string> DerefImageFiles = new List<string>();
                 List<AlertTextClass> AlertTextList = new List<AlertTextClass>();
                 string Expiry = string.Empty;
                 string EventTypeFull = string.Empty;
@@ -465,11 +469,17 @@ namespace SharpAlert
                     Console.WriteLine($"Expires: {Expiry}");
 
                     //https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
-                    //
                     string BCP47Language = LanguageRegex.MatchOrDefault(AlertInfo, "en-US");
                     Console.WriteLine($"Language: {BCP47Language}");
-                    
-                    string EventName = EventRegex.MatchOrDefault(AlertInfo, "Cautionary (Unknown Event)");
+
+                    string URL = WebRegex.MatchOrDefault(AlertInfo, string.Empty);
+                    string Web = WebRegex.MatchOrDefault(AlertInfo, string.Empty);
+                    Console.WriteLine($"Associated URL (if any): {URL}");
+                    Console.WriteLine($"Associated Web (if any): {Web}");
+                    if (string.IsNullOrWhiteSpace(PrimaryURL)) PrimaryURL = URL;
+                    if (string.IsNullOrWhiteSpace(PrimaryURL)) PrimaryURL = Web;
+
+                    string EventName = Regex.Replace(EventRegex.MatchOrDefault(AlertInfo, "Cautionary (Unknown Event)"), @"(^\w)|(\s\w)", m => m.Value.ToUpperInvariant());
                     Console.WriteLine($"Event Name: {EventName}");
 
                     string EventType = EventCodeRegex.MatchOrDefault(AlertInfo, "???");
@@ -477,12 +487,15 @@ namespace SharpAlert
                     Console.WriteLine($"Event: {EventType}");
                     Console.WriteLine($"Event (SAME Translation): {EventTypeTranslated}");
 
-                    if (!Settings.Default.AllowNonEnglishAlerts)
+                    if (!PrimaryURL.Contains("sasmex.net"))
                     {
-                        if (!BCP47Language.ToLowerInvariant().StartsWith("en-"))
+                        if (!Settings.Default.AllowNonEnglishAlerts)
                         {
-                            Console.WriteLine("[Alert Processor] Info tag discarded because it does not contain English information.");
-                            break;
+                            if (!BCP47Language.ToLowerInvariant().StartsWith("en-"))
+                            {
+                                Console.WriteLine("[Alert Processor] Info tag discarded because it does not contain English information.");
+                                break;
+                            }
                         }
                     }
 
@@ -520,85 +533,87 @@ namespace SharpAlert
                         var mime = MIMETypeRegex.MatchOrDefault(resource.Groups[1].Value);
                         Console.WriteLine($"Resource {ResourceCount} MIME Type: {mime}");
                         var size = SizeRegex.MatchOrDefault(resource.Groups[1].Value);
-                        Console.WriteLine($"Resource {ResourceCount} Size (if any | unused): {size}");
+                        Console.WriteLine($"Resource {ResourceCount} Size (if any): {size}");
                         var uri = URIRegex.MatchOrDefault(resource.Groups[1].Value);
                         Console.WriteLine($"Resource {ResourceCount} URI (if any): {uri}");
-                        Match derefUri = DerefURIRegex.Match(resource.Groups[1].Value);
-                        Console.WriteLine($"Resource {ResourceCount} Dereference URI (if any | unused): {derefUri.Groups[1].Value}");
-                        Match digest = DigestSecureHashAlgorithmOneRegex.Match(resource.Groups[1].Value);
-                        Console.WriteLine($"Resource {ResourceCount} SHA-1 (if any | unused): {digest.Groups[1].Value}");
+                        var derefUri = DerefURIRegex.MatchOrDefault(resource.Groups[1].Value);
+                        Console.WriteLine($"Resource {ResourceCount} Dereference URI (if any): {derefUri}");
+                        var digest = DigestSecureHashAlgorithmOneRegex.MatchOrDefault(resource.Groups[1].Value);
+                        Console.WriteLine($"Resource {ResourceCount} SHA-1 (if any | unused): {digest}");
 
-                        void AddAudioToList(string URI)
+                        void AddAudioToList()
                         {
-                            if (!string.IsNullOrWhiteSpace(URI))
+                            if (!string.IsNullOrWhiteSpace(uri))
                             {
-                                if (URI.StartsWith("http://") || URI.StartsWith("https://")) AudioFiles.Add(URI);
-                                else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} contains an invalid URI.");
+                                //if (string.IsNullOrWhiteSpace(derefUri))
+                                {
+                                    AudioFiles.Add(uri);
+                                    Console.WriteLine($"[Alert Processor] Resource {ResourceCount} was added to the audio list.");
+                                }
+                                //else
+                                {
+                                    // work on this
+                                }
                             }
-                            else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} contains an invalid URI.");
+                            else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} has no URI.");
                         }
                         
-                        void AddImageToList(string URI)
+                        void AddImageToList()
                         {
-                            if (!string.IsNullOrWhiteSpace(URI))
+                            if (!string.IsNullOrWhiteSpace(uri))
                             {
-                                if (URI.StartsWith("http://") || URI.StartsWith("https://")) ImageFiles.Add(URI);
-                                else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} contains an invalid URI.");
+                                ImageFiles.Add(uri);
+                                Console.WriteLine($"[Alert Processor] Resource {ResourceCount} was added to the image list.");
                             }
-                            else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} contains an invalid URI.");
+                            else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} has no URI.");
                         }
 
-                        if (string.IsNullOrWhiteSpace(uri))
+                        if (!string.IsNullOrWhiteSpace(uri))
                         {
                             switch (mime)
                             {
                                 case "audio/ogg":
-                                    AddAudioToList(uri);
+                                    AddAudioToList();
                                     break;
                                 case "audio/opus":
-                                    AddAudioToList(uri);
+                                    AddAudioToList();
                                     break;
                                 case "audio/vorbis":
-                                    AddAudioToList(uri);
+                                    AddAudioToList();
                                     break;
                                 case "audio/aac":
-                                    AddAudioToList(uri);
+                                    AddAudioToList();
                                     break;
                                 case "audio/mpeg":
-                                    AddAudioToList(uri);
+                                    AddAudioToList();
                                     break;
                                 case "audio/x-ipaws-audio-mp3":
-                                    AddAudioToList(uri);
+                                    AddAudioToList();
+                                    break;
+                                case "audio/x-ipaws-audio-wav":
+                                    AddAudioToList();
                                     break;
                                 case "application/x-url":
-                                    AddAudioToList(uri);
+                                    AddAudioToList();
                                     break;
-                            }
-                            
-                            switch (mime)
-                            {
                                 case "image/bmp":
-                                    AddImageToList(uri);
+                                    AddImageToList();
                                     break;
                                 case "image/gif":
-                                    AddImageToList(uri);
+                                    AddImageToList();
                                     break;
                                 case "image/jpeg":
-                                    AddImageToList(uri);
+                                    AddImageToList();
                                     break;
                                 case "image/png":
-                                    AddImageToList(uri);
+                                    AddImageToList();
+                                    break;
+                                default:
+                                    AddAudioToList();
                                     break;
                             }
                         }
                     }
-
-                    string URL = WebRegex.MatchOrDefault(AlertInfo, string.Empty);
-                    string Web = WebRegex.MatchOrDefault(AlertInfo, string.Empty);
-                    Console.WriteLine($"Associated URL (if any): {URL}");
-                    Console.WriteLine($"Associated Web (if any): {Web}");
-                    if (string.IsNullOrWhiteSpace(PrimaryURL)) PrimaryURL = URL;
-                    if (string.IsNullOrWhiteSpace(PrimaryURL)) PrimaryURL = Web;
 
                     if (!ReplayMode)
                     {
@@ -727,6 +742,11 @@ namespace SharpAlert
                     }
 
                     //Debugger.Break();
+
+                    if (!string.IsNullOrWhiteSpace(Settings.Default.StationIdentifier))
+                    {
+                        FullIntro = $"This message originates from {Settings.Default.StationIdentifier} ({Settings.Default.StationName}). {FullIntro}";
+                    }
 
                     AlertTextClass _AlertText = new AlertTextClass
                     {
@@ -860,7 +880,7 @@ namespace SharpAlert
                                 }
 
                                 // Delay to prevent the webhook from being rate limited
-                                //Thread.Sleep(1000);
+                                Thread.Sleep(100);
                             }
                         }
 
@@ -934,13 +954,18 @@ namespace SharpAlert
 
         public void RelayWindow(string identifier, string EventTypeFull, AlertTextClass _AlertText, string PrimaryURL, string MsgType, List<string> AudioFiles, List<string> ImageFiles)
         {
-            AlertsQueued++;
+            if (Settings.Default.DisableDialogs)
+            {
+                Console.WriteLine("[Alert Processor] Relay dialogs are disabled.");
+                return;
+            }
 
             Console.WriteLine("[Alert Processor] Relay queued.");
 
             lock (AlertValuesLock)
             {
                 Console.WriteLine("[Alert Processor] Relay queue locked.");
+                AlertsQueued++;
                 while (AlertDisplaying)
                 {
                     Monitor.Wait(AlertValuesLock);
@@ -952,10 +977,11 @@ namespace SharpAlert
             //{
             //}
 
+            AlertsQueued--;
+
             if (Settings.Default.alertNoGUI)
             {
                 AlertDisplaying = true;
-                AlertsQueued--;
 
                 Console.WriteLine("[Alert Processor] Beginning alert.");
 
@@ -990,7 +1016,6 @@ namespace SharpAlert
             else
             {
                 AlertDisplaying = true;
-                AlertsQueued--;
 
                 DialogAlertID = identifier;
                 DialogAlertTitle = EventTypeFull;
@@ -1032,48 +1057,26 @@ namespace SharpAlert
         {
             try
             {
+                ChooseTestForm ctf = new ChooseTestForm(false);
+                var result = ctf.ShowDialog();
+
                 ThreadPool.QueueUserWorkItem(_ =>
                 {
-                    RelayWindow("TEST",
-                        "Standard Test",
-                        new AlertTextClass
-                        { Intro = "Test. Test. Test.", Body = $"{Resources.TestScript}" },
-                        string.Empty,
-                        "alert",
-                        new List<string>() { "" },
-                        new List<string>() { "" });
-                    //Console.WriteLine("[Alert Processor] Relay queued.");
-
-                    //lock (AlertValuesLock)
-                    //{
-                    //    Console.WriteLine("[Alert Processor] Relay queue locked.");
-                    //    while (AlertDisplaying)
-                    //    {
-                    //        Monitor.Wait(AlertValuesLock);
-                    //    }
-                    //    Console.WriteLine("[Alert Processor] Relay queue unlocked.");
-                    //}
-
-                    ////AlertDisplaying = true;
-                    //DialogAlertID = "TEST";
-                    //DialogAlertTitle = "Standard Test";
-                    //DialogAlertText.Intro = "This is a test of SharpAlert's alert display.";
-                    //DialogAlertText.Body = Resources.TestScript.Replace("\r", string.Empty).Replace("\n", "\x20").Trim();
-                    //DialogAlertURL = "https://sharpalert.bunnytub.com";
-                    //DialogAlertAudioURL = string.Empty;
-                    //DialogAlertImageURL = string.Empty;
-                    //DialogAlertType = "alert";
-
-                    //ShowPopup();
-
-                    //lock (AlertValuesLock)
-                    //{
-                    //    //AlertDisplaying = false;
-                    //    Monitor.PulseAll(AlertValuesLock);
-                    //}
-
-                    //Console.WriteLine("[Alert Processor] Test released.");
+                    if (result == DialogResult.Yes)
+                    {
+                        // https://sasmex.net
+                        RelayWindow("TEST",
+                            ctf.EventType,
+                            new AlertTextClass
+                            { Intro = "Test. Test. Test.", Body = $"{ctf.EventDescription}" },
+                            string.Empty,
+                            "alert",
+                            new List<string>() { "" },
+                            new List<string>() { "" });
+                    }
                 });
+
+                ctf.Dispose();
             }
             catch (Exception ex)
             {
@@ -1513,24 +1516,21 @@ namespace SharpAlert
 
             Console.WriteLine("[Alert Processor] Parsing message type.");
 
-            string issue = "issued";
-            string update = "updated";
-            string cancel = "cancelled";
             string MsgPrefix;
 
             switch (MsgType.ToLowerInvariant())
             {
                 case "alert":
-                    MsgPrefix = issue;
+                    MsgPrefix = string.Empty;
                     break;
                 case "update":
-                    MsgPrefix = update;
+                    MsgPrefix = "This alert has been updated.";
                     break;
                 case "cancel":
-                    MsgPrefix = cancel;
+                    MsgPrefix = "This alert has been cancelled.";
                     break;
                 default:
-                    MsgPrefix = "issued";
+                    MsgPrefix = string.Empty;
                     break;
             }
 
@@ -1715,6 +1715,14 @@ namespace SharpAlert
 
             try
             {
+                //MatchCollection SenderNames = SenderNameRegex.Matches(InfoData);
+                //string UnfilteredSenderNames = string.Empty;
+                
+                //foreach (Match match in SenderNames)
+                //{
+                //    UnfilteredSenderNames += $"{match.Groups[1].Value}\x20";
+                //}
+
                 SenderName = SenderNameRegex.MatchOrDefault(InfoData).Replace(",", ",\x20");
                 if (string.IsNullOrWhiteSpace(SenderName))
                 {
@@ -1866,8 +1874,8 @@ namespace SharpAlert
 
             string IntroText = string.Empty;
 
-            IntroText += SentenceAppendSpace($"This alert goes into effect starting {BeginFormatted}, and ends at {EndFormatted}.");
-            IntroText += $"Issued by {SenderName}. Event type is {EventType}. Covering the following areas, {SentenceAppendEnd(AreaDesc)}";
+            IntroText += SentenceAppendSpace($"This alert goes into effect starting {BeginFormatted}, and ending at {EndFormatted}.");
+            IntroText += $"Issued by {SenderName}. Event type is {EventType}. {MsgPrefix} For for the following areas, {SentenceAppendEnd(AreaDesc)}";
             IntroText = IntroText.Replace("\r\n", "\n").Replace("\n", "\r\n"); // fix mixed newline problems hopefully
 
             Console.WriteLine("[Alert Processor] Finished compiling intro text.");
@@ -1884,6 +1892,8 @@ namespace SharpAlert
             BroadcastText = SentenceAppendEnd(BroadcastText);
             BroadcastText = TimeCorrection(BroadcastText);
             BroadcastText = string.Join(" ", BroadcastText.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries));
+
+            // It should not be this painful to fix text formatting.
 
             Console.WriteLine("[Alert Processor] Finished compiling body text.");
             return (IntroText, BroadcastText);

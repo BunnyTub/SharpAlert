@@ -91,22 +91,7 @@ namespace SharpAlert.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to According to all known laws of aviation, there is no way a bee should be able to fly.
-        ///Its wings are too small to get its fat little body off the ground.
-        ///The bee, of course, flies anyway because bees don&apos;t care what humans think is impossible.
-        ///Yellow, black. Yellow, black. Yellow, black. Yellow, black.
-        ///Ooh, black and yellow!
-        ///Let&apos;s shake it up a little.
-        ///Barry! Breakfast is ready!
-        ///Coming!
-        ///Hang on a second.
-        ///Hello?
-        ///Barry?
-        ///Adam?
-        ///Can you believe this is happening?
-        ///I can&apos;t.
-        ///I&apos;ll pick you up.
-        ///Looking  [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Just like songs in the radio. Every memory will come and go. Sometimes I wonder if I&apos;m to blame. That those wistful days are now long gone. Coincidentally our faces met again. I kept stumbling, my hands trembling, I&apos;m struggling. Even so, you&apos;re sentimental since the day it all began. You are guilty of this crime you made me fall in love. How many of you took the bait? How many of you can relate? Are we playing fair? Oh wеll, nobody cares. So, Sing along, it&apos;s such a silly song. The cackling carousel, it sp [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TestScript {
             get {

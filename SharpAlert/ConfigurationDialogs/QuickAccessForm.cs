@@ -20,8 +20,12 @@ namespace SharpAlert.ConfigurationDialogs
             }
         }
 
+        private bool Initialized = false;
+
         private void QuickAccessForm_Load(object sender, EventArgs e)
         {
+            if (Initialized) return;
+            Initialized = true;
             volumeBar.Value = Settings.Default.alertVolume;
             volumeBar.Scroll += (a, b) =>
             {

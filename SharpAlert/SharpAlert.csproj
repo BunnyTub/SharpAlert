@@ -53,6 +53,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>SharpAlert.MainEntryPoint</StartupObject>
@@ -157,6 +159,12 @@
     <Compile Include="AlertComponents\AlertFormImage.Designer.cs">
       <DependentUpon>AlertFormImage.cs</DependentUpon>
     </Compile>
+    <Compile Include="AlertComponents\ChooseTestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlertComponents\ChooseTestForm.Designer.cs">
+      <DependentUpon>ChooseTestForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AlertComponents\ManualAlertRelayForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -232,7 +240,6 @@
     <Compile Include="DisplayDialogs\Panels\AlertInfoHolder.Designer.cs">
       <DependentUpon>AlertInfoHolder.cs</DependentUpon>
     </Compile>
-    <Compile Include="HardwareSeeker.cs" />
     <Compile Include="ListingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -244,6 +251,12 @@
     </Compile>
     <Compile Include="ProgramWorker\ChooseOwnershipForm.Designer.cs">
       <DependentUpon>ChooseOwnershipForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProgramWorker\ChooseAudioForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgramWorker\ChooseAudioForm.Designer.cs">
+      <DependentUpon>ChooseAudioForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgramWorker\ChooseStyleForm.cs">
       <SubType>Form</SubType>
@@ -264,6 +277,12 @@
     </Compile>
     <Compile Include="ProgramWorker\SetupDoneForm.Designer.cs">
       <DependentUpon>SetupDoneForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProgramWorker\TimedForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgramWorker\TimedForm.Designer.cs">
+      <DependentUpon>TimedForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgramWorker\SetupForm.cs">
       <SubType>Form</SubType>
@@ -322,6 +341,9 @@
     <EmbeddedResource Include="AlertComponents\AlertFormImage.resx">
       <DependentUpon>AlertFormImage.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AlertComponents\ChooseTestForm.resx">
+      <DependentUpon>ChooseTestForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AlertComponents\ManualAlertRelayForm.resx">
       <DependentUpon>ManualAlertRelayForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -379,6 +401,9 @@
     <EmbeddedResource Include="ProgramWorker\ChooseOwnershipForm.resx">
       <DependentUpon>ChooseOwnershipForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ProgramWorker\ChooseAudioForm.resx">
+      <DependentUpon>ChooseAudioForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProgramWorker\ChooseStyleForm.resx">
       <DependentUpon>ChooseStyleForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -387,6 +412,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProgramWorker\SetupDoneForm.resx">
       <DependentUpon>SetupDoneForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgramWorker\TimedForm.resx">
+      <DependentUpon>TimedForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgramWorker\SetupForm.resx">
       <DependentUpon>SetupForm.cs</DependentUpon>

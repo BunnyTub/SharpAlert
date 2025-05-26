@@ -36,7 +36,6 @@
             this.FadeInAnimation = new System.Windows.Forms.Timer(this.components);
             this.FadeOutAnimation = new System.Windows.Forms.Timer(this.components);
             this.InfoTip = new System.Windows.Forms.ToolTip(this.components);
-            this.DismissAllButton = new System.Windows.Forms.Button();
             this.SpeakerButton = new System.Windows.Forms.Button();
             this.DismissButton = new System.Windows.Forms.Button();
             this.AlertIcon = new System.Windows.Forms.PictureBox();
@@ -79,12 +78,12 @@
             // 
             // FadeInAnimation
             // 
-            this.FadeInAnimation.Interval = 6;
+            this.FadeInAnimation.Interval = 3;
             this.FadeInAnimation.Tick += new System.EventHandler(this.FadeInAnimation_Tick);
             // 
             // FadeOutAnimation
             // 
-            this.FadeOutAnimation.Interval = 6;
+            this.FadeOutAnimation.Interval = 3;
             this.FadeOutAnimation.Tick += new System.EventHandler(this.FadeOutAnimation_Tick);
             // 
             // InfoTip
@@ -97,24 +96,6 @@
             this.InfoTip.IsBalloon = true;
             this.InfoTip.ReshowDelay = 50;
             this.InfoTip.ToolTipTitle = "What does this do?";
-            // 
-            // DismissAllButton
-            // 
-            this.DismissAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.DismissAllButton.BackColor = System.Drawing.Color.White;
-            this.DismissAllButton.Enabled = false;
-            this.DismissAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DismissAllButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
-            this.DismissAllButton.ForeColor = System.Drawing.Color.Black;
-            this.DismissAllButton.Location = new System.Drawing.Point(516, 329);
-            this.DismissAllButton.Name = "DismissAllButton";
-            this.DismissAllButton.Size = new System.Drawing.Size(35, 35);
-            this.DismissAllButton.TabIndex = 2;
-            this.DismissAllButton.Text = "⚫";
-            this.InfoTip.SetToolTip(this.DismissAllButton, "Dismisses all queued alerts.");
-            this.DismissAllButton.UseVisualStyleBackColor = false;
-            this.DismissAllButton.Visible = false;
-            this.DismissAllButton.Click += new System.EventHandler(this.LinkButton_Click);
             // 
             // SpeakerButton
             // 
@@ -139,7 +120,7 @@
             this.DismissButton.BackColor = System.Drawing.Color.White;
             this.DismissButton.Enabled = false;
             this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DismissButton.Font = new System.Drawing.Font("Arial", 18F);
+            this.DismissButton.Font = new System.Drawing.Font("Arial", 16F);
             this.DismissButton.ForeColor = System.Drawing.Color.Black;
             this.DismissButton.Location = new System.Drawing.Point(598, 329);
             this.DismissButton.Name = "DismissButton";
@@ -209,7 +190,6 @@
             this.OutlineContainerPanel.BorderThickness = 4;
             this.OutlineContainerPanel.Controls.Add(this.DismissButton);
             this.OutlineContainerPanel.Controls.Add(this.SpeakerButton);
-            this.OutlineContainerPanel.Controls.Add(this.DismissAllButton);
             this.OutlineContainerPanel.Controls.Add(this.AlertLinkText);
             this.OutlineContainerPanel.Controls.Add(this.AlertIcon);
             this.OutlineContainerPanel.Controls.Add(this.AlertText);
@@ -235,7 +215,7 @@
             this.AlertLinkText.Location = new System.Drawing.Point(9, 329);
             this.AlertLinkText.Margin = new System.Windows.Forms.Padding(0);
             this.AlertLinkText.Name = "AlertLinkText";
-            this.AlertLinkText.Size = new System.Drawing.Size(504, 35);
+            this.AlertLinkText.Size = new System.Drawing.Size(545, 35);
             this.AlertLinkText.TabIndex = 11;
             this.AlertLinkText.TabStop = true;
             this.AlertLinkText.Text = "https://sharpalert.bunnytub.com/";
@@ -320,7 +300,7 @@
             this.Opacity = 0D;
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "SharpAlert - Alert Dialog";
+            this.Text = "SharpAlert - Alert Panel";
             this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AlertForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AlertForm_FormClosed);
@@ -353,7 +333,6 @@
         private System.Windows.Forms.Timer TerminateSelf;
         private System.Windows.Forms.Button DismissButton;
         private System.Windows.Forms.Button SpeakerButton;
-        private System.Windows.Forms.Button DismissAllButton;
         private System.Windows.Forms.Panel ResizeBottomRight;
         private System.Windows.Forms.LinkLabel AlertLinkText;
         private System.Windows.Forms.Timer ChildFollowsParent;

@@ -1,17 +1,12 @@
 ﻿using SharpAlert.Properties;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using static SharpAlert.IceBearWorker;
 using static SharpAlert.MainEntryPoint;
 using static SharpAlert.RegexList;
@@ -97,6 +92,8 @@ namespace SharpAlert
                                 }
 
                             }).Start();
+                            Thread.Sleep(1000); // added sleep because we could accidentally get timed out
+
                             //Console.WriteLine($"[TCP Feed Capture] Getting data from URL: {URLPrefix}://{server}");
                             //HttpResponseMessage message = client.GetAsync($"{URLPrefix}://{server}").Result;
                             //message.EnsureSuccessStatusCode();
@@ -228,7 +225,7 @@ namespace SharpAlert
                                 if (capturedStatus.ToLowerInvariant() == "system" & capturedSender.ToLowerInvariant().Contains("naads-heartbeat"))
                                 {
                                     Console.WriteLine($"[TCP Feed Capture] Heartbeat detected from {name}.");
-                                    EnrollHeartbeat(dataReceived, FirstRun);
+                                    EnrollNAADSHeartbeat(dataReceived, FirstRun);
                                 }
                                 else
                                 {
@@ -302,7 +299,7 @@ namespace SharpAlert
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
+                                    Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already in queue or history).");
                                 }
                             }
                         }
@@ -311,7 +308,10 @@ namespace SharpAlert
                             Console.WriteLine($"[TCP Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
                         }
                     }
-                    if (alertIndex != 0) Console.WriteLine($"[TCP Feed Capture] {alertIndex} alert(s) checked.");
+                    if (alertIndex != 0)
+                    {
+                        //Console.WriteLine($"[TCP Feed Capture] {alertIndex} alert(s) checked.");
+                    }
                     else Console.WriteLine($"[TCP Feed Capture] No alerts were checked.");
                 }
                 else
@@ -321,7 +321,7 @@ namespace SharpAlert
             }
         }
 
-        public void EnrollHeartbeat(string data, bool FirstRunner)
+        public void EnrollNAADSHeartbeat(string data, bool FirstRunner)
         {
             lock (EnrollObject)
             {
@@ -345,17 +345,17 @@ namespace SharpAlert
                             //    filename = CreateMD5(alert.Value);
                             //}
 
-                            Console.WriteLine($"[TCP Feed Capture] {alertIndex} -> {filename} (NAADs Heartbeat)");
+                            Console.WriteLine($"[TCP Feed Capture] {alertIndex} -> {filename} (NAADS Heartbeat)");
                             SharpDataItem item = new SharpDataItem(filename, alert.Value);
 
-                            if (FirstRun && Settings.Default.discardFirstAlerts)
-                            {
-                                if (TryAddDataToHistory(item))
-                                {
-                                    Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
-                                }
-                            }
-                            else
+                            //if (FirstRun && Settings.Default.discardFirstAlerts)
+                            //{
+                            //    if (TryAddDataToHistory(item))
+                            //    {
+                            //        Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
+                            //    }
+                            //}
+                            //else
                             {
                                 string references = ReferencesRegex.MatchOrDefault(alert.Value);
                                 if (!string.IsNullOrWhiteSpace(references))
@@ -418,8 +418,8 @@ namespace SharpAlert
                                             }
                                             catch (Exception e2)
                                             {
-                                                Console.WriteLine($"[TCP Feed Capture] Stage 2 failed. {e2.Message}", ConsoleColor.Red);
-                                                Console.WriteLine($"[TCP Feed Capture] Failed to capture the data.", ConsoleColor.Red);
+                                                Console.WriteLine($"[TCP Feed Capture] Stage 2 failed. {e2.Message}");
+                                                Console.WriteLine($"[TCP Feed Capture] Failed to capture the data.");
                                                 HeartbeatFailure = true;
                                             }
                                         }

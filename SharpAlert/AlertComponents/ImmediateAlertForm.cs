@@ -96,12 +96,12 @@ namespace SharpAlert
 
         public void UpdateFields(string id, string alert, string intro, string text, string url, string type, double lat, double lng)
         {
-            this.Text = $"SharpAlert - {id}";
+            this.Text = $"SharpAlert - Immediate Panel";
             AlertSubtitleStr = alert;
             TitleText.Text = AlertSubtitleStr.ToUpperInvariant();
             AlertIntroTextStr = intro;
             AlertTextStr = text;
-            AlertText.Text = $"{AlertIntroTextStr} {AlertTextStr}";
+            AlertText.Text = $"{AlertIntroTextStr}\r\n\r\n{AlertTextStr}";
             //AlertText.Text = AlertTextStr;
             AlertUrlStr = url;
             AlertType = type;

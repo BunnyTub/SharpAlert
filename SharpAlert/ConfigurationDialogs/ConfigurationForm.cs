@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows.Forms;
 using static SharpAlert.MainEntryPoint;
 using static SharpAlert.IceBearWorker;
+using static SharpAlert.AudioManager;
 using System.Drawing;
 
 namespace SharpAlert
@@ -20,8 +21,21 @@ namespace SharpAlert
             InitializeComponent();
         }
 
+        private bool Initialized = false;
+
         private void ConfigurationForm_Load(object sender, EventArgs e)
         {
+            if (Initialized) return;
+            Initialized = true;
+
+            lock (notify)
+            {
+                notify.BalloonTipTitle = "SharpAlert is initializing Settings";
+                notify.BalloonTipText = "Settings is getting ready to be shown. This may take a few moments.";
+                notify.BalloonTipIcon = ToolTipIcon.Info;
+                notify.ShowBalloonTip(5000);
+            }
+
             DiscordWebhookURLInput.Text = Settings.Default.DiscordWebhook;
             DiscordWebhookAppendInput.Text = Settings.Default.DiscordWebhookAppend;
             DiscordWebhookConfirmAlertsBox.Checked = Settings.Default.DiscordWebhookConfirmAlerts;
@@ -77,6 +91,9 @@ namespace SharpAlert
             //    ((CheckBox)a).Enabled = true;
             //};
 
+            DisableDialogsBox.Checked = Settings.Default.DisableDialogs;
+            DisableDialogsBox.CheckedChanged += (a, b) => Settings.Default.DisableDialogs = ((CheckBox)a).Checked;
+            
             alertNoRelayBox.Checked = Settings.Default.alertNoRelay;
             alertNoRelayBox.CheckedChanged += (a, b) => Settings.Default.alertNoRelay = ((CheckBox)a).Checked;
             
@@ -105,6 +122,18 @@ namespace SharpAlert
                 ((CheckBox)a).Enabled = true;
             };
 
+            AudioDeviceCombo.Items.Clear();
+
+            lock (AudioDevicesList)
+            {
+                foreach (var device in AudioDevicesList)
+                {
+                    AudioDeviceCombo.Items.Add(device.FriendlyName);
+                }
+            }
+
+            AudioDeviceCombo.SelectedItem = Settings.Default.ProgramAudioOutput;
+
             RefreshAlertHistory();
         }
 
@@ -128,7 +157,10 @@ namespace SharpAlert
             if (SharpDataHistory.Count != 0)
             {
                 string DataHistory = string.Empty;
-                foreach (var item in SharpDataHistory) DataHistory += "" + item.Name + "\r\n";
+                foreach (var item in SharpDataHistory)
+                {
+                    DataHistory = $"{item.Name}\r\n{DataHistory}";
+                }
                 DataHistory.Trim();
                 AlertHistoryOutput.Text = DataHistory;
             }
@@ -386,6 +418,92 @@ namespace SharpAlert
             SaveDiscordSettingsButton.BackColor = Color.FromArgb(200, 60, 60);
             ToolTipInformation.Hide(this);
             ToolTipInformation.Show("You have unsaved changes. Click here to save them.", this, 409, 58, 1000);
+        }
+
+        private void AlertListRefresher_Tick(object sender, EventArgs e)
+        {
+            RefreshAlertHistory();
+        }
+
+        private void RefreshOutputsButton_Click(object sender, EventArgs e)
+        {
+            AlertAppearanceAndSoundsGroup.Enabled = false;
+            var result = MessageBox.Show("Refresh audio outputs?\r\nThe window may freeze for a few moments.",
+                "SharpAlert",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                var devices = RefreshAudioDevices();
+                AudioDeviceCombo.Items.Clear();
+
+                foreach (var device in devices)
+                {
+                    AudioDeviceCombo.Items.Add(device.FriendlyName);
+                }
+
+                AudioDeviceCombo.SelectedItem = Settings.Default.ProgramAudioOutput;
+            }
+            AlertAppearanceAndSoundsGroup.Enabled = true;
+        }
+
+        private void AudioDeviceCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string adc = AudioDeviceCombo.Text;
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                lock (AudioDevicesList)
+                {
+                    foreach (var device in AudioDevicesList)
+                    {
+                        if (device.FriendlyName.ToLowerInvariant() == adc.ToLowerInvariant())
+                        {
+                            CurrentAudioDevice = device;
+                            Settings.Default.ProgramAudioOutput = device.FriendlyName;
+                            //MessageBox.Show("Audio device get/set successfully.",
+                            //    "SharpAlert",
+                            //    MessageBoxButtons.OK,
+                            //    MessageBoxIcon.Information);
+                            break;
+                        }
+                    }
+                }
+            });
+        }
+
+        private void ConfigurationForm_VisibleChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void AudioDeviceMessage_Tick(object sender, EventArgs e)
+        {
+            if (this.Visible)
+            {
+                //AudioDeviceMessage.Stop();
+                if (string.IsNullOrWhiteSpace(Settings.Default.ProgramAudioOutput))
+                {
+                    AudioOutputLabel.BackColor = Color.FromArgb(200, 60, 60);
+                    this.ToolTipInformation.SetToolTip(this.AudioOutputLabel,
+                        "The default audio device is being used.\r\n" +
+                        "It is recommended to set a specific audio device.");
+                }
+                else
+                {
+                    AudioOutputLabel.BackColor = this.BackColor;
+                    this.ToolTipInformation.SetToolTip(this.AudioOutputLabel, string.Empty);
+                }
+            }
+        }
+
+        private void AppliedLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            MessageBox.Show("All settings (except select few) are applied immediately.\r\n" +
+                "You'll be notified if a setting requires a restart.\r\n\r\n" +
+                "Your changes are saved upon exiting the program.",
+                "SharpAlert",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
     }
 }

@@ -126,8 +126,16 @@
   <data name="ImportFileButton.ToolTip" xml:space="preserve">
     <value>Opens a file dialog to import a previously issued alert from.
 The alert is added to the queue as if it was captured from a feed, and will respect your alert configuration settings.
-If the alert already exists in the history, it will be removed before adding it to the queue to be processed again.</value>
+If the alert already exists in the history, it will be removed before adding it to the queue to be processed again.
+
+Heartbeats from NAADS are not supported via this method.</value>
   </data>
+  <metadata name="AlertListRefresher.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>276, 17</value>
+  </metadata>
+  <metadata name="AudioDeviceMessage.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>422, 17</value>
+  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>53</value>
   </metadata>

@@ -9,9 +9,9 @@ using static SharpAlert.MainEntryPoint;
 using static SharpAlert.AlertProcessor;
 using static SharpAlert.IceBearWorker;
 using System.Diagnostics;
-using System.Text;
-using System.Speech.Synthesis;
 using System.Threading.Tasks;
+using NAudio.CoreAudioApi;
+using System.Linq;
 
 namespace SharpAlert
 {
@@ -21,6 +21,38 @@ namespace SharpAlert
         private static readonly List<WasapiOut> TTSOutputs = new List<WasapiOut>();
         private static bool HoldIt = false;
         private static bool TTSHoldIt = false;
+        private static bool DeviceTreeFetched = false;
+
+        public static readonly List<MMDevice> AudioDevicesList = new List<MMDevice>();
+
+        private static readonly object DeviceLock = new object();
+
+        public static MMDevice _CurrentAudioDevice = null;
+        public static MMDevice CurrentAudioDevice
+        {
+            get
+            {
+                lock (DeviceLock)
+                {
+                    if (_CurrentAudioDevice != null && _CurrentAudioDevice.State == DeviceState.Active)
+                    {
+                        return _CurrentAudioDevice;
+                    }
+
+                    var devices = RefreshAudioDevices(); // Will set CurrentAudioDevice if needed
+
+                    return _CurrentAudioDevice; // Return after refresh
+                }
+            }
+            set
+            {
+                lock (DeviceLock)
+                {
+                    _CurrentAudioDevice = value;
+                }
+            }
+        }
+
 
         public static void StopAllAudio(bool NoEOM)
         {
@@ -178,6 +210,74 @@ namespace SharpAlert
             }
         }
 
+        public static MMDeviceCollection RefreshAudioDevices()
+        {
+            lock (AudioDevicesList)
+            {
+                Console.WriteLine("[Audio Manager] Preparing to refresh the audio device tree.");
+                DeviceTreeFetched = true;
+                AudioDevicesList.Clear();
+
+                using (var enumerator = new MMDeviceEnumerator())
+                {
+                    var devices = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
+
+                    bool deviceConnected = _CurrentAudioDevice?.State == DeviceState.Active;
+
+                    foreach (var device in devices)
+                    {
+                        Console.WriteLine($"[Audio Manager] Found audio device: {device.FriendlyName}");
+                        AudioDevicesList.Add(device);
+                    }
+
+                    if (!deviceConnected && devices.Count > 0)
+                    {
+                        if (_CurrentAudioDevice != null)
+                        {
+                            Console.WriteLine("[Audio Manager] The audio device object will be reset, because the previous one wasn't found.");
+                        }
+                        CurrentAudioDevice = devices[0];
+                    }
+
+                    if (devices.Count == 0)
+                    {
+                        Console.WriteLine("[Audio Manager] No audio device found.");
+                        CurrentAudioDevice = null;
+                        return devices;
+                    }
+
+                    MMDevice cad = AudioDevicesList.FirstOrDefault(device =>
+                        string.Equals(device.FriendlyName, Settings.Default.ProgramAudioOutput, StringComparison.OrdinalIgnoreCase));
+
+                    if (cad == null)
+                    {
+                        Console.WriteLine("[Audio Manager] The specified device name in the app configuration was not found.");
+                    }
+                    else
+                    {
+                        CurrentAudioDevice = cad;
+                    }
+
+                    Console.WriteLine("[Audio Manager] Finished audio device tree refresh.");
+                    return devices;
+                }
+            }
+        }
+
+
+        private static WasapiOut AudioDeviceSpecificWasapiOut()
+        {
+            lock (AudioDevicesList)
+            {
+                if (!DeviceTreeFetched)
+                {
+                    RefreshAudioDevices();
+                }
+                MMDevice selectedDevice = CurrentAudioDevice;
+                return new WasapiOut(selectedDevice, AudioClientShareMode.Shared, false, 20);
+            }
+        }
+
         public static void PlayWithFailoverToTTS(string url, string text)
         {
             if (!Settings.Default.alertTTSonly)
@@ -196,6 +296,7 @@ namespace SharpAlert
                 }
                 else
                 {
+                    Console.WriteLine("[Audio Manager] No URL provided for remote audio. TTS will be played instead.");
                     PlayFromTTSEngine(StringIntoTTSFriendly(text), false);
                 }
             }
@@ -289,6 +390,7 @@ namespace SharpAlert
                             {
                                 Console.WriteLine("[Audio Manager] No audio file specified inside the configuration.");
                                 PlayFromUnmanagedSourceAndWait(Resources.ui_warning_1, false);
+                                if (Settings.Default.alertPlayStartToneTwice && !HoldIt) PlayFromUnmanagedSourceAndWait(Resources.ui_warning_1, false);
                             }
                             else
                             {
@@ -297,17 +399,30 @@ namespace SharpAlert
                                     lock (AudioOutputLock)
                                     {
                                         Console.WriteLine("[Audio Manager] Audio queue locked.");
-                                        WasapiOut AudioOutput = new WasapiOut();
-                                        Outputs.Add(AudioOutput);
-                                        float volume = Settings.Default.alertVolume / 10f;
-                                        AudioOutput.Init(reader);
-                                        for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++)
-                                            AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
 
-                                        AudioOutput.Play();
-                                        while (AudioOutput.PlaybackState == PlaybackState.Playing && !HoldIt)
+                                        int ExecuteTimes = 1;
+
+                                        if (Settings.Default.alertPlayStartToneTwice) ExecuteTimes++;
+
+                                        Console.WriteLine($"[Audio Manager] Audio will be played {ExecuteTimes} time(s).");
+
+                                        for (int e = 0; e < ExecuteTimes; e++)
                                         {
-                                            Thread.Sleep(50);
+                                            WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
+                                            Outputs.Add(AudioOutput);
+                                            float volume = Settings.Default.alertVolume / 10f;
+                                            AudioOutput.Init(reader);
+                                            for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++)
+                                                AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
+
+                                            AudioOutput.Play();
+                                            while (AudioOutput.PlaybackState == PlaybackState.Playing && !HoldIt)
+                                            {
+                                                Thread.Sleep(25);
+                                            }
+
+                                            Outputs.Remove(AudioOutput);
+                                            AudioOutput.Dispose();
                                         }
 
                                         if (HoldIt)
@@ -315,9 +430,6 @@ namespace SharpAlert
                                             Console.WriteLine("[Audio Manager] Audio cleared from queue and unlocked.");
                                             return;
                                         }
-
-                                        Outputs.Remove(AudioOutput);
-                                        AudioOutput.Dispose();
                                     }
                                     Console.WriteLine("[Audio Manager] Audio queue unlocked.");
                                 }
@@ -372,7 +484,7 @@ namespace SharpAlert
                                     lock (AudioOutputLock)
                                     {
                                         Console.WriteLine("[Audio Manager] Audio queue locked.");
-                                        WasapiOut AudioOutput = new WasapiOut();
+                                        WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
                                         Outputs.Add(AudioOutput);
                                         float volume = Settings.Default.alertVolume / 10f;
                                         AudioOutput.Init(reader);
@@ -434,7 +546,7 @@ namespace SharpAlert
                                 lock (AudioOutputLock)
                                 {
                                     Console.WriteLine("[Audio Manager] Audio queue locked.");
-                                    WasapiOut AudioOutput = new WasapiOut();
+                                    WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
                                     Outputs.Add(AudioOutput);
                                     float volume = Settings.Default.alertVolume / 10f;
                                     AudioOutput.Init(mf);
@@ -488,8 +600,7 @@ namespace SharpAlert
                             lock (AudioOutputLock)
                             {
                                 Console.WriteLine("[Audio Manager] Audio queue locked.");
-
-                                WasapiOut AudioOutput = new WasapiOut();
+                                WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
                                 if (TTS) TTSOutputs.Add(AudioOutput);
                                 else Outputs.Add(AudioOutput);
                                 float volume = Settings.Default.alertVolume / 10f;
@@ -497,12 +608,9 @@ namespace SharpAlert
                                 for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++) AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
                                 AudioOutput.Play();
 
-                                Console.WriteLine("A");
-
                                 while (AudioOutput.PlaybackState == PlaybackState.Playing & !HoldIt)
                                 {
                                     Thread.Sleep(50);
-                                    Console.WriteLine("B");
                                 }
                                 if (HoldIt)
                                 {
@@ -545,7 +653,7 @@ namespace SharpAlert
                     unmanaged.CopyTo(stream);
                     using (var mf = new StreamMediaFoundationReader(stream))
                     {
-                        WasapiOut AudioOutput = new WasapiOut();
+                        WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
                         Outputs.Add(AudioOutput);
                         float volume = Settings.Default.alertVolume / 10f;
                         AudioOutput.Init(mf);
@@ -582,6 +690,7 @@ namespace SharpAlert
         {
             try
             {
+                bool LockedQueue = false;
                 void playAudio()
                 {
                     Console.WriteLine("[Audio Manager] Queued TTS audio.");
@@ -589,6 +698,7 @@ namespace SharpAlert
                     {
                         lock (AudioOutputLock)
                         {
+                            LockedQueue = true;
                             Console.WriteLine("[Audio Manager] Audio queue locked.");
                             using (MemoryStream stream = new MemoryStream())
                             {
@@ -639,7 +749,7 @@ namespace SharpAlert
 
                                 using (var mf = new StreamMediaFoundationReader(stream))
                                 {
-                                    WasapiOut AudioOutput = new WasapiOut();
+                                    WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
                                     TTSOutputs.Add(AudioOutput);
                                     float volume = Settings.Default.alertVolume / 10f;
                                     AudioOutput.Init(mf);
@@ -676,6 +786,7 @@ namespace SharpAlert
 
                 if (wait) playAudio();
                 else ThreadPool.QueueUserWorkItem(_ => playAudio());
+                while (!LockedQueue) Thread.Sleep(10);
             }
             catch (Exception ex)
             {

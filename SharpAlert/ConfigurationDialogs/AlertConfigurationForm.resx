@@ -120,9 +120,6 @@
   <metadata name="ToolTipInformation.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>13, 15</value>
   </metadata>
-  <metadata name="ToolTipInformation.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>13, 15</value>
-  </metadata>
   <data name="label6.ToolTip" xml:space="preserve">
     <value>This feature has changed from the previously name SAME Event blacklist.
 If the event of the alert matches any blacklisted events, it will be discarded. (case-insensitive)

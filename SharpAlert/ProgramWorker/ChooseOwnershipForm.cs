@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 using SharpAlert.Properties;
-using static SharpAlert.MainEntryPoint;
 
 namespace SharpAlert
 {
@@ -19,8 +18,13 @@ namespace SharpAlert
             this.Close();
         }
 
+        private bool Initialized = false;
+
         private void ChooseRegionForm_Load(object sender, EventArgs e)
         {
+            if (Initialized) return;
+            Initialized = true;
+
             StationIdentifierInput.Text = Settings.Default.StationIdentifier;
             StationNameInput.Text = Settings.Default.StationName;
         }
@@ -30,6 +34,7 @@ namespace SharpAlert
             if (string.IsNullOrEmpty(StationIdentifierInput.Text) &&
                 string.IsNullOrEmpty(StationNameInput.Text))
             {
+                return;
             }
 
             if (string.IsNullOrEmpty(StationIdentifierInput.Text) ||

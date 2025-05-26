@@ -65,9 +65,9 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.EventBlacklistOutput = new System.Windows.Forms.TextBox();
+            this.EventBlacklistInput = new System.Windows.Forms.TextBox();
             this.EventClearButton = new System.Windows.Forms.Button();
             this.EventAddButton = new System.Windows.Forms.Button();
-            this.EventBlacklistInput = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -83,6 +83,8 @@
             this.SAMEAddButton = new System.Windows.Forms.Button();
             this.AreaSAMEInput = new System.Windows.Forms.TextBox();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
+            this.StationButton = new System.Windows.Forms.Button();
+            this.LanguageButton = new System.Windows.Forms.Button();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ChangeEndButton = new System.Windows.Forms.Button();
@@ -108,8 +110,6 @@
             this.BusyLockText = new System.Windows.Forms.Label();
             this.BusyLock = new System.Windows.Forms.Timer(this.components);
             this.AudioTinkeringFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.LanguageButton = new System.Windows.Forms.Button();
-            this.StationButton = new System.Windows.Forms.Button();
             this.AlertFunctionalityGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlertDeadIntervalInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AlertCheckIntervalInput)).BeginInit();
@@ -529,9 +529,9 @@
             this.groupBox9.Controls.Add(this.label6);
             this.groupBox9.Controls.Add(this.label3);
             this.groupBox9.Controls.Add(this.EventBlacklistOutput);
+            this.groupBox9.Controls.Add(this.EventBlacklistInput);
             this.groupBox9.Controls.Add(this.EventClearButton);
             this.groupBox9.Controls.Add(this.EventAddButton);
-            this.groupBox9.Controls.Add(this.EventBlacklistInput);
             this.groupBox9.ForeColor = System.Drawing.Color.White;
             this.groupBox9.Location = new System.Drawing.Point(6, 200);
             this.groupBox9.Name = "groupBox9";
@@ -588,6 +588,16 @@
             this.EventBlacklistOutput.TabIndex = 3;
             this.EventBlacklistOutput.WordWrap = false;
             // 
+            // EventBlacklistInput
+            // 
+            this.EventBlacklistInput.BackColor = System.Drawing.Color.Black;
+            this.EventBlacklistInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.EventBlacklistInput.ForeColor = System.Drawing.Color.White;
+            this.EventBlacklistInput.Location = new System.Drawing.Point(6, 37);
+            this.EventBlacklistInput.Name = "EventBlacklistInput";
+            this.EventBlacklistInput.Size = new System.Drawing.Size(144, 21);
+            this.EventBlacklistInput.TabIndex = 0;
+            // 
             // EventClearButton
             // 
             this.EventClearButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
@@ -595,7 +605,7 @@
             this.EventClearButton.Font = new System.Drawing.Font("Arial", 8F);
             this.EventClearButton.Location = new System.Drawing.Point(6, 64);
             this.EventClearButton.Name = "EventClearButton";
-            this.EventClearButton.Size = new System.Drawing.Size(42, 23);
+            this.EventClearButton.Size = new System.Drawing.Size(90, 23);
             this.EventClearButton.TabIndex = 2;
             this.EventClearButton.Text = "Clear";
             this.EventClearButton.UseVisualStyleBackColor = false;
@@ -614,16 +624,6 @@
             this.EventAddButton.Text = "Add";
             this.EventAddButton.UseVisualStyleBackColor = false;
             this.EventAddButton.Click += new System.EventHandler(this.EventAddButton_Click);
-            // 
-            // EventBlacklistInput
-            // 
-            this.EventBlacklistInput.BackColor = System.Drawing.Color.Black;
-            this.EventBlacklistInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.EventBlacklistInput.ForeColor = System.Drawing.Color.White;
-            this.EventBlacklistInput.Location = new System.Drawing.Point(6, 37);
-            this.EventBlacklistInput.Name = "EventBlacklistInput";
-            this.EventBlacklistInput.Size = new System.Drawing.Size(144, 21);
-            this.EventBlacklistInput.TabIndex = 0;
             // 
             // label1
             // 
@@ -822,6 +822,31 @@
             this.ConfigurationPanel.Name = "ConfigurationPanel";
             this.ConfigurationPanel.Size = new System.Drawing.Size(671, 507);
             this.ConfigurationPanel.TabIndex = 6;
+            // 
+            // StationButton
+            // 
+            this.StationButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.StationButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.StationButton.Location = new System.Drawing.Point(403, 472);
+            this.StationButton.Name = "StationButton";
+            this.StationButton.Size = new System.Drawing.Size(125, 23);
+            this.StationButton.TabIndex = 20;
+            this.StationButton.Text = "Ownership Settings";
+            this.StationButton.UseVisualStyleBackColor = false;
+            this.StationButton.Click += new System.EventHandler(this.StationButton_Click);
+            // 
+            // LanguageButton
+            // 
+            this.LanguageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.LanguageButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.LanguageButton.Location = new System.Drawing.Point(534, 472);
+            this.LanguageButton.Name = "LanguageButton";
+            this.LanguageButton.Size = new System.Drawing.Size(125, 23);
+            this.LanguageButton.TabIndex = 19;
+            this.LanguageButton.Text = "Language Settings";
+            this.ToolTipInformation.SetToolTip(this.LanguageButton, "Opens the Language Settings window.");
+            this.LanguageButton.UseVisualStyleBackColor = false;
+            this.LanguageButton.Click += new System.EventHandler(this.LanguageButton_Click);
             // 
             // groupBox10
             // 
@@ -1122,30 +1147,6 @@
             this.BusyLock.Enabled = true;
             this.BusyLock.Tick += new System.EventHandler(this.BusyLock_Tick);
             // 
-            // LanguageButton
-            // 
-            this.LanguageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.LanguageButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.LanguageButton.Location = new System.Drawing.Point(534, 472);
-            this.LanguageButton.Name = "LanguageButton";
-            this.LanguageButton.Size = new System.Drawing.Size(125, 23);
-            this.LanguageButton.TabIndex = 19;
-            this.LanguageButton.Text = "Language Settings";
-            this.LanguageButton.UseVisualStyleBackColor = false;
-            this.LanguageButton.Click += new System.EventHandler(this.LanguageButton_Click);
-            // 
-            // StationButton
-            // 
-            this.StationButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.StationButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.StationButton.Location = new System.Drawing.Point(403, 472);
-            this.StationButton.Name = "StationButton";
-            this.StationButton.Size = new System.Drawing.Size(125, 23);
-            this.StationButton.TabIndex = 20;
-            this.StationButton.Text = "Ownership Settings";
-            this.StationButton.UseVisualStyleBackColor = false;
-            this.StationButton.Click += new System.EventHandler(this.StationButton_Click);
-            // 
             // AlertConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1229,7 +1230,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox EventBlacklistOutput;
         private System.Windows.Forms.Button EventClearButton;
-        private System.Windows.Forms.Button EventAddButton;
         private System.Windows.Forms.TextBox EventBlacklistInput;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox8;
@@ -1279,5 +1279,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button LanguageButton;
         private System.Windows.Forms.Button StationButton;
+        private System.Windows.Forms.Button EventAddButton;
     }
 }

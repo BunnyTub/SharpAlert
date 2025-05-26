@@ -31,8 +31,13 @@ namespace SharpAlert
             public string FriendlyName { get; set; }
         }
 
+        private bool Initialized = false;
+
         private void ChooseRegionForm_Load(object sender, EventArgs e)
         {
+            if (Initialized) return;
+            Initialized = true;
+
             AlertFullscreenCombo.DataSource = new ComboItem[] {
                 new ComboItem
                 {
@@ -194,6 +199,9 @@ namespace SharpAlert
 
             alertIncreaseSizeBox.Checked = Settings.Default.alertIncreaseSize;
             alertIncreaseSizeBox.CheckedChanged += (a, b) => Settings.Default.alertIncreaseSize = ((CheckBox)a).Checked;
+
+            alertPlayStartToneTwiceBox.Checked = Settings.Default.alertPlayStartToneTwice;
+            alertPlayStartToneTwiceBox.CheckedChanged += (a, b) => Settings.Default.alertPlayStartToneTwice = ((CheckBox)a).Checked;
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)

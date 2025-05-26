@@ -39,8 +39,12 @@ namespace SharpAlert
             public string FriendlyName { get; set; }
         }
 
+        private bool Initialized = false;
+
         private void ServerConfigurationForm_Load(object sender, EventArgs e)
         {
+            if (Initialized) return;
+            Initialized = true;
             //AppTypeCombo.SelectedIndex = Settings.Default.RunnerType;
             //AppTypeCombo.SelectedIndexChanged += (a, b) => Settings.Default.RunnerType = (byte)((ComboBox)a).SelectedIndex;
             //ClientServerURLInput.Text = Settings.Default.ClientServerURL;

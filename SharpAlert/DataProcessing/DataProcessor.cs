@@ -4,7 +4,6 @@ using static SharpAlert.RegexList;
 using System.Linq;
 using System.Threading;
 using SharpAlert.Properties;
-using System.Windows.Forms;
 using System.Collections.Generic;
 
 namespace SharpAlert

@@ -14,13 +14,21 @@ using SharpAlert.Properties;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace SharpAlert
 {
     internal static class VersionInfo
     {
         public static readonly int MajorVersion = 8;
-        public static readonly int MinorVersion = 0;
+        public static readonly int MinorVersion = 1;
+        public static readonly bool BetaVersion = true;
+        public static readonly DateTime BetaTimeEnd = DateTime.ParseExact(
+            "6/1/2025",
+            "M/d/yyyy",
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal
+        );
     }
 
     public class SharpDataItem
@@ -79,6 +87,8 @@ namespace SharpAlert
         public static readonly string AssemblyFile = Process.GetCurrentProcess().MainModule.FileName;
         public static readonly string AssemblyDirectory = Path.GetDirectoryName(AssemblyFile);
 
+        public static readonly string CustomURLsFileName = "feeds.txt";
+
         public static string[] args;
         public static Icon icon = SystemIcons.Information;
 
@@ -87,6 +97,14 @@ namespace SharpAlert
         /// </summary>
         public static void SafeExit()
         {
+            lock (notify)
+            {
+                notify.BalloonTipTitle = "SharpAlert is stopping";
+                notify.BalloonTipText = "Ice Bear is working to get everything shutdown. This may take a few moments.";
+                notify.BalloonTipIcon = ToolTipIcon.Info;
+                notify.ShowBalloonTip(5000);
+            }
+
             Console.WriteLine("Preparing for termination.");
             AllowThreadRestarts = false;
             Thread.Sleep(500);
@@ -185,7 +203,7 @@ namespace SharpAlert
         /// <summary>
         /// Starts everything.
         /// </summary>
-        [MTAThread]
+        [STAThread]
         private static void Main()
         {
             //watchdog self-child process
@@ -221,7 +239,7 @@ namespace SharpAlert
                             {
                                 new Thread(() =>
                                 {
-                                    Thread.Sleep(1000 * 30);
+                                    Thread.Sleep(1000 * 15);
                                     Environment.Exit(0);
                                 }).Start();
                                 MessageBox.Show("SharpAlert is already running.\r\nCheck the notification tray area on the taskbar!",

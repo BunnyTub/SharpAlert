@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using SharpAlert.Properties;
+using static SharpAlert.MainEntryPoint;
 
 namespace SharpAlert
 {
@@ -18,8 +21,13 @@ namespace SharpAlert
             this.Close();
         }
 
+        private bool Initialized = false;
+
         private void ChooseRegionForm_Load(object sender, EventArgs e)
         {
+            if (Initialized) return;
+            Initialized = true;
+
             RegionUnitedStatesBox.Checked = Settings.Default.RegionUnitedStates;
             RegionUnitedStatesBox.CheckedChanged += (a, b) => Settings.Default.RegionUnitedStates = ((CheckBox)a).Checked;
             RegionCanadaBox.Checked = Settings.Default.RegionCanada;
@@ -68,6 +76,36 @@ namespace SharpAlert
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
             e.Cancel = true;
+        }
+
+        private void LinkButton_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("If you have custom URLs, click OK. We'll create a file named \"feeds.txt\".\r\n" +
+                "Your URLs must provide alerts in CAP (XML) format, and they must support GET requests.\r\n" +
+                "Separate URLs by placing them in separate lines.\r\n" +
+                "Create comments by starting a new line with \"#\".",
+                "SharpAlert",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Information);
+
+            if (result == DialogResult.OK)
+            {
+                try
+                {
+                    if (!File.Exists($"{AssemblyDirectory}\\{CustomURLsFileName}"))
+                    {
+                        File.WriteAllText($"{AssemblyDirectory}\\{CustomURLsFileName}", "# Insert your URLs at any line in this file.\r\n" +
+                            "# Changes only apply within SharpAlert after you restart the program.\r\n\r\n" +
+                            "#https://example.com/replaceme/xml/feed");
+                    }
+
+                    Process.Start($"{AssemblyDirectory}\\{CustomURLsFileName}");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

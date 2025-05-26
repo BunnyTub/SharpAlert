@@ -38,6 +38,7 @@
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.RegionMexicoBox = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.LinkButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -140,12 +141,28 @@
             this.label1.Text = "To change these options later, go to Settings.";
             this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
+            // LinkButton
+            // 
+            this.LinkButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.LinkButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.LinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.LinkButton.Location = new System.Drawing.Point(451, 135);
+            this.LinkButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
+            this.LinkButton.Name = "LinkButton";
+            this.LinkButton.Size = new System.Drawing.Size(72, 23);
+            this.LinkButton.TabIndex = 15;
+            this.LinkButton.Text = "Custom";
+            this.ToolTipInformation.SetToolTip(this.LinkButton, "Click this button if you have custom servers (XML feed only).");
+            this.LinkButton.UseVisualStyleBackColor = false;
+            this.LinkButton.Click += new System.EventHandler(this.LinkButton_Click);
+            // 
             // ChooseRegionForm
             // 
             this.AcceptButton = this.DoneButton;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(532, 193);
+            this.Controls.Add(this.LinkButton);
             this.Controls.Add(this.RegionMexicoBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.RegionCanadaBox);
@@ -184,5 +201,6 @@
         private System.Windows.Forms.ToolTip ToolTipInformation;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox RegionMexicoBox;
+        private System.Windows.Forms.Button LinkButton;
     }
 }

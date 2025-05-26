@@ -16,8 +16,12 @@ namespace SharpAlert
         public AlertDetails.SAME_StateCode SelectedState;
         public AlertDetails.SAME_CountyCode SelectedCounty;
 
+        private bool Initialized = false;
+
         private void LocationsAdditionForm_Load(object sender, EventArgs e)
         {
+            if (Initialized) return;
+            Initialized = true;
             StateCombo.Items.AddRange(AlertDetails.States.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
         }
 

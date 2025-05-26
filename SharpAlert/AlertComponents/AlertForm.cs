@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using static SharpAlert.AudioManager;
 using static SharpAlert.MainEntryPoint;
+using static SharpAlert.AlertProcessor;
 
 namespace SharpAlert
 {
@@ -96,7 +97,7 @@ namespace SharpAlert
         public void UpdateFields(string id, string alert, string intro, string text, string url, string audio, string image, string type)
         {
             AlertIDStr = id;
-            this.Text = $"SharpAlert - {AlertIDStr}";
+            //this.Text = $"SharpAlert - {AlertIDStr}";
             AlertSubtitleStr = alert;
             SubtitleText.Text = AlertSubtitleStr;
             AlertIntroTextStr = intro;
@@ -118,11 +119,6 @@ namespace SharpAlert
             {
                 AlertLinkText.Enabled = true;
                 AlertLinkText.Text = AlertUrlStr;
-            }
-
-            if (!string.IsNullOrWhiteSpace(AlertImageUrlStr))
-            {
-
             }
 
             //switch (type)
@@ -192,7 +188,7 @@ namespace SharpAlert
             AutoExit.Interval = Settings.Default.alertTimeout * 60000;
             AutoExit.Start();
 
-            this.Text = $"SharpAlert - {AlertSubtitleStr}";
+            //this.Text = $"SharpAlert - {AlertSubtitleStr}";
             UpdateTaskbarProgress(TaskbarProgressState.Error, 100, 100);
             GotHandle = this.Handle;
 
@@ -311,6 +307,11 @@ namespace SharpAlert
                 WindowFlash.Start();
             }
 
+            if (!string.IsNullOrWhiteSpace(AlertImageUrlStr))
+            {
+                ShowImage();
+            }
+
             Console.WriteLine("[Alert GUI] Window shown.");
         }
 
@@ -330,7 +331,6 @@ namespace SharpAlert
         {
             DismissButton.Enabled = unlocked;
             SpeakerButton.Enabled = unlocked;
-            DismissAllButton.Enabled = unlocked;
             AlertLinkText.Enabled = unlocked;
         }
 
@@ -484,6 +484,10 @@ namespace SharpAlert
                 TitleText.BackColor = ColorTitleAndBordersOne;
                 AlertIcon.BackColor = ColorTitleAndBordersOne;
                 SubtitlePanel.BackColor = ColorSubtitleOnlyOne;
+                if (AlertsQueued != 0)
+                {
+                    DismissButton.Text = "Continue";
+                }
             }
             else
             {
@@ -491,6 +495,15 @@ namespace SharpAlert
                 TitleText.BackColor = ColorTitleAndBordersTwo;
                 AlertIcon.BackColor = ColorTitleAndBordersTwo;
                 SubtitlePanel.BackColor = ColorSubtitleOnlyTwo;
+                if (AlertsQueued != 0)
+                {
+                    //DismissButton.Text = $"{AlertsQueued} remain";
+                    DismissButton.Text = "Continue";
+                }
+                else
+                {
+                    DismissButton.Text = "Dismiss";
+                }
             }
             FlashTwo = !FlashTwo;
         }
@@ -571,12 +584,6 @@ namespace SharpAlert
 
         private void AlertLinkText_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (FunOnABun)
-            {
-                Process.Start("https://e926.net/posts/4773074");
-                return;
-            }
-
             if (!string.IsNullOrWhiteSpace(AlertUrlStr))
             {
                 // let's assume this is a URL for now, we'll fix it later
@@ -597,8 +604,6 @@ namespace SharpAlert
 
         private void SubtitleText_DoubleClick(object sender, EventArgs e)
         {
-            // DEBUG THING --- REMEMBER TO REMOVE
-            ShowImage();
         }
 
         private void ShowImage()
@@ -611,6 +616,7 @@ namespace SharpAlert
             catch (Exception)
             {
             }
+            afi.Text = $"SharpAlert - Attached Image | {AlertImageUrlStr}";
             afi.AttemptLoadImage(AlertImageUrlStr);
             //afi.AttemptLoadImage("https://cdn.discordapp.com/attachments/1199589026362052619/1366494987352801380/I_turned_into_a_dragon.jpg?ex=68112721&is=680fd5a1&hm=6a775bdbf87370da25bdf0ba71763d521b6183ecb4ce36d57ad88a2f867425ae&");
             afi.Opacity = 0.90;

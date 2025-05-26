@@ -234,7 +234,7 @@ namespace SharpAlert
                                 }
                                 else
                                 {
-                                    Console.WriteLine($"[HTTP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
+                                    Console.WriteLine($"[HTTP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already in queue or history).");
                                 }
                             }
                         }

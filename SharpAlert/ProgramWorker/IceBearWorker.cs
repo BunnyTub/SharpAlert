@@ -12,10 +12,13 @@ using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Speech.Synthesis;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using static SharpAlert.MainEntryPoint;
 using static SharpAlert.ServiceThreads;
+using static SharpAlert.RegexList;
+using static SharpAlert.AudioManager;
 
 namespace SharpAlert
 {
@@ -41,7 +44,7 @@ namespace SharpAlert
             if (args.Length >= 2) if (args.Contains("--console")) AllocateTerminal(false);
             if (Settings.Default.alertNoGUI) AllocateTerminal(false);
 
-            Console.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority. | https://sharpalert.bunnytub.com/");
+            Console.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | IsBeta = {VersionInfo.BetaVersion} | Safety is never a non-priority. | https://sharpalert.bunnytub.com/");
 
             client.DefaultRequestHeaders.UserAgent.ParseAdd(SelfUserAgent);
 
@@ -67,7 +70,7 @@ namespace SharpAlert
             {
                 HttpResponseMessage latest = client.GetAsync($"{IdentityURL}/SharpAlert/SharpAlert.txt").Result;
 
-                Console.WriteLine($"[Ice Bear | Version Request] The server responded with status code {latest.StatusCode}.");
+                Console.WriteLine($"[Ice Bear] The server responded with status code {latest.StatusCode}.");
 
                 RemoteVersion = latest.Content.ReadAsStringAsync().Result.Trim();
                 if (string.IsNullOrWhiteSpace(RemoteVersion) || RemoteVersion.Length == 0 || RemoteVersion.Length >= 10) RemoteVersion = "0.0";
@@ -76,6 +79,16 @@ namespace SharpAlert
             {
                 Console.WriteLine($"[Ice Bear] {ex.StackTrace} {ex.Message}");
                 Console.WriteLine($"[Ice Bear] Couldn't work with the server.");
+            }
+
+            if (VersionInfo.BetaVersion)
+            {
+                if (DateTime.UtcNow >= VersionInfo.BetaTimeEnd)
+                {
+                    TimedForm tf = new TimedForm();
+                    tf.ShowDialog();
+                    tf.Dispose();
+                }
             }
 
             Console.WriteLine("[Ice Bear] Initializing services.");
@@ -108,23 +121,6 @@ namespace SharpAlert
             {
                 lock (ChangedPropertiesList) ChangedPropertiesList.Clear();
             };
-
-            //switch (Settings.Default.RunnerType)
-            //{
-            //    default:
-            //        Console.WriteLine("[Ice Bear] Runner type is Standard.");
-            //        feed.server = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}";
-            //        break;
-            //    case 1:
-            //        Console.WriteLine("[Ice Bear] Runner type is Server.");
-            //        ServerServiceRun();
-            //        return;
-            //    case 2:
-            //        Console.WriteLine("[Ice Bear] Runner type is Client.");
-            //        UseHTTPS = false;
-            //        feed.server = $"{Settings.Default.ClientServerURL}:{Settings.Default.ClientServerPort}/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}";
-            //        break;
-            //}
 
             notificationThread = ReturnThreadWithCatch(() =>
             {
@@ -227,7 +223,72 @@ namespace SharpAlert
                 SetupExperienceOccurred = true;
             }
 
-            if (Settings.Default.RegionUnitedStates ||
+            bool AnyCustomServers()
+            {
+                try
+                {
+                    if (File.Exists($"{AssemblyDirectory}\\{CustomURLsFileName}"))
+                    {
+                        string[] ServerList = File.ReadAllLines($"{AssemblyDirectory}\\{CustomURLsFileName}");
+                        int LineNumber = 0;
+                        bool FoundValidServer = false;
+
+                        Console.WriteLine($"[Ice Bear] Checking \"{CustomURLsFileName}\" for server candidates.");
+
+                        foreach (string raw in ServerList)
+                        {
+                            string server = raw.Trim();
+
+                            LineNumber++;
+                            if (server.StartsWith("#"))
+                            {
+                                Console.WriteLine($"[Ice Bear] Comment skipped on line {LineNumber}.");
+                                continue;
+                            }
+                            else
+                            {
+                                if (server.StartsWith("http://") || server.StartsWith("https://"))
+                                {
+                                    server = server.Replace("http://", string.Empty).Replace("https://", string.Empty);
+                                    Console.WriteLine($"[Ice Bear] Adding server \"{server}\" on line {LineNumber}.");
+                                    var VisualServer = new FeedCapture.ServerInfo { ServerName = $"{CustomURLsFileName} | Line {LineNumber}", ServerPath = $"{server}" };
+                                    feed.servers.Add(VisualServer);
+                                    FoundValidServer = true;
+                                    continue;
+                                }
+                                else
+                                {
+                                    if (string.IsNullOrWhiteSpace(server))
+                                    {
+                                        Console.WriteLine($"[Ice Bear] Whitespace skipped on line {LineNumber}.");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"[Ice Bear] Invalid server skipped on line {LineNumber}.");
+                                    }
+                                    continue;
+                                }
+                            }
+                        }
+
+                        return FoundValidServer;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[Ice Bear] No custom server file found named \"{CustomURLsFileName}\".");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Ice Bear] Couldn't get custom servers. {ex.Message}");
+                }
+                return false;
+            }
+
+            bool CustomServersAvailable = AnyCustomServers();
+
+            if (CustomServersAvailable ||
+                Settings.Default.RegionUnitedStates ||
                 Settings.Default.RegionCanada ||
                 Settings.Default.RegionMexico) AnyFeedAvailable = true;
 
@@ -245,21 +306,23 @@ namespace SharpAlert
                 sf.Dispose();
                 if (!Settings.Default.DisclaimerShown)
                 {
-                    MessageBox.Show("Just a reminder...\r\n\r\n" +
-                        "SharpAlert is still in development! Expect bugs here and there.\r\n" +
-                        "If you find any, please report them, so they can be fixed.\r\n" +
-                        "Please do not use this app as your only alert source.\r\n" +
-                        "Remember to check other sources such as local media.\r\n\r\n" +
-                        "Thanks for downloading SharpAlert!",
-                        "SharpAlert",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation);
+                    //MessageBox.Show("Just a reminder...\r\n\r\n" +
+                    //    "SharpAlert is still in development! Expect bugs here and there.\r\n" +
+                    //    "If you find any, please report them, so they can be fixed.\r\n" +
+                    //    "Please do not use this app as your only alert source.\r\n" +
+                    //    "Remember to check other sources such as local media.\r\n\r\n" +
+                    //    "Thanks for downloading SharpAlert!",
+                    //    "SharpAlert",
+                    //    MessageBoxButtons.OK,
+                    //    MessageBoxIcon.Exclamation);
                     Settings.Default.DisclaimerShown = true;
                     Settings.Default.Save();
                 }
             });
 
             startup.Start();
+
+            RefreshAudioDevices();
 
             var IPAWSMain = new FeedCapture.ServerInfo { ServerName = "FEMA IPAWS", ServerPath = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}" };
             var IPAWSWireless = new FeedCapture.ServerInfo { ServerName = "FEMA IPAWS (WEA)", ServerPath = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}" };
@@ -384,11 +447,6 @@ namespace SharpAlert
                     Thread.Sleep(1000 * 60);
                 }
             }).Start();
-        }
-
-        private static void CheckSettingsCorrect()
-        {
-            // idk man
         }
 
         /// <summary>
@@ -1009,11 +1067,12 @@ namespace SharpAlert
 
                 if (!GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE), out uint mode))
                 {
+                    Console.WriteLine("[Ice Bear] Couldn't get console mode.");
                     //var MarshalException = new Win32Exception(unchecked(Marshal.GetLastWin32Error()));
                 }
 
                 mode &= ~ENABLE_QUICK_EDIT;
-                mode |= ENABLE_EXTENDED_FLAGS;
+                //mode |= ENABLE_EXTENDED_FLAGS;
 
                 if (!SetConsoleMode(consoleHandle, mode))
                 {
@@ -1033,11 +1092,15 @@ namespace SharpAlert
                 _handler += new ConsoleCtrlDelegate(_ => {
                     lock (LockObject)
                     {
+                        Settings.Default.Save();
                         SafeExit();
                         return true;
                     }
                 });
                 SetConsoleCtrlHandler(_handler, true);
+
+                Console.BackgroundColor = ConsoleColor.DarkGray;
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.Beep(1000, 200);
             }
         }
@@ -1102,7 +1165,7 @@ namespace SharpAlert
                         try
                         {
                             string data = File.ReadAllText(selectedPath);
-                            feed.EnrollAlerts(data, true);
+                            EnrollAlerts(data, true);
                         }
                         catch (Exception ex)
                         {
@@ -1122,6 +1185,152 @@ namespace SharpAlert
             });
             staThread.SetApartmentState(ApartmentState.STA);
             staThread.Start();
+        }
+
+        private static readonly object EnrollObject = new object();
+
+        private static void EnrollAlerts(string data, bool reset = false)
+        {
+            lock (EnrollObject)
+            {
+                MatchCollection alertMatches = AlertRegex.Matches(data);
+                int alertIndex = 0;
+
+                if (alertMatches != null || alertMatches.Count != 0)
+                {
+                    foreach (Match alert in alertMatches)
+                    {
+                        try
+                        {
+                            alertIndex++;
+                            if (alert.Value is null) continue;
+
+                            string filename = IdentifierRegex.MatchOrDefault(alert.Value, CreateMD5(alert.Value));
+
+                            //if (string.IsNullOrWhiteSpace(filename))
+                            //{
+                            //    Console.WriteLine("[HTTP Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
+                            //    filename = CreateMD5(alert.Value);
+                            //}
+
+                            Console.WriteLine($"[File Capture] {alertIndex} -> {filename}");
+
+                            //string StartingSharpAlertReplay = "<SharpAlertReplay>";
+                            //string EndingSharpAlertReplay = "<SharpAlertReplay>";
+                            //if (!alert.Value.Contains($"{StartingSharpAlertReplay}") || !alert.Value.Contains($"{EndingSharpAlertReplay}"))
+                            //{
+                            //    string alertReplayValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
+                            //}
+
+                            SharpDataItem item = new SharpDataItem(filename, alert.Value);
+
+                            if (reset)
+                            {
+                                TryRemoveDataFromHistory(item);
+                            }
+
+                            if (TryAddDataToQueue(item))
+                            {
+                                Console.WriteLine($"[File Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"[File Capture] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"[File Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
+                        }
+                    }
+                    if (alertIndex != 0) Console.WriteLine($"[File Capture] {alertIndex} alert(s) checked.");
+                    else Console.WriteLine($"[File Capture] No alerts were checked.");
+                }
+                else
+                {
+                    Console.WriteLine("[File Capture] There are no alerts to enroll.");
+                }
+            }
+        }
+
+        public static bool TryAddDataToQueue(SharpDataItem item)
+        {
+            lock (SharpDataQueue)
+            {
+                lock (SharpDataHistory)
+                {
+                    try
+                    {
+                        if (SharpDataQueue.Any(x => x.Name == item.Name) || SharpDataHistory.Any(x => x.Name == item.Name))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            SharpDataQueue.Add(item);
+                            return true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"[File Capture] {e.StackTrace} {e.Message}");
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public static bool TryAddDataToHistory(SharpDataItem item)
+        {
+            lock (SharpDataQueue)
+            {
+                lock (SharpDataHistory)
+                {
+                    try
+                    {
+                        if (SharpDataQueue.Any(x => x.Name == item.Name) || SharpDataHistory.Any(x => x.Name == item.Name))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            SharpDataHistory.Add(item);
+                            return true;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"[File Capture] {e.StackTrace} {e.Message}");
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public static bool TryRemoveDataFromHistory(SharpDataItem item)
+        {
+            lock (SharpDataQueue)
+            {
+                lock (SharpDataHistory)
+                {
+                    try
+                    {
+                        if (SharpDataHistory.Any(x => x.Name == item.Name))
+                        {
+                            return SharpDataHistory.Remove(item);
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"[File Capture] {e.StackTrace} {e.Message}");
+                        return false;
+                    }
+                }
+            }
         }
     }
 }

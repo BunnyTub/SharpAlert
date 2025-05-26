@@ -334,7 +334,7 @@ namespace SharpAlert.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsDescriptionAttribute("Existing alerts will be discarded for the first check when ticked.")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool discardFirstAlerts {
             get {
                 return ((bool)(this["discardFirstAlerts"]));
@@ -942,18 +942,6 @@ namespace SharpAlert.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool UsingStationInfo {
-            get {
-                return ((bool)(this["UsingStationInfo"]));
-            }
-            set {
-                this["UsingStationInfo"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string StationIdentifier {
             get {
@@ -1002,13 +990,37 @@ namespace SharpAlert.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool alertUseTitleAsSubtitle {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ProgramAudioOutput {
             get {
-                return ((bool)(this["alertUseTitleAsSubtitle"]));
+                return ((string)(this["ProgramAudioOutput"]));
             }
             set {
-                this["alertUseTitleAsSubtitle"] = value;
+                this["ProgramAudioOutput"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DisableDialogs {
+            get {
+                return ((bool)(this["DisableDialogs"]));
+            }
+            set {
+                this["DisableDialogs"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool alertPlayStartToneTwice {
+            get {
+                return ((bool)(this["alertPlayStartToneTwice"]));
+            }
+            set {
+                this["alertPlayStartToneTwice"] = value;
             }
         }
     }

@@ -72,6 +72,7 @@
             this.Opacity = 0D;
             this.ShowIcon = false;
             this.Text = "Attached Alert Image";
+            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AlertFormImage_FormClosing);
             this.Load += new System.EventHandler(this.AlertFormImage_Load);
             this.Shown += new System.EventHandler(this.AlertFormImage_Shown);

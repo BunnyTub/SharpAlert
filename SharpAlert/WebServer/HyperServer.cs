@@ -61,7 +61,7 @@ namespace SharpAlert
                     {
                         if (attrib.TypeId.ToString() == "HyperServerMapping")
                         {
-                            Console.WriteLine($"{((Mapping)attrib).Map}");
+                            Console.WriteLine($"[Hyper Server] Endpoint: {UrlPrefix.TrimEnd('/')}/{((Mapping)attrib).Map}");
                         }
                     }
                 }
@@ -253,6 +253,32 @@ namespace SharpAlert
 
                 return JsonSerializer.Serialize(alert);
             }
+        }
+
+        [Mapping("AlertXML")]
+        public object AlertXML(HttpListenerContext ctx)
+        {
+            ctx.Response.ContentType = "application/xml";
+            string Alerts = "<SharpAlertHyperServer>";
+            Alerts += "<SharpAlertNote>When is the dragon update?</SharpAlertNote>";
+            Alerts += $"<SharpAlertMaxAlertCount>{Settings.Default.storedMaxSize}</SharpAlertMaxAlertCount>";
+            foreach (var alert in MainEntryPoint.SharpDataHistory)
+            {
+                Alerts += alert.Data + "\r\n";
+            }
+            Alerts = Alerts.Trim() + "</SharpAlertHyperServer>";
+            return Alerts;
+        }
+        
+        [Mapping("AlertXML-Empty")]
+        public object Alert(HttpListenerContext ctx)
+        {
+            ctx.Response.ContentType = "application/xml";
+            string Alerts = "<SharpAlertHyperServer>";
+            Alerts += "<SharpAlertNote>Purposely returning zero alerts found.</SharpAlertNote>";
+            Alerts += $"<SharpAlertMaxAlertCount>{Settings.Default.storedMaxSize}</SharpAlertMaxAlertCount>";
+            Alerts += "</SharpAlertHyperServer>";
+            return Alerts;
         }
 
         //[Mapping("WarningSound")]

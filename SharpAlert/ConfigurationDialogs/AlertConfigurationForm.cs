@@ -14,9 +14,12 @@ namespace SharpAlert
             InitializeComponent();
         }
 
+        private bool Initialized = false;
+
         private void AlertConfigurationForm_Load(object sender, EventArgs e)
         {
-            CheckForIllegalCrossThreadCalls = false;
+            if (Initialized) return;
+            Initialized = true;
 
             AudioTinkeringFileDialog.Filter = "Audio Files (*.mp3, *.wav)|*.mp3;*.wav";
             AudioTinkeringFileDialog.FilterIndex = 0;
@@ -473,9 +476,9 @@ namespace SharpAlert
 
         private void LanguageButton_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("By default, alerts are only relayed if they have an English version.\r\n" +
+            DialogResult result = MessageBox.Show("By default, alerts are only shown if they have English text.\r\n" +
                 "Do you want to allow alerts of all languages to be relayed?\r\n\r\n" +
-                $"AllowNonEnglishLanguages is currently set to {Settings.Default.AllowNonEnglishAlerts}.",
+                $"AllowNonEnglishLanguages is currently set to {Settings.Default.AllowNonEnglishAlerts}.\r\nThis setting is always ignored for SASMEX alerts.",
                 "SharpAlert",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);

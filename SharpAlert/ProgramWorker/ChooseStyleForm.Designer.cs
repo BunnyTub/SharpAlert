@@ -34,22 +34,23 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.TitleText = new System.Windows.Forms.Label();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
-            this.label1 = new System.Windows.Forms.Label();
-            this.AlertFullscreenCombo = new System.Windows.Forms.ComboBox();
             this.alertTimeZoneUTCBox = new System.Windows.Forms.CheckBox();
             this.alertCompatibilityModeBox = new System.Windows.Forms.CheckBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.alertTimeoutInput = new System.Windows.Forms.NumericUpDown();
             this.alertFullscreenDisplayInput = new System.Windows.Forms.NumericUpDown();
             this.alertFullscreenIdleBox = new System.Windows.Forms.CheckBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.alertFullscreenWindowedBox = new System.Windows.Forms.CheckBox();
             this.alertTTSonlyBox = new System.Windows.Forms.CheckBox();
             this.alertIncreaseSizeBox = new System.Windows.Forms.CheckBox();
             this.alertNoGUIBox = new System.Windows.Forms.CheckBox();
-            this.label11 = new System.Windows.Forms.Label();
+            this.AlertFullscreenCombo = new System.Windows.Forms.ComboBox();
             this.WindowLocationCombo = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.alertPlayStartToneTwiceBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
@@ -101,30 +102,6 @@
             this.ToolTipInformation.ReshowDelay = 50;
             this.ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.Font = new System.Drawing.Font("Arial", 9F);
-            this.label1.Location = new System.Drawing.Point(9, 190);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(332, 26);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "To change these options later, go to Settings.";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // AlertFullscreenCombo
-            // 
-            this.AlertFullscreenCombo.BackColor = System.Drawing.Color.Black;
-            this.AlertFullscreenCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.AlertFullscreenCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AlertFullscreenCombo.ForeColor = System.Drawing.Color.White;
-            this.AlertFullscreenCombo.FormattingEnabled = true;
-            this.AlertFullscreenCombo.Location = new System.Drawing.Point(110, 57);
-            this.AlertFullscreenCombo.Name = "AlertFullscreenCombo";
-            this.AlertFullscreenCombo.Size = new System.Drawing.Size(95, 23);
-            this.AlertFullscreenCombo.TabIndex = 1;
-            // 
             // alertTimeZoneUTCBox
             // 
             this.alertTimeZoneUTCBox.AutoSize = true;
@@ -148,15 +125,6 @@
             this.ToolTipInformation.SetToolTip(this.alertCompatibilityModeBox, "Disables most animations and some background stuff. May help performance on older" +
         " systems.");
             this.alertCompatibilityModeBox.UseVisualStyleBackColor = true;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(108, 115);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(52, 15);
-            this.label9.TabIndex = 34;
-            this.label9.Text = "Timeout";
             // 
             // alertTimeoutInput
             // 
@@ -199,27 +167,6 @@
             this.alertFullscreenIdleBox.Text = "Idle panel";
             this.ToolTipInformation.SetToolTip(this.alertFullscreenIdleBox, "Shows an idle panel on top of all content.");
             this.alertFullscreenIdleBox.UseVisualStyleBackColor = true;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Arial", 9F);
-            this.label2.Location = new System.Drawing.Point(107, 39);
-            this.label2.Margin = new System.Windows.Forms.Padding(0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(76, 15);
-            this.label2.TabIndex = 36;
-            this.label2.Text = "Display style";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(108, 88);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(46, 15);
-            this.label8.TabIndex = 37;
-            this.label8.Text = "Screen";
             // 
             // alertFullscreenWindowedBox
             // 
@@ -266,14 +213,18 @@
         "ts cannot be interrupted or cancelled when this option is enabled.");
             this.alertNoGUIBox.UseVisualStyleBackColor = true;
             // 
-            // label11
+            // AlertFullscreenCombo
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(107, 144);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(85, 15);
-            this.label11.TabIndex = 39;
-            this.label11.Text = "Display where";
+            this.AlertFullscreenCombo.BackColor = System.Drawing.Color.Black;
+            this.AlertFullscreenCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AlertFullscreenCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AlertFullscreenCombo.ForeColor = System.Drawing.Color.White;
+            this.AlertFullscreenCombo.FormattingEnabled = true;
+            this.AlertFullscreenCombo.Location = new System.Drawing.Point(110, 57);
+            this.AlertFullscreenCombo.Name = "AlertFullscreenCombo";
+            this.AlertFullscreenCombo.Size = new System.Drawing.Size(95, 23);
+            this.AlertFullscreenCombo.TabIndex = 1;
+            this.ToolTipInformation.SetToolTip(this.AlertFullscreenCombo, "Choose how alerts are displayed.");
             // 
             // WindowLocationCombo
             // 
@@ -286,6 +237,70 @@
             this.WindowLocationCombo.Name = "WindowLocationCombo";
             this.WindowLocationCombo.Size = new System.Drawing.Size(95, 23);
             this.WindowLocationCombo.TabIndex = 4;
+            this.ToolTipInformation.SetToolTip(this.WindowLocationCombo, "Choose where on the screen alerts are displayed.\r\nThis option only affects some d" +
+        "isplay styles.");
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.Font = new System.Drawing.Font("Arial", 9F);
+            this.label1.Location = new System.Drawing.Point(9, 190);
+            this.label1.Margin = new System.Windows.Forms.Padding(0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(332, 26);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "To change these options later, go to Settings.";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(108, 115);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(52, 15);
+            this.label9.TabIndex = 34;
+            this.label9.Text = "Timeout";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Arial", 9F);
+            this.label2.Location = new System.Drawing.Point(107, 39);
+            this.label2.Margin = new System.Windows.Forms.Padding(0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(76, 15);
+            this.label2.TabIndex = 36;
+            this.label2.Text = "Display style";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(108, 88);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(46, 15);
+            this.label8.TabIndex = 37;
+            this.label8.Text = "Screen";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(107, 144);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(85, 15);
+            this.label11.TabIndex = 39;
+            this.label11.Text = "Display where";
+            // 
+            // alertPlayStartToneTwiceBox
+            // 
+            this.alertPlayStartToneTwiceBox.AutoSize = true;
+            this.alertPlayStartToneTwiceBox.Location = new System.Drawing.Point(387, 92);
+            this.alertPlayStartToneTwiceBox.Name = "alertPlayStartToneTwiceBox";
+            this.alertPlayStartToneTwiceBox.Size = new System.Drawing.Size(117, 19);
+            this.alertPlayStartToneTwiceBox.TabIndex = 12;
+            this.alertPlayStartToneTwiceBox.Text = "Extend alert tone";
+            this.ToolTipInformation.SetToolTip(this.alertPlayStartToneTwiceBox, "Extends the start tone by instructing the audio stack to play it twice.");
+            this.alertPlayStartToneTwiceBox.UseVisualStyleBackColor = true;
             // 
             // ChooseStyleForm
             // 
@@ -293,6 +308,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(532, 225);
+            this.Controls.Add(this.alertPlayStartToneTwiceBox);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.WindowLocationCombo);
             this.Controls.Add(this.alertIncreaseSizeBox);
@@ -357,5 +373,6 @@
         private System.Windows.Forms.CheckBox alertNoGUIBox;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox WindowLocationCombo;
+        private System.Windows.Forms.CheckBox alertPlayStartToneTwiceBox;
     }
 }

@@ -95,12 +95,12 @@ namespace SharpAlert
 
         public void UpdateFields(string id, string alert, string intro, string text, string url, string audio, string image, string type)
         {
-            this.Text = $"SharpAlert - {id}";
+            //this.Text = $"SharpAlert - {id}";
             AlertSubtitleStr = alert;
             SubtitleText.Text = AlertSubtitleStr;
             AlertIntroTextStr = intro;
             AlertTextStr = text;
-            AlertText.Text = $"{AlertIntroTextStr} {AlertTextStr}";
+            AlertText.Text = $"{AlertIntroTextStr}\r\n\r\n{AlertTextStr}";
             AlertUrlStr = url;
             AlertAudioUrlStr = audio;
             AlertImageUrlStr = image;

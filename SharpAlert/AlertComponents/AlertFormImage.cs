@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 using static SharpAlert.MainEntryPoint;
 
@@ -49,7 +48,6 @@ namespace SharpAlert
 
         private void AttachedImageBox_LoadCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
-
         }
     }
 }
