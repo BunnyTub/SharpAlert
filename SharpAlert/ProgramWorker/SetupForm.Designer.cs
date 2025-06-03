@@ -1,4 +1,4 @@
-﻿namespace SharpAlert.ProgramWorker
+﻿namespace SharpAlert
 {
     partial class SetupForm
     {

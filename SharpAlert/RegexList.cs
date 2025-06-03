@@ -36,10 +36,6 @@ namespace SharpAlert
 		public static readonly Regex LanguageRegex = new Regex(
 			@"<language>\s*(.*?)\s*</language>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-		
-		public static readonly Regex SentRegex = new Regex(
-			@"<sent>\s*(.*?)\s*</sent>",
-			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
 		public static readonly Regex StatusRegex = new Regex(
 			@"<status>\s*(.*?)\s*</status>",
@@ -77,18 +73,48 @@ namespace SharpAlert
 			@"<web>\s*(.*?)\s*</web>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-		public static readonly Regex EffectiveRegex = new Regex(
+        public static readonly Regex SentRegex = new Regex(
+            @"<sent>\s*(.*?)\s*</sent>",
+            RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+        public static readonly Regex EffectiveRegex = new Regex(
 			@"<effective>\s*(.*?)\s*</effective>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex OnsetRegex = new Regex(
+            @"<onset>\s*(.*?)\s*</onset>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
 		public static readonly Regex ExpiresRegex = new Regex(
 			@"<expires>\s*(.*?)\s*</expires>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		/// <summary>
+		///		<cap:sent>2025-05-26T05:15:00-05:00</cap:sent>
+        ///		<cap:effective>2025-05-26T05:15:00-05:00</cap:effective>
+        ///		<cap:onset>2025-05-26T05:15:00-05:00</cap:onset>
+        ///		<cap:expires>2025-05-26T05:45:00-05:00</cap:expires>
+		/// </summary>
 
-		public static readonly Regex EventRegex = new Regex(
-			@"<event>\s*(.*?)\s*</event>",
+		public static readonly Regex AtomEffectiveRegex = new Regex(
+            @"<cap:effective>\s*(.*?)\s*</cap:effective>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
+		public static readonly Regex AtomExpiresRegex = new Regex(
+            @"<cap:expires>\s*(.*?)\s*</cap:expires>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+        public static readonly Regex EntryRegex = new Regex(
+            @"<entry>\s*(.*?)\s*</entry>",
+            RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex EntryLinkRegex = new Regex(
+            @"<link rel=""alternate"" href=""\s*(.*?)\s*""/>",
+            RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+        public static readonly Regex EventRegex = new Regex(
+			@"<event>\s*(.*?)\s*</event>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 		
 		public static readonly Regex EventCodeRegex = new Regex(
             @"<eventcode><valueName>SAME</valueName><value>\s*(.*?)\s*</value></eventcode>",
@@ -132,6 +158,10 @@ namespace SharpAlert
 		
 		public static readonly Regex SenderRegex = new Regex(
 			@"<sender>\s*(.*?)\s*</sender>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex AuthorNameRegex = new Regex(
+            @"<name>\s*(.*?)\s*</name>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
 		public static readonly Regex DescriptionRegex = new Regex(

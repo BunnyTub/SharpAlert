@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Linq;
 using static SharpAlert.AudioManager;
+using static SharpAlert.AlertProcessor;
 
 namespace SharpAlert
 {
@@ -107,6 +108,11 @@ namespace SharpAlert
             AlertType = type;
             AlertText.SelectionStart = 0;
 
+            var message = GetTextFromMessageType(type);
+            TitleText.Text = message.text;
+            ColorTitleAndBordersOne = message.MainColor;
+            ColorSubtitleOnlyOne = message.SubColor;
+
             //switch (type)
             //{
             //    case "alert":
@@ -186,14 +192,16 @@ namespace SharpAlert
 
             StopAllAudioSilently();
 
-            if (AlertType != "cancel")
-            {
-                PlayStartToneFile(false);
-            }
-            else
-            {
-                PlayFromUnmanagedSource(Resources.ui_cancellation_1);
-            }
+            //if (AlertType != "cancel")
+            //{
+            //    PlayStartToneFile(false);
+            //}
+            //else
+            //{
+            //    PlayFromUnmanagedSource(Resources.ui_cancellation_1);
+            //}
+
+            PlayStartToneFile();
 
             AutoTTS.Start();
             AlertText.Focus();
@@ -258,7 +266,7 @@ namespace SharpAlert
             FlashTwo = false;
             WindowFlash.Start();
 
-            Console.WriteLine("[Alert GUI] Window shown.");
+            ConsoleExt.WriteLine("[Alert GUI] Window shown.");
         }
 
         private void DismissButton_Click(object sender, EventArgs e)
@@ -318,7 +326,7 @@ namespace SharpAlert
         {
             FadeOutExitReady = false;
             this.Opacity = 0;
-            Console.WriteLine("[Alert GUI] Window closed.");
+            ConsoleExt.WriteLine("[Alert GUI] Window closed.");
         }
 
         private bool FlashOne = false;
@@ -516,25 +524,30 @@ namespace SharpAlert
             }
         }
 
+        private Color ColorTitleAndBordersOne = Color.Red;
+        private Color ColorSubtitleOnlyOne = Color.FromArgb(140, 0, 0);
+        private readonly Color ColorTitleAndBordersTwo = Color.SlateGray;
+        private readonly Color ColorSubtitleOnlyTwo = Color.DarkSlateGray;
+
         private bool FlashTwo = false;
 
         private void WindowFlash_Tick(object sender, EventArgs e)
         {
             if (FlashTwo)
             {
-                TitleText.BackColor = Color.Red;
-                LeftOutlinePanel.BackColor = Color.Red;
-                RightOutlinePanel.BackColor = Color.Red;
-                BottomOutlinePanel.BackColor = Color.Red;
-                SubtitlePanel.BackColor = Color.FromArgb(140, 0, 0);
+                TitleText.BackColor = ColorTitleAndBordersOne;
+                LeftOutlinePanel.BackColor = ColorTitleAndBordersOne;
+                RightOutlinePanel.BackColor = ColorTitleAndBordersOne;
+                BottomOutlinePanel.BackColor = ColorTitleAndBordersOne;
+                SubtitlePanel.BackColor = ColorSubtitleOnlyOne;
             }
             else
             {
-                TitleText.BackColor = Color.SlateGray;
-                LeftOutlinePanel.BackColor = Color.SlateGray;
-                RightOutlinePanel.BackColor = Color.SlateGray;
-                BottomOutlinePanel.BackColor = Color.SlateGray;
-                SubtitlePanel.BackColor = Color.DarkSlateGray;
+                TitleText.BackColor = ColorTitleAndBordersTwo;
+                LeftOutlinePanel.BackColor = ColorTitleAndBordersTwo;
+                RightOutlinePanel.BackColor = ColorTitleAndBordersTwo;
+                BottomOutlinePanel.BackColor = ColorTitleAndBordersTwo;
+                SubtitlePanel.BackColor = ColorSubtitleOnlyTwo;
             }
             FlashTwo = !FlashTwo;
         }

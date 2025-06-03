@@ -1,4 +1,4 @@
-﻿namespace SharpAlert.ConfigurationDialogs
+﻿namespace SharpAlert
 {
     partial class MakiForm
     {

@@ -157,7 +157,7 @@ namespace SharpAlert.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Configuration.SettingsDescriptionAttribute("Allows minor messages to be relayed when ticked.")]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool severityMinor {
             get {
                 return ((bool)(this["severityMinor"]));
@@ -480,30 +480,6 @@ namespace SharpAlert.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("example.com")]
-        public string UserServerURL {
-            get {
-                return ((string)(this["UserServerURL"]));
-            }
-            set {
-                this["UserServerURL"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9792")]
-        public string UserServerPort {
-            get {
-                return ((string)(this["UserServerPort"]));
-            }
-            set {
-                this["UserServerPort"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool statusExercise {
             get {
@@ -708,7 +684,7 @@ namespace SharpAlert.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("25")]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
         public int storedMaxSize {
             get {
                 return ((int)(this["storedMaxSize"]));
@@ -918,7 +894,7 @@ namespace SharpAlert.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool DiscordWebhookConfirmAlerts {
             get {
                 return ((bool)(this["DiscordWebhookConfirmAlerts"]));
@@ -1021,6 +997,30 @@ namespace SharpAlert.Properties {
             }
             set {
                 this["alertPlayStartToneTwice"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RegionUnitedStatesNWS {
+            get {
+                return ((bool)(this["RegionUnitedStatesNWS"]));
+            }
+            set {
+                this["RegionUnitedStatesNWS"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LegacyAudioPlayer {
+            get {
+                return ((bool)(this["LegacyAudioPlayer"]));
+            }
+            set {
+                this["LegacyAudioPlayer"] = value;
             }
         }
     }

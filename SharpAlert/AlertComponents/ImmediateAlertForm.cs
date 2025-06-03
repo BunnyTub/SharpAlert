@@ -147,10 +147,12 @@ namespace SharpAlert
 
             if (AlertType != "cancel")
             {
+                EarthquakeText = "EARTHQUAKE / TERREMOTO";
                 PlayFromUnmanagedSource(Resources.ui_shakewarning_1);
             }
             else
             {
+                EarthquakeText = "CANCELLED / CANCELADO";
                 PlayFromUnmanagedSource(Resources.ui_cancellation_1);
             }
 
@@ -229,7 +231,7 @@ namespace SharpAlert
             FlashTwo = false;
             WindowFlash.Start();
 
-            Console.WriteLine("[Alert GUI] Window shown.");
+            ConsoleExt.WriteLine("[Alert GUI] Window shown.");
         }
 
         private void DismissButton_Click(object sender, EventArgs e)
@@ -250,7 +252,7 @@ namespace SharpAlert
 
         private void AlertForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Console.WriteLine("[Alert GUI] Window closed.");
+            ConsoleExt.WriteLine("[Alert GUI] Window closed.");
         }
 
         private bool FlashOne = false;
@@ -385,6 +387,8 @@ namespace SharpAlert
 
         bool CycleTwo = false;
 
+        private string EarthquakeText = string.Empty;
+
         private void CycleTwice()
         {
             if (CycleTwo)
@@ -393,7 +397,7 @@ namespace SharpAlert
             }
             else
             {
-                TitleText.Text = "EARTHQUAKE / TERREMOTO";
+                TitleText.Text = EarthquakeText;
             }
             CycleTwo = !CycleTwo;
         }

@@ -1,5 +1,4 @@
-﻿using SharpAlert.DisplayDialogs.Panels;
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace SharpAlert

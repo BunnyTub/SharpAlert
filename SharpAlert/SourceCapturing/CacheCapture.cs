@@ -12,7 +12,7 @@ namespace SharpAlert
         {
             client = new HttpClient
             {
-                Timeout = TimeSpan.FromSeconds(15)
+                Timeout = TimeSpan.FromSeconds(2)
             };
             client.DefaultRequestHeaders.UserAgent.ParseAdd($"Mozilla/5.0 (compatible; SharpAlert)");
         }
@@ -46,7 +46,7 @@ namespace SharpAlert
                 try
                 {
                     SAME_US_JSON = client.GetStringAsync($"{SAME_US_URL}").Result;
-                    Console.WriteLine($"[Cache Capture | SAME-US] Grabbed data.");
+                    ConsoleExt.WriteLine($"[Cache Capture | SAME-US] Grabbed data.");
                 }
                 catch (ThreadAbortException)
                 {
@@ -54,12 +54,12 @@ namespace SharpAlert
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[Cache Capture | SAME-US] {ex.Message}");
+                    ConsoleExt.WriteLine($"[Cache Capture | SAME-US] {ex.Message}");
                 }
 
                 if (!loop)
                 {
-                    Console.WriteLine($"[Cache Capture] Attempted to re-fill the cache.");
+                    ConsoleExt.WriteLine($"[Cache Capture] Attempted to re-fill the cache.");
                     return;
                 }
 

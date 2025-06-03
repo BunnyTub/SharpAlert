@@ -1,14 +1,12 @@
-﻿using NAudio.Wave;
-using SharpAlert.Properties;
+﻿using SharpAlert.Properties;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using static SharpAlert.IceBearWorker;
 
@@ -18,34 +16,52 @@ namespace SharpAlert
     {
         private static readonly WebClient client = new WebClient();
 
+        /// <summary>
+        /// Sends data to a webhook after converting the string to a byte array using UTF8.
+        /// </summary>
         private static bool UploadData(string webhook, string payload)
+        {
+            return UploadData(webhook, Encoding.UTF8.GetBytes(payload));
+        }
+
+        /// <summary>
+        /// Sends data to a webhook.
+        /// </summary>
+        /// <param name="webhook">The webhook to send data to.</param>
+        /// <param name="data">The data to send to the webhook.</param>
+        /// <returns>Returns True if the upload is successful.</returns>
+        private static bool UploadData(string webhook, byte[] data)
         {
             lock (client)
             {
                 try
                 {
-                    client.UploadData(webhook, Encoding.UTF8.GetBytes(payload));
+                    Thread.Sleep(1000 + 100);
+                    client.UploadData(webhook, data);
                     return true;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[Discord Webhook] {ex.Message}");
+                    ConsoleExt.WriteLine($"[Discord Webhook] {ex.Message}");
                     try
                     {
-                        client.UploadData(webhook, Encoding.UTF8.GetBytes(payload));
+                        Thread.Sleep(2000 + 100);
+                        client.UploadData(webhook, data);
                         return true;
                     }
                     catch (Exception exx)
                     {
-                        Console.WriteLine($"[Discord Webhook] {exx.Message}");
+                        ConsoleExt.WriteLine($"[Discord Webhook] {exx.Message}");
                         try
                         {
-                            client.UploadData(webhook, Encoding.UTF8.GetBytes(payload));
+                            ConsoleExt.WriteLine($"[Discord Webhook] Rate limiting possibly occurring. Pausing for 15 seconds to cool down.");
+                            Thread.Sleep((15 * 1000) + 100);
+                            client.UploadData(webhook, data);
                             return true;
                         }
                         catch (Exception exxx)
                         {
-                            Console.WriteLine($"[Discord Webhook] {exxx.Message}");
+                            ConsoleExt.WriteLine($"[Discord Webhook] {exxx.Message}");
                         }
                     }
                 }
@@ -73,7 +89,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                ConsoleExt.WriteLine(ex.Message);
                 return false;
             }
         }
@@ -109,7 +125,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                ConsoleExt.WriteLine(ex.Message);
                 return false;
             }
         }
@@ -148,7 +164,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                ConsoleExt.WriteLine(ex.Message);
                 return false;
             }
         }
@@ -179,6 +195,15 @@ namespace SharpAlert
                         AlertCompiled = "## Alert Message\r\n" +
                             $"{description1}\r\n\r\n{description2}";
 
+                        if (AlertCompiled.Length >= 3800)
+                        {
+                            AlertCompiled = AlertCompiled.Substring(0, 3800) + "...(truncuated)";
+                            ConsoleExt.WriteLine("[Discord Webhook] The length of the message has been truncuated.");
+                        }
+
+                        string AuthorName = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority.";
+                        if (!string.IsNullOrWhiteSpace(Settings.Default.StationIdentifier)) AuthorName += $"\x20| Relaying from {Settings.Default.StationIdentifier} ({Settings.Default.StationName}).";
+
                         var payloadObject = new
                         {
                             content = message,
@@ -188,7 +213,7 @@ namespace SharpAlert
                                 {
                                     author = new
                                     {
-                                        name = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority. | Caller ID",
+                                        name = $"",
                                         url = "https://sharpalert.bunnytub.com",
                                         icon_url = "https://bunnytub.com/media/SharpAlert.png"
                                     },
@@ -270,7 +295,7 @@ namespace SharpAlert
                         byte[] postFileBytes = Encoding.UTF8.GetBytes(closing);
                         stream.Write(postFileBytes, 0, postFileBytes.Length);
 
-                        client.UploadData(webhook, stream.ToArray());
+                        UploadData(webhook, stream.ToArray());
                     }
                 }
                 return true;

@@ -37,8 +37,9 @@
             this.RegionCanadaBox = new System.Windows.Forms.CheckBox();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.RegionMexicoBox = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.LinkButton = new System.Windows.Forms.Button();
+            this.RegionUnitedStatesNWSBox = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -84,9 +85,9 @@
             this.RegionUnitedStatesBox.Location = new System.Drawing.Point(111, 42);
             this.RegionUnitedStatesBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             this.RegionUnitedStatesBox.Name = "RegionUnitedStatesBox";
-            this.RegionUnitedStatesBox.Size = new System.Drawing.Size(121, 22);
+            this.RegionUnitedStatesBox.Size = new System.Drawing.Size(184, 22);
             this.RegionUnitedStatesBox.TabIndex = 11;
-            this.RegionUnitedStatesBox.Text = "United States";
+            this.RegionUnitedStatesBox.Text = "United States (IPAWS)";
             this.ToolTipInformation.SetToolTip(this.RegionUnitedStatesBox, "You can receive alerts from the United States via IPAWS (EAS & WEA).");
             this.RegionUnitedStatesBox.UseVisualStyleBackColor = true;
             // 
@@ -94,12 +95,12 @@
             // 
             this.RegionCanadaBox.AutoSize = true;
             this.RegionCanadaBox.Font = new System.Drawing.Font("Arial", 12F);
-            this.RegionCanadaBox.Location = new System.Drawing.Point(111, 70);
+            this.RegionCanadaBox.Location = new System.Drawing.Point(111, 98);
             this.RegionCanadaBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             this.RegionCanadaBox.Name = "RegionCanadaBox";
-            this.RegionCanadaBox.Size = new System.Drawing.Size(83, 22);
-            this.RegionCanadaBox.TabIndex = 12;
-            this.RegionCanadaBox.Text = "Canada";
+            this.RegionCanadaBox.Size = new System.Drawing.Size(153, 22);
+            this.RegionCanadaBox.TabIndex = 13;
+            this.RegionCanadaBox.Text = "Canada (NAADS)";
             this.ToolTipInformation.SetToolTip(this.RegionCanadaBox, "You can receive alerts from Canada via NAADS (National Alert Aggregation and Diss" +
         "emination System).");
             this.RegionCanadaBox.UseVisualStyleBackColor = true;
@@ -119,27 +120,15 @@
             // 
             this.RegionMexicoBox.AutoSize = true;
             this.RegionMexicoBox.Font = new System.Drawing.Font("Arial", 12F);
-            this.RegionMexicoBox.Location = new System.Drawing.Point(110, 98);
+            this.RegionMexicoBox.Location = new System.Drawing.Point(111, 126);
             this.RegionMexicoBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             this.RegionMexicoBox.Name = "RegionMexicoBox";
-            this.RegionMexicoBox.Size = new System.Drawing.Size(77, 22);
+            this.RegionMexicoBox.Size = new System.Drawing.Size(159, 22);
             this.RegionMexicoBox.TabIndex = 14;
-            this.RegionMexicoBox.Text = "Mexico";
+            this.RegionMexicoBox.Text = "Mexico (SASMEX)";
             this.ToolTipInformation.SetToolTip(this.RegionMexicoBox, "You can receive alerts from Mexico via SASMEX (Sistema de Alerta Sísmica Mexicano" +
         ").");
             this.RegionMexicoBox.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.Font = new System.Drawing.Font("Arial", 9F);
-            this.label1.Location = new System.Drawing.Point(9, 158);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(332, 26);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "To change these options later, go to Settings.";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // LinkButton
             // 
@@ -156,12 +145,39 @@
             this.LinkButton.UseVisualStyleBackColor = false;
             this.LinkButton.Click += new System.EventHandler(this.LinkButton_Click);
             // 
+            // RegionUnitedStatesNWSBox
+            // 
+            this.RegionUnitedStatesNWSBox.AutoSize = true;
+            this.RegionUnitedStatesNWSBox.Font = new System.Drawing.Font("Arial", 12F);
+            this.RegionUnitedStatesNWSBox.Location = new System.Drawing.Point(111, 70);
+            this.RegionUnitedStatesNWSBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
+            this.RegionUnitedStatesNWSBox.Name = "RegionUnitedStatesNWSBox";
+            this.RegionUnitedStatesNWSBox.Size = new System.Drawing.Size(172, 22);
+            this.RegionUnitedStatesNWSBox.TabIndex = 12;
+            this.RegionUnitedStatesNWSBox.Text = "United States (NWS)";
+            this.ToolTipInformation.SetToolTip(this.RegionUnitedStatesNWSBox, "You can receive alerts from the United States via NWS (National Weather Service)." +
+        "");
+            this.RegionUnitedStatesNWSBox.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.Font = new System.Drawing.Font("Arial", 9F);
+            this.label1.Location = new System.Drawing.Point(9, 158);
+            this.label1.Margin = new System.Windows.Forms.Padding(0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(332, 26);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "To change these options later, go to Settings.";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
             // ChooseRegionForm
             // 
             this.AcceptButton = this.DoneButton;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(532, 193);
+            this.Controls.Add(this.RegionUnitedStatesNWSBox);
             this.Controls.Add(this.LinkButton);
             this.Controls.Add(this.RegionMexicoBox);
             this.Controls.Add(this.label1);
@@ -202,5 +218,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox RegionMexicoBox;
         private System.Windows.Forms.Button LinkButton;
+        private System.Windows.Forms.CheckBox RegionUnitedStatesNWSBox;
     }
 }

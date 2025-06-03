@@ -62,19 +62,18 @@
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.Lime;
             this.label2.Location = new System.Drawing.Point(9, 54);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(216, 60);
+            this.label2.Size = new System.Drawing.Size(530, 60);
             this.label2.TabIndex = 9;
-            this.label2.Text = "Confuser.MSBuild (usage deprecated)\r\nCostura.Fody\r\nFody\r\nNAudio";
+            this.label2.Text = "Costura.Fody | Fody | NAudio";
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
+            this.linkLabel1.LinkColor = System.Drawing.Color.Pink;
             this.linkLabel1.Location = new System.Drawing.Point(9, 114);
             this.linkLabel1.Margin = new System.Windows.Forms.Padding(0);
             this.linkLabel1.Name = "linkLabel1";
@@ -90,14 +89,14 @@
             this.label3.Location = new System.Drawing.Point(9, 24);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(363, 15);
+            this.label3.Size = new System.Drawing.Size(230, 15);
             this.label3.TabIndex = 12;
-            this.label3.Text = "FEMA IPAWS OPEN is used as the primary incoming alert source.";
+            this.label3.Text = "Find alerting sources in Region Settings.";
             // 
             // linkLabel2
             // 
             this.linkLabel2.AutoSize = true;
-            this.linkLabel2.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
+            this.linkLabel2.LinkColor = System.Drawing.Color.Pink;
             this.linkLabel2.Location = new System.Drawing.Point(9, 129);
             this.linkLabel2.Margin = new System.Windows.Forms.Padding(0);
             this.linkLabel2.Name = "linkLabel2";

@@ -61,7 +61,6 @@
             this.statusTestBox = new System.Windows.Forms.CheckBox();
             this.LocationsAndEventsGroup = new System.Windows.Forms.GroupBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.EventSelectButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.EventBlacklistOutput = new System.Windows.Forms.TextBox();
@@ -176,7 +175,7 @@
             0});
             this.AlertDeadIntervalInput.Name = "AlertDeadIntervalInput";
             this.AlertDeadIntervalInput.Size = new System.Drawing.Size(54, 21);
-            this.AlertDeadIntervalInput.TabIndex = 9;
+            this.AlertDeadIntervalInput.TabIndex = 21;
             this.ToolTipInformation.SetToolTip(this.AlertDeadIntervalInput, "The amount of seconds to pause until the next alert can be shown.\r\nThis setting i" +
         "s ignored for earthquake alerts from SASMEX.");
             this.AlertDeadIntervalInput.Value = new decimal(new int[] {
@@ -219,7 +218,7 @@
             0});
             this.AlertCheckIntervalInput.Name = "AlertCheckIntervalInput";
             this.AlertCheckIntervalInput.Size = new System.Drawing.Size(54, 21);
-            this.AlertCheckIntervalInput.TabIndex = 6;
+            this.AlertCheckIntervalInput.TabIndex = 20;
             this.ToolTipInformation.SetToolTip(this.AlertCheckIntervalInput, "The amount of seconds until the next server check.\r\nThis option is not supported " +
         "when receiving alerts from NAADs.");
             this.AlertCheckIntervalInput.Value = new decimal(new int[] {
@@ -246,7 +245,7 @@
             this.discardFirstAlertsBox.Location = new System.Drawing.Point(6, 45);
             this.discardFirstAlertsBox.Name = "discardFirstAlertsBox";
             this.discardFirstAlertsBox.Size = new System.Drawing.Size(129, 19);
-            this.discardFirstAlertsBox.TabIndex = 18;
+            this.discardFirstAlertsBox.TabIndex = 10;
             this.discardFirstAlertsBox.Text = "Discard all on start";
             this.ToolTipInformation.SetToolTip(this.discardFirstAlertsBox, "Throw all alerts into the history instead of the queue on startup.");
             this.discardFirstAlertsBox.UseVisualStyleBackColor = true;
@@ -257,7 +256,7 @@
             this.weaOnlyBox.Location = new System.Drawing.Point(6, 20);
             this.weaOnlyBox.Name = "weaOnlyBox";
             this.weaOnlyBox.Size = new System.Drawing.Size(121, 19);
-            this.weaOnlyBox.TabIndex = 17;
+            this.weaOnlyBox.TabIndex = 9;
             this.weaOnlyBox.Text = "Mobile alerts only";
             this.ToolTipInformation.SetToolTip(this.weaOnlyBox, "Filter out all alerts except mobile alerts.\r\nThis may cause issues with alerts fr" +
         "om other sources than IPAWS and NAADS.");
@@ -284,7 +283,7 @@
             this.urgencyUnknownBox.Location = new System.Drawing.Point(6, 120);
             this.urgencyUnknownBox.Name = "urgencyUnknownBox";
             this.urgencyUnknownBox.Size = new System.Drawing.Size(78, 19);
-            this.urgencyUnknownBox.TabIndex = 16;
+            this.urgencyUnknownBox.TabIndex = 19;
             this.urgencyUnknownBox.Text = "Unknown";
             this.ToolTipInformation.SetToolTip(this.urgencyUnknownBox, "Allow messages with the following urgency.");
             this.urgencyUnknownBox.UseVisualStyleBackColor = true;
@@ -295,7 +294,7 @@
             this.urgencyPastBox.Location = new System.Drawing.Point(6, 95);
             this.urgencyPastBox.Name = "urgencyPastBox";
             this.urgencyPastBox.Size = new System.Drawing.Size(51, 19);
-            this.urgencyPastBox.TabIndex = 15;
+            this.urgencyPastBox.TabIndex = 18;
             this.urgencyPastBox.Text = "Past";
             this.ToolTipInformation.SetToolTip(this.urgencyPastBox, "Allow messages with the following urgency.");
             this.urgencyPastBox.UseVisualStyleBackColor = true;
@@ -306,7 +305,7 @@
             this.urgencyFutureBox.Location = new System.Drawing.Point(6, 70);
             this.urgencyFutureBox.Name = "urgencyFutureBox";
             this.urgencyFutureBox.Size = new System.Drawing.Size(61, 19);
-            this.urgencyFutureBox.TabIndex = 14;
+            this.urgencyFutureBox.TabIndex = 17;
             this.urgencyFutureBox.Text = "Future";
             this.ToolTipInformation.SetToolTip(this.urgencyFutureBox, "Allow messages with the following urgency.");
             this.urgencyFutureBox.UseVisualStyleBackColor = true;
@@ -317,7 +316,7 @@
             this.urgencyExpectedBox.Location = new System.Drawing.Point(6, 45);
             this.urgencyExpectedBox.Name = "urgencyExpectedBox";
             this.urgencyExpectedBox.Size = new System.Drawing.Size(76, 19);
-            this.urgencyExpectedBox.TabIndex = 13;
+            this.urgencyExpectedBox.TabIndex = 16;
             this.urgencyExpectedBox.Text = "Expected";
             this.ToolTipInformation.SetToolTip(this.urgencyExpectedBox, "Allow messages with the following urgency.");
             this.urgencyExpectedBox.UseVisualStyleBackColor = true;
@@ -328,7 +327,7 @@
             this.urgencyImmediateBox.Location = new System.Drawing.Point(6, 20);
             this.urgencyImmediateBox.Name = "urgencyImmediateBox";
             this.urgencyImmediateBox.Size = new System.Drawing.Size(85, 19);
-            this.urgencyImmediateBox.TabIndex = 12;
+            this.urgencyImmediateBox.TabIndex = 15;
             this.urgencyImmediateBox.Text = "Immediate";
             this.ToolTipInformation.SetToolTip(this.urgencyImmediateBox, "Allow messages with the following urgency.");
             this.urgencyImmediateBox.UseVisualStyleBackColor = true;
@@ -354,7 +353,7 @@
             this.severityUnknownBox.Location = new System.Drawing.Point(6, 120);
             this.severityUnknownBox.Name = "severityUnknownBox";
             this.severityUnknownBox.Size = new System.Drawing.Size(78, 19);
-            this.severityUnknownBox.TabIndex = 11;
+            this.severityUnknownBox.TabIndex = 8;
             this.severityUnknownBox.Text = "Unknown";
             this.ToolTipInformation.SetToolTip(this.severityUnknownBox, "Allow messages with this severity.");
             this.severityUnknownBox.UseVisualStyleBackColor = true;
@@ -365,7 +364,7 @@
             this.severityMinorBox.Location = new System.Drawing.Point(6, 95);
             this.severityMinorBox.Name = "severityMinorBox";
             this.severityMinorBox.Size = new System.Drawing.Size(56, 19);
-            this.severityMinorBox.TabIndex = 10;
+            this.severityMinorBox.TabIndex = 7;
             this.severityMinorBox.Text = "Minor";
             this.ToolTipInformation.SetToolTip(this.severityMinorBox, "Allow messages with this severity.");
             this.severityMinorBox.UseVisualStyleBackColor = true;
@@ -376,7 +375,7 @@
             this.severityModerateBox.Location = new System.Drawing.Point(6, 70);
             this.severityModerateBox.Name = "severityModerateBox";
             this.severityModerateBox.Size = new System.Drawing.Size(77, 19);
-            this.severityModerateBox.TabIndex = 9;
+            this.severityModerateBox.TabIndex = 6;
             this.severityModerateBox.Text = "Moderate";
             this.ToolTipInformation.SetToolTip(this.severityModerateBox, "Allow messages with this severity.");
             this.severityModerateBox.UseVisualStyleBackColor = true;
@@ -387,7 +386,7 @@
             this.severitySevereBox.Location = new System.Drawing.Point(6, 45);
             this.severitySevereBox.Name = "severitySevereBox";
             this.severitySevereBox.Size = new System.Drawing.Size(64, 19);
-            this.severitySevereBox.TabIndex = 8;
+            this.severitySevereBox.TabIndex = 5;
             this.severitySevereBox.Text = "Severe";
             this.ToolTipInformation.SetToolTip(this.severitySevereBox, "Allow messages with this severity.");
             this.severitySevereBox.UseVisualStyleBackColor = true;
@@ -398,7 +397,7 @@
             this.severityExtremeBox.Location = new System.Drawing.Point(6, 20);
             this.severityExtremeBox.Name = "severityExtremeBox";
             this.severityExtremeBox.Size = new System.Drawing.Size(71, 19);
-            this.severityExtremeBox.TabIndex = 7;
+            this.severityExtremeBox.TabIndex = 4;
             this.severityExtremeBox.Text = "Extreme";
             this.ToolTipInformation.SetToolTip(this.severityExtremeBox, "Allow messages with this severity.");
             this.severityExtremeBox.UseVisualStyleBackColor = true;
@@ -423,7 +422,7 @@
             this.messageTypeTestBox.Location = new System.Drawing.Point(6, 95);
             this.messageTypeTestBox.Name = "messageTypeTestBox";
             this.messageTypeTestBox.Size = new System.Drawing.Size(49, 19);
-            this.messageTypeTestBox.TabIndex = 6;
+            this.messageTypeTestBox.TabIndex = 14;
             this.messageTypeTestBox.Text = "Test";
             this.ToolTipInformation.SetToolTip(this.messageTypeTestBox, "Allow messages of the following type.\r\nTake note! This differs from the message s" +
         "tatus variant of the same name, and is primarily used in CAP-CP (NAADS) messages" +
@@ -436,7 +435,7 @@
             this.messageTypeCancelBox.Location = new System.Drawing.Point(6, 70);
             this.messageTypeCancelBox.Name = "messageTypeCancelBox";
             this.messageTypeCancelBox.Size = new System.Drawing.Size(65, 19);
-            this.messageTypeCancelBox.TabIndex = 5;
+            this.messageTypeCancelBox.TabIndex = 13;
             this.messageTypeCancelBox.Text = "Cancel";
             this.ToolTipInformation.SetToolTip(this.messageTypeCancelBox, "Allow messages of the following type.");
             this.messageTypeCancelBox.UseVisualStyleBackColor = true;
@@ -447,7 +446,7 @@
             this.messageTypeUpdateBox.Location = new System.Drawing.Point(6, 45);
             this.messageTypeUpdateBox.Name = "messageTypeUpdateBox";
             this.messageTypeUpdateBox.Size = new System.Drawing.Size(66, 19);
-            this.messageTypeUpdateBox.TabIndex = 4;
+            this.messageTypeUpdateBox.TabIndex = 12;
             this.messageTypeUpdateBox.Text = "Update";
             this.ToolTipInformation.SetToolTip(this.messageTypeUpdateBox, "Allow messages of the following type.");
             this.messageTypeUpdateBox.UseVisualStyleBackColor = true;
@@ -458,7 +457,7 @@
             this.messageTypeAlertBox.Location = new System.Drawing.Point(6, 20);
             this.messageTypeAlertBox.Name = "messageTypeAlertBox";
             this.messageTypeAlertBox.Size = new System.Drawing.Size(50, 19);
-            this.messageTypeAlertBox.TabIndex = 3;
+            this.messageTypeAlertBox.TabIndex = 11;
             this.messageTypeAlertBox.Text = "Alert";
             this.ToolTipInformation.SetToolTip(this.messageTypeAlertBox, "Allow messages of the following type.");
             this.messageTypeAlertBox.UseVisualStyleBackColor = true;
@@ -482,7 +481,7 @@
             this.statusExerciseBox.Location = new System.Drawing.Point(6, 45);
             this.statusExerciseBox.Name = "statusExerciseBox";
             this.statusExerciseBox.Size = new System.Drawing.Size(73, 19);
-            this.statusExerciseBox.TabIndex = 3;
+            this.statusExerciseBox.TabIndex = 2;
             this.statusExerciseBox.Text = "Exercise";
             this.ToolTipInformation.SetToolTip(this.statusExerciseBox, "Allow messages with this status.");
             this.statusExerciseBox.UseVisualStyleBackColor = true;
@@ -493,7 +492,7 @@
             this.statusActualBox.Location = new System.Drawing.Point(6, 20);
             this.statusActualBox.Name = "statusActualBox";
             this.statusActualBox.Size = new System.Drawing.Size(59, 19);
-            this.statusActualBox.TabIndex = 2;
+            this.statusActualBox.TabIndex = 0;
             this.statusActualBox.Text = "Actual";
             this.ToolTipInformation.SetToolTip(this.statusActualBox, "Allow messages with this status.");
             this.statusActualBox.UseVisualStyleBackColor = true;
@@ -504,7 +503,7 @@
             this.statusTestBox.Location = new System.Drawing.Point(6, 70);
             this.statusTestBox.Name = "statusTestBox";
             this.statusTestBox.Size = new System.Drawing.Size(49, 19);
-            this.statusTestBox.TabIndex = 1;
+            this.statusTestBox.TabIndex = 3;
             this.statusTestBox.Text = "Test";
             this.ToolTipInformation.SetToolTip(this.statusTestBox, "Allow messages with this status.");
             this.statusTestBox.UseVisualStyleBackColor = true;
@@ -525,7 +524,6 @@
             // 
             // groupBox9
             // 
-            this.groupBox9.Controls.Add(this.EventSelectButton);
             this.groupBox9.Controls.Add(this.label6);
             this.groupBox9.Controls.Add(this.label3);
             this.groupBox9.Controls.Add(this.EventBlacklistOutput);
@@ -539,19 +537,6 @@
             this.groupBox9.TabIndex = 4;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Events";
-            // 
-            // EventSelectButton
-            // 
-            this.EventSelectButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.EventSelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.EventSelectButton.Font = new System.Drawing.Font("Arial", 8F);
-            this.EventSelectButton.Location = new System.Drawing.Point(102, 64);
-            this.EventSelectButton.Name = "EventSelectButton";
-            this.EventSelectButton.Size = new System.Drawing.Size(48, 23);
-            this.EventSelectButton.TabIndex = 5;
-            this.EventSelectButton.Text = "Select";
-            this.EventSelectButton.UseVisualStyleBackColor = false;
-            this.EventSelectButton.Click += new System.EventHandler(this.EventSelectButton_Click);
             // 
             // label6
             // 
@@ -585,7 +570,7 @@
             this.EventBlacklistOutput.ReadOnly = true;
             this.EventBlacklistOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.EventBlacklistOutput.Size = new System.Drawing.Size(144, 50);
-            this.EventBlacklistOutput.TabIndex = 3;
+            this.EventBlacklistOutput.TabIndex = 34;
             this.EventBlacklistOutput.WordWrap = false;
             // 
             // EventBlacklistInput
@@ -596,7 +581,7 @@
             this.EventBlacklistInput.Location = new System.Drawing.Point(6, 37);
             this.EventBlacklistInput.Name = "EventBlacklistInput";
             this.EventBlacklistInput.Size = new System.Drawing.Size(144, 21);
-            this.EventBlacklistInput.TabIndex = 0;
+            this.EventBlacklistInput.TabIndex = 31;
             // 
             // EventClearButton
             // 
@@ -605,8 +590,8 @@
             this.EventClearButton.Font = new System.Drawing.Font("Arial", 8F);
             this.EventClearButton.Location = new System.Drawing.Point(6, 64);
             this.EventClearButton.Name = "EventClearButton";
-            this.EventClearButton.Size = new System.Drawing.Size(90, 23);
-            this.EventClearButton.TabIndex = 2;
+            this.EventClearButton.Size = new System.Drawing.Size(96, 23);
+            this.EventClearButton.TabIndex = 32;
             this.EventClearButton.Text = "Clear";
             this.EventClearButton.UseVisualStyleBackColor = false;
             this.EventClearButton.Click += new System.EventHandler(this.EventClearButton_Click);
@@ -614,13 +599,12 @@
             // EventAddButton
             // 
             this.EventAddButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.EventAddButton.Enabled = false;
             this.EventAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.EventAddButton.Font = new System.Drawing.Font("Arial", 8F);
-            this.EventAddButton.Location = new System.Drawing.Point(54, 64);
+            this.EventAddButton.Location = new System.Drawing.Point(108, 64);
             this.EventAddButton.Name = "EventAddButton";
             this.EventAddButton.Size = new System.Drawing.Size(42, 23);
-            this.EventAddButton.TabIndex = 1;
+            this.EventAddButton.TabIndex = 33;
             this.EventAddButton.Text = "Add";
             this.EventAddButton.UseVisualStyleBackColor = false;
             this.EventAddButton.Click += new System.EventHandler(this.EventAddButton_Click);
@@ -674,7 +658,7 @@
             this.ListAreaCAPCPOutput.Name = "ListAreaCAPCPOutput";
             this.ListAreaCAPCPOutput.ScrollAlwaysVisible = true;
             this.ListAreaCAPCPOutput.Size = new System.Drawing.Size(144, 77);
-            this.ListAreaCAPCPOutput.TabIndex = 6;
+            this.ListAreaCAPCPOutput.TabIndex = 30;
             this.ToolTipInformation.SetToolTip(this.ListAreaCAPCPOutput, "SAME-US locations are only used in Canada.");
             this.ListAreaCAPCPOutput.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ListAreaCAPCPOutput_ItemCheck);
             // 
@@ -685,7 +669,7 @@
             this.UGCClearButton.Location = new System.Drawing.Point(6, 47);
             this.UGCClearButton.Name = "UGCClearButton";
             this.UGCClearButton.Size = new System.Drawing.Size(94, 23);
-            this.UGCClearButton.TabIndex = 2;
+            this.UGCClearButton.TabIndex = 28;
             this.UGCClearButton.Text = "Clear";
             this.UGCClearButton.UseVisualStyleBackColor = false;
             this.UGCClearButton.Click += new System.EventHandler(this.UGCClearButton_Click);
@@ -697,7 +681,7 @@
             this.UGCAddButton.Location = new System.Drawing.Point(106, 47);
             this.UGCAddButton.Name = "UGCAddButton";
             this.UGCAddButton.Size = new System.Drawing.Size(44, 23);
-            this.UGCAddButton.TabIndex = 1;
+            this.UGCAddButton.TabIndex = 29;
             this.UGCAddButton.Text = "Add";
             this.UGCAddButton.UseVisualStyleBackColor = false;
             this.UGCAddButton.Click += new System.EventHandler(this.UGCAddButton_Click);
@@ -710,7 +694,7 @@
             this.AreaCAPCPInput.Location = new System.Drawing.Point(6, 20);
             this.AreaCAPCPInput.Name = "AreaCAPCPInput";
             this.AreaCAPCPInput.Size = new System.Drawing.Size(124, 21);
-            this.AreaCAPCPInput.TabIndex = 0;
+            this.AreaCAPCPInput.TabIndex = 27;
             this.ToolTipInformation.SetToolTip(this.AreaCAPCPInput, "Enter a CAP-CP code here.");
             // 
             // groupBox7
@@ -753,7 +737,7 @@
             this.ListAreaSAMEOutput.Name = "ListAreaSAMEOutput";
             this.ListAreaSAMEOutput.ScrollAlwaysVisible = true;
             this.ListAreaSAMEOutput.Size = new System.Drawing.Size(144, 77);
-            this.ListAreaSAMEOutput.TabIndex = 5;
+            this.ListAreaSAMEOutput.TabIndex = 26;
             this.ToolTipInformation.SetToolTip(this.ListAreaSAMEOutput, "SAME-US locations are only used in Canada.");
             this.ListAreaSAMEOutput.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ListAreaSAMEOutput_ItemCheck);
             this.ListAreaSAMEOutput.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.ListAreaSAMEOutput_Format);
@@ -766,7 +750,7 @@
             this.SAMESelectButton.Location = new System.Drawing.Point(102, 47);
             this.SAMESelectButton.Name = "SAMESelectButton";
             this.SAMESelectButton.Size = new System.Drawing.Size(48, 23);
-            this.SAMESelectButton.TabIndex = 4;
+            this.SAMESelectButton.TabIndex = 25;
             this.SAMESelectButton.Text = "Select";
             this.SAMESelectButton.UseVisualStyleBackColor = false;
             this.SAMESelectButton.Click += new System.EventHandler(this.SAMESelectButton_Click);
@@ -779,7 +763,7 @@
             this.SAMEClearButton.Location = new System.Drawing.Point(6, 47);
             this.SAMEClearButton.Name = "SAMEClearButton";
             this.SAMEClearButton.Size = new System.Drawing.Size(42, 23);
-            this.SAMEClearButton.TabIndex = 2;
+            this.SAMEClearButton.TabIndex = 23;
             this.SAMEClearButton.Text = "Clear";
             this.SAMEClearButton.UseVisualStyleBackColor = false;
             this.SAMEClearButton.Click += new System.EventHandler(this.SAMEClearButton_Click);
@@ -792,7 +776,7 @@
             this.SAMEAddButton.Location = new System.Drawing.Point(54, 47);
             this.SAMEAddButton.Name = "SAMEAddButton";
             this.SAMEAddButton.Size = new System.Drawing.Size(42, 23);
-            this.SAMEAddButton.TabIndex = 1;
+            this.SAMEAddButton.TabIndex = 24;
             this.SAMEAddButton.Text = "Add";
             this.SAMEAddButton.UseVisualStyleBackColor = false;
             this.SAMEAddButton.Click += new System.EventHandler(this.SAMEAddButton_Click);
@@ -805,7 +789,7 @@
             this.AreaSAMEInput.Location = new System.Drawing.Point(6, 20);
             this.AreaSAMEInput.Name = "AreaSAMEInput";
             this.AreaSAMEInput.Size = new System.Drawing.Size(124, 21);
-            this.AreaSAMEInput.TabIndex = 0;
+            this.AreaSAMEInput.TabIndex = 22;
             this.ToolTipInformation.SetToolTip(this.AreaSAMEInput, "Enter a SAME code here.");
             // 
             // ConfigurationPanel
@@ -830,7 +814,7 @@
             this.StationButton.Location = new System.Drawing.Point(403, 472);
             this.StationButton.Name = "StationButton";
             this.StationButton.Size = new System.Drawing.Size(125, 23);
-            this.StationButton.TabIndex = 20;
+            this.StationButton.TabIndex = 51;
             this.StationButton.Text = "Ownership Settings";
             this.StationButton.UseVisualStyleBackColor = false;
             this.StationButton.Click += new System.EventHandler(this.StationButton_Click);
@@ -842,7 +826,7 @@
             this.LanguageButton.Location = new System.Drawing.Point(534, 472);
             this.LanguageButton.Name = "LanguageButton";
             this.LanguageButton.Size = new System.Drawing.Size(125, 23);
-            this.LanguageButton.TabIndex = 19;
+            this.LanguageButton.TabIndex = 52;
             this.LanguageButton.Text = "Language Settings";
             this.ToolTipInformation.SetToolTip(this.LanguageButton, "Opens the Language Settings window.");
             this.LanguageButton.UseVisualStyleBackColor = false;
@@ -877,7 +861,7 @@
             this.ChangeEndButton.Location = new System.Drawing.Point(6, 66);
             this.ChangeEndButton.Name = "ChangeEndButton";
             this.ChangeEndButton.Size = new System.Drawing.Size(198, 23);
-            this.ChangeEndButton.TabIndex = 3;
+            this.ChangeEndButton.TabIndex = 50;
             this.ChangeEndButton.Text = "Select End Tone Location";
             this.ChangeEndButton.UseVisualStyleBackColor = false;
             this.ChangeEndButton.Click += new System.EventHandler(this.ChangeEndButton_Click);
@@ -889,7 +873,7 @@
             this.ChangeStartButton.Location = new System.Drawing.Point(6, 37);
             this.ChangeStartButton.Name = "ChangeStartButton";
             this.ChangeStartButton.Size = new System.Drawing.Size(198, 23);
-            this.ChangeStartButton.TabIndex = 2;
+            this.ChangeStartButton.TabIndex = 49;
             this.ChangeStartButton.Text = "Select Start Tone Location";
             this.ChangeStartButton.UseVisualStyleBackColor = false;
             this.ChangeStartButton.Click += new System.EventHandler(this.ChangeStartButton_Click);
@@ -916,7 +900,7 @@
             this.showExpiryMessagesBox.Location = new System.Drawing.Point(143, 15);
             this.showExpiryMessagesBox.Name = "showExpiryMessagesBox";
             this.showExpiryMessagesBox.Size = new System.Drawing.Size(181, 25);
-            this.showExpiryMessagesBox.TabIndex = 19;
+            this.showExpiryMessagesBox.TabIndex = 36;
             this.showExpiryMessagesBox.Text = "Show expired alert messages";
             this.ToolTipInformation.SetToolTip(this.showExpiryMessagesBox, "Show me a message when alerts expire as a bar on the top of my screen.");
             this.showExpiryMessagesBox.UseVisualStyleBackColor = false;
@@ -936,28 +920,27 @@
             this.storedMaxSizeInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.storedMaxSizeInput.ForeColor = System.Drawing.Color.White;
             this.storedMaxSizeInput.Increment = new decimal(new int[] {
-            5,
+            100,
             0,
             0,
             0});
             this.storedMaxSizeInput.Location = new System.Drawing.Point(70, 18);
             this.storedMaxSizeInput.Maximum = new decimal(new int[] {
-            150,
+            1000,
             0,
             0,
             0});
             this.storedMaxSizeInput.Minimum = new decimal(new int[] {
-            25,
+            200,
             0,
             0,
             0});
             this.storedMaxSizeInput.Name = "storedMaxSizeInput";
-            this.storedMaxSizeInput.Size = new System.Drawing.Size(54, 21);
-            this.storedMaxSizeInput.TabIndex = 9;
-            this.ToolTipInformation.SetToolTip(this.storedMaxSizeInput, "Store more alerts, at the expense of more memory resources.\r\nOnly increase this v" +
-        "alue if you can spare many bytes!");
+            this.storedMaxSizeInput.Size = new System.Drawing.Size(67, 21);
+            this.storedMaxSizeInput.TabIndex = 35;
+            this.ToolTipInformation.SetToolTip(this.storedMaxSizeInput, "Store more alerts, at the expense of more memory resources.\r\n");
             this.storedMaxSizeInput.Value = new decimal(new int[] {
-            25,
+            500,
             0,
             0,
             0});
@@ -993,7 +976,7 @@
             this.categoryOtherBox.Location = new System.Drawing.Point(311, 70);
             this.categoryOtherBox.Name = "categoryOtherBox";
             this.categoryOtherBox.Size = new System.Drawing.Size(111, 19);
-            this.categoryOtherBox.TabIndex = 23;
+            this.categoryOtherBox.TabIndex = 48;
             this.categoryOtherBox.Text = "Other/Unknown";
             this.ToolTipInformation.SetToolTip(this.categoryOtherBox, "Allow messages of the following category.");
             this.categoryOtherBox.UseVisualStyleBackColor = true;
@@ -1004,7 +987,7 @@
             this.categoryCBRNEBox.Location = new System.Drawing.Point(311, 45);
             this.categoryCBRNEBox.Name = "categoryCBRNEBox";
             this.categoryCBRNEBox.Size = new System.Drawing.Size(91, 19);
-            this.categoryCBRNEBox.TabIndex = 22;
+            this.categoryCBRNEBox.TabIndex = 47;
             this.categoryCBRNEBox.Text = "Toxic Threat";
             this.ToolTipInformation.SetToolTip(this.categoryCBRNEBox, "Allow messages of the following category.");
             this.categoryCBRNEBox.UseVisualStyleBackColor = true;
@@ -1015,7 +998,7 @@
             this.categoryInfraBox.Location = new System.Drawing.Point(311, 20);
             this.categoryInfraBox.Name = "categoryInfraBox";
             this.categoryInfraBox.Size = new System.Drawing.Size(67, 19);
-            this.categoryInfraBox.TabIndex = 21;
+            this.categoryInfraBox.TabIndex = 46;
             this.categoryInfraBox.Text = "Utilities";
             this.ToolTipInformation.SetToolTip(this.categoryInfraBox, "Allow messages of the following category.");
             this.categoryInfraBox.UseVisualStyleBackColor = true;
@@ -1026,7 +1009,7 @@
             this.categoryTransportBox.Location = new System.Drawing.Point(199, 70);
             this.categoryTransportBox.Name = "categoryTransportBox";
             this.categoryTransportBox.Size = new System.Drawing.Size(106, 19);
-            this.categoryTransportBox.TabIndex = 20;
+            this.categoryTransportBox.TabIndex = 45;
             this.categoryTransportBox.Text = "Transportation";
             this.ToolTipInformation.SetToolTip(this.categoryTransportBox, "Allow messages of the following category.");
             this.categoryTransportBox.UseVisualStyleBackColor = true;
@@ -1037,7 +1020,7 @@
             this.categoryEnvBox.Location = new System.Drawing.Point(199, 45);
             this.categoryEnvBox.Name = "categoryEnvBox";
             this.categoryEnvBox.Size = new System.Drawing.Size(105, 19);
-            this.categoryEnvBox.TabIndex = 19;
+            this.categoryEnvBox.TabIndex = 44;
             this.categoryEnvBox.Text = "Environmental";
             this.ToolTipInformation.SetToolTip(this.categoryEnvBox, "Allow messages of the following category.");
             this.categoryEnvBox.UseVisualStyleBackColor = true;
@@ -1048,7 +1031,7 @@
             this.categoryHealthBox.Location = new System.Drawing.Point(199, 20);
             this.categoryHealthBox.Name = "categoryHealthBox";
             this.categoryHealthBox.Size = new System.Drawing.Size(68, 19);
-            this.categoryHealthBox.TabIndex = 18;
+            this.categoryHealthBox.TabIndex = 43;
             this.categoryHealthBox.Text = "Medical";
             this.ToolTipInformation.SetToolTip(this.categoryHealthBox, "Allow messages of the following category.");
             this.categoryHealthBox.UseVisualStyleBackColor = true;
@@ -1059,7 +1042,7 @@
             this.categoryFireBox.Location = new System.Drawing.Point(119, 70);
             this.categoryFireBox.Name = "categoryFireBox";
             this.categoryFireBox.Size = new System.Drawing.Size(47, 19);
-            this.categoryFireBox.TabIndex = 17;
+            this.categoryFireBox.TabIndex = 42;
             this.categoryFireBox.Text = "Fire";
             this.ToolTipInformation.SetToolTip(this.categoryFireBox, "Allow messages of the following category.");
             this.categoryFireBox.UseVisualStyleBackColor = true;
@@ -1070,7 +1053,7 @@
             this.categoryRescueBox.Location = new System.Drawing.Point(119, 45);
             this.categoryRescueBox.Name = "categoryRescueBox";
             this.categoryRescueBox.Size = new System.Drawing.Size(69, 19);
-            this.categoryRescueBox.TabIndex = 16;
+            this.categoryRescueBox.TabIndex = 41;
             this.categoryRescueBox.Text = "Rescue";
             this.ToolTipInformation.SetToolTip(this.categoryRescueBox, "Allow messages of the following category.");
             this.categoryRescueBox.UseVisualStyleBackColor = true;
@@ -1081,7 +1064,7 @@
             this.categorySecurityBox.Location = new System.Drawing.Point(119, 20);
             this.categorySecurityBox.Name = "categorySecurityBox";
             this.categorySecurityBox.Size = new System.Drawing.Size(69, 19);
-            this.categorySecurityBox.TabIndex = 15;
+            this.categorySecurityBox.TabIndex = 40;
             this.categorySecurityBox.Text = "Security";
             this.ToolTipInformation.SetToolTip(this.categorySecurityBox, "Allow messages of the following category.");
             this.categorySecurityBox.UseVisualStyleBackColor = true;
@@ -1092,7 +1075,7 @@
             this.categorySafetyBox.Location = new System.Drawing.Point(6, 70);
             this.categorySafetyBox.Name = "categorySafetyBox";
             this.categorySafetyBox.Size = new System.Drawing.Size(106, 19);
-            this.categorySafetyBox.TabIndex = 14;
+            this.categorySafetyBox.TabIndex = 39;
             this.categorySafetyBox.Text = "General Safety";
             this.ToolTipInformation.SetToolTip(this.categorySafetyBox, "Allow messages of the following category.");
             this.categorySafetyBox.UseVisualStyleBackColor = true;
@@ -1103,7 +1086,7 @@
             this.categoryMetBox.Location = new System.Drawing.Point(6, 45);
             this.categoryMetBox.Name = "categoryMetBox";
             this.categoryMetBox.Size = new System.Drawing.Size(106, 19);
-            this.categoryMetBox.TabIndex = 13;
+            this.categoryMetBox.TabIndex = 38;
             this.categoryMetBox.Text = "Meteorological";
             this.ToolTipInformation.SetToolTip(this.categoryMetBox, "Allow messages of the following category.");
             this.categoryMetBox.UseVisualStyleBackColor = true;
@@ -1114,7 +1097,7 @@
             this.categoryGeoBox.Location = new System.Drawing.Point(6, 20);
             this.categoryGeoBox.Name = "categoryGeoBox";
             this.categoryGeoBox.Size = new System.Drawing.Size(94, 19);
-            this.categoryGeoBox.TabIndex = 12;
+            this.categoryGeoBox.TabIndex = 37;
             this.categoryGeoBox.Text = "Geophysical";
             this.ToolTipInformation.SetToolTip(this.categoryGeoBox, "Allow messages of the following category.");
             this.categoryGeoBox.UseVisualStyleBackColor = true;
@@ -1144,7 +1127,6 @@
             // 
             // BusyLock
             // 
-            this.BusyLock.Enabled = true;
             this.BusyLock.Tick += new System.EventHandler(this.BusyLock_Tick);
             // 
             // AlertConfigurationForm
@@ -1271,7 +1253,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown AlertDeadIntervalInput;
         private System.Windows.Forms.CheckBox showExpiryMessagesBox;
-        private System.Windows.Forms.Button EventSelectButton;
         private System.Windows.Forms.CheckedListBox ListAreaSAMEOutput;
         private System.Windows.Forms.CheckBox messageTypeTestBox;
         private System.Windows.Forms.CheckedListBox ListAreaCAPCPOutput;

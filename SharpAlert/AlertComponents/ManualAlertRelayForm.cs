@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using SharpAlert.Properties;
 
-namespace SharpAlert.AlertComponents
+namespace SharpAlert
 {
     public partial class ManualAlertRelayForm : Form
     {

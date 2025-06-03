@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace SharpAlert.ProgramWorker
+namespace SharpAlert
 {
     public partial class SetupDoneForm : Form
     {

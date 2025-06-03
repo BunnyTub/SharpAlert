@@ -6,6 +6,9 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Linq;
 using static SharpAlert.AudioManager;
+using static SharpAlert.MainEntryPoint;
+using static SharpAlert.AlertProcessor;
+
 
 namespace SharpAlert
 {
@@ -95,7 +98,6 @@ namespace SharpAlert
 
         public void UpdateFields(string id, string alert, string intro, string text, string url, string audio, string image, string type)
         {
-            this.Text = $"SharpAlert - {id}";
             AlertSubtitleStr = alert;
             AlertText.Text = AlertSubtitleStr;
             AlertIntroTextStr = intro;
@@ -106,35 +108,15 @@ namespace SharpAlert
             AlertImageUrlStr = image;
             AlertType = type;
 
-            //switch (type)
-            //{
-            //    case "alert":
-            //        TitleText.BackColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "EMERGENCY ALERT";
-            //        break;
-            //    case "update":
-            //        TitleText.BackColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "ALERT UPDATE";
-            //        break;
-            //    case "cancel":
-            //        TitleText.BackColor = Color.FromArgb(0, 80, 200);
-            //        SubtitlePanel.BackColor = Color.FromArgb(0, 50, 100);
-            //        TitleText.Text = "ALERT CANCELLED";
-            //        break;
-            //    case "test":
-            //        TitleText.BackColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "ALERT TEST";
-            //        break;
-            //    default:
-            //        TitleText.BackColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "EMERGENCY ALERT";
-            //        break;
-            //}
+            var message = GetTextFromMessageType(type);
+            BottomOutlinePanel.BackColor = message.MainColor;
+            AlertText.BackColor = message.SubColor;
         }
+
+        //private Color ColorTitleAndBordersOne = Color.Red;
+        //private Color ColorSubtitleOnlyOne = Color.FromArgb(140, 0, 0);
+        //private readonly Color ColorTitleAndBordersTwo = Color.SlateGray;
+        //private readonly Color ColorSubtitleOnlyTwo = Color.DarkSlateGray;
 
         private void UpdateTaskbarProgress(TaskbarProgressState state, ulong completed, ulong total)
         {
@@ -183,14 +165,16 @@ namespace SharpAlert
 
             StopAllAudioSilently();
 
-            if (AlertType != "cancel")
-            {
-                PlayStartToneFile(false);
-            }
-            else
-            {
-                PlayFromUnmanagedSource(Resources.ui_cancellation_1);
-            }
+            //if (AlertType != "cancel")
+            //{
+            //    PlayStartToneFile(false);
+            //}
+            //else
+            //{
+            //    PlayFromUnmanagedSource(Resources.ui_cancellation_1);
+            //}
+
+            PlayStartToneFile();
 
             AutoTTS.Start();
 
@@ -210,7 +194,6 @@ namespace SharpAlert
                     this.Size = new Size(Screen.PrimaryScreen.Bounds.Width - 100,
                         Screen.PrimaryScreen.Bounds.Height - 100);
                 }
-                // fixme
                 this.CenterToScreen();
             }
             else
@@ -252,7 +235,7 @@ namespace SharpAlert
             FlashTwo = false;
             WindowFlash.Start();
 
-            Console.WriteLine("[Alert GUI] Window shown.");
+            ConsoleExt.WriteLine("[Alert GUI] Window shown.");
         }
 
         private void DismissButton_Click(object sender, EventArgs e)
@@ -264,7 +247,7 @@ namespace SharpAlert
 
         private void AlertForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!MainEntryPoint.AllowThreadRestarts) return;
+            if (!AllowThreadRestarts) return;
             UnlockButtons(false);
             AutoExit.Stop();
             StopAllAudioSilently();
@@ -312,7 +295,7 @@ namespace SharpAlert
         {
             FadeOutExitReady = false;
             this.Opacity = 0;
-            Console.WriteLine("[Alert GUI] Window closed.");
+            ConsoleExt.WriteLine("[Alert GUI] Window closed.");
         }
 
         private bool FlashOne = false;
@@ -445,7 +428,7 @@ namespace SharpAlert
 
         private void TerminateSelf_Tick(object sender, EventArgs e)
         {
-            if (!MainEntryPoint.AllowThreadRestarts)
+            if (!AllowThreadRestarts)
             {
                 FadeOutExitReady = true;
                 this.Close();

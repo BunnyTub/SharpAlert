@@ -185,16 +185,18 @@ namespace SharpAlert
                 UnlockButtons(true);
             }
 
-            if (AlertType != "cancel")
-            {
-                //PlayFromManagedSource(GenerateFSKStream($"{AlertIDStr}|{DateTime.UtcNow:s)}|{AlertType}|{AlertSubtitleStr.Replace("|", "_")}"));
-                //PlayFromUnmanagedSource(Resources.ui_warning_1);
-                PlayStartToneFile();
-            }
-            else
-            {
-                PlayFromUnmanagedSource(Resources.ui_cancellation_1);
-            }
+            //if (AlertType != "cancel")
+            //{
+            //    //PlayFromManagedSource(GenerateFSKStream($"{AlertIDStr}|{DateTime.UtcNow:s)}|{AlertType}|{AlertSubtitleStr.Replace("|", "_")}"));
+            //    //PlayFromUnmanagedSource(Resources.ui_warning_1);
+            //    PlayStartToneFile();
+            //}
+            //else
+            //{
+            //    PlayFromUnmanagedSource(Resources.ui_cancellation_1);
+            //}
+
+            PlayStartToneFile();
 
             if (Settings.Default.alertTitlebarControls)
             {
@@ -212,7 +214,7 @@ namespace SharpAlert
                         Screen.PrimaryScreen.WorkingArea.Height - this.Height - LocationMargin
                     );
 
-            Console.WriteLine("[Alert GUI] Window shown.");
+            ConsoleExt.WriteLine("[Alert GUI] Window shown.");
         }
 
         private void DismissButton_Click(object sender, EventArgs e)
@@ -297,7 +299,7 @@ namespace SharpAlert
         {
             FadeOutExitReady = false;
             this.Opacity = 0;
-            Console.WriteLine("[Alert GUI] Window closed.");
+            ConsoleExt.WriteLine("[Alert GUI] Window closed.");
         }
 
         private bool FlashOne = false;

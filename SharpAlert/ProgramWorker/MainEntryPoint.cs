@@ -20,11 +20,11 @@ namespace SharpAlert
 {
     internal static class VersionInfo
     {
-        public static readonly int MajorVersion = 8;
-        public static readonly int MinorVersion = 1;
-        public static readonly bool BetaVersion = true;
+        public static readonly int MajorVersion = 9;
+        public static readonly int MinorVersion = 0;
+        public static readonly bool BetaVersion = false;
         public static readonly DateTime BetaTimeEnd = DateTime.ParseExact(
-            "6/1/2025",
+            "6/2/2025",
             "M/d/yyyy",
             CultureInfo.InvariantCulture,
             DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal
@@ -49,6 +49,7 @@ namespace SharpAlert
         public static readonly DateTime startDT = DateTime.UtcNow;
         public static bool AllowThreadRestarts = true;
         public static FeedCapture feed;
+        public static WeatherAtomCapture atomfeed;
         public static DirectFeedCapture directfeed;
         public static CacheCapture cache;
         public static DataProcessor dataproc;
@@ -61,7 +62,6 @@ namespace SharpAlert
         public static object StatusWindowLock = new object();
         public static NotifyIcon notify;
         public static HyperServer hyper;
-        public static SpeechSynthesizer engine;
         public static object AlertValuesLock = new object();
         private static bool _AlertDisplaying = false;
         public static DateTime AlertDisplayingBeginTime { get; private set; } = DateTime.MinValue;
@@ -105,7 +105,7 @@ namespace SharpAlert
                 notify.ShowBalloonTip(5000);
             }
 
-            Console.WriteLine("Preparing for termination.");
+            ConsoleExt.WriteLine("Preparing for termination.");
             AllowThreadRestarts = false;
             Thread.Sleep(500);
 
@@ -122,32 +122,32 @@ namespace SharpAlert
 
                 //if (ServiceRunnerScheduled)
                 {
-                    Console.WriteLine("Hyper Server is shutting down.");
+                    ConsoleExt.WriteLine("Hyper Server is shutting down.");
                     hyper?.ServiceStop();
-                    Console.WriteLine("Feed Capture is shutting down.");
+                    ConsoleExt.WriteLine("Feed Capture is shutting down.");
                     feed?.ServiceStop();
-                    Console.WriteLine("Direct Feed Capture is shutting down.");
+                    ConsoleExt.WriteLine("Direct Feed Capture is shutting down.");
                     directfeed?.ServiceStop();
-                    Console.WriteLine("Cache Capture is shutting down.");
+                    ConsoleExt.WriteLine("Cache Capture is shutting down.");
                     cache?.ServiceStop();
-                    Console.WriteLine("Data Processor is shutting down.");
+                    ConsoleExt.WriteLine("Data Processor is shutting down.");
                     dataproc?.ServiceStop();
-                    Console.WriteLine("Alert Processor is shutting down.");
+                    ConsoleExt.WriteLine("Alert Processor is shutting down.");
                     lock (AlertProcessor.AlertLock)
                     {
                     }
-                    Console.WriteLine("Idle Window is shutting down.");
+                    ConsoleExt.WriteLine("Idle Window is shutting down.");
                     if (idle != null) DestroyIdleWindow();
-                    Console.WriteLine("Status Window is shutting down.");
+                    ConsoleExt.WriteLine("Status Window is shutting down.");
                     if (status != null) DestroyStatusWindow();
-                    Console.WriteLine("Stopping all sounds.");
+                    ConsoleExt.WriteLine("Stopping all sounds.");
                     try
                     {
                         StopAllAudioSilently();
                     }
                     catch (Exception)
                     {
-                        Console.WriteLine("Cannot stop some sounds.");
+                        ConsoleExt.WriteLine("Cannot stop some sounds.");
                     }
                     if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
                     {
@@ -161,7 +161,7 @@ namespace SharpAlert
             {
                 if (Finished)
                 {
-                    Console.WriteLine("Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-");
+                    ConsoleExt.WriteLine("Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-");
                     if (notify != null)
                     {
                         lock (notify)
@@ -181,7 +181,7 @@ namespace SharpAlert
                 i++;
             }
 
-            Console.WriteLine("Shutdown timed out. Say thanks to Ice Bear for his hard work... -w-");
+            ConsoleExt.WriteLine("Shutdown timed out. Say thanks to Ice Bear for his hard work... -w-");
             if (notify != null)
             {
                 lock (notify)
@@ -211,6 +211,16 @@ namespace SharpAlert
 
             if (args.Length >= 2)
             {
+                //if (args[1] == "--sharpalert-xml")
+                //{
+                //    // arg 2 contains SharpAlert XML
+                //    // see 
+                //    if (args.Length == 3)
+                //    {
+
+                //    }
+                //}
+
                 //if (args.Contains("--i-want-to-be-fucked-up-the-ass-like-a-gay-little-bunny-boy"))
                 //{
                 //    for (int i = 0; i < 20; i++)
@@ -256,9 +266,9 @@ namespace SharpAlert
                         {
                             Process parentProc = GetParentProcess();
 
-                            if (GetParentProcess().MainModule.FileName == AssemblyFile)
+                            if (parentProc.MainModule.FileName.ToLowerInvariant() == AssemblyFile.ToLowerInvariant())
                             {
-                                GetParentProcess().WaitForExit();
+                                parentProc.WaitForExit();
                                 Settings.Default.Save();
                                 SafeExit();
                             }
@@ -437,7 +447,7 @@ namespace SharpAlert
 
         public static void CreateIdleWindow()
         {
-            ThreadPool.QueueUserWorkItem(_ =>
+            ThreadDrool.StartAndForget(() =>
             {
                 CloseIdleWindow = true;
                 lock (IdleWindowLock)
@@ -454,7 +464,7 @@ namespace SharpAlert
         
         public static void CreateStatusWindow()
         {
-            ThreadPool.QueueUserWorkItem(_ =>
+            ThreadDrool.StartAndForget(() =>
             {
                 CloseStatusWindow = true;
                 lock (StatusWindowLock)

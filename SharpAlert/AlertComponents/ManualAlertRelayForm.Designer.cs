@@ -1,4 +1,4 @@
-﻿namespace SharpAlert.AlertComponents
+﻿namespace SharpAlert
 {
     partial class ManualAlertRelayForm
     {

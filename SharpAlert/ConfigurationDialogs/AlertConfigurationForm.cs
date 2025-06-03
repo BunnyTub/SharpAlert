@@ -310,24 +310,28 @@ namespace SharpAlert
                         if (AudioTinkeringFileDialog.ShowDialog() != DialogResult.OK)
                         {
                             Settings.Default.StartToneLocation = string.Empty;
-                            MessageBox.Show(this,
-                                "Reverted to default audio.",
-                                "SharpAlert",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
+                            lock (notify)
+                            {
+                                notify.BalloonTipTitle = "SharpAlert has audio changes";
+                                notify.BalloonTipText = "Reverted to default audio.";
+                                notify.BalloonTipIcon = ToolTipIcon.Info;
+                                notify.ShowBalloonTip(5000);
+                            }
                             return;
                         }
                         Settings.Default.StartToneLocation = AudioTinkeringFileDialog.FileName;
-                        MessageBox.Show(this, "Using linked audio.",
-                                "SharpAlert",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
+                        lock (notify)
+                        {
+                            notify.BalloonTipTitle = "SharpAlert has audio changes";
+                            notify.BalloonTipText = "Using linked audio.";
+                            notify.BalloonTipIcon = ToolTipIcon.Info;
+                            notify.ShowBalloonTip(5000);
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(this,
-                        $"{ex.StackTrace} {ex.Message}",
+                    MessageBox.Show($"{ex.StackTrace} {ex.Message}",
                         "SharpAlert",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
@@ -348,25 +352,28 @@ namespace SharpAlert
                         if (AudioTinkeringFileDialog.ShowDialog() != DialogResult.OK)
                         {
                             Settings.Default.EndToneLocation = string.Empty;
-                            MessageBox.Show(this,
-                                "Reverted to default audio.",
-                                "SharpAlert",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
+                            lock (notify)
+                            {
+                                notify.BalloonTipTitle = "SharpAlert has audio changes";
+                                notify.BalloonTipText = "Reverted to default audio.";
+                                notify.BalloonTipIcon = ToolTipIcon.Info;
+                                notify.ShowBalloonTip(5000);
+                            }
                             return;
                         }
                         Settings.Default.EndToneLocation = AudioTinkeringFileDialog.FileName;
-                        MessageBox.Show(this,
-                                "Using linked audio.",
-                                "SharpAlert",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
+                        lock (notify)
+                        {
+                            notify.BalloonTipTitle = "SharpAlert has audio changes";
+                            notify.BalloonTipText = "Using linked audio.";
+                            notify.BalloonTipIcon = ToolTipIcon.Info;
+                            notify.ShowBalloonTip(5000);
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(this,
-                        $"{ex.StackTrace} {ex.Message}",
+                    MessageBox.Show($"{ex.StackTrace} {ex.Message}",
                         "SharpAlert",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);

@@ -1,6 +1,7 @@
 ﻿using SharpAlert.Properties;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -11,7 +12,7 @@ using static SharpAlert.RegexList;
 
 namespace SharpAlert
 {
-    public class FeedCapture
+    public class WeatherAtomCapture
     {
         public class ServerInfo
         {
@@ -53,7 +54,7 @@ namespace SharpAlert
         public static int Calls { get; private set; } = 0;
 
         /// <summary>
-        /// Starts the HTTP Feed Capture service in the current thread as a client.
+        /// Starts the Atom Feed Capture service in the current thread as a client.
         /// </summary>
         /// <param name="useHTTPS">Use the secure version of Hypertext Transfer Protocol to connect to the target server.</param>
         public void ServiceRun(bool useHTTPS)
@@ -67,6 +68,8 @@ namespace SharpAlert
                     string URLPrefix = useHTTPS ? "https" : "http";
                     bool AllConnectionsSuccessful = true;
 
+                    if (Stop) return;
+
                     lock (servers)
                     {
                         if (servers.Any())
@@ -77,7 +80,7 @@ namespace SharpAlert
                                 try
                                 {
                                     count--;
-                                    ConsoleExt.WriteLine($"[HTTP Feed Capture] Getting data from {server.ServerName}. URL -> {server.ServerPath}");
+                                    ConsoleExt.WriteLine($"[Atom Feed Capture] Getting data from {server.ServerName}. URL -> {server.ServerPath}");
                                     HttpResponseMessage message = client.GetAsync($"{URLPrefix}://{server.ServerPath}").Result;
                                     message.EnsureSuccessStatusCode();
 
@@ -85,12 +88,12 @@ namespace SharpAlert
                                     Calls++;
 
                                     string Result = message.Content.ReadAsStringAsync().Result;
-                                    EnrollAlerts(Result);
+                                    EnrollEntries(Result);
                                 }
                                 catch (Exception ex)
                                 {
                                     count++;
-                                    ConsoleExt.WriteLine($"[HTTP Feed Capture] {ex.Message}");
+                                    ConsoleExt.WriteLine($"[Atom Feed Capture] {ex.Message}");
                                     AllConnectionsSuccessful = false;
                                     server.LastRunSuccess = false;
                                 }
@@ -103,11 +106,11 @@ namespace SharpAlert
 
                             if (AllConnectionsSuccessful)
                             {
-                                ConsoleExt.WriteLine($"[HTTP Feed Capture] Fetched from all feeds successfully.");
+                                ConsoleExt.WriteLine($"[Atom Feed Capture] Fetched from all feeds successfully.");
                             }
                             else
                             {
-                                ConsoleExt.WriteLine("[HTTP Feed Capture] Not all feeds were fetched from successfully.");
+                                ConsoleExt.WriteLine("[Atom Feed Capture] Not all feeds were fetched from successfully.");
                             }
                         }
                     }
@@ -126,7 +129,7 @@ namespace SharpAlert
                 }
                 catch (TimeoutException)
                 {
-                    ConsoleExt.WriteLine($"[HTTP Feed Capture] Timed out.");
+                    ConsoleExt.WriteLine($"[Atom Feed Capture] Timed out.");
                     Thread.Sleep(15 * 1000);
                 }
                 catch (ThreadAbortException)
@@ -135,8 +138,8 @@ namespace SharpAlert
                 }
                 catch (Exception e)
                 {
-                    ConsoleExt.WriteLine($"[HTTP HTTP Feed Capture] {e.Message}");
-                    if (e.InnerException != null) ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.InnerException.Message}");
+                    ConsoleExt.WriteLine($"[HTTP Atom Feed Capture] {e.Message}");
+                    if (e.InnerException != null) ConsoleExt.WriteLine($"[Atom Feed Capture] {e.InnerException.Message}");
                     //if (LastConnectionSuccessful)
                     //{
                     //    lock (notify)
@@ -172,12 +175,113 @@ namespace SharpAlert
                 }
                 catch (Exception e)
                 {
-                    ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
+                    ConsoleExt.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
                 }
             }
         }
 
         private readonly object EnrollObject = new object();
+
+        public void EnrollEntries(string data)
+        {
+            MatchCollection entries = EntryRegex.Matches(data);
+
+            string AlertList = string.Empty;
+
+            int EntriesIndex = 0;
+            int EntriesDiscardCount = 0;
+
+            ConsoleExt.WriteLine($"[Atom Feed Capture] Processing {entries.Count} tag(s).");
+
+            foreach (Match entry in entries)
+            {
+                if (Stop) return;
+
+                EntriesIndex++;
+                if (EntriesIndex.ToString().Last() == "0".ToCharArray()[0])
+                {
+                    ConsoleExt.WriteLine($"[Atom Feed Capture] {EntriesIndex} tag(s) processed out of {entries.Count}.");
+                }
+                else
+                {
+                    if (entries.Count == EntriesIndex)
+                    {
+                        ConsoleExt.WriteLine($"[Atom Feed Capture] Processing last tag.");
+                    }
+                    else
+                    {
+                        if (EntriesIndex == 1)
+                        {
+                            ConsoleExt.WriteLine($"[Atom Feed Capture] Processing first tag.");
+                        }
+                    }
+                }
+
+                string EntryStr = entry.Groups[0].Value;
+
+                EntryStr = $"<alert><info>{EntryStr}</info></alert>";
+                EntryStr = EntryStr.Replace("<cap:", "<");
+                EntryStr = EntryStr.Replace("</cap:", "</");
+                EntryStr = EntryStr.Replace("<summary>", "<description>").Replace("</summary>", "</description>");
+                EntryStr = DescriptionRegex.Replace(EntryStr,
+                    $"<description>{DescriptionRegex.MatchOrDefault(EntryStr).Replace("\r", "").Replace("\n", " ").Trim()}</description>");
+
+                //ConsoleExt.WriteLine($"[Atom Feed Capture] {EntriesCount} -> {CreateMD5(entry.Groups[1].Value)} (entry name is unused)");
+                string Effective = AtomEffectiveRegex.MatchOrDefault(EntryStr, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
+                //ConsoleExt.WriteLine($"[Atom Feed Capture] Atom Effective: {Effective}");
+
+                string Expiry = AtomExpiresRegex.MatchOrDefault(EntryStr, DateTime.UtcNow.AddHours(1).ToString("O", CultureInfo.InvariantCulture));
+                //ConsoleExt.WriteLine($"[Atom Feed Capture] Atom Expires: {Expiry}");
+
+                try
+                {
+                    if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
+                    {
+                        EntriesDiscardCount++;
+                        //ConsoleExt.WriteLine($"[Atom Feed Capture] Entry discarded because it has expired.");
+                        continue;
+                    }
+                }
+                catch (Exception)
+                {
+                    //ConsoleExt.WriteLine($"[Atom Feed Capture] Expiry check skipped because it has failed. {ex.Message}");
+                }
+
+                AlertList += $"{EntryStr}\r\n";
+
+                //string ReturnURL = EntryLinkRegex.MatchOrDefault(entry.Groups[1].Value);
+
+                //if (string.IsNullOrWhiteSpace(ReturnURL))
+                //{
+                //    EntriesDiscardCount++;
+                //    //ConsoleExt.WriteLine($"[Atom Feed Capture] Entry discarded because a suitable XML link could not be found.");
+                //    continue;
+                //}
+
+                //try
+                //{
+                //    HttpResponseMessage message = client.GetAsync(ReturnURL).Result;
+                //    message.EnsureSuccessStatusCode();
+
+                //    if (Calls >= 100000) Calls = 0;
+                //    Calls++;
+
+                //    string Result = message.Content.ReadAsStringAsync().Result;
+                //    AlertList += $"{Result}\r\n";
+                //    //ConsoleExt.WriteLine($"[Atom Feed Capture] Entry saved for further processing.");
+                //}
+                //catch (Exception ex)
+                //{
+                //    ConsoleExt.WriteLine($"[Atom Feed Capture] Entry could not be saved. {ex.Message}");
+                //}
+
+                //Thread.Sleep(10); // we're gonna get rate limited. Awesome!
+            }
+
+            ConsoleExt.WriteLine($"[Atom Feed Capture] {EntriesIndex} tag(s) saved, and {EntriesDiscardCount} tag(s) discarded. Tags remaining: {EntriesIndex - EntriesDiscardCount}");
+
+            EnrollAlerts(AlertList);
+        }
 
         public void EnrollAlerts(string data, bool reset = false)
         {
@@ -185,32 +289,38 @@ namespace SharpAlert
             {
                 MatchCollection alertMatches = AlertRegex.Matches(data);
                 int alertIndex = 0;
+                int alertDiscardCount = 0;
 
                 if (alertMatches != null || alertMatches.Count != 0)
                 {
+                    ConsoleExt.WriteLine($"[Atom Feed Capture] Processing {alertMatches.Count} alert(s).");
+
                     foreach (Match alert in alertMatches)
                     {
                         try
                         {
                             alertIndex++;
                             if (alert.Value is null) continue;
+                            if (alertIndex.ToString().Last() == "0".ToCharArray()[0])
+                            {
+                                ConsoleExt.WriteLine($"[Atom Feed Capture] {alertIndex} alert(s) processed out of {alertMatches.Count}.");
+                            }
+                            else
+                            {
+                                if (alertMatches.Count == alertIndex)
+                                {
+                                    ConsoleExt.WriteLine($"[Atom Feed Capture] Processing last alert.");
+                                }
+                                else
+                                {
+                                    if (alertIndex == 1)
+                                    {
+                                        ConsoleExt.WriteLine($"[Atom Feed Capture] Processing first alert.");
+                                    }
+                                }
+                            }
 
                             string filename = IdentifierRegex.MatchOrDefault(alert.Value, CreateMD5(alert.Value));
-
-                            //if (string.IsNullOrWhiteSpace(filename))
-                            //{
-                            //    ConsoleExt.WriteLine("[HTTP Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
-                            //    filename = CreateMD5(alert.Value);
-                            //}
-
-                            ConsoleExt.WriteLine($"[HTTP Feed Capture] {alertIndex} -> {filename}");
-
-                            //string StartingSharpAlertReplay = "<SharpAlertReplay>";
-                            //string EndingSharpAlertReplay = "<SharpAlertReplay>";
-                            //if (!alert.Value.Contains($"{StartingSharpAlertReplay}") || !alert.Value.Contains($"{EndingSharpAlertReplay}"))
-                            //{
-                            //    string alertReplayValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
-                            //}
 
                             SharpDataItem item = new SharpDataItem(filename, alert.Value);
 
@@ -223,102 +333,40 @@ namespace SharpAlert
                             {
                                 if (TryAddDataToHistory(item))
                                 {
-                                    ConsoleExt.WriteLine($"[HTTP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
+                                    //ConsoleExt.WriteLine($"[Atom Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
+                                    alertDiscardCount++;
                                 }
                             }
                             else
                             {
                                 if (TryAddDataToQueue(item))
                                 {
-                                    ConsoleExt.WriteLine($"[HTTP Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
+                                    //ConsoleExt.WriteLine($"[Atom Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
                                 }
                                 else
                                 {
-                                    ConsoleExt.WriteLine($"[HTTP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already in queue or history).");
+                                    //ConsoleExt.WriteLine($"[Atom Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already in queue or history).");
+                                    alertDiscardCount++;
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            ConsoleExt.WriteLine($"[HTTP Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
+                            ConsoleExt.WriteLine($"[Atom Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
                         }
                     }
-                    if (alertIndex != 0) ConsoleExt.WriteLine($"[HTTP Feed Capture] {alertIndex} alert(s) checked.");
-                    else ConsoleExt.WriteLine($"[HTTP Feed Capture] No alerts were checked.");
+                    if (alertIndex != 0)
+                    {
+                        ConsoleExt.WriteLine($"[Atom Feed Capture] {alertIndex} alert(s) checked, and {alertDiscardCount} alert(s) discarded. Alerts remaining: {alertIndex - alertDiscardCount}");
+                    }
+                    else ConsoleExt.WriteLine($"[Atom Feed Capture] No alerts were checked.");
                 }
                 else
                 {
-                    ConsoleExt.WriteLine("[HTTP Feed Capture] There are no alerts to enroll.");
+                    ConsoleExt.WriteLine("[Atom Feed Capture] There are no alerts to enroll.");
                 }
             }
         }
-
-        /// <summary>
-        /// Starts the HTTP Feed Capture service in the current thread as a server instead of a client.
-        /// </summary>
-        /// <param name="useHTTPS">Use the secure version of Hypertext Transfer Protocol to connect to the target server.</param>
-        //public void ServerServiceRun(bool useHTTPS)
-        //{
-        //    if (Stop) return;
-
-        //    string URLPrefix = useHTTPS ? "https" : "http";
-        //    while (true)
-        //    {
-        //        try
-        //        {
-        //            ConsoleExt.WriteLine($"[HTTP Feed Capture] Getting data from the server.");
-        //            Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server}");
-        //            if (!message.Wait(10000)) continue;
-        //            message.Result.EnsureSuccessStatusCode();
-
-        //            if (Calls > 100000) Calls = 0;
-        //            Calls++;
-
-        //            Result = message.Result.Content.ReadAsStringAsync().Result;
-
-        //            ConsoleExt.WriteLine($"[HTTP Feed Capture] Grabbed data from the server.");
-
-        //            for (int i = 0; !(i >= 30);)
-        //            {
-        //                if (Stop)
-        //                {
-        //                    Stop = false;
-        //                    return;
-        //                }
-        //                Thread.Sleep(1000);
-        //                i++;
-        //            }
-        //        }
-        //        catch (SocketException e)
-        //        {
-        //            ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.Message}");
-        //            Thread.Sleep(1000);
-        //        }
-        //        catch (TimeoutException)
-        //        {
-        //            ConsoleExt.WriteLine($"[HTTP Feed Capture] Timed out.");
-        //        }
-        //        catch (HttpRequestException e)
-        //        {
-        //            ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message} {e.Message}");
-        //        }
-        //        catch (AggregateException e)
-        //        {
-        //            ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
-        //        }
-        //        catch (TaskCanceledException)
-        //        {
-        //            ConsoleExt.WriteLine("[HTTP Feed Capture] The executing task was canceled.");
-        //        }
-        //        catch (ThreadAbortException)
-        //        {
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
-        //        }
-        //    }
-        //}
 
         public static bool TryAddDataToQueue(SharpDataItem item)
         {
@@ -340,7 +388,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
+                        ConsoleExt.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }
@@ -367,7 +415,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
+                        ConsoleExt.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }
@@ -393,7 +441,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
+                        ConsoleExt.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }

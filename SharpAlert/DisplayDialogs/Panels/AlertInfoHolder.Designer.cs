@@ -1,4 +1,4 @@
-﻿namespace SharpAlert.DisplayDialogs.Panels
+﻿namespace SharpAlert
 {
     partial class AlertInfoHolder
     {

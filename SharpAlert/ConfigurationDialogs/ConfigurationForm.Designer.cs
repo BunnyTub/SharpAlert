@@ -61,22 +61,30 @@
             this.AudioDeviceCombo = new System.Windows.Forms.ComboBox();
             this.RefreshOutputsButton = new System.Windows.Forms.Button();
             this.DisableDialogsBox = new System.Windows.Forms.CheckBox();
+            this.RevealAlertIdentifierInput = new System.Windows.Forms.TextBox();
+            this.RevealButton = new System.Windows.Forms.Button();
+            this.RevealRecentButton = new System.Windows.Forms.Button();
+            this.LegacyAudioPlayerBox = new System.Windows.Forms.CheckBox();
             this.DiscordWebhookGroup = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.AlertAppearanceAndSoundsGroup = new System.Windows.Forms.GroupBox();
-            this.AudioOutputLabel = new System.Windows.Forms.Label();
+            this.AdvancedAudioGroup = new System.Windows.Forms.GroupBox();
             this.GlobalVolumeLabel = new System.Windows.Forms.Label();
+            this.AudioOutputLabel = new System.Windows.Forms.Label();
             this.PastAlertsGroup = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
             this.AlertListRefresher = new System.Windows.Forms.Timer(this.components);
             this.AudioDeviceMessage = new System.Windows.Forms.Timer(this.components);
-            this.AppliedLink = new System.Windows.Forms.LinkLabel();
+            this.AudioOutputClearLink = new System.Windows.Forms.LinkLabel();
+            this.SaveAllSettingsButton = new System.Windows.Forms.Button();
+            this.RawSettingsButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
             this.DiscordWebhookGroup.SuspendLayout();
             this.AlertAppearanceAndSoundsGroup.SuspendLayout();
+            this.AdvancedAudioGroup.SuspendLayout();
             this.PastAlertsGroup.SuspendLayout();
             this.ConfigurationPanel.SuspendLayout();
             this.SuspendLayout();
@@ -101,10 +109,10 @@
             this.DiscordWebhookURLInput.BackColor = System.Drawing.Color.Black;
             this.DiscordWebhookURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.DiscordWebhookURLInput.ForeColor = System.Drawing.Color.White;
-            this.DiscordWebhookURLInput.Location = new System.Drawing.Point(6, 60);
+            this.DiscordWebhookURLInput.Location = new System.Drawing.Point(6, 58);
             this.DiscordWebhookURLInput.Name = "DiscordWebhookURLInput";
             this.DiscordWebhookURLInput.Size = new System.Drawing.Size(170, 21);
-            this.DiscordWebhookURLInput.TabIndex = 2;
+            this.DiscordWebhookURLInput.TabIndex = 3;
             this.ToolTipInformation.SetToolTip(this.DiscordWebhookURLInput, "The Discord webhook URL to send data to.");
             this.DiscordWebhookURLInput.UseSystemPasswordChar = true;
             this.DiscordWebhookURLInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DiscordWebhookURLInput_KeyDown);
@@ -114,10 +122,10 @@
             this.DiscordWebhookAppendInput.BackColor = System.Drawing.Color.Black;
             this.DiscordWebhookAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.DiscordWebhookAppendInput.ForeColor = System.Drawing.Color.White;
-            this.DiscordWebhookAppendInput.Location = new System.Drawing.Point(182, 60);
+            this.DiscordWebhookAppendInput.Location = new System.Drawing.Point(182, 58);
             this.DiscordWebhookAppendInput.Name = "DiscordWebhookAppendInput";
             this.DiscordWebhookAppendInput.Size = new System.Drawing.Size(170, 21);
-            this.DiscordWebhookAppendInput.TabIndex = 3;
+            this.DiscordWebhookAppendInput.TabIndex = 4;
             this.ToolTipInformation.SetToolTip(this.DiscordWebhookAppendInput, "The message to be appended after all data of an alert is sent successfully.");
             this.DiscordWebhookAppendInput.UseSystemPasswordChar = true;
             this.DiscordWebhookAppendInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DiscordWebhookAppendInput_KeyDown);
@@ -130,10 +138,10 @@
             this.NS_UnhideSecureBox.Checked = true;
             this.NS_UnhideSecureBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.NS_UnhideSecureBox.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.NS_UnhideSecureBox.Location = new System.Drawing.Point(358, 56);
+            this.NS_UnhideSecureBox.Location = new System.Drawing.Point(358, 54);
             this.NS_UnhideSecureBox.Name = "NS_UnhideSecureBox";
             this.NS_UnhideSecureBox.Size = new System.Drawing.Size(43, 25);
-            this.NS_UnhideSecureBox.TabIndex = 4;
+            this.NS_UnhideSecureBox.TabIndex = 5;
             this.NS_UnhideSecureBox.Text = "Hide";
             this.ToolTipInformation.SetToolTip(this.NS_UnhideSecureBox, "Hides possibly sensitive information.");
             this.NS_UnhideSecureBox.UseVisualStyleBackColor = false;
@@ -143,10 +151,10 @@
             // 
             this.SaveDiscordSettingsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.SaveDiscordSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SaveDiscordSettingsButton.Location = new System.Drawing.Point(407, 56);
+            this.SaveDiscordSettingsButton.Location = new System.Drawing.Point(407, 54);
             this.SaveDiscordSettingsButton.Name = "SaveDiscordSettingsButton";
             this.SaveDiscordSettingsButton.Size = new System.Drawing.Size(120, 25);
-            this.SaveDiscordSettingsButton.TabIndex = 1;
+            this.SaveDiscordSettingsButton.TabIndex = 6;
             this.SaveDiscordSettingsButton.Text = "Modfiy Webhook";
             this.ToolTipInformation.SetToolTip(this.SaveDiscordSettingsButton, "Saves the webhook and message data.\r\nIf this button is red, click it to save chan" +
         "ges.");
@@ -155,12 +163,14 @@
             // 
             // AlertHistoryClearButton
             // 
+            this.AlertHistoryClearButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.AlertHistoryClearButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.AlertHistoryClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.AlertHistoryClearButton.Location = new System.Drawing.Point(569, 49);
+            this.AlertHistoryClearButton.Location = new System.Drawing.Point(592, 78);
             this.AlertHistoryClearButton.Name = "AlertHistoryClearButton";
-            this.AlertHistoryClearButton.Size = new System.Drawing.Size(72, 52);
-            this.AlertHistoryClearButton.TabIndex = 19;
+            this.AlertHistoryClearButton.Size = new System.Drawing.Size(72, 77);
+            this.AlertHistoryClearButton.TabIndex = 26;
             this.AlertHistoryClearButton.Text = "Clear\r\nHistory";
             this.ToolTipInformation.SetToolTip(this.AlertHistoryClearButton, "Clears the history list.");
             this.AlertHistoryClearButton.UseVisualStyleBackColor = false;
@@ -168,38 +178,40 @@
             // 
             // AlertHistoryRefreshButton
             // 
+            this.AlertHistoryRefreshButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.AlertHistoryRefreshButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.AlertHistoryRefreshButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.AlertHistoryRefreshButton.Location = new System.Drawing.Point(569, 49);
+            this.AlertHistoryRefreshButton.Location = new System.Drawing.Point(592, 49);
             this.AlertHistoryRefreshButton.Name = "AlertHistoryRefreshButton";
             this.AlertHistoryRefreshButton.Size = new System.Drawing.Size(72, 23);
-            this.AlertHistoryRefreshButton.TabIndex = 18;
+            this.AlertHistoryRefreshButton.TabIndex = 25;
             this.AlertHistoryRefreshButton.Text = "Refresh";
             this.ToolTipInformation.SetToolTip(this.AlertHistoryRefreshButton, "Refreshes the history list.\r\nRefreshing happens automatically every second, so th" +
         "is button may be removed in the future.");
             this.AlertHistoryRefreshButton.UseVisualStyleBackColor = false;
-            this.AlertHistoryRefreshButton.Visible = false;
             this.AlertHistoryRefreshButton.Click += new System.EventHandler(this.AlertHistoryRefreshButton_Click);
             // 
             // AlertHistoryReplayRecentButton
             // 
+            this.AlertHistoryReplayRecentButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.AlertHistoryReplayRecentButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.AlertHistoryReplayRecentButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.AlertHistoryReplayRecentButton.Location = new System.Drawing.Point(491, 20);
+            this.AlertHistoryReplayRecentButton.Location = new System.Drawing.Point(514, 20);
             this.AlertHistoryReplayRecentButton.Name = "AlertHistoryReplayRecentButton";
             this.AlertHistoryReplayRecentButton.Size = new System.Drawing.Size(72, 23);
-            this.AlertHistoryReplayRecentButton.TabIndex = 20;
+            this.AlertHistoryReplayRecentButton.TabIndex = 22;
             this.AlertHistoryReplayRecentButton.Text = "Replay";
-            this.ToolTipInformation.SetToolTip(this.AlertHistoryReplayRecentButton, "Immediately re-adds the most recent alert back into the queue after wiping it fro" +
-        "m the history.");
+            this.ToolTipInformation.SetToolTip(this.AlertHistoryReplayRecentButton, "Immediately calls the Alert Proccessor to process the most recent alert again.\r\nE" +
+        "xpiry does not affect whether or not an alert can be replayed.");
             this.AlertHistoryReplayRecentButton.UseVisualStyleBackColor = false;
             this.AlertHistoryReplayRecentButton.Click += new System.EventHandler(this.AlertHistoryReplayRecentButton_Click);
             // 
             // AlertHistoryDumpLink
             // 
+            this.AlertHistoryDumpLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.AlertHistoryDumpLink.AutoSize = true;
-            this.AlertHistoryDumpLink.LinkColor = System.Drawing.Color.Yellow;
-            this.AlertHistoryDumpLink.Location = new System.Drawing.Point(378, 17);
+            this.AlertHistoryDumpLink.LinkColor = System.Drawing.Color.Pink;
+            this.AlertHistoryDumpLink.Location = new System.Drawing.Point(401, 17);
             this.AlertHistoryDumpLink.Name = "AlertHistoryDumpLink";
             this.AlertHistoryDumpLink.Size = new System.Drawing.Size(107, 15);
             this.AlertHistoryDumpLink.TabIndex = 16;
@@ -212,12 +224,13 @@
             // 
             // OpenCreditsButton
             // 
+            this.OpenCreditsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.OpenCreditsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.OpenCreditsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.OpenCreditsButton.Location = new System.Drawing.Point(12, 351);
+            this.OpenCreditsButton.Location = new System.Drawing.Point(12, 427);
             this.OpenCreditsButton.Name = "OpenCreditsButton";
             this.OpenCreditsButton.Size = new System.Drawing.Size(61, 23);
-            this.OpenCreditsButton.TabIndex = 20;
+            this.OpenCreditsButton.TabIndex = 27;
             this.OpenCreditsButton.Text = "Credits";
             this.ToolTipInformation.SetToolTip(this.OpenCreditsButton, "Ice Bear definitely helped here :3 (This is a dialog, not a link)");
             this.OpenCreditsButton.UseVisualStyleBackColor = false;
@@ -225,8 +238,9 @@
             // 
             // label10
             // 
+            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(79, 355);
+            this.label10.Location = new System.Drawing.Point(79, 431);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(246, 15);
             this.label10.TabIndex = 11;
@@ -235,12 +249,13 @@
             // 
             // CacheOperationButton
             // 
+            this.CacheOperationButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.CacheOperationButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.CacheOperationButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.CacheOperationButton.Location = new System.Drawing.Point(459, 351);
+            this.CacheOperationButton.Location = new System.Drawing.Point(482, 427);
             this.CacheOperationButton.Name = "CacheOperationButton";
             this.CacheOperationButton.Size = new System.Drawing.Size(94, 23);
-            this.CacheOperationButton.TabIndex = 22;
+            this.CacheOperationButton.TabIndex = 29;
             this.CacheOperationButton.Text = "Reset Cache";
             this.ToolTipInformation.SetToolTip(this.CacheOperationButton, "Re-caches information from the internet.");
             this.CacheOperationButton.UseMnemonic = false;
@@ -253,7 +268,7 @@
             this.BusyLockText.Font = new System.Drawing.Font("Arial", 12F);
             this.BusyLockText.Location = new System.Drawing.Point(0, 0);
             this.BusyLockText.Name = "BusyLockText";
-            this.BusyLockText.Size = new System.Drawing.Size(671, 405);
+            this.BusyLockText.Size = new System.Drawing.Size(694, 481);
             this.BusyLockText.TabIndex = 14;
             this.BusyLockText.Text = "Please wait or dismiss all alerts to configure settings.";
             this.BusyLockText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -261,23 +276,25 @@
             // 
             // statusWindowBox
             // 
+            this.statusWindowBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.statusWindowBox.AutoSize = true;
-            this.statusWindowBox.Location = new System.Drawing.Point(345, 354);
+            this.statusWindowBox.Location = new System.Drawing.Point(368, 430);
             this.statusWindowBox.Name = "statusWindowBox";
             this.statusWindowBox.Size = new System.Drawing.Size(106, 19);
-            this.statusWindowBox.TabIndex = 21;
+            this.statusWindowBox.TabIndex = 28;
             this.statusWindowBox.Text = "Status window";
             this.ToolTipInformation.SetToolTip(this.statusWindowBox, "Shows the status window.");
             this.statusWindowBox.UseVisualStyleBackColor = true;
             // 
             // TTSButton
             // 
+            this.TTSButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.TTSButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.TTSButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.TTSButton.Location = new System.Drawing.Point(559, 351);
+            this.TTSButton.Location = new System.Drawing.Point(582, 427);
             this.TTSButton.Name = "TTSButton";
             this.TTSButton.Size = new System.Drawing.Size(100, 23);
-            this.TTSButton.TabIndex = 23;
+            this.TTSButton.TabIndex = 30;
             this.TTSButton.Text = "TTS Settings";
             this.ToolTipInformation.SetToolTip(this.TTSButton, "Opens the TTS configuration window.");
             this.TTSButton.UseMnemonic = false;
@@ -289,10 +306,10 @@
             this.AlertButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.AlertButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.AlertButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.AlertButton.Location = new System.Drawing.Point(534, 12);
+            this.AlertButton.Location = new System.Drawing.Point(557, 12);
             this.AlertButton.Name = "AlertButton";
             this.AlertButton.Size = new System.Drawing.Size(125, 23);
-            this.AlertButton.TabIndex = 0;
+            this.AlertButton.TabIndex = 2;
             this.AlertButton.Text = "Message Settings";
             this.ToolTipInformation.SetToolTip(this.AlertButton, "Opens the alert configuration window.");
             this.AlertButton.UseMnemonic = false;
@@ -301,8 +318,9 @@
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 381);
+            this.label3.Location = new System.Drawing.Point(9, 457);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(616, 15);
@@ -314,7 +332,7 @@
             // volumeBar
             // 
             this.volumeBar.LargeChange = 1;
-            this.volumeBar.Location = new System.Drawing.Point(60, 49);
+            this.volumeBar.Location = new System.Drawing.Point(60, 17);
             this.volumeBar.Name = "volumeBar";
             this.volumeBar.Size = new System.Drawing.Size(320, 45);
             this.volumeBar.TabIndex = 14;
@@ -323,6 +341,9 @@
             // 
             // AlertHistoryOutput
             // 
+            this.AlertHistoryOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.AlertHistoryOutput.BackColor = System.Drawing.Color.Black;
             this.AlertHistoryOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AlertHistoryOutput.Font = new System.Drawing.Font("Arial", 12F);
@@ -332,44 +353,47 @@
             this.AlertHistoryOutput.Name = "AlertHistoryOutput";
             this.AlertHistoryOutput.ReadOnly = true;
             this.AlertHistoryOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.AlertHistoryOutput.Size = new System.Drawing.Size(479, 66);
-            this.AlertHistoryOutput.TabIndex = 15;
+            this.AlertHistoryOutput.Size = new System.Drawing.Size(502, 91);
+            this.AlertHistoryOutput.TabIndex = 18;
             this.ToolTipInformation.SetToolTip(this.AlertHistoryOutput, "This area shows the identifiers of each alert. If an identifier couldn\'t be found" +
         ", the identifier will be an MD5 value based on the alert\'s raw data.");
             this.AlertHistoryOutput.WordWrap = false;
             // 
             // alertNoRelayBox
             // 
+            this.alertNoRelayBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.alertNoRelayBox.AutoSize = true;
-            this.alertNoRelayBox.Location = new System.Drawing.Point(396, 20);
+            this.alertNoRelayBox.Location = new System.Drawing.Point(419, 20);
             this.alertNoRelayBox.Name = "alertNoRelayBox";
             this.alertNoRelayBox.Size = new System.Drawing.Size(126, 19);
-            this.alertNoRelayBox.TabIndex = 25;
+            this.alertNoRelayBox.TabIndex = 12;
             this.alertNoRelayBox.Text = "Disable USB relay";
             this.ToolTipInformation.SetToolTip(this.alertNoRelayBox, "Stops USB relays from being triggered when alerts are being relayed.");
             this.alertNoRelayBox.UseVisualStyleBackColor = true;
             // 
             // alertPlayEndToneBox
             // 
+            this.alertPlayEndToneBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.alertPlayEndToneBox.AutoSize = true;
-            this.alertPlayEndToneBox.Location = new System.Drawing.Point(290, 20);
+            this.alertPlayEndToneBox.Location = new System.Drawing.Point(313, 20);
             this.alertPlayEndToneBox.Name = "alertPlayEndToneBox";
             this.alertPlayEndToneBox.Size = new System.Drawing.Size(100, 19);
-            this.alertPlayEndToneBox.TabIndex = 28;
+            this.alertPlayEndToneBox.TabIndex = 11;
             this.alertPlayEndToneBox.Text = "Play end tone";
             this.ToolTipInformation.SetToolTip(this.alertPlayEndToneBox, "Plays an auditory tone when an alert is closed.");
             this.alertPlayEndToneBox.UseVisualStyleBackColor = true;
             // 
             // PlayTestButton
             // 
+            this.PlayTestButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PlayTestButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.PlayTestButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.PlayTestButton.Font = new System.Drawing.Font("Arial", 9F);
             this.PlayTestButton.ForeColor = System.Drawing.Color.White;
-            this.PlayTestButton.Location = new System.Drawing.Point(569, 20);
+            this.PlayTestButton.Location = new System.Drawing.Point(592, 20);
             this.PlayTestButton.Name = "PlayTestButton";
             this.PlayTestButton.Size = new System.Drawing.Size(72, 23);
-            this.PlayTestButton.TabIndex = 17;
+            this.PlayTestButton.TabIndex = 24;
             this.PlayTestButton.Text = "New Alert";
             this.ToolTipInformation.SetToolTip(this.PlayTestButton, "Opens the alert editor window.");
             this.PlayTestButton.UseVisualStyleBackColor = false;
@@ -377,14 +401,16 @@
             // 
             // ImportFileButton
             // 
+            this.ImportFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ImportFileButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.ImportFileButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.ImportFileButton.Font = new System.Drawing.Font("Arial", 9F);
             this.ImportFileButton.ForeColor = System.Drawing.Color.White;
-            this.ImportFileButton.Location = new System.Drawing.Point(491, 49);
+            this.ImportFileButton.Location = new System.Drawing.Point(514, 49);
             this.ImportFileButton.Name = "ImportFileButton";
-            this.ImportFileButton.Size = new System.Drawing.Size(72, 52);
-            this.ImportFileButton.TabIndex = 21;
+            this.ImportFileButton.Size = new System.Drawing.Size(72, 106);
+            this.ImportFileButton.TabIndex = 23;
             this.ImportFileButton.Text = "Add File To Queue";
             this.ToolTipInformation.SetToolTip(this.ImportFileButton, resources.GetString("ImportFileButton.ToolTip"));
             this.ImportFileButton.UseVisualStyleBackColor = false;
@@ -392,11 +418,12 @@
             // 
             // DiscordWebhookConfirmAlertsBox
             // 
+            this.DiscordWebhookConfirmAlertsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.DiscordWebhookConfirmAlertsBox.AutoSize = true;
-            this.DiscordWebhookConfirmAlertsBox.Location = new System.Drawing.Point(537, 37);
+            this.DiscordWebhookConfirmAlertsBox.Location = new System.Drawing.Point(560, 35);
             this.DiscordWebhookConfirmAlertsBox.Name = "DiscordWebhookConfirmAlertsBox";
             this.DiscordWebhookConfirmAlertsBox.Size = new System.Drawing.Size(104, 19);
-            this.DiscordWebhookConfirmAlertsBox.TabIndex = 29;
+            this.DiscordWebhookConfirmAlertsBox.TabIndex = 7;
             this.DiscordWebhookConfirmAlertsBox.Text = "Confirm alerts";
             this.ToolTipInformation.SetToolTip(this.DiscordWebhookConfirmAlertsBox, "Shows a window with alert information for a short period of time.\r\nYou can either" +
         " forward the alert by waiting or clicking \"FORWARD\", or discard it by clicking \"" +
@@ -408,10 +435,10 @@
             this.RegionButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.RegionButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.RegionButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.RegionButton.Location = new System.Drawing.Point(403, 12);
+            this.RegionButton.Location = new System.Drawing.Point(426, 12);
             this.RegionButton.Name = "RegionButton";
             this.RegionButton.Size = new System.Drawing.Size(125, 23);
-            this.RegionButton.TabIndex = 30;
+            this.RegionButton.TabIndex = 1;
             this.RegionButton.Text = "Region Settings";
             this.ToolTipInformation.SetToolTip(this.RegionButton, "Opens the region configuration window.\r\n");
             this.RegionButton.UseMnemonic = false;
@@ -420,13 +447,12 @@
             // 
             // StyleButton
             // 
-            this.StyleButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.StyleButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.StyleButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.StyleButton.Location = new System.Drawing.Point(6, 20);
             this.StyleButton.Name = "StyleButton";
             this.StyleButton.Size = new System.Drawing.Size(125, 23);
-            this.StyleButton.TabIndex = 31;
+            this.StyleButton.TabIndex = 9;
             this.StyleButton.Text = "Style Settings";
             this.ToolTipInformation.SetToolTip(this.StyleButton, "Opens the style configuration window.");
             this.StyleButton.UseMnemonic = false;
@@ -435,17 +461,20 @@
             // 
             // DiscordWebhookRelayLocallyBox
             // 
+            this.DiscordWebhookRelayLocallyBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.DiscordWebhookRelayLocallyBox.AutoSize = true;
-            this.DiscordWebhookRelayLocallyBox.Location = new System.Drawing.Point(537, 62);
+            this.DiscordWebhookRelayLocallyBox.Location = new System.Drawing.Point(560, 60);
             this.DiscordWebhookRelayLocallyBox.Name = "DiscordWebhookRelayLocallyBox";
             this.DiscordWebhookRelayLocallyBox.Size = new System.Drawing.Size(94, 19);
-            this.DiscordWebhookRelayLocallyBox.TabIndex = 30;
+            this.DiscordWebhookRelayLocallyBox.TabIndex = 8;
             this.DiscordWebhookRelayLocallyBox.Text = "Relay locally";
             this.ToolTipInformation.SetToolTip(this.DiscordWebhookRelayLocallyBox, "Relay alerts locally in addition to sending a message.");
             this.DiscordWebhookRelayLocallyBox.UseVisualStyleBackColor = true;
             // 
             // AudioDeviceCombo
             // 
+            this.AudioDeviceCombo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.AudioDeviceCombo.BackColor = System.Drawing.Color.Black;
             this.AudioDeviceCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.AudioDeviceCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -453,10 +482,10 @@
             this.AudioDeviceCombo.FormattingEnabled = true;
             this.AudioDeviceCombo.Items.AddRange(new object[] {
             "Refresh the outputs..."});
-            this.AudioDeviceCombo.Location = new System.Drawing.Point(386, 67);
+            this.AudioDeviceCombo.Location = new System.Drawing.Point(386, 35);
             this.AudioDeviceCombo.Name = "AudioDeviceCombo";
-            this.AudioDeviceCombo.Size = new System.Drawing.Size(226, 23);
-            this.AudioDeviceCombo.TabIndex = 37;
+            this.AudioDeviceCombo.Size = new System.Drawing.Size(237, 23);
+            this.AudioDeviceCombo.TabIndex = 15;
             this.ToolTipInformation.SetToolTip(this.AudioDeviceCombo, "Choose the audio output device to use for sounds.");
             this.AudioDeviceCombo.SelectedIndexChanged += new System.EventHandler(this.AudioDeviceCombo_SelectedIndexChanged);
             // 
@@ -466,10 +495,10 @@
             this.RefreshOutputsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.RefreshOutputsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.RefreshOutputsButton.Font = new System.Drawing.Font("Arial", 9F);
-            this.RefreshOutputsButton.Location = new System.Drawing.Point(618, 67);
+            this.RefreshOutputsButton.Location = new System.Drawing.Point(629, 35);
             this.RefreshOutputsButton.Name = "RefreshOutputsButton";
             this.RefreshOutputsButton.Size = new System.Drawing.Size(23, 23);
-            this.RefreshOutputsButton.TabIndex = 39;
+            this.RefreshOutputsButton.TabIndex = 17;
             this.RefreshOutputsButton.Text = "⭐";
             this.ToolTipInformation.SetToolTip(this.RefreshOutputsButton, "Refreshes the audio output list.");
             this.RefreshOutputsButton.UseMnemonic = false;
@@ -478,18 +507,80 @@
             // 
             // DisableDialogsBox
             // 
+            this.DisableDialogsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.DisableDialogsBox.AutoSize = true;
-            this.DisableDialogsBox.Location = new System.Drawing.Point(528, 20);
+            this.DisableDialogsBox.Location = new System.Drawing.Point(551, 20);
             this.DisableDialogsBox.Name = "DisableDialogsBox";
             this.DisableDialogsBox.Size = new System.Drawing.Size(113, 19);
-            this.DisableDialogsBox.TabIndex = 40;
+            this.DisableDialogsBox.TabIndex = 13;
             this.DisableDialogsBox.Text = "Disable dialogs";
             this.ToolTipInformation.SetToolTip(this.DisableDialogsBox, "Disable alert dialogs from appearing.\r\nUseful if you just need to only use the we" +
         "b server function.");
             this.DisableDialogsBox.UseVisualStyleBackColor = true;
             // 
+            // RevealAlertIdentifierInput
+            // 
+            this.RevealAlertIdentifierInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.RevealAlertIdentifierInput.BackColor = System.Drawing.Color.Black;
+            this.RevealAlertIdentifierInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.RevealAlertIdentifierInput.ForeColor = System.Drawing.Color.White;
+            this.RevealAlertIdentifierInput.Location = new System.Drawing.Point(6, 134);
+            this.RevealAlertIdentifierInput.Name = "RevealAlertIdentifierInput";
+            this.RevealAlertIdentifierInput.Size = new System.Drawing.Size(380, 21);
+            this.RevealAlertIdentifierInput.TabIndex = 19;
+            this.ToolTipInformation.SetToolTip(this.RevealAlertIdentifierInput, "The alert identifier you want to access.");
+            this.RevealAlertIdentifierInput.UseSystemPasswordChar = true;
+            // 
+            // RevealButton
+            // 
+            this.RevealButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.RevealButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.RevealButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.RevealButton.Font = new System.Drawing.Font("Arial", 9F);
+            this.RevealButton.Location = new System.Drawing.Point(392, 132);
+            this.RevealButton.Name = "RevealButton";
+            this.RevealButton.Size = new System.Drawing.Size(55, 23);
+            this.RevealButton.TabIndex = 20;
+            this.RevealButton.Text = "Show";
+            this.ToolTipInformation.SetToolTip(this.RevealButton, "Reveal more information about a specific identifier in the list.");
+            this.RevealButton.UseMnemonic = false;
+            this.RevealButton.UseVisualStyleBackColor = false;
+            this.RevealButton.Click += new System.EventHandler(this.RevealButton_Click);
+            // 
+            // RevealRecentButton
+            // 
+            this.RevealRecentButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.RevealRecentButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.RevealRecentButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.RevealRecentButton.Font = new System.Drawing.Font("Arial", 9F);
+            this.RevealRecentButton.Location = new System.Drawing.Point(453, 132);
+            this.RevealRecentButton.Name = "RevealRecentButton";
+            this.RevealRecentButton.Size = new System.Drawing.Size(55, 23);
+            this.RevealRecentButton.TabIndex = 21;
+            this.RevealRecentButton.Text = "Recent";
+            this.ToolTipInformation.SetToolTip(this.RevealRecentButton, "Reveal more information about the most recent alert in the list.");
+            this.RevealRecentButton.UseMnemonic = false;
+            this.RevealRecentButton.UseVisualStyleBackColor = false;
+            this.RevealRecentButton.Click += new System.EventHandler(this.RevealRecentButton_Click);
+            // 
+            // LegacyAudioPlayerBox
+            // 
+            this.LegacyAudioPlayerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.LegacyAudioPlayerBox.AutoSize = true;
+            this.LegacyAudioPlayerBox.Location = new System.Drawing.Point(150, 20);
+            this.LegacyAudioPlayerBox.Name = "LegacyAudioPlayerBox";
+            this.LegacyAudioPlayerBox.Size = new System.Drawing.Size(157, 19);
+            this.LegacyAudioPlayerBox.TabIndex = 10;
+            this.LegacyAudioPlayerBox.Text = "Use legacy audio player";
+            this.ToolTipInformation.SetToolTip(this.LegacyAudioPlayerBox, "Switches out the default audio player (NAudio) in favor of the legacy audio playe" +
+        "r (SoundPlayer).");
+            this.LegacyAudioPlayerBox.UseVisualStyleBackColor = true;
+            // 
             // DiscordWebhookGroup
             // 
+            this.DiscordWebhookGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.DiscordWebhookGroup.Controls.Add(this.DiscordWebhookRelayLocallyBox);
             this.DiscordWebhookGroup.Controls.Add(this.DiscordWebhookConfirmAlertsBox);
             this.DiscordWebhookGroup.Controls.Add(this.SaveDiscordSettingsButton);
@@ -500,9 +591,9 @@
             this.DiscordWebhookGroup.Controls.Add(this.DiscordWebhookURLInput);
             this.DiscordWebhookGroup.Controls.Add(this.label5);
             this.DiscordWebhookGroup.ForeColor = System.Drawing.Color.White;
-            this.DiscordWebhookGroup.Location = new System.Drawing.Point(12, 39);
+            this.DiscordWebhookGroup.Location = new System.Drawing.Point(12, 41);
             this.DiscordWebhookGroup.Name = "DiscordWebhookGroup";
-            this.DiscordWebhookGroup.Size = new System.Drawing.Size(647, 87);
+            this.DiscordWebhookGroup.Size = new System.Drawing.Size(670, 85);
             this.DiscordWebhookGroup.TabIndex = 6;
             this.DiscordWebhookGroup.TabStop = false;
             this.DiscordWebhookGroup.Text = "Discord Webhook";
@@ -510,7 +601,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(182, 42);
+            this.label7.Location = new System.Drawing.Point(182, 40);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(117, 15);
             this.label7.TabIndex = 9;
@@ -519,7 +610,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 42);
+            this.label6.Location = new System.Drawing.Point(6, 40);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(133, 15);
             this.label6.TabIndex = 7;
@@ -530,35 +621,59 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(6, 17);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(491, 15);
+            this.label5.Size = new System.Drawing.Size(509, 15);
             this.label5.TabIndex = 6;
-            this.label5.Text = "Using a Discord webhook will disable all GUI alerts. Leave the URL blank to disab" +
-    "le this.";
+            this.label5.Text = "You can send alerts to a Discord webhook here. Leave the URL blank to disable thi" +
+    "s feature.";
             // 
             // AlertAppearanceAndSoundsGroup
             // 
+            this.AlertAppearanceAndSoundsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.AdvancedAudioGroup);
+            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.LegacyAudioPlayerBox);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.DisableDialogsBox);
-            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.RefreshOutputsButton);
-            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.AudioOutputLabel);
-            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.AudioDeviceCombo);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.StyleButton);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertPlayEndToneBox);
             this.AlertAppearanceAndSoundsGroup.Controls.Add(this.alertNoRelayBox);
-            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.GlobalVolumeLabel);
-            this.AlertAppearanceAndSoundsGroup.Controls.Add(this.volumeBar);
             this.AlertAppearanceAndSoundsGroup.ForeColor = System.Drawing.Color.White;
             this.AlertAppearanceAndSoundsGroup.Location = new System.Drawing.Point(12, 132);
             this.AlertAppearanceAndSoundsGroup.Name = "AlertAppearanceAndSoundsGroup";
-            this.AlertAppearanceAndSoundsGroup.Size = new System.Drawing.Size(647, 100);
+            this.AlertAppearanceAndSoundsGroup.Size = new System.Drawing.Size(670, 122);
             this.AlertAppearanceAndSoundsGroup.TabIndex = 7;
             this.AlertAppearanceAndSoundsGroup.TabStop = false;
             this.AlertAppearanceAndSoundsGroup.Text = "Alert Settings";
+            // 
+            // AdvancedAudioGroup
+            // 
+            this.AdvancedAudioGroup.Controls.Add(this.AudioOutputClearLink);
+            this.AdvancedAudioGroup.Controls.Add(this.GlobalVolumeLabel);
+            this.AdvancedAudioGroup.Controls.Add(this.volumeBar);
+            this.AdvancedAudioGroup.Controls.Add(this.AudioDeviceCombo);
+            this.AdvancedAudioGroup.Controls.Add(this.RefreshOutputsButton);
+            this.AdvancedAudioGroup.Controls.Add(this.AudioOutputLabel);
+            this.AdvancedAudioGroup.ForeColor = System.Drawing.Color.White;
+            this.AdvancedAudioGroup.Location = new System.Drawing.Point(6, 49);
+            this.AdvancedAudioGroup.Name = "AdvancedAudioGroup";
+            this.AdvancedAudioGroup.Size = new System.Drawing.Size(658, 67);
+            this.AdvancedAudioGroup.TabIndex = 47;
+            this.AdvancedAudioGroup.TabStop = false;
+            this.AdvancedAudioGroup.Text = "Audio Settings";
+            // 
+            // GlobalVolumeLabel
+            // 
+            this.GlobalVolumeLabel.Location = new System.Drawing.Point(6, 17);
+            this.GlobalVolumeLabel.Name = "GlobalVolumeLabel";
+            this.GlobalVolumeLabel.Size = new System.Drawing.Size(48, 45);
+            this.GlobalVolumeLabel.TabIndex = 13;
+            this.GlobalVolumeLabel.Text = "Global\r\nVolume";
+            this.GlobalVolumeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // AudioOutputLabel
             // 
             this.AudioOutputLabel.AutoSize = true;
             this.AudioOutputLabel.Font = new System.Drawing.Font("Arial", 9F);
-            this.AudioOutputLabel.Location = new System.Drawing.Point(383, 49);
+            this.AudioOutputLabel.Location = new System.Drawing.Point(383, 17);
             this.AudioOutputLabel.Margin = new System.Windows.Forms.Padding(0);
             this.AudioOutputLabel.Name = "AudioOutputLabel";
             this.AudioOutputLabel.Size = new System.Drawing.Size(77, 15);
@@ -566,17 +681,14 @@
             this.AudioOutputLabel.Text = "Audio Output";
             this.AudioOutputLabel.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
-            // GlobalVolumeLabel
-            // 
-            this.GlobalVolumeLabel.Location = new System.Drawing.Point(6, 49);
-            this.GlobalVolumeLabel.Name = "GlobalVolumeLabel";
-            this.GlobalVolumeLabel.Size = new System.Drawing.Size(48, 45);
-            this.GlobalVolumeLabel.TabIndex = 13;
-            this.GlobalVolumeLabel.Text = "Global\r\nVolume";
-            this.GlobalVolumeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // PastAlertsGroup
             // 
+            this.PastAlertsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PastAlertsGroup.Controls.Add(this.RevealRecentButton);
+            this.PastAlertsGroup.Controls.Add(this.RevealButton);
+            this.PastAlertsGroup.Controls.Add(this.RevealAlertIdentifierInput);
             this.PastAlertsGroup.Controls.Add(this.ImportFileButton);
             this.PastAlertsGroup.Controls.Add(this.PlayTestButton);
             this.PastAlertsGroup.Controls.Add(this.AlertHistoryDumpLink);
@@ -586,9 +698,9 @@
             this.PastAlertsGroup.Controls.Add(this.AlertHistoryClearButton);
             this.PastAlertsGroup.Controls.Add(this.AlertHistoryRefreshButton);
             this.PastAlertsGroup.ForeColor = System.Drawing.Color.White;
-            this.PastAlertsGroup.Location = new System.Drawing.Point(12, 238);
+            this.PastAlertsGroup.Location = new System.Drawing.Point(12, 260);
             this.PastAlertsGroup.Name = "PastAlertsGroup";
-            this.PastAlertsGroup.Size = new System.Drawing.Size(647, 107);
+            this.PastAlertsGroup.Size = new System.Drawing.Size(670, 161);
             this.PastAlertsGroup.TabIndex = 5;
             this.PastAlertsGroup.TabStop = false;
             this.PastAlertsGroup.Text = "Alert List";
@@ -604,7 +716,8 @@
             // 
             // ConfigurationPanel
             // 
-            this.ConfigurationPanel.Controls.Add(this.AppliedLink);
+            this.ConfigurationPanel.Controls.Add(this.RawSettingsButton);
+            this.ConfigurationPanel.Controls.Add(this.SaveAllSettingsButton);
             this.ConfigurationPanel.Controls.Add(this.label3);
             this.ConfigurationPanel.Controls.Add(this.RegionButton);
             this.ConfigurationPanel.Controls.Add(this.AlertButton);
@@ -619,12 +732,11 @@
             this.ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
             this.ConfigurationPanel.Name = "ConfigurationPanel";
-            this.ConfigurationPanel.Size = new System.Drawing.Size(671, 405);
+            this.ConfigurationPanel.Size = new System.Drawing.Size(694, 481);
             this.ConfigurationPanel.TabIndex = 13;
             // 
             // AlertListRefresher
             // 
-            this.AlertListRefresher.Enabled = true;
             this.AlertListRefresher.Interval = 1000;
             this.AlertListRefresher.Tick += new System.EventHandler(this.AlertListRefresher_Tick);
             // 
@@ -634,34 +746,62 @@
             this.AudioDeviceMessage.Interval = 2000;
             this.AudioDeviceMessage.Tick += new System.EventHandler(this.AudioDeviceMessage_Tick);
             // 
-            // AppliedLink
+            // AudioOutputClearLink
             // 
-            this.AppliedLink.AutoSize = true;
-            this.AppliedLink.Font = new System.Drawing.Font("Arial", 16F);
-            this.AppliedLink.LinkColor = System.Drawing.Color.Yellow;
-            this.AppliedLink.Location = new System.Drawing.Point(12, 9);
-            this.AppliedLink.Name = "AppliedLink";
-            this.AppliedLink.Size = new System.Drawing.Size(378, 25);
-            this.AppliedLink.TabIndex = 27;
-            this.AppliedLink.TabStop = true;
-            this.AppliedLink.Text = "Most settings are applied immediately.";
-            this.ToolTipInformation.SetToolTip(this.AppliedLink, "Mostly everything is immediately applied. Some settings may require a program res" +
+            this.AudioOutputClearLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.AudioOutputClearLink.AutoSize = true;
+            this.AudioOutputClearLink.Font = new System.Drawing.Font("Arial", 9F);
+            this.AudioOutputClearLink.LinkColor = System.Drawing.Color.Pink;
+            this.AudioOutputClearLink.Location = new System.Drawing.Point(474, 17);
+            this.AudioOutputClearLink.Name = "AudioOutputClearLink";
+            this.AudioOutputClearLink.Size = new System.Drawing.Size(149, 15);
+            this.AudioOutputClearLink.TabIndex = 16;
+            this.AudioOutputClearLink.TabStop = true;
+            this.AudioOutputClearLink.Text = "Use default device (Clear)";
+            this.ToolTipInformation.SetToolTip(this.AudioOutputClearLink, "Mostly everything is immediately applied. Some settings may require a program res" +
         "tart.");
-            this.AppliedLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AppliedLink_LinkClicked);
+            this.AudioOutputClearLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AudioOutputClearLink_LinkClicked);
+            // 
+            // SaveAllSettingsButton
+            // 
+            this.SaveAllSettingsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.SaveAllSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.SaveAllSettingsButton.Location = new System.Drawing.Point(12, 12);
+            this.SaveAllSettingsButton.Name = "SaveAllSettingsButton";
+            this.SaveAllSettingsButton.Size = new System.Drawing.Size(125, 23);
+            this.SaveAllSettingsButton.TabIndex = 0;
+            this.SaveAllSettingsButton.Text = "Save Settings";
+            this.ToolTipInformation.SetToolTip(this.SaveAllSettingsButton, "Saves all of your settings to disk.");
+            this.SaveAllSettingsButton.UseMnemonic = false;
+            this.SaveAllSettingsButton.UseVisualStyleBackColor = false;
+            this.SaveAllSettingsButton.Click += new System.EventHandler(this.SaveAllSettingsButton_Click);
+            // 
+            // RawSettingsButton
+            // 
+            this.RawSettingsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.RawSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.RawSettingsButton.Location = new System.Drawing.Point(143, 12);
+            this.RawSettingsButton.Name = "RawSettingsButton";
+            this.RawSettingsButton.Size = new System.Drawing.Size(125, 23);
+            this.RawSettingsButton.TabIndex = 0;
+            this.RawSettingsButton.Text = "Migrate Settings";
+            this.ToolTipInformation.SetToolTip(this.RawSettingsButton, "Migrates older settings data.");
+            this.RawSettingsButton.UseMnemonic = false;
+            this.RawSettingsButton.UseVisualStyleBackColor = false;
+            this.RawSettingsButton.Click += new System.EventHandler(this.RawSettingsButton_Click);
             // 
             // ConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(671, 405);
+            this.ClientSize = new System.Drawing.Size(694, 481);
             this.Controls.Add(this.ConfigurationPanel);
             this.Controls.Add(this.BusyLockText);
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(710, 460);
             this.Name = "ConfigurationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert - Settings";
@@ -672,6 +812,8 @@
             this.DiscordWebhookGroup.PerformLayout();
             this.AlertAppearanceAndSoundsGroup.ResumeLayout(false);
             this.AlertAppearanceAndSoundsGroup.PerformLayout();
+            this.AdvancedAudioGroup.ResumeLayout(false);
+            this.AdvancedAudioGroup.PerformLayout();
             this.PastAlertsGroup.ResumeLayout(false);
             this.PastAlertsGroup.PerformLayout();
             this.ConfigurationPanel.ResumeLayout(false);
@@ -724,6 +866,13 @@
         private System.Windows.Forms.Button RefreshOutputsButton;
         private System.Windows.Forms.CheckBox DisableDialogsBox;
         private System.Windows.Forms.Timer AudioDeviceMessage;
-        private System.Windows.Forms.LinkLabel AppliedLink;
+        private System.Windows.Forms.Button RevealRecentButton;
+        private System.Windows.Forms.Button RevealButton;
+        private System.Windows.Forms.TextBox RevealAlertIdentifierInput;
+        private System.Windows.Forms.CheckBox LegacyAudioPlayerBox;
+        private System.Windows.Forms.GroupBox AdvancedAudioGroup;
+        private System.Windows.Forms.LinkLabel AudioOutputClearLink;
+        private System.Windows.Forms.Button SaveAllSettingsButton;
+        private System.Windows.Forms.Button RawSettingsButton;
     }
 }

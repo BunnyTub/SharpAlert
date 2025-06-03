@@ -13,8 +13,9 @@ namespace SharpAlert
             else DoneButton.Text = "Done";
         }
 
-        public string EventType = "Standard Test";
-        public string EventDescription = Resources.TestScript;
+        public string EventType = string.Empty;
+        public string EventDescription = string.Empty;
+        public string EventURL = string.Empty;
 
         private void DoneButton_Click(object sender, EventArgs e)
         {
@@ -24,14 +25,19 @@ namespace SharpAlert
                 EventType = AlertTypeInput.Text;
                 EventDescription = AlertDescriptionInput.Text;
             }
-            
+
+            if (EarthquakeAlertBox.Checked) EventURL = "https://sasmex.net";
+
             this.DialogResult = DialogResult.Yes;
             this.Close();
         }
 
         private void ChooseRegionForm_Load(object sender, EventArgs e)
         {
-            // called more than once
+            // reset to defaults every time
+            EventType = "Standard Test";
+            EventDescription = Resources.TestScript;
+            EventURL = "https://sharpalert.bunnytub.com";
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)

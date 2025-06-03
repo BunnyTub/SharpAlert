@@ -5,14 +5,11 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using static SharpAlert.AudioManager;
-using static SharpAlert.MainEntryPoint;
 using static SharpAlert.AlertProcessor;
-using static SharpAlert.AlertDisplayer;
 
 namespace SharpAlert
 {
-    public partial class AlertForm : Form
+    public partial class AlertInfoForm : Form
     {
         private string AlertIDStr = string.Empty;
         private string AlertSubtitleStr = string.Empty;
@@ -87,7 +84,7 @@ namespace SharpAlert
             public uint dwTimeout;
         }
 
-        public AlertForm()
+        public AlertInfoForm()
         {
             InitializeComponent();
             // We used all this fucking P/Invoke, just to make the taskbar icon red!?
@@ -122,57 +119,7 @@ namespace SharpAlert
                 AlertLinkText.Text = AlertUrlStr;
             }
 
-            var message = GetTextFromMessageType(type);
-            TitleText.Text = message.text;
-            ColorTitleAndBordersOne = message.MainColor;
-            ColorSubtitleOnlyOne = message.SubColor;
-
-            //switch (type)
-            //{
-            //    case "alert":
-            //        TitleText.BackColor = Color.Red;
-            //        OutlineContainerPanel.BorderColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "EMERGENCY ALERT";
-            //        break;
-            //    case "update":
-            //        TitleText.BackColor = Color.Red;
-            //        OutlineContainerPanel.BorderColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "ALERT UPDATE";
-            //        break;
-            //    case "cancel":
-            //        TitleText.BackColor = Color.FromArgb(0, 80, 200);
-            //        OutlineContainerPanel.BorderColor = Color.FromArgb(0, 80, 200);
-            //        SubtitlePanel.BackColor = Color.FromArgb(0, 50, 100);
-            //        TitleText.Text = "ALERT CANCELLED";
-            //        break;
-            //    case "test":
-            //        TitleText.BackColor = Color.Red;
-            //        OutlineContainerPanel.BorderColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "ALERT TEST";
-            //        break;
-            //    default:
-            //        TitleText.BackColor = Color.Red;
-            //        OutlineContainerPanel.BorderColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "EMERGENCY ALERT";
-            //        break;
-            //}
-        }
-
-        private void UpdateTaskbarProgress(TaskbarProgressState state, ulong completed, ulong total)
-        {
-            if (GotHandle != null || GotHandle == IntPtr.Zero)
-            {
-                taskbarList.SetProgressState(GotHandle, state);
-
-                if (state == TaskbarProgressState.Normal || state == TaskbarProgressState.Error || state == TaskbarProgressState.Paused)
-                {
-                    taskbarList.SetProgressValue(GotHandle, completed, total);
-                }
-            }
+            TitleText.Text = GetTextFromMessageType(type).text;
         }
 
         private void AlertForm_Load(object sender, EventArgs e)
@@ -184,48 +131,8 @@ namespace SharpAlert
             this.Close();
         }
 
-        private Color ColorTitleAndBordersOne = Color.Red;
-        private Color ColorSubtitleOnlyOne = Color.FromArgb(140, 0, 0);
-        private readonly Color ColorTitleAndBordersTwo = Color.SlateGray;
-        private readonly Color ColorSubtitleOnlyTwo = Color.DarkSlateGray;
-
         private void AlertForm_Shown(object sender, EventArgs e)
         {
-            AutoExit.Interval = Settings.Default.alertTimeout * 60000;
-            AutoExit.Start();
-
-            //this.Text = $"SharpAlert - {AlertSubtitleStr}";
-            UpdateTaskbarProgress(TaskbarProgressState.Error, 100, 100);
-            GotHandle = this.Handle;
-
-            if (!Settings.Default.alertCompatibilityMode)
-            {
-                FadeInAnimation.Start();
-                FlashTaskbarStatus.Start();
-            }
-            else
-            {
-                FlashTaskbarStatus.Stop();
-                UpdateTaskbarProgress(TaskbarProgressState.NoProgress, 0, 0);
-                this.Opacity = 1;
-                UnlockButtons(true);
-            }
-
-            StopAllAudioSilently();
-
-            //if (AlertType != "cancel")
-            //{
-            //    //PlayFromManagedSource(GenerateFSKStream($"{AlertIDStr}|{DateTime.UtcNow:s)}|{AlertType}|{AlertSubtitleStr.Replace("|", "_")}"));
-            //    //PlayFromUnmanagedSource(Resources.ui_warning_1);
-            //    PlayStartToneFile();
-            //}
-            //else
-            //{
-            //    //PlayFromUnmanagedSource(Resources.ui_cancellation_1);
-            //}
-
-            PlayStartToneFile();
-
             if (Settings.Default.alertTitlebarControls)
             {
                 this.FormBorderStyle = FormBorderStyle.Sizable;
@@ -303,17 +210,10 @@ namespace SharpAlert
                 AlertText.Font = new Font("Arial", 18F);
             }
 
-            FlashTwo = false;
-
-            OutlineContainerPanel.BorderColor = ColorTitleAndBordersOne;
-            TitleText.BackColor = ColorTitleAndBordersOne;
-            AlertIcon.BackColor = ColorTitleAndBordersOne;
-            SubtitlePanel.BackColor = ColorSubtitleOnlyOne;
-
-            if (!Settings.Default.alertCompatibilityMode)
-            {
-                WindowFlash.Start();
-            }
+            //OutlineContainerPanel.BorderColor = ColorTitleAndBordersOne;
+            //TitleText.BackColor = ColorTitleAndBordersOne;
+            //AlertIcon.BackColor = ColorTitleAndBordersOne;
+            //SubtitlePanel.BackColor = ColorSubtitleOnlyOne;
 
             if (!string.IsNullOrWhiteSpace(AlertImageUrlStr))
             {
@@ -328,142 +228,15 @@ namespace SharpAlert
             this.Close();
         }
 
-        private void SpeakerButton_Click(object sender, EventArgs e)
-        {
-            SpeakerButton.Enabled = false;
-            PlayFromTTSEngine(AlertIntroTextStr, false);
-            PlayWithFailoverToTTS(AlertAudioUrlStr, AlertTextStr);
-        }
-
-        private void UnlockButtons(bool unlocked)
-        {
-            DismissButton.Enabled = unlocked;
-            SpeakerButton.Enabled = unlocked;
-            AlertLinkText.Enabled = unlocked;
-        }
-
         private void AlertForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             HideImage();
-            if (!AllowThreadRestarts) return;
-            UnlockButtons(false);
-            AutoExit.Stop();
-            if (!Settings.Default.alertCompatibilityMode)
-            {
-                if (FadeOutExitReady)
-                {
-                    return;
-                }
-                else
-                {
-                    e.Cancel = true;
-                    FadeOutAnimation.Start();
-                }
-                PlayEndToneFile(false);
-            }
-            else
-            {
-                WindowFlash.Stop();
-                PlayEndToneFile(true);
-            }
-
-        }
-
-        private IntPtr GotHandle = IntPtr.Zero;
-
-        private int EnsureForTick = 5;
-
-        private void EnsureTopWindow_Tick(object sender, EventArgs e)
-        {
-            SetWindowPos(GotHandle, (IntPtr)HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
-            SetForegroundWindow(GotHandle);
-            EnsureForTick--;
-
-            if (EnsureForTick == 0)
-            {
-                EnsureTopWindow.Stop();
-                return;
-            }
-        }
-
-        private void LinkButton_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(AlertUrlStr))
-            {
-                // let's assume this is a URL for now, we'll fix it later
-                Process.Start(AlertUrlStr);
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show("This alert has no accompanying website.",
-                    "SharpAlert",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-                this.Close();
-            }
+            return;
         }
 
         private void AlertForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            FadeOutExitReady = false;
-            this.Opacity = 0;
             ConsoleExt.WriteLine("[Alert GUI] Window closed.");
-        }
-
-        private bool FlashOne = false;
-
-        private void FlashTaskbarStatus_Tick(object sender, EventArgs e)
-        {
-            if (FlashOne)
-            {
-                UpdateTaskbarProgress(TaskbarProgressState.Error, 100, 100);
-                //AlertIcon.Visible = true;
-            }
-            else
-            {
-                UpdateTaskbarProgress(TaskbarProgressState.Normal, 100, 100);
-                //AlertIcon.Visible = false;
-            }
-            FlashOne = !FlashOne;
-        }
-
-        private void AutoTTS_Tick(object sender, EventArgs e)
-        {
-            AutoTTS.Stop();
-        }
-
-        private bool FadeOutExitReady = false;
-
-        private void FadeInAnimation_Tick(object sender, EventArgs e)
-        {
-            if (this.Opacity == 1)
-            {
-                FadeInAnimation.Stop();
-                UnlockButtons(true);
-                return;
-            }
-            else
-            {
-                this.Opacity += 0.01;
-            }
-        }
-
-        private void FadeOutAnimation_Tick(object sender, EventArgs e)
-        {
-            if (this.Opacity == 0)
-            {
-                FadeOutAnimation.Stop();
-                FadeOutExitReady = true;
-                WindowFlash.Stop();
-                this.Hide();
-                this.Close();
-            }
-            else
-            {
-                FadeInAnimation.Stop();
-                this.Opacity -= 0.01;
-            }
         }
 
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
@@ -480,49 +253,6 @@ namespace SharpAlert
 
         private void OutlineContainerPanel_Paint(object sender, PaintEventArgs e)
         {
-        }
-
-        private bool FlashTwo = false;
-
-        private void WindowFlash_Tick(object sender, EventArgs e)
-        {
-            if (FlashTwo)
-            {
-                OutlineContainerPanel.BorderColor = ColorTitleAndBordersOne;
-                TitleText.BackColor = ColorTitleAndBordersOne;
-                AlertIcon.BackColor = ColorTitleAndBordersOne;
-                SubtitlePanel.BackColor = ColorSubtitleOnlyOne;
-                if (AlertsQueued != 0)
-                {
-                    DismissButton.Text = "Continue";
-                }
-            }
-            else
-            {
-                OutlineContainerPanel.BorderColor = ColorTitleAndBordersTwo;
-                TitleText.BackColor = ColorTitleAndBordersTwo;
-                AlertIcon.BackColor = ColorTitleAndBordersTwo;
-                SubtitlePanel.BackColor = ColorSubtitleOnlyTwo;
-                if (AlertsQueued != 0)
-                {
-                    //DismissButton.Text = $"{AlertsQueued} remain";
-                    DismissButton.Text = "Continue";
-                }
-                else
-                {
-                    DismissButton.Text = "Dismiss";
-                }
-            }
-            FlashTwo = !FlashTwo;
-        }
-
-        private void TerminateSelf_Tick(object sender, EventArgs e)
-        {
-            if (!MainEntryPoint.AllowThreadRestarts)
-            {
-                FadeOutExitReady = true;
-                this.Close();
-            }
         }
 
         private int BottomRightMx;
@@ -554,36 +284,6 @@ namespace SharpAlert
             BottomRightMov = false;
         }
 
-        private int BottomLeftMx;
-        private int BottomLeftMy;
-        private int BottomLeftSw;
-        private int BottomLeftSh;
-        private bool BottomLeftMov;
-
-        private void ResizeBottomLeft_MouseDown(object sender, MouseEventArgs e)
-        {
-            BottomLeftMov = true;
-            BottomLeftMx = MousePosition.X;
-            BottomLeftMy = MousePosition.Y;
-            BottomLeftSw = Width;
-            BottomLeftSh = Height;
-        }
-
-        private void ResizeBottomLeft_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (BottomLeftMov)
-            {
-                //SetDesktopLocation(MousePosition.X, Location.Y);
-                Width = MousePosition.X - Width;
-                Height = MousePosition.Y - BottomLeftMy + BottomLeftSh;
-            }
-        }
-
-        private void ResizeBottomLeft_MouseUp(object sender, MouseEventArgs e)
-        {
-            BottomLeftMov = false;
-        }
-
         private void AlertIcon_MouseDown(object sender, MouseEventArgs e)
         {
             ReleaseCapture();
@@ -596,7 +296,6 @@ namespace SharpAlert
             {
                 // let's assume this is a URL for now, we'll fix it later
                 Process.Start(AlertUrlStr);
-                this.Close();
             }
             else
             {
@@ -604,7 +303,6 @@ namespace SharpAlert
                     "SharpAlert",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
-                this.Close();
             }
         }
 
@@ -647,12 +345,6 @@ namespace SharpAlert
             catch (Exception)
             {
             }
-        }
-
-        private void DismissAllAlertsFor30SecondsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DeadTimeOverride = 30;
-            this.Close();
         }
     }
 }

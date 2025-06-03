@@ -27,7 +27,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="severityMinor" Description="Allows minor messages to be relayed when ticked." Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="severityUnknown" Description="Allows all unknown severity messages to be relayed when ticked." Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -95,12 +95,6 @@
     <Setting Name="messageTypeTest" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="UserServerURL" Type="System.String" Scope="User">
-      <Value Profile="(Default)">example.com</Value>
-    </Setting>
-    <Setting Name="UserServerPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">9792</Value>
-    </Setting>
     <Setting Name="statusExercise" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -153,7 +147,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="storedMaxSize" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">25</Value>
+      <Value Profile="(Default)">500</Value>
     </Setting>
     <Setting Name="WindowLocation" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -205,7 +199,7 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="DiscordWebhookConfirmAlerts" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="SetupExperienceComplete" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -229,6 +223,12 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="alertPlayStartToneTwice" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="RegionUnitedStatesNWS" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LegacyAudioPlayer" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

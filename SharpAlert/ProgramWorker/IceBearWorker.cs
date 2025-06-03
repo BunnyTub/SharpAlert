@@ -1,6 +1,4 @@
 ﻿using Microsoft.Win32;
-using SharpAlert.ConfigurationDialogs;
-using SharpAlert.ProgramWorker;
 using SharpAlert.Properties;
 using System;
 using System.Collections.Generic;
@@ -9,7 +7,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Speech.Synthesis;
 using System.Text.RegularExpressions;
@@ -19,6 +16,7 @@ using static SharpAlert.MainEntryPoint;
 using static SharpAlert.ServiceThreads;
 using static SharpAlert.RegexList;
 using static SharpAlert.AudioManager;
+using static SharpAlert.ThreadDrool;
 
 namespace SharpAlert
 {
@@ -31,7 +29,7 @@ namespace SharpAlert
 
         public static bool ServiceRunnerScheduled { get; private set; }
 
-        public static readonly string SelfUserAgent = "Mozilla/5.0 (compatible; SharpAlert)";
+        public static readonly string SelfUserAgent = "Mozilla/5.0 (compatible; SharpAlert; bunnytub@bunnytub.com)";
 
         /// <summary>
         /// Starts the Ice Bear Worker as a client.
@@ -44,7 +42,7 @@ namespace SharpAlert
             if (args.Length >= 2) if (args.Contains("--console")) AllocateTerminal(false);
             if (Settings.Default.alertNoGUI) AllocateTerminal(false);
 
-            Console.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | IsBeta = {VersionInfo.BetaVersion} | Safety is never a non-priority. | https://sharpalert.bunnytub.com/");
+            ConsoleExt.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | IsBeta = {VersionInfo.BetaVersion} | Safety is never a non-priority. | https://sharpalert.bunnytub.com/");
 
             client.DefaultRequestHeaders.UserAgent.ParseAdd(SelfUserAgent);
 
@@ -62,7 +60,7 @@ namespace SharpAlert
 
             string RemoteVersion = string.Empty;
 
-            Console.WriteLine("[Ice Bear] Checking application version.");
+            ConsoleExt.WriteLine("[Ice Bear] Checking application version.");
 
             string IdentityURL = "https://bunnytub.com";
 
@@ -70,15 +68,15 @@ namespace SharpAlert
             {
                 HttpResponseMessage latest = client.GetAsync($"{IdentityURL}/SharpAlert/SharpAlert.txt").Result;
 
-                Console.WriteLine($"[Ice Bear] The server responded with status code {latest.StatusCode}.");
+                ConsoleExt.WriteLine($"[Ice Bear] The server responded with status code {latest.StatusCode}.");
 
                 RemoteVersion = latest.Content.ReadAsStringAsync().Result.Trim();
                 if (string.IsNullOrWhiteSpace(RemoteVersion) || RemoteVersion.Length == 0 || RemoteVersion.Length >= 10) RemoteVersion = "0.0";
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[Ice Bear] {ex.StackTrace} {ex.Message}");
-                Console.WriteLine($"[Ice Bear] Couldn't work with the server.");
+                ConsoleExt.WriteLine($"[Ice Bear] {ex.StackTrace} {ex.Message}");
+                ConsoleExt.WriteLine($"[Ice Bear] Couldn't work with the server.");
             }
 
             if (VersionInfo.BetaVersion)
@@ -91,22 +89,22 @@ namespace SharpAlert
                 }
             }
 
-            Console.WriteLine("[Ice Bear] Initializing services.");
-
-            Console.WriteLine("[Ice Bear] Initializing Feed Capture.");
+            ConsoleExt.WriteLine("[Ice Bear] Initializing services.");
+            // use threads you moron
+            ConsoleExt.WriteLine("[Ice Bear] Initializing Feed Capture.");
             feed = new FeedCapture();
-            Console.WriteLine("[Ice Bear] Initializing Direct Feed Capture.");
+            ConsoleExt.WriteLine("[Ice Bear] Initializing Atom Feed Capture.");
+            atomfeed = new WeatherAtomCapture();
+            ConsoleExt.WriteLine("[Ice Bear] Initializing Direct Feed Capture.");
             directfeed = new DirectFeedCapture();
-            Console.WriteLine("[Ice Bear] Initializing Cache Capture.");
+            ConsoleExt.WriteLine("[Ice Bear] Initializing Cache Capture.");
             cache = new CacheCapture();
-            Console.WriteLine("[Ice Bear] Initializing Data Processor.");
+            ConsoleExt.WriteLine("[Ice Bear] Initializing Data Processor.");
             dataproc = new DataProcessor();
-            Console.WriteLine("[Ice Bear] Initializing History Processor.");
+            ConsoleExt.WriteLine("[Ice Bear] Initializing History Processor.");
             historyproc = new HistoryProcessor();
-            Console.WriteLine("[Ice Bear] Initializing Hyper Server.");
+            ConsoleExt.WriteLine("[Ice Bear] Initializing Hyper Server.");
             hyper = new HyperServer();
-            Console.WriteLine("[Ice Bear] Initializing Speech Synthesizer.");
-            engine = new SpeechSynthesizer();
 
             Settings.Default.PropertyChanged += (objective, eventArgs) =>
             {
@@ -121,8 +119,42 @@ namespace SharpAlert
             {
                 lock (ChangedPropertiesList) ChangedPropertiesList.Clear();
             };
+                
+            ConsoleExt.WriteLine("[Ice Bear] Starting services momentarily.");
 
-            notificationThread = ReturnThreadWithCatch(() =>
+            bool AnyFeedAvailable = false;
+            bool SetupExperienceOccurred = false;
+
+            if (!Settings.Default.SetupExperienceComplete)
+            {
+                ConsoleExt.WriteLine("[Ice Bear] Starting program setup experience.");
+
+                SetupForm sf = new SetupForm();
+                sf.ShowDialog();
+                sf.Dispose();
+                ChooseRegionForm crf = new ChooseRegionForm(true);
+                crf.ShowDialog();
+                crf.Dispose();
+                ChooseStyleForm csf = new ChooseStyleForm(true);
+                csf.ShowDialog();
+                csf.Dispose();
+                ChooseAudioForm caf = new ChooseAudioForm(true);
+                caf.ShowDialog();
+                caf.Dispose();
+                ChooseOwnershipForm cof = new ChooseOwnershipForm(true);
+                cof.ShowDialog();
+                cof.Dispose();
+                SetupDoneForm sdf = new SetupDoneForm();
+                sdf.ShowDialog();
+                sdf.Dispose();
+
+                Settings.Default.SetupExperienceComplete = true;
+                Settings.Default.Save();
+
+                SetupExperienceOccurred = true;
+            }
+
+            notificationThread = StartCatchAllThread(() =>
             {
                 SystemEvents.PowerModeChanged += (a, b) =>
                 {
@@ -160,68 +192,31 @@ namespace SharpAlert
                     }
                 };
 
-                SystemEvents.SessionEnding += (a, b) =>
-                {
-                    if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
-                    {
-                        switch (b.Reason)
-                        {
-                            case SessionEndReasons.SystemShutdown:
-                                DiscordWebhook.SendFormattedMessage("The host is shutting down.");
-                                break;
-                            case SessionEndReasons.Logoff:
-                                DiscordWebhook.SendFormattedMessage("The host is logging off.");
-                                break;
-                        }
-                    }
-                    SafeExit();
-                };
+                //SystemEvents.SessionEnding += (a, b) =>
+                //{
+                //    if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                //    {
+                //        switch (b.Reason)
+                //        {
+                //            case SessionEndReasons.SystemShutdown:
+                //                DiscordWebhook.SendFormattedMessage("The host is shutting down.");
+                //                break;
+                //            case SessionEndReasons.Logoff:
+                //                DiscordWebhook.SendFormattedMessage("The host is logging off.");
+                //                break;
+                //        }
+                //    }
+                //    SafeExit();
+                //};
 
-                try
-                {
-                    CreateNotifyIcon(RemoteVersion);
-                    Application.Run();
-                }
-                catch (Exception ex)
-                {
-                    UnsafeFault(ex, true);
-                }
+                CreateNotifyIcon(RemoteVersion);
+                Application.Run();
             }, false);
-            //notificationThread.MonitorAndStart("Notification Tray");
-            notificationThread.Start();
 
             while (notify == null) Thread.Sleep(100);
 
-            Console.WriteLine("[Ice Bear] Starting services momentarily.");
-
-            bool AnyFeedAvailable = false;
-            bool SetupExperienceOccurred = false;
-
-            if (!Settings.Default.SetupExperienceComplete)
-            {
-                Console.WriteLine("[Ice Bear] Starting program setup experience.");
-
-                SetupForm sf = new SetupForm();
-                sf.ShowDialog();
-                sf.Dispose();
-                ChooseRegionForm crf = new ChooseRegionForm(true);
-                crf.ShowDialog();
-                crf.Dispose();
-                ChooseStyleForm csf = new ChooseStyleForm(true);
-                csf.ShowDialog();
-                csf.Dispose();
-                ChooseOwnershipForm cof = new ChooseOwnershipForm(true);
-                cof.ShowDialog();
-                cof.Dispose();
-                SetupDoneForm sdf = new SetupDoneForm();
-                sdf.ShowDialog();
-                sdf.Dispose();
-
-                Settings.Default.SetupExperienceComplete = true;
-                Settings.Default.Save();
-
-                SetupExperienceOccurred = true;
-            }
+            // migrate users upwards from the minimum limit
+            if (Settings.Default.storedMaxSize < 100) Settings.Default.storedMaxSize = 500;
 
             bool AnyCustomServers()
             {
@@ -233,7 +228,7 @@ namespace SharpAlert
                         int LineNumber = 0;
                         bool FoundValidServer = false;
 
-                        Console.WriteLine($"[Ice Bear] Checking \"{CustomURLsFileName}\" for server candidates.");
+                        ConsoleExt.WriteLine($"[Ice Bear] Checking \"{CustomURLsFileName}\" for server candidates.");
 
                         foreach (string raw in ServerList)
                         {
@@ -242,7 +237,7 @@ namespace SharpAlert
                             LineNumber++;
                             if (server.StartsWith("#"))
                             {
-                                Console.WriteLine($"[Ice Bear] Comment skipped on line {LineNumber}.");
+                                ConsoleExt.WriteLine($"[Ice Bear] Comment skipped on line {LineNumber}.");
                                 continue;
                             }
                             else
@@ -250,7 +245,7 @@ namespace SharpAlert
                                 if (server.StartsWith("http://") || server.StartsWith("https://"))
                                 {
                                     server = server.Replace("http://", string.Empty).Replace("https://", string.Empty);
-                                    Console.WriteLine($"[Ice Bear] Adding server \"{server}\" on line {LineNumber}.");
+                                    ConsoleExt.WriteLine($"[Ice Bear] Adding server \"{server}\" on line {LineNumber}.");
                                     var VisualServer = new FeedCapture.ServerInfo { ServerName = $"{CustomURLsFileName} | Line {LineNumber}", ServerPath = $"{server}" };
                                     feed.servers.Add(VisualServer);
                                     FoundValidServer = true;
@@ -260,11 +255,11 @@ namespace SharpAlert
                                 {
                                     if (string.IsNullOrWhiteSpace(server))
                                     {
-                                        Console.WriteLine($"[Ice Bear] Whitespace skipped on line {LineNumber}.");
+                                        ConsoleExt.WriteLine($"[Ice Bear] Whitespace skipped on line {LineNumber}.");
                                     }
                                     else
                                     {
-                                        Console.WriteLine($"[Ice Bear] Invalid server skipped on line {LineNumber}.");
+                                        ConsoleExt.WriteLine($"[Ice Bear] Invalid server skipped on line {LineNumber}.");
                                     }
                                     continue;
                                 }
@@ -275,12 +270,12 @@ namespace SharpAlert
                     }
                     else
                     {
-                        Console.WriteLine($"[Ice Bear] No custom server file found named \"{CustomURLsFileName}\".");
+                        ConsoleExt.WriteLine($"[Ice Bear] No custom server file found named \"{CustomURLsFileName}\".");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[Ice Bear] Couldn't get custom servers. {ex.Message}");
+                    ConsoleExt.WriteLine($"[Ice Bear] Couldn't get custom servers. {ex.Message}");
                 }
                 return false;
             }
@@ -289,12 +284,13 @@ namespace SharpAlert
 
             if (CustomServersAvailable ||
                 Settings.Default.RegionUnitedStates ||
+                Settings.Default.RegionUnitedStatesNWS ||
                 Settings.Default.RegionCanada ||
                 Settings.Default.RegionMexico) AnyFeedAvailable = true;
 
             if (!AnyFeedAvailable && !SetupExperienceOccurred)
             {
-                Console.WriteLine("[Ice Bear] Prompting user for region information.");
+                ConsoleExt.WriteLine("[Ice Bear] Prompting user for region information.");
                 ChooseRegionForm crf = new ChooseRegionForm(false);
                 crf.ShowDialog();
             }
@@ -326,9 +322,6 @@ namespace SharpAlert
 
             var IPAWSMain = new FeedCapture.ServerInfo { ServerName = "FEMA IPAWS", ServerPath = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}" };
             var IPAWSWireless = new FeedCapture.ServerInfo { ServerName = "FEMA IPAWS (WEA)", ServerPath = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}" };
-            var SASMEXMain = new FeedCapture.ServerInfo { ServerName = "SASMEX", ServerPath = $"sasmex.net/rss/sasmex.xml" };
-            var NAADSPrimary = new DirectFeedCapture.TCPServerInfo { ServerName = "NAADS Primary", ServerAddress = "streaming1.naad-adna.pelmorex.com", ServerPort = 8080 };
-            var NAADSBackup = new DirectFeedCapture.TCPServerInfo { ServerName = "NAADS Backup", ServerAddress = "streaming2.naad-adna.pelmorex.com", ServerPort = 8080 };
 
             if (Settings.Default.RegionUnitedStates)
             {
@@ -336,46 +329,36 @@ namespace SharpAlert
                 feed.servers.Add(IPAWSWireless);
             }
 
+            var NWSAtom = new WeatherAtomCapture.ServerInfo { ServerName = "NWS Atom", ServerPath = $"api.weather.gov/alerts/active.atom" };
+
+            if (Settings.Default.RegionUnitedStatesNWS)
+            {
+                atomfeed.servers.Add(NWSAtom);
+            }
+
+            var NAADSPrimary = new DirectFeedCapture.TCPServerInfo { ServerName = "NAADS Primary", ServerAddress = "streaming1.naad-adna.pelmorex.com", ServerPort = 8080 };
+            var NAADSBackup = new DirectFeedCapture.TCPServerInfo { ServerName = "NAADS Backup", ServerAddress = "streaming2.naad-adna.pelmorex.com", ServerPort = 8080 };
+
             if (Settings.Default.RegionCanada)
             {
                 directfeed.servers.Add(NAADSPrimary);
                 directfeed.servers.Add(NAADSBackup);
             }
 
+            var SASMEXMain = new FeedCapture.ServerInfo { ServerName = "SASMEX", ServerPath = $"sasmex.net/rss/sasmex.xml" };
+
             if (Settings.Default.RegionMexico)
             {
                 feed.servers.Add(SASMEXMain);
             }
 
-            feedThread = ReturnThreadWithCatch(() => feed.ServiceRun(true), false);
-            feedThread.SetApartmentState(ApartmentState.MTA);
-            //feedThread.MonitorAndStart("Feed Capture");
-            feedThread.Start();
-
-            directfeedThread = new Thread(() => directfeed.ServiceRun());
-            directfeedThread.SetApartmentState(ApartmentState.MTA);
-            //directfeedThread.MonitorAndStart("Direct Feed Capture");
-            directfeedThread.Start();
-
-            cacheThread = ReturnThreadWithCatch(() => cache.ServiceRun(true), true);
-            cacheThread.SetApartmentState(ApartmentState.MTA);
-            //cacheThread.MonitorAndStart("Cache Capture");
-            cacheThread.Start();
-
-            dataProcThread = ReturnThreadWithCatch(() => dataproc.ServiceRun(), true);
-            dataProcThread.SetApartmentState(ApartmentState.MTA);
-            //dataProcThread.MonitorAndStart("Data Processor");
-            dataProcThread.Start();
-
-            historyProcThread = ReturnThreadWithCatch(() => historyproc.ServiceRun(), true);
-            historyProcThread.SetApartmentState(ApartmentState.MTA);
-            //historyProcThread.MonitorAndStart("History Processor");
-            historyProcThread.Start();
-
-            serverThread = ReturnThreadWithCatch(async () => await hyper.ServiceRun(), true);
-            serverThread.SetApartmentState(ApartmentState.MTA);
-            //serverThread.MonitorAndStart("Hyper Server");
-            serverThread.Start();
+            feedThread = StartCatchAllThread(() => feed.ServiceRun(true), false);
+            atomfeedThread = StartCatchAllThread(() => atomfeed.ServiceRun(true), false);
+            directfeedThread = StartCatchAllThread(() => directfeed.ServiceRun(), false);
+            cacheThread = StartCatchAllThread(() => cache.ServiceRun(true), true);
+            dataProcThread = StartCatchAllThread(() => dataproc.ServiceRun(), true);
+            historyProcThread = StartCatchAllThread(() => historyproc.ServiceRun(), true);
+            serverThread = StartCatchAllThread(async () => await hyper.ServiceRun(), true);
 
             if (Settings.Default.statusWindow)
             {
@@ -411,10 +394,7 @@ namespace SharpAlert
                 }
             }
 
-            heartbeatThread = ReturnThreadWithCatch(() => HeartbeatWorker.ServiceRun(), true);
-            heartbeatThread.SetApartmentState(ApartmentState.MTA);
-            //historyProcThread.MonitorAndStart("Heartbeat");
-            heartbeatThread.Start();
+            heartbeatThread = StartCatchAllThread(() => HeartbeatWorker.ServiceRun(), true);
 
             ServiceRunnerScheduled = true;
 
@@ -449,120 +429,7 @@ namespace SharpAlert
             }).Start();
         }
 
-        /// <summary>
-        /// Starts the Ice Bear Worker as a server instead of a client.
-        /// </summary>
-        //private static void ServerServiceRun()
-        //{
-        //    AllocateTerminal(false);
-
-        //    Thread.Sleep(1000);
-
-        //    if (Control.ModifierKeys == Keys.Shift)
-        //    {
-        //        Console.WriteLine("[Ice Bear] Reverting runner configuration.");
-        //        Settings.Default.RunnerType = 0;
-        //        Settings.Default.Save();
-        //        Console.WriteLine("[Ice Bear] The runner configuration has been reset.");
-        //        Thread.Sleep(5000);
-        //        Environment.Exit(0);
-        //    }
-
-        //    Console.WriteLine("[Ice Bear] To stop operating in server mode, hold SHIFT when the program starts.");
-        //    Console.WriteLine("[Ice Bear] Initializing internet services. (this may fail if you're not running this with admin privileges)");
-
-        //    HttpListener listener = new HttpListener();
-        //    listener.Prefixes.Add("http://*:9792/");
-
-        //    Console.WriteLine("[Ice Bear] Starting services momentarily.");
-
-        //    Thread feedThread = ReturnThreadWithCatch(() => feed.ServerServiceRun(true), true);
-        //    feedThread.SetApartmentState(ApartmentState.MTA);
-        //    //feedThread.MonitorAndStart("Feed Capture");
-        //    feedThread.Start();
-
-        //    listener.Start();
-        //    CreateStatusWindow();
-
-        //    ServiceRunnerScheduled = true;
-
-        //    Console.WriteLine("[Ice Bear] Listening for requests. (on port 9792)");
-
-        //    while (true)
-        //    {
-        //        Console.WriteLine("[Ice Bear] Waiting for the next request.");
-        //        HttpListenerContext context = listener.GetContext();
-
-        //        ThreadPool.QueueUserWorkItem(_ =>
-        //        {
-        //            var request = context.Request;
-        //            Console.WriteLine($"[Ice Bear] Sending data ({request.UserAgent} | {request.RemoteEndPoint.Address}).");
-
-        //            if (request.HttpMethod.ToUpperInvariant() == "GET")
-        //            {
-        //                context.Response.StatusCode = (int)HttpStatusCode.OK;
-        //                context.Response.ContentType = "application/xml";
-        //                byte[] feed = Encoding.UTF8.GetBytes(FeedCapture.Result);
-        //                context.Response.OutputStream.Write(feed, 0, feed.Length);
-        //                context.Response.OutputStream.Close();
-        //                Console.WriteLine($"[Ice Bear] Sent the data successfully.");
-        //            }
-        //            else
-        //            {
-        //                Console.WriteLine($"[Ice Bear] Client did not send the request via GET.");
-        //                context.Response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;
-        //                context.Response.OutputStream.Close();
-        //            }
-        //        });
-        //    }
-        //}
-
-        //private static void MonitorAndStart(this Thread thread, string FriendlyName)
-        //{
-        //    Thread sub = new Thread(() =>
-        //    {
-        //        while (AllowThreadRestarts)
-        //        {
-        //            thread.Start();
-        //            Console.WriteLine($"[Ice Bear] {FriendlyName} started.");
-        //            while (thread.IsAlive) Thread.Sleep(500);
-        //            Console.WriteLine($"[Ice Bear] {FriendlyName} exited.");
-        //            Thread.Sleep(300);
-        //        }
-        //        Console.WriteLine($"[Ice Bear] Thread handling for {FriendlyName} has stopped.");
-        //    });
-        //    sub.Start();
-        //}
-
         private static readonly object ThreadErrorLockObject = new object();
-
-        /// <summary>
-        /// Acts as a layer for creating a Thread. The original intended code is run, but any exceptions are caught if they occur.
-        /// </summary>
-        /// <param name="action"></param>
-        /// <returns>Try-catch Thread</returns>
-        private static Thread ReturnThreadWithCatch(Action action, bool restartable)
-        {
-            Console.WriteLine($"[Ice Bear] Returning thread. (action = {action.Method.Name}, restartable = {restartable})");
-            return new Thread(() =>
-            {
-                while (AllowThreadRestarts)
-                {
-                    try
-                    {
-                        action.Invoke();
-                    }
-                    catch (ThreadAbortException)
-                    {
-                        return;
-                    }
-                    catch (Exception ex)
-                    {
-                        UnsafeFault(ex, !restartable);
-                    }
-                }
-            });
-        }
 
         private static bool NotifyIconCalled = false;
         private static readonly List<string> ChangedPropertiesList = new List<string>();
@@ -840,51 +707,51 @@ namespace SharpAlert
         private static ConfigurationForm cf = null;
         private static QuickAccessForm qaf = null;
 
-        [DllImport("user32.dll")]
-        private static extern IntPtr WindowFromPoint(Point Point);
+        //[DllImport("user32.dll")]
+        //private static extern IntPtr WindowFromPoint(Point Point);
 
-        private static Rectangle GetIconRectangle(NotifyIcon notifyIcon)
-        {
-            var id = GetFieldValue<int>(notifyIcon, "id");
-            var window = GetFieldValue<NativeWindow>(notifyIcon, "window");
-            var identifier = new NOTIFYICONIDENTIFIER
-            {
-                cbSize = Marshal.SizeOf(typeof(NOTIFYICONIDENTIFIER)),
-                hWnd = window.Handle,
-                uID = id,
-                guidItem = Guid.Empty
-            };
-            Shell_NotifyIconGetRect(ref identifier, out RECT rc);
-            return Rectangle.FromLTRB(rc.Left, rc.Top, rc.Right, rc.Bottom);
-        }
+        //private static Rectangle GetIconRectangle(NotifyIcon notifyIcon)
+        //{
+        //    var id = GetFieldValue<int>(notifyIcon, "id");
+        //    var window = GetFieldValue<NativeWindow>(notifyIcon, "window");
+        //    var identifier = new NOTIFYICONIDENTIFIER
+        //    {
+        //        cbSize = Marshal.SizeOf(typeof(NOTIFYICONIDENTIFIER)),
+        //        hWnd = window.Handle,
+        //        uID = id,
+        //        guidItem = Guid.Empty
+        //    };
+        //    Shell_NotifyIconGetRect(ref identifier, out RECT rc);
+        //    return Rectangle.FromLTRB(rc.Left, rc.Top, rc.Right, rc.Bottom);
+        //}
 
-        private static TValue GetFieldValue<TValue>(object target, string fieldName)
-        {
-            var fi = target.GetType().GetField(fieldName,
-                    BindingFlags.NonPublic | BindingFlags.Instance);
-            return (TValue)fi.GetValue(target);
-        }
+        //private static TValue GetFieldValue<TValue>(object target, string fieldName)
+        //{
+        //    var fi = target.GetType().GetField(fieldName,
+        //            BindingFlags.NonPublic | BindingFlags.Instance);
+        //    return (TValue)fi.GetValue(target);
+        //}
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct RECT
-        {
-            public int Left;
-            public int Top;
-            public int Right;
-            public int Bottom;
-        }
+        //[StructLayout(LayoutKind.Sequential)]
+        //private struct RECT
+        //{
+        //    public int Left;
+        //    public int Top;
+        //    public int Right;
+        //    public int Bottom;
+        //}
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct NOTIFYICONIDENTIFIER
-        {
-            public int cbSize;
-            public IntPtr hWnd;
-            public int uID;
-            public Guid guidItem;
-        }
+        //[StructLayout(LayoutKind.Sequential)]
+        //private struct NOTIFYICONIDENTIFIER
+        //{
+        //    public int cbSize;
+        //    public IntPtr hWnd;
+        //    public int uID;
+        //    public Guid guidItem;
+        //}
 
-        [DllImport("shell32.dll")]
-        private static extern int Shell_NotifyIconGetRect(ref NOTIFYICONIDENTIFIER identifier, out RECT iconLocation);
+        //[DllImport("shell32.dll")]
+        //private static extern int Shell_NotifyIconGetRect(ref NOTIFYICONIDENTIFIER identifier, out RECT iconLocation);
 
         public static void UnsafeFault(Exception exception, bool terminate)
         {
@@ -898,6 +765,8 @@ namespace SharpAlert
                     {
                         AllowThreadRestarts = false;
                         try { feedThread?.Abort(); } catch (Exception) { }
+                        try { atomfeedThread?.Abort(); } catch (Exception) { }
+                        try { directfeedThread?.Abort(); } catch (Exception) { }
                         try { cacheThread?.Abort(); } catch (Exception) { }
                         try { dataProcThread?.Abort(); } catch (Exception) { }
                         try { historyProcThread?.Abort(); } catch (Exception) { }
@@ -931,17 +800,6 @@ namespace SharpAlert
                     $"{ex.Message}\r\n" +
                     $"{ex.TargetSite}\r\n" +
                     $"{ex.StackTrace}";
-
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
-                {
-                    DiscordWebhook.SendUnformattedMessage(ExceptionCompiled + "\r\n\r\nPlease report this issue to my owner!\r\nIf you are the owner, contact <@603429346736341013> (bunnytub.com/SharpAlert.html) for help.");
-                }
-            }
-            catch (Exception)
-            {
-            }
             
             try
             {
@@ -955,7 +813,18 @@ namespace SharpAlert
             {
             }
 
-            Console.WriteLine(ExceptionCompiled);
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                {
+                    DiscordWebhook.SendUnformattedMessage(ExceptionCompiled + "\r\n\r\nPlease report this issue to my owner!\r\nIf you are the owner, contact <@603429346736341013> (https://bunnytub.com/SharpAlert.html | bunnytub@bunnytub.com) for help.");
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            ConsoleExt.WriteLine(ExceptionCompiled);
 
 #if DEBUG
             Debugger.Break();
@@ -992,13 +861,16 @@ namespace SharpAlert
         [DllImport("user32.dll", SetLastError = true)]
         public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
-        public const int STD_OUTPUT_HANDLE = -11;
-        public const uint GENERIC_WRITE = 0x40000000;
-        public const uint OPEN_EXISTING = 3;
-        public const uint WM_CLOSE = 0x0010;
+        internal const int STD_OUTPUT_HANDLE = -11;
+        internal const uint GENERIC_WRITE = 0x40000000;
+        internal const uint OPEN_EXISTING = 3;
+        internal const uint WM_CLOSE = 0x0010;
         internal const uint ENABLE_QUICK_EDIT = 0x0040;
         internal const uint ENABLE_EXTENDED_FLAGS = 0x0080;
-        public const int STD_INPUT_HANDLE = -10;
+        internal const uint ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;
+        internal const uint ENABLE_ECHO_INPUT = 0x0004;
+        internal const uint ENABLE_LINE_INPUT = 0x0002;
+        internal const int STD_INPUT_HANDLE = -10;
 
         [DllImport("kernel32.dll", SetLastError = true)]
         internal static extern IntPtr GetStdHandle(int nStdHandle);
@@ -1059,32 +931,62 @@ namespace SharpAlert
             {
                 Console.Title = "SharpAlert Console Window";
                 IntPtr consoleHandle = CreateFile("CONOUT$", GENERIC_WRITE, 0, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
+                
                 if (consoleHandle == IntPtr.Zero)
                 {
                     //throw new Win32Exception(Marshal.GetLastWin32Error());
                     return;
                 }
 
-                if (!GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE), out uint mode))
-                {
-                    Console.WriteLine("[Ice Bear] Couldn't get console mode.");
-                    //var MarshalException = new Win32Exception(unchecked(Marshal.GetLastWin32Error()));
-                }
+                //if (!GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE), out uint mode))
+                //{
+                //    ConsoleExt.WriteLine("[Ice Bear] Couldn't get console mode.");
+                //    //var MarshalException = new Win32Exception(unchecked(Marshal.GetLastWin32Error()));
+                //}
 
-                mode &= ~ENABLE_QUICK_EDIT;
+                //mode &= ~ENABLE_QUICK_EDIT; // Disable Quick Edit
+                //mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING; // Enable ANSI
                 //mode |= ENABLE_EXTENDED_FLAGS;
 
-                if (!SetConsoleMode(consoleHandle, mode))
-                {
-                    //var MarshalException = new Win32Exception(unchecked(Marshal.GetLastWin32Error()));
-                }
+                //if (!SetConsoleMode(consoleHandle, mode))
+                //{
+                //    //var MarshalException = new Win32Exception(unchecked(Marshal.GetLastWin32Error()));
+                //}
 
                 SetStdHandle(STD_OUTPUT_HANDLE, consoleHandle);
                 var writer = new StreamWriter(Console.OpenStandardOutput())
                 {
-                    AutoFlush = true
+                    AutoFlush = true,
+                    //NewLine = " DEMO VERSION (SHARPALERT v9.0 --- TO REMOVE THIS MESSAGE, VISIT STORE.SHARPALERT.COM)"
                 };
                 Console.SetOut(writer);
+
+                //const int STD_INPUT_HANDLE = -10;
+                //IntPtr stdinHandle = GetStdHandle(STD_INPUT_HANDLE);
+
+                //if (stdinHandle == IntPtr.Zero || stdinHandle == new IntPtr(-1))
+                //{
+                //    ConsoleExt.WriteLine("[Ice Bear] Failed to get stdin handle.");
+                //}
+                //else
+                //{
+                //    ConsoleExt.WriteLine("[Ice Bear] Got stdin handle.");
+                //}
+
+                //if (!GetConsoleMode(stdinHandle, out uint stdInMode))
+                //{
+                //    Console.WriteLine("[Ice Bear] Failed to get console mode.");
+                //    return;
+                //}
+
+                //// Disable echo and line input
+                //stdInMode &= ~ENABLE_ECHO_INPUT;
+                //stdInMode &= ~ENABLE_LINE_INPUT;
+
+                //if (!SetConsoleMode(stdinHandle, stdInMode))
+                //{
+                //    Console.WriteLine("[Ice Bear] Failed to set console mode.");
+                //}
 
                 object LockObject = new object();
 
@@ -1099,8 +1001,21 @@ namespace SharpAlert
                 });
                 SetConsoleCtrlHandler(_handler, true);
 
-                Console.BackgroundColor = ConsoleColor.DarkGray;
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                //new Thread(() =>
+                //{
+                //    var colors = (ConsoleColor[])Enum.GetValues(typeof(ConsoleColor));
+                //    var rand = new Random();
+
+                //    while (true)
+                //    {
+                //        Console.BackgroundColor = colors[rand.Next(colors.Length)];
+                //        Console.ForegroundColor = colors[rand.Next(colors.Length)];
+                //        Thread.Sleep(50);
+                //    }
+                //}).Start();
+
+                new Thread(() => ConsoleExt.ServiceRun()).Start();
+
                 Console.Beep(1000, 200);
             }
         }
@@ -1141,7 +1056,7 @@ namespace SharpAlert
             {
                 try
                 {
-                    Console.WriteLine("Opening file picker.");
+                    ConsoleExt.WriteLine("[Ice Bear] Opening the file picker.");
 
                     string selectedSafePath = string.Empty;
 
@@ -1156,9 +1071,11 @@ namespace SharpAlert
 
                     if (fbd.ShowDialog() != DialogResult.OK)
                     {
-                        Console.WriteLine("No file chosen.");
+                        ConsoleExt.WriteLine("[Ice Bear] No file chosen from the file picker.");
                         return;
                     }
+
+                    ConsoleExt.WriteLine("[Ice Bear] Processing chosen file(s).");
 
                     foreach (string selectedPath in fbd.FileNames)
                     {
@@ -1169,7 +1086,7 @@ namespace SharpAlert
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine(ex.Message);
+                            ConsoleExt.WriteLine(ex.Message);
                         }
                     }
 
@@ -1209,11 +1126,11 @@ namespace SharpAlert
 
                             //if (string.IsNullOrWhiteSpace(filename))
                             //{
-                            //    Console.WriteLine("[HTTP Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
+                            //    ConsoleExt.WriteLine("[HTTP Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
                             //    filename = CreateMD5(alert.Value);
                             //}
 
-                            Console.WriteLine($"[File Capture] {alertIndex} -> {filename}");
+                            ConsoleExt.WriteLine($"[File Capture] {alertIndex} -> {filename}");
 
                             //string StartingSharpAlertReplay = "<SharpAlertReplay>";
                             //string EndingSharpAlertReplay = "<SharpAlertReplay>";
@@ -1231,24 +1148,24 @@ namespace SharpAlert
 
                             if (TryAddDataToQueue(item))
                             {
-                                Console.WriteLine($"[File Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
+                                ConsoleExt.WriteLine($"[File Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
                             }
                             else
                             {
-                                Console.WriteLine($"[File Capture] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
+                                ConsoleExt.WriteLine($"[File Capture] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
                             }
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"[File Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
+                            ConsoleExt.WriteLine($"[File Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
                         }
                     }
-                    if (alertIndex != 0) Console.WriteLine($"[File Capture] {alertIndex} alert(s) checked.");
-                    else Console.WriteLine($"[File Capture] No alerts were checked.");
+                    if (alertIndex != 0) ConsoleExt.WriteLine($"[File Capture] {alertIndex} alert(s) checked.");
+                    else ConsoleExt.WriteLine($"[File Capture] No alerts were checked.");
                 }
                 else
                 {
-                    Console.WriteLine("[File Capture] There are no alerts to enroll.");
+                    ConsoleExt.WriteLine("[File Capture] There are no alerts to enroll.");
                 }
             }
         }
@@ -1273,7 +1190,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"[File Capture] {e.StackTrace} {e.Message}");
+                        ConsoleExt.WriteLine($"[File Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }
@@ -1300,7 +1217,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"[File Capture] {e.StackTrace} {e.Message}");
+                        ConsoleExt.WriteLine($"[File Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }
@@ -1326,7 +1243,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"[File Capture] {e.StackTrace} {e.Message}");
+                        ConsoleExt.WriteLine($"[File Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }

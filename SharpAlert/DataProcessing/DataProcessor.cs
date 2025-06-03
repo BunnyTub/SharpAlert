@@ -39,7 +39,7 @@ namespace SharpAlert
                     {
                         // use first instead of last, otherwise, recent alerts will be forgotten
                         lock (SharpDataHistory) SharpDataHistory.Remove(SharpDataHistory.First());
-                        Console.WriteLine($"[Data Processor] Trimmed data history.");
+                        ConsoleExt.WriteLine($"[Data Processor] Trimmed data history.");
                     }
 
                     List<SharpDataItem> LocalDataQueue = new List<SharpDataItem>();
@@ -63,14 +63,14 @@ namespace SharpAlert
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine($"[Data Processor] {ex.Message}");
+                                ConsoleExt.WriteLine($"[Data Processor] {ex.Message}");
                                 continue;
                             }
                             //if (relayItem is null) continue;
                         }
                         else
                         {
-                            //Console.WriteLine("[Data Processor] There are no items in the queue yet.");
+                            //ConsoleExt.WriteLine("[Data Processor] There are no items in the queue yet.");
                             continue;
                         }
 
@@ -80,14 +80,20 @@ namespace SharpAlert
                             {
                                 try
                                 {
-                                    Console.WriteLine($"[Data Processor] Processing queued item.");
+                                    if (Stop)
+                                    {
+                                        Stop = false;
+                                        return;
+                                    }
+
+                                    ConsoleExt.WriteLine($"[Data Processor] Preparing to process -> {relayItem.Name}");
 
                                     string Replay = ReplayedAlertRegex.MatchOrDefault(relayItem.Data, "false");
                                     bool ReplayMode = false;
 
                                     if (Replay.ToLowerInvariant() == "true")
                                     {
-                                        Console.WriteLine("[Data Processor] Detected an alert in replay mode.");
+                                        ConsoleExt.WriteLine("[Data Processor] Detected an alert in replay mode.");
                                         ReplayMode = true;
                                         relayItem.Data = relayItem.Data.Replace("<SharpAlertReplay>true</SharpAlertReplay>", "<SharpAlertReplay>false</SharpAlertReplay>");
                                     }
@@ -97,24 +103,36 @@ namespace SharpAlert
 
                                     try
                                     {
-                                        ThreadPool.QueueUserWorkItem(_ =>
+                                        int Limit = 10;
+                                        if (ap.AlertsProcessing >= Limit)
+                                        {
+                                            ConsoleExt.WriteLine($"[Data Processor] Processing limit reached. Waiting until the amount of alerts processing is under {Limit}.");
+                                            while (ap.AlertsProcessing >= Limit)
+                                            {
+                                                Thread.Sleep(100);
+                                            }
+                                            ConsoleExt.WriteLine($"[Data Processor] The amount of alerts processing is now under {Limit}. Continuing work in progress.");
+                                        }
+
+                                        ThreadDrool.StartAndForget(() =>
                                         {
                                             //if (MessageBox.Show($"Process {relayItem.Name}?\r\n\r\n" +
                                             //    $"{relayItem.Data}",
                                             //    "SharpAlert",
                                             //    MessageBoxButtons.YesNo) == DialogResult.Yes)
-                                            ap.ProcessAlertItem(relayItem, ReplayMode);
+                                            ConsoleExt.WriteLine($"[Data Processor] Waiting for processing -> {relayItem.Name}");
+                                            ap.ProcessAlertItem(relayItem, ReplayMode, false);
                                         });
-                                        Console.WriteLine($"[Data Processor] The item is being processed by the Alert Processor.");
+
                                     }
                                     catch (NotSupportedException ex)
                                     {
-                                        Console.WriteLine($"[Data Processor] The item couldn't be sent to the Alert Processor. {ex.Message}");
+                                        ConsoleExt.WriteLine($"[Data Processor] Failed ({ex.Message}) -> {relayItem.Name}");
                                     }
                                 }
                                 catch (Exception ex)
                                 {
-                                    Console.WriteLine($"[Data Processor] The item couldn't be processed. {ex.Message}");
+                                    ConsoleExt.WriteLine($"[Data Processor] Failed ({ex.Message}) -> {relayItem.Name}");
                                 }
                             }
                         }   
@@ -126,7 +144,7 @@ namespace SharpAlert
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"[Data Processor] {e.StackTrace} {e.Message}");
+                    ConsoleExt.WriteLine($"[Data Processor] {e.StackTrace} {e.Message}");
                 }
             }
         }

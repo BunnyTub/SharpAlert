@@ -42,17 +42,17 @@ namespace SharpAlert
                 if (IsAdministrator)
                 {
                     listener.Prefixes.Add(ElevatedUrlPrefix);
-                    Console.WriteLine($"[Hyper Server] Traffic available from any IP: {ElevatedUrlPrefix}");
+                    ConsoleExt.WriteLine($"[Hyper Server] Traffic available from any IP: {ElevatedUrlPrefix}");
                 }
                 else
                 {
                     listener.Prefixes.Add(UrlPrefix);
-                    Console.WriteLine($"[Hyper Server] Traffic is local only (elevate for any traffic): {UrlPrefix}");
+                    ConsoleExt.WriteLine($"[Hyper Server] Traffic is local only (elevate for any traffic): {UrlPrefix}");
                 }
 
                 listener.Start();
-                Console.WriteLine($"[Hyper Server] Listening for requests...");
-                Console.WriteLine("[Hyper Server] Available endpoints:");
+                ConsoleExt.WriteLine($"[Hyper Server] Listening for requests...");
+                ConsoleExt.WriteLine("[Hyper Server] Available endpoints:");
 
                 var methods = GetType().GetMethods();
                 foreach (var method in methods)
@@ -61,7 +61,7 @@ namespace SharpAlert
                     {
                         if (attrib.TypeId.ToString() == "HyperServerMapping")
                         {
-                            Console.WriteLine($"[Hyper Server] Endpoint: {UrlPrefix.TrimEnd('/')}/{((Mapping)attrib).Map}");
+                            ConsoleExt.WriteLine($"[Hyper Server] Endpoint: {UrlPrefix.TrimEnd('/')}/{((Mapping)attrib).Map}");
                         }
                     }
                 }
@@ -81,15 +81,17 @@ namespace SharpAlert
                                 Stop = false;
                                 return;
                             }
+                            Thread.Sleep(50);
                         }
 
                         var ctx = contextTask.Result;
                         ctx.Response.AddHeader("Access-Control-Allow-Origin", "*");
+                        ctx.Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate, no-transform");
                         _ = HandleRequestAsync(ctx);
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"[Hyper Server] {ex.Message}");
+                        ConsoleExt.WriteLine($"[Hyper Server] {ex.Message}");
                         await Task.Delay(1000);
                     }
                 }
@@ -166,7 +168,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[Hyper Server] {ex.Message}");
+                ConsoleExt.WriteLine($"[Hyper Server] {ex.Message}");
                 await WriteResponseAsync(ctx, 500, "The server encountered a problem while processing the request.");
             }
             finally
@@ -177,7 +179,8 @@ namespace SharpAlert
             }
         }
 
-        private async Task WriteResponseAsync(HttpListenerContext ctx, int statusCode, string body, string contentType = "text/plain")
+        // string contentType = "text/plain"
+        private async Task WriteResponseAsync(HttpListenerContext ctx, int statusCode, string body)
         {
             if (ctx.Response.OutputStream != null)
             {
@@ -232,10 +235,10 @@ namespace SharpAlert
                 {
                     AlertInProgress = true,
                     MatchTime = $"{MainEntryPoint.AlertDisplayingBeginTime.Ticks}",
-                    AlertID = MainEntryPoint.dataproc?.ap?.DialogAlertID,
-                    AlertType = MainEntryPoint.dataproc?.ap?.DialogAlertType,
-                    AlertTitle = MainEntryPoint.dataproc?.ap?.DialogAlertTitle,
-                    AlertText = $"{MainEntryPoint.dataproc?.ap?.DialogAlertText.Intro} {MainEntryPoint.dataproc?.ap?.DialogAlertText.Body}"
+                    AlertID = AlertDisplayer.DialogAlertID,
+                    AlertType = AlertDisplayer.DialogAlertType,
+                    AlertTitle = AlertDisplayer.DialogAlertTitle,
+                    AlertText = $"{AlertDisplayer.DialogAlertText.Intro} {AlertDisplayer.DialogAlertText.Body}"
                 };
 
                 return JsonSerializer.Serialize(alert);

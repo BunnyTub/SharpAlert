@@ -35,10 +35,11 @@
             this.TitleText = new System.Windows.Forms.Label();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.AlertTypeInput = new System.Windows.Forms.TextBox();
+            this.AlertDescriptionInput = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.AlertDescriptionInput = new System.Windows.Forms.TextBox();
+            this.EarthquakeAlertBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -95,9 +96,21 @@
             this.AlertTypeInput.ForeColor = System.Drawing.Color.White;
             this.AlertTypeInput.Location = new System.Drawing.Point(108, 57);
             this.AlertTypeInput.Name = "AlertTypeInput";
-            this.AlertTypeInput.Size = new System.Drawing.Size(170, 21);
+            this.AlertTypeInput.Size = new System.Drawing.Size(242, 21);
             this.AlertTypeInput.TabIndex = 37;
             this.ToolTipInformation.SetToolTip(this.AlertTypeInput, "This is your station ID.");
+            // 
+            // AlertDescriptionInput
+            // 
+            this.AlertDescriptionInput.BackColor = System.Drawing.Color.Black;
+            this.AlertDescriptionInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AlertDescriptionInput.ForeColor = System.Drawing.Color.White;
+            this.AlertDescriptionInput.Location = new System.Drawing.Point(108, 99);
+            this.AlertDescriptionInput.Multiline = true;
+            this.AlertDescriptionInput.Name = "AlertDescriptionInput";
+            this.AlertDescriptionInput.Size = new System.Drawing.Size(412, 61);
+            this.AlertDescriptionInput.TabIndex = 39;
+            this.ToolTipInformation.SetToolTip(this.AlertDescriptionInput, "This is your station\'s friendly name.");
             // 
             // label1
             // 
@@ -136,17 +149,15 @@
             this.label3.Text = "Alert Description";
             this.label3.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
-            // AlertDescriptionInput
+            // EarthquakeAlertBox
             // 
-            this.AlertDescriptionInput.BackColor = System.Drawing.Color.Black;
-            this.AlertDescriptionInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AlertDescriptionInput.ForeColor = System.Drawing.Color.White;
-            this.AlertDescriptionInput.Location = new System.Drawing.Point(108, 99);
-            this.AlertDescriptionInput.Multiline = true;
-            this.AlertDescriptionInput.Name = "AlertDescriptionInput";
-            this.AlertDescriptionInput.Size = new System.Drawing.Size(412, 61);
-            this.AlertDescriptionInput.TabIndex = 39;
-            this.ToolTipInformation.SetToolTip(this.AlertDescriptionInput, "This is your station\'s friendly name.");
+            this.EarthquakeAlertBox.AutoSize = true;
+            this.EarthquakeAlertBox.Location = new System.Drawing.Point(356, 58);
+            this.EarthquakeAlertBox.Name = "EarthquakeAlertBox";
+            this.EarthquakeAlertBox.Size = new System.Drawing.Size(164, 19);
+            this.EarthquakeAlertBox.TabIndex = 40;
+            this.EarthquakeAlertBox.Text = "Send as earthquake alert";
+            this.EarthquakeAlertBox.UseVisualStyleBackColor = true;
             // 
             // ChooseTestForm
             // 
@@ -154,6 +165,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(532, 225);
+            this.Controls.Add(this.EarthquakeAlertBox);
             this.Controls.Add(this.AlertDescriptionInput);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.AlertTypeInput);
@@ -193,5 +205,6 @@
         private System.Windows.Forms.TextBox AlertTypeInput;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox AlertDescriptionInput;
+        private System.Windows.Forms.CheckBox EarthquakeAlertBox;
     }
 }

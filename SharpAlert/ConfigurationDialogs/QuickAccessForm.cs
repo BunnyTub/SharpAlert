@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using SharpAlert.Properties;
 using static SharpAlert.IceBearWorker;
 
-namespace SharpAlert.ConfigurationDialogs
+namespace SharpAlert
 {
     public partial class QuickAccessForm : Form
     {

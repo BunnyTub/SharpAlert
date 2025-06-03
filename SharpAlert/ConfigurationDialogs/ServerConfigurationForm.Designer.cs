@@ -46,7 +46,6 @@
             // 
             // BusyLock
             // 
-            this.BusyLock.Enabled = true;
             this.BusyLock.Tick += new System.EventHandler(this.BusyLock_Tick);
             // 
             // BusyLockText

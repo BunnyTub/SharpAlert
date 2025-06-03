@@ -198,7 +198,7 @@
             // 
             this.AlertText.BackColor = System.Drawing.Color.DarkRed;
             this.AlertText.Dock = System.Windows.Forms.DockStyle.Top;
-            this.AlertText.Font = new System.Drawing.Font("Arial", 48F);
+            this.AlertText.Font = new System.Drawing.Font("Arial", 52F);
             this.AlertText.Location = new System.Drawing.Point(0, 0);
             this.AlertText.Name = "AlertText";
             this.AlertText.ScrollSpeed = 5F;
@@ -230,7 +230,7 @@
             this.Opacity = 0D;
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "SharpAlert - Alert Panel";
+            this.Text = "SharpAlert - Scroll Panel";
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Magenta;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AlertForm_FormClosing);

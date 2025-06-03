@@ -37,13 +37,18 @@ namespace SharpAlert
             {
                 try
                 {
-                    Thread.Sleep(60 * 1000);
+                    for (int i = 0; i < 60; i++)
+                    {
+
+                        Thread.Sleep(1 * 1000);
+                    }
+
 
                     if (SharpDataRelayedNamesHistory.Count > Settings.Default.storedMaxSize)
                     {
                         // use first instead of last, otherwise, recent alerts will be forgotten
                         lock (SharpDataRelayedNamesHistory) SharpDataRelayedNamesHistory.Remove(SharpDataRelayedNamesHistory.First());
-                        Console.WriteLine($"[History Processor] Trimmed data history.");
+                        ConsoleExt.WriteLine($"[History Processor] Trimmed data history.");
                     }
 
                     if (Stop)
@@ -60,7 +65,7 @@ namespace SharpAlert
                     {
                         lock (SharpDataHistory)
                         {
-                            Console.WriteLine("[History Processor] Checking timestamps.");
+                            ConsoleExt.WriteLine("[History Processor] Checking timestamps.");
                             string CompiledString = string.Empty;
                             bool Expired = false;
                             List<string> Names = new List<string>();
@@ -77,7 +82,7 @@ namespace SharpAlert
                             foreach (string name in Names)
                             {
                                 alertIndex++;
-                                Console.WriteLine($"[History Processor] {alertIndex} -> {name}");
+                                //ConsoleExt.WriteLine($"[History Processor] {alertIndex} -> {name}");
                                 try
                                 {
                                     if (SharpDataHistory.Any(x => x.Name == name))
@@ -90,25 +95,25 @@ namespace SharpAlert
                                         {
                                             SharpDataRelayedNamesHistory.Remove(name);
                                             ExpiredNames.Add(name);
-                                            Console.WriteLine($"[History Processor] Alert {alertIndex} ({historicItem.Name}) is expired.");
+                                            ConsoleExt.WriteLine($"[History Processor] Alert {alertIndex} ({historicItem.Name}) is expired.");
                                             //expired,type,sent,effective,expiry
-                                            CompiledString += $"The alert {historicResult.Item2}, effective {historicResult.Item3}, has recently expired at {historicResult.Item4}.\x20";
+                                            CompiledString += $"Event type of {historicResult.Item2}, effective {historicResult.Item3}, has recently expired at {historicResult.Item4}.\x20";
                                             Expired = true;
                                         }
                                         else
                                         {
-                                            Console.WriteLine($"[History Processor] Alert {alertIndex} is not expired.");
+                                            //ConsoleExt.WriteLine($"[History Processor] Alert {alertIndex} is not expired.");
                                         }
                                     }
                                     else
                                     {
                                         SharpDataRelayedNamesHistory.Remove(name);
-                                        Console.WriteLine($"[History Processor] Alert {alertIndex} is no longer in the history.");
+                                        ConsoleExt.WriteLine($"[History Processor] Alert {alertIndex} has been removed from the history.");
                                     }
                                 }
                                 catch (Exception ex)
                                 {
-                                    Console.WriteLine($"[History Processor] {ex.StackTrace} {ex.Message}");
+                                    ConsoleExt.WriteLine($"[History Processor] {ex.StackTrace} {ex.Message}");
                                 }
                             }
 
@@ -166,7 +171,7 @@ namespace SharpAlert
                             }
                             else
                             {
-                                Console.WriteLine("[History Processor] No alerts are expired.");
+                                ConsoleExt.WriteLine("[History Processor] No alerts are expired.");
                             }
                         }
                     }
@@ -177,7 +182,7 @@ namespace SharpAlert
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[History Processor] {ex.StackTrace} {ex.Message}");
+                    ConsoleExt.WriteLine($"[History Processor] {ex.StackTrace} {ex.Message}");
                     //new ToppleForm($"{ex.Message} {ex.StackTrace}").ShowDialog();
                 }
             }
@@ -193,13 +198,13 @@ namespace SharpAlert
             lock (AlertLock)
             {
                 string Sent = SentRegex.Match(relayItem.Data).Groups[1].Value;
-                Console.WriteLine($"Sent: {Sent}");
+                ConsoleExt.WriteLine($"Sent: {Sent}");
 
                 string Status = StatusRegex.Match(relayItem.Data).Groups[1].Value;
-                Console.WriteLine($"Status: {Status}");
+                ConsoleExt.WriteLine($"Status: {Status}");
 
                 string MsgType = MessageTypeRegex.Match(relayItem.Data).Groups[1].Value;
-                Console.WriteLine($"Message Type: {MsgType}");
+                ConsoleExt.WriteLine($"Message Type: {MsgType}");
 
                 MatchCollection infoMatches = InfoRegex.Matches(relayItem.Data);
 
@@ -208,20 +213,20 @@ namespace SharpAlert
                 foreach (Match infoMatch in infoMatches)
                 {
                     infoProc++;
-                    Console.WriteLine($"[History Processor] Processing info tag.");
+                    ConsoleExt.WriteLine($"[History Processor] Processing info tag.");
 
                     try
                     {
                         string AlertInfo = $"{infoMatch.Groups[1].Value}";
 
                         string Effective = EffectiveRegex.MatchOrDefault(relayItem.Data, $"{DateTime.UtcNow.AddHours(-1):f}");
-                        Console.WriteLine($"Effective: {Effective}");
+                        ConsoleExt.WriteLine($"Effective: {Effective}");
 
                         string Expiry = ExpiresRegex.MatchOrDefault(relayItem.Data, $"Unknown Date Time");
-                        Console.WriteLine($"Expires: {Expiry}");
+                        ConsoleExt.WriteLine($"Expires: {Expiry}");
 
                         string EventType = EventRegex.MatchOrDefault(AlertInfo, "Cautionary (Unknown Event)");
-                        Console.WriteLine($"Event Type: {EventType}");
+                        ConsoleExt.WriteLine($"Event Type: {EventType}");
 
                         if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
                         {
