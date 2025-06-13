@@ -10,6 +10,7 @@ using static SharpAlert.IceBearWorker;
 using static SharpAlert.AudioManager;
 using System.Drawing;
 using static SharpAlert.AlertProcessor;
+using System.Xml.Linq;
 
 namespace SharpAlert
 {
@@ -39,14 +40,14 @@ namespace SharpAlert
                 notify.ShowBalloonTip(5000);
             }
 
-            DiscordWebhookURLInput.Text = Settings.Default.DiscordWebhook;
-            DiscordWebhookAppendInput.Text = Settings.Default.DiscordWebhookAppend;
-            DiscordWebhookConfirmAlertsBox.Checked = Settings.Default.DiscordWebhookConfirmAlerts;
-            DiscordWebhookConfirmAlertsBox.CheckedChanged += (a, b) => Settings.Default.DiscordWebhookConfirmAlerts = ((CheckBox)a).Checked;
-            DiscordWebhookRelayLocallyBox.Checked = Settings.Default.DiscordWebhookRelayLocally;
+            DiscordWebhookURLInput.Text = QuickSettings.Instance.DiscordWebhook;
+            DiscordWebhookAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend;
+            DiscordWebhookConfirmAlertsBox.Checked = QuickSettings.Instance.DiscordWebhookConfirmAlerts;
+            DiscordWebhookConfirmAlertsBox.CheckedChanged += (a, b) => QuickSettings.Instance.DiscordWebhookConfirmAlerts = ((CheckBox)a).Checked;
+            DiscordWebhookRelayLocallyBox.Checked = QuickSettings.Instance.DiscordWebhookRelayLocally;
             DiscordWebhookRelayLocallyBox.CheckedChanged += (a, b) =>
             {
-                Settings.Default.DiscordWebhookRelayLocally = ((CheckBox)a).Checked;
+                QuickSettings.Instance.DiscordWebhookRelayLocally = ((CheckBox)a).Checked;
                 if (!((CheckBox)a).Checked)
                 {
                     if (string.IsNullOrWhiteSpace(DiscordWebhookURLInput.Text)) AlertAppearanceAndSoundsGroup.Enabled = true;
@@ -64,7 +65,7 @@ namespace SharpAlert
                 else AlertAppearanceAndSoundsGroup.Enabled = false;
             }
 
-            //alertFullscreenBox.Checked = Settings.Default.alertDisplayType;
+            //alertFullscreenBox.Checked = QuickSettings.Instance.alertDisplayType;
             //if (alertFullscreenBox.Checked)
             //{
             //    alertFullscreenIdleBox.Enabled = true;
@@ -78,7 +79,7 @@ namespace SharpAlert
             //alertFullscreenBox.CheckedChanged += (a, b) =>
             //{
             //    ((CheckBox)a).Enabled = false;
-            //    Settings.Default.alertDisplayType = ((CheckBox)a).Checked;
+            //    QuickSettings.Instance.alertDisplayType = ((CheckBox)a).Checked;
             //    if (((CheckBox)a).Checked)
             //    {
             //        alertFullscreenIdleBox.Enabled = true;
@@ -94,35 +95,42 @@ namespace SharpAlert
             //    ((CheckBox)a).Enabled = true;
             //};
 
-            DisableDialogsBox.Checked = Settings.Default.DisableDialogs;
-            DisableDialogsBox.CheckedChanged += (a, b) => Settings.Default.DisableDialogs = ((CheckBox)a).Checked;
+            alertNoRelayBox.Checked = QuickSettings.Instance.alertNoRelay;
+            alertNoRelayBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertNoRelay = ((CheckBox)a).Checked;
             
-            alertNoRelayBox.Checked = Settings.Default.alertNoRelay;
-            alertNoRelayBox.CheckedChanged += (a, b) => Settings.Default.alertNoRelay = ((CheckBox)a).Checked;
+            alertPlayEndToneBox.Checked = QuickSettings.Instance.alertPlayEndTone;
+            alertPlayEndToneBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertPlayEndTone = ((CheckBox)a).Checked;
             
-            alertPlayEndToneBox.Checked = Settings.Default.alertPlayEndTone;
-            alertPlayEndToneBox.CheckedChanged += (a, b) => Settings.Default.alertPlayEndTone = ((CheckBox)a).Checked;
-            
-            volumeBar.Value = Settings.Default.alertVolume;
-            volumeBar.Scroll += (a, b) => Settings.Default.alertVolume = ((TrackBar)a).Value;
+            volumeBar.Value = QuickSettings.Instance.alertVolume;
+            volumeBar.Scroll += (a, b) => QuickSettings.Instance.alertVolume = ((TrackBar)a).Value;
 
-            LegacyAudioPlayerBox.Checked = Settings.Default.LegacyAudioPlayer;
+            LegacyAudioPlayerBox.Checked = QuickSettings.Instance.LegacyAudioPlayer;
             AdvancedAudioGroup.Enabled = !LegacyAudioPlayerBox.Checked;
             LegacyAudioPlayerBox.CheckedChanged += (a, b) =>
             {
-                Settings.Default.LegacyAudioPlayer = ((CheckBox)a).Checked;
+                QuickSettings.Instance.LegacyAudioPlayer = ((CheckBox)a).Checked;
                 AdvancedAudioGroup.Enabled = LegacyAudioPlayerBox.Checked;
-                MessageBox.Show("This setting requires a program restart. You'll lose out on program volume, using a specific output device, remote audio, and the ability to customize alert tones if this is enabled. Works better on low-end systems.",
-                    "SharpAlert",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
+                if (((CheckBox)a).Checked)
+                {
+                    MessageBox.Show("This setting requires a program restart. You'll lose out on program volume, using a specific output device, remote audio, and the ability to customize alert tones if this is enabled. Works better on low-end systems.",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                }
+                else
+                {
+                    MessageBox.Show("This setting requires a program restart.",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                }
             };
 
-            statusWindowBox.Checked = Settings.Default.statusWindow;
+            statusWindowBox.Checked = QuickSettings.Instance.statusWindow;
             statusWindowBox.CheckedChanged += (a, b) =>
             {
                 ((CheckBox)a).Enabled = false;
-                Settings.Default.statusWindow = ((CheckBox)a).Checked;
+                QuickSettings.Instance.statusWindow = ((CheckBox)a).Checked;
 
                 if (((CheckBox)a).Checked)
                 {
@@ -147,14 +155,14 @@ namespace SharpAlert
                 }
             }
 
-            AudioDeviceCombo.SelectedItem = Settings.Default.ProgramAudioOutput;
+            AudioDeviceCombo.SelectedItem = QuickSettings.Instance.ProgramAudioOutput;
 
-            Settings.Default.PropertyChanged += (a, b) =>
-            {
-                SaveAllSettingsButton.BackColor = Color.FromArgb(200, 60, 60);
-                ToolTipInformation.Hide(this);
-                ToolTipInformation.Show("You have unsaved changes.", this, 0, 0, 1000);
-            };
+            //QuickSettings.Instance.PropertyChanged += (a, b) =>
+            //{
+            //    SaveAllSettingsButton.BackColor = Color.FromArgb(200, 60, 60);
+            //    //ToolTipInformation.Hide(this);
+            //    //ToolTipInformation.Show("You have unsaved changes.", this, 0, 0, 1000);
+            //};
 
             RefreshAlertHistory();
         }
@@ -185,13 +193,17 @@ namespace SharpAlert
                     {
                         DataHistory = $"{item.Name}\r\n{DataHistory}";
                     }
+                    AlertHistoryText.Text = $"Count: {SharpDataHistory.Count} alert(s)";
+
+                    LastKnownHistoryCount = SharpDataHistory.Count;
                 }
                 DataHistory.Trim();
                 AlertHistoryOutput.Text = DataHistory;
             }
             else
             {
-                AlertHistoryOutput.Text = "There is no history available.";
+                AlertHistoryText.Text = "There are no items in the history.";
+                AlertHistoryOutput.Clear();
             }
         }
         
@@ -202,7 +214,8 @@ namespace SharpAlert
             {
                 SharpDataHistory.Clear();
                 SharpDataRelayedNamesHistory.Clear();
-                AlertHistoryOutput.Text = "The history was cleared.";
+                AlertHistoryText.Text = "The history was cleared.";
+                AlertHistoryOutput.Clear();
                 MessageBox.Show("The history has been cleared.",
                     "SharpAlert",
                     MessageBoxButtons.OK,
@@ -219,6 +232,7 @@ namespace SharpAlert
 
         private void AlertHistoryRefreshButton_Click(object sender, EventArgs e)
         {
+            AlertHistoryRefreshButton.BackColor = Color.FromArgb(60, 60, 60);
             RefreshAlertHistory();
         }
 
@@ -246,12 +260,24 @@ namespace SharpAlert
                                 alert.Data += "<SharpAlertReplay>true</SharpAlertReplay>";
                             }
 
-                            if (dataproc.ap.ProcessAlertItem(alert, true, false) == null)
+                            AlertInfo alertInfo = dataproc.ap.ProcessAlertItem(alert, true, false);
+
+                            if (alertInfo == null)
                             {
-                                MessageBox.Show("The alert does not meet the requirements that you've set in Message Settings, so it has not been relayed.",
+                                MessageBox.Show("The alert does not meet the requirements you've set, so it has not been relayed.",
                                     "SharpAlert",
                                     MessageBoxButtons.OK,
-                                    MessageBoxIcon.Information);
+                                    MessageBoxIcon.Exclamation);
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrWhiteSpace(alertInfo.AlertDiscardReason))
+                                {
+                                    MessageBox.Show($"{alertInfo.AlertDiscardReason}",
+                                        "SharpAlert",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Exclamation);
+                                }
                             }
                             //SharpDataQueue.Add(alert);
                         }
@@ -292,10 +318,10 @@ namespace SharpAlert
         {
             SaveDiscordSettingsButton.BackColor = Color.FromArgb(60, 60, 60);
 
-            Settings.Default.DiscordWebhook = DiscordWebhookURLInput.Text.Trim();
-            Settings.Default.DiscordWebhookAppend = DiscordWebhookAppendInput.Text.Trim();
+            QuickSettings.Instance.DiscordWebhook = DiscordWebhookURLInput.Text.Trim();
+            QuickSettings.Instance.DiscordWebhookAppend = DiscordWebhookAppendInput.Text.Trim();
 
-            if (!Settings.Default.DiscordWebhookRelayLocally)
+            if (!QuickSettings.Instance.DiscordWebhookRelayLocally)
             {
                 if (string.IsNullOrWhiteSpace(DiscordWebhookURLInput.Text)) AlertAppearanceAndSoundsGroup.Enabled = true;
                 else AlertAppearanceAndSoundsGroup.Enabled = false;
@@ -313,30 +339,68 @@ namespace SharpAlert
 
         private void AlertHistoryDumpLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            DialogResult result = MessageBox.Show("Export all alerts separately?\r\n" +
+                "Choosing NO will bundle all alerts into one file.",
+                "SharpAlert",
+                MessageBoxButtons.YesNoCancel);
+
+            if (result == DialogResult.Cancel) return;
+
             if (SharpDataHistory.Count != 0)
             {
-                string directory = AssemblyDirectory + "\\dump";
-                Directory.CreateDirectory(directory);
-                lock (SharpDataHistory)
+                try
                 {
-                    foreach (var item in SharpDataHistory)
+                    string directory = QuickSettings.ConfigDirPath + "\\Exports";
+
+                    Directory.CreateDirectory(directory);
+                    lock (SharpDataHistory)
                     {
-                        string name = item.Name;
-                        // some names relayed love having illegal filepath characters
-                        // this is the best fix I can think of, other than just using an MD5 of the data
-                        name = string.Join("_", name.Split(Path.GetInvalidFileNameChars()));
-                        File.WriteAllText(directory + "\\" + name + ".xml", item.Data);
+                        //BundledAlerts_Timestamp.cap
+                        if (result == DialogResult.Yes)
+                        {
+                            foreach (var item in SharpDataHistory)
+                            {
+                                string name = item.Name;
+                                // some names relayed love having illegal filepath characters
+                                // this is the best fix I can think of, other than just using an MD5 of the data
+                                name = string.Join("_", name.Split(Path.GetInvalidFileNameChars()));
+                                File.WriteAllText(directory + "\\" + name + ".cap", item.Data);
+                            }
+                        }
+                        else
+                        {
+                            if (result == DialogResult.No)
+                            {
+                                string FullData = "<SharpAlertMassImport>true</SharpAlertMassImport>\r\n";
+
+                                foreach (var item in SharpDataHistory)
+                                {
+                                    FullData += $"{item.Data}";
+                                }
+
+                                File.WriteAllText(directory + $"\\Bundled_{DateTime.UtcNow.Ticks}.cap", FullData);
+                            }
+                        }
                     }
+
+                    MessageBox.Show($"{SharpDataHistory.Count} alert(s) have been exported.",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    Process.Start("explorer.exe", $"{directory}");
                 }
-                MessageBox.Show($"{SharpDataHistory.Count} item(s) saved to the dump directory.",
-                    "SharpAlert",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-                Process.Start(AssemblyDirectory + "\\dump");
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"{ex.Message}",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
             else
             {
-                MessageBox.Show($"There are no items in the history.",
+                MessageBox.Show($"There are no alerts in the history.",
                     "SharpAlert",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation);
@@ -382,7 +446,7 @@ namespace SharpAlert
             //    ConsoleExt.WriteLine($"[Configuration Dialog] Couldn't work with the server.");
             //}
 
-            //if (Settings.Default.MakiVersion == "0")
+            //if (QuickSettings.Instance.MakiVersion == "0")
             //{
             //    var result = MessageBox.Show("Maki TTS can help manage 32-bit TTS voices.\r\n" +
             //    "Do you want to use it when needed?",
@@ -416,7 +480,6 @@ namespace SharpAlert
 
             //scf.ShowDialog();
         }
-
 
         private void PlayTestButton_Click(object sender, EventArgs e)
         {
@@ -459,20 +522,27 @@ namespace SharpAlert
         private void DiscordWebhookURLInput_KeyDown(object sender, KeyEventArgs e)
         {
             SaveDiscordSettingsButton.BackColor = Color.FromArgb(200, 60, 60);
-            ToolTipInformation.Hide(this);
-            ToolTipInformation.Show("You have modified webhook related fields. Click here to apply them.", this, 409, 58, 1000);
+            //ToolTipInformation.Hide(this);
+            //ToolTipInformation.Show("You have modified webhook related fields. Click here to apply them.", this, 409, 58, 1000);
         }
 
         private void DiscordWebhookAppendInput_KeyDown(object sender, KeyEventArgs e)
         {
             SaveDiscordSettingsButton.BackColor = Color.FromArgb(200, 60, 60);
-            ToolTipInformation.Hide(this);
-            ToolTipInformation.Show("You have modified webhook related fields. Click here to apply them.", this, 409, 58, 1000);
+            //ToolTipInformation.Hide(this);
+            //ToolTipInformation.Show("You have modified webhook related fields. Click here to apply them.", this, 409, 58, 1000);
         }
+
+        int LastKnownHistoryCount = 0;
 
         private void AlertListRefresher_Tick(object sender, EventArgs e)
         {
-            RefreshAlertHistory();
+            if (SharpDataHistory.Count != LastKnownHistoryCount)
+            {
+                AlertHistoryRefreshButton.BackColor = Color.FromArgb(200, 60, 60);
+                AlertHistoryText.Text = $"Count: {SharpDataHistory.Count} alert(s) - Click refresh to update the list";
+            }
+            //RefreshAlertHistory();
         }
 
         private void RefreshOutputsButton_Click(object sender, EventArgs e)
@@ -492,7 +562,7 @@ namespace SharpAlert
                     AudioDeviceCombo.Items.Add(device.FriendlyName);
                 }
 
-                AudioDeviceCombo.SelectedItem = Settings.Default.ProgramAudioOutput;
+                AudioDeviceCombo.SelectedItem = QuickSettings.Instance.ProgramAudioOutput;
             }
         }
 
@@ -510,7 +580,7 @@ namespace SharpAlert
                         if (device.FriendlyName.ToLowerInvariant() == adc.ToLowerInvariant())
                         {
                             CurrentAudioDevice = device;
-                            Settings.Default.ProgramAudioOutput = device.FriendlyName;
+                            QuickSettings.Instance.ProgramAudioOutput = device.FriendlyName;
                             //MessageBox.Show("Audio device get/set successfully.",
                             //    "SharpAlert",
                             //    MessageBoxButtons.OK,
@@ -531,7 +601,7 @@ namespace SharpAlert
             if (this.Visible)
             {
                 //AudioDeviceMessage.Stop();
-                if (string.IsNullOrWhiteSpace(Settings.Default.ProgramAudioOutput))
+                if (string.IsNullOrWhiteSpace(QuickSettings.Instance.ProgramAudioOutput))
                 {
                     AudioOutputLabel.BackColor = Color.FromArgb(200, 60, 60);
                     ToolTipInformation.SetToolTip(AudioOutputLabel,
@@ -649,14 +719,13 @@ namespace SharpAlert
             if (result == DialogResult.Yes)
             {
                 AudioDeviceCombo.SelectedIndex = -1;
-                Settings.Default.ProgramAudioOutput = string.Empty;
+                QuickSettings.Instance.ProgramAudioOutput = string.Empty;
             }
         }
 
         private void SaveAllSettingsButton_Click(object sender, EventArgs e)
         {
-            SaveAllSettingsButton.BackColor = Color.FromArgb(60, 60, 60);
-            Settings.Default.Save();
+            QuickSettings.Instance.Save();
         }
 
         private void DebuggerChecker_Tick(object sender, EventArgs e)
@@ -665,31 +734,73 @@ namespace SharpAlert
 
         private void RawSettingsButton_Click(object sender, EventArgs e)
         {
+            Migrate();
         }
 
-        public static void MigrateAuto()
+        private void Migrate()
         {
-            MessageBox.Show("Start migration?\r\n" +
-                "The program will immediately close after it's done.");
-            var old = Settings.Default;
-            var sharp = QuickSettings.Instance;
-
-            var oldProps = old.GetType().GetProperties();
-            var newProps = typeof(QuickSettings).GetProperties();
-
-            foreach (var oldProp in oldProps)
+            if ((ModifierKeys & Keys.Shift) != Keys.Shift)
             {
-                var newProp = newProps.FirstOrDefault(p => p.Name == oldProp.Name &&
-                                                           p.PropertyType == oldProp.PropertyType);
-                if (newProp != null && newProp.CanWrite)
+                if (QuickSettings.Instance.MigrationOccurred)
                 {
-                    var value = oldProp.GetValue(old);
-                    newProp.SetValue(sharp, value);
+                    MessageBox.Show("You have already migrated your settings.\r\n" +
+                        "Hold SHIFT while clicking the button to migrate anyway.",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                    return;
                 }
             }
 
-            sharp.Save();
-            Environment.Exit(0);
+            DialogResult result = MessageBox.Show("Start migration from old settings?\r\n" +
+                "The program will immediately close after it's successful, and all of your current new settings will be overwritten by your old settings.",
+                "SharpAlert",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    var old = Settings.Default;
+                    var sharp = QuickSettings.Instance;
+
+                    var oldProps = old.GetType().GetProperties();
+                    var newProps = typeof(QuickSettings).GetProperties();
+
+                    foreach (var oldProp in oldProps)
+                    {
+                        var newProp = newProps.FirstOrDefault(p => p.Name == oldProp.Name &&
+                                                                   p.PropertyType == oldProp.PropertyType);
+                        if (newProp != null && newProp.CanWrite)
+                        {
+                            var value = oldProp.GetValue(old);
+                            newProp.SetValue(sharp, value);
+                        }
+                    }
+
+                    sharp.MigrationOccurred = true;
+                    sharp.Save();
+                    Environment.Exit(0);
+                }
+                catch (Exception ex)
+                {
+                    Exception exception = new Exception($"Migration from old settings to new settings failed.\r\n{ex.Message}");
+                    UnsafeFault(exception, true);
+                    //MessageBox.Show($"Migration has failed. {ex.Message}",
+                    //    "SharpAlert",
+                    //    MessageBoxButtons.OK,
+                    //    MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private ServerConfigurationForm scf = null;
+
+        private void ServerButton_Click(object sender, EventArgs e)
+        {
+            if (scf == null || scf.IsDisposed) scf = new ServerConfigurationForm();
+            scf.ShowDialog();
         }
     }
 }

@@ -20,6 +20,7 @@ namespace SharpAlert
         public static string DialogAlertImageURL = string.Empty;
         public static string DialogAlertType = string.Empty;
         public static List<AlertDisplayerInfo> Alerts = new List<AlertDisplayerInfo>();
+
         public class AlertDisplayerInfo
         {
             public string Identifier = string.Empty;
@@ -33,12 +34,6 @@ namespace SharpAlert
 
         public static void RelayWindow(string Identifier, string EventTypeFull, AlertTextClass _AlertText, string PrimaryURL, string MsgType, List<string> AudioFiles, List<string> ImageFiles)
         {
-            if (Settings.Default.DisableDialogs)
-            {
-                ConsoleExt.WriteLine("[Alert Displayer] Relay dialogs are disabled.");
-                return;
-            }
-
             AlertDisplayerInfo alert = new AlertDisplayerInfo
             {
                 Identifier = Identifier,
@@ -50,8 +45,8 @@ namespace SharpAlert
                 ImageFiles = ImageFiles
             };
 
-            ConsoleExt.WriteLine($"[Alert Displayer] Queued -> {Identifier}");
             Alerts.Add(alert);
+            ConsoleExt.WriteLine($"[Alert Displayer] Queued dialog -> {Identifier}");
         }
 
         public static void StartDisplayerCallLoop()
@@ -105,17 +100,26 @@ namespace SharpAlert
 
             AlertsQueued--;
 
-            if (Settings.Default.alertNoGUI)
+            DialogAlertID = Identifier;
+            DialogAlertTitle = EventTypeFull;
+            DialogAlertText = (_AlertText.Intro, _AlertText.Body);
+            DialogAlertType = MsgType.ToLowerInvariant();
+            DialogAlertURL = PrimaryURL;
+
+            if (QuickSettings.Instance.DisableDialogs)
+            {
+                ConsoleExt.WriteLine("[Alert Displayer] Relay dialogs are disabled. Pausing for 5 seconds.");
+                AlertDisplaying = true;
+                Thread.Sleep(5000);
+                AlertDisplaying = false;
+                return;
+            }
+
+            if (QuickSettings.Instance.alertNoGUI)
             {
                 AlertDisplaying = true;
 
                 ConsoleExt.WriteLine("[Alert Displayer] Beginning alert.");
-
-                DialogAlertID = Identifier;
-                DialogAlertTitle = EventTypeFull;
-                DialogAlertText = (_AlertText.Intro, _AlertText.Body);
-                DialogAlertType = MsgType.ToLowerInvariant();
-                DialogAlertURL = PrimaryURL;
 
                 notify.Icon = Resources.TrayAlertIcon;
 
@@ -142,12 +146,6 @@ namespace SharpAlert
             else
             {
                 AlertDisplaying = true;
-
-                DialogAlertID = Identifier;
-                DialogAlertTitle = EventTypeFull;
-                DialogAlertText = (_AlertText.Intro, _AlertText.Body);
-                DialogAlertType = MsgType.ToLowerInvariant();
-                DialogAlertURL = PrimaryURL;
 
                 if (AudioFiles.Count != 0)
                 {
@@ -227,7 +225,7 @@ namespace SharpAlert
                     }
                     else
                     {
-                        switch (Settings.Default.alertDisplayType)
+                        switch (QuickSettings.Instance.alertDisplayType)
                         {
                             default:
                             case 0:
@@ -253,7 +251,7 @@ namespace SharpAlert
 
                     if (DeadTimeOverride <= 0)
                     {
-                        int DeadTime = Settings.Default.AlertDeadInterval;
+                        int DeadTime = QuickSettings.Instance.AlertDeadInterval;
                         if (DeadTime != 0)
                         {
                             ConsoleExt.WriteLine($"[Alert Displayer] Pausing alerts for {DeadTime} second(s) to fill dead time.");
@@ -308,7 +306,7 @@ namespace SharpAlert
                     {
                         relayPing = false;
 
-                        if (Settings.Default.alertNoRelay) continue;
+                        if (QuickSettings.Instance.alertNoRelay) continue;
 
                         Thread.Sleep(1000);
 

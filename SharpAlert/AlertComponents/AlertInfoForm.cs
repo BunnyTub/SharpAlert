@@ -133,7 +133,7 @@ namespace SharpAlert
 
         private void AlertForm_Shown(object sender, EventArgs e)
         {
-            if (Settings.Default.alertTitlebarControls)
+            if (QuickSettings.Instance.alertTitlebarControls)
             {
                 this.FormBorderStyle = FormBorderStyle.Sizable;
             }
@@ -144,14 +144,14 @@ namespace SharpAlert
 
             int LocationMargin = 10;
 
-            switch (Settings.Default.WindowLocation)
+            switch (QuickSettings.Instance.WindowLocation)
             {
                 default:
-                    if (!(Settings.Default.alertFullscreenDisplay >= Screen.AllScreens.Count()))
+                    if (!(QuickSettings.Instance.alertFullscreenDisplay >= Screen.AllScreens.Count()))
                     {
                         this.Location = new Point(
-                            (Screen.AllScreens[Settings.Default.alertFullscreenDisplay].WorkingArea.Width - this.Width) / 2,
-                            (Screen.AllScreens[Settings.Default.alertFullscreenDisplay].WorkingArea.Height - this.Height) / 2
+                            (Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].WorkingArea.Width - this.Width) / 2,
+                            (Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].WorkingArea.Height - this.Height) / 2
                         );
                     }
                     else
@@ -163,11 +163,11 @@ namespace SharpAlert
                     }
                     break;
                 case 1:
-                    if (!(Settings.Default.alertFullscreenDisplay >= Screen.AllScreens.Count()))
+                    if (!(QuickSettings.Instance.alertFullscreenDisplay >= Screen.AllScreens.Count()))
                     {
                         this.Location = new Point(
-                            Screen.AllScreens[Settings.Default.alertFullscreenDisplay].WorkingArea.Location.X + LocationMargin,
-                            Screen.AllScreens[Settings.Default.alertFullscreenDisplay].WorkingArea.Location.Y + LocationMargin
+                            Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].WorkingArea.Location.X + LocationMargin,
+                            Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].WorkingArea.Location.Y + LocationMargin
                         );
                     }
                     else
@@ -201,7 +201,7 @@ namespace SharpAlert
                     break;
             }
 
-            if (Settings.Default.alertIncreaseSize)
+            if (QuickSettings.Instance.alertIncreaseSize)
             {
                 AlertText.Font = new Font("Arial", 24F);
             }

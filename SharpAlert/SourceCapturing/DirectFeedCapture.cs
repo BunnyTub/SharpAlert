@@ -50,6 +50,8 @@ namespace SharpAlert
         public static string Result { get; private set; } = string.Empty;
         public static int Calls { get; private set; } = 0;
 
+        public static readonly List<Thread> CaptureThreads = new List<Thread>();
+
         /// <summary>
         /// Starts the TCP Feed Capture service in the current thread as a client.
         /// </summary>
@@ -57,6 +59,12 @@ namespace SharpAlert
         public void ServiceRun()
         {
             if (Stop) return;
+
+            if (!servers.Any())
+            {
+                ConsoleExt.WriteLine("[TCP Feed Capture] No servers found.");
+                return;
+            }
 
             try
             {
@@ -66,7 +74,7 @@ namespace SharpAlert
                     {
                         try
                         {
-                            new Thread(() =>
+                            Thread thread = new Thread(() =>
                             {
                                 while (true)
                                 {
@@ -91,7 +99,10 @@ namespace SharpAlert
                                     ConsoleExt.WriteLine($"[TCP Feed Capture] The connection was closed for {server.ServerName}.");
                                 }
 
-                            }).Start();
+                            });
+
+                            CaptureThreads.Add(thread);
+                            thread.Start();
                             Thread.Sleep(1000); // added sleep because we could accidentally get timed out
 
                             //ConsoleExt.WriteLine($"[TCP Feed Capture] Getting data from URL: {URLPrefix}://{server}");
@@ -131,7 +142,7 @@ namespace SharpAlert
 
                 try
                 {
-                    int CheckInterval = Settings.Default.AlertCheckInterval;
+                    int CheckInterval = QuickSettings.Instance.AlertCheckInterval;
                     for (int i = 0; !(i >= CheckInterval);)
                     {
                         if (Stop)
@@ -157,6 +168,8 @@ namespace SharpAlert
         public DateTime LastHeartbeat { get; private set; } = DateTime.UtcNow;
 
         private bool FirstRun = true;
+
+
 
         private void ServiceReceive(string name, string host, int port)
         {
@@ -284,7 +297,7 @@ namespace SharpAlert
                             string alertReplayValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
                             SharpDataItem item = new SharpDataItem(filename, alert.Value);
 
-                            if (FirstRunner && Settings.Default.discardFirstAlerts)
+                            if (FirstRunner && QuickSettings.Instance.discardFirstAlerts)
                             {
                                 if (TryAddDataToHistory(item))
                                 {
@@ -348,7 +361,7 @@ namespace SharpAlert
                             ConsoleExt.WriteLine($"[TCP Feed Capture] {alertIndex} -> {filename} (NAADS Heartbeat)");
                             SharpDataItem item = new SharpDataItem(filename, alert.Value);
 
-                            //if (FirstRun && Settings.Default.discardFirstAlerts)
+                            //if (FirstRun && QuickSettings.Instance.discardFirstAlerts)
                             //{
                             //    if (TryAddDataToHistory(item))
                             //    {

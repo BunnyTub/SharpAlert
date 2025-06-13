@@ -40,6 +40,7 @@
             this.LinkButton = new System.Windows.Forms.Button();
             this.RegionUnitedStatesNWSBox = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -48,7 +49,7 @@
             this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DoneButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DoneButton.Location = new System.Drawing.Point(451, 161);
+            this.DoneButton.Location = new System.Drawing.Point(451, 185);
             this.DoneButton.Margin = new System.Windows.Forms.Padding(0);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(72, 23);
@@ -135,7 +136,7 @@
             this.LinkButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.LinkButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.LinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.LinkButton.Location = new System.Drawing.Point(451, 135);
+            this.LinkButton.Location = new System.Drawing.Point(451, 159);
             this.LinkButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             this.LinkButton.Name = "LinkButton";
             this.LinkButton.Size = new System.Drawing.Size(72, 23);
@@ -163,7 +164,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.Font = new System.Drawing.Font("Arial", 9F);
-            this.label1.Location = new System.Drawing.Point(9, 158);
+            this.label1.Location = new System.Drawing.Point(9, 182);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(332, 26);
@@ -171,12 +172,27 @@
             this.label1.Text = "To change these options later, go to Settings.";
             this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Font = new System.Drawing.Font("Arial", 12F);
+            this.checkBox1.Location = new System.Drawing.Point(111, 154);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(193, 22);
+            this.checkBox1.TabIndex = 16;
+            this.checkBox1.Text = "Brazil (IDAP) - Disabled";
+            this.ToolTipInformation.SetToolTip(this.checkBox1, "You can receive alerts from Brazil via IDAP (Divulgação de Alertas Públicos).");
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.Visible = false;
+            // 
             // ChooseRegionForm
             // 
             this.AcceptButton = this.DoneButton;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(532, 193);
+            this.ClientSize = new System.Drawing.Size(532, 217);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.RegionUnitedStatesNWSBox);
             this.Controls.Add(this.LinkButton);
             this.Controls.Add(this.RegionMexicoBox);
@@ -219,5 +235,6 @@
         private System.Windows.Forms.CheckBox RegionMexicoBox;
         private System.Windows.Forms.Button LinkButton;
         private System.Windows.Forms.CheckBox RegionUnitedStatesNWSBox;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

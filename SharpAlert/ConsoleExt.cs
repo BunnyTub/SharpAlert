@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using static SharpAlert.MainEntryPoint;
 
 namespace SharpAlert
 {
@@ -21,7 +16,7 @@ namespace SharpAlert
             {
                 while (true)
                 {
-                    Console.Title = $"SharpAlert Console Window - CPU usage: {Math.Floor(GetUsageOfCPUAsPercent())}%";
+                    Console.Title = $"SharpAlert Console Window | CPU: {Math.Floor(GetUsageOfCPUAsPercent())}% - RAM: {Math.Floor(GetUsageOfRAMAsMB())} MB";
                     Thread.Sleep(500);
                 }
             });
@@ -49,12 +44,21 @@ namespace SharpAlert
         private static double GetUsageOfCPUAsPercent()
         {
             var startTime = DateTime.UtcNow;
-            var startCpuUsage = Process.GetCurrentProcess().TotalProcessorTime;
+            var startCPU = Process.GetCurrentProcess().TotalProcessorTime;
             Thread.Sleep(500);
 
             var endTime = DateTime.UtcNow;
-            var endCpuUsage = Process.GetCurrentProcess().TotalProcessorTime; var cpuUsedMs = (endCpuUsage - startCpuUsage).TotalMilliseconds;
+            var endCPU = Process.GetCurrentProcess().TotalProcessorTime; var cpuUsedMs = (endCPU - startCPU).TotalMilliseconds;
             var totalMsPassed = (endTime - startTime).TotalMilliseconds; var cpuUsageTotal = cpuUsedMs / (Environment.ProcessorCount * totalMsPassed); return cpuUsageTotal * 100;
+        }
+        
+        private static Process currentproc = null;
+
+        private static double GetUsageOfRAMAsMB()
+        {
+            if (currentproc == null) currentproc = Process.GetCurrentProcess();
+            currentproc.Refresh();
+            return currentproc.PrivateMemorySize64 / 1024.0 / 1024.0;
         }
 
         private static readonly object WriteLock = new object();
@@ -63,6 +67,8 @@ namespace SharpAlert
         {
             lock (WriteLock)
             {
+                //Console.WriteLine("SERVICE MODE ENABLED --- PERFORMANCE MAY BE IMPACTED --- THIS IS FOR TESTING PURPOSES");
+                if (ServiceMode) input = $"[SERVICE MODE] {input}";
                 Console.WriteLine(input);
             }
         }

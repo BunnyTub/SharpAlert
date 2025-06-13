@@ -61,11 +61,36 @@ namespace SharpAlert
             public string Body { get; set; }
         }
 
-        public int AlertsProcessing { get; private set; } = 0;
+        private int AlertsProcessedBeforeGC = 0;
+        private int _AlertsProcessing = 0;
+        public int AlertsProcessing
+        {
+            get
+            {
+                return _AlertsProcessing;
+            }
+            private set
+            {
+                if (value > _AlertsProcessing) AlertsProcessedBeforeGC++;
+                _AlertsProcessing = value;
+
+                if (AlertsProcessedBeforeGC >= 50)
+                {
+                    AlertsProcessedBeforeGC = 0;
+                    ThreadDrool.StartAndForget(() =>
+                    {
+                        Console.WriteLine("[Alert Processor] Collecting garbage globally.");
+                        GC.Collect();
+                    });
+                }
+            }
+        }
+        public bool AlertInProcessing { get; private set; } = false;
 
         //bool DoNotAddToCount
         public AlertInfo ProcessAlertItem(SharpDataItem relayItem, bool ReplayMode, bool IgnoreDiscards)
         {
+            AlertInProcessing = true;
             ConsoleExt.WriteLine($"[Alert Processor] Beginning processing -> {relayItem.Name}");
             //if (!DoNotAddToCount) AlertsProcessing++;
             AlertsProcessing++;
@@ -73,12 +98,13 @@ namespace SharpAlert
             //if (!DoNotAddToCount) AlertsProcessing--;
             AlertsProcessing--;
             ConsoleExt.WriteLine($"[Alert Processor] Finished processing -> {relayItem.Name}");
+            AlertInProcessing = false;
             return info;
         }
 
         public class AlertInfo
         {
-            //public bool AlertRelayable { get; set; } = false;
+            public string AlertDiscardReason { get; set; } = string.Empty;
             public string AlertID { get; set; } = string.Empty;
             public string AlertEventType { get; set; } = string.Empty;
             public string AlertMessageType { get; set; } = string.Empty;
@@ -119,6 +145,16 @@ namespace SharpAlert
                 MatchCollection infoMatches = InfoRegex.Matches(relayItem.Data);
                 bool final = false;
 
+                if (!ProcessAlertX(Status, MsgType))
+                {
+                    ConsoleExt.WriteLine($"[Alert Processor] Alert discarded due to status/message_type settings.");
+                    //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
+                    if (!IgnoreDiscards)
+                    {
+                        return new AlertInfo { AlertDiscardReason = "The alert was blocked because of your status, or message type settings." };
+                    }
+                }
+
                 for (int ii = 0; ii < infoMatches.Count; ii++)
                 {
                     try
@@ -137,9 +173,12 @@ namespace SharpAlert
 
                 if (!final)
                 {
-                    ConsoleExt.WriteLine($"[Alert Processor] Alert discarded due to user preferences or invalidity.");
+                    ConsoleExt.WriteLine($"[Alert Processor] Alert discarded due to urgency/category settings.");
                     //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
-                    if (!IgnoreDiscards) return null;
+                    if (!IgnoreDiscards)
+                    {
+                        return new AlertInfo { AlertDiscardReason = "The alert was blocked because of your urgency, or category settings." };
+                    }
                 }
 
                 int infoProc = 0;
@@ -193,12 +232,12 @@ namespace SharpAlert
                     {
                         if (!PrimaryURL.Contains("sasmex.net"))
                         {
-                            if (!Settings.Default.AllowNonEnglishAlerts)
+                            if (!QuickSettings.Instance.AllowNonEnglishAlerts)
                             {
                                 if (!BCP47Language.ToLowerInvariant().StartsWith("en-"))
                                 {
                                     ConsoleExt.WriteLine("[Alert Processor] Info tag discarded because it does not contain English information.");
-                                    break;
+                                    continue;
                                 }
                             }
                         }
@@ -349,24 +388,23 @@ namespace SharpAlert
 
                     bool EventBlacklisted = false;
 
-                    if ((ProcessParameterX(AlertInfo) && ProcessAlertX(Status, MsgType, Severity)) ||
+                    if (ProcessParameterX(AlertInfo) ||
                         BroadcastImmediatelyRegex.MatchOrDefault(AlertInfo, "no").ToLowerInvariant() == "yes" || IgnoreDiscards)
                     {
-                        foreach (string Event in Settings.Default.EnforceEventBlacklist)
-                        {
-                            if (EventName.ToLowerInvariant().Contains(Event.ToLowerInvariant()))
-                            {
-                                EventBlacklisted = true;
-                                break;
-                            }
-                        }
-                       
-
                         if (!IgnoreDiscards)
                         {
-                            foreach (string Event in Settings.Default.EnforceSAMEEventBlacklist)
+                            foreach (string Event in QuickSettings.Instance.EnforceEventBlacklist)
                             {
-                                if (EventType.ToLowerInvariant().Contains(Event.ToLowerInvariant()))
+                                if (EventName.ToLowerInvariant().Contains(Event.ToLowerInvariant()))
+                                {
+                                    EventBlacklisted = true;
+                                    break;
+                                }
+                            }
+
+                            foreach (string SAMEEvent in QuickSettings.Instance.EnforceSAMEEventBlacklist)
+                            {
+                                if (EventType.ToLowerInvariant().Contains(SAMEEvent.ToLowerInvariant()))
                                 {
                                     EventBlacklisted = true;
                                     break;
@@ -416,7 +454,7 @@ namespace SharpAlert
                             {
                                 ConsoleExt.WriteLine($"[Alert Processor] The contents of the current info tag match a previously processed tag.");
                                 MatchFound = true;
-                                break;
+                                continue;
                             }
                         }
 
@@ -424,12 +462,12 @@ namespace SharpAlert
                         {
                             AlertTextList.Add(text);
                             ConsoleExt.WriteLine($"[Alert Processor] The contents of the current info tag have been added.");
-                            break;
+                            continue;
                         }
                     }
                     else
                     {
-                        ConsoleExt.WriteLine($"[Alert Processor] Alert discarded either due to user preferences or invalidity.");
+                        ConsoleExt.WriteLine($"[Alert Processor] Alert discarded due to mobile alert settings, or other things.");
                     }
                 }
 
@@ -441,6 +479,7 @@ namespace SharpAlert
                 if (AlertTextList.Count == 0)
                 {
                     ConsoleExt.WriteLine("[Alert Processor] There is no alert text to process.");
+                    return new AlertInfo { AlertDiscardReason = "The alert cannot be processed because no alert text exists (somehow)." };
                 }
                 else
                 {
@@ -470,9 +509,9 @@ namespace SharpAlert
 
                     //Debugger.Break();
 
-                    if (!string.IsNullOrWhiteSpace(Settings.Default.StationIdentifier))
+                    if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.StationIdentifier))
                     {
-                        FullIntro = $"This message originates from {Settings.Default.StationIdentifier} ({Settings.Default.StationName}). {FullIntro}";
+                        FullIntro = $"This message originates from {QuickSettings.Instance.StationIdentifier} ({QuickSettings.Instance.StationName}). {FullIntro}";
                     }
 
                     AlertTextClass _AlertText = new AlertTextClass
@@ -499,13 +538,13 @@ namespace SharpAlert
                             bool CalledWebhookFunction = false;
                             bool DialogCanAppear = true;
                         
-                            if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                            if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                             {
                                 CalledWebhookFunction = true;
 
                                 DialogResult result = DialogResult.Yes;
 
-                                if (Settings.Default.DiscordWebhookConfirmAlerts)
+                                if (QuickSettings.Instance.DiscordWebhookConfirmAlerts)
                                 {
                                     ManualAlertRelayForm mar = new ManualAlertRelayForm();
                                     mar.UpdateFields(relayItem.Name, EventTypeFull, _AlertText.Intro, _AlertText.Body, PrimaryURL, string.Empty, string.Empty, string.Empty);
@@ -572,7 +611,7 @@ namespace SharpAlert
                                     if (LocationList.EndsWith(";")) LocationList = LocationList.Substring(0, LocationList.Length - 1);
 
                                     string CompiledMessage = $"{ProcessedEvent} | Location(s): {LocationList}\r\n-# Identifier: {relayItem.Name}"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
-                                    if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhookAppend)) CompiledMessage += "\r\n" + Settings.Default.DiscordWebhookAppend;
+                                    if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + QuickSettings.Instance.DiscordWebhookAppend;
                                     //DiscordWebhook.SendUnformattedMessage(CompiledMessage);
 
                                     if (DiscordWebhook.SendEmbeddedMessage(CompiledMessage, $"{MaxSeverity} Emergency {MsgType.First().ToString().ToUpper() + MsgType.Substring(1)}",
@@ -610,7 +649,7 @@ namespace SharpAlert
 
                             if (CalledWebhookFunction)
                             {
-                                if (!Settings.Default.DiscordWebhookRelayLocally) DialogCanAppear = false;
+                                if (!QuickSettings.Instance.DiscordWebhookRelayLocally) DialogCanAppear = false;
                             }
 
                             if (DialogCanAppear)
@@ -662,7 +701,7 @@ namespace SharpAlert
                         //if (LocationList.EndsWith(";")) LocationList = LocationList.Substring(0, LocationList.Length - 1);
 
                         //string CompiledMessage = $"{EventsList} | Location(s): {LocationList}\r\n-# Identifier: {relayItem.Name}\r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms";
-                        //if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhookAppend)) CompiledMessage += "\r\n" + Settings.Default.DiscordWebhookAppend;
+                        //if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + QuickSettings.Instance.DiscordWebhookAppend;
                         //DiscordWebhook.SendUnformattedMessage(CompiledMessage);
 
                         //ConsoleExt.WriteLine("[Alert Processor] Sent finalizing text to the Discord webhook.");
@@ -709,6 +748,32 @@ namespace SharpAlert
         //    AlertText.SelectionLength = 0;
         //    AlertText.SelectionStart = 0;
 
+        public void ProcessExternalAlert(string AlertEvent, string AlertIntro, string AlertBody)
+        {
+            try
+            {
+                ThreadDrool.StartAndForget(() =>
+                {
+                    RelayWindow($"EXTERNAL_EVENT_{DateTime.UtcNow.Ticks}",
+                            AlertEvent,
+                            new AlertTextClass
+                            { Intro = $"This alert has been relayed from an external source. {AlertIntro}".Trim(), Body = $"{AlertBody}".Trim() },
+                            string.Empty,
+                            "alert",
+                            new List<string>() { "" },
+                            new List<string>() { "" });
+                });
+            }
+            catch (Exception ex)
+            {
+                ConsoleExt.WriteLine($"[Alert Processor] Couldn't process an external alert. {ex.Message}");
+            }
+            finally
+            {
+                ConsoleExt.WriteLine($"[Alert Processor] Finished processing an external alert.");
+            }
+        }
+        
         public void ProcessAlertTest()
         {
             try
@@ -762,14 +827,8 @@ namespace SharpAlert
             }
         }
 
-        /// <summary>
-        /// Processes the info tag, then returns a boolean depending on the configuration.
-        /// </summary>
-        /// <param name="InfoX">The info XML data to process.</param>
-        /// <param name="MsgType">The type of message.</param>
-        /// <param name="Severity">The severity of the message.</param>
-        /// <param name="Urgency">The urgency of the message.</param>
-        /// <returns>Returns True if the caller should continue.</returns>
+        // Checks severity, urgency, categories.
+        // checks against the user settings, then returns true if all checks pass successfully. hopefully.
         public static bool ProcessInfoX(string InfoX)
         {
             ConsoleExt.WriteLine("Processing InfoX.");
@@ -799,44 +858,44 @@ namespace SharpAlert
                 switch (Severity)
                 {
                     case "extreme":
-                        SeverityValue = Settings.Default.severityExtreme;
+                        SeverityValue = QuickSettings.Instance.severityExtreme;
                         break;
                     case "severe":
-                        SeverityValue = Settings.Default.severitySevere;
+                        SeverityValue = QuickSettings.Instance.severitySevere;
                         break;
                     case "moderate":
-                        SeverityValue = Settings.Default.severityModerate;
+                        SeverityValue = QuickSettings.Instance.severityModerate;
                         break;
                     case "minor":
-                        SeverityValue = Settings.Default.severityMinor;
+                        SeverityValue = QuickSettings.Instance.severityMinor;
                         break;
                     case "unknown":
-                        SeverityValue = Settings.Default.severityUnknown;
+                        SeverityValue = QuickSettings.Instance.severityUnknown;
                         break;
                     default:
-                        SeverityValue = Settings.Default.severityUnknown;
+                        SeverityValue = QuickSettings.Instance.severityUnknown;
                         break;
                 }
 
                 switch (Urgency)
                 {
                     case "immediate":
-                        UrgencyValue = Settings.Default.urgencyImmediate;
+                        UrgencyValue = QuickSettings.Instance.urgencyImmediate;
                         break;
                     case "expected":
-                        UrgencyValue = Settings.Default.urgencyExpected;
+                        UrgencyValue = QuickSettings.Instance.urgencyExpected;
                         break;
                     case "future":
-                        UrgencyValue = Settings.Default.urgencyFuture;
+                        UrgencyValue = QuickSettings.Instance.urgencyFuture;
                         break;
                     case "past":
-                        UrgencyValue = Settings.Default.urgencyPast;
+                        UrgencyValue = QuickSettings.Instance.urgencyPast;
                         break;
                     case "unknown":
-                        UrgencyValue = Settings.Default.urgencyUnknown;
+                        UrgencyValue = QuickSettings.Instance.urgencyUnknown;
                         break;
                     default:
-                        UrgencyValue = Settings.Default.urgencyUnknown;
+                        UrgencyValue = QuickSettings.Instance.urgencyUnknown;
                         break;
                 }
 
@@ -845,43 +904,43 @@ namespace SharpAlert
                     switch (Category.Groups[1].Value)
                     {
                         case "geo":
-                            CategoryValue = Settings.Default.categoryGeophysical;
+                            CategoryValue = QuickSettings.Instance.categoryGeophysical;
                             break;
                         case "met":
-                            CategoryValue = Settings.Default.categoryMeterological;
+                            CategoryValue = QuickSettings.Instance.categoryMeterological;
                             break;
                         case "safety":
-                            CategoryValue = Settings.Default.categoryGeneralSafety;
+                            CategoryValue = QuickSettings.Instance.categoryGeneralSafety;
                             break;
                         case "security":
-                            CategoryValue = Settings.Default.categorySecurity;
+                            CategoryValue = QuickSettings.Instance.categorySecurity;
                             break;
                         case "rescue":
-                            CategoryValue = Settings.Default.categoryRescue;
+                            CategoryValue = QuickSettings.Instance.categoryRescue;
                             break;
                         case "fire":
-                            CategoryValue = Settings.Default.categoryFire;
+                            CategoryValue = QuickSettings.Instance.categoryFire;
                             break;
                         case "health":
-                            CategoryValue = Settings.Default.categoryMedical;
+                            CategoryValue = QuickSettings.Instance.categoryMedical;
                             break;
                         case "env":
-                            CategoryValue = Settings.Default.categoryEnvironmental;
+                            CategoryValue = QuickSettings.Instance.categoryEnvironmental;
                             break;
                         case "transport":
-                            CategoryValue = Settings.Default.categoryTransportation;
+                            CategoryValue = QuickSettings.Instance.categoryTransportation;
                             break;
                         case "infra":
-                            CategoryValue = Settings.Default.categoryUtilities;
+                            CategoryValue = QuickSettings.Instance.categoryUtilities;
                             break;
                         case "cbrne":
-                            CategoryValue = Settings.Default.categoryToxicThreat;
+                            CategoryValue = QuickSettings.Instance.categoryToxicThreat;
                             break;
                         case "other":
-                            CategoryValue = Settings.Default.categoryOtherUnknown;
+                            CategoryValue = QuickSettings.Instance.categoryOtherUnknown;
                             break;
                         default:
-                            CategoryValue = Settings.Default.categoryOtherUnknown;
+                            CategoryValue = QuickSettings.Instance.categoryOtherUnknown;
                             break;
                     }
 
@@ -905,27 +964,30 @@ namespace SharpAlert
             }
 
             // do something with LanguageRegex
+            // but he never did.
 
             if (Final)
             {
                 bool LocationsMatch = false;
 
-                if (Settings.Default.AllowedSAMELocations_Geocodes.Count == 0 &&
-                    Settings.Default.AllowedCAPCPLocations_Geocodes.Count == 0)
+                if (QuickSettings.Instance.AllowedSAMELocations_Geocodes.Count == 0 &&
+                    QuickSettings.Instance.AllowedCAPCPLocations_Geocodes.Count == 0 &&
+                    QuickSettings.Instance.AllowedCustomLocations_GeocodesList.Count == 0)
                 {
                     // if no locations are found, assume all locations are valid
                     ConsoleExt.WriteLine("[Alert Processor] Any locations are allowed, because the configuration does not specify any.");   
                     return true;
                 }
 
+                // I don't even know how this works anymore
+
                 // SAME
-                if (Settings.Default.AllowedSAMELocations_Geocodes.Count != 0)
+                if (QuickSettings.Instance.AllowedSAMELocations_Geocodes.Count != 0)
                 {
-                    // adds the locations for us to use
                     StringCollection locations = new StringCollection();
-                    lock (Settings.Default.AllowedSAMELocations_Geocodes)
+                    lock (QuickSettings.Instance.AllowedSAMELocations_Geocodes)
                     {
-                        foreach (string location in Settings.Default.AllowedSAMELocations_Geocodes)
+                        foreach (string location in QuickSettings.Instance.AllowedSAMELocations_Geocodes)
                         {
                             if (!locations.Contains(location))
                             {
@@ -941,7 +1003,6 @@ namespace SharpAlert
                         }
                     }
 
-                    // tries to verify locations
                     try
                     {
                         MatchCollection matches = GeocodeSpecificAreaMessageEncodingRegex.Matches(InfoX);
@@ -973,16 +1034,21 @@ namespace SharpAlert
                 }
                 
                 // CAP-CP
-                if (Settings.Default.AllowedCAPCPLocations_Geocodes.Count != 0)
+                if (QuickSettings.Instance.AllowedCAPCPLocations_Geocodes.Count != 0)
                 {
                     try
                     {
-                        MatchCollection matches = GeocodeUniversalGeographicCodeRegex.Matches(InfoX);
+                        //<geocode>
+                        //  <valueName>profile:CAP-CP:Location:0.3</valueName>
+                        //  <value>4718808</value>
+                        //</geocode>
+
+                        MatchCollection matches = GeocodeCommonAlertingProtocolCanadaCodeRegex.Matches(InfoX);
                         bool GeoMatch = false;
                         foreach (Match match in matches)
                         {
                             string geocode = match.Groups[1].Value;
-                            if (Settings.Default.AllowedCAPCPLocations_Geocodes.Contains(geocode))
+                            if (QuickSettings.Instance.AllowedCAPCPLocations_Geocodes.Contains(geocode))
                             {
                                 GeoMatch = true;
                                 break;
@@ -992,11 +1058,55 @@ namespace SharpAlert
                         if (GeoMatch)
                         {
                             LocationsMatch = true;
-                            ConsoleExt.WriteLine("[Alert Processor] One or more UGC locations were matched.");
+                            ConsoleExt.WriteLine("[Alert Processor] One or more CAP-CP locations were matched.");
                         }
                         else
                         {
-                            ConsoleExt.WriteLine("[Alert Processor] No locations matched the UGC list.");
+                            ConsoleExt.WriteLine("[Alert Processor] No locations matched the CAP-CP list.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ConsoleExt.WriteLine($"[Alert Processor] An unknown amount of locations were matched. {ex.Message}");
+                    }
+                }
+
+                // CUSTOM
+                if (QuickSettings.Instance.AllowedCustomLocations_GeocodesList.Count != 0)
+                {
+                    try
+                    {
+                        MatchCollection matches = GeocodeRegex.Matches(InfoX);
+                        bool GeoMatch = false;
+                        foreach (Match match in matches)
+                        {
+                            string GeocodeFull = match.Groups[1].Value.Trim();
+                            string valueName = ValueNameRegex.MatchOrDefault(GeocodeFull).Trim();
+                            string value = ValueRegex.MatchOrDefault(GeocodeFull).Trim();
+
+                            foreach (var location in QuickSettings.Instance.AllowedCustomLocations_GeocodesList)
+                            {
+                                if (location.ValueName == valueName)
+                                {
+                                    if (location.Value.ToLowerInvariant() == value.ToLowerInvariant())
+                                    {
+                                        GeoMatch = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (GeoMatch) break;
+                        }
+
+                        if (GeoMatch)
+                        {
+                            LocationsMatch = true;
+                            ConsoleExt.WriteLine("[Alert Processor] One or more custom locations were matched.");
+                        }
+                        else
+                        {
+                            ConsoleExt.WriteLine("[Alert Processor] No locations matched the custom list.");
                         }
                     }
                     catch (Exception ex)
@@ -1009,22 +1119,21 @@ namespace SharpAlert
                 {
                     ConsoleExt.WriteLine("[Alert Processor] No locations matched.");
                 }
+                else
+                {
+                    ConsoleExt.WriteLine("[Alert Processor] Locations matched.");
+                }
 
                 return LocationsMatch;
             }
             else return false;
         }
 
-        /// <summary>
-        /// Processes the parameter tag, then returns a boolean depending on the configuration.
-        /// </summary>
-        /// <param name="ParameterX">The parameter XML data to process.</param>
-        /// <returns>Returns True if the caller should continue.</returns>
         public bool ProcessParameterX(string ParameterX)
         {
             ConsoleExt.WriteLine("[Alert Processor] Processing ParemeterX.");
 
-            if (Settings.Default.weaOnly)
+            if (QuickSettings.Instance.weaOnly)
             {
                 if (WEAHandlingRegex.MatchOrDefault(ParameterX).ToLowerInvariant() == "imminent threat")
                 {
@@ -1040,122 +1149,72 @@ namespace SharpAlert
             }
             else return true;
         }
-
-        /// <summary>
-        /// Processes the alert tag, then returns a boolean depending on the configuration.
-        /// </summary>
-        /// <param name="Status">The status of the message.</param>
-        /// <param name="MsgType">The overall message type.</param>
-        /// <param name="Severity">The severity of the message.</param>
-        /// <returns>Returns True if the caller should continue.</returns>
-        public bool ProcessAlertX(string Status, string MsgType, string Severity)
+        
+        public bool ProcessAlertX(string Status, string MsgType)
         {
             ConsoleExt.WriteLine("[Alert Processor] Processing AlertX.");
 
             bool Final = false;
 
             // Status:
-            // Test
             // Actual
+            // Exercise
+            // Test
 
             switch (Status.ToLowerInvariant())
             {
                 case "actual":
-                    if (!Settings.Default.statusActual) return false;
+                    if (!QuickSettings.Instance.statusActual) return false;
                     break;
                 case "exercise":
-                    if (!Settings.Default.statusExercise) return false;
+                    if (!QuickSettings.Instance.statusExercise) return false;
                     break;
                 case "test":
-                    if (!Settings.Default.statusTest) return false;
+                    if (!QuickSettings.Instance.statusTest) return false;
                     break;
                 default:
                     break;
             }
-
-            // Severity:
-            // Extreme
-            // Severe
-            // Moderate
-            // Minor
-            // Unknown
 
             // MsgType:
             // Alert
             // Update
             // Cancel
 
+            try
             {
-                try
+                bool MessageTypeValue; // MsgType
+
+                switch (MsgType.ToLowerInvariant())
                 {
-                    bool var1; // Severity
-                    bool var2; // MsgType
-
-                    switch (Severity.ToLowerInvariant())
-                    {
-                        case "extreme":
-                            var1 = Settings.Default.severityExtreme;
-                            break;
-                        case "severe":
-                            var1 = Settings.Default.severitySevere;
-                            break;
-                        case "moderate":
-                            var1 = Settings.Default.severityModerate;
-                            break;
-                        case "minor":
-                            var1 = Settings.Default.severityMinor;
-                            break;
-                        case "unknown":
-                            var1 = Settings.Default.severityUnknown;
-                            break;
-                        default:
-                            var1 = Settings.Default.severityUnknown;
-                            break;
-                    }
-
-                    switch (MsgType.ToLowerInvariant())
-                    {
-                        case "alert":
-                            var2 = Settings.Default.messageTypeAlert;
-                            break;
-                        case "update":
-                            var2 = Settings.Default.messageTypeUpdate;
-                            break;
-                        case "cancel":
-                            var2 = Settings.Default.messageTypeCancel;
-                            break;
-                        default:
-                            var2 = false;
-                            break;
-                    }
-
-                    if (var1 && var2)
-                    {
-                        Final = true;
-                    }
+                    case "alert":
+                        MessageTypeValue = QuickSettings.Instance.messageTypeAlert;
+                        break;
+                    case "update":
+                        MessageTypeValue = QuickSettings.Instance.messageTypeUpdate;
+                        break;
+                    case "cancel":
+                        MessageTypeValue = QuickSettings.Instance.messageTypeCancel;
+                        break;
+                    default:
+                        MessageTypeValue = QuickSettings.Instance.messageTypeAlert;
+                        break;
                 }
-                catch (Exception)
+
+                if (MessageTypeValue)
                 {
-                    Final = false;
+                    Final = true;
                 }
+            }
+            catch (Exception)
+            {
+                Final = false;
             }
 
             // do something with LanguageRegex
 
             if (Final)
             {
-                //var WEAHandle = WEAHandlingRegex.Match(AlertX);
-
-                //if (WEAHandle.Success)
-                //{
-                //    switch (WEAHandle.Value)
-                //    {
-                //        case "Imminent Threat":
-                //            break;
-                //        default:
-                //            return false;
-                //    }
-                //}
                 return true;
             }
             else return false;
@@ -1217,7 +1276,7 @@ namespace SharpAlert
             try
             {
                 string effective = EffectiveRegex.MatchOrDefault(InfoData);
-                if (Settings.Default.alertTimeZoneUTC)
+                if (QuickSettings.Instance.alertTimeZoneUTC)
                 {
                     effectiveDate = DateTime.Parse(effective, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
                 }
@@ -1231,7 +1290,7 @@ namespace SharpAlert
                 ConsoleExt.WriteLine(ex.Message);
                 try
                 {
-                    if (Settings.Default.alertTimeZoneUTC)
+                    if (QuickSettings.Instance.alertTimeZoneUTC)
                     {
                         effectiveDate = DateTime.Parse(Sent, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
                     }
@@ -1253,7 +1312,7 @@ namespace SharpAlert
             try
             {
                 string expires = ExpiresRegex.MatchOrDefault(InfoData);
-                if (Settings.Default.alertTimeZoneUTC)
+                if (QuickSettings.Instance.alertTimeZoneUTC)
                 {
                     expiryDate = DateTime.Parse(expires, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
                 }
@@ -1265,7 +1324,7 @@ namespace SharpAlert
             catch (Exception ex)
             {
                 ConsoleExt.WriteLine(ex.Message);
-                if (Settings.Default.alertTimeZoneUTC)
+                if (QuickSettings.Instance.alertTimeZoneUTC)
                 {
                     expiryDate = DateTime.UtcNow.AddHours(1);
                 }
@@ -1278,7 +1337,7 @@ namespace SharpAlert
             ConsoleExt.WriteLine("[Alert Processor] Parsing time zone.");
 
             string TimeZoneName = "Unknown TZ";
-            if (Settings.Default.alertTimeZoneUTC) TimeZoneName = "UTC";
+            if (QuickSettings.Instance.alertTimeZoneUTC) TimeZoneName = "UTC";
             else TimeZoneName = LocalTimeAbbreviation();
 
             string SentFormatted = $"{sentDate:HH:mm} {TimeZoneName}, {sentDate:MMMM dd}, {sentDate:yyyy}";

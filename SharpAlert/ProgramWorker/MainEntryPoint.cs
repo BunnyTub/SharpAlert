@@ -5,12 +5,10 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using System.Speech.Synthesis;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using static SharpAlert.AudioManager;
 using static SharpAlert.IceBearWorker;
-using SharpAlert.Properties;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
@@ -21,10 +19,10 @@ namespace SharpAlert
     internal static class VersionInfo
     {
         public static readonly int MajorVersion = 9;
-        public static readonly int MinorVersion = 0;
+        public static readonly int MinorVersion = 2;
         public static readonly bool BetaVersion = false;
         public static readonly DateTime BetaTimeEnd = DateTime.ParseExact(
-            "6/2/2025",
+            "6/6/2025",
             "M/d/yyyy",
             CultureInfo.InvariantCulture,
             DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal
@@ -60,6 +58,7 @@ namespace SharpAlert
         public static bool CloseStatusWindow = false;
         public static object IdleWindowLock = new object();
         public static object StatusWindowLock = new object();
+        public static object AudioOutputLock = new object();
         public static NotifyIcon notify;
         public static HyperServer hyper;
         public static object AlertValuesLock = new object();
@@ -78,7 +77,8 @@ namespace SharpAlert
                 AlertDisplayingBeginTime = DateTime.UtcNow;
             }
         }
-        public static object AudioOutputLock = new object();
+
+        public static Icon icon = SystemIcons.Information;
 
         public static List<SharpDataItem> SharpDataQueue = new List<SharpDataItem>();
         public static List<SharpDataItem> SharpDataHistory = new List<SharpDataItem>();
@@ -89,8 +89,6 @@ namespace SharpAlert
 
         public static readonly string CustomURLsFileName = "feeds.txt";
 
-        public static string[] args;
-        public static Icon icon = SystemIcons.Information;
 
         /// <summary>
         /// Stops everything safely. Hopefully. exitCode is unused.
@@ -149,7 +147,7 @@ namespace SharpAlert
                     {
                         ConsoleExt.WriteLine("Cannot stop some sounds.");
                     }
-                    if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                    if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                     {
                         DiscordWebhook.SendFormattedMessage("SharpAlert has stopped.");
                     }
@@ -198,7 +196,7 @@ namespace SharpAlert
             Environment.Exit(0);
         }
 
-        public static bool FunOnABun = false;
+        public static bool ServiceMode { get; private set; } = false;
 
         /// <summary>
         /// Starts everything.
@@ -208,18 +206,19 @@ namespace SharpAlert
         {
             //watchdog self-child process
             string[] args = Environment.GetCommandLineArgs();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
             if (args.Length >= 2)
             {
-                //if (args[1] == "--sharpalert-xml")
-                //{
-                //    // arg 2 contains SharpAlert XML
-                //    // see 
-                //    if (args.Length == 3)
-                //    {
-
-                //    }
-                //}
+                if (args.Contains("--service-mode"))
+                {
+                    AllocateTerminal(false);
+                    ConsoleExt.WriteLine("SERVICE MODE ACTIVE --- PERFORMANCE MAY BE IMPACTED --- THIS IS FOR TESTING PURPOSES");
+                    ServiceMode = true;
+                    Thread.Sleep(1000);
+                    new Thread(() => new ServiceMonitorForm().ShowDialog()).Start();
+                }
 
                 //if (args.Contains("--i-want-to-be-fucked-up-the-ass-like-a-gay-little-bunny-boy"))
                 //{
@@ -230,63 +229,72 @@ namespace SharpAlert
                 //    }
                 //    return; 
                 //}
-                
-                //FunOnABun = true;
 
                 ////if (args.Contains("--call-debugger"))
                 ////{
                 ////    if (Debugger.Launch()) Debugger.NotifyOfCrossThreadDependency();
                 ////}
 
-                if (args.Contains("--monitored"))
+                if (args.Contains("--monitored") || ServiceMode)
                 {
                     Mutex mutex = new Mutex(false, "BUNNYTUB_EASCULTURE_SharpAlert_ProtectEZ");
+
                     try
                     {
-                        if (!args.Contains("--ignore-duplicates"))
+                        if (!ServiceMode)
                         {
-                            if (!mutex.WaitOne(0, false))
+                            if (!args.Contains("--ignore-duplicates"))
                             {
-                                new Thread(() =>
+                                if (!mutex.WaitOne(0, false))
                                 {
-                                    Thread.Sleep(1000 * 15);
+                                    new Thread(() =>
+                                    {
+                                        Thread.Sleep(1000 * 15);
+                                        Environment.Exit(0);
+                                    }).Start();
+                                    MessageBox.Show("SharpAlert is already running.\r\nCheck the notification tray area on the taskbar!",
+                                        "SharpAlert",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Exclamation);
                                     Environment.Exit(0);
-                                }).Start();
-                                MessageBox.Show("SharpAlert is already running.\r\nCheck the notification tray area on the taskbar!",
-                                    "SharpAlert",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Exclamation);
-                                Environment.Exit(0);
+                                }
                             }
                         }
 
-                        new Thread(() => ServiceRun()).Start();
+                        new Thread(() => ServiceRun(args)).Start();
 
-                        try
+                        if (!ServiceMode)
                         {
-                            Process parentProc = GetParentProcess();
-
-                            if (parentProc.MainModule.FileName.ToLowerInvariant() == AssemblyFile.ToLowerInvariant())
+                            try
                             {
-                                parentProc.WaitForExit();
-                                Settings.Default.Save();
-                                SafeExit();
+                                Process parentProc = GetParentProcess();
+
+                                if (parentProc.MainModule.FileName.ToLowerInvariant() == AssemblyFile.ToLowerInvariant())
+                                {
+                                    parentProc.WaitForExit();
+                                    QuickSettings.Instance.Save();
+                                    SafeExit();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                LogFault(new Exception("Couldn't identify the parent process. This may limit the ability for SharpAlert to recover from a problem.", ex));
                             }
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            LogFault(new Exception("Couldn't identify the parent process. This may limit the ability for SharpAlert to recover from a problem.", ex));
+                            mutex?.Close();
                         }
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("SharpAlert failed to start!\r\n" +
+                        MessageBox.Show($"SharpAlert failed to start! ServiceMode = {ServiceMode}\r\n" +
                             $"{ex.StackTrace}\r\n" +
                             $"{ex.Message}\r\n" +
                             $"Please report this.\r\n" +
                             $"If this is your first time running SharpAlert,\r\n" +
                             $"check that you have .NET Framework 4.8 installed.\r\n" +
-                            $"Make sure no compatibility options are enabled.\r\b",
+                            $"Make sure no compatibility options are enabled.",
                             "SharpAlert",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Error);
@@ -346,8 +354,8 @@ namespace SharpAlert
                         return;
                     default:
                         restartable = true;
-                        Settings.Default.Reload();
-                        if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                        QuickSettings.Instance.Reload();
+                        if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                         {
                             DiscordWebhook.SendFormattedMessage($"SharpAlert has terminated unexpectedly. ({monitorSelf.ExitCode})");
                         }

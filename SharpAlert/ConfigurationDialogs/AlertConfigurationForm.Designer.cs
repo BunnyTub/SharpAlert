@@ -31,9 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AlertConfigurationForm));
             this.AlertFunctionalityGroup = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.AlertDeadIntervalInput = new System.Windows.Forms.NumericUpDown();
-            this.AlertCheckIntervalLabel = new System.Windows.Forms.Label();
             this.AlertCheckIntervalInput = new System.Windows.Forms.NumericUpDown();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.discardFirstAlertsBox = new System.Windows.Forms.CheckBox();
@@ -60,27 +60,14 @@
             this.statusActualBox = new System.Windows.Forms.CheckBox();
             this.statusTestBox = new System.Windows.Forms.CheckBox();
             this.LocationsAndEventsGroup = new System.Windows.Forms.GroupBox();
+            this.LocationsButton = new System.Windows.Forms.Button();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.EventBlacklistOutput = new System.Windows.Forms.TextBox();
             this.EventBlacklistInput = new System.Windows.Forms.TextBox();
             this.EventClearButton = new System.Windows.Forms.Button();
-            this.EventAddButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.ListAreaCAPCPOutput = new System.Windows.Forms.CheckedListBox();
-            this.UGCClearButton = new System.Windows.Forms.Button();
-            this.UGCAddButton = new System.Windows.Forms.Button();
-            this.AreaCAPCPInput = new System.Windows.Forms.TextBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.ListAreaSAMEOutput = new System.Windows.Forms.CheckedListBox();
-            this.SAMESelectButton = new System.Windows.Forms.Button();
-            this.SAMEClearButton = new System.Windows.Forms.Button();
-            this.SAMEAddButton = new System.Windows.Forms.Button();
-            this.AreaSAMEInput = new System.Windows.Forms.TextBox();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
             this.StationButton = new System.Windows.Forms.Button();
             this.LanguageButton = new System.Windows.Forms.Button();
@@ -109,6 +96,7 @@
             this.BusyLockText = new System.Windows.Forms.Label();
             this.BusyLock = new System.Windows.Forms.Timer(this.components);
             this.AudioTinkeringFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.EventAddButton = new System.Windows.Forms.Button();
             this.AlertFunctionalityGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlertDeadIntervalInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AlertCheckIntervalInput)).BeginInit();
@@ -119,8 +107,6 @@
             this.groupBox1.SuspendLayout();
             this.LocationsAndEventsGroup.SuspendLayout();
             this.groupBox9.SuspendLayout();
-            this.groupBox8.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             this.ConfigurationPanel.SuspendLayout();
             this.groupBox10.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -130,9 +116,9 @@
             // 
             // AlertFunctionalityGroup
             // 
+            this.AlertFunctionalityGroup.Controls.Add(this.label7);
             this.AlertFunctionalityGroup.Controls.Add(this.label4);
             this.AlertFunctionalityGroup.Controls.Add(this.AlertDeadIntervalInput);
-            this.AlertFunctionalityGroup.Controls.Add(this.AlertCheckIntervalLabel);
             this.AlertFunctionalityGroup.Controls.Add(this.AlertCheckIntervalInput);
             this.AlertFunctionalityGroup.Controls.Add(this.groupBox11);
             this.AlertFunctionalityGroup.Controls.Add(this.groupBox5);
@@ -147,14 +133,24 @@
             this.AlertFunctionalityGroup.TabStop = false;
             this.AlertFunctionalityGroup.Text = "Alert Functionality";
             // 
+            // label7
+            // 
+            this.label7.Location = new System.Drawing.Point(160, 299);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(84, 21);
+            this.label7.TabIndex = 23;
+            this.label7.Text = "Check Interval";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ToolTipInformation.SetToolTip(this.label7, ".");
+            // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(160, 328);
+            this.label4.Location = new System.Drawing.Point(160, 326);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(79, 15);
+            this.label4.Size = new System.Drawing.Size(84, 21);
             this.label4.TabIndex = 10;
             this.label4.Text = "Dead Interval";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ToolTipInformation.SetToolTip(this.label4, ".");
             // 
             // AlertDeadIntervalInput
@@ -183,17 +179,6 @@
             0,
             0,
             0});
-            // 
-            // AlertCheckIntervalLabel
-            // 
-            this.AlertCheckIntervalLabel.AutoSize = true;
-            this.AlertCheckIntervalLabel.Location = new System.Drawing.Point(160, 301);
-            this.AlertCheckIntervalLabel.Name = "AlertCheckIntervalLabel";
-            this.AlertCheckIntervalLabel.Size = new System.Drawing.Size(84, 15);
-            this.AlertCheckIntervalLabel.TabIndex = 8;
-            this.AlertCheckIntervalLabel.Text = "Check Interval";
-            this.AlertCheckIntervalLabel.Click += new System.EventHandler(this.AlertCheckIntervalLabel_Click);
-            this.AlertCheckIntervalLabel.DoubleClick += new System.EventHandler(this.AlertCheckIntervalLabel_DoubleClick);
             // 
             // AlertCheckIntervalInput
             // 
@@ -510,10 +495,9 @@
             // 
             // LocationsAndEventsGroup
             // 
+            this.LocationsAndEventsGroup.Controls.Add(this.LocationsButton);
             this.LocationsAndEventsGroup.Controls.Add(this.groupBox9);
             this.LocationsAndEventsGroup.Controls.Add(this.label1);
-            this.LocationsAndEventsGroup.Controls.Add(this.groupBox8);
-            this.LocationsAndEventsGroup.Controls.Add(this.groupBox7);
             this.LocationsAndEventsGroup.ForeColor = System.Drawing.Color.White;
             this.LocationsAndEventsGroup.Location = new System.Drawing.Point(328, 12);
             this.LocationsAndEventsGroup.Name = "LocationsAndEventsGroup";
@@ -522,14 +506,27 @@
             this.LocationsAndEventsGroup.TabStop = false;
             this.LocationsAndEventsGroup.Text = "Locations/Events";
             // 
+            // LocationsButton
+            // 
+            this.LocationsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.LocationsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.LocationsButton.Font = new System.Drawing.Font("Arial", 16F);
+            this.LocationsButton.Location = new System.Drawing.Point(6, 35);
+            this.LocationsButton.Name = "LocationsButton";
+            this.LocationsButton.Size = new System.Drawing.Size(319, 159);
+            this.LocationsButton.TabIndex = 34;
+            this.LocationsButton.Text = "Locations have moved.\r\nClick here to access the locations panel.";
+            this.LocationsButton.UseVisualStyleBackColor = false;
+            this.LocationsButton.Click += new System.EventHandler(this.LocationsButton_Click);
+            // 
             // groupBox9
             // 
+            this.groupBox9.Controls.Add(this.EventAddButton);
             this.groupBox9.Controls.Add(this.label6);
             this.groupBox9.Controls.Add(this.label3);
             this.groupBox9.Controls.Add(this.EventBlacklistOutput);
             this.groupBox9.Controls.Add(this.EventBlacklistInput);
             this.groupBox9.Controls.Add(this.EventClearButton);
-            this.groupBox9.Controls.Add(this.EventAddButton);
             this.groupBox9.ForeColor = System.Drawing.Color.White;
             this.groupBox9.Location = new System.Drawing.Point(6, 200);
             this.groupBox9.Name = "groupBox9";
@@ -596,19 +593,6 @@
             this.EventClearButton.UseVisualStyleBackColor = false;
             this.EventClearButton.Click += new System.EventHandler(this.EventClearButton_Click);
             // 
-            // EventAddButton
-            // 
-            this.EventAddButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.EventAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.EventAddButton.Font = new System.Drawing.Font("Arial", 8F);
-            this.EventAddButton.Location = new System.Drawing.Point(108, 64);
-            this.EventAddButton.Name = "EventAddButton";
-            this.EventAddButton.Size = new System.Drawing.Size(42, 23);
-            this.EventAddButton.TabIndex = 33;
-            this.EventAddButton.Text = "Add";
-            this.EventAddButton.UseVisualStyleBackColor = false;
-            this.EventAddButton.Click += new System.EventHandler(this.EventAddButton_Click);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -618,179 +602,6 @@
             this.label1.Size = new System.Drawing.Size(310, 15);
             this.label1.TabIndex = 5;
             this.label1.Text = "If all location fields are blank, any locations are allowed.";
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Controls.Add(this.label8);
-            this.groupBox8.Controls.Add(this.ListAreaCAPCPOutput);
-            this.groupBox8.Controls.Add(this.UGCClearButton);
-            this.groupBox8.Controls.Add(this.UGCAddButton);
-            this.groupBox8.Controls.Add(this.AreaCAPCPInput);
-            this.groupBox8.ForeColor = System.Drawing.Color.White;
-            this.groupBox8.Location = new System.Drawing.Point(169, 35);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(156, 159);
-            this.groupBox8.TabIndex = 4;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "CAP-CP Locations";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.ForeColor = System.Drawing.Color.Yellow;
-            this.label8.Location = new System.Drawing.Point(136, 22);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(14, 15);
-            this.label8.TabIndex = 8;
-            this.label8.Text = "?";
-            this.ToolTipInformation.SetToolTip(this.label8, "CAP-CP location restrictions are applied ONLY to alerts that arrive from NAADS.");
-            // 
-            // ListAreaCAPCPOutput
-            // 
-            this.ListAreaCAPCPOutput.BackColor = System.Drawing.Color.Black;
-            this.ListAreaCAPCPOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ListAreaCAPCPOutput.CheckOnClick = true;
-            this.ListAreaCAPCPOutput.ForeColor = System.Drawing.Color.White;
-            this.ListAreaCAPCPOutput.FormattingEnabled = true;
-            this.ListAreaCAPCPOutput.HorizontalScrollbar = true;
-            this.ListAreaCAPCPOutput.IntegralHeight = false;
-            this.ListAreaCAPCPOutput.Location = new System.Drawing.Point(6, 76);
-            this.ListAreaCAPCPOutput.Name = "ListAreaCAPCPOutput";
-            this.ListAreaCAPCPOutput.ScrollAlwaysVisible = true;
-            this.ListAreaCAPCPOutput.Size = new System.Drawing.Size(144, 77);
-            this.ListAreaCAPCPOutput.TabIndex = 30;
-            this.ToolTipInformation.SetToolTip(this.ListAreaCAPCPOutput, "SAME-US locations are only used in Canada.");
-            this.ListAreaCAPCPOutput.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ListAreaCAPCPOutput_ItemCheck);
-            // 
-            // UGCClearButton
-            // 
-            this.UGCClearButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.UGCClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.UGCClearButton.Location = new System.Drawing.Point(6, 47);
-            this.UGCClearButton.Name = "UGCClearButton";
-            this.UGCClearButton.Size = new System.Drawing.Size(94, 23);
-            this.UGCClearButton.TabIndex = 28;
-            this.UGCClearButton.Text = "Clear";
-            this.UGCClearButton.UseVisualStyleBackColor = false;
-            this.UGCClearButton.Click += new System.EventHandler(this.UGCClearButton_Click);
-            // 
-            // UGCAddButton
-            // 
-            this.UGCAddButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.UGCAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.UGCAddButton.Location = new System.Drawing.Point(106, 47);
-            this.UGCAddButton.Name = "UGCAddButton";
-            this.UGCAddButton.Size = new System.Drawing.Size(44, 23);
-            this.UGCAddButton.TabIndex = 29;
-            this.UGCAddButton.Text = "Add";
-            this.UGCAddButton.UseVisualStyleBackColor = false;
-            this.UGCAddButton.Click += new System.EventHandler(this.UGCAddButton_Click);
-            // 
-            // AreaCAPCPInput
-            // 
-            this.AreaCAPCPInput.BackColor = System.Drawing.Color.Black;
-            this.AreaCAPCPInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AreaCAPCPInput.ForeColor = System.Drawing.Color.White;
-            this.AreaCAPCPInput.Location = new System.Drawing.Point(6, 20);
-            this.AreaCAPCPInput.Name = "AreaCAPCPInput";
-            this.AreaCAPCPInput.Size = new System.Drawing.Size(124, 21);
-            this.AreaCAPCPInput.TabIndex = 27;
-            this.ToolTipInformation.SetToolTip(this.AreaCAPCPInput, "Enter a CAP-CP code here.");
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.label7);
-            this.groupBox7.Controls.Add(this.ListAreaSAMEOutput);
-            this.groupBox7.Controls.Add(this.SAMESelectButton);
-            this.groupBox7.Controls.Add(this.SAMEClearButton);
-            this.groupBox7.Controls.Add(this.SAMEAddButton);
-            this.groupBox7.Controls.Add(this.AreaSAMEInput);
-            this.groupBox7.ForeColor = System.Drawing.Color.White;
-            this.groupBox7.Location = new System.Drawing.Point(6, 35);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(156, 159);
-            this.groupBox7.TabIndex = 3;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "SAME Locations";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.ForeColor = System.Drawing.Color.Yellow;
-            this.label7.Location = new System.Drawing.Point(136, 22);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(14, 15);
-            this.label7.TabIndex = 8;
-            this.label7.Text = "?";
-            this.ToolTipInformation.SetToolTip(this.label7, "SAME location restrictions are applied ONLY to alerts that arrive from IPAWS.");
-            // 
-            // ListAreaSAMEOutput
-            // 
-            this.ListAreaSAMEOutput.BackColor = System.Drawing.Color.Black;
-            this.ListAreaSAMEOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ListAreaSAMEOutput.CheckOnClick = true;
-            this.ListAreaSAMEOutput.ForeColor = System.Drawing.Color.White;
-            this.ListAreaSAMEOutput.FormattingEnabled = true;
-            this.ListAreaSAMEOutput.HorizontalScrollbar = true;
-            this.ListAreaSAMEOutput.IntegralHeight = false;
-            this.ListAreaSAMEOutput.Location = new System.Drawing.Point(6, 76);
-            this.ListAreaSAMEOutput.Name = "ListAreaSAMEOutput";
-            this.ListAreaSAMEOutput.ScrollAlwaysVisible = true;
-            this.ListAreaSAMEOutput.Size = new System.Drawing.Size(144, 77);
-            this.ListAreaSAMEOutput.TabIndex = 26;
-            this.ToolTipInformation.SetToolTip(this.ListAreaSAMEOutput, "SAME-US locations are only used in Canada.");
-            this.ListAreaSAMEOutput.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ListAreaSAMEOutput_ItemCheck);
-            this.ListAreaSAMEOutput.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.ListAreaSAMEOutput_Format);
-            // 
-            // SAMESelectButton
-            // 
-            this.SAMESelectButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.SAMESelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SAMESelectButton.Font = new System.Drawing.Font("Arial", 8F);
-            this.SAMESelectButton.Location = new System.Drawing.Point(102, 47);
-            this.SAMESelectButton.Name = "SAMESelectButton";
-            this.SAMESelectButton.Size = new System.Drawing.Size(48, 23);
-            this.SAMESelectButton.TabIndex = 25;
-            this.SAMESelectButton.Text = "Select";
-            this.SAMESelectButton.UseVisualStyleBackColor = false;
-            this.SAMESelectButton.Click += new System.EventHandler(this.SAMESelectButton_Click);
-            // 
-            // SAMEClearButton
-            // 
-            this.SAMEClearButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.SAMEClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SAMEClearButton.Font = new System.Drawing.Font("Arial", 8F);
-            this.SAMEClearButton.Location = new System.Drawing.Point(6, 47);
-            this.SAMEClearButton.Name = "SAMEClearButton";
-            this.SAMEClearButton.Size = new System.Drawing.Size(42, 23);
-            this.SAMEClearButton.TabIndex = 23;
-            this.SAMEClearButton.Text = "Clear";
-            this.SAMEClearButton.UseVisualStyleBackColor = false;
-            this.SAMEClearButton.Click += new System.EventHandler(this.SAMEClearButton_Click);
-            // 
-            // SAMEAddButton
-            // 
-            this.SAMEAddButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.SAMEAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SAMEAddButton.Font = new System.Drawing.Font("Arial", 8F);
-            this.SAMEAddButton.Location = new System.Drawing.Point(54, 47);
-            this.SAMEAddButton.Name = "SAMEAddButton";
-            this.SAMEAddButton.Size = new System.Drawing.Size(42, 23);
-            this.SAMEAddButton.TabIndex = 24;
-            this.SAMEAddButton.Text = "Add";
-            this.SAMEAddButton.UseVisualStyleBackColor = false;
-            this.SAMEAddButton.Click += new System.EventHandler(this.SAMEAddButton_Click);
-            // 
-            // AreaSAMEInput
-            // 
-            this.AreaSAMEInput.BackColor = System.Drawing.Color.Black;
-            this.AreaSAMEInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AreaSAMEInput.ForeColor = System.Drawing.Color.White;
-            this.AreaSAMEInput.Location = new System.Drawing.Point(6, 20);
-            this.AreaSAMEInput.Name = "AreaSAMEInput";
-            this.AreaSAMEInput.Size = new System.Drawing.Size(124, 21);
-            this.AreaSAMEInput.TabIndex = 22;
-            this.ToolTipInformation.SetToolTip(this.AreaSAMEInput, "Enter a SAME code here.");
             // 
             // ConfigurationPanel
             // 
@@ -938,7 +749,8 @@
             this.storedMaxSizeInput.Name = "storedMaxSizeInput";
             this.storedMaxSizeInput.Size = new System.Drawing.Size(67, 21);
             this.storedMaxSizeInput.TabIndex = 35;
-            this.ToolTipInformation.SetToolTip(this.storedMaxSizeInput, "Store more alerts, at the expense of more memory resources.\r\n");
+            this.ToolTipInformation.SetToolTip(this.storedMaxSizeInput, "Controls how many alerts to have in the history.\r\nOlder alerts are trimmed first " +
+        "from history lists.");
             this.storedMaxSizeInput.Value = new decimal(new int[] {
             500,
             0,
@@ -1129,6 +941,19 @@
             // 
             this.BusyLock.Tick += new System.EventHandler(this.BusyLock_Tick);
             // 
+            // EventAddButton
+            // 
+            this.EventAddButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.EventAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.EventAddButton.Font = new System.Drawing.Font("Arial", 8F);
+            this.EventAddButton.Location = new System.Drawing.Point(108, 64);
+            this.EventAddButton.Name = "EventAddButton";
+            this.EventAddButton.Size = new System.Drawing.Size(42, 23);
+            this.EventAddButton.TabIndex = 35;
+            this.EventAddButton.Text = "Add";
+            this.EventAddButton.UseVisualStyleBackColor = false;
+            this.EventAddButton.Click += new System.EventHandler(this.EventAddButton_Click);
+            // 
             // AlertConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1147,7 +972,6 @@
             this.Text = "SharpAlert - Message Settings";
             this.Load += new System.EventHandler(this.AlertConfigurationForm_Load);
             this.AlertFunctionalityGroup.ResumeLayout(false);
-            this.AlertFunctionalityGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlertDeadIntervalInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.AlertCheckIntervalInput)).EndInit();
             this.groupBox11.ResumeLayout(false);
@@ -1164,10 +988,6 @@
             this.LocationsAndEventsGroup.PerformLayout();
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
             this.ConfigurationPanel.ResumeLayout(false);
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
@@ -1183,7 +1003,6 @@
         #endregion
 
         private System.Windows.Forms.GroupBox AlertFunctionalityGroup;
-        private System.Windows.Forms.Label AlertCheckIntervalLabel;
         private System.Windows.Forms.NumericUpDown AlertCheckIntervalInput;
         private System.Windows.Forms.GroupBox groupBox11;
         private System.Windows.Forms.CheckBox discardFirstAlertsBox;
@@ -1214,14 +1033,6 @@
         private System.Windows.Forms.Button EventClearButton;
         private System.Windows.Forms.TextBox EventBlacklistInput;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.Button UGCClearButton;
-        private System.Windows.Forms.Button UGCAddButton;
-        private System.Windows.Forms.TextBox AreaCAPCPInput;
-        private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.Button SAMEClearButton;
-        private System.Windows.Forms.Button SAMEAddButton;
-        private System.Windows.Forms.TextBox AreaSAMEInput;
         private System.Windows.Forms.Panel ConfigurationPanel;
         private System.Windows.Forms.ToolTip ToolTipInformation;
         private System.Windows.Forms.Timer BusyLock;
@@ -1249,17 +1060,14 @@
         private System.Windows.Forms.Button ChangeStartButton;
         private System.Windows.Forms.OpenFileDialog AudioTinkeringFileDialog;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button SAMESelectButton;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown AlertDeadIntervalInput;
         private System.Windows.Forms.CheckBox showExpiryMessagesBox;
-        private System.Windows.Forms.CheckedListBox ListAreaSAMEOutput;
         private System.Windows.Forms.CheckBox messageTypeTestBox;
-        private System.Windows.Forms.CheckedListBox ListAreaCAPCPOutput;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button LanguageButton;
         private System.Windows.Forms.Button StationButton;
+        private System.Windows.Forms.Button LocationsButton;
+        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button EventAddButton;
     }
 }

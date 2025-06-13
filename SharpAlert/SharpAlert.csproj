@@ -65,15 +65,6 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-Remote|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>\\192.168.196.243\SharpAlertBin\Debug-Remote\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Costura, Version=6.0.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>..\packages\Costura.Fody.6.0.0\lib\netstandard2.0\Costura.dll</HintPath>
@@ -107,6 +98,9 @@
     </Reference>
     <Reference Include="NAudio.WinMM, Version=2.2.1.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.WinMM.2.2.1\lib\netstandard2.0\NAudio.WinMM.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -254,6 +248,12 @@
     <Compile Include="ListingForm.Designer.cs">
       <DependentUpon>ListingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProgramWorker\ChooseLocationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgramWorker\ChooseLocationForm.Designer.cs">
+      <DependentUpon>ChooseLocationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProgramWorker\ChooseOwnershipForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -301,6 +301,12 @@
     </Compile>
     <Compile Include="QuickSettings.cs" />
     <Compile Include="RelayController.cs" />
+    <Compile Include="ServiceMonitorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServiceMonitorForm.Designer.cs">
+      <DependentUpon>ServiceMonitorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SourceCapturing\CacheCapture.cs" />
     <Compile Include="ConfigurationDialogs\CreditsForm.cs">
       <SubType>Form</SubType>
@@ -340,6 +346,7 @@
       <DependentUpon>TeleIdleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SourceCapturing\DirectFeedCapture.cs" />
+    <Compile Include="SourceCapturing\IDAPCapture.cs" />
     <Compile Include="SourceCapturing\WeatherAtomCapture.cs" />
     <Compile Include="ThreadDrool.cs" />
     <Compile Include="WebServer\HyperServer.cs" />
@@ -413,6 +420,9 @@
     <EmbeddedResource Include="ListingForm.resx">
       <DependentUpon>ListingForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ProgramWorker\ChooseLocationForm.resx">
+      <DependentUpon>ChooseLocationForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProgramWorker\ChooseOwnershipForm.resx">
       <DependentUpon>ChooseOwnershipForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -433,6 +443,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProgramWorker\SetupForm.resx">
       <DependentUpon>SetupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServiceMonitorForm.resx">
+      <DependentUpon>ServiceMonitorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ToppleForm.resx">
       <DependentUpon>ToppleForm.cs</DependentUpon>
@@ -507,6 +520,8 @@
     <None Include="Resources\ui_alert.wav" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="WebServer\style.css" />
+    <EmbeddedResource Include="WebServer\index.html" />
     <None Include="Resources\WarningApp1.png" />
     <None Include="Resources\AlertIcon.ico" />
     <None Include="Resources\LightIcon.ico" />
@@ -557,7 +572,8 @@
   <Import Project="..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets')" />
   <PropertyGroup>
     <PostBuildEvent>del /s /q /f *.config
-del /s /q /f *.xml</PostBuildEvent>
+del /s /q /f *.xml
+del /s /q /f *.dll</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Fody.6.9.2\build\Fody.targets" Condition="Exists('..\packages\Fody.6.9.2\build\Fody.targets')" />
   <Import Project="..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />

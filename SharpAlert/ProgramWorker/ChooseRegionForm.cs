@@ -28,21 +28,21 @@ namespace SharpAlert
             if (Initialized) return;
             Initialized = true;
 
-            RegionUnitedStatesBox.Checked = Settings.Default.RegionUnitedStates;
-            RegionUnitedStatesBox.CheckedChanged += (a, b) => Settings.Default.RegionUnitedStates = ((CheckBox)a).Checked;
-            RegionUnitedStatesNWSBox.Checked = Settings.Default.RegionUnitedStatesNWS;
+            RegionUnitedStatesBox.Checked = QuickSettings.Instance.RegionUnitedStates;
+            RegionUnitedStatesBox.CheckedChanged += (a, b) => QuickSettings.Instance.RegionUnitedStates = ((CheckBox)a).Checked;
+            RegionUnitedStatesNWSBox.Checked = QuickSettings.Instance.RegionUnitedStatesNWS;
             RegionUnitedStatesNWSBox.CheckedChanged += (a, b) =>
             {
-                Settings.Default.RegionUnitedStatesNWS = ((CheckBox)a).Checked;
+                QuickSettings.Instance.RegionUnitedStatesNWS = ((CheckBox)a).Checked;
                 //if (((CheckBox)a).Checked) MessageBox.Show("",
                 //    "SharpAlert",
                 //    MessageBoxButtons.OK,
                 //    MessageBoxIcon.Exclamation);
             };
-            RegionCanadaBox.Checked = Settings.Default.RegionCanada;
-            RegionCanadaBox.CheckedChanged += (a, b) => Settings.Default.RegionCanada = ((CheckBox)a).Checked;
-            RegionMexicoBox.Checked = Settings.Default.RegionMexico;
-            RegionMexicoBox.CheckedChanged += (a, b) => Settings.Default.RegionMexico = ((CheckBox)a).Checked;
+            RegionCanadaBox.Checked = QuickSettings.Instance.RegionCanada;
+            RegionCanadaBox.CheckedChanged += (a, b) => QuickSettings.Instance.RegionCanada = ((CheckBox)a).Checked;
+            RegionMexicoBox.Checked = QuickSettings.Instance.RegionMexico;
+            RegionMexicoBox.CheckedChanged += (a, b) => QuickSettings.Instance.RegionMexico = ((CheckBox)a).Checked;
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)

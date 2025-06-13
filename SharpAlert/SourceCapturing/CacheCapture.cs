@@ -12,7 +12,7 @@ namespace SharpAlert
         {
             client = new HttpClient
             {
-                Timeout = TimeSpan.FromSeconds(2)
+                Timeout = TimeSpan.FromSeconds(30)
             };
             client.DefaultRequestHeaders.UserAgent.ParseAdd($"Mozilla/5.0 (compatible; SharpAlert)");
         }

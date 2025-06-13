@@ -42,7 +42,7 @@ namespace SharpAlert
 
         private void SaveSettingsButton_Click(object sender, EventArgs e)
         {
-            Settings.Default.Save();
+            QuickSettings.Instance.Save();
         }
     }
 }

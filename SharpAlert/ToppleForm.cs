@@ -8,7 +8,7 @@ namespace SharpAlert
     public partial class ToppleForm : Form
     {
         private readonly string ToppleReason = string.Empty;
-        bool HostProcessOfSubProcess = false;
+        private readonly bool HostProcessOfSubProcess = false;
 
         public ToppleForm(string Reason, bool _HostProcessOfSubProcess)
         {
@@ -70,9 +70,8 @@ namespace SharpAlert
 
         private void ResetButton_Click(object sender, EventArgs e)
         {
-            Settings.Default.Reset();
-            Settings.Default.Upgrade();
-            Settings.Default.Save();
+            QuickSettings.Instance.Reset();
+            QuickSettings.Instance.Save();
         }
 
         private void DebuggerButton_Click(object sender, EventArgs e)

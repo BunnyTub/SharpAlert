@@ -33,39 +33,51 @@ namespace SharpAlert
                 }
             }
 
-            AudioDeviceCombo.SelectedItem = Settings.Default.ProgramAudioOutput;
+            AudioDeviceCombo.SelectedItem = QuickSettings.Instance.ProgramAudioOutput;
 
             if (Initialized) return;
             Initialized = true;
 
-            volumeBar.Value = Settings.Default.alertVolume;
-            volumeBar.Scroll += (a, b) => Settings.Default.alertVolume = ((TrackBar)a).Value;
+            volumeBar.Value = QuickSettings.Instance.alertVolume;
+            volumeBar.Scroll += (a, b) =>
+            {
+                if (LegacyAudioPlayerBox.Checked)
+                {
+                    MessageBox.Show("You cannot use this feature with the legacy audio player.",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+                QuickSettings.Instance.alertVolume = ((TrackBar)a).Value;
+            };
             
-            LegacyAudioPlayerBox.Checked = Settings.Default.LegacyAudioPlayer;
+            LegacyAudioPlayerBox.Checked = QuickSettings.Instance.LegacyAudioPlayer;
             LegacyAudioPlayerBox.CheckedChanged += (a, b) =>
             {
-                Settings.Default.LegacyAudioPlayer = ((CheckBox)a).Checked;
-                MessageBox.Show("This setting requires a program restart. You'll lose out on program volume, using a specific output device, remote audio, and the ability to customize alert tones.",
+                QuickSettings.Instance.LegacyAudioPlayer = ((CheckBox)a).Checked;
+                MessageBox.Show("The program will now close.\r\n" +
+                    "Please open it again to complete the setup.",
                     "SharpAlert",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
-                UsingLegacy = true;
-                this.Close();
+                    MessageBoxIcon.Information);
+                QuickSettings.Instance.Save();
+                Environment.Exit(0);
             };
         }
 
-        private bool UsingLegacy = false;
-
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (UsingLegacy)
+            if (LegacyAudioPlayerBox.Checked)
             {
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(Settings.Default.ProgramAudioOutput))
+            if (string.IsNullOrWhiteSpace(QuickSettings.Instance.ProgramAudioOutput))
             {
-                MessageBox.Show("You must choose an audio output.",
+                MessageBox.Show("You must choose an audio output.\r\n" +
+                    "If you're having trouble, try the legacy audio player.",
                     "SharpAlert",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation);
@@ -95,7 +107,7 @@ namespace SharpAlert
                         if (device.FriendlyName.ToLowerInvariant() == adc.ToLowerInvariant())
                         {
                             CurrentAudioDevice = device;
-                            Settings.Default.ProgramAudioOutput = device.FriendlyName;
+                            QuickSettings.Instance.ProgramAudioOutput = device.FriendlyName;
                             //MessageBox.Show("Audio device get/set successfully.",
                             //    "SharpAlert",
                             //    MessageBoxButtons.OK,
@@ -109,6 +121,15 @@ namespace SharpAlert
 
         private void RefreshOutputsButton_Click(object sender, EventArgs e)
         {
+            if (LegacyAudioPlayerBox.Checked)
+            {
+                MessageBox.Show("You cannot use this feature with the legacy audio player.",
+                    "SharpAlert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+                return;
+            }
+
             var result = MessageBox.Show("Refresh audio outputs?\r\nThe window may freeze for a few moments.",
                 "SharpAlert",
                 MessageBoxButtons.YesNo,
@@ -124,7 +145,7 @@ namespace SharpAlert
                     AudioDeviceCombo.Items.Add(device.FriendlyName);
                 }
 
-                AudioDeviceCombo.SelectedItem = Settings.Default.ProgramAudioOutput;
+                AudioDeviceCombo.SelectedItem = QuickSettings.Instance.ProgramAudioOutput;
             }
         }
     }

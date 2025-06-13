@@ -1,5 +1,4 @@
-﻿using SharpAlert.Properties;
-using System;
+﻿using System;
 using System.Threading;
 using System.Windows.Forms;
 using static SharpAlert.MainEntryPoint;
@@ -27,43 +26,43 @@ namespace SharpAlert
             AudioTinkeringFileDialog.Multiselect = false;
             AudioTinkeringFileDialog.Title = "SharpAlert - Audio Selection";
 
-            statusActualBox.Checked = Settings.Default.statusActual;
-            statusActualBox.CheckedChanged += (a, b) => Settings.Default.statusActual = ((CheckBox)a).Checked;
-            statusExerciseBox.Checked = Settings.Default.statusExercise;
-            statusExerciseBox.CheckedChanged += (a, b) => Settings.Default.statusExercise = ((CheckBox)a).Checked;
-            statusTestBox.Checked = Settings.Default.statusTest;
-            statusTestBox.CheckedChanged += (a, b) => Settings.Default.statusTest = ((CheckBox)a).Checked;
+            statusActualBox.Checked = QuickSettings.Instance.statusActual;
+            statusActualBox.CheckedChanged += (a, b) => QuickSettings.Instance.statusActual = ((CheckBox)a).Checked;
+            statusExerciseBox.Checked = QuickSettings.Instance.statusExercise;
+            statusExerciseBox.CheckedChanged += (a, b) => QuickSettings.Instance.statusExercise = ((CheckBox)a).Checked;
+            statusTestBox.Checked = QuickSettings.Instance.statusTest;
+            statusTestBox.CheckedChanged += (a, b) => QuickSettings.Instance.statusTest = ((CheckBox)a).Checked;
 
-            messageTypeAlertBox.Checked = Settings.Default.messageTypeAlert;
-            messageTypeAlertBox.CheckedChanged += (a, b) => Settings.Default.messageTypeAlert = ((CheckBox)a).Checked;
-            messageTypeUpdateBox.Checked = Settings.Default.messageTypeUpdate;
-            messageTypeUpdateBox.CheckedChanged += (a, b) => Settings.Default.messageTypeUpdate = ((CheckBox)a).Checked;
-            messageTypeCancelBox.Checked = Settings.Default.messageTypeCancel;
-            messageTypeCancelBox.CheckedChanged += (a, b) => Settings.Default.messageTypeCancel = ((CheckBox)a).Checked;
-            messageTypeTestBox.Checked = Settings.Default.messageTypeTest;
-            messageTypeTestBox.CheckedChanged += (a, b) => Settings.Default.messageTypeTest = ((CheckBox)a).Checked;
+            messageTypeAlertBox.Checked = QuickSettings.Instance.messageTypeAlert;
+            messageTypeAlertBox.CheckedChanged += (a, b) => QuickSettings.Instance.messageTypeAlert = ((CheckBox)a).Checked;
+            messageTypeUpdateBox.Checked = QuickSettings.Instance.messageTypeUpdate;
+            messageTypeUpdateBox.CheckedChanged += (a, b) => QuickSettings.Instance.messageTypeUpdate = ((CheckBox)a).Checked;
+            messageTypeCancelBox.Checked = QuickSettings.Instance.messageTypeCancel;
+            messageTypeCancelBox.CheckedChanged += (a, b) => QuickSettings.Instance.messageTypeCancel = ((CheckBox)a).Checked;
+            messageTypeTestBox.Checked = QuickSettings.Instance.messageTypeTest;
+            messageTypeTestBox.CheckedChanged += (a, b) => QuickSettings.Instance.messageTypeTest = ((CheckBox)a).Checked;
 
-            severityExtremeBox.Checked = Settings.Default.severityExtreme;
-            severityExtremeBox.CheckedChanged += (a, b) => Settings.Default.severityExtreme = ((CheckBox)a).Checked;
-            severitySevereBox.Checked = Settings.Default.severitySevere;
-            severitySevereBox.CheckedChanged += (a, b) => Settings.Default.severitySevere = ((CheckBox)a).Checked;
-            severityModerateBox.Checked = Settings.Default.severityModerate;
-            severityModerateBox.CheckedChanged += (a, b) => Settings.Default.severityModerate = ((CheckBox)a).Checked;
-            severityMinorBox.Checked = Settings.Default.severityMinor;
-            severityMinorBox.CheckedChanged += (a, b) => Settings.Default.severityMinor = ((CheckBox)a).Checked;
-            severityUnknownBox.Checked = Settings.Default.severityUnknown;
-            severityUnknownBox.CheckedChanged += (a, b) => Settings.Default.severityUnknown = ((CheckBox)a).Checked;
+            severityExtremeBox.Checked = QuickSettings.Instance.severityExtreme;
+            severityExtremeBox.CheckedChanged += (a, b) => QuickSettings.Instance.severityExtreme = ((CheckBox)a).Checked;
+            severitySevereBox.Checked = QuickSettings.Instance.severitySevere;
+            severitySevereBox.CheckedChanged += (a, b) => QuickSettings.Instance.severitySevere = ((CheckBox)a).Checked;
+            severityModerateBox.Checked = QuickSettings.Instance.severityModerate;
+            severityModerateBox.CheckedChanged += (a, b) => QuickSettings.Instance.severityModerate = ((CheckBox)a).Checked;
+            severityMinorBox.Checked = QuickSettings.Instance.severityMinor;
+            severityMinorBox.CheckedChanged += (a, b) => QuickSettings.Instance.severityMinor = ((CheckBox)a).Checked;
+            severityUnknownBox.Checked = QuickSettings.Instance.severityUnknown;
+            severityUnknownBox.CheckedChanged += (a, b) => QuickSettings.Instance.severityUnknown = ((CheckBox)a).Checked;
 
-            urgencyImmediateBox.Checked = Settings.Default.urgencyImmediate;
-            urgencyImmediateBox.CheckedChanged += (a, b) => Settings.Default.urgencyImmediate = ((CheckBox)a).Checked;
-            urgencyExpectedBox.Checked = Settings.Default.urgencyExpected;
-            urgencyExpectedBox.CheckedChanged += (a, b) => Settings.Default.urgencyExpected = ((CheckBox)a).Checked;
-            urgencyFutureBox.Checked = Settings.Default.urgencyFuture;
-            urgencyFutureBox.CheckedChanged += (a, b) => Settings.Default.urgencyFuture = ((CheckBox)a).Checked;
-            urgencyPastBox.Checked = Settings.Default.urgencyPast;
-            urgencyPastBox.CheckedChanged += (a, b) => Settings.Default.urgencyPast = ((CheckBox)a).Checked;
-            urgencyUnknownBox.Checked = Settings.Default.urgencyUnknown;
-            urgencyUnknownBox.CheckedChanged += (a, b) => Settings.Default.urgencyUnknown = ((CheckBox)a).Checked;
+            urgencyImmediateBox.Checked = QuickSettings.Instance.urgencyImmediate;
+            urgencyImmediateBox.CheckedChanged += (a, b) => QuickSettings.Instance.urgencyImmediate = ((CheckBox)a).Checked;
+            urgencyExpectedBox.Checked = QuickSettings.Instance.urgencyExpected;
+            urgencyExpectedBox.CheckedChanged += (a, b) => QuickSettings.Instance.urgencyExpected = ((CheckBox)a).Checked;
+            urgencyFutureBox.Checked = QuickSettings.Instance.urgencyFuture;
+            urgencyFutureBox.CheckedChanged += (a, b) => QuickSettings.Instance.urgencyFuture = ((CheckBox)a).Checked;
+            urgencyPastBox.Checked = QuickSettings.Instance.urgencyPast;
+            urgencyPastBox.CheckedChanged += (a, b) => QuickSettings.Instance.urgencyPast = ((CheckBox)a).Checked;
+            urgencyUnknownBox.Checked = QuickSettings.Instance.urgencyUnknown;
+            urgencyUnknownBox.CheckedChanged += (a, b) => QuickSettings.Instance.urgencyUnknown = ((CheckBox)a).Checked;
 
             if (AlertCheckIntervalInput.Value < 5)
             {
@@ -71,205 +70,90 @@ namespace SharpAlert
             }
             else
             {
-                AlertCheckIntervalInput.Value = Settings.Default.AlertCheckInterval;
+                AlertCheckIntervalInput.Value = QuickSettings.Instance.AlertCheckInterval;
             }
-            AlertCheckIntervalInput.ValueChanged += (a, b) => Settings.Default.AlertCheckInterval = (int)((NumericUpDown)a).Value;
+            AlertCheckIntervalInput.ValueChanged += (a, b) => QuickSettings.Instance.AlertCheckInterval = (int)((NumericUpDown)a).Value;
 
-            AlertDeadIntervalInput.Value = Settings.Default.AlertDeadInterval;
-            AlertDeadIntervalInput.ValueChanged += (a, b) => Settings.Default.AlertDeadInterval = (int)((NumericUpDown)a).Value;
+            AlertDeadIntervalInput.Value = QuickSettings.Instance.AlertDeadInterval;
+            AlertDeadIntervalInput.ValueChanged += (a, b) => QuickSettings.Instance.AlertDeadInterval = (int)((NumericUpDown)a).Value;
 
-            weaOnlyBox.Checked = Settings.Default.weaOnly;
-            weaOnlyBox.CheckedChanged += (a, b) => Settings.Default.weaOnly = ((CheckBox)a).Checked;
-            discardFirstAlertsBox.Checked = Settings.Default.discardFirstAlerts;
-            discardFirstAlertsBox.CheckedChanged += (a, b) => Settings.Default.discardFirstAlerts = ((CheckBox)a).Checked;
+            weaOnlyBox.Checked = QuickSettings.Instance.weaOnly;
+            weaOnlyBox.CheckedChanged += (a, b) => QuickSettings.Instance.weaOnly = ((CheckBox)a).Checked;
+            discardFirstAlertsBox.Checked = QuickSettings.Instance.discardFirstAlerts;
+            discardFirstAlertsBox.CheckedChanged += (a, b) => QuickSettings.Instance.discardFirstAlerts = ((CheckBox)a).Checked;
             
-            categoryGeoBox.Checked = Settings.Default.categoryGeophysical;
-            categoryGeoBox.CheckedChanged += (a, b) => Settings.Default.categoryGeophysical = ((CheckBox)a).Checked;
-            categorySecurityBox.Checked = Settings.Default.categorySecurity;
-            categorySecurityBox.CheckedChanged += (a, b) => Settings.Default.categorySecurity = ((CheckBox)a).Checked;
-            categoryHealthBox.Checked = Settings.Default.categoryMedical;
-            categoryHealthBox.CheckedChanged += (a, b) => Settings.Default.categoryMedical = ((CheckBox)a).Checked;
-            categoryInfraBox.Checked = Settings.Default.categoryUtilities;
-            categoryInfraBox.CheckedChanged += (a, b) => Settings.Default.categoryUtilities = ((CheckBox)a).Checked;
-            categoryMetBox.Checked = Settings.Default.categoryMeterological;
-            categoryMetBox.CheckedChanged += (a, b) => Settings.Default.categoryMeterological = ((CheckBox)a).Checked;
-            categoryRescueBox.Checked = Settings.Default.categoryRescue;
-            categoryRescueBox.CheckedChanged += (a, b) => Settings.Default.categoryRescue = ((CheckBox)a).Checked;
-            categoryEnvBox.Checked = Settings.Default.categoryEnvironmental;
-            categoryEnvBox.CheckedChanged += (a, b) => Settings.Default.categoryEnvironmental = ((CheckBox)a).Checked;
-            categoryCBRNEBox.Checked = Settings.Default.categoryToxicThreat;
-            categoryCBRNEBox.CheckedChanged += (a, b) => Settings.Default.categoryToxicThreat = ((CheckBox)a).Checked;
-            categorySafetyBox.Checked = Settings.Default.categoryGeneralSafety;
-            categorySafetyBox.CheckedChanged += (a, b) => Settings.Default.categoryGeneralSafety = ((CheckBox)a).Checked;
-            categoryFireBox.Checked = Settings.Default.categoryFire;
-            categoryFireBox.CheckedChanged += (a, b) => Settings.Default.categoryFire = ((CheckBox)a).Checked;
-            categoryTransportBox.Checked = Settings.Default.categoryTransportation;
-            categoryTransportBox.CheckedChanged += (a, b) => Settings.Default.categoryTransportation = ((CheckBox)a).Checked;
-            categoryOtherBox.Checked = Settings.Default.categoryOtherUnknown;
-            categoryOtherBox.CheckedChanged += (a, b) => Settings.Default.categoryOtherUnknown = ((CheckBox)a).Checked;
+            categoryGeoBox.Checked = QuickSettings.Instance.categoryGeophysical;
+            categoryGeoBox.CheckedChanged += (a, b) => QuickSettings.Instance.categoryGeophysical = ((CheckBox)a).Checked;
+            categorySecurityBox.Checked = QuickSettings.Instance.categorySecurity;
+            categorySecurityBox.CheckedChanged += (a, b) => QuickSettings.Instance.categorySecurity = ((CheckBox)a).Checked;
+            categoryHealthBox.Checked = QuickSettings.Instance.categoryMedical;
+            categoryHealthBox.CheckedChanged += (a, b) => QuickSettings.Instance.categoryMedical = ((CheckBox)a).Checked;
+            categoryInfraBox.Checked = QuickSettings.Instance.categoryUtilities;
+            categoryInfraBox.CheckedChanged += (a, b) => QuickSettings.Instance.categoryUtilities = ((CheckBox)a).Checked;
+            categoryMetBox.Checked = QuickSettings.Instance.categoryMeterological;
+            categoryMetBox.CheckedChanged += (a, b) => QuickSettings.Instance.categoryMeterological = ((CheckBox)a).Checked;
+            categoryRescueBox.Checked = QuickSettings.Instance.categoryRescue;
+            categoryRescueBox.CheckedChanged += (a, b) => QuickSettings.Instance.categoryRescue = ((CheckBox)a).Checked;
+            categoryEnvBox.Checked = QuickSettings.Instance.categoryEnvironmental;
+            categoryEnvBox.CheckedChanged += (a, b) => QuickSettings.Instance.categoryEnvironmental = ((CheckBox)a).Checked;
+            categoryCBRNEBox.Checked = QuickSettings.Instance.categoryToxicThreat;
+            categoryCBRNEBox.CheckedChanged += (a, b) => QuickSettings.Instance.categoryToxicThreat = ((CheckBox)a).Checked;
+            categorySafetyBox.Checked = QuickSettings.Instance.categoryGeneralSafety;
+            categorySafetyBox.CheckedChanged += (a, b) => QuickSettings.Instance.categoryGeneralSafety = ((CheckBox)a).Checked;
+            categoryFireBox.Checked = QuickSettings.Instance.categoryFire;
+            categoryFireBox.CheckedChanged += (a, b) => QuickSettings.Instance.categoryFire = ((CheckBox)a).Checked;
+            categoryTransportBox.Checked = QuickSettings.Instance.categoryTransportation;
+            categoryTransportBox.CheckedChanged += (a, b) => QuickSettings.Instance.categoryTransportation = ((CheckBox)a).Checked;
+            categoryOtherBox.Checked = QuickSettings.Instance.categoryOtherUnknown;
+            categoryOtherBox.CheckedChanged += (a, b) => QuickSettings.Instance.categoryOtherUnknown = ((CheckBox)a).Checked;
 
-            storedMaxSizeInput.Value = Settings.Default.storedMaxSize;
-            storedMaxSizeInput.ValueChanged += (a, b) => Settings.Default.storedMaxSize = (int)((NumericUpDown)a).Value;
-            showExpiryMessagesBox.Checked = Settings.Default.showExpiryMessages;
-            showExpiryMessagesBox.CheckedChanged += (a, b) => Settings.Default.showExpiryMessages = ((CheckBox)a).Checked;
-
-            ListAreaSAMEOutput.Items.Clear();
-            foreach (string area in Settings.Default.AllowedSAMELocations_Geocodes)
-            {
-                ListAreaSAMEOutput.Items.Add(area, true);
-            }
-
-            ListAreaCAPCPOutput.Items.Clear();
-            foreach (string area in Settings.Default.AllowedCAPCPLocations_Geocodes)
-            {
-                ListAreaCAPCPOutput.Items.Add(area, true);
-            }
+            storedMaxSizeInput.Value = QuickSettings.Instance.storedMaxSize;
+            storedMaxSizeInput.ValueChanged += (a, b) => QuickSettings.Instance.storedMaxSize = (int)((NumericUpDown)a).Value;
+            showExpiryMessagesBox.Checked = QuickSettings.Instance.showExpiryMessages;
+            showExpiryMessagesBox.CheckedChanged += (a, b) => QuickSettings.Instance.showExpiryMessages = ((CheckBox)a).Checked;
 
             string Events = string.Empty;
-            foreach (string SAME_event in Settings.Default.EnforceEventBlacklist) Events += SAME_event + "\r\n";
+            foreach (string SAME_event in QuickSettings.Instance.EnforceEventBlacklist) Events += SAME_event + "\r\n";
             Events = Events.Trim();
             EventBlacklistOutput.Text = Events;
-        }
-
-        private void SAMEAddButton_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(AreaSAMEInput.Text))
-            {
-                if (!(AreaSAMEInput.Text.Length >= 5))
-                {
-                    MessageBox.Show("The SAME location must be at least 5-6 characters.",
-                        "SharpAlert",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation);
-                    AreaSAMEInput.Clear();
-                    return;
-                }
-
-                if (Settings.Default.AllowedSAMELocations_Geocodes.Contains(AreaSAMEInput.Text))
-                {
-                    var removal = MessageBox.Show("The SAME location is already in the list. Remove it?",
-                        "SharpAlert",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
-                    if (removal == DialogResult.Yes) Settings.Default.AllowedSAMELocations_Geocodes.Remove(AreaSAMEInput.Text);
-                    ListAreaSAMEOutput.Items.Clear();
-                    foreach (string area in Settings.Default.AllowedSAMELocations_Geocodes)
-                    {
-                        ListAreaSAMEOutput.Items.Add(area);
-                    }
-                    AreaSAMEInput.Clear();
-                    return;
-                }
-                else
-                {
-                    Settings.Default.AllowedSAMELocations_Geocodes.Add(AreaSAMEInput.Text);
-                    ListAreaSAMEOutput.Items.Clear();
-                    foreach (string area in Settings.Default.AllowedSAMELocations_Geocodes)
-                    {
-                        ListAreaSAMEOutput.Items.Add(area);
-                    }
-                    AreaSAMEInput.Clear();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Enter a SAME location value to add it.",
-                    "SharpAlert",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
-            }
-        }
-
-        private void UGCAddButton_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(AreaCAPCPInput.Text))
-            {
-                if (!(AreaCAPCPInput.Text.Length >= 5))
-                {
-                    MessageBox.Show("The CAP-CP location must be at least 5-6 characters.",
-                        "SharpAlert",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation);
-                    AreaCAPCPInput.Clear();
-                    return;
-                }
-
-                if (Settings.Default.AllowedCAPCPLocations_Geocodes.Contains(AreaCAPCPInput.Text))
-                {
-                    var removal = MessageBox.Show("The CAP-CP location is already in the list. Remove it?",
-                        "SharpAlert",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
-                    if (removal == DialogResult.Yes) Settings.Default.AllowedCAPCPLocations_Geocodes.Remove(AreaCAPCPInput.Text);
-                    ListAreaCAPCPOutput.Items.Clear();
-                    foreach (string area in Settings.Default.AllowedCAPCPLocations_Geocodes)
-                    {
-                        ListAreaSAMEOutput.Items.Add(area);
-                    }
-                    AreaCAPCPInput.Clear();
-                    return;
-                }
-                else
-                {
-                    Settings.Default.AllowedCAPCPLocations_Geocodes.Add(AreaCAPCPInput.Text);
-                    ListAreaCAPCPOutput.Items.Clear();
-                    foreach (string area in Settings.Default.AllowedCAPCPLocations_Geocodes)
-                    {
-                        ListAreaCAPCPOutput.Items.Add(area);
-                    }
-                    AreaCAPCPInput.Clear();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Enter a CAP-CP location value to add it.",
-                    "SharpAlert",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
-            }
         }
 
         private void EventAddButton_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(EventBlacklistInput.Text))
             {
-                Settings.Default.EnforceEventBlacklist.Add(EventBlacklistInput.Text);
-                string Events = string.Empty;
-                foreach (string SAME_event in Settings.Default.EnforceEventBlacklist) Events += SAME_event + "\r\n";
-                Events = Events.Trim();
-                EventBlacklistOutput.Text = Events;
-                EventBlacklistInput.Clear();
+                if (QuickSettings.Instance.EnforceEventBlacklist.Contains(EventBlacklistInput.Text))
+                {
+                    var removal = MessageBox.Show("The event name is already in the list. Remove it?",
+                        "SharpAlert",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+                    if (removal == DialogResult.Yes) QuickSettings.Instance.EnforceEventBlacklist.Remove(EventBlacklistInput.Text);
+                    EventBlacklistOutput.Clear();
+                    foreach (string area in QuickSettings.Instance.EnforceEventBlacklist)
+                    {
+                        EventBlacklistOutput.Text = $"{area}\r\n{EventBlacklistOutput.Text}";
+                    }
+                    EventBlacklistInput.Clear();
+                    return;
+                }
+                else
+                {
+                    QuickSettings.Instance.EnforceEventBlacklist.Add(EventBlacklistInput.Text);
+                    EventBlacklistOutput.Clear();
+                    foreach (string area in QuickSettings.Instance.AllowedCAPCPLocations_Geocodes)
+                    {
+                        EventBlacklistOutput.Text = $"{area}\r\n{EventBlacklistOutput.Text}";
+                    }
+                    EventBlacklistInput.Clear();
+                }
             }
             else
             {
-                MessageBox.Show("Enter an event value to add it.",
+                MessageBox.Show("Enter an event name to add it.",
                     "SharpAlert",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation);
-            }
-        }
-
-        private void SAMEClearButton_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Clear SAME location data?",
-                "SharpAlert",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                Settings.Default.AllowedSAMELocations_Geocodes.Clear();
-                ListAreaSAMEOutput.Items.Clear();
-            }
-        }
-
-        private void UGCClearButton_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Clear CAP-CP location data?",
-                "SharpAlert",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                Settings.Default.AllowedCAPCPLocations_Geocodes.Clear();
-                ListAreaCAPCPOutput.Items.Clear();
             }
         }
 
@@ -280,7 +164,7 @@ namespace SharpAlert
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                Settings.Default.EnforceEventBlacklist.Clear();
+                QuickSettings.Instance.EnforceEventBlacklist.Clear();
                 EventBlacklistOutput.Text = string.Empty;
             }
         }
@@ -309,7 +193,7 @@ namespace SharpAlert
                     {
                         if (AudioTinkeringFileDialog.ShowDialog() != DialogResult.OK)
                         {
-                            Settings.Default.StartToneLocation = string.Empty;
+                            QuickSettings.Instance.StartToneLocation = string.Empty;
                             lock (notify)
                             {
                                 notify.BalloonTipTitle = "SharpAlert has audio changes";
@@ -319,7 +203,7 @@ namespace SharpAlert
                             }
                             return;
                         }
-                        Settings.Default.StartToneLocation = AudioTinkeringFileDialog.FileName;
+                        QuickSettings.Instance.StartToneLocation = AudioTinkeringFileDialog.FileName;
                         lock (notify)
                         {
                             notify.BalloonTipTitle = "SharpAlert has audio changes";
@@ -351,7 +235,7 @@ namespace SharpAlert
                     {
                         if (AudioTinkeringFileDialog.ShowDialog() != DialogResult.OK)
                         {
-                            Settings.Default.EndToneLocation = string.Empty;
+                            QuickSettings.Instance.EndToneLocation = string.Empty;
                             lock (notify)
                             {
                                 notify.BalloonTipTitle = "SharpAlert has audio changes";
@@ -361,7 +245,7 @@ namespace SharpAlert
                             }
                             return;
                         }
-                        Settings.Default.EndToneLocation = AudioTinkeringFileDialog.FileName;
+                        QuickSettings.Instance.EndToneLocation = AudioTinkeringFileDialog.FileName;
                         lock (notify)
                         {
                             notify.BalloonTipTitle = "SharpAlert has audio changes";
@@ -387,73 +271,6 @@ namespace SharpAlert
         {
         }
 
-        //Double-click to toggle 5 second polling. This is not recommended on lower end hardware, or networks with bad/unstable connections.
-        private void AlertCheckIntervalLabel_DoubleClick(object sender, EventArgs e)
-        {
-            //if (AlertCheckIntervalInput.Enabled)
-            //{
-            //    AlertCheckIntervalInput.Enabled = false;
-            //    Settings.Default.AlertCheckInterval = 5;
-            //}
-            //else
-            //{
-            //    AlertCheckIntervalInput.Enabled = true;
-            //    AlertCheckIntervalInput.Value = 30;
-            //}
-        }
-
-        private readonly LocationsAdditionForm laf = new LocationsAdditionForm();
-
-        private void SAMESelectButton_Click(object sender, EventArgs e)
-        {
-            var result = laf.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                string lefted = $"{laf.SelectedState.Id.ToString().PadLeft(3, '0')}";
-                string righted = $"{laf.SelectedCounty.Id.ToString().PadLeft(3, '0')}";
-                AreaSAMEInput.Enabled = false;
-                AreaSAMEInput.Text = lefted + righted;
-                SAMEAddButton.PerformClick();
-                AreaSAMEInput.Enabled = true;
-            }
-        }
-
-        private readonly EventsAdditionForm eaf = new EventsAdditionForm();
-
-        private void EventSelectButton_Click(object sender, EventArgs e)
-        {
-            var result = eaf.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                string lefted = $"{eaf.SelectedState.Id.ToString().PadLeft(3, '0')}";
-                string righted = $"{eaf.SelectedCounty.Id.ToString().PadLeft(3, '0')}";
-                EventBlacklistInput.Enabled = false;
-                EventBlacklistInput.Text = lefted + righted;
-                EventAddButton.PerformClick();
-                EventBlacklistInput.Enabled = true;
-            }
-        }
-
-        private void ListAreaSAMEOutput_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            if (e.NewValue == CheckState.Checked) return;
-
-            if (MessageBox.Show("Remove this location from the SAME location list?",
-                "SharpAlert",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                Settings.Default.AllowedSAMELocations_Geocodes.RemoveAt(e.Index);
-                ListAreaSAMEOutput.Items.Clear();
-                foreach (string area in Settings.Default.AllowedSAMELocations_Geocodes)
-                {
-                    ListAreaSAMEOutput.Items.Add(area);
-                }
-            }
-
-            e.NewValue = CheckState.Checked;
-        }
-
         //int[] states = (AlertDetails.States.OrderBy(x => x.Id).Select(x => x.Id).ToArray());
 
         private void ListAreaSAMEOutput_Format(object sender, ListControlConvertEventArgs e)
@@ -461,31 +278,11 @@ namespace SharpAlert
             e.Value = GetFriendlyNameFromSAMELocation((string)e.Value);
         }
 
-        private void ListAreaCAPCPOutput_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            if (e.NewValue == CheckState.Checked) return;
-
-            if (MessageBox.Show("Remove this location from the CAP-CP location list?",
-                "SharpAlert",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                Settings.Default.AllowedCAPCPLocations_Geocodes.RemoveAt(e.Index);
-                ListAreaCAPCPOutput.Items.Clear();
-                foreach (string area in Settings.Default.AllowedCAPCPLocations_Geocodes)
-                {
-                    ListAreaCAPCPOutput.Items.Add(area);
-                }
-            }
-
-            e.NewValue = CheckState.Checked;
-        }
-
         private void LanguageButton_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("By default, alerts are only shown if they have English text.\r\n" +
                 "Do you want to allow alerts of all languages to be relayed?\r\n\r\n" +
-                $"AllowNonEnglishLanguages is currently set to {Settings.Default.AllowNonEnglishAlerts}.\r\nThis setting is always ignored for SASMEX alerts.",
+                $"AllowNonEnglishLanguages is currently set to {QuickSettings.Instance.AllowNonEnglishAlerts}.\r\nThis setting is always ignored for SASMEX alerts.",
                 "SharpAlert",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
@@ -493,10 +290,10 @@ namespace SharpAlert
             switch (result)
             {
                 case DialogResult.Yes:
-                    Settings.Default.AllowNonEnglishAlerts = true;
+                    QuickSettings.Instance.AllowNonEnglishAlerts = true;
                     break;
                 case DialogResult.No:
-                    Settings.Default.AllowNonEnglishAlerts = false;
+                    QuickSettings.Instance.AllowNonEnglishAlerts = false;
                     break;
             }
         }
@@ -507,6 +304,14 @@ namespace SharpAlert
         {
             if (cof == null || cof.IsDisposed) cof = new ChooseOwnershipForm(false);
             cof.ShowDialog();
+        }
+
+        private ChooseLocationForm clf = null;
+
+        private void LocationsButton_Click(object sender, EventArgs e)
+        {
+            if (clf == null || clf.IsDisposed) clf = new ChooseLocationForm(false);
+            clf.ShowDialog();
         }
     }
 }

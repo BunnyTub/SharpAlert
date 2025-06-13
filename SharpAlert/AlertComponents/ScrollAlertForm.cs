@@ -145,12 +145,12 @@ namespace SharpAlert
 
         private void AlertForm_Shown(object sender, EventArgs e)
         {
-            AutoExit.Interval = Settings.Default.alertTimeout * 60000;
+            AutoExit.Interval = QuickSettings.Instance.alertTimeout * 60000;
             AutoExit.Start();
 
             GotHandle = this.Handle;
 
-            if (!Settings.Default.alertCompatibilityMode)
+            if (!QuickSettings.Instance.alertCompatibilityMode)
             {
                 FadeInAnimation.Start();
                 FlashTaskbarStatus.Start();
@@ -180,14 +180,14 @@ namespace SharpAlert
 
             this.WindowState = FormWindowState.Normal;
 
-            if (Settings.Default.alertTitlebarControls)
+            if (QuickSettings.Instance.alertTitlebarControls)
             {
                 taskbarList.MarkFullscreenWindow(GotHandle, false);
                 this.FormBorderStyle = FormBorderStyle.Sizable;
-                if (!(Settings.Default.alertFullscreenDisplay >= Screen.AllScreens.Count()))
+                if (!(QuickSettings.Instance.alertFullscreenDisplay >= Screen.AllScreens.Count()))
                 {
-                    this.Size = new Size(Screen.AllScreens[Settings.Default.alertFullscreenDisplay].Bounds.Width - 100,
-                        Screen.AllScreens[Settings.Default.alertFullscreenDisplay].Bounds.Height - 100);
+                    this.Size = new Size(Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].Bounds.Width - 100,
+                        Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].Bounds.Height - 100);
                 }
                 else
                 {
@@ -201,9 +201,9 @@ namespace SharpAlert
                 taskbarList.MarkFullscreenWindow(GotHandle, true);
                 try
                 {
-                    if (!(Settings.Default.alertFullscreenDisplay >= Screen.AllScreens.Count()))
+                    if (!(QuickSettings.Instance.alertFullscreenDisplay >= Screen.AllScreens.Count()))
                     {
-                        this.Location = Screen.AllScreens[Settings.Default.alertFullscreenDisplay].Bounds.Location;
+                        this.Location = Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].Bounds.Location;
                     }
                     else
                     {
@@ -217,7 +217,7 @@ namespace SharpAlert
                 this.WindowState = FormWindowState.Maximized;
             }
 
-            if (Settings.Default.alertIncreaseSize)
+            if (QuickSettings.Instance.alertIncreaseSize)
             {
                 AlertText.Font = new Font("Arial", 52F);
             }
@@ -251,7 +251,7 @@ namespace SharpAlert
             UnlockButtons(false);
             AutoExit.Stop();
             StopAllAudioSilently();
-            if (!Settings.Default.alertCompatibilityMode)
+            if (!QuickSettings.Instance.alertCompatibilityMode)
             {
                 if (FadeOutExitReady)
                 {

@@ -21,15 +21,15 @@ namespace SharpAlert
             this.WindowState = FormWindowState.Normal;
             try
             {
-                if (!(Settings.Default.alertFullscreenDisplay >= Screen.AllScreens.Count()))
-                    this.Location = Screen.AllScreens[Settings.Default.alertFullscreenDisplay].WorkingArea.Location;
+                if (!(QuickSettings.Instance.alertFullscreenDisplay >= Screen.AllScreens.Count()))
+                    this.Location = Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].WorkingArea.Location;
             }
             catch (Exception)
             {
             }
             this.WindowState = FormWindowState.Maximized;
-            if (Settings.Default.alertTimeZoneUTC) UseUTCTimeZone = true;
-            if (Settings.Default.alertCompatibilityMode)
+            if (QuickSettings.Instance.alertTimeZoneUTC) UseUTCTimeZone = true;
+            if (QuickSettings.Instance.alertCompatibilityMode)
             {
                 InfoText.ScrollSpeed = 0;
                 IdleText.Dock = DockStyle.Fill;

@@ -26,10 +26,10 @@ namespace SharpAlert
         {
             if (Initialized) return;
             Initialized = true;
-            volumeBar.Value = Settings.Default.alertVolume;
+            volumeBar.Value = QuickSettings.Instance.alertVolume;
             volumeBar.Scroll += (a, b) =>
             {
-                Settings.Default.alertVolume = ((TrackBar)a).Value;
+                QuickSettings.Instance.alertVolume = ((TrackBar)a).Value;
                 AudioManager.PlayFromUnmanagedSource(Resources.ui_beep_1, true);
             };
         }

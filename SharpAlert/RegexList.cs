@@ -23,14 +23,22 @@ namespace SharpAlert
         //    return match.Success ? match.Groups[1].Value : defaultValue;
         //}
 
-        //public static readonly Regex ValueNameRegex = new Regex(
-        //    @"<valueName>([^<]+)</valueName>\s*<value>([^<]+)</value>",
-        //    RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
 		// for some reason, the Regex engine ignores forward slashes as syntax. It does make things a little cleaner though.
 
         public static readonly Regex ReplayedAlertRegex = new Regex(
             @"<SharpAlertReplay>\s*(.*?)\s*</SharpAlertReplay>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex AlertTitleRegex = new Regex(
+            @"<SharpAlert-AlertTitle>\s*(.*?)\s*</SharpAlert-AlertTitle>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex AlertIntroRegex = new Regex(
+            @"<SharpAlert-AlertIntro>\s*(.*?)\s*</SharpAlert-AlertIntro>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+		public static readonly Regex AlertBodyRegex = new Regex(
+            @"<SharpAlert-AlertBody>\s*(.*?)\s*</SharpAlert-AlertBody>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
 		public static readonly Regex LanguageRegex = new Regex(
@@ -224,8 +232,20 @@ namespace SharpAlert
             @"<geocode>\s*<valueName>SAME</valueName>\s*<value>\s*(.*?)\s*</value>\s*</geocode>",
             RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 		
-		public static readonly Regex GeocodeUniversalGeographicCodeRegex = new Regex(
-            @"<geocode>\s*<valueName>UGC</valueName>\s*<value>\s*(.*?)\s*</value>\s*</geocode>",
+		public static readonly Regex GeocodeCommonAlertingProtocolCanadaCodeRegex = new Regex(
+            @"<geocode>\s*<valueName>profile:CAP-CP:Location:0.3</valueName>\s*<value>\s*(.*?)\s*</value>\s*</geocode>",
             RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-	}
+
+        public static Regex GeocodeRegex = new Regex(
+             @"<geocode>\s*(.*?)\s*</geocode>",
+             RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+        public static Regex ValueNameRegex = new Regex(
+             @"<valueName>\s*(.*?)\s*</valueName>",
+             RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static Regex ValueRegex = new Regex(
+             @"<value>\s*(.*?)\s*></value>",
+             RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+    }
 }

@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using SharpAlert.Properties;
+using static SharpAlert.MainEntryPoint;
 
 namespace SharpAlert
 {
@@ -35,7 +40,7 @@ namespace SharpAlert
 
         public static bool IsAdministrator => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 
-        public async Task ServiceRun()
+        public void ServiceRun()
         {
             using (var listener = new HttpListener())
             {
@@ -66,7 +71,70 @@ namespace SharpAlert
                     }
                 }
 
+                var resources = Assembly.GetExecutingAssembly().GetManifestResourceNames();
+
+                foreach (string resourceName in resources)
+                {
+                    if (resourceName.StartsWith("SharpAlert.WebServer."))
+                    {
+                        if (resourceName.ToLowerInvariant().EndsWith(".html") || resourceName.ToLowerInvariant().EndsWith(".htm"))
+                        {
+                            // Extract just the filename from the full resource name
+                            string[] parts = resourceName.Split('.');
+                            int count = parts.Length;
+
+                            if (count >= 2)
+                            {
+                                string fileName = $"{parts[count - 2]}.{parts[count - 1]}";
+                                ConsoleExt.WriteLine($"[Hyper Server] Endpoint (HTML): {UrlPrefix.TrimEnd('/')}/{fileName}");
+                            }
+                        }
+                    
+                        if (resourceName.ToLowerInvariant().EndsWith(".css"))
+                        {
+                            string[] parts = resourceName.Split('.');
+                            int count = parts.Length;
+
+                            if (count >= 2)
+                            {
+                                string fileName = $"{parts[count - 2]}.{parts[count - 1]}";
+                                ConsoleExt.WriteLine($"[Hyper Server] Endpoint (CSS): {UrlPrefix.TrimEnd('/')}/{fileName}");
+                            }
+                        }
+                    
+                        if (resourceName.ToLowerInvariant().EndsWith(".js"))
+                        {
+                            string[] parts = resourceName.Split('.');
+                            int count = parts.Length;
+
+                            if (count >= 2)
+                            {
+                                string fileName = $"{parts[count - 2]}.{parts[count - 1]}";
+                                ConsoleExt.WriteLine($"[Hyper Server] Endpoint (JS): {UrlPrefix.TrimEnd('/')}/{fileName}");
+                            }
+                        }
+
+                        if (resourceName.ToLowerInvariant().EndsWith(".js"))
+                        {
+                            string[] parts = resourceName.Split('.');
+                            int count = parts.Length;
+
+                            if (count >= 2)
+                            {
+                                string fileName = $"{parts[count - 2]}.{parts[count - 1]}";
+                                ConsoleExt.WriteLine($"[Hyper Server] Endpoint (JS): {UrlPrefix.TrimEnd('/')}/{fileName}");
+                            }
+                        }
+                    }
+                }
+
                 Started = true;
+
+                List<string> BadUserAgents = new List<string>
+                {
+                    "ByteSpider",
+                    "WhenYouFuckingSeeIt727"
+                };
 
                 while (true)
                 {
@@ -85,14 +153,28 @@ namespace SharpAlert
                         }
 
                         var ctx = contextTask.Result;
-                        ctx.Response.AddHeader("Access-Control-Allow-Origin", "*");
-                        ctx.Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate, no-transform");
-                        _ = HandleRequestAsync(ctx);
+
+                        Console.WriteLine($"[Hyper Server] Request received -> {ctx.Request.RemoteEndPoint.Address}");
+
+                        var userAgent = ctx.Request.UserAgent ?? string.Empty;
+
+                        var match = BadUserAgents.Find(bad =>
+                            userAgent.IndexOf(bad, StringComparison.OrdinalIgnoreCase) >= 0);
+
+                        if (match != null)
+                        {
+                            Console.WriteLine($"[Hyper Server] Returning garbage data. (possible spam/scraper)");
+                            Task.Run(() => WriteGarbageResponseAsync(ctx));
+                        }
+                        else
+                        {
+                            Task.Run(() => HandleRequestAsync(ctx));
+                        }
                     }
                     catch (Exception ex)
                     {
                         ConsoleExt.WriteLine($"[Hyper Server] {ex.Message}");
-                        await Task.Delay(1000);
+                        Thread.Sleep(1000);
                     }
                 }
             }
@@ -106,9 +188,13 @@ namespace SharpAlert
                     ? ctx.Request.Url.Segments[1].TrimEnd('/')
                     : null;
 
+                ctx.Response.AddHeader("Access-Control-Allow-Origin", "*");
+                ctx.Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate, no-transform");
+                ctx.Response.AddHeader($"Warning", "299 SharpAlert \"Unauthorized access or use in administrative areas may violate laws and result in disciplinary action, civil liability, or criminal prosecution. Activity may be monitored and reported. By continuing, you consent to these terms. Stop connection immediately if you are not authorized.\"");
+
                 if (string.IsNullOrEmpty(methodName))
                 {
-                    await WriteResponseAsync(ctx, 400, "You must specify a method name to call endpoints.");
+                    await WriteResponseAsync(ctx, 404, "You must specify an endpoint.");
                     return;
                 }
 
@@ -125,7 +211,28 @@ namespace SharpAlert
 
                 if (method == null)
                 {
-                    await WriteResponseAsync(ctx, 404, "There is no endpoint at this URL.");
+                    try
+                    {
+                        using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SharpAlert.WebServer." + methodName))
+                        {
+                            if (stream == null)
+                            {
+                                await WriteResponseAsync(ctx, 404, $"There is no endpoint at this URL.");
+                            }
+                            else
+                            {
+                                using (StreamReader reader = new StreamReader(stream))
+                                {
+                                    await WriteResponseAsync(ctx, 200, reader.ReadToEnd());
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        await WriteResponseAsync(ctx, 404, $"Could not grab an endpoint at this URL. (why? {ex.Message})");
+                    }
+
                     return;
                 }
 
@@ -147,28 +254,39 @@ namespace SharpAlert
 
                 if (result != null)
                 {
+                    if (result is NullClass) return;
+                    
                     if (result is string output)
                     {
-                        await WriteResponseAsync(ctx, 200, output);
+                        if (!string.IsNullOrEmpty(output)) await WriteResponseAsync(ctx, 200, output);
                         //await WriteResponseAsync(ctx, 200, output, "application/xml");
                         //await WriteResponseAsync(ctx, 200, output, "application/xhtml+xml");
                     }
                     else
                     {
-                        await WriteResponseAsync(ctx, 500, "There's something wrong with the endpoint. Try again later.");
+                        if (result is byte[] byteOutput)
+                        {
+                            await WriteByteResponseAsync(ctx, 200, byteOutput);
+                            //await WriteResponseAsync(ctx, 200, output, "application/xml");
+                            //await WriteResponseAsync(ctx, 200, output, "application/xhtml+xml");
+                        }
+                        else
+                        {
+                            await WriteResponseAsync(ctx, 500, "There's something wrong with the endpoint. Try again later.");
+                        }
                     }
                 }
                 else if (!ctx.Response.OutputStream.CanWrite)
                 {
                 }
                 else
-                {
+                {   
                     await WriteResponseAsync(ctx, 204, string.Empty); // No Content
                 }
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine($"[Hyper Server] {ex.Message}");
+                ConsoleExt.WriteLine($"[Hyper Server] {ex.GetBaseException().Message}");
                 await WriteResponseAsync(ctx, 500, "The server encountered a problem while processing the request.");
             }
             finally
@@ -185,6 +303,29 @@ namespace SharpAlert
             if (ctx.Response.OutputStream != null)
             {
                 byte[] buffer = Encoding.UTF8.GetBytes(body);
+                ctx.Response.StatusCode = statusCode;
+                //ctx.Response.ContentType = contentType;
+                ctx.Response.ContentLength64 = buffer.Length;
+
+                await ctx.Response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
+            }
+        }
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        private async Task WriteGarbageResponseAsync(HttpListenerContext ctx)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            if (ctx.Response.OutputStream != null)
+            {
+                ctx.Response.StatusCode = 727;
+                ctx.Response.OutputStream.Close();
+            }
+        }
+
+        private async Task WriteByteResponseAsync(HttpListenerContext ctx, int statusCode, byte[] buffer)
+        {
+            if (ctx.Response.OutputStream != null)
+            {
                 ctx.Response.StatusCode = statusCode;
                 //ctx.Response.ContentType = contentType;
                 ctx.Response.ContentLength64 = buffer.Length;
@@ -225,16 +366,57 @@ namespace SharpAlert
         //    return File.ReadAllText($"{MainEntryPoint.AssemblyDirectory}\\WebServer\\AlertScroll.html");
         //}
 
+#pragma warning disable IDE0060 // Remove unused parameter
+
+        [Mapping("favicon.ico")]
+        public object FavoriteIcon(HttpListenerContext ctx)
+        {
+            ctx.Response.ContentType = "image/png";
+
+            using (var stream = new MemoryStream())
+            {
+                Resources.AlertIcon.Save(stream, ImageFormat.Png);  
+                return stream.ToArray();
+            }
+        }
+        
+        [Mapping("version")]
+        public object Version(HttpListenerContext ctx)
+        {
+            return $"</center><h1>SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} is hosting this server.</h1></center>";
+        }
+        
+        [Mapping("version-raw")]
+        public object VersionRaw(HttpListenerContext ctx)
+        {
+            return $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}";
+        }
+
+        [Mapping("self-destruct")]
+        public object SelfDestruct(HttpListenerContext ctx)
+        {
+            if (AuthenticationFulfilled(ctx))
+            {
+                byte[] message = Encoding.UTF8.GetBytes("</center><h1>Self-destruct sequence initiated.</h1></center>");
+                ctx.Response.OutputStream.Write(message, 0, message.Length);
+                ctx.Response.OutputStream.Close();
+                Environment.Exit(0);
+                return new NullClass();
+            }
+
+            return "You cannot just try an initiate a self-destruct sequence without authenticating!";
+        }
+
         [Mapping("AlertInfo")]
         public object AlertInfo(HttpListenerContext ctx)
         {
             ctx.Response.ContentType = "application/json";
-            if (MainEntryPoint.AlertDisplaying)
+            if (AlertDisplaying)
             {
                 var alert = new AlertInformation
                 {
                     AlertInProgress = true,
-                    MatchTime = $"{MainEntryPoint.AlertDisplayingBeginTime.Ticks}",
+                    MatchTime = $"{AlertDisplayingBeginTime.Ticks}",
                     AlertID = AlertDisplayer.DialogAlertID,
                     AlertType = AlertDisplayer.DialogAlertType,
                     AlertTitle = AlertDisplayer.DialogAlertTitle,
@@ -248,6 +430,7 @@ namespace SharpAlert
                 var alert = new AlertInformation
                 {
                     AlertInProgress = false,
+                    MatchTime = string.Empty,
                     AlertID = string.Empty,
                     AlertType = string.Empty,
                     AlertTitle = string.Empty,
@@ -258,13 +441,111 @@ namespace SharpAlert
             }
         }
 
+        private bool AuthenticationFulfilled(HttpListenerContext ctx)
+        {
+            try
+            {
+                void SendAuthChallenge(HttpListenerContext ctx_, string message)
+                {
+                    byte[] buffer = Encoding.UTF8.GetBytes(message);
+                    ctx_.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    ctx_.Response.AddHeader("WWW-Authenticate", "Basic realm=\"SharpAlert Administrative Panel\"");
+                    ctx_.Response.ContentLength64 = buffer.Length;
+                    ctx_.Response.OutputStream.Write(buffer, 0, buffer.Length);
+                    ctx_.Response.OutputStream.Close();
+                }
+
+                string authHeader = ctx.Request.Headers["Authorization"];
+
+                if (string.IsNullOrWhiteSpace(authHeader) || !authHeader.StartsWith("Basic ", StringComparison.OrdinalIgnoreCase))
+                {
+                    SendAuthChallenge(ctx, "Please authenticate to use this endpoint.");
+                    return false;
+                }
+
+                string encodedCredentials = authHeader.Substring("Basic\x20".Length).Trim();
+                string decodedCredentials = Encoding.UTF8.GetString(Convert.FromBase64String(encodedCredentials));
+                string[] parts = decodedCredentials.Split(':');
+
+                if (parts.Length != 2)
+                {
+                    ctx.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    return false;
+                }
+
+                string username = parts[0];
+                string password = parts[1];
+
+                if (username != QuickSettings.Instance.ServerUsername || password != QuickSettings.Instance.ServerPassword)
+                {
+                    ctx.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    ctx.Response.AddHeader("WWW-Authenticate", "Basic realm=\"SharpAlert Administrative Panel\"");
+                    return false;
+                }
+
+                ctx.Response.StatusCode = (int)HttpStatusCode.OK;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}\r\n{ex.StackTrace}");
+            }
+
+            return false;
+
+            //using (var writer = new StreamWriter(ctx.Response.OutputStream))
+            //{
+            //    writer.Write("Welcome, admin!");
+            //}
+        }
+
+        public class NullClass { }
+
+        private readonly string NoAccessMessage = "No authentication, no access. If you're not supposed to be here, stop, and remember that your request is being logged!";
+
+        [Mapping("ClearAlertHistory")]
+        public object ClearAlertHistory(HttpListenerContext ctx)
+        {
+            if (AuthenticationFulfilled(ctx))
+            {
+                SharpDataHistory.Clear();
+                SharpDataRelayedNamesHistory.Clear();
+                return "Cleared the alert history.";
+            }
+            else
+            { 
+                return NoAccessMessage;
+            }
+        }
+        
+        //[Mapping("ClearAlertHistory")]
+        //public object Login(HttpListenerContext ctx)
+        //{
+        //    if (AuthenticationFulfilled(ctx))
+        //    {
+        //        if (File.Exists(AssemblyDirectory))
+        //        {
+        //            return "";
+        //        }
+        //        else
+        //        {
+        //            return "To use the visual interface, download the optional HTML pack.";
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return NoAccessMessage;
+        //    }
+        //}
+
+
         [Mapping("AlertXML")]
         public object AlertXML(HttpListenerContext ctx)
         {
             ctx.Response.ContentType = "application/xml";
             string Alerts = "<SharpAlertHyperServer>";
-            Alerts += "<SharpAlertNote>When is the dragon update?</SharpAlertNote>";
-            Alerts += $"<SharpAlertMaxAlertCount>{Settings.Default.storedMaxSize}</SharpAlertMaxAlertCount>";
+            Alerts += "<SharpAlertNote>When is the bunny update?</SharpAlertNote>";
+            Alerts += $"<SharpAlertMaxAlertCount>{QuickSettings.Instance.storedMaxSize}</SharpAlertMaxAlertCount>";
             foreach (var alert in MainEntryPoint.SharpDataHistory)
             {
                 Alerts += alert.Data + "\r\n";
@@ -279,7 +560,7 @@ namespace SharpAlert
             ctx.Response.ContentType = "application/xml";
             string Alerts = "<SharpAlertHyperServer>";
             Alerts += "<SharpAlertNote>Purposely returning zero alerts found.</SharpAlertNote>";
-            Alerts += $"<SharpAlertMaxAlertCount>{Settings.Default.storedMaxSize}</SharpAlertMaxAlertCount>";
+            Alerts += $"<SharpAlertMaxAlertCount>{QuickSettings.Instance.storedMaxSize}</SharpAlertMaxAlertCount>";
             Alerts += "</SharpAlertHyperServer>";
             return Alerts;
         }
@@ -292,5 +573,6 @@ namespace SharpAlert
         //    ctx.Response.OutputStream.Dispose();
         //    return null;
         //}
+#pragma warning restore IDE0060 // Remove unused parameter
     }
 }

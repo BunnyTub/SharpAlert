@@ -44,7 +44,7 @@ namespace SharpAlert
                     }
 
 
-                    if (SharpDataRelayedNamesHistory.Count > Settings.Default.storedMaxSize)
+                    if (SharpDataRelayedNamesHistory.Count > QuickSettings.Instance.storedMaxSize)
                     {
                         // use first instead of last, otherwise, recent alerts will be forgotten
                         lock (SharpDataRelayedNamesHistory) SharpDataRelayedNamesHistory.Remove(SharpDataRelayedNamesHistory.First());
@@ -57,7 +57,7 @@ namespace SharpAlert
                         return;
                     }
 
-                    //if (Settings.Default.alertNoGUI) continue;
+                    //if (QuickSettings.Instance.alertNoGUI) continue;
 
                     int alertIndex = 0;
 
@@ -120,7 +120,7 @@ namespace SharpAlert
                             if (Expired)
                             {
                                 CompiledString = CompiledString.Trim();
-                                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                                if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                                 {
                                     string FullNames = string.Empty;
                                     
@@ -160,10 +160,10 @@ namespace SharpAlert
                                 }
                                 else
                                 {
-                                    if (Settings.Default.alertNoGUI) continue;
+                                    if (QuickSettings.Instance.alertNoGUI) continue;
                                     else
                                     {
-                                        if (!Settings.Default.showExpiryMessages) continue;
+                                        if (!QuickSettings.Instance.showExpiryMessages) continue;
                                         info.UpdateFields(CompiledString);
                                         info.ShowDialog();
                                     }

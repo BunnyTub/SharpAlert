@@ -191,14 +191,14 @@ namespace SharpAlert
 
         private void AlertForm_Shown(object sender, EventArgs e)
         {
-            AutoExit.Interval = Settings.Default.alertTimeout * 60000;
+            AutoExit.Interval = QuickSettings.Instance.alertTimeout * 60000;
             AutoExit.Start();
 
             //this.Text = $"SharpAlert - {AlertSubtitleStr}";
             UpdateTaskbarProgress(TaskbarProgressState.Error, 100, 100);
             GotHandle = this.Handle;
 
-            if (!Settings.Default.alertCompatibilityMode)
+            if (!QuickSettings.Instance.alertCompatibilityMode)
             {
                 FadeInAnimation.Start();
                 FlashTaskbarStatus.Start();
@@ -226,7 +226,7 @@ namespace SharpAlert
 
             PlayStartToneFile();
 
-            if (Settings.Default.alertTitlebarControls)
+            if (QuickSettings.Instance.alertTitlebarControls)
             {
                 this.FormBorderStyle = FormBorderStyle.Sizable;
             }
@@ -237,14 +237,14 @@ namespace SharpAlert
 
             int LocationMargin = 10;
 
-            switch (Settings.Default.WindowLocation)
+            switch (QuickSettings.Instance.WindowLocation)
             {
                 default:
-                    if (!(Settings.Default.alertFullscreenDisplay >= Screen.AllScreens.Count()))
+                    if (!(QuickSettings.Instance.alertFullscreenDisplay >= Screen.AllScreens.Count()))
                     {
                         this.Location = new Point(
-                            (Screen.AllScreens[Settings.Default.alertFullscreenDisplay].WorkingArea.Width - this.Width) / 2,
-                            (Screen.AllScreens[Settings.Default.alertFullscreenDisplay].WorkingArea.Height - this.Height) / 2
+                            (Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].WorkingArea.Width - this.Width) / 2,
+                            (Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].WorkingArea.Height - this.Height) / 2
                         );
                     }
                     else
@@ -256,11 +256,11 @@ namespace SharpAlert
                     }
                     break;
                 case 1:
-                    if (!(Settings.Default.alertFullscreenDisplay >= Screen.AllScreens.Count()))
+                    if (!(QuickSettings.Instance.alertFullscreenDisplay >= Screen.AllScreens.Count()))
                     {
                         this.Location = new Point(
-                            Screen.AllScreens[Settings.Default.alertFullscreenDisplay].WorkingArea.Location.X + LocationMargin,
-                            Screen.AllScreens[Settings.Default.alertFullscreenDisplay].WorkingArea.Location.Y + LocationMargin
+                            Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].WorkingArea.Location.X + LocationMargin,
+                            Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].WorkingArea.Location.Y + LocationMargin
                         );
                     }
                     else
@@ -294,7 +294,7 @@ namespace SharpAlert
                     break;
             }
 
-            if (Settings.Default.alertIncreaseSize)
+            if (QuickSettings.Instance.alertIncreaseSize)
             {
                 AlertText.Font = new Font("Arial", 24F);
             }
@@ -310,7 +310,7 @@ namespace SharpAlert
             AlertIcon.BackColor = ColorTitleAndBordersOne;
             SubtitlePanel.BackColor = ColorSubtitleOnlyOne;
 
-            if (!Settings.Default.alertCompatibilityMode)
+            if (!QuickSettings.Instance.alertCompatibilityMode)
             {
                 WindowFlash.Start();
             }
@@ -348,7 +348,7 @@ namespace SharpAlert
             if (!AllowThreadRestarts) return;
             UnlockButtons(false);
             AutoExit.Stop();
-            if (!Settings.Default.alertCompatibilityMode)
+            if (!QuickSettings.Instance.alertCompatibilityMode)
             {
                 if (FadeOutExitReady)
                 {

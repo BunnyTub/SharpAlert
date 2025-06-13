@@ -24,7 +24,7 @@ namespace SharpAlert
         {
             get;
             private set;
-        } = Settings.Default.LegacyAudioPlayer;
+        } = QuickSettings.Instance.LegacyAudioPlayer;
         private static readonly SoundPlayer LegacyAudioPlayer = new SoundPlayer(); 
         private static readonly List<WasapiOut> Outputs = new List<WasapiOut>();
         private static readonly List<WasapiOut> TTSOutputs = new List<WasapiOut>();
@@ -303,7 +303,7 @@ namespace SharpAlert
                     }
 
                     MMDevice cad = AudioDevicesList.FirstOrDefault(device =>
-                        string.Equals(device.FriendlyName, Settings.Default.ProgramAudioOutput, StringComparison.OrdinalIgnoreCase));
+                        string.Equals(device.FriendlyName, QuickSettings.Instance.ProgramAudioOutput, StringComparison.OrdinalIgnoreCase));
 
                     if (cad == null)
                     {
@@ -341,7 +341,7 @@ namespace SharpAlert
 
         public static void PlayWithFailoverToTTS(string url, string text)
         {
-            if (!Settings.Default.alertTTSonly)
+            if (!QuickSettings.Instance.alertTTSonly)
             {
                 if (!string.IsNullOrWhiteSpace(url) && !UsingLegacyAudioPlayer)
                 {
@@ -392,7 +392,7 @@ namespace SharpAlert
                         //        ConsoleExt.WriteLine("[Audio Manager] Audio queue locked.");
                         //        WasapiOut AudioOutput = new WasapiOut();
                         //        Outputs.Add(AudioOutput);
-                        //        float volume = Settings.Default.alertVolume / 10f;
+                        //        float volume = QuickSettings.Instance.alertVolume / 10f;
                         //        AudioOutput.Init(mf);
                         //        for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++) AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
                         //        AudioOutput.Play();
@@ -438,7 +438,7 @@ namespace SharpAlert
             StopAllAudioSilently();
             ToneDone = false;
 
-            //if (!Settings.Default.alertPlayStartTone)
+            //if (!QuickSettings.Instance.alertPlayStartTone)
             //{
             //    ToneDone = true;
             //    return;
@@ -452,7 +452,11 @@ namespace SharpAlert
                     {
                         LegacyAudioPlayer.Stream = Resources.ui_warning_1;
                         if (wait) LegacyAudioPlayer.PlaySync();
-                        else LegacyAudioPlayer.Play();
+                        else ThreadDrool.StartAndForget(() =>
+                        {
+                            LegacyAudioPlayer.PlaySync();
+                            ToneDone = true;
+                        });
                     }
                     ConsoleExt.WriteLine("[Audio Manager] Playing start tone audio (legacy).");
                 }
@@ -460,7 +464,7 @@ namespace SharpAlert
                 {
                     void playAudio()
                     {
-                        string path = Settings.Default.StartToneLocation;
+                        string path = QuickSettings.Instance.StartToneLocation;
                         //if (!string.IsNullOrWhiteSpace(path))
                         try
                         {
@@ -468,7 +472,7 @@ namespace SharpAlert
                             {
                                 ConsoleExt.WriteLine("[Audio Manager] No audio file specified inside the configuration.");
                                 PlayFromUnmanagedSourceAndWait(Resources.ui_warning_1, false);
-                                if (Settings.Default.alertPlayStartToneTwice && !HoldIt) PlayFromUnmanagedSourceAndWait(Resources.ui_warning_1, false);
+                                if (QuickSettings.Instance.alertPlayStartToneTwice && !HoldIt) PlayFromUnmanagedSourceAndWait(Resources.ui_warning_1, false);
                             }
                             else
                             {
@@ -480,14 +484,14 @@ namespace SharpAlert
 
                                         int ExecuteTimes = 1;
 
-                                        if (Settings.Default.alertPlayStartToneTwice) ExecuteTimes++;
+                                        if (QuickSettings.Instance.alertPlayStartToneTwice) ExecuteTimes++;
 
                                         ConsoleExt.WriteLine($"[Audio Manager] Audio will be played {ExecuteTimes} time(s).");
 
                                         for (int e = 0; e < ExecuteTimes; e++)
                                         {
                                             WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
-                                            float volume = Settings.Default.alertVolume / 10f;
+                                            float volume = QuickSettings.Instance.alertVolume / 10f;
                                             AudioOutput.Init(reader);
                                             for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++)
                                                 AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
@@ -532,7 +536,7 @@ namespace SharpAlert
             StopAllAudioSilently();
             ToneDone = false;
 
-            if (!Settings.Default.alertPlayEndTone)
+            if (!QuickSettings.Instance.alertPlayEndTone)
             {
                 ToneDone = true;
                 return;
@@ -554,7 +558,7 @@ namespace SharpAlert
                 {
                     void playAudio()
                     {
-                        string path = Settings.Default.EndToneLocation;
+                        string path = QuickSettings.Instance.EndToneLocation;
                         //if (!string.IsNullOrWhiteSpace(path))
                         {
                             try
@@ -572,7 +576,7 @@ namespace SharpAlert
                                         {
                                             ConsoleExt.WriteLine("[Audio Manager] Audio queue locked.");
                                             WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
-                                            float volume = Settings.Default.alertVolume / 10f;
+                                            float volume = QuickSettings.Instance.alertVolume / 10f;
                                             AudioOutput.Init(reader);
                                             for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++)
                                                 AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
@@ -643,7 +647,7 @@ namespace SharpAlert
                                         ConsoleExt.WriteLine("[Audio Manager] Audio queue locked.");
                                         WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
                                         Outputs.Add(AudioOutput);
-                                        float volume = Settings.Default.alertVolume / 10f;
+                                        float volume = QuickSettings.Instance.alertVolume / 10f;
                                         AudioOutput.Init(mf);
                                         for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++) AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
                                         AudioOutput.Play();
@@ -707,7 +711,7 @@ namespace SharpAlert
                                 {
                                     ConsoleExt.WriteLine("[Audio Manager] Audio queue locked.");
                                     WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
-                                    float volume = Settings.Default.alertVolume / 10f;
+                                    float volume = QuickSettings.Instance.alertVolume / 10f;
                                     AudioOutput.Init(mf);
                                     for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++) AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
                                     
@@ -773,7 +777,7 @@ namespace SharpAlert
                         using (var mf = new StreamMediaFoundationReader(stream))
                         {
                             WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
-                            float volume = Settings.Default.alertVolume / 10f;
+                            float volume = QuickSettings.Instance.alertVolume / 10f;
                             AudioOutput.Init(mf);
                             for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++) AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
                             AudioOutput.Play();
@@ -850,11 +854,11 @@ namespace SharpAlert
                                     //bool UseMaki = false;
                                     lock (engine)
                                     {
-                                        if (!string.IsNullOrWhiteSpace(Settings.Default.ProgramVoice))
+                                        if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.ProgramVoice))
                                         {
                                             try
                                             {
-                                                engine.SelectVoice(Settings.Default.ProgramVoice);
+                                                engine.SelectVoice(QuickSettings.Instance.ProgramVoice);
                                             }
                                             catch (Exception ex)
                                             {
@@ -867,11 +871,11 @@ namespace SharpAlert
 
                                         //if (UseMaki)
                                         //{
-                                        //    //$"{AssemblyDirectory}\\Maki.exe", $"--voice-syntax-console \"{Settings.Default.ProgramVoice}|{tts.Replace("|", "_")}\""
+                                        //    //$"{AssemblyDirectory}\\Maki.exe", $"--voice-syntax-console \"{QuickSettings.Instance.ProgramVoice}|{tts.Replace("|", "_")}\""
                                         //    ProcessStartInfo maki = new ProcessStartInfo
                                         //    {
                                         //        FileName = $"{AssemblyDirectory}\\Maki.exe",
-                                        //        Arguments = $"--voice-syntax-console \"{Settings.Default.ProgramVoice}|{tts.Replace("|", "_")}\"",
+                                        //        Arguments = $"--voice-syntax-console \"{QuickSettings.Instance.ProgramVoice}|{tts.Replace("|", "_")}\"",
                                         //        RedirectStandardOutput = true
                                         //    };
                                         //    Process MakiProcess = Process.Start(maki);
@@ -896,7 +900,7 @@ namespace SharpAlert
                                         using (var mf = new StreamMediaFoundationReader(stream))
                                         {
                                             WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
-                                            float volume = Settings.Default.alertVolume / 10f;
+                                            float volume = QuickSettings.Instance.alertVolume / 10f;
                                             AudioOutput.Init(mf);
                                             for (int i = 0; i < AudioOutput.AudioStreamVolume.ChannelCount; i++) AudioOutput.AudioStreamVolume.SetChannelVolume(i, volume);
                                             AudioOutput.Play();

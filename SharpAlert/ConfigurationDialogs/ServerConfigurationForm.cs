@@ -1,5 +1,5 @@
-﻿using SharpAlert.Properties;
-using System;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using static SharpAlert.MainEntryPoint;
 
@@ -10,23 +10,6 @@ namespace SharpAlert
         public ServerConfigurationForm()
         {
             InitializeComponent();
-            AppTypeCombo.DataSource = new ComboItem[] {
-                new ComboItem
-                {
-                    // 1
-                    FriendlyName = "Standard",
-                },
-                new ComboItem
-                {
-                    // 2
-                    FriendlyName = "Server"
-                },
-                new ComboItem
-                {
-                    // 3
-                    FriendlyName = "Client"
-                }
-            };
         }
 
         class ComboItem
@@ -45,22 +28,17 @@ namespace SharpAlert
         {
             if (Initialized) return;
             Initialized = true;
-            //AppTypeCombo.SelectedIndex = Settings.Default.RunnerType;
-            //AppTypeCombo.SelectedIndexChanged += (a, b) => Settings.Default.RunnerType = (byte)((ComboBox)a).SelectedIndex;
-            //ClientServerURLInput.Text = Settings.Default.ClientServerURL;
-            //ClientServerURLInput.TextChanged += (a, b) => Settings.Default.ClientServerURL = ((TextBox)a).Text.Trim();
-            //ClientServerPortInput.Text = Settings.Default.ClientServerPort;
-            //ClientServerPortInput.TextChanged += (a, b) => Settings.Default.ClientServerPort = ((TextBox)a).Text.Trim();
-            this.Close();
+            WebServerUsernameInput.Text = QuickSettings.Instance.ServerUsername;
+            WebServerUsernameInput.TextChanged += (a, b) => QuickSettings.Instance.ServerUsername = ((TextBox)a).Text.Trim();
+            WebServerPasswordInput.Text = QuickSettings.Instance.ServerPassword;
+            WebServerPasswordInput.TextChanged += (a, b) => QuickSettings.Instance.ServerPassword = ((TextBox)a).Text.Trim();
+            DisableDialogsBox.Checked = QuickSettings.Instance.DisableDialogs;
+            DisableDialogsBox.CheckedChanged += (a, b) => QuickSettings.Instance.DisableDialogs = ((CheckBox)a).Checked;
         }
 
         private void ServerConfigurationForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            MessageBox.Show("Server settings have been deprecated.",
-                "SharpAlert",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Exclamation);
-            //Settings.Default.Save();
+            //QuickSettings.Instance.Save();
             //Environment.Exit(0);
         }
 
@@ -76,6 +54,24 @@ namespace SharpAlert
                 ConfigurationPanel.Visible = true;
                 BusyLockText.SendToBack();
             }
+        }
+
+        private void SaveServerSettingsButton_Click(object sender, EventArgs e)
+        {
+            SaveServerSettingsButton.BackColor = Color.FromArgb(60, 60, 60);
+
+            QuickSettings.Instance.ServerUsername = WebServerUsernameInput.Text.Trim();
+            QuickSettings.Instance.ServerPassword = WebServerPasswordInput.Text.Trim();
+        }
+
+        private void WebServerUsernameInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            SaveServerSettingsButton.BackColor = Color.FromArgb(200, 60, 60);
+        }
+
+        private void WebServerPasswordInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            SaveServerSettingsButton.BackColor = Color.FromArgb(200, 60, 60);
         }
     }
 }

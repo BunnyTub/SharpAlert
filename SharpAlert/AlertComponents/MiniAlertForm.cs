@@ -165,14 +165,14 @@ namespace SharpAlert
 
         private void AlertForm_Shown(object sender, EventArgs e)
         {
-            AutoExit.Interval = Settings.Default.alertTimeout * 60000;
+            AutoExit.Interval = QuickSettings.Instance.alertTimeout * 60000;
             AutoExit.Start();
 
             this.Text = $"SharpAlert - Emergency Alert";
             UpdateTaskbarProgress(TaskbarProgressState.Error, 100, 100);
             GotHandle = this.Handle;
 
-            if (!Settings.Default.alertCompatibilityMode)
+            if (!QuickSettings.Instance.alertCompatibilityMode)
             {
                 FadeInAnimation.Start();
                 FlashTaskbarStatus.Start();
@@ -198,7 +198,7 @@ namespace SharpAlert
 
             PlayStartToneFile();
 
-            if (Settings.Default.alertTitlebarControls)
+            if (QuickSettings.Instance.alertTitlebarControls)
             {
                 this.FormBorderStyle = FormBorderStyle.Sizable;
             }
@@ -241,7 +241,7 @@ namespace SharpAlert
             if (!MainEntryPoint.AllowThreadRestarts) return;
             UnlockButtons(false);
             AutoExit.Stop();
-            if (!Settings.Default.alertCompatibilityMode)
+            if (!QuickSettings.Instance.alertCompatibilityMode)
             {
                 if (FadeOutExitReady)
                 {

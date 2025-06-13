@@ -17,9 +17,9 @@ namespace SharpAlert
             this.WindowState = FormWindowState.Normal;
             try
             {
-                if (!(Settings.Default.alertFullscreenDisplay >= Screen.AllScreens.Count()))
+                if (!(QuickSettings.Instance.alertFullscreenDisplay >= Screen.AllScreens.Count()))
                 {
-                    this.Location = Screen.AllScreens[Settings.Default.alertFullscreenDisplay].Bounds.Location;
+                    this.Location = Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].Bounds.Location;
                 }
                 else
                 {
@@ -46,7 +46,7 @@ namespace SharpAlert
         {
             AutoExit.Start();
 
-            if (!Settings.Default.alertCompatibilityMode)
+            if (!QuickSettings.Instance.alertCompatibilityMode)
             {
                 FadeInAnimation.Start();
             }
@@ -73,7 +73,7 @@ namespace SharpAlert
         {
             UnlockButtons(false);
             AutoExit.Stop();
-            if (!Settings.Default.alertCompatibilityMode)
+            if (!QuickSettings.Instance.alertCompatibilityMode)
             {
                 if (FadeOutExitReady)
                 {

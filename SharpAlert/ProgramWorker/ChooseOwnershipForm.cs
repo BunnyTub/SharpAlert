@@ -25,8 +25,8 @@ namespace SharpAlert
             if (Initialized) return;
             Initialized = true;
 
-            StationIdentifierInput.Text = Settings.Default.StationIdentifier;
-            StationNameInput.Text = Settings.Default.StationName;
+            StationIdentifierInput.Text = QuickSettings.Instance.StationIdentifier;
+            StationNameInput.Text = QuickSettings.Instance.StationName;
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -49,8 +49,8 @@ namespace SharpAlert
                 return;
             }
 
-            Settings.Default.StationIdentifier = StationIdentifierInput.Text;
-            Settings.Default.StationName = StationNameInput.Text;
+            QuickSettings.Instance.StationIdentifier = StationIdentifierInput.Text;
+            QuickSettings.Instance.StationName = StationNameInput.Text;
         }
 
         private void ChooseRegionForm_HelpButtonClicked(object sender, System.ComponentModel.CancelEventArgs e)

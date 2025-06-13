@@ -30,6 +30,16 @@ namespace SharpAlert
                     {
                         UnsafeFault(ex, !restartable);
                     }
+
+                    if (!restartable)
+                    {
+                        ConsoleExt.WriteLine($"[Thread Drool] Closing thread. (action = {action.Method.Name}, restartable = {restartable})");
+                        return;
+                    }
+                    else
+                    {
+                        ConsoleExt.WriteLine($"[Thread Drool] Restarting thread. (action = {action.Method.Name}, restartable = {restartable})");
+                    }
                 }
             });
             thread.SetApartmentState(apt);

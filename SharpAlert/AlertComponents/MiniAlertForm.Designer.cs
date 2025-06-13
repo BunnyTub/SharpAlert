@@ -73,12 +73,12 @@
             // 
             // FadeInAnimation
             // 
-            this.FadeInAnimation.Interval = 6;
+            this.FadeInAnimation.Interval = 3;
             this.FadeInAnimation.Tick += new System.EventHandler(this.FadeInAnimation_Tick);
             // 
             // FadeOutAnimation
             // 
-            this.FadeOutAnimation.Interval = 6;
+            this.FadeOutAnimation.Interval = 3;
             this.FadeOutAnimation.Tick += new System.EventHandler(this.FadeOutAnimation_Tick);
             // 
             // InfoTip

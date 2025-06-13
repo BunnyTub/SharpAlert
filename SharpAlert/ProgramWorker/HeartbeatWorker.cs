@@ -11,7 +11,7 @@ namespace SharpAlert
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                 {
                     DiscordWebhook.SendUnformattedMessage("My heartbeat has begun.");
                 }

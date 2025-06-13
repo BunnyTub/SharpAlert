@@ -60,8 +60,8 @@ namespace SharpAlert
                     FriendlyName = "Full scroll"
                 },
             };
-            AlertFullscreenCombo.SelectedIndex = Settings.Default.alertDisplayType;
-            AlertFullscreenCombo.SelectedIndexChanged += (a, b) => Settings.Default.alertDisplayType = (byte)((ComboBox)a).SelectedIndex;
+            AlertFullscreenCombo.SelectedIndex = QuickSettings.Instance.alertDisplayType;
+            AlertFullscreenCombo.SelectedIndexChanged += (a, b) => QuickSettings.Instance.alertDisplayType = (byte)((ComboBox)a).SelectedIndex;
 
             WindowLocationCombo.DataSource = new ComboItem[] {
                 new ComboItem
@@ -90,20 +90,20 @@ namespace SharpAlert
                     FriendlyName = "Bottom Right"
                 },
             };
-            WindowLocationCombo.SelectedIndex = Settings.Default.WindowLocation;
-            WindowLocationCombo.SelectedIndexChanged += (a, b) => Settings.Default.WindowLocation = (byte)((ComboBox)a).SelectedIndex;
+            WindowLocationCombo.SelectedIndex = QuickSettings.Instance.WindowLocation;
+            WindowLocationCombo.SelectedIndexChanged += (a, b) => QuickSettings.Instance.WindowLocation = (byte)((ComboBox)a).SelectedIndex;
 
-            alertFullscreenWindowedBox.Checked = Settings.Default.alertTitlebarControls;
-            alertFullscreenWindowedBox.CheckedChanged += (a, b) => Settings.Default.alertTitlebarControls = ((CheckBox)a).Checked;
+            alertFullscreenWindowedBox.Checked = QuickSettings.Instance.alertTitlebarControls;
+            alertFullscreenWindowedBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertTitlebarControls = ((CheckBox)a).Checked;
 
-            alertTimeoutInput.Value = Settings.Default.alertTimeout;
-            alertTimeoutInput.ValueChanged += (a, b) => Settings.Default.alertTimeout = (int)((NumericUpDown)a).Value;
+            alertTimeoutInput.Value = QuickSettings.Instance.alertTimeout;
+            alertTimeoutInput.ValueChanged += (a, b) => QuickSettings.Instance.alertTimeout = (int)((NumericUpDown)a).Value;
 
-            alertFullscreenIdleBox.Checked = Settings.Default.alertFullscreenIdle;
+            alertFullscreenIdleBox.Checked = QuickSettings.Instance.alertFullscreenIdle;
             alertFullscreenIdleBox.CheckedChanged += (a, b) =>
             {
                 ((CheckBox)a).Enabled = false;
-                Settings.Default.alertFullscreenIdle = ((CheckBox)a).Checked;
+                QuickSettings.Instance.alertFullscreenIdle = ((CheckBox)a).Checked;
 
                 if (((CheckBox)a).Checked)
                 {
@@ -120,11 +120,11 @@ namespace SharpAlert
                 this.BringToFront();
             };
 
-            alertTimeZoneUTCBox.Checked = Settings.Default.alertTimeZoneUTC;
-            alertTimeZoneUTCBox.CheckedChanged += (a, b) => Settings.Default.alertTimeZoneUTC = ((CheckBox)a).Checked;
+            alertTimeZoneUTCBox.Checked = QuickSettings.Instance.alertTimeZoneUTC;
+            alertTimeZoneUTCBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertTimeZoneUTC = ((CheckBox)a).Checked;
 
             bool alertFullscreenDisplayIgnoreInput = false;
-            alertFullscreenDisplayInput.Value = Settings.Default.alertFullscreenDisplay;
+            alertFullscreenDisplayInput.Value = QuickSettings.Instance.alertFullscreenDisplay;
             alertFullscreenDisplayInput.ValueChanged += (a, b) =>
             {
                 if (alertFullscreenDisplayIgnoreInput) return;
@@ -138,13 +138,13 @@ namespace SharpAlert
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
-                        Settings.Default.alertFullscreenDisplay = (int)((NumericUpDown)a).Value;
+                        QuickSettings.Instance.alertFullscreenDisplay = (int)((NumericUpDown)a).Value;
                         //MonitorNonExistant = true;
                     }
                     else
                     {
                         alertFullscreenDisplayIgnoreInput = true;
-                        ((NumericUpDown)a).Value = Settings.Default.alertFullscreenDisplay;
+                        ((NumericUpDown)a).Value = QuickSettings.Instance.alertFullscreenDisplay;
                         alertFullscreenDisplayIgnoreInput = false;
                         return;
                     }
@@ -158,28 +158,28 @@ namespace SharpAlert
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        Settings.Default.alertFullscreenDisplay = (int)((NumericUpDown)a).Value;
+                        QuickSettings.Instance.alertFullscreenDisplay = (int)((NumericUpDown)a).Value;
                     }
                     else
                     {
                         alertFullscreenDisplayIgnoreInput = true;
-                        ((NumericUpDown)a).Value = Settings.Default.alertFullscreenDisplay;
+                        ((NumericUpDown)a).Value = QuickSettings.Instance.alertFullscreenDisplay;
                         alertFullscreenDisplayIgnoreInput = false;
                         return;
                     }
                 }
             };
 
-            alertCompatibilityModeBox.Checked = Settings.Default.alertCompatibilityMode;
-            alertCompatibilityModeBox.CheckedChanged += (a, b) => Settings.Default.alertCompatibilityMode = ((CheckBox)a).Checked;
+            alertCompatibilityModeBox.Checked = QuickSettings.Instance.alertCompatibilityMode;
+            alertCompatibilityModeBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertCompatibilityMode = ((CheckBox)a).Checked;
 
-            alertTTSonlyBox.Checked = Settings.Default.alertTTSonly;
-            alertTTSonlyBox.CheckedChanged += (a, b) => Settings.Default.alertTTSonly = ((CheckBox)a).Checked;
+            alertTTSonlyBox.Checked = QuickSettings.Instance.alertTTSonly;
+            alertTTSonlyBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertTTSonly = ((CheckBox)a).Checked;
 
-            alertNoGUIBox.Checked = Settings.Default.alertNoGUI;
+            alertNoGUIBox.Checked = QuickSettings.Instance.alertNoGUI;
             alertNoGUIBox.CheckedChanged += (a, b) =>
             {
-                Settings.Default.alertNoGUI = ((CheckBox)a).Checked;
+                QuickSettings.Instance.alertNoGUI = ((CheckBox)a).Checked;
                 if (((CheckBox)a).Checked)
                 {
                     MessageBox.Show("The console will now be opened.",
@@ -197,11 +197,11 @@ namespace SharpAlert
                 }
             };
 
-            alertIncreaseSizeBox.Checked = Settings.Default.alertIncreaseSize;
-            alertIncreaseSizeBox.CheckedChanged += (a, b) => Settings.Default.alertIncreaseSize = ((CheckBox)a).Checked;
+            alertIncreaseSizeBox.Checked = QuickSettings.Instance.alertIncreaseSize;
+            alertIncreaseSizeBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertIncreaseSize = ((CheckBox)a).Checked;
 
-            alertPlayStartToneTwiceBox.Checked = Settings.Default.alertPlayStartToneTwice;
-            alertPlayStartToneTwiceBox.CheckedChanged += (a, b) => Settings.Default.alertPlayStartToneTwice = ((CheckBox)a).Checked;
+            alertPlayStartToneTwiceBox.Checked = QuickSettings.Instance.alertPlayStartToneTwice;
+            alertPlayStartToneTwiceBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertPlayStartToneTwice = ((CheckBox)a).Checked;
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)

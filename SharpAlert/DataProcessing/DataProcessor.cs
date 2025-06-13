@@ -3,7 +3,6 @@ using static SharpAlert.MainEntryPoint;
 using static SharpAlert.RegexList;
 using System.Linq;
 using System.Threading;
-using SharpAlert.Properties;
 using System.Collections.Generic;
 
 namespace SharpAlert
@@ -35,7 +34,7 @@ namespace SharpAlert
                     Thread.Sleep(100);
 
                     // Trim history for memory saving
-                    if (SharpDataHistory.Count > Settings.Default.storedMaxSize)
+                    if (SharpDataHistory.Count > QuickSettings.Instance.storedMaxSize)
                     {
                         // use first instead of last, otherwise, recent alerts will be forgotten
                         lock (SharpDataHistory) SharpDataHistory.Remove(SharpDataHistory.First());

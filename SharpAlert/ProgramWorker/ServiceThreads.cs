@@ -1,17 +1,23 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 
 namespace SharpAlert
 {
     public static class ServiceThreads
     {
-        public static Thread feedThread;
-        public static Thread atomfeedThread;
-        public static Thread directfeedThread;
-        public static Thread cacheThread;
-        public static Thread dataProcThread;
-        public static Thread historyProcThread;
-        public static Thread notificationThread;
-        public static Thread serverThread;
-        public static Thread heartbeatThread;
+        private static Thread DummyThread()
+        {
+            return new Thread(() => throw new Exception("Caller executed dummy thread. This may be unintended behavior."));
+        } 
+
+        public static Thread feedThread = DummyThread();
+        public static Thread atomfeedThread = DummyThread();
+        public static Thread directfeedThread = DummyThread();
+        public static Thread cacheThread = DummyThread();
+        public static Thread dataProcThread = DummyThread();
+        public static Thread historyProcThread = DummyThread();
+        public static Thread notificationThread = DummyThread();
+        public static Thread serverThread = DummyThread();
+        public static Thread heartbeatThread = DummyThread();
     }
 }

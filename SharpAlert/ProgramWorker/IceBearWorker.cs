@@ -1,14 +1,12 @@
 ﻿using Microsoft.Win32;
 using SharpAlert.Properties;
-using System;
-using System.Collections.Generic;
+using System;   
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices;
-using System.Speech.Synthesis;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -27,27 +25,20 @@ namespace SharpAlert
             Timeout = TimeSpan.FromSeconds(15)
         };
 
-        public static bool ServiceRunnerScheduled { get; private set; }
-
         public static readonly string SelfUserAgent = "Mozilla/5.0 (compatible; SharpAlert; bunnytub@bunnytub.com)";
+        public static bool ServiceRunnerScheduled { get; private set; } = false;
 
         /// <summary>
         /// Starts the Ice Bear Worker as a client.
         /// </summary>
         [MTAThread]
-        public static void ServiceRun()
+        public static void ServiceRun(string[] args)
         {
-            args = Environment.GetCommandLineArgs();
-
-            if (args.Length >= 2) if (args.Contains("--console")) AllocateTerminal(false);
-            if (Settings.Default.alertNoGUI) AllocateTerminal(false);
 
             ConsoleExt.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | IsBeta = {VersionInfo.BetaVersion} | Safety is never a non-priority. | https://sharpalert.bunnytub.com/");
+            if (ServiceMode) ConsoleExt.WriteLine($"Running under Service Mode.");
 
             client.DefaultRequestHeaders.UserAgent.ParseAdd(SelfUserAgent);
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
 
             try
             {
@@ -106,26 +97,26 @@ namespace SharpAlert
             ConsoleExt.WriteLine("[Ice Bear] Initializing Hyper Server.");
             hyper = new HyperServer();
 
-            Settings.Default.PropertyChanged += (objective, eventArgs) =>
-            {
-                lock (ChangedPropertiesList)
-                {
-                    if (!ChangedPropertiesList.Contains(eventArgs.PropertyName))
-                        ChangedPropertiesList.Add(eventArgs.PropertyName);
-                }
-            };
+            //QuickSettings.Instance.PropertyChanged += (objective, eventArgs) =>
+            //{
+            //    lock (ChangedPropertiesList)
+            //    {
+            //        if (!ChangedPropertiesList.Contains(eventArgs.PropertyName))
+            //            ChangedPropertiesList.Add(eventArgs.PropertyName);
+            //    }
+            //};
 
-            Settings.Default.SettingsSaving += (objective, eventArgs) =>
-            {
-                lock (ChangedPropertiesList) ChangedPropertiesList.Clear();
-            };
+            //QuickSettings.Instance.SettingsSaving += (objective, eventArgs) =>
+            //{
+            //    lock (ChangedPropertiesList) ChangedPropertiesList.Clear();
+            //};
                 
             ConsoleExt.WriteLine("[Ice Bear] Starting services momentarily.");
 
             bool AnyFeedAvailable = false;
             bool SetupExperienceOccurred = false;
 
-            if (!Settings.Default.SetupExperienceComplete)
+            if (!QuickSettings.Instance.SetupExperienceComplete)
             {
                 ConsoleExt.WriteLine("[Ice Bear] Starting program setup experience.");
 
@@ -148,8 +139,8 @@ namespace SharpAlert
                 sdf.ShowDialog();
                 sdf.Dispose();
 
-                Settings.Default.SetupExperienceComplete = true;
-                Settings.Default.Save();
+                QuickSettings.Instance.SetupExperienceComplete = true;
+                QuickSettings.Instance.Save();
 
                 SetupExperienceOccurred = true;
             }
@@ -158,15 +149,15 @@ namespace SharpAlert
             {
                 SystemEvents.PowerModeChanged += (a, b) =>
                 {
-                    if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                    if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                     {
                         switch (b.Mode)
                         {
                             //case PowerModes.Resume:
-                            //    DiscordWebhook.SendFormattedMessage("The host is resuming from sleep.", Settings.Default.DiscordWebhook);
+                            //    DiscordWebhook.SendFormattedMessage("The host is resuming from sleep.", QuickSettings.Instance.DiscordWebhook);
                             //    break;
                             //case PowerModes.Suspend:
-                            //    DiscordWebhook.SendFormattedMessage("The host is entering into sleep.", Settings.Default.DiscordWebhook);
+                            //    DiscordWebhook.SendFormattedMessage("The host is entering into sleep.", QuickSettings.Instance.DiscordWebhook);
                             //    break;
                             case PowerModes.StatusChange:
                                 var powerStatus = SystemInformation.PowerStatus;
@@ -194,7 +185,7 @@ namespace SharpAlert
 
                 //SystemEvents.SessionEnding += (a, b) =>
                 //{
-                //    if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                //    if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                 //    {
                 //        switch (b.Reason)
                 //        {
@@ -216,7 +207,7 @@ namespace SharpAlert
             while (notify == null) Thread.Sleep(100);
 
             // migrate users upwards from the minimum limit
-            if (Settings.Default.storedMaxSize < 100) Settings.Default.storedMaxSize = 500;
+            if (QuickSettings.Instance.storedMaxSize < 100) QuickSettings.Instance.storedMaxSize = 500;
 
             bool AnyCustomServers()
             {
@@ -283,16 +274,23 @@ namespace SharpAlert
             bool CustomServersAvailable = AnyCustomServers();
 
             if (CustomServersAvailable ||
-                Settings.Default.RegionUnitedStates ||
-                Settings.Default.RegionUnitedStatesNWS ||
-                Settings.Default.RegionCanada ||
-                Settings.Default.RegionMexico) AnyFeedAvailable = true;
+                QuickSettings.Instance.RegionUnitedStates ||
+                QuickSettings.Instance.RegionUnitedStatesNWS ||
+                QuickSettings.Instance.RegionCanada ||
+                QuickSettings.Instance.RegionMexico) AnyFeedAvailable = true;
 
             if (!AnyFeedAvailable && !SetupExperienceOccurred)
             {
-                ConsoleExt.WriteLine("[Ice Bear] Prompting user for region information.");
-                ChooseRegionForm crf = new ChooseRegionForm(false);
-                crf.ShowDialog();
+                lock (notify)
+                {
+                    notify.BalloonTipIcon = ToolTipIcon.Info;
+                    notify.BalloonTipTitle = $"No feeds enabled";
+                    notify.BalloonTipText = "There are currently no feeds enabled.";
+                    notify.ShowBalloonTip(5000);
+                }
+                //ConsoleExt.WriteLine("[Ice Bear] Prompting user for region information.");
+                //ChooseRegionForm crf = new ChooseRegionForm(false);
+                //crf.ShowDialog();
             }
 
             Thread startup = new Thread(() =>
@@ -300,7 +298,7 @@ namespace SharpAlert
                 StartupForm sf = new StartupForm(Resources.WarningApp_Splash);
                 sf.ShowDialog();
                 sf.Dispose();
-                if (!Settings.Default.DisclaimerShown)
+                if (!QuickSettings.Instance.DisclaimerShown)
                 {
                     //MessageBox.Show("Just a reminder...\r\n\r\n" +
                     //    "SharpAlert is still in development! Expect bugs here and there.\r\n" +
@@ -311,8 +309,8 @@ namespace SharpAlert
                     //    "SharpAlert",
                     //    MessageBoxButtons.OK,
                     //    MessageBoxIcon.Exclamation);
-                    Settings.Default.DisclaimerShown = true;
-                    Settings.Default.Save();
+                    QuickSettings.Instance.DisclaimerShown = true;
+                    QuickSettings.Instance.Save();
                 }
             });
 
@@ -323,7 +321,7 @@ namespace SharpAlert
             var IPAWSMain = new FeedCapture.ServerInfo { ServerName = "FEMA IPAWS", ServerPath = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}" };
             var IPAWSWireless = new FeedCapture.ServerInfo { ServerName = "FEMA IPAWS (WEA)", ServerPath = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}" };
 
-            if (Settings.Default.RegionUnitedStates)
+            if (QuickSettings.Instance.RegionUnitedStates)
             {
                 feed.servers.Add(IPAWSMain);
                 feed.servers.Add(IPAWSWireless);
@@ -331,7 +329,7 @@ namespace SharpAlert
 
             var NWSAtom = new WeatherAtomCapture.ServerInfo { ServerName = "NWS Atom", ServerPath = $"api.weather.gov/alerts/active.atom" };
 
-            if (Settings.Default.RegionUnitedStatesNWS)
+            if (QuickSettings.Instance.RegionUnitedStatesNWS)
             {
                 atomfeed.servers.Add(NWSAtom);
             }
@@ -339,7 +337,7 @@ namespace SharpAlert
             var NAADSPrimary = new DirectFeedCapture.TCPServerInfo { ServerName = "NAADS Primary", ServerAddress = "streaming1.naad-adna.pelmorex.com", ServerPort = 8080 };
             var NAADSBackup = new DirectFeedCapture.TCPServerInfo { ServerName = "NAADS Backup", ServerAddress = "streaming2.naad-adna.pelmorex.com", ServerPort = 8080 };
 
-            if (Settings.Default.RegionCanada)
+            if (QuickSettings.Instance.RegionCanada)
             {
                 directfeed.servers.Add(NAADSPrimary);
                 directfeed.servers.Add(NAADSBackup);
@@ -347,7 +345,7 @@ namespace SharpAlert
 
             var SASMEXMain = new FeedCapture.ServerInfo { ServerName = "SASMEX", ServerPath = $"sasmex.net/rss/sasmex.xml" };
 
-            if (Settings.Default.RegionMexico)
+            if (QuickSettings.Instance.RegionMexico)
             {
                 feed.servers.Add(SASMEXMain);
             }
@@ -358,19 +356,19 @@ namespace SharpAlert
             cacheThread = StartCatchAllThread(() => cache.ServiceRun(true), true);
             dataProcThread = StartCatchAllThread(() => dataproc.ServiceRun(), true);
             historyProcThread = StartCatchAllThread(() => historyproc.ServiceRun(), true);
-            serverThread = StartCatchAllThread(async () => await hyper.ServiceRun(), true);
+            serverThread = StartCatchAllThread(() => hyper.ServiceRun(), true);
 
-            if (Settings.Default.statusWindow)
+            if (QuickSettings.Instance.statusWindow)
             {
                 CreateStatusWindow();
             }
 
-            if (Settings.Default.alertFullscreenIdle)
+            if (QuickSettings.Instance.alertFullscreenIdle)
             {
                 CreateIdleWindow();
             }
 
-            if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+            if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
             {
                 if (DiscordWebhook.SendFormattedMessage("SharpAlert has started."))
                 {
@@ -427,12 +425,17 @@ namespace SharpAlert
                     Thread.Sleep(1000 * 60);
                 }
             }).Start();
+
+            new Thread(() =>
+            {
+                PipeWorker.ServerServiceRun();
+            }).Start();
         }
 
         private static readonly object ThreadErrorLockObject = new object();
 
         private static bool NotifyIconCalled = false;
-        private static readonly List<string> ChangedPropertiesList = new List<string>();
+        //private static readonly List<string> ChangedPropertiesList = new List<string>();
         public static bool IgnoreRightClick = false;
 
         /// <summary>
@@ -621,38 +624,38 @@ namespace SharpAlert
                 IgnoreRightClick = false;
             }));
 
-            contextMenu.Items.Add(new ToolStripMenuItem("Save Settings", null, (sender, arg) =>
-            {
-                Settings.Default.Save();
-                //string SettingsChangedList = string.Empty;
+            //contextMenu.Items.Add(new ToolStripMenuItem("Save Settings", null, (sender, arg) =>
+            //{
+            //    QuickSettings.Instance.Save();
+            //    //string SettingsChangedList = string.Empty;
 
-                //foreach (string SettingName in ChangedPropertiesList)
-                //{
-                //    SettingsChangedList += SettingName + "\r\n";
-                //}
+            //    //foreach (string SettingName in ChangedPropertiesList)
+            //    //{
+            //    //    SettingsChangedList += SettingName + "\r\n";
+            //    //}
 
-                //SettingsChangedList = SettingsChangedList.Trim();
+            //    //SettingsChangedList = SettingsChangedList.Trim();
 
-                //if (!string.IsNullOrWhiteSpace(SettingsChangedList))
-                //{
-                //    if (MessageBox.Show("Do you want to save the current configuration?\r\n\r\n" +
-                //        "The following settings were changed:\r\n" +
-                //        SettingsChangedList,
-                //        "SharpAlert",
-                //        MessageBoxButtons.YesNo,
-                //        MessageBoxIcon.Question) == DialogResult.Yes)
-                //    {
-                //        Settings.Default.Save();
-                //    }
-                //}
-                //else
-                //{
-                //    MessageBox.Show("There are no pending changes to save.",
-                //        "SharpAlert",
-                //        MessageBoxButtons.OK,
-                //        MessageBoxIcon.Information);
-                //}
-            }));
+            //    //if (!string.IsNullOrWhiteSpace(SettingsChangedList))
+            //    //{
+            //    //    if (MessageBox.Show("Do you want to save the current configuration?\r\n\r\n" +
+            //    //        "The following settings were changed:\r\n" +
+            //    //        SettingsChangedList,
+            //    //        "SharpAlert",
+            //    //        MessageBoxButtons.YesNo,
+            //    //        MessageBoxIcon.Question) == DialogResult.Yes)
+            //    //    {
+            //    //        QuickSettings.Instance.Save();
+            //    //    }
+            //    //}
+            //    //else
+            //    //{
+            //    //    MessageBox.Show("There are no pending changes to save.",
+            //    //        "SharpAlert",
+            //    //        MessageBoxButtons.OK,
+            //    //        MessageBoxIcon.Information);
+            //    //}
+            //}));
 
             contextMenu.Items.Add(new ToolStripMenuItem("Reset Settings", null, (sender, arg) =>
             {
@@ -662,8 +665,8 @@ namespace SharpAlert
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    Settings.Default.Reset();
-                    Settings.Default.Save();
+                    QuickSettings.Instance.Reset();
+                    QuickSettings.Instance.Save();
                     Environment.Exit(0);
                 }
             }));
@@ -764,17 +767,18 @@ namespace SharpAlert
                     if (terminate)
                     {
                         AllowThreadRestarts = false;
-                        try { feedThread?.Abort(); } catch (Exception) { }
-                        try { atomfeedThread?.Abort(); } catch (Exception) { }
-                        try { directfeedThread?.Abort(); } catch (Exception) { }
-                        try { cacheThread?.Abort(); } catch (Exception) { }
-                        try { dataProcThread?.Abort(); } catch (Exception) { }
-                        try { historyProcThread?.Abort(); } catch (Exception) { }
-                        try { notificationThread?.Abort(); } catch (Exception) { }
+                        //try { feedThread?.Abort(); } catch (Exception) { }
+                        //try { atomfeedThread?.Abort(); } catch (Exception) { }
+                        //try { directfeedThread?.Abort(); } catch (Exception) { }
+                        //try { cacheThread?.Abort(); } catch (Exception) { }
+                        //try { dataProcThread?.Abort(); } catch (Exception) { }
+                        //try { historyProcThread?.Abort(); } catch (Exception) { }
+                        //try { notificationThread?.Abort(); } catch (Exception) { }
                         ToppleForm tf = new ToppleForm(ExceptionCompiled, false);
+                        tf.ShowDialog();
                         //new Thread(() => SafeExit(0)).Start();
                         //Thread.Sleep(5000);
-                        Environment.Exit(0);
+                        Environment.Exit(exception.HResult);
                         return;
                     }
                     else
@@ -815,7 +819,7 @@ namespace SharpAlert
 
             try
             {
-                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                 {
                     DiscordWebhook.SendUnformattedMessage(ExceptionCompiled + "\r\n\r\nPlease report this issue to my owner!\r\nIf you are the owner, contact <@603429346736341013> (https://bunnytub.com/SharpAlert.html | bunnytub@bunnytub.com) for help.");
                 }
@@ -826,11 +830,13 @@ namespace SharpAlert
 
             ConsoleExt.WriteLine(ExceptionCompiled);
 
-#if DEBUG
-            Debugger.Break();
-#endif
-
             return ExceptionCompiled;
+            //#if DEBUG
+            //            //Debugger.Break();
+            //            throw ex;
+            //#else
+            //            return ExceptionCompiled;
+            //#endif
         }
 
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -909,7 +915,7 @@ namespace SharpAlert
             //    return;
             //}
 
-            Settings.Default.Save();
+            QuickSettings.Instance.Save();
             SafeExit();
         }
 
@@ -994,7 +1000,7 @@ namespace SharpAlert
                 _handler += new ConsoleCtrlDelegate(_ => {
                     lock (LockObject)
                     {
-                        Settings.Default.Save();
+                        QuickSettings.Instance.Save();
                         SafeExit();
                         return true;
                     }
@@ -1082,6 +1088,13 @@ namespace SharpAlert
                         try
                         {
                             string data = File.ReadAllText(selectedPath);
+                            if (data.Contains("<SharpAlertMassImport>true</SharpAlertMassImport>"))
+                            {
+                                MessageBox.Show("You are importing a mass amount of alerts. Proceed with caution.",
+                                    "SharpAlert",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Exclamation);
+                            }
                             EnrollAlerts(data, true);
                         }
                         catch (Exception ex)

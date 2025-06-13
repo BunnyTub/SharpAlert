@@ -1,5 +1,4 @@
-﻿using SharpAlert.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -59,6 +58,12 @@ namespace SharpAlert
         public void ServiceRun(bool useHTTPS)
         {
             if (Stop) return;
+
+            if (!servers.Any())
+            {
+                ConsoleExt.WriteLine("[HTTP Feed Capture] No servers found.");
+                return;
+            }
 
             while (true)
             {
@@ -135,7 +140,7 @@ namespace SharpAlert
                 }
                 catch (Exception e)
                 {
-                    ConsoleExt.WriteLine($"[HTTP HTTP Feed Capture] {e.Message}");
+                    ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.Message}");
                     if (e.InnerException != null) ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.InnerException.Message}");
                     //if (LastConnectionSuccessful)
                     //{
@@ -154,7 +159,7 @@ namespace SharpAlert
 
                 try
                 {
-                    int CheckInterval = Settings.Default.AlertCheckInterval;
+                    int CheckInterval = QuickSettings.Instance.AlertCheckInterval;
                     for (int i = 0; !(i >= CheckInterval);)
                     {
                         if (Stop)
@@ -219,7 +224,7 @@ namespace SharpAlert
                                 TryRemoveDataFromHistory(item);
                             }
 
-                            if (FirstRun && Settings.Default.discardFirstAlerts)
+                            if (FirstRun && QuickSettings.Instance.discardFirstAlerts)
                             {
                                 if (TryAddDataToHistory(item))
                                 {
@@ -253,74 +258,7 @@ namespace SharpAlert
             }
         }
 
-        /// <summary>
-        /// Starts the HTTP Feed Capture service in the current thread as a server instead of a client.
-        /// </summary>
-        /// <param name="useHTTPS">Use the secure version of Hypertext Transfer Protocol to connect to the target server.</param>
-        //public void ServerServiceRun(bool useHTTPS)
-        //{
-        //    if (Stop) return;
-
-        //    string URLPrefix = useHTTPS ? "https" : "http";
-        //    while (true)
-        //    {
-        //        try
-        //        {
-        //            ConsoleExt.WriteLine($"[HTTP Feed Capture] Getting data from the server.");
-        //            Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server}");
-        //            if (!message.Wait(10000)) continue;
-        //            message.Result.EnsureSuccessStatusCode();
-
-        //            if (Calls > 100000) Calls = 0;
-        //            Calls++;
-
-        //            Result = message.Result.Content.ReadAsStringAsync().Result;
-
-        //            ConsoleExt.WriteLine($"[HTTP Feed Capture] Grabbed data from the server.");
-
-        //            for (int i = 0; !(i >= 30);)
-        //            {
-        //                if (Stop)
-        //                {
-        //                    Stop = false;
-        //                    return;
-        //                }
-        //                Thread.Sleep(1000);
-        //                i++;
-        //            }
-        //        }
-        //        catch (SocketException e)
-        //        {
-        //            ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.Message}");
-        //            Thread.Sleep(1000);
-        //        }
-        //        catch (TimeoutException)
-        //        {
-        //            ConsoleExt.WriteLine($"[HTTP Feed Capture] Timed out.");
-        //        }
-        //        catch (HttpRequestException e)
-        //        {
-        //            ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message} {e.Message}");
-        //        }
-        //        catch (AggregateException e)
-        //        {
-        //            ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
-        //        }
-        //        catch (TaskCanceledException)
-        //        {
-        //            ConsoleExt.WriteLine("[HTTP Feed Capture] The executing task was canceled.");
-        //        }
-        //        catch (ThreadAbortException)
-        //        {
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
-        //        }
-        //    }
-        //}
-
-        public static bool TryAddDataToQueue(SharpDataItem item)
+        public bool TryAddDataToQueue(SharpDataItem item)
         {
             lock (SharpDataQueue)
             {
@@ -347,7 +285,7 @@ namespace SharpAlert
             }
         }
 
-        public static bool TryAddDataToHistory(SharpDataItem item)
+        public bool TryAddDataToHistory(SharpDataItem item)
         {
             lock (SharpDataQueue)
             {
@@ -374,7 +312,7 @@ namespace SharpAlert
             }
         }
 
-        public static bool TryRemoveDataFromHistory(SharpDataItem item)
+        public bool TryRemoveDataFromHistory(SharpDataItem item)
         {
             lock (SharpDataQueue)
             {

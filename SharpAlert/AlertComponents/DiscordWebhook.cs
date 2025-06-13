@@ -73,8 +73,8 @@ namespace SharpAlert
         {
             try
             {
-                string webhook = $"{Settings.Default.DiscordWebhook}";
-                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                string webhook = $"{QuickSettings.Instance.DiscordWebhook}";
+                if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                 {
                     lock (client)
                     {
@@ -99,8 +99,8 @@ namespace SharpAlert
         {
             try
             {
-                string webhook = $"{Settings.Default.DiscordWebhook}";
-                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                string webhook = $"{QuickSettings.Instance.DiscordWebhook}";
+                if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                 {
                     lock (client)
                     {
@@ -135,8 +135,8 @@ namespace SharpAlert
         {
             try
             {
-                string webhook = $"{Settings.Default.DiscordWebhook}";
-                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                string webhook = $"{QuickSettings.Instance.DiscordWebhook}";
+                if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                 {
                     lock (client)
                     {
@@ -174,8 +174,8 @@ namespace SharpAlert
         {
             try
             {
-                string webhook = $"{Settings.Default.DiscordWebhook}";
-                if (!string.IsNullOrWhiteSpace(Settings.Default.DiscordWebhook))
+                string webhook = $"{QuickSettings.Instance.DiscordWebhook}";
+                if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                 {
                     lock (client)
                     {
@@ -190,7 +190,7 @@ namespace SharpAlert
                         if (ImageFileURL.Any()) ImageURL = ImageFileURL[0];
 
                         string AlertCompiled;
-                        //if (Settings.Default.weaOnly) AlertCompiled = "## WIRELESS EMERGENCY ALERT\r\n";
+                        //if (QuickSettings.Instance.weaOnly) AlertCompiled = "## WIRELESS EMERGENCY ALERT\r\n";
                         //else AlertCompiled = "# EMERGENCY ALERT\r\n";
                         AlertCompiled = "## Alert Message\r\n" +
                             $"{description1}\r\n\r\n{description2}";
@@ -202,7 +202,7 @@ namespace SharpAlert
                         }
 
                         string AuthorName = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority.";
-                        if (!string.IsNullOrWhiteSpace(Settings.Default.StationIdentifier)) AuthorName += $"\x20| Relaying from {Settings.Default.StationIdentifier} ({Settings.Default.StationName}).";
+                        if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.StationIdentifier)) AuthorName += $"\x20| Relaying from {QuickSettings.Instance.StationIdentifier} ({QuickSettings.Instance.StationName}).";
 
                         var payloadObject = new
                         {

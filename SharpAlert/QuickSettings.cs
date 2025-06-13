@@ -1,15 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.IO;
-using System.Text.Json;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using Newtonsoft.Json;
+//using static SharpAlert.IceBearWorker;
 
 namespace SharpAlert
 {
+    public class CustomGeocodeValues
+    {
+        //<geocode>
+        //  <valueName>IBGE</valueName>
+        //  <value>4205803</value>
+        //</geocode>
+
+        public string ValueName { get; set; } = string.Empty;
+        public string Value { get; set; } = string.Empty;
+    }
+
     public class QuickSettings
     {
-        private static readonly string ConfigPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        public static readonly string ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SharpAlert", "configuration.json");
+        
+        public static readonly string ConfigDirPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "SharpAlert");
+
+        //public event EventHandler SettingsSaving;
 
         private static QuickSettings _instance;
 
@@ -25,6 +45,7 @@ namespace SharpAlert
 
 #pragma warning disable IDE1006 // Naming Styles
         // Status
+        public bool MigrationOccurred { get; set; } = false;
         public bool statusActual { get; set; } = true;
         public bool statusTest { get; set; } = false;
         public bool statusExercise { get; set; } = false;
@@ -48,6 +69,8 @@ namespace SharpAlert
         // Locations
         public StringCollection AllowedSAMELocations_Geocodes { get; set; } = new StringCollection();
         public StringCollection AllowedCAPCPLocations_Geocodes { get; set; } = new StringCollection();
+        
+        public List<CustomGeocodeValues> AllowedCustomLocations_GeocodesList { get; set; } = new List<CustomGeocodeValues>();
         // Blacklist
         public StringCollection EnforceEventBlacklist { get; set; } = new StringCollection();
         public StringCollection EnforceSAMEEventBlacklist { get; set; } = new StringCollection();
@@ -59,9 +82,9 @@ namespace SharpAlert
         public int alertDisplayType { get; set; } = 0;
         public int WindowLocation { get; set; } = 0;
         public int alertTimeout { get; set; } = 5;
-        public bool alertFullscreenIdle { get; set; } = true;
+        public bool alertFullscreenIdle { get; set; } = false;
         public int alertFullscreenDisplay { get; set; } = 0;
-        public int alertDeadInterval { get; set; } = 1;
+        public int AlertDeadInterval { get; set; } = 1;
         public bool alertCompatibilityMode { get; set; } = false;
         public bool statusWindow { get; set; } = false;
         public bool showExpiryMessages { get; set; } = false;
@@ -101,11 +124,14 @@ namespace SharpAlert
         public string DiscordWebhookAppend { get; set; } = string.Empty;
         public bool DiscordWebhookConfirmAlerts { get; set; } = true;
         public bool DiscordWebhookRelayLocally { get; set; } = false;
+        // Server
+        public string ServerUsername { get; set; } = "username";
+        public string ServerPassword { get; set; } = "password";
         // Categories
         public bool categoryGeophysical { get; set; } = true;
         public bool categorySecurity { get; set; } = true;
         public bool categoryMedical { get; set; } = true;
-        public bool categoryUtilites { get; set; } = true;
+        public bool categoryUtilities { get; set; } = true;
         public bool categoryMeterological { get; set; } = true;
         public bool categoryRescue { get; set; } = true;
         public bool categoryEnvironmental { get; set; } = true;
@@ -120,22 +146,63 @@ namespace SharpAlert
 
         public void Save()
         {
+            ConsoleExt.WriteLine($"[Configuration Handler] The current configuration is being saved.");
             var dir = Path.GetDirectoryName(ConfigPath);
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
 
-            var json = JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true });
+            var json = JsonConvert.SerializeObject(this, Formatting.Indented);
             File.WriteAllText(ConfigPath, json);
         }
 
-        public static QuickSettings Load()
+        private static QuickSettings Load()
         {
-            if (File.Exists(ConfigPath))
+            try
             {
-                var json = File.ReadAllText(ConfigPath);
-                return JsonSerializer.Deserialize<QuickSettings>(json) ?? new QuickSettings();
+                if (File.Exists(ConfigPath))
+                {
+                    var json = File.ReadAllText(ConfigPath);
+                    return JsonConvert.DeserializeObject<QuickSettings>(json) ?? new QuickSettings();
+                }
             }
+            catch (Exception ex)
+            {
+                DialogResult result = MessageBox.Show($"Settings could not be loaded. {ex.Message}\r\n\r\n" +
+                    $"Click ABORT to open the location of the data.\r\n" +
+                    $"Click RETRY to wipe all settings data.\r\n" +
+                    $"Click IGNORE to do nothing, and exit.",
+                    "SharpAlert",
+                    MessageBoxButtons.AbortRetryIgnore,
+                    MessageBoxIcon.Error);
+
+                switch (result)
+                {
+                    case DialogResult.Abort:
+                        Process.Start($"{ConfigDirPath}");
+                        break;
+                    case DialogResult.Retry:
+                        var json = JsonConvert.SerializeObject(new QuickSettings(), Formatting.Indented);
+                        File.WriteAllText(ConfigPath, json);
+                        break;
+                }
+
+                Environment.Exit(0);
+                return null;
+            }
+
             return new QuickSettings();
+        }
+
+        public void Reset()
+        {
+            var dir = Path.GetDirectoryName(ConfigPath);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
+            var json = JsonConvert.SerializeObject(new QuickSettings(), Formatting.Indented);
+            File.WriteAllText(ConfigPath, json);
+
+            Reload();
         }
 
         public void Reload()
