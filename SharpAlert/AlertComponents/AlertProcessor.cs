@@ -12,6 +12,8 @@ using static SharpAlert.MainEntryPoint;
 using static SharpAlert.RegexList;
 using static SharpAlert.AlertDisplayer;
 using System.Drawing;
+using static SharpAlert.AlertDetails;
+using System.Diagnostics;
 
 namespace SharpAlert
 {
@@ -1628,11 +1630,6 @@ namespace SharpAlert
             return (IntroText, BroadcastText);
         }
         
-        /// <summary>
-        /// Processes the info tag, then returns a message body.
-        /// </summary>
-        /// <param name="InfoData">The info XML data to process.</param>
-        /// <returns>Returns a compiled message body.</returns>
         public List<string> CompiledLocations(string InfoData)
         {
             try
@@ -1709,11 +1706,6 @@ namespace SharpAlert
             }
         }
 
-        /// <summary>
-        /// Processes the data string for TTS friendlyness.
-        /// </summary>
-        /// <param name="Data"></param>
-        /// <returns></returns>
         public static string StringIntoTTSFriendly(string Data)
         {
             string FriendlyData = Data;
@@ -1730,50 +1722,120 @@ namespace SharpAlert
             return FriendlyData;
         }
 
-        /// <summary>
-        /// Gets the friendly name of the area specified.
-        /// </summary>
-        /// <param name="code">The code of which to get the friendly name from.</param>
-        /// <returns></returns>
         public static string GetFriendlyNameFromSAMELocation(string code)
         {
+            // stop reliance on external sources for retriving locations
+            // and as a benefit, we can finally get full state names
+            return GetFriendlyNameFromSAMELocationLocally(code);
+
+            //try
+            //{
+            //    if (string.IsNullOrWhiteSpace(CacheCapture.SAME_US_JSON)) cache.ServiceRun(false);
+            //    if (!string.IsNullOrWhiteSpace(CacheCapture.SAME_US_JSON))
+            //    {
+            //        using (JsonDocument doc = JsonDocument.Parse(CacheCapture.SAME_US_JSON))
+            //        {
+            //            JsonElement root = doc.RootElement;
+            //            JsonElement same = root.GetProperty("SAME");
+
+            //            if (same.TryGetProperty(code, out JsonElement rawSAME))
+            //            {
+            //                return rawSAME.GetString();
+            //            }
+            //            else
+            //            {
+            //                if (code.Length == 6)
+            //                {
+            //                    if (same.TryGetProperty(code.Substring(1), out JsonElement subSAME))
+            //                    {
+            //                        return subSAME.GetString();
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        ConsoleExt.WriteLine("[Alert Processor] The cache is unavailable.");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    ConsoleExt.WriteLine($"[Alert Processor] {ex.Message}");
+            //}
+
+            //return $"{code} (Cache Unavailable)";
+        }
+
+        public static string GetFriendlyNameFromSAMELocationLocally(string code)
+        {
+            if (!int.TryParse(code, out int _))
+            {
+                return $"{code} (Unknown Location)";
+            }
+
             try
             {
-                if (string.IsNullOrWhiteSpace(CacheCapture.SAME_US_JSON)) cache.ServiceRun(false);
-                if (!string.IsNullOrWhiteSpace(CacheCapture.SAME_US_JSON))
-                {
-                    using (JsonDocument doc = JsonDocument.Parse(CacheCapture.SAME_US_JSON))
-                    {
-                        JsonElement root = doc.RootElement;
-                        JsonElement same = root.GetProperty("SAME");
+                // PSSCCC
 
-                        if (same.TryGetProperty(code, out JsonElement rawSAME))
+                // two digit state code comes first, then three digit county code
+
+                if (code.Length != 5)
+                {
+                    if (code.Length == 6)
+                    {
+                        code = code.Substring(1);
+                    }
+                    else
+                    {
+                        return $"{code} (Unknown Location)";
+                    }
+                }
+
+                // This might be inefficient, but we're not running this software on fucking a Pentium II.
+                // Save the optimization tricks for a rainy day.
+
+                // P
+                //unused
+
+                // SS
+                int StateCode = int.Parse(code.Substring(0, 2));
+                int SavedStateCode = -1;
+
+                foreach (var state in States)
+                {
+                    if (state.Id == StateCode)
+                    {
+                        SavedStateCode = state.Id;
+                        break;
+                    }
+                }
+
+                // CCC
+                int CountyCode = int.Parse(code.Substring(2));
+                int SavedCountyCode = -1;
+                SAME_CountyCode SavedCounty = null;
+
+                foreach (var county in Counties)
+                {
+                    if (county.State.Id == SavedStateCode)
+                    {
+                        if (county.Id == CountyCode)
                         {
-                            return rawSAME.GetString();
-                        }
-                        else
-                        {
-                            if (code.Length == 6)
-                            {
-                                if (same.TryGetProperty(code.Substring(1), out JsonElement subSAME))
-                                {
-                                    return subSAME.GetString();
-                                }
-                            }
+                            SavedCountyCode = county.Id;
+                            SavedCounty = county;
+                            break;
                         }
                     }
                 }
-                else
-                {
-                    ConsoleExt.WriteLine("[Alert Processor] The cache is unavailable.");
-                }
+
+                return $"{SavedCounty.Name}, {SavedCounty.State.Name};";
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine($"[Alert Processor] {ex.Message}");
+                IceBearWorker.UnsafeFault(ex, false);
+                return $"{code} (Unknown Location)";
             }
-
-            return $"{code} (Cache Unavailable)";
         }
 
         string SentenceAppendEnd(string value)

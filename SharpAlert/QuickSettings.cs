@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 //using static SharpAlert.IceBearWorker;
@@ -23,11 +22,15 @@ namespace SharpAlert
 
     public class QuickSettings
     {
+        // NEVER CHANGE ANY OF THESE STRINGS BELOW!
+
         public static readonly string ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SharpAlert", "configuration.json");
         
         public static readonly string ConfigDirPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SharpAlert");
+
+        // DO YOU WANT TO FUCK UP THE USER INSTALLATION PATH?
 
         //public event EventHandler SettingsSaving;
 
@@ -89,7 +92,7 @@ namespace SharpAlert
         public bool statusWindow { get; set; } = false;
         public bool showExpiryMessages { get; set; } = false;
         public bool alertNoGUI { get; set; } = false;
-        // "alertNoRelay" disables USB relays. It doesn't prevent relaying.]
+        // "alertNoRelay" disables USB relays. It doesn't prevent relaying.
         public bool alertNoRelay { get; set; } = false;
         public bool DisableDialogs { get; set; } = false;
         public bool alertIncreaseSize { get; set; } = false;

@@ -11,9 +11,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using SharpAlert.Properties;
 using static SharpAlert.MainEntryPoint;
+using static SharpAlert.IceBearWorker;
 
 namespace SharpAlert
 {
@@ -488,10 +488,10 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"{ex.Message}\r\n{ex.StackTrace}");
+                LogFault(ex);
             }
 
-            return false;
+            return true;
 
             //using (var writer = new StreamWriter(ctx.Response.OutputStream))
             //{

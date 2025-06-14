@@ -20,9 +20,9 @@ namespace SharpAlert
     {
         public static readonly int MajorVersion = 9;
         public static readonly int MinorVersion = 2;
-        public static readonly bool BetaVersion = false;
+        public static readonly bool BetaVersion = true;
         public static readonly DateTime BetaTimeEnd = DateTime.ParseExact(
-            "6/6/2025",
+            "6/20/2025",
             "M/d/yyyy",
             CultureInfo.InvariantCulture,
             DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal

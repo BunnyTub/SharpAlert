@@ -609,7 +609,7 @@
             // 
             // ServerButton
             // 
-            this.ServerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ServerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ServerButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.ServerButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.ServerButton.Location = new System.Drawing.Point(557, 427);
@@ -690,6 +690,8 @@
             // 
             // AdvancedAudioGroup
             // 
+            this.AdvancedAudioGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.AdvancedAudioGroup.Controls.Add(this.AudioOutputClearLink);
             this.AdvancedAudioGroup.Controls.Add(this.GlobalVolumeLabel);
             this.AdvancedAudioGroup.Controls.Add(this.volumeBar);

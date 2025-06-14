@@ -51,33 +51,41 @@ namespace SharpAlert
 
             string RemoteVersion = string.Empty;
 
-            ConsoleExt.WriteLine("[Ice Bear] Checking application version.");
-
-            string IdentityURL = "https://bunnytub.com";
-
-            try
+            if (!ServiceMode)
             {
-                HttpResponseMessage latest = client.GetAsync($"{IdentityURL}/SharpAlert/SharpAlert.txt").Result;
+                ConsoleExt.WriteLine("[Ice Bear] Checking application version.");
 
-                ConsoleExt.WriteLine($"[Ice Bear] The server responded with status code {latest.StatusCode}.");
+                string IdentityURL = "https://bunnytub.com";
 
-                RemoteVersion = latest.Content.ReadAsStringAsync().Result.Trim();
-                if (string.IsNullOrWhiteSpace(RemoteVersion) || RemoteVersion.Length == 0 || RemoteVersion.Length >= 10) RemoteVersion = "0.0";
-            }
-            catch (Exception ex)
-            {
-                ConsoleExt.WriteLine($"[Ice Bear] {ex.StackTrace} {ex.Message}");
-                ConsoleExt.WriteLine($"[Ice Bear] Couldn't work with the server.");
-            }
-
-            if (VersionInfo.BetaVersion)
-            {
-                if (DateTime.UtcNow >= VersionInfo.BetaTimeEnd)
+                try
                 {
-                    TimedForm tf = new TimedForm();
-                    tf.ShowDialog();
-                    tf.Dispose();
+                    HttpResponseMessage latest = client.GetAsync($"{IdentityURL}/SharpAlert/SharpAlert.txt").Result;
+
+                    ConsoleExt.WriteLine($"[Ice Bear] The server responded with status code {latest.StatusCode}.");
+
+                    RemoteVersion = latest.Content.ReadAsStringAsync().Result.Trim();
+                    if (string.IsNullOrWhiteSpace(RemoteVersion) || RemoteVersion.Length == 0 || RemoteVersion.Length >= 10) RemoteVersion = "0.0";
                 }
+                catch (Exception ex)
+                {
+                    ConsoleExt.WriteLine($"[Ice Bear] {ex.StackTrace} {ex.Message}");
+                    ConsoleExt.WriteLine($"[Ice Bear] Couldn't work with the server.");
+                }
+
+                if (VersionInfo.BetaVersion)
+                {
+                    if (DateTime.UtcNow >= VersionInfo.BetaTimeEnd)
+                    {
+                        TimedForm tf = new TimedForm();
+                        tf.ShowDialog();
+                        tf.Dispose();
+                    }
+                }
+            }
+            else
+            {
+                ConsoleExt.WriteLine("[Ice Bear] Version checking skipped due to service mode.");
+                RemoteVersion = "service";
             }
 
             ConsoleExt.WriteLine("[Ice Bear] Initializing services.");
@@ -518,52 +526,76 @@ namespace SharpAlert
 
             contextMenu.Items.Add(new ToolStripSeparator());
 
-            string[] RemoteVersionSplit = RemoteVersion.Split('.');
             bool UpdatesAvailable = false;
-
-            if (RemoteVersionSplit.Length == 2)
+            
+            if (RemoteVersion == "service")
             {
-                try
+                lock (notify)
                 {
-                    if (int.Parse(RemoteVersionSplit[0]) > VersionInfo.MajorVersion ||
-                        int.Parse(RemoteVersionSplit[1]) > VersionInfo.MinorVersion)
+                    notify.BalloonTipTitle = "SharpAlert is running";
+                    notify.BalloonTipText = $"I'll just be waiting right over here in my tray icon. Service mode active.";
+                    notify.BalloonTipIcon = ToolTipIcon.Info;
+                    notify.ShowBalloonTip(5000);
+                }
+            }
+            else
+            {
+                string[] RemoteVersionSplit = RemoteVersion.Split('.');
+
+                if (RemoteVersionSplit.Length == 2)
+                {
+                    try
+                    {
+                        if (int.Parse(RemoteVersionSplit[0]) > VersionInfo.MajorVersion ||
+                            int.Parse(RemoteVersionSplit[1]) > VersionInfo.MinorVersion)
+                        {
+                            lock (notify)
+                            {
+                                notify.BalloonTipTitle = "SharpAlert is running";
+                                notify.BalloonTipText = $"Update available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                                //notify.BalloonTipText = $"You may be running an older version. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                                notify.BalloonTipIcon = ToolTipIcon.Info;
+                                notify.ShowBalloonTip(5000);
+                            }
+                            UpdatesAvailable = true;
+                        }
+                        else
+                        {
+                            if (int.Parse(RemoteVersionSplit[0]) < VersionInfo.MajorVersion ||
+                                int.Parse(RemoteVersionSplit[1]) < VersionInfo.MinorVersion)
+                            {
+                                lock (notify)
+                                {
+                                    notify.BalloonTipTitle = "SharpAlert is running";
+                                    notify.BalloonTipText = $"Downgrade available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                                    notify.BalloonTipIcon = ToolTipIcon.Info;
+                                    notify.ShowBalloonTip(5000);
+                                }
+                            }
+                            else
+                            {
+                                lock (notify)
+                                {
+                                    notify.BalloonTipTitle = "SharpAlert is running";
+                                    notify.BalloonTipText = $"I'll just be waiting right over here in my tray icon. You're up to date.";
+                                    notify.BalloonTipIcon = ToolTipIcon.Info;
+                                    notify.ShowBalloonTip(5000);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception)
                     {
                         lock (notify)
                         {
                             notify.BalloonTipTitle = "SharpAlert is running";
-                            notify.BalloonTipText = $"Update available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
-                            //notify.BalloonTipText = $"You may be running an older version. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
+                            notify.BalloonTipText = "I'll just be waiting right over here in my tray icon. Couldn't check for updates.";
                             notify.BalloonTipIcon = ToolTipIcon.Info;
                             notify.ShowBalloonTip(5000);
                         }
-                        UpdatesAvailable = true;
-                    }
-                    else
-                    {
-                        if (int.Parse(RemoteVersionSplit[0]) < VersionInfo.MajorVersion ||
-                            int.Parse(RemoteVersionSplit[1]) < VersionInfo.MinorVersion)
-                        {
-                            lock (notify)
-                            {
-                                notify.BalloonTipTitle = "SharpAlert is running";
-                                notify.BalloonTipText = $"Downgrade available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
-                                notify.BalloonTipIcon = ToolTipIcon.Info;
-                                notify.ShowBalloonTip(5000);
-                            }
-                        }
-                        else
-                        {
-                            lock (notify)
-                            {
-                                notify.BalloonTipTitle = "SharpAlert is running";
-                                notify.BalloonTipText = $"I'll just be waiting right over here in my tray icon. You're up to date.";
-                                notify.BalloonTipIcon = ToolTipIcon.Info;
-                                notify.ShowBalloonTip(5000);
-                            }
-                        }
                     }
                 }
-                catch (Exception)
+                else
                 {
                     lock (notify)
                     {
@@ -572,16 +604,6 @@ namespace SharpAlert
                         notify.BalloonTipIcon = ToolTipIcon.Info;
                         notify.ShowBalloonTip(5000);
                     }
-                }
-            }
-            else
-            {
-                lock (notify)
-                {
-                    notify.BalloonTipTitle = "SharpAlert is running";
-                    notify.BalloonTipText = "I'll just be waiting right over here in my tray icon. Couldn't check for updates.";
-                    notify.BalloonTipIcon = ToolTipIcon.Info;
-                    notify.ShowBalloonTip(5000);
                 }
             }
 
@@ -623,39 +645,6 @@ namespace SharpAlert
                 cf.ShowDialog();
                 IgnoreRightClick = false;
             }));
-
-            //contextMenu.Items.Add(new ToolStripMenuItem("Save Settings", null, (sender, arg) =>
-            //{
-            //    QuickSettings.Instance.Save();
-            //    //string SettingsChangedList = string.Empty;
-
-            //    //foreach (string SettingName in ChangedPropertiesList)
-            //    //{
-            //    //    SettingsChangedList += SettingName + "\r\n";
-            //    //}
-
-            //    //SettingsChangedList = SettingsChangedList.Trim();
-
-            //    //if (!string.IsNullOrWhiteSpace(SettingsChangedList))
-            //    //{
-            //    //    if (MessageBox.Show("Do you want to save the current configuration?\r\n\r\n" +
-            //    //        "The following settings were changed:\r\n" +
-            //    //        SettingsChangedList,
-            //    //        "SharpAlert",
-            //    //        MessageBoxButtons.YesNo,
-            //    //        MessageBoxIcon.Question) == DialogResult.Yes)
-            //    //    {
-            //    //        QuickSettings.Instance.Save();
-            //    //    }
-            //    //}
-            //    //else
-            //    //{
-            //    //    MessageBox.Show("There are no pending changes to save.",
-            //    //        "SharpAlert",
-            //    //        MessageBoxButtons.OK,
-            //    //        MessageBoxIcon.Information);
-            //    //}
-            //}));
 
             contextMenu.Items.Add(new ToolStripMenuItem("Reset Settings", null, (sender, arg) =>
             {

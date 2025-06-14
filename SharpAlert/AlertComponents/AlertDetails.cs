@@ -1,8 +1,5 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SharpAlert
 {
@@ -12,24 +9,26 @@ namespace SharpAlert
 
         public class SAME_EventCode
         {
-            public SAME_EventCode(string id, string name)
+            public SAME_EventCode(string id, string name, bool unclearUsage = false)
             {
                 ID = id;
                 Name = name;
+                UnclearUsage = unclearUsage;
             }
 
             public string ID { private set; get; }
             public string Name { private set; get; }
+            public bool UnclearUsage { private set; get; }
         }
 
         public static List<SAME_EventCode> AlertCodes = new List<SAME_EventCode>
         {
-            // Used in the EBS (Emergency Broadcast System). Should not be broadcasted or used anymore.
-            new SAME_EventCode("EAN", "Emergency Action Notification"),
-            new SAME_EventCode("EAT", "Emergency Action Termination"),
+            // Used in the EBS (Emergency Broadcast System).
+            new SAME_EventCode("EAN", "National Emergency Message", true),
+            new SAME_EventCode("EAT", "National Emergency Message Termination", true),
             
             // These are national alert codes.
-            new SAME_EventCode("NIC", "National Information Center"),
+            new SAME_EventCode("NIC", "National Information Center", true),
             new SAME_EventCode("NPT", "National Periodic Test"),
             new SAME_EventCode("NAT", "National Audible Test"),
             new SAME_EventCode("NST", "National Slient Test"),
@@ -37,10 +36,6 @@ namespace SharpAlert
             // These are required tests.
             new SAME_EventCode("RMT", "Required Monthly Test"),
             new SAME_EventCode("RWT", "Required Weekly Test"),
-
-            // These are required tests. (unofficial - most likely will be recognized as "Unrecognized Message")
-            //new SAME_EventCode("RDT", "Required Daily Test"),
-            //new SAME_EventCode("RYT", "Required Yearly Test"),
 
             // These are administratives codes.
             new SAME_EventCode("ADR", "Administrative Message"),
@@ -3573,12 +3568,19 @@ namespace SharpAlert
 
             public int Id { private set; get; }
             public string Name { private set; get; }
-            public string Value => Name;
+            //public string Value => Name;
         }
 
         public static List<SAME_StateCode> States = new List<SAME_StateCode>
         {
             //new SAME_StateCode(00, "National (USA/CANADA)"),
+            new SAME_StateCode(1, "Alabama"),
+            new SAME_StateCode(2, "Alaska"),
+            new SAME_StateCode(4, "Arizona"),
+            new SAME_StateCode(5, "Arkansas"),
+            new SAME_StateCode(6, "California"),
+            new SAME_StateCode(8, "Colorado"),
+            new SAME_StateCode(9, "Connecticut"),
             new SAME_StateCode(10, "Delaware"),
             new SAME_StateCode(11, "District of Columbia"),
             new SAME_StateCode(12, "Florida"),
@@ -3629,13 +3631,6 @@ namespace SharpAlert
             new SAME_StateCode(72, "Puerto Rico"),
             new SAME_StateCode(74, "U.S. Minor Outlying Islands"),
             new SAME_StateCode(78, "U.S. Virgin Islands"),
-            new SAME_StateCode(1, "Alabama"),
-            new SAME_StateCode(2, "Alaska"),
-            new SAME_StateCode(4, "Arizona"),
-            new SAME_StateCode(5, "Arkansas"),
-            new SAME_StateCode(6, "California"),
-            new SAME_StateCode(8, "Colorado"),
-            new SAME_StateCode(9, "Connecticut"),
         };
     }
 }

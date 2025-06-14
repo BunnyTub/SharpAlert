@@ -109,7 +109,7 @@ namespace SharpAlert
             LegacyAudioPlayerBox.CheckedChanged += (a, b) =>
             {
                 QuickSettings.Instance.LegacyAudioPlayer = ((CheckBox)a).Checked;
-                AdvancedAudioGroup.Enabled = LegacyAudioPlayerBox.Checked;
+                //AdvancedAudioGroup.Enabled = !LegacyAudioPlayerBox.Checked;
                 if (((CheckBox)a).Checked)
                 {
                     MessageBox.Show("This setting requires a program restart. You'll lose out on program volume, using a specific output device, remote audio, and the ability to customize alert tones if this is enabled. Works better on low-end systems.",

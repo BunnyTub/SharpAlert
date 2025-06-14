@@ -215,6 +215,12 @@
     <Compile Include="ConfigurationDialogs\MakiForm.Designer.cs">
       <DependentUpon>MakiForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationDialogs\ManagementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigurationDialogs\ManagementForm.Designer.cs">
+      <DependentUpon>ManagementForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationDialogs\QuickAccessForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -389,6 +395,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationDialogs\LocationsAdditionForm.resx">
       <DependentUpon>LocationsAdditionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationDialogs\ManagementForm.resx">
+      <DependentUpon>ManagementForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationDialogs\QuickAccessForm.resx">
       <DependentUpon>QuickAccessForm.cs</DependentUpon>
