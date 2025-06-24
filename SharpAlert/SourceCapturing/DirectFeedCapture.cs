@@ -62,7 +62,7 @@ namespace SharpAlert
 
             if (!servers.Any())
             {
-                ConsoleExt.WriteLine("[TCP Feed Capture] No servers found.");
+                Console.WriteLine("[TCP Feed Capture] No servers found.");
                 return;
             }
 
@@ -93,10 +93,10 @@ namespace SharpAlert
                                     }
                                     catch (Exception ex)
                                     {
-                                        ConsoleExt.WriteLine($"[TCP Feed Capture] Exception caught in {server.ServerName}. {ex.Message}");
+                                        Console.WriteLine($"[TCP Feed Capture] Exception caught in {server.ServerName}. {ex.Message}");
                                     }
 
-                                    ConsoleExt.WriteLine($"[TCP Feed Capture] The connection was closed for {server.ServerName}.");
+                                    Console.WriteLine($"[TCP Feed Capture] The connection was closed for {server.ServerName}.");
                                 }
 
                             });
@@ -104,28 +104,18 @@ namespace SharpAlert
                             CaptureThreads.Add(thread);
                             thread.Start();
                             Thread.Sleep(1000); // added sleep because we could accidentally get timed out
-
-                            //ConsoleExt.WriteLine($"[TCP Feed Capture] Getting data from URL: {URLPrefix}://{server}");
-                            //HttpResponseMessage message = client.GetAsync($"{URLPrefix}://{server}").Result;
-                            //message.EnsureSuccessStatusCode();
-
-                            //if (Calls >= 100000) Calls = 0;
-                            //Calls++;
-
-                            //Result = message.Content.ReadAsStringAsync().Result;
-                            //EnrollAlerts(Result);
                         }
                         catch (Exception ex)
                         {
                             //AllConnectionsSuccessful = false;
-                            ConsoleExt.WriteLine($"[TCP Feed Capture] {ex.Message}");
+                            Console.WriteLine($"[TCP Feed Capture] {ex.Message}");
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine($"[TCP Feed Capture] {ex.Message}");
+                Console.WriteLine($"[TCP Feed Capture] {ex.Message}");
             }
 
             while (true)
@@ -160,7 +150,7 @@ namespace SharpAlert
                 }
                 catch (Exception ex)
                 {
-                    ConsoleExt.WriteLine($"[TCP Feed Capture] {ex.StackTrace} {ex.Message}");
+                    Console.WriteLine($"[TCP Feed Capture] {ex.StackTrace} {ex.Message}");
                 }
             }
         }
@@ -168,8 +158,6 @@ namespace SharpAlert
         public DateTime LastHeartbeat { get; private set; } = DateTime.UtcNow;
 
         private bool FirstRun = true;
-
-
 
         private void ServiceReceive(string name, string host, int port)
         {
@@ -185,7 +173,7 @@ namespace SharpAlert
                         NetworkStream stream = tcp.GetStream();
                         stream.ReadTimeout = 300 * 1000;
                         stream.WriteTimeout = 10 * 1000;
-                        ConsoleExt.WriteLine($"[TCP Feed Capture] Connected to {name}.");
+                        Console.WriteLine($"[TCP Feed Capture] Connected to {name}.");
                         string dataReceived = string.Empty;
                         
                         List<byte> data = new List<byte>();
@@ -207,7 +195,7 @@ namespace SharpAlert
                             }
                             data.Clear();
                             DateTime now = DateTime.UtcNow;
-                            ConsoleExt.WriteLine($"[TCP Feed Capture] Getting data from {name}. TCP -> {host}:{port}");
+                            Console.WriteLine($"[TCP Feed Capture] Getting data from {name}. TCP -> {host}:{port}");
 
                             while (stream.DataAvailable)
                             {
@@ -218,7 +206,7 @@ namespace SharpAlert
                                 }
                             }
 
-                            ConsoleExt.WriteLine($"[TCP Feed Capture] Processing data from {name}.");
+                            Console.WriteLine($"[TCP Feed Capture] Processing data from {name}.");
                             string chunk = Encoding.UTF8.GetString(data.ToArray(), 0, data.Count);
 
                             dataReceived += chunk;
@@ -227,6 +215,8 @@ namespace SharpAlert
 
                             if (chunk.Contains(delimiter))
                             {
+                                FeedSuccessfulCalls++;
+
                                 dataReceived = dataReceived.Substring(0, dataReceived.IndexOf(delimiter)) + delimiter;
 
                                 string capturedSent = SentRegex.MatchOrDefault(dataReceived);
@@ -237,18 +227,18 @@ namespace SharpAlert
 
                                 if (capturedStatus.ToLowerInvariant() == "system" & capturedSender.ToLowerInvariant().Contains("naads-heartbeat"))
                                 {
-                                    ConsoleExt.WriteLine($"[TCP Feed Capture] Heartbeat detected from {name}.");
+                                    Console.WriteLine($"[TCP Feed Capture] Heartbeat detected from {name}.");
                                     EnrollNAADSHeartbeat(dataReceived, FirstRun);
                                 }
                                 else
                                 {
-                                    ConsoleExt.WriteLine($"[TCP Feed Capture] Alert detected from {name}.");
+                                    Console.WriteLine($"[TCP Feed Capture] Alert detected from {name}.");
                                     EnrollAlerts(dataReceived, FirstRun);
                                 }
 
                                 FirstRun = false;
 
-                                ConsoleExt.WriteLine($"[TCP Feed Capture] Saved data from {name}. TCP -> {host}:{port}");
+                                Console.WriteLine($"[TCP Feed Capture] Saved data from {name}. TCP -> {host}:{port}");
 
                                 dataReceived = string.Empty;
                             }
@@ -257,11 +247,11 @@ namespace SharpAlert
                 }
                 catch (TimeoutException)
                 {
-                    ConsoleExt.WriteLine($"[TCP Feed Capture] Timed out from {name}.");
+                    Console.WriteLine($"[TCP Feed Capture] Timed out from {name}.");
                 }
                 catch (Exception ex)
                 {
-                    ConsoleExt.WriteLine($"[TCP Feed Capture] Exception caught in {name}. {ex.Message}");
+                    Console.WriteLine($"[TCP Feed Capture] Exception caught in {name}. {ex.Message}");
                 }
                 Thread.Sleep(15 * 1000);
             }
@@ -289,11 +279,11 @@ namespace SharpAlert
 
                             //if (string.IsNullOrWhiteSpace(filename))
                             //{
-                            //    ConsoleExt.WriteLine("[TCP Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
+                            //    Console.WriteLine("[TCP Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
                             //    filename = CreateMD5(alert.Value);
                             //}
 
-                            ConsoleExt.WriteLine($"[TCP Feed Capture] {alertIndex} -> {filename}");
+                            Console.WriteLine($"[TCP Feed Capture] {alertIndex} -> {filename}");
                             string alertReplayValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
                             SharpDataItem item = new SharpDataItem(filename, alert.Value);
 
@@ -301,35 +291,35 @@ namespace SharpAlert
                             {
                                 if (TryAddDataToHistory(item))
                                 {
-                                    ConsoleExt.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
+                                    Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
                                 }
                             }
                             else
                             {
                                 if (TryAddDataToQueue(item))
                                 {
-                                    ConsoleExt.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
+                                    Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
                                 }
                                 else
                                 {
-                                    ConsoleExt.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already in queue or history).");
+                                    Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already in queue or history).");
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            ConsoleExt.WriteLine($"[TCP Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
+                            Console.WriteLine($"[TCP Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
                         }
                     }
                     if (alertIndex != 0)
                     {
-                        //ConsoleExt.WriteLine($"[TCP Feed Capture] {alertIndex} alert(s) checked.");
+                        //Console.WriteLine($"[TCP Feed Capture] {alertIndex} alert(s) checked.");
                     }
-                    else ConsoleExt.WriteLine($"[TCP Feed Capture] No alerts were checked.");
+                    else Console.WriteLine($"[TCP Feed Capture] No alerts were checked.");
                 }
                 else
                 {
-                    ConsoleExt.WriteLine("[TCP Feed Capture] There are no alerts to enroll.");
+                    Console.WriteLine("[TCP Feed Capture] There are no alerts to enroll.");
                 }
             }
         }
@@ -354,18 +344,18 @@ namespace SharpAlert
 
                             //if (string.IsNullOrWhiteSpace(filename))
                             //{
-                            //    ConsoleExt.WriteLine("[TCP Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
+                            //    Console.WriteLine("[TCP Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
                             //    filename = CreateMD5(alert.Value);
                             //}
 
-                            ConsoleExt.WriteLine($"[TCP Feed Capture] {alertIndex} -> {filename} (NAADS Heartbeat)");
+                            Console.WriteLine($"[TCP Feed Capture] {alertIndex} -> {filename} (NAADS Heartbeat)");
                             SharpDataItem item = new SharpDataItem(filename, alert.Value);
 
                             //if (FirstRun && QuickSettings.Instance.discardFirstAlerts)
                             //{
                             //    if (TryAddDataToHistory(item))
                             //    {
-                            //        ConsoleExt.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
+                            //        Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
                             //    }
                             //}
                             //else
@@ -373,13 +363,13 @@ namespace SharpAlert
                                 string references = ReferencesRegex.MatchOrDefault(alert.Value);
                                 if (!string.IsNullOrWhiteSpace(references))
                                 {
-                                    //ConsoleExt.WriteLine(references.Groups[0].Value);
-                                    //ConsoleExt.WriteLine(references.Groups[1].Value);
+                                    //Console.WriteLine(references.Groups[0].Value);
+                                    //Console.WriteLine(references.Groups[1].Value);
                                     //Check.Heartbeat(references,
                                     //    $"{AssemblyDirectory}\\XMLqueue",
                                     //    $"{AssemblyDirectory}\\XMLhistory");
 
-                                    ConsoleExt.WriteLine($"[TCP Feed Capture] Downloading alerts from heartbeat.");
+                                    Console.WriteLine($"[TCP Feed Capture] Downloading alerts from heartbeat.");
                                     string[] ReferencesList = references.Split('\x20');
                                     //int FilesMatched = 0;
                                     int Found = 0;
@@ -412,7 +402,7 @@ namespace SharpAlert
 
                                         try
                                         {
-                                            ConsoleExt.WriteLine($"[TCP Feed Capture] {Found} -> {name} ({url1})");
+                                            Console.WriteLine($"[TCP Feed Capture] {Found} -> {name} ({url1})");
                                             Task<string> xml = client.GetStringAsync(url1);
                                             xml.Wait();
                                             result = xml.Result;
@@ -422,8 +412,8 @@ namespace SharpAlert
                                         {
                                             try
                                             {
-                                                ConsoleExt.WriteLine($"[TCP Feed Capture] Stage 1 failed. {e1.Message}");
-                                                ConsoleExt.WriteLine($"[TCP Feed Capture] {Found} -> {name} ({url2}) (retrying)");
+                                                Console.WriteLine($"[TCP Feed Capture] Stage 1 failed. {e1.Message}");
+                                                Console.WriteLine($"[TCP Feed Capture] {Found} -> {name} ({url2}) (retrying)");
                                                 Task<string> xml = client.GetStringAsync(url2);
                                                 xml.Wait();
                                                 result = xml.Result;
@@ -431,8 +421,8 @@ namespace SharpAlert
                                             }
                                             catch (Exception e2)
                                             {
-                                                ConsoleExt.WriteLine($"[TCP Feed Capture] Stage 2 failed. {e2.Message}");
-                                                ConsoleExt.WriteLine($"[TCP Feed Capture] Failed to capture the data.");
+                                                Console.WriteLine($"[TCP Feed Capture] Stage 2 failed. {e2.Message}");
+                                                Console.WriteLine($"[TCP Feed Capture] Failed to capture the data.");
                                                 HeartbeatFailure = true;
                                             }
                                         }
@@ -445,25 +435,25 @@ namespace SharpAlert
 
                                 //if (TryAddDataToQueue(item))
                                 //{
-                                //    ConsoleExt.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
+                                //    Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
                                 //}
                                 //else
                                 //{
-                                //    ConsoleExt.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
+                                //    Console.WriteLine($"[TCP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already queued or is in history).");
                                 //}
                             }
                         }
                         catch (Exception ex)
                         {
-                            ConsoleExt.WriteLine($"[TCP Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
+                            Console.WriteLine($"[TCP Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
                         }
                     }
-                    if (alertIndex != 0) ConsoleExt.WriteLine($"[TCP Feed Capture] {alertIndex} alert(s) checked.");
-                    else ConsoleExt.WriteLine($"[TCP Feed Capture] No alerts were checked.");
+                    if (alertIndex != 0) Console.WriteLine($"[TCP Feed Capture] {alertIndex} alert(s) checked.");
+                    else Console.WriteLine($"[TCP Feed Capture] No alerts were checked.");
                 }
                 else
                 {
-                    ConsoleExt.WriteLine("[TCP Feed Capture] There are no alerts to enroll.");
+                    Console.WriteLine("[TCP Feed Capture] There are no alerts to enroll.");
                 }
             }
         }
@@ -481,7 +471,7 @@ namespace SharpAlert
         //    {
         //        try
         //        {
-        //            ConsoleExt.WriteLine($"[TCP Feed Capture] Getting data from the server.");
+        //            Console.WriteLine($"[TCP Feed Capture] Getting data from the server.");
         //            Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server}");
         //            if (!message.Wait(10000)) continue;
         //            message.Result.EnsureSuccessStatusCode();
@@ -491,7 +481,7 @@ namespace SharpAlert
 
         //            Result = message.Result.Content.ReadAsStringAsync().Result;
 
-        //            ConsoleExt.WriteLine($"[TCP Feed Capture] Grabbed data from the server.");
+        //            Console.WriteLine($"[TCP Feed Capture] Grabbed data from the server.");
 
         //            for (int i = 0; !(i >= 30);)
         //            {
@@ -506,31 +496,31 @@ namespace SharpAlert
         //        }
         //        catch (SocketException e)
         //        {
-        //            ConsoleExt.WriteLine($"[TCP Feed Capture] {e.Message}");
+        //            Console.WriteLine($"[TCP Feed Capture] {e.Message}");
         //            Thread.Sleep(1000);
         //        }
         //        catch (TimeoutException)
         //        {
-        //            ConsoleExt.WriteLine($"[TCP Feed Capture] Timed out.");
+        //            Console.WriteLine($"[TCP Feed Capture] Timed out.");
         //        }
         //        catch (HttpRequestException e)
         //        {
-        //            ConsoleExt.WriteLine($"[TCP Feed Capture] {e.StackTrace} {e.Message} {e.Message}");
+        //            Console.WriteLine($"[TCP Feed Capture] {e.StackTrace} {e.Message} {e.Message}");
         //        }
         //        catch (AggregateException e)
         //        {
-        //            ConsoleExt.WriteLine($"[TCP Feed Capture] {e.StackTrace} {e.Message}");
+        //            Console.WriteLine($"[TCP Feed Capture] {e.StackTrace} {e.Message}");
         //        }
         //        catch (TaskCanceledException)
         //        {
-        //            ConsoleExt.WriteLine("[TCP Feed Capture] The executing task was canceled.");
+        //            Console.WriteLine("[TCP Feed Capture] The executing task was canceled.");
         //        }
         //        catch (ThreadAbortException)
         //        {
         //        }
         //        catch (Exception e)
         //        {
-        //            ConsoleExt.WriteLine($"[TCP Feed Capture] {e.StackTrace} {e.Message}");
+        //            Console.WriteLine($"[TCP Feed Capture] {e.StackTrace} {e.Message}");
         //        }
         //    }
         //}
@@ -555,7 +545,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        ConsoleExt.WriteLine($"[TCP Feed Capture] {e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[TCP Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }
@@ -582,7 +572,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        ConsoleExt.WriteLine($"[TCP Feed Capture] {e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[TCP Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }

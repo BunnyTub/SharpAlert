@@ -63,7 +63,7 @@ namespace SharpAlert
 
             if (!servers.Any())
             {
-                ConsoleExt.WriteLine("[Atom Feed Capture] No servers found.");
+                Console.WriteLine("[Atom Feed Capture] No servers found.");
                 return;
             }
 
@@ -86,12 +86,13 @@ namespace SharpAlert
                                 try
                                 {
                                     count--;
-                                    ConsoleExt.WriteLine($"[Atom Feed Capture] Getting data from {server.ServerName}. URL -> {server.ServerPath}");
+                                    Console.WriteLine($"[Atom Feed Capture] Getting data from {server.ServerName}. URL -> {server.ServerPath}");
                                     HttpResponseMessage message = client.GetAsync($"{URLPrefix}://{server.ServerPath}").Result;
                                     message.EnsureSuccessStatusCode();
 
                                     if (Calls >= 100000) Calls = 0;
                                     Calls++;
+                                    // HEY YOU ABSOLUTE FUCKING IDIOT
 
                                     string Result = message.Content.ReadAsStringAsync().Result;
                                     EnrollEntries(Result);
@@ -99,7 +100,7 @@ namespace SharpAlert
                                 catch (Exception ex)
                                 {
                                     count++;
-                                    ConsoleExt.WriteLine($"[Atom Feed Capture] {ex.Message}");
+                                    Console.WriteLine($"[Atom Feed Capture] {ex.Message}");
                                     AllConnectionsSuccessful = false;
                                     server.LastRunSuccess = false;
                                 }
@@ -112,11 +113,11 @@ namespace SharpAlert
 
                             if (AllConnectionsSuccessful)
                             {
-                                ConsoleExt.WriteLine($"[Atom Feed Capture] Fetched from all feeds successfully.");
+                                Console.WriteLine($"[Atom Feed Capture] Fetched from all feeds successfully.");
                             }
                             else
                             {
-                                ConsoleExt.WriteLine("[Atom Feed Capture] Not all feeds were fetched from successfully.");
+                                Console.WriteLine("[Atom Feed Capture] Not all feeds were fetched from successfully.");
                             }
                         }
                     }
@@ -135,7 +136,7 @@ namespace SharpAlert
                 }
                 catch (TimeoutException)
                 {
-                    ConsoleExt.WriteLine($"[Atom Feed Capture] Timed out.");
+                    Console.WriteLine($"[Atom Feed Capture] Timed out.");
                     Thread.Sleep(15 * 1000);
                 }
                 catch (ThreadAbortException)
@@ -144,8 +145,8 @@ namespace SharpAlert
                 }
                 catch (Exception e)
                 {
-                    ConsoleExt.WriteLine($"[HTTP Atom Feed Capture] {e.Message}");
-                    if (e.InnerException != null) ConsoleExt.WriteLine($"[Atom Feed Capture] {e.InnerException.Message}");
+                    Console.WriteLine($"[HTTP Atom Feed Capture] {e.Message}");
+                    if (e.InnerException != null) Console.WriteLine($"[Atom Feed Capture] {e.InnerException.Message}");
                     //if (LastConnectionSuccessful)
                     //{
                     //    lock (notify)
@@ -181,7 +182,7 @@ namespace SharpAlert
                 }
                 catch (Exception e)
                 {
-                    ConsoleExt.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
+                    Console.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
                 }
             }
         }
@@ -197,7 +198,7 @@ namespace SharpAlert
             int EntriesIndex = 0;
             int EntriesDiscardCount = 0;
 
-            ConsoleExt.WriteLine($"[Atom Feed Capture] Processing {entries.Count} tag(s).");
+            Console.WriteLine($"[Atom Feed Capture] Processing {entries.Count} tag(s).");
 
             foreach (Match entry in entries)
             {
@@ -206,19 +207,19 @@ namespace SharpAlert
                 EntriesIndex++;
                 if (EntriesIndex.ToString().Last() == "0".ToCharArray()[0])
                 {
-                    ConsoleExt.WriteLine($"[Atom Feed Capture] {EntriesIndex} tag(s) processed out of {entries.Count}.");
+                    Console.WriteLine($"[Atom Feed Capture] {EntriesIndex} tag(s) processed out of {entries.Count}.");
                 }
                 else
                 {
                     if (entries.Count == EntriesIndex)
                     {
-                        ConsoleExt.WriteLine($"[Atom Feed Capture] Processing last tag.");
+                        Console.WriteLine($"[Atom Feed Capture] Processing last tag.");
                     }
                     else
                     {
                         if (EntriesIndex == 1)
                         {
-                            ConsoleExt.WriteLine($"[Atom Feed Capture] Processing first tag.");
+                            Console.WriteLine($"[Atom Feed Capture] Processing first tag.");
                         }
                     }
                 }
@@ -232,25 +233,25 @@ namespace SharpAlert
                 EntryStr = DescriptionRegex.Replace(EntryStr,
                     $"<description>{DescriptionRegex.MatchOrDefault(EntryStr).Replace("\r", "").Replace("\n", " ").Trim()}</description>");
 
-                //ConsoleExt.WriteLine($"[Atom Feed Capture] {EntriesCount} -> {CreateMD5(entry.Groups[1].Value)} (entry name is unused)");
+                //Console.WriteLine($"[Atom Feed Capture] {EntriesCount} -> {CreateMD5(entry.Groups[1].Value)} (entry name is unused)");
                 string Effective = AtomEffectiveRegex.MatchOrDefault(EntryStr, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
-                //ConsoleExt.WriteLine($"[Atom Feed Capture] Atom Effective: {Effective}");
+                //Console.WriteLine($"[Atom Feed Capture] Atom Effective: {Effective}");
 
                 string Expiry = AtomExpiresRegex.MatchOrDefault(EntryStr, DateTime.UtcNow.AddHours(1).ToString("O", CultureInfo.InvariantCulture));
-                //ConsoleExt.WriteLine($"[Atom Feed Capture] Atom Expires: {Expiry}");
+                //Console.WriteLine($"[Atom Feed Capture] Atom Expires: {Expiry}");
 
                 try
                 {
                     if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
                     {
                         EntriesDiscardCount++;
-                        //ConsoleExt.WriteLine($"[Atom Feed Capture] Entry discarded because it has expired.");
+                        //Console.WriteLine($"[Atom Feed Capture] Entry discarded because it has expired.");
                         continue;
                     }
                 }
                 catch (Exception)
                 {
-                    //ConsoleExt.WriteLine($"[Atom Feed Capture] Expiry check skipped because it has failed. {ex.Message}");
+                    //Console.WriteLine($"[Atom Feed Capture] Expiry check skipped because it has failed. {ex.Message}");
                 }
 
                 AlertList += $"{EntryStr}\r\n";
@@ -260,7 +261,7 @@ namespace SharpAlert
                 //if (string.IsNullOrWhiteSpace(ReturnURL))
                 //{
                 //    EntriesDiscardCount++;
-                //    //ConsoleExt.WriteLine($"[Atom Feed Capture] Entry discarded because a suitable XML link could not be found.");
+                //    //Console.WriteLine($"[Atom Feed Capture] Entry discarded because a suitable XML link could not be found.");
                 //    continue;
                 //}
 
@@ -274,17 +275,17 @@ namespace SharpAlert
 
                 //    string Result = message.Content.ReadAsStringAsync().Result;
                 //    AlertList += $"{Result}\r\n";
-                //    //ConsoleExt.WriteLine($"[Atom Feed Capture] Entry saved for further processing.");
+                //    //Console.WriteLine($"[Atom Feed Capture] Entry saved for further processing.");
                 //}
                 //catch (Exception ex)
                 //{
-                //    ConsoleExt.WriteLine($"[Atom Feed Capture] Entry could not be saved. {ex.Message}");
+                //    Console.WriteLine($"[Atom Feed Capture] Entry could not be saved. {ex.Message}");
                 //}
 
                 //Thread.Sleep(10); // we're gonna get rate limited. Awesome!
             }
 
-            ConsoleExt.WriteLine($"[Atom Feed Capture] {EntriesIndex} tag(s) saved, and {EntriesDiscardCount} tag(s) discarded. Tags remaining: {EntriesIndex - EntriesDiscardCount}");
+            Console.WriteLine($"[Atom Feed Capture] {EntriesIndex} tag(s) saved, and {EntriesDiscardCount} tag(s) discarded. Tags remaining: {EntriesIndex - EntriesDiscardCount}");
 
             EnrollAlerts(AlertList);
         }
@@ -299,7 +300,7 @@ namespace SharpAlert
 
                 if (alertMatches != null || alertMatches.Count != 0)
                 {
-                    ConsoleExt.WriteLine($"[Atom Feed Capture] Processing {alertMatches.Count} alert(s).");
+                    Console.WriteLine($"[Atom Feed Capture] Processing {alertMatches.Count} alert(s).");
 
                     foreach (Match alert in alertMatches)
                     {
@@ -309,19 +310,19 @@ namespace SharpAlert
                             if (alert.Value is null) continue;
                             if (alertIndex.ToString().Last() == "0".ToCharArray()[0])
                             {
-                                ConsoleExt.WriteLine($"[Atom Feed Capture] {alertIndex} alert(s) processed out of {alertMatches.Count}.");
+                                Console.WriteLine($"[Atom Feed Capture] {alertIndex} alert(s) processed out of {alertMatches.Count}.");
                             }
                             else
                             {
                                 if (alertMatches.Count == alertIndex)
                                 {
-                                    ConsoleExt.WriteLine($"[Atom Feed Capture] Processing last alert.");
+                                    Console.WriteLine($"[Atom Feed Capture] Processing last alert.");
                                 }
                                 else
                                 {
                                     if (alertIndex == 1)
                                     {
-                                        ConsoleExt.WriteLine($"[Atom Feed Capture] Processing first alert.");
+                                        Console.WriteLine($"[Atom Feed Capture] Processing first alert.");
                                     }
                                 }
                             }
@@ -339,7 +340,7 @@ namespace SharpAlert
                             {
                                 if (TryAddDataToHistory(item))
                                 {
-                                    //ConsoleExt.WriteLine($"[Atom Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
+                                    //Console.WriteLine($"[Atom Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
                                     alertDiscardCount++;
                                 }
                             }
@@ -347,29 +348,29 @@ namespace SharpAlert
                             {
                                 if (TryAddDataToQueue(item))
                                 {
-                                    //ConsoleExt.WriteLine($"[Atom Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
+                                    //Console.WriteLine($"[Atom Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
                                 }
                                 else
                                 {
-                                    //ConsoleExt.WriteLine($"[Atom Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already in queue or history).");
+                                    //Console.WriteLine($"[Atom Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already in queue or history).");
                                     alertDiscardCount++;
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            ConsoleExt.WriteLine($"[Atom Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
+                            Console.WriteLine($"[Atom Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
                         }
                     }
                     if (alertIndex != 0)
                     {
-                        ConsoleExt.WriteLine($"[Atom Feed Capture] {alertIndex} alert(s) checked, and {alertDiscardCount} alert(s) discarded. Alerts remaining: {alertIndex - alertDiscardCount}");
+                        Console.WriteLine($"[Atom Feed Capture] {alertIndex} alert(s) checked, and {alertDiscardCount} alert(s) discarded. Alerts remaining: {alertIndex - alertDiscardCount}");
                     }
-                    else ConsoleExt.WriteLine($"[Atom Feed Capture] No alerts were checked.");
+                    else Console.WriteLine($"[Atom Feed Capture] No alerts were checked.");
                 }
                 else
                 {
-                    ConsoleExt.WriteLine("[Atom Feed Capture] There are no alerts to enroll.");
+                    Console.WriteLine("[Atom Feed Capture] There are no alerts to enroll.");
                 }
             }
         }
@@ -394,7 +395,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        ConsoleExt.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }
@@ -421,7 +422,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        ConsoleExt.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }
@@ -447,7 +448,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        ConsoleExt.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }

@@ -45,12 +45,13 @@
             this.alertNoGUIBox = new System.Windows.Forms.CheckBox();
             this.AlertFullscreenCombo = new System.Windows.Forms.ComboBox();
             this.WindowLocationCombo = new System.Windows.Forms.ComboBox();
+            this.alertPlayStartToneTwiceBox = new System.Windows.Forms.CheckBox();
+            this.statusWindowBox = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.alertPlayStartToneTwiceBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
@@ -105,10 +106,10 @@
             // alertTimeZoneUTCBox
             // 
             this.alertTimeZoneUTCBox.AutoSize = true;
-            this.alertTimeZoneUTCBox.Location = new System.Drawing.Point(214, 65);
+            this.alertTimeZoneUTCBox.Location = new System.Drawing.Point(214, 92);
             this.alertTimeZoneUTCBox.Name = "alertTimeZoneUTCBox";
             this.alertTimeZoneUTCBox.Size = new System.Drawing.Size(77, 19);
-            this.alertTimeZoneUTCBox.TabIndex = 6;
+            this.alertTimeZoneUTCBox.TabIndex = 7;
             this.alertTimeZoneUTCBox.Text = "Use UTC";
             this.ToolTipInformation.SetToolTip(this.alertTimeZoneUTCBox, "Uses UTC visually everywhere instead of the system time zone.\r\nAlert text may not" +
         " be affected by this setting.");
@@ -117,10 +118,10 @@
             // alertCompatibilityModeBox
             // 
             this.alertCompatibilityModeBox.AutoSize = true;
-            this.alertCompatibilityModeBox.Location = new System.Drawing.Point(214, 90);
+            this.alertCompatibilityModeBox.Location = new System.Drawing.Point(214, 117);
             this.alertCompatibilityModeBox.Name = "alertCompatibilityModeBox";
             this.alertCompatibilityModeBox.Size = new System.Drawing.Size(132, 19);
-            this.alertCompatibilityModeBox.TabIndex = 7;
+            this.alertCompatibilityModeBox.TabIndex = 8;
             this.alertCompatibilityModeBox.Text = "Compatibility mode";
             this.ToolTipInformation.SetToolTip(this.alertCompatibilityModeBox, "Disables most animations and some background stuff. May help performance on older" +
         " systems.");
@@ -171,10 +172,10 @@
             // alertFullscreenWindowedBox
             // 
             this.alertFullscreenWindowedBox.AutoSize = true;
-            this.alertFullscreenWindowedBox.Location = new System.Drawing.Point(214, 115);
+            this.alertFullscreenWindowedBox.Location = new System.Drawing.Point(214, 142);
             this.alertFullscreenWindowedBox.Name = "alertFullscreenWindowedBox";
             this.alertFullscreenWindowedBox.Size = new System.Drawing.Size(157, 19);
-            this.alertFullscreenWindowedBox.TabIndex = 8;
+            this.alertFullscreenWindowedBox.TabIndex = 9;
             this.alertFullscreenWindowedBox.Text = "Enable window controls";
             this.ToolTipInformation.SetToolTip(this.alertFullscreenWindowedBox, "Enables titlebar window controls for alert panels.");
             this.alertFullscreenWindowedBox.UseVisualStyleBackColor = true;
@@ -182,10 +183,10 @@
             // alertTTSonlyBox
             // 
             this.alertTTSonlyBox.AutoSize = true;
-            this.alertTTSonlyBox.Location = new System.Drawing.Point(214, 140);
+            this.alertTTSonlyBox.Location = new System.Drawing.Point(214, 167);
             this.alertTTSonlyBox.Name = "alertTTSonlyBox";
             this.alertTTSonlyBox.Size = new System.Drawing.Size(159, 19);
-            this.alertTTSonlyBox.TabIndex = 9;
+            this.alertTTSonlyBox.TabIndex = 10;
             this.alertTTSonlyBox.Text = "Never play remote audio";
             this.ToolTipInformation.SetToolTip(this.alertTTSonlyBox, "Turn off requests for remote audio. Only plays TTS.");
             this.alertTTSonlyBox.UseVisualStyleBackColor = true;
@@ -196,7 +197,7 @@
             this.alertIncreaseSizeBox.Location = new System.Drawing.Point(387, 67);
             this.alertIncreaseSizeBox.Name = "alertIncreaseSizeBox";
             this.alertIncreaseSizeBox.Size = new System.Drawing.Size(106, 19);
-            this.alertIncreaseSizeBox.TabIndex = 11;
+            this.alertIncreaseSizeBox.TabIndex = 12;
             this.alertIncreaseSizeBox.Text = "Large font size";
             this.ToolTipInformation.SetToolTip(this.alertIncreaseSizeBox, "Increases the font size of alert text.");
             this.alertIncreaseSizeBox.UseVisualStyleBackColor = true;
@@ -207,7 +208,7 @@
             this.alertNoGUIBox.Location = new System.Drawing.Point(387, 42);
             this.alertNoGUIBox.Name = "alertNoGUIBox";
             this.alertNoGUIBox.Size = new System.Drawing.Size(98, 19);
-            this.alertNoGUIBox.TabIndex = 10;
+            this.alertNoGUIBox.TabIndex = 11;
             this.alertNoGUIBox.Text = "Console only";
             this.ToolTipInformation.SetToolTip(this.alertNoGUIBox, "All alert functions are done through the console, and no dialogs are shown.\r\nAler" +
         "ts cannot be interrupted or cancelled when this option is enabled.");
@@ -239,6 +240,30 @@
             this.WindowLocationCombo.TabIndex = 4;
             this.ToolTipInformation.SetToolTip(this.WindowLocationCombo, "Choose where on the screen alerts are displayed.\r\nThis option only affects some d" +
         "isplay styles.");
+            // 
+            // alertPlayStartToneTwiceBox
+            // 
+            this.alertPlayStartToneTwiceBox.AutoSize = true;
+            this.alertPlayStartToneTwiceBox.Location = new System.Drawing.Point(387, 92);
+            this.alertPlayStartToneTwiceBox.Name = "alertPlayStartToneTwiceBox";
+            this.alertPlayStartToneTwiceBox.Size = new System.Drawing.Size(117, 19);
+            this.alertPlayStartToneTwiceBox.TabIndex = 13;
+            this.alertPlayStartToneTwiceBox.Text = "Extend alert tone";
+            this.ToolTipInformation.SetToolTip(this.alertPlayStartToneTwiceBox, "Extends the start tone by instructing the audio stack to play it twice.");
+            this.alertPlayStartToneTwiceBox.UseVisualStyleBackColor = true;
+            this.alertPlayStartToneTwiceBox.Visible = false;
+            // 
+            // statusWindowBox
+            // 
+            this.statusWindowBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.statusWindowBox.AutoSize = true;
+            this.statusWindowBox.Location = new System.Drawing.Point(214, 67);
+            this.statusWindowBox.Name = "statusWindowBox";
+            this.statusWindowBox.Size = new System.Drawing.Size(106, 19);
+            this.statusWindowBox.TabIndex = 6;
+            this.statusWindowBox.Text = "Status window";
+            this.ToolTipInformation.SetToolTip(this.statusWindowBox, "Shows the status window.");
+            this.statusWindowBox.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -291,23 +316,13 @@
             this.label11.TabIndex = 39;
             this.label11.Text = "Display where";
             // 
-            // alertPlayStartToneTwiceBox
-            // 
-            this.alertPlayStartToneTwiceBox.AutoSize = true;
-            this.alertPlayStartToneTwiceBox.Location = new System.Drawing.Point(387, 92);
-            this.alertPlayStartToneTwiceBox.Name = "alertPlayStartToneTwiceBox";
-            this.alertPlayStartToneTwiceBox.Size = new System.Drawing.Size(117, 19);
-            this.alertPlayStartToneTwiceBox.TabIndex = 12;
-            this.alertPlayStartToneTwiceBox.Text = "Extend alert tone";
-            this.ToolTipInformation.SetToolTip(this.alertPlayStartToneTwiceBox, "Extends the start tone by instructing the audio stack to play it twice.");
-            this.alertPlayStartToneTwiceBox.UseVisualStyleBackColor = true;
-            // 
             // ChooseStyleForm
             // 
             this.AcceptButton = this.DoneButton;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(532, 225);
+            this.Controls.Add(this.statusWindowBox);
             this.Controls.Add(this.alertPlayStartToneTwiceBox);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.WindowLocationCombo);
@@ -339,7 +354,6 @@
             this.Name = "ChooseStyleForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert - Style Selection";
-            this.TopMost = true;
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.ChooseRegionForm_HelpButtonClicked);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChooseRegionForm_FormClosing);
             this.Load += new System.EventHandler(this.ChooseRegionForm_Load);
@@ -374,5 +388,6 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox WindowLocationCombo;
         private System.Windows.Forms.CheckBox alertPlayStartToneTwiceBox;
+        private System.Windows.Forms.CheckBox statusWindowBox;
     }
 }

@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO.Pipes;
+﻿using System.IO.Pipes;
 using System.IO;
 using static SharpAlert.MainEntryPoint;
 using System.Threading;
 using System.Collections.Generic;
+using System;
 
 namespace SharpAlert
 {
@@ -42,7 +42,7 @@ namespace SharpAlert
                         string line = reader.ReadLine();
                         if (line == null) break;
                         Console.WriteLine($"[Pipe Worker] Incoming alert text -> {line}");
-                        dataproc?.ap?.ProcessExternalAlert("External Alert", string.Empty, line);
+                        dataproc?.ap?.ProcessExternalAlert("External Alert", "This alert has been relayed from an external source.", line);
                     }
                 }
 

@@ -1,6 +1,5 @@
 ﻿using SharpAlert.Properties;
 using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -231,7 +230,7 @@ namespace SharpAlert
             FlashTwo = false;
             WindowFlash.Start();
 
-            ConsoleExt.WriteLine("[Alert GUI] Window shown.");
+            Console.WriteLine("[Alert GUI] Window shown.");
         }
 
         private void DismissButton_Click(object sender, EventArgs e)
@@ -252,7 +251,7 @@ namespace SharpAlert
 
         private void AlertForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            ConsoleExt.WriteLine("[Alert GUI] Window closed.");
+            Console.WriteLine("[Alert GUI] Window closed.");
         }
 
         private bool FlashOne = false;

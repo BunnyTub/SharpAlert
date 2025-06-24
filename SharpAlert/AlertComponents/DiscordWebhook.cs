@@ -41,7 +41,7 @@ namespace SharpAlert
                 }
                 catch (Exception ex)
                 {
-                    ConsoleExt.WriteLine($"[Discord Webhook] {ex.Message}");
+                    Console.WriteLine($"[Discord Webhook] {ex.Message}");
                     try
                     {
                         Thread.Sleep(2000 + 100);
@@ -50,17 +50,17 @@ namespace SharpAlert
                     }
                     catch (Exception exx)
                     {
-                        ConsoleExt.WriteLine($"[Discord Webhook] {exx.Message}");
+                        Console.WriteLine($"[Discord Webhook] {exx.Message}");
                         try
                         {
-                            ConsoleExt.WriteLine($"[Discord Webhook] Rate limiting possibly occurring. Pausing for 15 seconds to cool down.");
+                            Console.WriteLine($"[Discord Webhook] Rate limiting possibly occurring. Pausing for 15 seconds to cool down.");
                             Thread.Sleep((15 * 1000) + 100);
                             client.UploadData(webhook, data);
                             return true;
                         }
                         catch (Exception exxx)
                         {
-                            ConsoleExt.WriteLine($"[Discord Webhook] {exxx.Message}");
+                            Console.WriteLine($"[Discord Webhook] {exxx.Message}");
                         }
                     }
                 }
@@ -88,7 +88,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }
@@ -124,7 +124,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }
@@ -163,7 +163,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }
@@ -197,7 +197,7 @@ namespace SharpAlert
                         if (AlertCompiled.Length >= 3800)
                         {
                             AlertCompiled = AlertCompiled.Substring(0, 3800) + "...(truncuated)";
-                            ConsoleExt.WriteLine("[Discord Webhook] The length of the message has been truncuated.");
+                            Console.WriteLine("[Discord Webhook] The length of the message has been truncuated.");
                         }
 
                         string AuthorName = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority.";

@@ -98,7 +98,7 @@
             this.AlertTypeInput.Name = "AlertTypeInput";
             this.AlertTypeInput.Size = new System.Drawing.Size(242, 21);
             this.AlertTypeInput.TabIndex = 37;
-            this.ToolTipInformation.SetToolTip(this.AlertTypeInput, "This is your station ID.");
+            this.ToolTipInformation.SetToolTip(this.AlertTypeInput, "This is the alert type.");
             // 
             // AlertDescriptionInput
             // 
@@ -110,7 +110,7 @@
             this.AlertDescriptionInput.Name = "AlertDescriptionInput";
             this.AlertDescriptionInput.Size = new System.Drawing.Size(412, 61);
             this.AlertDescriptionInput.TabIndex = 39;
-            this.ToolTipInformation.SetToolTip(this.AlertDescriptionInput, "This is your station\'s friendly name.");
+            this.ToolTipInformation.SetToolTip(this.AlertDescriptionInput, "This is the alert description.");
             // 
             // label1
             // 
@@ -121,8 +121,8 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(342, 41);
             this.label1.TabIndex = 13;
-            this.label1.Text = "This feature doesn\'t send messages to a Discord webhook.\r\nLeave all fields blank " +
-    "to use the default test alert values.";
+            this.label1.Text = "This simply relays a message locally to test the dialogs.\r\nLeave all fields blank" +
+    " to use the default test alert values.";
             this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // label2
@@ -158,6 +158,7 @@
             this.EarthquakeAlertBox.TabIndex = 40;
             this.EarthquakeAlertBox.Text = "Send as earthquake alert";
             this.EarthquakeAlertBox.UseVisualStyleBackColor = true;
+            this.EarthquakeAlertBox.Visible = false;
             // 
             // ChooseTestForm
             // 
@@ -184,7 +185,6 @@
             this.Name = "ChooseTestForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert - Test Editor";
-            this.TopMost = true;
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.ChooseRegionForm_HelpButtonClicked);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChooseRegionForm_FormClosing);
             this.Load += new System.EventHandler(this.ChooseRegionForm_Load);

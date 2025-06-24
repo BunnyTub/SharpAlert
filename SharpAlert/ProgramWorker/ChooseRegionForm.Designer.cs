@@ -39,8 +39,8 @@
             this.RegionMexicoBox = new System.Windows.Forms.CheckBox();
             this.LinkButton = new System.Windows.Forms.Button();
             this.RegionUnitedStatesNWSBox = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -160,18 +160,6 @@
         "");
             this.RegionUnitedStatesNWSBox.UseVisualStyleBackColor = true;
             // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.Font = new System.Drawing.Font("Arial", 9F);
-            this.label1.Location = new System.Drawing.Point(9, 182);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(332, 26);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "To change these options later, go to Settings.";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
@@ -185,6 +173,18 @@
             this.ToolTipInformation.SetToolTip(this.checkBox1, "You can receive alerts from Brazil via IDAP (Divulgação de Alertas Públicos).");
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.Visible = false;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.Font = new System.Drawing.Font("Arial", 9F);
+            this.label1.Location = new System.Drawing.Point(9, 182);
+            this.label1.Margin = new System.Windows.Forms.Padding(0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(332, 26);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "To change these options later, go to Settings.";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // ChooseRegionForm
             // 
@@ -213,7 +213,6 @@
             this.Name = "ChooseRegionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert - Region Selection";
-            this.TopMost = true;
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.ChooseRegionForm_HelpButtonClicked);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChooseRegionForm_FormClosing);
             this.Load += new System.EventHandler(this.ChooseRegionForm_Load);

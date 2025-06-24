@@ -1,5 +1,4 @@
-﻿using SharpAlert.Properties;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -220,7 +219,7 @@ namespace SharpAlert
                 ShowImage();
             }
 
-            ConsoleExt.WriteLine("[Alert GUI] Window shown.");
+            Console.WriteLine("[Alert GUI] Window shown.");
         }
 
         private void DismissButton_Click(object sender, EventArgs e)
@@ -236,13 +235,13 @@ namespace SharpAlert
 
         private void AlertForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            ConsoleExt.WriteLine("[Alert GUI] Window closed.");
+            Console.WriteLine("[Alert GUI] Window closed.");
         }
 
-        [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
+        [DllImport("user32.dll", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
 
-        [DllImport("user32.DLL", EntryPoint = "SendMessage")]
+        [DllImport("user32.dll", EntryPoint = "SendMessage")]
         private extern static void SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
 
         private void TitleText_MouseDown(object sender, MouseEventArgs e)

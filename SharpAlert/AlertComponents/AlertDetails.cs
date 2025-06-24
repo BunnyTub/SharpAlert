@@ -1,4 +1,6 @@
-﻿
+﻿// I SAY UH... JUST BE CAREFUL WITH THIS FILE.
+// ROSLYN WILL EAT YOUR RESOURCES WITH THIS FILE OPEN.
+
 using System.Collections.Generic;
 
 namespace SharpAlert
@@ -979,7 +981,6 @@ namespace SharpAlert
             new SAME_CountyCode(95, "Harlan", new SAME_StateCode(21, "Kentucky")),
             new SAME_CountyCode(97, "Harrison", new SAME_StateCode(21, "Kentucky")),
             new SAME_CountyCode(99, "Hart", new SAME_StateCode(21, "Kentucky")),
-
 
             //Louisiana - 22
             new SAME_CountyCode(000, "All of Louisiana", new SAME_StateCode(22, "Louisiana")),

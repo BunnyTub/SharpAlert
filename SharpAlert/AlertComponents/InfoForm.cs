@@ -1,5 +1,4 @@
-﻿using SharpAlert.Properties;
-using System;
+﻿using System;
 using System.Windows.Forms;
 using System.Linq;
 
@@ -56,7 +55,7 @@ namespace SharpAlert
                 UnlockButtons(true);
             }
 
-            ConsoleExt.WriteLine("[Alert GUI] Window shown.");
+            Console.WriteLine("[Alert GUI] Window shown.");
         }
 
         private void UnlockButtons(bool unlocked)
@@ -104,7 +103,7 @@ namespace SharpAlert
         {
             FadeOutExitReady = false;
             this.Opacity = 0;
-            ConsoleExt.WriteLine("[Alert GUI] Window closed.");
+            Console.WriteLine("[Alert GUI] Window closed.");
         }
 
         private bool FadeOutExitReady = false;

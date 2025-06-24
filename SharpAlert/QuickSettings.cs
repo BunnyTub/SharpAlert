@@ -80,7 +80,8 @@ namespace SharpAlert
         // Alert Stuff
         public int AlertCheckInterval { get; set; } = 30;
         public bool weaOnly { get; set; } = false;
-        public bool discardFirstAlerts { get; set; } = false;
+        // Changed discard to align with region changes
+        public bool discardFirstAlerts { get; set; } = true;
         // Alert Dialogs
         public int alertDisplayType { get; set; } = 0;
         public int WindowLocation { get; set; } = 0;
@@ -90,11 +91,13 @@ namespace SharpAlert
         public int AlertDeadInterval { get; set; } = 1;
         public bool alertCompatibilityMode { get; set; } = false;
         public bool statusWindow { get; set; } = false;
-        public bool showExpiryMessages { get; set; } = false;
+        // Removed support for expiry messages.
+        //public bool showExpiryMessages { get; set; } = false;
         public bool alertNoGUI { get; set; } = false;
         // "alertNoRelay" disables USB relays. It doesn't prevent relaying.
-        public bool alertNoRelay { get; set; } = false;
+        public bool alertNoRelay { get; set; } = true;
         public bool DisableDialogs { get; set; } = false;
+        public bool DisableAlertProcessing { get; set; } = false;
         public bool alertIncreaseSize { get; set; } = false;
         public bool alertTitlebarControls { get; set; } = false;
         public bool alertTimeZoneUTC { get; set; } = false;
@@ -127,6 +130,7 @@ namespace SharpAlert
         public string DiscordWebhookAppend { get; set; } = string.Empty;
         public bool DiscordWebhookConfirmAlerts { get; set; } = true;
         public bool DiscordWebhookRelayLocally { get; set; } = false;
+        public bool DiscordWebhookDisableHeartbeat { get; set; } = false;
         // Server
         public string ServerUsername { get; set; } = "username";
         public string ServerPassword { get; set; } = "password";
@@ -149,7 +153,7 @@ namespace SharpAlert
 
         public void Save()
         {
-            ConsoleExt.WriteLine($"[Configuration Handler] The current configuration is being saved.");
+            Console.WriteLine($"[Configuration Handler] The current configuration is being saved.");
             var dir = Path.GetDirectoryName(ConfigPath);
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
@@ -184,12 +188,11 @@ namespace SharpAlert
                         Process.Start($"{ConfigDirPath}");
                         break;
                     case DialogResult.Retry:
-                        var json = JsonConvert.SerializeObject(new QuickSettings(), Formatting.Indented);
-                        File.WriteAllText(ConfigPath, json);
+                        _instance.Reset();
                         break;
                 }
 
-                Environment.Exit(0);
+                Environment.Exit(-1);
                 return null;
             }
 

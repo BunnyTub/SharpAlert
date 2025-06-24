@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
-using SharpAlert.Properties;
 using static SharpAlert.AudioManager;
 
 namespace SharpAlert
@@ -52,17 +52,20 @@ namespace SharpAlert
 
                 QuickSettings.Instance.alertVolume = ((TrackBar)a).Value;
             };
-            
+
+            alertPlayEndToneBox.Checked = QuickSettings.Instance.alertPlayEndTone;
+            alertPlayEndToneBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertPlayEndTone = ((CheckBox)a).Checked;
+
             LegacyAudioPlayerBox.Checked = QuickSettings.Instance.LegacyAudioPlayer;
             LegacyAudioPlayerBox.CheckedChanged += (a, b) =>
             {
                 QuickSettings.Instance.LegacyAudioPlayer = ((CheckBox)a).Checked;
-                MessageBox.Show("The program will now close.\r\n" +
-                    "Please open it again to complete the setup.",
+                QuickSettings.Instance.Save();
+                MessageBox.Show("Your settings have been saved.\r\n" +
+                    "The program will now close.",
                     "SharpAlert",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
-                QuickSettings.Instance.Save();
                 Environment.Exit(0);
             };
         }
@@ -147,6 +150,36 @@ namespace SharpAlert
 
                 AudioDeviceCombo.SelectedItem = QuickSettings.Instance.ProgramAudioOutput;
             }
+        }
+
+        private void AudioOutputClearLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (LegacyAudioPlayerBox.Checked)
+            {
+                MessageBox.Show("You cannot use this feature with the legacy audio player.",
+                    "SharpAlert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            DialogResult result = MessageBox.Show("Use the default audio device?\r\n" +
+                "It's better to use a specific audio device.",
+                "SharpAlert",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                AudioDeviceCombo.SelectedIndex = -1;
+                QuickSettings.Instance.ProgramAudioOutput = string.Empty;
+            }
+        }
+
+        private void TTSButton_Click(object sender, EventArgs e)
+        {
+            Process.Start("C:\\Windows\\system32\\rundll32.exe", "shell32.dll,Control_RunDLL C:\\Windows\\system32\\speech\\speechux\\sapi.cpl");
+            return;
         }
     }
 }

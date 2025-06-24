@@ -34,10 +34,10 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.TitleText = new System.Windows.Forms.Label();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.StationIdentifierInput = new System.Windows.Forms.TextBox();
             this.StationNameInput = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -88,6 +88,28 @@
             this.ToolTipInformation.ReshowDelay = 50;
             this.ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
+            // StationIdentifierInput
+            // 
+            this.StationIdentifierInput.BackColor = System.Drawing.Color.Black;
+            this.StationIdentifierInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.StationIdentifierInput.ForeColor = System.Drawing.Color.White;
+            this.StationIdentifierInput.Location = new System.Drawing.Point(108, 57);
+            this.StationIdentifierInput.Name = "StationIdentifierInput";
+            this.StationIdentifierInput.Size = new System.Drawing.Size(170, 21);
+            this.StationIdentifierInput.TabIndex = 37;
+            this.ToolTipInformation.SetToolTip(this.StationIdentifierInput, "This is your station ID.");
+            // 
+            // StationNameInput
+            // 
+            this.StationNameInput.BackColor = System.Drawing.Color.Black;
+            this.StationNameInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.StationNameInput.ForeColor = System.Drawing.Color.White;
+            this.StationNameInput.Location = new System.Drawing.Point(108, 99);
+            this.StationNameInput.Name = "StationNameInput";
+            this.StationNameInput.Size = new System.Drawing.Size(170, 21);
+            this.StationNameInput.TabIndex = 39;
+            this.ToolTipInformation.SetToolTip(this.StationNameInput, "This is your station\'s friendly name.");
+            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -112,28 +134,6 @@
             this.label2.TabIndex = 36;
             this.label2.Text = "Station Identifier";
             this.label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
-            // StationIdentifierInput
-            // 
-            this.StationIdentifierInput.BackColor = System.Drawing.Color.Black;
-            this.StationIdentifierInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.StationIdentifierInput.ForeColor = System.Drawing.Color.White;
-            this.StationIdentifierInput.Location = new System.Drawing.Point(108, 57);
-            this.StationIdentifierInput.Name = "StationIdentifierInput";
-            this.StationIdentifierInput.Size = new System.Drawing.Size(170, 21);
-            this.StationIdentifierInput.TabIndex = 37;
-            this.ToolTipInformation.SetToolTip(this.StationIdentifierInput, "This is your station ID.");
-            // 
-            // StationNameInput
-            // 
-            this.StationNameInput.BackColor = System.Drawing.Color.Black;
-            this.StationNameInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.StationNameInput.ForeColor = System.Drawing.Color.White;
-            this.StationNameInput.Location = new System.Drawing.Point(108, 99);
-            this.StationNameInput.Name = "StationNameInput";
-            this.StationNameInput.Size = new System.Drawing.Size(170, 21);
-            this.StationNameInput.TabIndex = 39;
-            this.ToolTipInformation.SetToolTip(this.StationNameInput, "This is your station\'s friendly name.");
             // 
             // label3
             // 
@@ -172,7 +172,6 @@
             this.Name = "ChooseOwnershipForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert - Ownership Selection";
-            this.TopMost = true;
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.ChooseRegionForm_HelpButtonClicked);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChooseRegionForm_FormClosing);
             this.Load += new System.EventHandler(this.ChooseRegionForm_Load);

@@ -59,19 +59,5 @@ namespace SharpAlert
                 this.DialogResult = DialogResult.OK;
             }
         }
-
-        private void BusyLock_Tick(object sender, EventArgs e)
-        {
-            if (AlertDisplaying)
-            {
-                ConfigurationPanel.Visible = false;
-                BusyLockText.BringToFront();
-            }
-            else
-            {
-                ConfigurationPanel.Visible = true;
-                BusyLockText.SendToBack();
-            }
-        }
     }
 }

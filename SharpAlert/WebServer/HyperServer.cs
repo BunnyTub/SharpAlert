@@ -4,11 +4,9 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Reflection;
 using System.Security.Principal;
 using System.Text;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using SharpAlert.Properties;
@@ -47,17 +45,17 @@ namespace SharpAlert
                 if (IsAdministrator)
                 {
                     listener.Prefixes.Add(ElevatedUrlPrefix);
-                    ConsoleExt.WriteLine($"[Hyper Server] Traffic available from any IP: {ElevatedUrlPrefix}");
+                    Console.WriteLine($"[Hyper Server] Traffic available from any IP: {ElevatedUrlPrefix}");
                 }
                 else
                 {
                     listener.Prefixes.Add(UrlPrefix);
-                    ConsoleExt.WriteLine($"[Hyper Server] Traffic is local only (elevate for any traffic): {UrlPrefix}");
+                    Console.WriteLine($"[Hyper Server] Traffic is local only (elevate for any traffic): {UrlPrefix}");
                 }
 
                 listener.Start();
-                ConsoleExt.WriteLine($"[Hyper Server] Listening for requests...");
-                ConsoleExt.WriteLine("[Hyper Server] Available endpoints:");
+                Console.WriteLine($"[Hyper Server] Listening for requests...");
+                Console.WriteLine("[Hyper Server] Available endpoints:");
 
                 var methods = GetType().GetMethods();
                 foreach (var method in methods)
@@ -66,7 +64,7 @@ namespace SharpAlert
                     {
                         if (attrib.TypeId.ToString() == "HyperServerMapping")
                         {
-                            ConsoleExt.WriteLine($"[Hyper Server] Endpoint: {UrlPrefix.TrimEnd('/')}/{((Mapping)attrib).Map}");
+                            Console.WriteLine($"[Hyper Server] Endpoint: {UrlPrefix.TrimEnd('/')}/{((Mapping)attrib).Map}");
                         }
                     }
                 }
@@ -86,7 +84,7 @@ namespace SharpAlert
                             if (count >= 2)
                             {
                                 string fileName = $"{parts[count - 2]}.{parts[count - 1]}";
-                                ConsoleExt.WriteLine($"[Hyper Server] Endpoint (HTML): {UrlPrefix.TrimEnd('/')}/{fileName}");
+                                Console.WriteLine($"[Hyper Server] Endpoint (HTML): {UrlPrefix.TrimEnd('/')}/{fileName}");
                             }
                         }
                     
@@ -98,7 +96,7 @@ namespace SharpAlert
                             if (count >= 2)
                             {
                                 string fileName = $"{parts[count - 2]}.{parts[count - 1]}";
-                                ConsoleExt.WriteLine($"[Hyper Server] Endpoint (CSS): {UrlPrefix.TrimEnd('/')}/{fileName}");
+                                Console.WriteLine($"[Hyper Server] Endpoint (CSS): {UrlPrefix.TrimEnd('/')}/{fileName}");
                             }
                         }
                     
@@ -110,7 +108,7 @@ namespace SharpAlert
                             if (count >= 2)
                             {
                                 string fileName = $"{parts[count - 2]}.{parts[count - 1]}";
-                                ConsoleExt.WriteLine($"[Hyper Server] Endpoint (JS): {UrlPrefix.TrimEnd('/')}/{fileName}");
+                                Console.WriteLine($"[Hyper Server] Endpoint (JS): {UrlPrefix.TrimEnd('/')}/{fileName}");
                             }
                         }
 
@@ -122,7 +120,7 @@ namespace SharpAlert
                             if (count >= 2)
                             {
                                 string fileName = $"{parts[count - 2]}.{parts[count - 1]}";
-                                ConsoleExt.WriteLine($"[Hyper Server] Endpoint (JS): {UrlPrefix.TrimEnd('/')}/{fileName}");
+                                Console.WriteLine($"[Hyper Server] Endpoint (JS): {UrlPrefix.TrimEnd('/')}/{fileName}");
                             }
                         }
                     }
@@ -173,7 +171,7 @@ namespace SharpAlert
                     }
                     catch (Exception ex)
                     {
-                        ConsoleExt.WriteLine($"[Hyper Server] {ex.Message}");
+                        Console.WriteLine($"[Hyper Server] {ex.Message}");
                         Thread.Sleep(1000);
                     }
                 }
@@ -286,7 +284,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine($"[Hyper Server] {ex.GetBaseException().Message}");
+                Console.WriteLine($"[Hyper Server] {ex.GetBaseException().Message}");
                 await WriteResponseAsync(ctx, 500, "The server encountered a problem while processing the request.");
             }
             finally
@@ -375,7 +373,7 @@ namespace SharpAlert
 
             using (var stream = new MemoryStream())
             {
-                Resources.AlertIcon.Save(stream, ImageFormat.Png);  
+                Resources.AlertIcon.Save(stream, ImageFormat.Png);
                 return stream.ToArray();
             }
         }
@@ -407,39 +405,39 @@ namespace SharpAlert
             return "You cannot just try an initiate a self-destruct sequence without authenticating!";
         }
 
-        [Mapping("AlertInfo")]
-        public object AlertInfo(HttpListenerContext ctx)
-        {
-            ctx.Response.ContentType = "application/json";
-            if (AlertDisplaying)
-            {
-                var alert = new AlertInformation
-                {
-                    AlertInProgress = true,
-                    MatchTime = $"{AlertDisplayingBeginTime.Ticks}",
-                    AlertID = AlertDisplayer.DialogAlertID,
-                    AlertType = AlertDisplayer.DialogAlertType,
-                    AlertTitle = AlertDisplayer.DialogAlertTitle,
-                    AlertText = $"{AlertDisplayer.DialogAlertText.Intro} {AlertDisplayer.DialogAlertText.Body}"
-                };
+        //[Mapping("AlertInfo")]
+        //public object AlertInfo(HttpListenerContext ctx)
+        //{
+        //    ctx.Response.ContentType = "application/json";
+        //    if (AlertDisplaying)
+        //    {
+        //        var alert = new AlertInformation
+        //        {
+        //            AlertInProgress = true,
+        //            MatchTime = $"{AlertDisplayingBeginTime.Ticks}",
+        //            AlertID = AlertDisplayer.DialogAlertID,
+        //            AlertType = AlertDisplayer.DialogAlertType,
+        //            AlertTitle = AlertDisplayer.DialogAlertTitle,
+        //            AlertText = $"{AlertDisplayer.DialogAlertText.Intro} {AlertDisplayer.DialogAlertText.Body}"
+        //        };
 
-                return JsonSerializer.Serialize(alert);
-            }
-            else
-            {
-                var alert = new AlertInformation
-                {
-                    AlertInProgress = false,
-                    MatchTime = string.Empty,
-                    AlertID = string.Empty,
-                    AlertType = string.Empty,
-                    AlertTitle = string.Empty,
-                    AlertText = string.Empty
-                };
+        //        return JsonSerializer.Serialize(alert);
+        //    }
+        //    else
+        //    {
+        //        var alert = new AlertInformation
+        //        {
+        //            AlertInProgress = false,
+        //            MatchTime = string.Empty,
+        //            AlertID = string.Empty,
+        //            AlertType = string.Empty,
+        //            AlertTitle = string.Empty,
+        //            AlertText = string.Empty
+        //        };
 
-                return JsonSerializer.Serialize(alert);
-            }
-        }
+        //        return JsonSerializer.Serialize(alert);
+        //    }
+        //}
 
         private bool AuthenticationFulfilled(HttpListenerContext ctx)
         {

@@ -1,5 +1,4 @@
-﻿using SharpAlert.Properties;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -95,7 +94,7 @@ namespace SharpAlert
             taskbarList.HrInit();
         }
 
-        public void UpdateFields(string id, string alert, string intro, string text, string url, string audio, string image, string type)
+        public void UpdateFields(string id, string alert, string intro, string text, string url, string audio, string image, string type, string severity)
         {
             AlertIDStr = id;
             //this.Text = $"SharpAlert - {AlertIDStr}";
@@ -126,40 +125,6 @@ namespace SharpAlert
             TitleText.Text = message.text;
             ColorTitleAndBordersOne = message.MainColor;
             ColorSubtitleOnlyOne = message.SubColor;
-
-            //switch (type)
-            //{
-            //    case "alert":
-            //        TitleText.BackColor = Color.Red;
-            //        OutlineContainerPanel.BorderColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "EMERGENCY ALERT";
-            //        break;
-            //    case "update":
-            //        TitleText.BackColor = Color.Red;
-            //        OutlineContainerPanel.BorderColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "ALERT UPDATE";
-            //        break;
-            //    case "cancel":
-            //        TitleText.BackColor = Color.FromArgb(0, 80, 200);
-            //        OutlineContainerPanel.BorderColor = Color.FromArgb(0, 80, 200);
-            //        SubtitlePanel.BackColor = Color.FromArgb(0, 50, 100);
-            //        TitleText.Text = "ALERT CANCELLED";
-            //        break;
-            //    case "test":
-            //        TitleText.BackColor = Color.Red;
-            //        OutlineContainerPanel.BorderColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "ALERT TEST";
-            //        break;
-            //    default:
-            //        TitleText.BackColor = Color.Red;
-            //        OutlineContainerPanel.BorderColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "EMERGENCY ALERT";
-            //        break;
-            //}
         }
 
         private void UpdateTaskbarProgress(TaskbarProgressState state, ulong completed, ulong total)
@@ -224,7 +189,7 @@ namespace SharpAlert
             //    //PlayFromUnmanagedSource(Resources.ui_cancellation_1);
             //}
 
-            PlayStartToneFile();
+            PlayStartToneFile("");
 
             if (QuickSettings.Instance.alertTitlebarControls)
             {
@@ -320,7 +285,7 @@ namespace SharpAlert
                 ShowImage();
             }
 
-            ConsoleExt.WriteLine("[Alert GUI] Window shown.");
+            Console.WriteLine("[Alert GUI] Window shown.");
         }
 
         private void DismissButton_Click(object sender, EventArgs e)
@@ -408,7 +373,7 @@ namespace SharpAlert
         {
             FadeOutExitReady = false;
             this.Opacity = 0;
-            ConsoleExt.WriteLine("[Alert GUI] Window closed.");
+            Console.WriteLine("[Alert GUI] Window closed.");
         }
 
         private bool FlashOne = false;
@@ -426,11 +391,6 @@ namespace SharpAlert
                 //AlertIcon.Visible = false;
             }
             FlashOne = !FlashOne;
-        }
-
-        private void AutoTTS_Tick(object sender, EventArgs e)
-        {
-            AutoTTS.Stop();
         }
 
         private bool FadeOutExitReady = false;
@@ -466,10 +426,10 @@ namespace SharpAlert
             }
         }
 
-        [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
+        [DllImport("user32.dll", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
 
-        [DllImport("user32.DLL", EntryPoint = "SendMessage")]
+        [DllImport("user32.dll", EntryPoint = "SendMessage")]
         private extern static void SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
 
         private void TitleText_MouseDown(object sender, MouseEventArgs e)
@@ -518,7 +478,7 @@ namespace SharpAlert
 
         private void TerminateSelf_Tick(object sender, EventArgs e)
         {
-            if (!MainEntryPoint.AllowThreadRestarts)
+            if (!AllowThreadRestarts)
             {
                 FadeOutExitReady = true;
                 this.Close();

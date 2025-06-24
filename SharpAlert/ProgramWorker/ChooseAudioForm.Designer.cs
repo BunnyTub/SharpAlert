@@ -38,6 +38,9 @@
             this.AudioDeviceCombo = new System.Windows.Forms.ComboBox();
             this.volumeBar = new System.Windows.Forms.TrackBar();
             this.LegacyAudioPlayerBox = new System.Windows.Forms.CheckBox();
+            this.alertPlayEndToneBox = new System.Windows.Forms.CheckBox();
+            this.AudioOutputClearLink = new System.Windows.Forms.LinkLabel();
+            this.TTSButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.AudioOutputLabel = new System.Windows.Forms.Label();
             this.GlobalVolumeLabel = new System.Windows.Forms.Label();
@@ -147,8 +150,51 @@
             this.LegacyAudioPlayerBox.TabIndex = 45;
             this.LegacyAudioPlayerBox.Text = "Use legacy audio player";
             this.ToolTipInformation.SetToolTip(this.LegacyAudioPlayerBox, "Switches out the default audio player (NAudio) in favor of the legacy audio playe" +
-        "r (SoundPlayer).");
+        "r (SoundPlayer).\r\nThe program will immediately close if you change this option.");
             this.LegacyAudioPlayerBox.UseVisualStyleBackColor = false;
+            // 
+            // alertPlayEndToneBox
+            // 
+            this.alertPlayEndToneBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.alertPlayEndToneBox.AutoSize = true;
+            this.alertPlayEndToneBox.Location = new System.Drawing.Point(423, 134);
+            this.alertPlayEndToneBox.Name = "alertPlayEndToneBox";
+            this.alertPlayEndToneBox.Size = new System.Drawing.Size(100, 19);
+            this.alertPlayEndToneBox.TabIndex = 46;
+            this.alertPlayEndToneBox.Text = "Play end tone";
+            this.ToolTipInformation.SetToolTip(this.alertPlayEndToneBox, "Plays an auditory tone when an alert is closed.");
+            this.alertPlayEndToneBox.UseVisualStyleBackColor = true;
+            // 
+            // AudioOutputClearLink
+            // 
+            this.AudioOutputClearLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.AudioOutputClearLink.AutoSize = true;
+            this.AudioOutputClearLink.Font = new System.Drawing.Font("Arial", 9F);
+            this.AudioOutputClearLink.LinkColor = System.Drawing.Color.Pink;
+            this.AudioOutputClearLink.Location = new System.Drawing.Point(342, 39);
+            this.AudioOutputClearLink.Name = "AudioOutputClearLink";
+            this.AudioOutputClearLink.Size = new System.Drawing.Size(149, 15);
+            this.AudioOutputClearLink.TabIndex = 47;
+            this.AudioOutputClearLink.TabStop = true;
+            this.AudioOutputClearLink.Text = "Use default device (Clear)";
+            this.ToolTipInformation.SetToolTip(this.AudioOutputClearLink, "Mostly everything is immediately applied. Some settings may require a program res" +
+        "tart.");
+            this.AudioOutputClearLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AudioOutputClearLink_LinkClicked);
+            // 
+            // TTSButton
+            // 
+            this.TTSButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.TTSButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.TTSButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.TTSButton.Location = new System.Drawing.Point(348, 161);
+            this.TTSButton.Name = "TTSButton";
+            this.TTSButton.Size = new System.Drawing.Size(100, 23);
+            this.TTSButton.TabIndex = 48;
+            this.TTSButton.Text = "TTS Settings";
+            this.ToolTipInformation.SetToolTip(this.TTSButton, "Opens the TTS configuration window.");
+            this.TTSButton.UseMnemonic = false;
+            this.TTSButton.UseVisualStyleBackColor = false;
+            this.TTSButton.Click += new System.EventHandler(this.TTSButton_Click);
             // 
             // label1
             // 
@@ -189,6 +235,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(532, 193);
+            this.Controls.Add(this.TTSButton);
+            this.Controls.Add(this.AudioOutputClearLink);
+            this.Controls.Add(this.alertPlayEndToneBox);
             this.Controls.Add(this.LegacyAudioPlayerBox);
             this.Controls.Add(this.GlobalVolumeLabel);
             this.Controls.Add(this.volumeBar);
@@ -210,7 +259,6 @@
             this.Name = "ChooseAudioForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert - Audio Selection";
-            this.TopMost = true;
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.ChooseRegionForm_HelpButtonClicked);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChooseRegionForm_FormClosing);
             this.Load += new System.EventHandler(this.ChooseRegionForm_Load);
@@ -234,5 +282,8 @@
         private System.Windows.Forms.Label GlobalVolumeLabel;
         private System.Windows.Forms.TrackBar volumeBar;
         private System.Windows.Forms.CheckBox LegacyAudioPlayerBox;
+        private System.Windows.Forms.CheckBox alertPlayEndToneBox;
+        private System.Windows.Forms.LinkLabel AudioOutputClearLink;
+        private System.Windows.Forms.Button TTSButton;
     }
 }

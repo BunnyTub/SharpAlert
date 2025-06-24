@@ -36,6 +36,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.AutoClose = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -109,6 +110,12 @@
             this.label3.Text = "You are using a copy of SharpAlert that is intended for beta testing. You can sti" +
     "ll continue using this version, however, do not expect support or assistance.";
             // 
+            // AutoClose
+            // 
+            this.AutoClose.Enabled = true;
+            this.AutoClose.Interval = 15000;
+            this.AutoClose.Tick += new System.EventHandler(this.AutoClose_Tick);
+            // 
             // TimedForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -143,5 +150,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Timer AutoClose;
     }
 }

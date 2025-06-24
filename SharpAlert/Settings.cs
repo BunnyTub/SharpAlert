@@ -17,13 +17,13 @@ namespace SharpAlert.Properties
         
         private void SettingChangingEventHandler(object sender, System.Configuration.SettingChangingEventArgs e)
         {
-            ConsoleExt.WriteLine($"[Configuration Handler] The value of \"{e.SettingName}\" is being updated to \"{e.NewValue}\".");
+            Console.WriteLine($"[Configuration Handler] The value of \"{e.SettingName}\" is being updated to \"{e.NewValue}\".");
 
         }
         
         private void SettingsSavingEventHandler(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            ConsoleExt.WriteLine($"[Configuration Handler] The current configuration is being saved.");
+            Console.WriteLine($"[Configuration Handler] The current configuration is being saved.");
         }
     }
 }

@@ -12,22 +12,13 @@ namespace SharpAlert
             InitializeComponent();
         }
 
-        class ComboItem
-        {
-            public override string ToString()
-            {
-                return FriendlyName;
-            }
-
-            public string FriendlyName { get; set; }
-        }
-
         private bool Initialized = false;
 
         private void ServerConfigurationForm_Load(object sender, EventArgs e)
         {
             if (Initialized) return;
             Initialized = true;
+
             WebServerUsernameInput.Text = QuickSettings.Instance.ServerUsername;
             WebServerUsernameInput.TextChanged += (a, b) => QuickSettings.Instance.ServerUsername = ((TextBox)a).Text.Trim();
             WebServerPasswordInput.Text = QuickSettings.Instance.ServerPassword;

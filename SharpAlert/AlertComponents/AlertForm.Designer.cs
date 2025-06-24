@@ -32,7 +32,6 @@
             this.AutoExit = new System.Windows.Forms.Timer(this.components);
             this.EnsureTopWindow = new System.Windows.Forms.Timer(this.components);
             this.FlashTaskbarStatus = new System.Windows.Forms.Timer(this.components);
-            this.AutoTTS = new System.Windows.Forms.Timer(this.components);
             this.FadeInAnimation = new System.Windows.Forms.Timer(this.components);
             this.FadeOutAnimation = new System.Windows.Forms.Timer(this.components);
             this.InfoTip = new System.Windows.Forms.ToolTip(this.components);
@@ -73,11 +72,6 @@
             // 
             this.FlashTaskbarStatus.Interval = 500;
             this.FlashTaskbarStatus.Tick += new System.EventHandler(this.FlashTaskbarStatus_Tick);
-            // 
-            // AutoTTS
-            // 
-            this.AutoTTS.Interval = 8000;
-            this.AutoTTS.Tick += new System.EventHandler(this.AutoTTS_Tick);
             // 
             // FadeInAnimation
             // 
@@ -337,7 +331,6 @@
         private System.Windows.Forms.Timer AutoExit;
         private System.Windows.Forms.Timer EnsureTopWindow;
         private System.Windows.Forms.Timer FlashTaskbarStatus;
-        private System.Windows.Forms.Timer AutoTTS;
         private System.Windows.Forms.Timer FadeInAnimation;
         private System.Windows.Forms.Timer FadeOutAnimation;
         private System.Windows.Forms.ToolTip InfoTip;

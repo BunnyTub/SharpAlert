@@ -42,6 +42,7 @@
             this.ServerRequestsText = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.UptimeMeterText = new System.Windows.Forms.Label();
+            this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // RefreshData
@@ -71,6 +72,7 @@
             this.CAPQueueCountText.TabIndex = 1;
             this.CAPQueueCountText.Text = "0";
             this.CAPQueueCountText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ToolTipInformation.SetToolTip(this.CAPQueueCountText, "The number of items waiting in the queue.");
             // 
             // CAPHistoryCountText
             // 
@@ -82,6 +84,7 @@
             this.CAPHistoryCountText.TabIndex = 3;
             this.CAPHistoryCountText.Text = "0";
             this.CAPHistoryCountText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ToolTipInformation.SetToolTip(this.CAPHistoryCountText, "The number of items in the history. This includes discarded alerts.");
             // 
             // label4
             // 
@@ -104,6 +107,7 @@
             this.AlertQueueCountText.TabIndex = 5;
             this.AlertQueueCountText.Text = "0";
             this.AlertQueueCountText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ToolTipInformation.SetToolTip(this.AlertQueueCountText, "The number of alerts in the queue.");
             // 
             // label6
             // 
@@ -126,6 +130,7 @@
             this.AlertsRelayedText.TabIndex = 7;
             this.AlertsRelayedText.Text = "0";
             this.AlertsRelayedText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ToolTipInformation.SetToolTip(this.AlertsRelayedText, "The number of alerts relayed successfully.");
             // 
             // label8
             // 
@@ -148,6 +153,9 @@
             this.ServerRequestsText.TabIndex = 9;
             this.ServerRequestsText.Text = "0";
             this.ServerRequestsText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ToolTipInformation.SetToolTip(this.ServerRequestsText, "The number of successful server requests.\r\n\r\nFor HTTP servers, this indicates a r" +
+        "equest returning code 200.\r\nFor TCP servers, this indicates that the \"</alert>\" " +
+        "closing tag was received.");
             // 
             // label10
             // 
@@ -169,8 +177,19 @@
             this.UptimeMeterText.Name = "UptimeMeterText";
             this.UptimeMeterText.Size = new System.Drawing.Size(420, 20);
             this.UptimeMeterText.TabIndex = 12;
-            this.UptimeMeterText.Text = "Up time: OwO";
+            this.UptimeMeterText.Text = ";w;";
             this.UptimeMeterText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // ToolTipInformation
+            // 
+            this.ToolTipInformation.AutomaticDelay = 250;
+            this.ToolTipInformation.AutoPopDelay = 15000;
+            this.ToolTipInformation.BackColor = System.Drawing.Color.White;
+            this.ToolTipInformation.ForeColor = System.Drawing.Color.Black;
+            this.ToolTipInformation.InitialDelay = 250;
+            this.ToolTipInformation.IsBalloon = true;
+            this.ToolTipInformation.ReshowDelay = 50;
+            this.ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
             // StatusForm
             // 
@@ -217,5 +236,6 @@
         private System.Windows.Forms.Label ServerRequestsText;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label UptimeMeterText;
+        private System.Windows.Forms.ToolTip ToolTipInformation;
     }
 }

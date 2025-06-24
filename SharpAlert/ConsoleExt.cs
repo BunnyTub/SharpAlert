@@ -32,8 +32,8 @@ namespace SharpAlert
                 {
                     lock (WriteLock)
                     {
-                        Console.WriteLine("Logging has been locked.");
-                        Console.WriteLine("Press any key to continue.");
+                        Console.WriteLine("[Console Extensions] Logging has been locked.");
+                        Console.WriteLine("[Console Extensions] Press any key to continue.");
                         Console.ReadKey(true);
                     }
                     //Console.WriteLine("Debug key struck.");
@@ -63,14 +63,14 @@ namespace SharpAlert
 
         private static readonly object WriteLock = new object();
 
-        public static void WriteLine(object input)
-        {
-            lock (WriteLock)
-            {
-                //Console.WriteLine("SERVICE MODE ENABLED --- PERFORMANCE MAY BE IMPACTED --- THIS IS FOR TESTING PURPOSES");
-                if (ServiceMode) input = $"[SERVICE MODE] {input}";
-                Console.WriteLine(input);
-            }
-        }
+        //public static void WriteLine(object input)
+        //{
+        //    lock (WriteLock)
+        //    {
+        //        //Console.WriteLine("SERVICE MODE ENABLED --- PERFORMANCE MAY BE IMPACTED --- THIS IS FOR TESTING PURPOSES");
+        //        if (ServiceMode) input = $"[Service Mode] {input}";
+        //        Console.WriteLine(input);
+        //    }
+        //}
     }
 }

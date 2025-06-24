@@ -19,5 +19,11 @@ namespace SharpAlert
         {
             this.BringToFront();
         }
+
+        private void AutoClose_Tick(object sender, EventArgs e)
+        {
+            AutoClose.Enabled = false;
+            this.Close();
+        }
     }
 }

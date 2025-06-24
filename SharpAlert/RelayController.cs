@@ -34,13 +34,13 @@ namespace SharpAlert
         {
             if (device == null)
             {
-                ConsoleExt.WriteLine("Device not found. Please check the connection.");
+                Console.WriteLine("Device not found. Please check the connection.");
                 return false;
             }
             if (!device.IsOpen)
             {
                 device.OpenDevice();
-                if (!device.IsOpen) ConsoleExt.WriteLine("Device is not active.");
+                if (!device.IsOpen) Console.WriteLine("Device is not active.");
                 return false;
             }
             return true;
@@ -66,7 +66,7 @@ namespace SharpAlert
         {
             if (device == null || !device.IsConnected)
             {
-                ConsoleExt.WriteLine("Device is not active. Cannot read report.");
+                Console.WriteLine("Device is not active. Cannot read report.");
                 lastRowStatus = new byte[] { 0, 1, 0, 0, 0, 0, 0, 0, 3 };
                 return lastRowStatus;
             }
@@ -79,7 +79,7 @@ namespace SharpAlert
             }
             else
             {
-                ConsoleExt.WriteLine("Failed to read report or insufficient data.");
+                Console.WriteLine("Failed to read report or insufficient data.");
                 lastRowStatus = new byte[] { 0, 0, 1, 0, 0, 0, 0, 0, 0, 3 };
             }
             return lastRowStatus;
@@ -97,13 +97,13 @@ namespace SharpAlert
                 bool success = device.WriteFeatureData(buffer);
                 if (!success)
                 {
-                    ConsoleExt.WriteLine("[Relay Controller] There was a problem using the relay.");
+                    Console.WriteLine("[Relay Controller] There was a problem using the relay.");
                 }
                 return success;
             }
             else
             {
-                ConsoleExt.WriteLine("[Relay Controller] There was a problem using the relay. It may not be connected.");
+                Console.WriteLine("[Relay Controller] There was a problem using the relay. It may not be connected.");
                 return false;
             }
         }
@@ -119,7 +119,7 @@ namespace SharpAlert
             //byte[] buffer = ReadStatusRow();
             //if (buffer.Length < 9)
             //{
-            //    ConsoleExt.WriteLine("Invalid report length.");
+            //    Console.WriteLine("Invalid report length.");
             //    return 0;
             //}
             //// Bitwise AND the relay number with buffer[8] (as in the Python code)
@@ -139,7 +139,7 @@ namespace SharpAlert
             }
             else
             {
-                ConsoleExt.WriteLine("[Relay Controller] Couldn't turn on all contacts.");
+                Console.WriteLine("[Relay Controller] Couldn't turn on all contacts.");
                 return false;
             }
         }
@@ -157,7 +157,7 @@ namespace SharpAlert
             }
             else
             {
-                ConsoleExt.WriteLine("[Relay Controller] Couldn't turn off all contacts.");
+                Console.WriteLine("[Relay Controller] Couldn't turn off all contacts.");
                 return false;
             }
         }
@@ -176,7 +176,7 @@ namespace SharpAlert
             }
             else
             {
-                ConsoleExt.WriteLine($"[Relay Controller] Couldn't turn on contact {relayNumber}.");
+                Console.WriteLine($"[Relay Controller] Couldn't turn on contact {relayNumber}.");
                 return false;
             }
         }
@@ -195,7 +195,7 @@ namespace SharpAlert
             }
             else
             {
-                ConsoleExt.WriteLine($"[Relay Controller] Couldn't turn off contact {relayNumber}.");
+                Console.WriteLine($"[Relay Controller] Couldn't turn off contact {relayNumber}.");
                 return false;
             }
         }

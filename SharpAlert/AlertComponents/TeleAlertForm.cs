@@ -267,7 +267,7 @@ namespace SharpAlert
             FlashTwo = false;
             WindowFlash.Start();
 
-            ConsoleExt.WriteLine("[Alert GUI] Window shown.");
+            Console.WriteLine("[Alert GUI] Window shown.");
         }
 
         private void DismissButton_Click(object sender, EventArgs e)
@@ -327,7 +327,7 @@ namespace SharpAlert
         {
             FadeOutExitReady = false;
             this.Opacity = 0;
-            ConsoleExt.WriteLine("[Alert GUI] Window closed.");
+            Console.WriteLine("[Alert GUI] Window closed.");
         }
 
         private bool FlashOne = false;

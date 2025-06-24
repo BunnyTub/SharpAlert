@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.Net;
 using System.Windows.Forms;
 using static SharpAlert.MainEntryPoint;
 
@@ -18,6 +20,24 @@ namespace SharpAlert
                 if (!string.IsNullOrWhiteSpace(URL))
                 {
                     AttachedImageBox.Load(URL);
+                }
+                else
+                {
+                    AttachedImageBox.Load("https://bunnytub.com/SharpAlert/fallback.png");
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+        
+        public void AttemptLoadImage(Bitmap bitmap)
+        {
+            try
+            {
+                if (bitmap != null)
+                {
+                    AttachedImageBox.Image = bitmap;
                 }
                 else
                 {

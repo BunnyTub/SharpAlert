@@ -214,7 +214,7 @@ namespace SharpAlert
                         Screen.PrimaryScreen.WorkingArea.Height - this.Height - LocationMargin
                     );
 
-            ConsoleExt.WriteLine("[Alert GUI] Window shown.");
+            Console.WriteLine("[Alert GUI] Window shown.");
         }
 
         private void DismissButton_Click(object sender, EventArgs e)
@@ -299,7 +299,7 @@ namespace SharpAlert
         {
             FadeOutExitReady = false;
             this.Opacity = 0;
-            ConsoleExt.WriteLine("[Alert GUI] Window closed.");
+            Console.WriteLine("[Alert GUI] Window closed.");
         }
 
         private bool FlashOne = false;
@@ -354,10 +354,10 @@ namespace SharpAlert
             }
         }
 
-        [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
+        [DllImport("user32.dll", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
 
-        [DllImport("user32.DLL", EntryPoint = "SendMessage")]
+        [DllImport("user32.dll", EntryPoint = "SendMessage")]
         private extern static void SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
         
         private void TitleText_MouseDown(object sender, MouseEventArgs e)

@@ -35,7 +35,7 @@ namespace SharpAlert
 
         private void OpenSettingsButton_Click(object sender, EventArgs e)
         {
-            ConfigurationForm cf = new ConfigurationForm();
+            AlertListForm cf = new AlertListForm();
             cf.ShowDialog();
             cf.Dispose();
         }

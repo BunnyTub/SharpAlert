@@ -1,5 +1,4 @@
-﻿using SharpAlert.Properties;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;

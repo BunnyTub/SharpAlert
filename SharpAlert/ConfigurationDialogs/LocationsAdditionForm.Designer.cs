@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LocationsAdditionForm));
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -37,7 +36,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.StateCombo = new System.Windows.Forms.ComboBox();
             this.SAMEAddButton = new System.Windows.Forms.Button();
-            this.BusyLock = new System.Windows.Forms.Timer(this.components);
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
             this.BusyLockText = new System.Windows.Forms.Label();
             this.groupBox7.SuspendLayout();
@@ -135,11 +133,6 @@
             this.SAMEAddButton.UseVisualStyleBackColor = false;
             this.SAMEAddButton.Click += new System.EventHandler(this.SAMEAddButton_Click);
             // 
-            // BusyLock
-            // 
-            this.BusyLock.Enabled = true;
-            this.BusyLock.Tick += new System.EventHandler(this.BusyLock_Tick);
-            // 
             // ConfigurationPanel
             // 
             this.ConfigurationPanel.Controls.Add(this.groupBox7);
@@ -176,7 +169,8 @@
             this.MinimizeBox = false;
             this.Name = "LocationsAdditionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "SharpAlert Locations";
+            this.Text = "SharpAlert - Locations";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.LocationsAdditionForm_Load);
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
@@ -194,7 +188,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox StateCombo;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Timer BusyLock;
         private System.Windows.Forms.Panel ConfigurationPanel;
         private System.Windows.Forms.Label BusyLockText;
     }

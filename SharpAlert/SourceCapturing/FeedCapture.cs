@@ -49,8 +49,6 @@ namespace SharpAlert
             //}
         }
 
-        public static int Calls { get; private set; } = 0;
-
         /// <summary>
         /// Starts the HTTP Feed Capture service in the current thread as a client.
         /// </summary>
@@ -61,7 +59,7 @@ namespace SharpAlert
 
             if (!servers.Any())
             {
-                ConsoleExt.WriteLine("[HTTP Feed Capture] No servers found.");
+                Console.WriteLine("[HTTP Feed Capture] No servers found.");
                 return;
             }
 
@@ -82,12 +80,11 @@ namespace SharpAlert
                                 try
                                 {
                                     count--;
-                                    ConsoleExt.WriteLine($"[HTTP Feed Capture] Getting data from {server.ServerName}. URL -> {server.ServerPath}");
+                                    Console.WriteLine($"[HTTP Feed Capture] Getting data from {server.ServerName}. URL -> {server.ServerPath}");
                                     HttpResponseMessage message = client.GetAsync($"{URLPrefix}://{server.ServerPath}").Result;
                                     message.EnsureSuccessStatusCode();
 
-                                    if (Calls >= 100000) Calls = 0;
-                                    Calls++;
+                                    FeedSuccessfulCalls++;
 
                                     string Result = message.Content.ReadAsStringAsync().Result;
                                     EnrollAlerts(Result);
@@ -95,7 +92,7 @@ namespace SharpAlert
                                 catch (Exception ex)
                                 {
                                     count++;
-                                    ConsoleExt.WriteLine($"[HTTP Feed Capture] {ex.Message}");
+                                    Console.WriteLine($"[HTTP Feed Capture] {ex.Message}");
                                     AllConnectionsSuccessful = false;
                                     server.LastRunSuccess = false;
                                 }
@@ -108,11 +105,11 @@ namespace SharpAlert
 
                             if (AllConnectionsSuccessful)
                             {
-                                ConsoleExt.WriteLine($"[HTTP Feed Capture] Fetched from all feeds successfully.");
+                                Console.WriteLine($"[HTTP Feed Capture] Fetched from all feeds successfully.");
                             }
                             else
                             {
-                                ConsoleExt.WriteLine("[HTTP Feed Capture] Not all feeds were fetched from successfully.");
+                                Console.WriteLine("[HTTP Feed Capture] Not all feeds were fetched from successfully.");
                             }
                         }
                     }
@@ -131,7 +128,7 @@ namespace SharpAlert
                 }
                 catch (TimeoutException)
                 {
-                    ConsoleExt.WriteLine($"[HTTP Feed Capture] Timed out.");
+                    Console.WriteLine($"[HTTP Feed Capture] Timed out.");
                     Thread.Sleep(15 * 1000);
                 }
                 catch (ThreadAbortException)
@@ -140,8 +137,8 @@ namespace SharpAlert
                 }
                 catch (Exception e)
                 {
-                    ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.Message}");
-                    if (e.InnerException != null) ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.InnerException.Message}");
+                    Console.WriteLine($"[HTTP Feed Capture] {e.Message}");
+                    if (e.InnerException != null) Console.WriteLine($"[HTTP Feed Capture] {e.InnerException.Message}");
                     //if (LastConnectionSuccessful)
                     //{
                     //    lock (notify)
@@ -177,7 +174,7 @@ namespace SharpAlert
                 }
                 catch (Exception e)
                 {
-                    ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
+                    Console.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
                 }
             }
         }
@@ -204,11 +201,11 @@ namespace SharpAlert
 
                             //if (string.IsNullOrWhiteSpace(filename))
                             //{
-                            //    ConsoleExt.WriteLine("[HTTP Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
+                            //    Console.WriteLine("[HTTP Feed Capture] Identifier not found. An MD5 value will be assigned to this alert instead.");
                             //    filename = CreateMD5(alert.Value);
                             //}
 
-                            ConsoleExt.WriteLine($"[HTTP Feed Capture] {alertIndex} -> {filename}");
+                            Console.WriteLine($"[HTTP Feed Capture] {alertIndex} -> {filename}");
 
                             //string StartingSharpAlertReplay = "<SharpAlertReplay>";
                             //string EndingSharpAlertReplay = "<SharpAlertReplay>";
@@ -228,32 +225,32 @@ namespace SharpAlert
                             {
                                 if (TryAddDataToHistory(item))
                                 {
-                                    ConsoleExt.WriteLine($"[HTTP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
+                                    Console.WriteLine($"[HTTP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
                                 }
                             }
                             else
                             {
                                 if (TryAddDataToQueue(item))
                                 {
-                                    ConsoleExt.WriteLine($"[HTTP Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
+                                    Console.WriteLine($"[HTTP Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
                                 }
                                 else
                                 {
-                                    ConsoleExt.WriteLine($"[HTTP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already in queue or history).");
+                                    Console.WriteLine($"[HTTP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already in queue or history).");
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            ConsoleExt.WriteLine($"[HTTP Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
+                            Console.WriteLine($"[HTTP Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
                         }
                     }
-                    if (alertIndex != 0) ConsoleExt.WriteLine($"[HTTP Feed Capture] {alertIndex} alert(s) checked.");
-                    else ConsoleExt.WriteLine($"[HTTP Feed Capture] No alerts were checked.");
+                    if (alertIndex != 0) Console.WriteLine($"[HTTP Feed Capture] {alertIndex} alert(s) checked.");
+                    else Console.WriteLine($"[HTTP Feed Capture] No alerts were checked.");
                 }
                 else
                 {
-                    ConsoleExt.WriteLine("[HTTP Feed Capture] There are no alerts to enroll.");
+                    Console.WriteLine("[HTTP Feed Capture] There are no alerts to enroll.");
                 }
             }
         }
@@ -278,7 +275,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }
@@ -305,7 +302,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }
@@ -331,7 +328,7 @@ namespace SharpAlert
                     }
                     catch (Exception e)
                     {
-                        ConsoleExt.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[HTTP Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }

@@ -26,6 +26,9 @@ namespace SharpAlert
             AudioTinkeringFileDialog.Multiselect = false;
             AudioTinkeringFileDialog.Title = "SharpAlert - Audio Selection";
 
+            alertNoRelayBox.Checked = QuickSettings.Instance.alertNoRelay;
+            alertNoRelayBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertNoRelay = ((CheckBox)a).Checked;
+
             statusActualBox.Checked = QuickSettings.Instance.statusActual;
             statusActualBox.CheckedChanged += (a, b) => QuickSettings.Instance.statusActual = ((CheckBox)a).Checked;
             statusExerciseBox.Checked = QuickSettings.Instance.statusExercise;
@@ -109,8 +112,6 @@ namespace SharpAlert
 
             storedMaxSizeInput.Value = QuickSettings.Instance.storedMaxSize;
             storedMaxSizeInput.ValueChanged += (a, b) => QuickSettings.Instance.storedMaxSize = (int)((NumericUpDown)a).Value;
-            showExpiryMessagesBox.Checked = QuickSettings.Instance.showExpiryMessages;
-            showExpiryMessagesBox.CheckedChanged += (a, b) => QuickSettings.Instance.showExpiryMessages = ((CheckBox)a).Checked;
 
             string Events = string.Empty;
             foreach (string SAME_event in QuickSettings.Instance.EnforceEventBlacklist) Events += SAME_event + "\r\n";
@@ -312,6 +313,37 @@ namespace SharpAlert
         {
             if (clf == null || clf.IsDisposed) clf = new ChooseLocationForm(false);
             clf.ShowDialog();
+        }
+
+        private void AlertConfigurationForm_HelpButtonClicked(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            MessageBox.Show("This area has controls for CAP filtering.\r\n" +
+                "Uncheck a checkbox to deny all alerts with that parameter.\r\n\r\n" +
+                "Some CAP alerts may not work properly with event and location filtering depending on the CAP server.",
+                "SharpAlert",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+            e.Cancel = true;
+        }
+
+        private void LocationsClearButton_Click(object sender, EventArgs e)
+        {
+            QuickSettings.Instance.AllowedSAMELocations_Geocodes.Clear();
+            QuickSettings.Instance.AllowedCAPCPLocations_Geocodes.Clear();
+            QuickSettings.Instance.AllowedCustomLocations_GeocodesList.Clear();
+            MessageBox.Show("Cleared all locations.\r\n" +
+                "Alerts from all locations are now allowed.",
+                "SharpAlert",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+        private AlertListForm alf = null;
+
+        private void AlertListButton_Click(object sender, EventArgs e)
+        {
+            if (alf == null || alf.IsDisposed) alf = new AlertListForm();
+            alf.ShowDialog();
         }
     }
 }

@@ -1,9 +1,14 @@
 ﻿using System;
 using static SharpAlert.MainEntryPoint;
 using static SharpAlert.RegexList;
+using static SharpAlert.AlertProcessor;
+using static SharpAlert.AlertDisplayer;
 using System.Linq;
 using System.Threading;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace SharpAlert
 {
@@ -38,7 +43,7 @@ namespace SharpAlert
                     {
                         // use first instead of last, otherwise, recent alerts will be forgotten
                         lock (SharpDataHistory) SharpDataHistory.Remove(SharpDataHistory.First());
-                        ConsoleExt.WriteLine($"[Data Processor] Trimmed data history.");
+                        Console.WriteLine($"[Data Processor] Trimmed data history.");
                     }
 
                     List<SharpDataItem> LocalDataQueue = new List<SharpDataItem>();
@@ -62,14 +67,14 @@ namespace SharpAlert
                             }
                             catch (Exception ex)
                             {
-                                ConsoleExt.WriteLine($"[Data Processor] {ex.Message}");
+                                Console.WriteLine($"[Data Processor] {ex.Message}");
                                 continue;
                             }
                             //if (relayItem is null) continue;
                         }
                         else
                         {
-                            //ConsoleExt.WriteLine("[Data Processor] There are no items in the queue yet.");
+                            //Console.WriteLine("[Data Processor] There are no items in the queue yet.");
                             continue;
                         }
 
@@ -85,14 +90,14 @@ namespace SharpAlert
                                         return;
                                     }
 
-                                    ConsoleExt.WriteLine($"[Data Processor] Preparing to process -> {relayItem.Name}");
+                                    Console.WriteLine($"[Data Processor] Preparing to process -> {relayItem.Name}");
 
                                     string Replay = ReplayedAlertRegex.MatchOrDefault(relayItem.Data, "false");
                                     bool ReplayMode = false;
 
                                     if (Replay.ToLowerInvariant() == "true")
                                     {
-                                        ConsoleExt.WriteLine("[Data Processor] Detected an alert in replay mode.");
+                                        Console.WriteLine("[Data Processor] Detected an alert in replay mode.");
                                         ReplayMode = true;
                                         relayItem.Data = relayItem.Data.Replace("<SharpAlertReplay>true</SharpAlertReplay>", "<SharpAlertReplay>false</SharpAlertReplay>");
                                     }
@@ -102,15 +107,15 @@ namespace SharpAlert
 
                                     try
                                     {
-                                        int Limit = 10;
+                                        int Limit = 15;
                                         if (ap.AlertsProcessing >= Limit)
                                         {
-                                            ConsoleExt.WriteLine($"[Data Processor] Processing limit reached. Waiting until the amount of alerts processing is under {Limit}.");
+                                            Console.WriteLine($"[Data Processor] Processing limit reached. Waiting until the amount of alerts processing is under {Limit}.");
                                             while (ap.AlertsProcessing >= Limit)
                                             {
-                                                Thread.Sleep(100);
+                                                Thread.Sleep(50);
                                             }
-                                            ConsoleExt.WriteLine($"[Data Processor] The amount of alerts processing is now under {Limit}. Continuing work in progress.");
+                                            Console.WriteLine($"[Data Processor] The amount of alerts processing is now under {Limit}. Continuing work in progress.");
                                         }
 
                                         ThreadDrool.StartAndForget(() =>
@@ -119,19 +124,179 @@ namespace SharpAlert
                                             //    $"{relayItem.Data}",
                                             //    "SharpAlert",
                                             //    MessageBoxButtons.YesNo) == DialogResult.Yes)
-                                            ConsoleExt.WriteLine($"[Data Processor] Waiting for processing -> {relayItem.Name}");
-                                            ap.ProcessAlertItem(relayItem, ReplayMode, false);
+                                            Console.WriteLine($"[Data Processor] Waiting for processing -> {relayItem.Name}");
+                                            AlertInfo info = ap.ProcessAlertItem(relayItem, ReplayMode, false);
+                                            Console.WriteLine($"[Data Processor] Finished processing -> {relayItem.Name}");
+
+                                            if (string.IsNullOrWhiteSpace(info.AlertDiscardReason))
+                                            {
+                                                try
+                                                {
+                                                    if (ReplayMode)
+                                                    {
+                                                        lock (notify)
+                                                        {
+                                                            notify.BalloonTipIcon = ToolTipIcon.Info;
+                                                            notify.BalloonTipTitle = $"{info.AlertEventType}";
+                                                            notify.BalloonTipText = $"The alert has been sent again via replay mode.";
+                                                            notify.ShowBalloonTip(5000);
+                                                        }
+                                                    }
+
+                                                    bool CalledWebhookFunction = false;
+                                                    bool DialogCanAppear = true;
+
+                                                    if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
+                                                    {
+                                                        CalledWebhookFunction = true;
+
+                                                        DialogResult result = DialogResult.Yes;
+
+                                                        if (QuickSettings.Instance.DiscordWebhookConfirmAlerts)
+                                                        {
+                                                            ManualAlertRelayForm mar = new ManualAlertRelayForm();
+                                                            mar.UpdateFields(relayItem.Name, info.AlertEventType, info.AlertIntroText, info.AlertBodyText, info.AlertURL, string.Empty, string.Empty, info.AlertMessageType);
+                                                            mar.ShowDialog();
+                                                            result = mar.DialogResult;
+                                                            mar.Dispose();
+                                                        }
+
+                                                        if (result != DialogResult.No)
+                                                        {
+                                                            DateTime sentDate;
+                                                            try
+                                                            {
+                                                                sentDate = DateTime.Parse(info.AlertSentDate, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+                                                            }
+                                                            catch (Exception ex)
+                                                            {
+                                                                Console.WriteLine(ex.Message);
+                                                                sentDate = DateTime.Now;
+                                                            }
+
+                                                            DateTime expiresDate;
+                                                            try
+                                                            {
+                                                                expiresDate = DateTime.Parse(info.AlertExpiryDate, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal);
+                                                            }
+                                                            catch (Exception ex)
+                                                            {
+                                                                Console.WriteLine(ex.Message);
+                                                                expiresDate = DateTime.Now.AddHours(1);
+                                                            }
+
+                                                            int color = 16777215;
+
+                                                            switch (info.AlertMessageType.ToLowerInvariant())
+                                                            {
+                                                                case "alert":
+                                                                    color = 16711680;
+                                                                    break;
+                                                                case "update":
+                                                                    color = 16711935;
+                                                                    break;
+                                                                case "cancel":
+                                                                    color = 10079487;
+                                                                    break;
+                                                            }
+
+                                                            string LocationList = string.Empty;
+                                                            foreach (string Location in info.AlertFriendlyLocations)
+                                                            {
+                                                                foreach (string loc in Location.Split(';')) LocationList += $"{loc.Trim()}; ";
+                                                            }
+
+                                                            //string EventsList = string.Empty;
+                                                            //foreach (string Event in AllEvents)
+                                                            //{
+                                                            //    EventsList += $"{Regex.Replace(Event.ToLowerInvariant(), @"(^\w)|(\s\w)", m => m.Value.ToUpperInvariant())}, ";
+                                                            //}
+                                                            //EventsList = EventsList.Substring(0, EventsList.Length - 2);
+
+                                                            string ProcessedEvent = $"{Regex.Replace(info.AlertEventType, @"(^\w)|(\s\w)", m => m.Value.ToUpperInvariant())}";
+
+                                                            LocationList = LocationList.Trim().Substring(0, LocationList.Length - 2).Trim();
+                                                            if (LocationList.EndsWith(";")) LocationList = LocationList.Substring(0, LocationList.Length - 1);
+
+                                                            string CompiledMessage = $"{ProcessedEvent} | Location(s): {LocationList}\r\n-# Identifier: {relayItem.Name}"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
+                                                            if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + QuickSettings.Instance.DiscordWebhookAppend;
+                                                            //DiscordWebhook.SendUnformattedMessage(CompiledMessage);
+
+                                                            if (DiscordWebhook.SendEmbeddedMessage(CompiledMessage, $"{info.AlertSeverity} Emergency {info.AlertMessageType.First().ToString().ToUpper() + info.AlertMessageType.Substring(1)}",
+                                                                info.AlertIntroText, info.AlertBodyText + $"\r\n\r\n||${LocationList}$||",
+                                                                relayItem,
+                                                                new List<string> { info.AlertAudioURL },
+                                                                new List<string> { info.AlertImageURL },
+                                                                color))
+                                                            {
+                                                                lock (notify)
+                                                                {
+                                                                    notify.BalloonTipIcon = ToolTipIcon.Info;
+                                                                    notify.BalloonTipTitle = $"{info.AlertEventType}";
+                                                                    notify.BalloonTipText = $"The alert was sent {sentDate:g}. The alert expires {expiresDate:g}.";
+                                                                    notify.ShowBalloonTip(5000);
+                                                                }
+                                                                //AnyAlertRelayed = true;
+                                                                //UsedDiscordHook = true;
+                                                            }
+                                                            else
+                                                            {
+                                                                lock (notify)
+                                                                {
+                                                                    notify.BalloonTipIcon = ToolTipIcon.Warning;
+                                                                    notify.BalloonTipTitle = $"{info.AlertEventType}";
+                                                                    notify.BalloonTipText = $"The alert was sent {sentDate:g}. The alert expires {expiresDate:g}. The alert failed to relay through the webhook.";
+                                                                    notify.ShowBalloonTip(5000);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    if (CalledWebhookFunction)
+                                                    {
+                                                        if (!QuickSettings.Instance.DiscordWebhookRelayLocally) DialogCanAppear = false;
+                                                    }
+
+                                                    if (DialogCanAppear)
+                                                    {
+                                                        ThreadDrool.StartAndForget(() =>
+                                                        {
+                                                            RelayWindow(relayItem.Name, info.AlertEventType,
+                                                                new AlertTextClass
+                                                                {
+                                                                    Intro = info.AlertIntroText,
+                                                                    Body = info.AlertBodyText
+                                                                }, info.AlertURL, info.AlertMessageType, info.AlertSeverity, new List<string> { info.AlertAudioURL }, new List<string> { info.AlertImageURL });
+                                                        });
+                                                    }
+
+                                                    //AnyAlertRelayed = true;
+                                                    SharpDataRelayedNamesHistory.Add(relayItem.Name);
+                                                }
+                                                catch (NotSupportedException ex)
+                                                {
+                                                    Console.WriteLine($"[Data Processor] Couldn't relay. {ex.Message}");
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    Console.WriteLine($"[Data Processor] Couldn't relay. {ex.Message}");
+                                                }
+                                                finally
+                                                {
+                                                    Console.WriteLine($"[Data Processor] Finished relaying.");
+                                                }
+                                            }
                                         });
 
                                     }
                                     catch (NotSupportedException ex)
                                     {
-                                        ConsoleExt.WriteLine($"[Data Processor] Failed ({ex.Message}) -> {relayItem.Name}");
+                                        Console.WriteLine($"[Data Processor] Failed ({ex.Message}) -> {relayItem.Name}");
                                     }
                                 }
                                 catch (Exception ex)
                                 {
-                                    ConsoleExt.WriteLine($"[Data Processor] Failed ({ex.Message}) -> {relayItem.Name}");
+                                    Console.WriteLine($"[Data Processor] Failed ({ex.Message}) -> {relayItem.Name}");
                                 }
                             }
                         }   
@@ -143,7 +308,7 @@ namespace SharpAlert
                 }
                 catch (Exception e)
                 {
-                    ConsoleExt.WriteLine($"[Data Processor] {e.StackTrace} {e.Message}");
+                    Console.WriteLine($"[Data Processor] {e.StackTrace} {e.Message}");
                 }
             }
         }

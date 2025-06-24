@@ -102,21 +102,14 @@ namespace SharpAlert
             alertFullscreenIdleBox.Checked = QuickSettings.Instance.alertFullscreenIdle;
             alertFullscreenIdleBox.CheckedChanged += (a, b) =>
             {
-                ((CheckBox)a).Enabled = false;
-                QuickSettings.Instance.alertFullscreenIdle = ((CheckBox)a).Checked;
+                IdleWindowVisible = ((CheckBox)a).Checked;
+                this.BringToFront();
+            };
 
-                if (((CheckBox)a).Checked)
-                {
-                    CreateIdleWindow();
-                }
-                else
-                {
-                    DestroyIdleWindow();
-                }
-
-                Thread.Sleep(500);
-                ((CheckBox)a).Enabled = true;
-
+            statusWindowBox.Checked = QuickSettings.Instance.statusWindow;
+            statusWindowBox.CheckedChanged += (a, b) =>
+            {
+                StatusWindowVisible = ((CheckBox)a).Checked;
                 this.BringToFront();
             };
 

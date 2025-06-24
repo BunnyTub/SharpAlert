@@ -22,7 +22,7 @@ namespace SharpAlert
         public static readonly int MinorVersion = 2;
         public static readonly bool BetaVersion = true;
         public static readonly DateTime BetaTimeEnd = DateTime.ParseExact(
-            "6/20/2025",
+            "7/27/2025",
             "M/d/yyyy",
             CultureInfo.InvariantCulture,
             DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal
@@ -46,6 +46,15 @@ namespace SharpAlert
     {
         public static readonly DateTime startDT = DateTime.UtcNow;
         public static bool AllowThreadRestarts = true;
+        private static int FeedSuccessfulCalls_ = 0;
+        public static int FeedSuccessfulCalls
+        {
+            get => FeedSuccessfulCalls_;
+            set
+            {
+                FeedSuccessfulCalls_ = value;
+            }
+        }
         public static FeedCapture feed;
         public static WeatherAtomCapture atomfeed;
         public static DirectFeedCapture directfeed;
@@ -89,9 +98,8 @@ namespace SharpAlert
 
         public static readonly string CustomURLsFileName = "feeds.txt";
 
-
         /// <summary>
-        /// Stops everything safely. Hopefully. exitCode is unused.
+        /// Stops everything safely. Hopefully.
         /// </summary>
         public static void SafeExit()
         {
@@ -103,7 +111,7 @@ namespace SharpAlert
                 notify.ShowBalloonTip(5000);
             }
 
-            ConsoleExt.WriteLine("Preparing for termination.");
+            Console.WriteLine("Preparing for termination.");
             AllowThreadRestarts = false;
             Thread.Sleep(500);
 
@@ -120,32 +128,32 @@ namespace SharpAlert
 
                 //if (ServiceRunnerScheduled)
                 {
-                    ConsoleExt.WriteLine("Hyper Server is shutting down.");
+                    Console.WriteLine("Hyper Server is shutting down.");
                     hyper?.ServiceStop();
-                    ConsoleExt.WriteLine("Feed Capture is shutting down.");
+                    Console.WriteLine("Feed Capture is shutting down.");
                     feed?.ServiceStop();
-                    ConsoleExt.WriteLine("Direct Feed Capture is shutting down.");
+                    Console.WriteLine("Direct Feed Capture is shutting down.");
                     directfeed?.ServiceStop();
-                    ConsoleExt.WriteLine("Cache Capture is shutting down.");
+                    Console.WriteLine("Cache Capture is shutting down.");
                     cache?.ServiceStop();
-                    ConsoleExt.WriteLine("Data Processor is shutting down.");
+                    Console.WriteLine("Data Processor is shutting down.");
                     dataproc?.ServiceStop();
-                    ConsoleExt.WriteLine("Alert Processor is shutting down.");
+                    Console.WriteLine("Alert Processor is shutting down.");
                     lock (AlertProcessor.AlertLock)
                     {
                     }
-                    ConsoleExt.WriteLine("Idle Window is shutting down.");
-                    if (idle != null) DestroyIdleWindow();
-                    ConsoleExt.WriteLine("Status Window is shutting down.");
-                    if (status != null) DestroyStatusWindow();
-                    ConsoleExt.WriteLine("Stopping all sounds.");
+                    Console.WriteLine("Idle Window is shutting down.");
+                    if (idle != null) IdleWindowVisible = false;
+                    Console.WriteLine("Status Window is shutting down.");
+                    if (status != null) StatusWindowVisible = false;
+                    Console.WriteLine("Stopping all sounds.");
                     try
                     {
                         StopAllAudioSilently();
                     }
                     catch (Exception)
                     {
-                        ConsoleExt.WriteLine("Cannot stop some sounds.");
+                        Console.WriteLine("Cannot stop some sounds.");
                     }
                     if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                     {
@@ -159,7 +167,7 @@ namespace SharpAlert
             {
                 if (Finished)
                 {
-                    ConsoleExt.WriteLine("Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-");
+                    Console.WriteLine("Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-");
                     if (notify != null)
                     {
                         lock (notify)
@@ -179,7 +187,7 @@ namespace SharpAlert
                 i++;
             }
 
-            ConsoleExt.WriteLine("Shutdown timed out. Say thanks to Ice Bear for his hard work... -w-");
+            Console.WriteLine("Shutdown timed out. Say thanks to Ice Bear for his hard work... -w-");
             if (notify != null)
             {
                 lock (notify)
@@ -214,26 +222,18 @@ namespace SharpAlert
                 if (args.Contains("--service-mode"))
                 {
                     AllocateTerminal(false);
-                    ConsoleExt.WriteLine("SERVICE MODE ACTIVE --- PERFORMANCE MAY BE IMPACTED --- THIS IS FOR TESTING PURPOSES");
+                    Console.WriteLine("SERVICE MODE ACTIVE --- PERFORMANCE MAY BE IMPACTED --- THIS IS FOR TESTING PURPOSES");
                     ServiceMode = true;
                     Thread.Sleep(1000);
-                    new Thread(() => new ServiceMonitorForm().ShowDialog()).Start();
+                    new Thread(() => { while (true) new ServiceMonitorForm().ShowDialog(); }).Start();
                 }
-
-                //if (args.Contains("--i-want-to-be-fucked-up-the-ass-like-a-gay-little-bunny-boy"))
-                //{
-                //    for (int i = 0; i < 20; i++)
-                //    {
-                //        Process.Start(AssemblyFile, "--monitored --ignore-duplicates --wattpad");
-                //        Thread.Sleep(300);
-                //    }
-                //    return; 
-                //}
-
-                ////if (args.Contains("--call-debugger"))
-                ////{
-                ////    if (Debugger.Launch()) Debugger.NotifyOfCrossThreadDependency();
-                ////}
+                else
+                {
+                    if (args.Contains("--console"))
+                    {
+                        AllocateTerminal(false);
+                    }
+                }
 
                 if (args.Contains("--monitored") || ServiceMode)
                 {
@@ -261,7 +261,7 @@ namespace SharpAlert
                             }
                         }
 
-                        new Thread(() => ServiceRun(args)).Start();
+                        new Thread(() => ServiceRun()).Start();
 
                         if (!ServiceMode)
                         {
@@ -453,73 +453,76 @@ namespace SharpAlert
             }
         }
 
-        public static void CreateIdleWindow()
+        private static object IdleWindowVisible_ = false;
+        public static bool IdleWindowVisible
         {
-            ThreadDrool.StartAndForget(() =>
+            get => (bool)IdleWindowVisible_;
+            set
             {
-                CloseIdleWindow = true;
-                lock (IdleWindowLock)
+                lock (IdleWindowVisible_)
                 {
-                    Application.EnableVisualStyles();
-                    CloseIdleWindow = false;
-                    idle = new TeleIdleForm();
-                    while (!CloseIdleWindow) idle.ShowDialog(null);
-                    idle.Dispose();
-                    idle = null;
-                }
-            });
-        }
-        
-        public static void CreateStatusWindow()
-        {
-            ThreadDrool.StartAndForget(() =>
-            {
-                CloseStatusWindow = true;
-                lock (StatusWindowLock)
-                {
-                    Application.EnableVisualStyles();
-                    CloseStatusWindow = false;
-                    status = new StatusForm();
-                    while (!CloseStatusWindow) status.ShowDialog(null);
-                    status.Dispose();
-                    status = null;
-                }
-            });
-        }
-        
-        public static void DestroyIdleWindow()
-        {
-            CloseIdleWindow = true;
-            lock (IdleWindowLock)
-            {
-                while (idle != null)
-                {
-                    while (CloseIdleWindow)
+                    if (value)
                     {
-                        Thread.Sleep(100);
+                        ThreadDrool.StartAndForget(() =>
+                        {
+                            if (idle != null && !idle.IsDisposed)
+                            {
+                                idle.Invoke(new MethodInvoker(() => idle.Dispose()));
+                            }
+                            else
+                            {
+                                idle = new TeleIdleForm();
+                            }
+                            idle?.ShowDialog();
+                        });
                     }
-                    idle.Dispose();
-                    idle = null;
+                    else
+                    {
+                        if (idle != null && !idle.IsDisposed)
+                        {
+                            idle.Invoke(new MethodInvoker(() => idle.Dispose()));
+                        }
+                    }
+
+                    IdleWindowVisible_ = value;
                 }
-                CloseIdleWindow = false;
             }
         }
-        
-        public static void DestroyStatusWindow()
+
+
+        private static object StatusWindowVisible_ = false;
+        public static bool StatusWindowVisible
         {
-            CloseStatusWindow = true;
-            lock (StatusWindowLock)
+            get => (bool)StatusWindowVisible_;
+            set
             {
-                while (status != null)
+                lock (StatusWindowVisible_)
                 {
-                    while (CloseStatusWindow)
+                    if (value)
                     {
-                        Thread.Sleep(100);
+                        ThreadDrool.StartAndForget(() =>
+                        {
+                            if (status != null && !status.IsDisposed)
+                            {
+                                status.Invoke(new MethodInvoker(() => status.Dispose()));
+                            }
+                            else
+                            {
+                                status = new StatusForm();
+                            }
+                            status?.ShowDialog();
+                        });
                     }
-                    status.Dispose();
-                    status = null;
+                    else
+                    {
+                        if (idle != null && !idle.IsDisposed)
+                        {
+                            status.Invoke(new MethodInvoker(() => status.Dispose()));
+                        }
+                    }
+
+                    StatusWindowVisible_ = value;
                 }
-                CloseStatusWindow = false;
             }
         }
     }

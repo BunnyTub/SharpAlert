@@ -79,7 +79,7 @@ namespace SharpAlert
             {
                 try
                 {
-                    ConsoleExt.WriteLine("[Audio Manager] Preparing to stop all audio.");
+                    Console.WriteLine("[Audio Manager] Preparing to stop all audio.");
 
                     if (UsingLegacyAudioPlayer)
                     {
@@ -112,7 +112,7 @@ namespace SharpAlert
                             }
                             catch (Exception ex)
                             {
-                                ConsoleExt.WriteLine($"{ex.Message}");
+                                Console.WriteLine($"{ex.Message}");
                             }
                         }
 
@@ -120,11 +120,11 @@ namespace SharpAlert
                         HoldIt = false;
                     }
 
-                    ConsoleExt.WriteLine("[Audio Manager] Attempted to stop all audio.");
+                    Console.WriteLine("[Audio Manager] Attempted to stop all audio.");
                 }
                 catch (Exception ex)
                 {
-                    ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                    Console.WriteLine($"[Audio Manager] {ex.Message}");
                     //lock (notify)
                     //{
                     //    notify.BalloonTipTitle = "SharpAlert is having issues";
@@ -177,7 +177,7 @@ namespace SharpAlert
                         }
                         catch (Exception ex)
                         {
-                            ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                            Console.WriteLine($"[Audio Manager] {ex.Message}");
                         }
                     }
 
@@ -187,7 +187,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                Console.WriteLine($"[Audio Manager] {ex.Message}");
                 //lock (notify)
                 //{
                 //    notify.BalloonTipTitle = "SharpAlert is having issues";
@@ -232,7 +232,7 @@ namespace SharpAlert
                         }
                         catch (Exception ex)
                         {
-                            ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                            Console.WriteLine($"[Audio Manager] {ex.Message}");
                         }
                     }
 
@@ -241,7 +241,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                Console.WriteLine($"[Audio Manager] {ex.Message}");
                 //lock (notify)
                 //{
                 //    notify.BalloonTipTitle = "SharpAlert is having issues";
@@ -270,7 +270,7 @@ namespace SharpAlert
 
             lock (AudioDevicesList)
             {
-                ConsoleExt.WriteLine("[Audio Manager] Preparing to refresh the audio device tree.");
+                Console.WriteLine("[Audio Manager] Preparing to refresh the audio device tree.");
                 DeviceTreeFetched = true;
                 AudioDevicesList.Clear();
 
@@ -282,7 +282,7 @@ namespace SharpAlert
 
                     foreach (var device in devices)
                     {
-                        ConsoleExt.WriteLine($"[Audio Manager] Found audio device: {device.FriendlyName}");
+                        Console.WriteLine($"[Audio Manager] Found audio device: {device.FriendlyName}");
                         AudioDevicesList.Add(device);
                     }
 
@@ -290,14 +290,14 @@ namespace SharpAlert
                     {
                         if (_CurrentAudioDevice != null)
                         {
-                            ConsoleExt.WriteLine("[Audio Manager] The audio device object will be reset, because the previous one wasn't found.");
+                            Console.WriteLine("[Audio Manager] The audio device object will be reset, because the previous one wasn't found.");
                         }
                         CurrentAudioDevice = devices[0];
                     }
 
                     if (devices.Count == 0)
                     {
-                        ConsoleExt.WriteLine("[Audio Manager] No audio device found.");
+                        Console.WriteLine("[Audio Manager] No audio device found.");
                         CurrentAudioDevice = null;
                         return devices;
                     }
@@ -307,14 +307,14 @@ namespace SharpAlert
 
                     if (cad == null)
                     {
-                        ConsoleExt.WriteLine("[Audio Manager] The specified device name in the app configuration was not found.");
+                        Console.WriteLine("[Audio Manager] The specified device name in the app configuration was not found.");
                     }
                     else
                     {
                         CurrentAudioDevice = cad;
                     }
 
-                    ConsoleExt.WriteLine("[Audio Manager] Finished audio device tree refresh.");
+                    Console.WriteLine("[Audio Manager] Finished audio device tree refresh.");
                     return devices;
                 }
             }
@@ -351,19 +351,19 @@ namespace SharpAlert
                     }
                     catch (Exception ex)
                     {
-                        ConsoleExt.WriteLine($"[Audio Manager] Failed to play remote audio. TTS will be played instead. {ex.Message}");
+                        Console.WriteLine($"[Audio Manager] Failed to play remote audio. TTS will be played instead. {ex.Message}");
                         PlayFromTTSEngine(StringIntoTTSFriendly(text), false);
                     }
                 }
                 else
                 {
-                    ConsoleExt.WriteLine("[Audio Manager] No remote audio or the legacy audio player is active. TTS will be played instead.");
+                    Console.WriteLine("[Audio Manager] No remote audio or the legacy audio player is active. TTS will be played instead.");
                     PlayFromTTSEngine(StringIntoTTSFriendly(text), false);
                 }
             }
             else
             {
-                ConsoleExt.WriteLine($"[Audio Manager] User settings prohibit remote audio. TTS will be played instead.");
+                Console.WriteLine($"[Audio Manager] User settings prohibit remote audio. TTS will be played instead.");
                 PlayFromTTSEngine(StringIntoTTSFriendly(text), false);
             }
         }
@@ -381,7 +381,7 @@ namespace SharpAlert
                 //IceBearWorker.client.GetByteArrayAsync(url).Result;
                 ThreadDrool.StartAndForget(() =>
                 {
-                    ConsoleExt.WriteLine("[Audio Manager] Queued remote audio.");
+                    Console.WriteLine("[Audio Manager] Queued remote audio.");
                     try
                     {
                         PlayFromManagedSource(new MemoryStream(client.GetByteArrayAsync(url).Result), true);
@@ -389,7 +389,7 @@ namespace SharpAlert
                         //{
                         //    lock (AudioOutputLock)
                         //    {
-                        //        ConsoleExt.WriteLine("[Audio Manager] Audio queue locked.");
+                        //        Console.WriteLine("[Audio Manager] Audio queue locked.");
                         //        WasapiOut AudioOutput = new WasapiOut();
                         //        Outputs.Add(AudioOutput);
                         //        float volume = QuickSettings.Instance.alertVolume / 10f;
@@ -402,19 +402,19 @@ namespace SharpAlert
                         //        }
                         //        if (HoldIt)
                         //        {
-                        //            ConsoleExt.WriteLine("[Audio Manager] Audio cleared from queue and unlocked.");
+                        //            Console.WriteLine("[Audio Manager] Audio cleared from queue and unlocked.");
                         //            return;
                         //        }
                         //        Outputs.Remove(AudioOutput);
                         //        if (eom) PlayFromUnmanagedSourceAndWait(Resources.ui_end_1);
                         //        AudioOutput.Dispose();
                         //    }
-                        //    ConsoleExt.WriteLine("[Audio Manager] Audio queue unlocked.");
+                        //    Console.WriteLine("[Audio Manager] Audio queue unlocked.");
                         //}
                     }
                     catch (Exception ex)
                     {
-                        ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                        Console.WriteLine($"[Audio Manager] {ex.Message}");
                         lock (notify)
                         {
                             notify.BalloonTipTitle = "SharpAlert is having issues";
@@ -427,13 +427,13 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                Console.WriteLine($"[Audio Manager] {ex.Message}");
             }
         }
 
         public static bool ToneDone = true;
 
-        public static void PlayStartToneFile(bool wait = false)
+        public static void PlayStartToneFile(string severity = "???", bool wait = false)
         {
             StopAllAudioSilently();
             ToneDone = false;
@@ -458,7 +458,7 @@ namespace SharpAlert
                             ToneDone = true;
                         });
                     }
-                    ConsoleExt.WriteLine("[Audio Manager] Playing start tone audio (legacy).");
+                    Console.WriteLine("[Audio Manager] Playing start tone audio (legacy).");
                 }
                 else
                 {
@@ -470,7 +470,7 @@ namespace SharpAlert
                         {
                             if (string.IsNullOrWhiteSpace(path))
                             {
-                                ConsoleExt.WriteLine("[Audio Manager] No audio file specified inside the configuration.");
+                                Console.WriteLine("[Audio Manager] No audio file specified inside the configuration.");
                                 PlayFromUnmanagedSourceAndWait(Resources.ui_warning_1, false);
                                 if (QuickSettings.Instance.alertPlayStartToneTwice && !HoldIt) PlayFromUnmanagedSourceAndWait(Resources.ui_warning_1, false);
                             }
@@ -480,13 +480,13 @@ namespace SharpAlert
                                 {
                                     lock (AudioOutputLock)
                                     {
-                                        ConsoleExt.WriteLine("[Audio Manager] Audio queue locked.");
+                                        Console.WriteLine("[Audio Manager] Audio queue locked.");
 
                                         int ExecuteTimes = 1;
 
                                         if (QuickSettings.Instance.alertPlayStartToneTwice) ExecuteTimes++;
 
-                                        ConsoleExt.WriteLine($"[Audio Manager] Audio will be played {ExecuteTimes} time(s).");
+                                        Console.WriteLine($"[Audio Manager] Audio will be played {ExecuteTimes} time(s).");
 
                                         for (int e = 0; e < ExecuteTimes; e++)
                                         {
@@ -506,17 +506,17 @@ namespace SharpAlert
 
                                         if (HoldIt)
                                         {
-                                            ConsoleExt.WriteLine("[Audio Manager] Audio cleared from queue and unlocked.");
+                                            Console.WriteLine("[Audio Manager] Audio cleared from queue and unlocked.");
                                             return;
                                         }
                                     }
-                                    ConsoleExt.WriteLine("[Audio Manager] Audio queue unlocked.");
+                                    Console.WriteLine("[Audio Manager] Audio queue unlocked.");
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                            Console.WriteLine($"[Audio Manager] {ex.Message}");
                         }
                         ToneDone = true;
                     }
@@ -526,7 +526,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                Console.WriteLine($"[Audio Manager] {ex.Message}");
                 ToneDone = true;
             }
         }
@@ -552,7 +552,7 @@ namespace SharpAlert
                         if (wait) LegacyAudioPlayer.PlaySync();
                         else LegacyAudioPlayer.Play();
                     }
-                    ConsoleExt.WriteLine("[Audio Manager] Playing end tone audio (legacy).");
+                    Console.WriteLine("[Audio Manager] Playing end tone audio (legacy).");
                 }
                 else
                 {
@@ -565,7 +565,7 @@ namespace SharpAlert
                             {
                                 if (string.IsNullOrWhiteSpace(path))
                                 {
-                                    ConsoleExt.WriteLine("[Audio Manager] No audio file specified inside the configuration.");
+                                    Console.WriteLine("[Audio Manager] No audio file specified inside the configuration.");
                                     PlayFromUnmanagedSource(Resources.ui_end_1);
                                 }
                                 else
@@ -574,7 +574,7 @@ namespace SharpAlert
                                     {
                                         lock (AudioOutputLock)
                                         {
-                                            ConsoleExt.WriteLine("[Audio Manager] Audio queue locked.");
+                                            Console.WriteLine("[Audio Manager] Audio queue locked.");
                                             WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
                                             float volume = QuickSettings.Instance.alertVolume / 10f;
                                             AudioOutput.Init(reader);
@@ -591,17 +591,17 @@ namespace SharpAlert
 
                                             if (HoldIt)
                                             {
-                                                ConsoleExt.WriteLine("[Audio Manager] Audio cleared from queue and unlocked.");
+                                                Console.WriteLine("[Audio Manager] Audio cleared from queue and unlocked.");
                                                 return;
                                             }
                                         }
-                                        ConsoleExt.WriteLine("[Audio Manager] Audio queue unlocked.");
+                                        Console.WriteLine("[Audio Manager] Audio queue unlocked.");
                                     }
                                 }
                             }
                             catch (Exception ex)
                             {
-                                ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                                Console.WriteLine($"[Audio Manager] {ex.Message}");
                             }
                             ToneDone = true;
                         }
@@ -612,7 +612,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                Console.WriteLine($"[Audio Manager] {ex.Message}");
                 ToneDone = true;
             }
         }
@@ -628,13 +628,13 @@ namespace SharpAlert
                         LegacyAudioPlayer.Stream = unmanaged;
                         LegacyAudioPlayer.Play();
                     }
-                    ConsoleExt.WriteLine("[Audio Manager] Playing unmanaged audio (legacy).");
+                    Console.WriteLine("[Audio Manager] Playing unmanaged audio (legacy).");
                 }
                 else
                 {
                     ThreadDrool.StartAndForget(() =>
                     {
-                        ConsoleExt.WriteLine("[Audio Manager] Queued unmanaged audio.");
+                        Console.WriteLine("[Audio Manager] Queued unmanaged audio.");
                         try
                         {
                             using (MemoryStream stream = new MemoryStream())
@@ -644,7 +644,7 @@ namespace SharpAlert
                                 {
                                     lock (AudioOutputLock)
                                     {
-                                        ConsoleExt.WriteLine("[Audio Manager] Audio queue locked.");
+                                        Console.WriteLine("[Audio Manager] Audio queue locked.");
                                         WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
                                         Outputs.Add(AudioOutput);
                                         float volume = QuickSettings.Instance.alertVolume / 10f;
@@ -658,11 +658,11 @@ namespace SharpAlert
                                         }
                                         if (HoldIt)
                                         {
-                                            ConsoleExt.WriteLine("[Audio Manager] Audio cleared from queue and unlocked.");
+                                            Console.WriteLine("[Audio Manager] Audio cleared from queue and unlocked.");
                                             return;
                                         }
                                     }
-                                    ConsoleExt.WriteLine("[Audio Manager] Audio queue unlocked.");
+                                    Console.WriteLine("[Audio Manager] Audio queue unlocked.");
                                 }
                             }
                         }
@@ -681,7 +681,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                Console.WriteLine($"[Audio Manager] {ex.Message}");
             }
         }
 
@@ -696,20 +696,20 @@ namespace SharpAlert
                         LegacyAudioPlayer.Stream = managed;
                         LegacyAudioPlayer.Play();
                     }
-                    ConsoleExt.WriteLine("[Audio Manager] Playing managed audio (legacy).");
+                    Console.WriteLine("[Audio Manager] Playing managed audio (legacy).");
                 }
                 else
                 {
                     ThreadDrool.StartAndForget(() =>
                     {
-                        ConsoleExt.WriteLine("[Audio Manager] Queued managed audio.");
+                        Console.WriteLine("[Audio Manager] Queued managed audio.");
                         try
                         {
                             using (var mf = new StreamMediaFoundationReader(managed))
                             {
                                 lock (AudioOutputLock)
                                 {
-                                    ConsoleExt.WriteLine("[Audio Manager] Audio queue locked.");
+                                    Console.WriteLine("[Audio Manager] Audio queue locked.");
                                     WasapiOut AudioOutput = AudioDeviceSpecificWasapiOut();
                                     float volume = QuickSettings.Instance.alertVolume / 10f;
                                     AudioOutput.Init(mf);
@@ -725,19 +725,19 @@ namespace SharpAlert
                                     }
                                     if (HoldIt)
                                     {
-                                        ConsoleExt.WriteLine("[Audio Manager] Audio cleared from queue and unlocked.");
+                                        Console.WriteLine("[Audio Manager] Audio cleared from queue and unlocked.");
                                         return;
                                     }
                                     //if (TTS) TTSOutputs.Remove(AudioOutput);
                                     //else Outputs.Remove(AudioOutput);
                                     //AudioOutput.Dispose();
                                 }
-                                ConsoleExt.WriteLine("[Audio Manager] Audio queue unlocked.");
+                                Console.WriteLine("[Audio Manager] Audio queue unlocked.");
                             }
                         }
                         catch (Exception ex)
                         {
-                            ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                            Console.WriteLine($"[Audio Manager] {ex.Message}");
                             lock (notify)
                             {
                                 notify.BalloonTipTitle = "SharpAlert is having issues";
@@ -751,7 +751,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                Console.WriteLine($"[Audio Manager] {ex.Message}");
             }
         }
 
@@ -761,7 +761,7 @@ namespace SharpAlert
             {
                 if (UsingLegacyAudioPlayer)
                 {
-                    ConsoleExt.WriteLine("[Audio Manager] Preparing to play unmanaged audio in the current thread (legacy).");
+                    Console.WriteLine("[Audio Manager] Preparing to play unmanaged audio in the current thread (legacy).");
                     lock (LegacyAudioPlayer)
                     {
                         LegacyAudioPlayer.Stream = unmanaged;
@@ -770,7 +770,7 @@ namespace SharpAlert
                 }
                 else
                 {
-                    ConsoleExt.WriteLine("[Audio Manager] Preparing to play in the current thread.");
+                    Console.WriteLine("[Audio Manager] Preparing to play in the current thread.");
                     using (MemoryStream stream = new MemoryStream())
                     {
                         unmanaged.CopyTo(stream);
@@ -788,7 +788,7 @@ namespace SharpAlert
                             }
                             if (HoldIt)
                             {
-                                ConsoleExt.WriteLine("[Audio Manager] Audio closed.");
+                                Console.WriteLine("[Audio Manager] Audio closed.");
                                 return;
                             }
                         }
@@ -797,7 +797,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                Console.WriteLine($"[Audio Manager] {ex.Message}");
                 lock (notify)
                 {
                     notify.BalloonTipTitle = "SharpAlert is having issues";
@@ -842,13 +842,13 @@ namespace SharpAlert
                 {
                     void playAudio()
                     {
-                        ConsoleExt.WriteLine("[Audio Manager] Queued TTS audio.");
+                        Console.WriteLine("[Audio Manager] Queued TTS audio.");
                         try
                         {
                             lock (AudioOutputLock)
                             {
                                 //LockedQueue = true;
-                                ConsoleExt.WriteLine("[Audio Manager] Audio queue locked.");
+                                Console.WriteLine("[Audio Manager] Audio queue locked.");
                                 using (MemoryStream stream = new MemoryStream())
                                 {
                                     //bool UseMaki = false;
@@ -862,7 +862,7 @@ namespace SharpAlert
                                             }
                                             catch (Exception ex)
                                             {
-                                                ConsoleExt.WriteLine(ex.Message);
+                                                Console.WriteLine(ex.Message);
                                                 //UseMaki = true;
                                             }
                                         }
@@ -911,7 +911,7 @@ namespace SharpAlert
                                             }
                                             if (TTSHoldIt)
                                             {
-                                                ConsoleExt.WriteLine("[Audio Manager] Audio cleared from queue and unlocked.");
+                                                Console.WriteLine("[Audio Manager] Audio cleared from queue and unlocked.");
                                                 return;
                                             }
                                         }
@@ -921,7 +921,7 @@ namespace SharpAlert
                         }
                         catch (Exception ex)
                         {
-                            ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                            Console.WriteLine($"[Audio Manager] {ex.Message}");
                             lock (notify)
                             {
                                 notify.BalloonTipTitle = "SharpAlert is having issues";
@@ -930,7 +930,7 @@ namespace SharpAlert
                                 notify.ShowBalloonTip(5000);
                             }
                         }
-                        ConsoleExt.WriteLine("[Audio Manager] Audio queue unlocked.");
+                        Console.WriteLine("[Audio Manager] Audio queue unlocked.");
                     }
                     if (wait) playAudio();
                     else ThreadDrool.StartAndForget(() => playAudio());
@@ -939,7 +939,7 @@ namespace SharpAlert
             }
             catch (Exception ex)
             {
-                ConsoleExt.WriteLine($"[Audio Manager] {ex.Message}");
+                Console.WriteLine($"[Audio Manager] {ex.Message}");
             }
         }
     }
