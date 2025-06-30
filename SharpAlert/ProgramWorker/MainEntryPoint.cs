@@ -18,8 +18,8 @@ namespace SharpAlert
 {
     internal static class VersionInfo
     {
-        public static readonly int MajorVersion = 9;
-        public static readonly int MinorVersion = 2;
+        public static readonly int MajorVersion = 10;
+        public static readonly int MinorVersion = 0;
         public static readonly bool BetaVersion = true;
         public static readonly DateTime BetaTimeEnd = DateTime.ParseExact(
             "7/27/2025",

@@ -1,6 +1,6 @@
 ﻿namespace SharpAlert
 {
-    partial class ChooseStyleForm
+    partial class StyleConfigurationForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChooseStyleForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StyleConfigurationForm));
             this.DoneButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.TitleText = new System.Windows.Forms.Label();
@@ -255,7 +255,6 @@
             // 
             // statusWindowBox
             // 
-            this.statusWindowBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.statusWindowBox.AutoSize = true;
             this.statusWindowBox.Location = new System.Drawing.Point(214, 67);
             this.statusWindowBox.Name = "statusWindowBox";
@@ -316,7 +315,7 @@
             this.label11.TabIndex = 39;
             this.label11.Text = "Display where";
             // 
-            // ChooseStyleForm
+            // StyleConfigurationForm
             // 
             this.AcceptButton = this.DoneButton;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -351,7 +350,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "ChooseStyleForm";
+            this.Name = "StyleConfigurationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert - Style Selection";
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.ChooseRegionForm_HelpButtonClicked);

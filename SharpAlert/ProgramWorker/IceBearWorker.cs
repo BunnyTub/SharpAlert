@@ -78,7 +78,13 @@ namespace SharpAlert
                 {
                     if (DateTime.UtcNow >= VersionInfo.BetaTimeEnd)
                     {
-                        TimedForm tf = new TimedForm();
+                        TimedForm tf = new TimedForm(true);
+                        tf.ShowDialog();
+                        tf.Dispose();
+                    }
+                    else
+                    {
+                        TimedForm tf = new TimedForm(false);
                         tf.ShowDialog();
                         tf.Dispose();
                     }
@@ -106,20 +112,6 @@ namespace SharpAlert
             historyproc = new HistoryProcessor();
             Console.WriteLine("[Ice Bear] Initializing Hyper Server.");
             hyper = new HyperServer();
-
-            //QuickSettings.Instance.PropertyChanged += (objective, eventArgs) =>
-            //{
-            //    lock (ChangedPropertiesList)
-            //    {
-            //        if (!ChangedPropertiesList.Contains(eventArgs.PropertyName))
-            //            ChangedPropertiesList.Add(eventArgs.PropertyName);
-            //    }
-            //};
-
-            //QuickSettings.Instance.SettingsSaving += (objective, eventArgs) =>
-            //{
-            //    lock (ChangedPropertiesList) ChangedPropertiesList.Clear();
-            //};
                 
             Console.WriteLine("[Ice Bear] Starting services momentarily.");
 
@@ -136,7 +128,7 @@ namespace SharpAlert
                 ChooseRegionForm crf = new ChooseRegionForm(true);
                 crf.ShowDialog();
                 crf.Dispose();
-                ChooseStyleForm csf = new ChooseStyleForm(true);
+                StyleConfigurationForm csf = new StyleConfigurationForm(true);
                 csf.ShowDialog();
                 csf.Dispose();
                 ChooseAudioForm caf = new ChooseAudioForm(true);
@@ -192,6 +184,8 @@ namespace SharpAlert
                         }
                     }
                 };
+
+                // detect network outage at some point and notify the user
 
                 //SystemEvents.SessionEnding += (a, b) =>
                 //{

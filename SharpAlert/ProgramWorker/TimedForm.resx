@@ -120,6 +120,11 @@
   <metadata name="ToolTipInformation.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>27, 16</value>
   </metadata>
+  <data name="label3.Text" xml:space="preserve">
+    <value>You are using a copy of SharpAlert that is intended for beta testing. Please report problems found while using this version, as it is still within beta support.
+
+This dialog closes automatically after 15 seconds.</value>
+  </data>
   <metadata name="AutoClose.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>182, 16</value>
   </metadata>

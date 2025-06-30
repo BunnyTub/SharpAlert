@@ -111,7 +111,7 @@ namespace SharpAlert
         public string ProgramVoice { get; set; } = string.Empty;
         public string ProgramAudioOutput { get; set; } = string.Empty;
         // "MakiVersion" is unused.
-        public string MakiVersion { get; set; } = string.Empty;
+        //public string MakiVersion { get; set; } = string.Empty;
         // Data Structure
         public int storedMaxSize { get; set; } = 500;
         // First-run
@@ -132,6 +132,7 @@ namespace SharpAlert
         public bool DiscordWebhookRelayLocally { get; set; } = false;
         public bool DiscordWebhookDisableHeartbeat { get; set; } = false;
         // Server
+        public bool EnableServer { get; set; } = false;
         public string ServerUsername { get; set; } = "username";
         public string ServerPassword { get; set; } = "password";
         // Categories

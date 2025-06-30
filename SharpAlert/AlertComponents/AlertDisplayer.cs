@@ -154,9 +154,12 @@ namespace SharpAlert
 
         private static readonly object PopupLock = new object();
 
+        /// <summary>
+        /// The time in seconds to wait until the next alert dialog can be shown.
+        /// </summary>
         public static int DeadTimeOverride = 0;
 
-        public static void ShowPopup(AlertDisplayerInfo alert)
+        private static void ShowPopup(AlertDisplayerInfo alert)
         {
             lock (PopupLock)
             {
@@ -211,7 +214,7 @@ namespace SharpAlert
                                 alert.AudioFiles.FirstOrEmpty(),
                                 alert.ImageFiles.FirstOrEmpty(),
                                 alert.MsgType,
-                                "???");
+                                alert.Severity);
                             raf.ShowDialog();
                             break;
                         case 1:
@@ -253,6 +256,20 @@ namespace SharpAlert
                                 alert.MsgType);
                             saf.ShowDialog();
                             break;
+                        case 4:
+                            // MultiAlertForm
+                            if (saf == null || saf.IsDisposed) saf = new ScrollAlertForm();
+                            saf.UpdateFields(alert.Identifier,
+                                alert.EventTypeFull,
+                                alert._AlertText.Intro,
+                                alert._AlertText.Body,
+                                alert.PrimaryURL,
+                                alert.AudioFiles.FirstOrEmpty(),
+                                alert.ImageFiles.FirstOrEmpty(),
+                                alert.MsgType);
+                            saf.ShowDialog();
+                            break;
+
                     }
 
                     notify.Icon = Resources.TrayLightIcon;

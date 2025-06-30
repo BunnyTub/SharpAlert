@@ -32,15 +32,16 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServerConfigurationForm));
             this.BusyLockText = new System.Windows.Forms.Label();
             this.ApplicationTypeGroup = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.ConfigurationPanel = new System.Windows.Forms.Panel();
-            this.DisableDialogsBox = new System.Windows.Forms.CheckBox();
-            this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
-            this.label6 = new System.Windows.Forms.Label();
-            this.WebServerUsernameInput = new System.Windows.Forms.TextBox();
+            this.SaveServerSettingsButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.WebServerPasswordInput = new System.Windows.Forms.TextBox();
-            this.SaveServerSettingsButton = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.WebServerUsernameInput = new System.Windows.Forms.TextBox();
+            this.DisableDialogsBox = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.ConfigurationPanel = new System.Windows.Forms.Panel();
+            this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
+            this.EnableServerBox = new System.Windows.Forms.CheckBox();
             this.ApplicationTypeGroup.SuspendLayout();
             this.ConfigurationPanel.SuspendLayout();
             this.SuspendLayout();
@@ -61,6 +62,7 @@
             this.ApplicationTypeGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.ApplicationTypeGroup.Controls.Add(this.EnableServerBox);
             this.ApplicationTypeGroup.Controls.Add(this.SaveServerSettingsButton);
             this.ApplicationTypeGroup.Controls.Add(this.label2);
             this.ApplicationTypeGroup.Controls.Add(this.WebServerPasswordInput);
@@ -76,72 +78,20 @@
             this.ApplicationTypeGroup.TabStop = false;
             this.ApplicationTypeGroup.Text = "Server";
             // 
-            // label1
+            // SaveServerSettingsButton
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 17);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(303, 30);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "The server runs locally on port 5576.\r\nElevate the process to allow any inbound c" +
-    "onnections.";
-            // 
-            // ConfigurationPanel
-            // 
-            this.ConfigurationPanel.Controls.Add(this.ApplicationTypeGroup);
-            this.ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
-            this.ConfigurationPanel.Name = "ConfigurationPanel";
-            this.ConfigurationPanel.Size = new System.Drawing.Size(570, 151);
-            this.ConfigurationPanel.TabIndex = 9;
-            // 
-            // DisableDialogsBox
-            // 
-            this.DisableDialogsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.DisableDialogsBox.AutoSize = true;
-            this.DisableDialogsBox.Location = new System.Drawing.Point(427, 20);
-            this.DisableDialogsBox.Name = "DisableDialogsBox";
-            this.DisableDialogsBox.Size = new System.Drawing.Size(113, 19);
-            this.DisableDialogsBox.TabIndex = 14;
-            this.DisableDialogsBox.Text = "Disable dialogs";
-            this.ToolTipInformation.SetToolTip(this.DisableDialogsBox, "Causes the alert displayer to toggle the alert display boolean on for 5 seconds.\r" +
-        "\nUseful if you\'re only wanting to send alerts out via the web server, or for oth" +
-        "er purposes.");
-            this.DisableDialogsBox.UseVisualStyleBackColor = true;
-            // 
-            // ToolTipInformation
-            // 
-            this.ToolTipInformation.AutomaticDelay = 250;
-            this.ToolTipInformation.AutoPopDelay = 15000;
-            this.ToolTipInformation.BackColor = System.Drawing.Color.White;
-            this.ToolTipInformation.ForeColor = System.Drawing.Color.Black;
-            this.ToolTipInformation.InitialDelay = 250;
-            this.ToolTipInformation.IsBalloon = true;
-            this.ToolTipInformation.ReshowDelay = 50;
-            this.ToolTipInformation.ToolTipTitle = "What does this do?";
-            // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 82);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(66, 15);
-            this.label6.TabIndex = 16;
-            this.label6.Text = "Username";
-            // 
-            // WebServerUsernameInput
-            // 
-            this.WebServerUsernameInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.WebServerUsernameInput.BackColor = System.Drawing.Color.Black;
-            this.WebServerUsernameInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.WebServerUsernameInput.ForeColor = System.Drawing.Color.White;
-            this.WebServerUsernameInput.Location = new System.Drawing.Point(6, 100);
-            this.WebServerUsernameInput.Name = "WebServerUsernameInput";
-            this.WebServerUsernameInput.Size = new System.Drawing.Size(170, 21);
-            this.WebServerUsernameInput.TabIndex = 15;
-            this.ToolTipInformation.SetToolTip(this.WebServerUsernameInput, "The server username used to authenticate with administrative pages/actions.");
-            this.WebServerUsernameInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.WebServerUsernameInput_KeyDown);
+            this.SaveServerSettingsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.SaveServerSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.SaveServerSettingsButton.ForeColor = System.Drawing.Color.White;
+            this.SaveServerSettingsButton.Location = new System.Drawing.Point(415, 98);
+            this.SaveServerSettingsButton.Name = "SaveServerSettingsButton";
+            this.SaveServerSettingsButton.Size = new System.Drawing.Size(125, 23);
+            this.SaveServerSettingsButton.TabIndex = 19;
+            this.SaveServerSettingsButton.Text = "Modify Server";
+            this.ToolTipInformation.SetToolTip(this.SaveServerSettingsButton, "Applies server settings immediately.");
+            this.SaveServerSettingsButton.UseMnemonic = false;
+            this.SaveServerSettingsButton.UseVisualStyleBackColor = false;
+            this.SaveServerSettingsButton.Click += new System.EventHandler(this.SaveServerSettingsButton_Click);
             // 
             // label2
             // 
@@ -167,20 +117,86 @@
             this.WebServerPasswordInput.UseSystemPasswordChar = true;
             this.WebServerPasswordInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.WebServerPasswordInput_KeyDown);
             // 
-            // SaveServerSettingsButton
+            // label6
             // 
-            this.SaveServerSettingsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.SaveServerSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SaveServerSettingsButton.ForeColor = System.Drawing.Color.White;
-            this.SaveServerSettingsButton.Location = new System.Drawing.Point(415, 98);
-            this.SaveServerSettingsButton.Name = "SaveServerSettingsButton";
-            this.SaveServerSettingsButton.Size = new System.Drawing.Size(125, 23);
-            this.SaveServerSettingsButton.TabIndex = 19;
-            this.SaveServerSettingsButton.Text = "Modify Server";
-            this.ToolTipInformation.SetToolTip(this.SaveServerSettingsButton, "Applies server settings immediately.");
-            this.SaveServerSettingsButton.UseMnemonic = false;
-            this.SaveServerSettingsButton.UseVisualStyleBackColor = false;
-            this.SaveServerSettingsButton.Click += new System.EventHandler(this.SaveServerSettingsButton_Click);
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 82);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(66, 15);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "Username";
+            // 
+            // WebServerUsernameInput
+            // 
+            this.WebServerUsernameInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.WebServerUsernameInput.BackColor = System.Drawing.Color.Black;
+            this.WebServerUsernameInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.WebServerUsernameInput.ForeColor = System.Drawing.Color.White;
+            this.WebServerUsernameInput.Location = new System.Drawing.Point(6, 100);
+            this.WebServerUsernameInput.Name = "WebServerUsernameInput";
+            this.WebServerUsernameInput.Size = new System.Drawing.Size(170, 21);
+            this.WebServerUsernameInput.TabIndex = 15;
+            this.ToolTipInformation.SetToolTip(this.WebServerUsernameInput, "The server username used to authenticate with administrative pages/actions.");
+            this.WebServerUsernameInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.WebServerUsernameInput_KeyDown);
+            // 
+            // DisableDialogsBox
+            // 
+            this.DisableDialogsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.DisableDialogsBox.AutoSize = true;
+            this.DisableDialogsBox.Location = new System.Drawing.Point(427, 20);
+            this.DisableDialogsBox.Name = "DisableDialogsBox";
+            this.DisableDialogsBox.Size = new System.Drawing.Size(113, 19);
+            this.DisableDialogsBox.TabIndex = 14;
+            this.DisableDialogsBox.Text = "Disable dialogs";
+            this.ToolTipInformation.SetToolTip(this.DisableDialogsBox, "Causes the alert displayer to toggle the alert display boolean on for 5 seconds.\r" +
+        "\nUseful if you\'re only wanting to send alerts out via the web server, or for oth" +
+        "er purposes.");
+            this.DisableDialogsBox.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 17);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(303, 30);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "The server runs locally on port 5576.\r\nElevate the process to allow any inbound c" +
+    "onnections.";
+            // 
+            // ConfigurationPanel
+            // 
+            this.ConfigurationPanel.Controls.Add(this.ApplicationTypeGroup);
+            this.ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
+            this.ConfigurationPanel.Name = "ConfigurationPanel";
+            this.ConfigurationPanel.Size = new System.Drawing.Size(570, 151);
+            this.ConfigurationPanel.TabIndex = 9;
+            // 
+            // ToolTipInformation
+            // 
+            this.ToolTipInformation.AutomaticDelay = 250;
+            this.ToolTipInformation.AutoPopDelay = 15000;
+            this.ToolTipInformation.BackColor = System.Drawing.Color.White;
+            this.ToolTipInformation.ForeColor = System.Drawing.Color.Black;
+            this.ToolTipInformation.InitialDelay = 250;
+            this.ToolTipInformation.IsBalloon = true;
+            this.ToolTipInformation.ReshowDelay = 50;
+            this.ToolTipInformation.ToolTipTitle = "What does this do?";
+            // 
+            // EnableServerBox
+            // 
+            this.EnableServerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.EnableServerBox.AutoSize = true;
+            this.EnableServerBox.Location = new System.Drawing.Point(427, 45);
+            this.EnableServerBox.Name = "EnableServerBox";
+            this.EnableServerBox.Size = new System.Drawing.Size(102, 19);
+            this.EnableServerBox.TabIndex = 20;
+            this.EnableServerBox.Text = "Enable server";
+            this.ToolTipInformation.SetToolTip(this.EnableServerBox, "Causes the alert displayer to toggle the alert display boolean on for 5 seconds.\r" +
+        "\nUseful if you\'re only wanting to send alerts out via the web server, or for oth" +
+        "er purposes.");
+            this.EnableServerBox.UseVisualStyleBackColor = true;
             // 
             // ServerConfigurationForm
             // 
@@ -218,5 +234,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox WebServerUsernameInput;
         private System.Windows.Forms.Button SaveServerSettingsButton;
+        private System.Windows.Forms.CheckBox EnableServerBox;
     }
 }

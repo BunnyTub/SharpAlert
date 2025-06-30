@@ -95,8 +95,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(342, 41);
             this.label2.TabIndex = 26;
-            this.label2.Text = "This dialog has appeared, because you are using a beta build of SharpAlert beyond" +
-    " a certain internal date and time.";
+            this.label2.Text = "This dialog cannot be disabled in beta versions of SharpAlert.";
             this.label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // label3
@@ -107,8 +106,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(400, 91);
             this.label3.TabIndex = 27;
-            this.label3.Text = "You are using a copy of SharpAlert that is intended for beta testing. You can sti" +
-    "ll continue using this version, however, do not expect support or assistance.";
+            this.label3.Text = resources.GetString("label3.Text");
             // 
             // AutoClose
             // 

@@ -7,9 +7,9 @@ using static SharpAlert.MainEntryPoint;
 
 namespace SharpAlert
 {
-    public partial class ChooseStyleForm : Form
+    public partial class StyleConfigurationForm : Form
     {
-        public ChooseStyleForm(bool ShowNextInsteadOfDone)
+        public StyleConfigurationForm(bool ShowNextInsteadOfDone)
         {
             InitializeComponent();
             if (ShowNextInsteadOfDone) DoneButton.Text = "Next";
@@ -56,8 +56,13 @@ namespace SharpAlert
                 },
                 new ComboItem
                 {
-                    // 2
+                    // 3
                     FriendlyName = "Full scroll"
+                },
+                new ComboItem
+                {
+                    // 4
+                    FriendlyName = "Multi screen"
                 },
             };
             AlertFullscreenCombo.SelectedIndex = QuickSettings.Instance.alertDisplayType;

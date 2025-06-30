@@ -33,11 +33,11 @@ namespace SharpAlert.ConfigurationDialogs
             acf.ShowDialog();
         }
 
-        private ChooseStyleForm csf = null;
+        private StyleConfigurationForm csf = null;
 
         private void StyleSettingsButton_Click(object sender, EventArgs e)
         {
-            if (csf == null || csf.IsDisposed) csf = new ChooseStyleForm(false);
+            if (csf == null || csf.IsDisposed) csf = new StyleConfigurationForm(false);
             csf.ShowDialog();
         }
 

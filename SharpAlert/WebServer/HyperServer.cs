@@ -40,6 +40,8 @@ namespace SharpAlert
 
         public void ServiceRun()
         {
+            if (!QuickSettings.Instance.EnableServer) return;
+
             using (var listener = new HttpListener())
             {
                 if (IsAdministrator)

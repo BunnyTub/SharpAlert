@@ -249,34 +249,34 @@
     <Compile Include="DisplayDialogs\Panels\AlertInfoHolder.Designer.cs">
       <DependentUpon>AlertInfoHolder.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProgramWorker\ChooseLocationForm.cs">
+    <Compile Include="ConfigurationDialogs\ChooseLocationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProgramWorker\ChooseLocationForm.Designer.cs">
+    <Compile Include="ConfigurationDialogs\ChooseLocationForm.Designer.cs">
       <DependentUpon>ChooseLocationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProgramWorker\ChooseOwnershipForm.cs">
+    <Compile Include="ConfigurationDialogs\ChooseOwnershipForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProgramWorker\ChooseOwnershipForm.Designer.cs">
+    <Compile Include="ConfigurationDialogs\ChooseOwnershipForm.Designer.cs">
       <DependentUpon>ChooseOwnershipForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProgramWorker\ChooseAudioForm.cs">
+    <Compile Include="ConfigurationDialogs\ChooseAudioForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProgramWorker\ChooseAudioForm.Designer.cs">
+    <Compile Include="ConfigurationDialogs\ChooseAudioForm.Designer.cs">
       <DependentUpon>ChooseAudioForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProgramWorker\ChooseStyleForm.cs">
+    <Compile Include="ConfigurationDialogs\StyleConfigurationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProgramWorker\ChooseStyleForm.Designer.cs">
-      <DependentUpon>ChooseStyleForm.cs</DependentUpon>
+    <Compile Include="ConfigurationDialogs\StyleConfigurationForm.Designer.cs">
+      <DependentUpon>StyleConfigurationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProgramWorker\ChooseRegionForm.cs">
+    <Compile Include="ConfigurationDialogs\ChooseRegionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProgramWorker\ChooseRegionForm.Designer.cs">
+    <Compile Include="ConfigurationDialogs\ChooseRegionForm.Designer.cs">
       <DependentUpon>ChooseRegionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgramWorker\HeartbeatWorker.cs" />
@@ -420,19 +420,19 @@
     <EmbeddedResource Include="DisplayDialogs\TeleIdleForm.resx">
       <DependentUpon>TeleIdleForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProgramWorker\ChooseLocationForm.resx">
+    <EmbeddedResource Include="ConfigurationDialogs\ChooseLocationForm.resx">
       <DependentUpon>ChooseLocationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProgramWorker\ChooseOwnershipForm.resx">
+    <EmbeddedResource Include="ConfigurationDialogs\ChooseOwnershipForm.resx">
       <DependentUpon>ChooseOwnershipForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProgramWorker\ChooseAudioForm.resx">
+    <EmbeddedResource Include="ConfigurationDialogs\ChooseAudioForm.resx">
       <DependentUpon>ChooseAudioForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProgramWorker\ChooseStyleForm.resx">
-      <DependentUpon>ChooseStyleForm.cs</DependentUpon>
+    <EmbeddedResource Include="ConfigurationDialogs\StyleConfigurationForm.resx">
+      <DependentUpon>StyleConfigurationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProgramWorker\ChooseRegionForm.resx">
+    <EmbeddedResource Include="ConfigurationDialogs\ChooseRegionForm.resx">
       <DependentUpon>ChooseRegionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgramWorker\SetupDoneForm.resx">

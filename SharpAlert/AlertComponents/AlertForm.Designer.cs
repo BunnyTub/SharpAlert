@@ -102,7 +102,7 @@
             this.SpeakerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SpeakerButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
             this.SpeakerButton.ForeColor = System.Drawing.Color.Black;
-            this.SpeakerButton.Location = new System.Drawing.Point(557, 329);
+            this.SpeakerButton.Location = new System.Drawing.Point(557, 328);
             this.SpeakerButton.Name = "SpeakerButton";
             this.SpeakerButton.Size = new System.Drawing.Size(35, 35);
             this.SpeakerButton.TabIndex = 1;
@@ -120,7 +120,7 @@
             this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DismissButton.Font = new System.Drawing.Font("Arial", 16F);
             this.DismissButton.ForeColor = System.Drawing.Color.Black;
-            this.DismissButton.Location = new System.Drawing.Point(598, 329);
+            this.DismissButton.Location = new System.Drawing.Point(598, 328);
             this.DismissButton.Name = "DismissButton";
             this.DismissButton.Size = new System.Drawing.Size(115, 35);
             this.DismissButton.TabIndex = 0;
@@ -155,6 +155,7 @@
             this.AlertIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.AlertIcon.TabIndex = 2;
             this.AlertIcon.TabStop = false;
+            this.AlertIcon.Click += new System.EventHandler(this.AlertIcon_Click);
             this.AlertIcon.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AlertIcon_MouseDown);
             // 
             // SubtitlePanel
@@ -213,7 +214,7 @@
             this.OutlineContainerPanel.Margin = new System.Windows.Forms.Padding(0);
             this.OutlineContainerPanel.Name = "OutlineContainerPanel";
             this.OutlineContainerPanel.Padding = new System.Windows.Forms.Padding(4);
-            this.OutlineContainerPanel.Size = new System.Drawing.Size(720, 371);
+            this.OutlineContainerPanel.Size = new System.Drawing.Size(720, 370);
             this.OutlineContainerPanel.TabIndex = 12;
             this.OutlineContainerPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.OutlineContainerPanel_Paint);
             // 
@@ -224,7 +225,7 @@
             this.AlertLinkText.BackColor = System.Drawing.Color.Transparent;
             this.AlertLinkText.Font = new System.Drawing.Font("Arial", 12F);
             this.AlertLinkText.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
-            this.AlertLinkText.Location = new System.Drawing.Point(9, 329);
+            this.AlertLinkText.Location = new System.Drawing.Point(9, 328);
             this.AlertLinkText.Margin = new System.Windows.Forms.Padding(0);
             this.AlertLinkText.Name = "AlertLinkText";
             this.AlertLinkText.Size = new System.Drawing.Size(545, 35);
@@ -248,7 +249,7 @@
             this.AlertText.Name = "AlertText";
             this.AlertText.ReadOnly = true;
             this.AlertText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.AlertText.Size = new System.Drawing.Size(711, 242);
+            this.AlertText.Size = new System.Drawing.Size(711, 241);
             this.AlertText.TabIndex = 8;
             // 
             // TitleText
@@ -269,7 +270,7 @@
             this.ResizeBottomRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ResizeBottomRight.BackColor = System.Drawing.Color.Transparent;
             this.ResizeBottomRight.Cursor = System.Windows.Forms.Cursors.SizeNWSE;
-            this.ResizeBottomRight.Location = new System.Drawing.Point(704, 355);
+            this.ResizeBottomRight.Location = new System.Drawing.Point(704, 354);
             this.ResizeBottomRight.Name = "ResizeBottomRight";
             this.ResizeBottomRight.Size = new System.Drawing.Size(16, 16);
             this.ResizeBottomRight.TabIndex = 10;
@@ -299,7 +300,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(720, 371);
+            this.ClientSize = new System.Drawing.Size(720, 370);
             this.ControlBox = false;
             this.Controls.Add(this.OutlineContainerPanel);
             this.DoubleBuffered = true;

@@ -105,6 +105,7 @@ namespace SharpAlert
             }
             else
             {
+                Console.WriteLine($"[Alert Processor] Processing of alerts is currently disabled.");
                 return new AlertInfo
                 {
                     AlertDiscardReason = "Processing of alerts is currently disabled."

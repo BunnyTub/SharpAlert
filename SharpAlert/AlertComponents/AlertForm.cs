@@ -21,6 +21,7 @@ namespace SharpAlert
         private string AlertAudioUrlStr = string.Empty;
         private string AlertImageUrlStr = string.Empty;
         private string AlertType = string.Empty;
+        private string AlertSeverity = string.Empty;
 
         private const int HWND_TOPMOST = -1;
         private const int SWP_NOMOVE = 0x0002;
@@ -107,6 +108,7 @@ namespace SharpAlert
             AlertAudioUrlStr = audio;
             AlertImageUrlStr = image;
             AlertType = type;
+            AlertSeverity = severity;
             AlertText.SelectionLength = 0;
             AlertText.SelectionStart = 0;
 
@@ -572,6 +574,8 @@ namespace SharpAlert
 
         private void SubtitleText_DoubleClick(object sender, EventArgs e)
         {
+            // Twitter Banner Resizing
+            //this.Height = 240;
         }
 
         private void ShowImage()
@@ -613,6 +617,10 @@ namespace SharpAlert
         {
             DeadTimeOverride = 30;
             this.Close();
+        }
+
+        private void AlertIcon_Click(object sender, EventArgs e)
+        {
         }
     }
 }
