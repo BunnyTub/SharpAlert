@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpAlert
+namespace SharpAlert.AlertComponents
 {
     internal class AlertFormDetails
     {
     }
 }
+

@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace SharpAlert
+namespace SharpAlert.AlertComponents
 {
     public static class AlertDetails
     {
@@ -3635,3 +3635,4 @@ namespace SharpAlert
         };
     }
 }
+

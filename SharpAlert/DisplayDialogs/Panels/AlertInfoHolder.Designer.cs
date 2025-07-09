@@ -1,4 +1,4 @@
-﻿namespace SharpAlert
+﻿namespace SharpAlert.DisplayDialogs.Panels
 {
     partial class AlertInfoHolder
     {
@@ -97,3 +97,4 @@
         private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
+

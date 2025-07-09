@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using static SharpAlert.MainEntryPoint;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
 
-namespace SharpAlert
+namespace SharpAlert.ConfigurationDialogs
 {
     public partial class DiscordConfigurationForm : Form
     {
@@ -89,3 +89,4 @@ namespace SharpAlert
         }
     }
 }
+

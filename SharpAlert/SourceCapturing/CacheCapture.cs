@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading;
 
-namespace SharpAlert
+namespace SharpAlert.SourceCapturing
 {
     public class CacheCapture
     {

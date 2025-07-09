@@ -4,16 +4,15 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Forms;
-using static SharpAlert.MainEntryPoint;
 using static SharpAlert.RegexList;
-using static SharpAlert.AlertDisplayer;
+using static SharpAlert.AlertComponents.AlertDisplayer;
+using static SharpAlert.AlertComponents.AlertDetails;
 using System.Drawing;
-using static SharpAlert.AlertDetails;
-using System.Diagnostics;
+using SharpAlert.ProgramWorker;
+using System.Runtime.InteropServices;
 
-namespace SharpAlert
+namespace SharpAlert.AlertComponents
 {
     public class AlertProcessor
     {
@@ -74,13 +73,15 @@ namespace SharpAlert
                 if (value > _AlertsProcessing) AlertsProcessedBeforeGC++;
                 _AlertsProcessing = value;
 
-                if (AlertsProcessedBeforeGC >= 50)
+                if (AlertsProcessedBeforeGC >= 100)
                 {
                     AlertsProcessedBeforeGC = 0;
                     ThreadDrool.StartAndForget(() =>
                     {
-                        Console.WriteLine("[Alert Processor] Collecting garbage globally.");
-                        GC.Collect();
+                        //Console.WriteLine("[Alert Processor] Collecting garbage globally.");
+                        //GC.Collect();
+                        //GC.WaitForPendingFinalizers();
+                        //GC.WaitForFullGCComplete();
                     });
                 }
             }
@@ -144,7 +145,7 @@ namespace SharpAlert
 
                 //DiscordWebhook.SendUnformattedMessage($"Processing incoming alert item. ({startProc:O} UTC)");
 
-                bool AnyAlertRelayed = false;
+                //bool AnyAlertRelayed = false;
                 //bool UsedDiscordHook = false;
 
                 string Sent = SentRegex.MatchOrDefault(relayItem.Data, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
@@ -542,10 +543,10 @@ namespace SharpAlert
                     }
                 }
 
-                if (AnyAlertRelayed)
-                {
-                    AlertsRelayed++;
-                }
+                //if (AnyAlertRelayed)
+                //{
+                AlertsRelayed++;
+                //}
 
                 Console.WriteLine($"[Alert Processor] Processed all available entries. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
 
@@ -1814,3 +1815,4 @@ namespace SharpAlert
         }
     }
 }
+

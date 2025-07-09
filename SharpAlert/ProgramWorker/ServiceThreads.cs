@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace SharpAlert
+namespace SharpAlert.ProgramWorker
 {
     public static class ServiceThreads
     {
@@ -13,6 +13,7 @@ namespace SharpAlert
         public static Thread feedThread = DummyThread();
         public static Thread atomfeedThread = DummyThread();
         public static Thread directfeedThread = DummyThread();
+        public static Thread idapfeedThread = DummyThread();
         public static Thread cacheThread = DummyThread();
         public static Thread dataProcThread = DummyThread();
         public static Thread historyProcThread = DummyThread();
@@ -21,3 +22,4 @@ namespace SharpAlert
         public static Thread heartbeatThread = DummyThread();
     }
 }
+

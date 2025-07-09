@@ -8,7 +8,7 @@ using System.Text;
 using EASEncoder.Models;
 //using SpeechLib;
 
-namespace EASEncoderFusion
+namespace SharpAlert.SharpEncoder
 {
     public static class EASEncoder
     {

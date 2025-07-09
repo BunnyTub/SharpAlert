@@ -23,7 +23,11 @@ namespace SharpAlert
         //    return match.Success ? match.Groups[1].Value : defaultValue;
         //}
 
-		// for some reason, the Regex engine ignores forward slashes as syntax. It does make things a little cleaner though.
+        // for some reason, the Regex engine ignores forward slashes as syntax. It does make things a little cleaner though.
+
+        public static readonly Regex HrefRegex = new Regex(
+			@"<a\s+[^>]*?href\s*=\s*[""']([^""']+)[""']", // yeah I just copied this, I can't even read it, but at least it works.
+			RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public static readonly Regex ReplayedAlertRegex = new Regex(
             @"<SharpAlertReplay>\s*(.*?)\s*</SharpAlertReplay>",
@@ -249,3 +253,5 @@ namespace SharpAlert
              RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
     }
 }
+
+

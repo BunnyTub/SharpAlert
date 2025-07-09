@@ -1,16 +1,15 @@
-﻿using SharpAlert.Properties;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Linq;
 using static SharpAlert.AudioManager;
-using static SharpAlert.MainEntryPoint;
-using static SharpAlert.AlertProcessor;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
+using static SharpAlert.AlertComponents.AlertProcessor;
 
 
-namespace SharpAlert
+namespace SharpAlert.AlertComponents
 {
     public partial class ScrollAlertForm : Form
     {
@@ -103,6 +102,7 @@ namespace SharpAlert
             AlertIntroTextStr = intro;
             AlertTextStr = text;
             AlertText.Text = $"{AlertIntroTextStr.Replace("\r\n", "\x20".Trim())} {AlertTextStr.Replace("\r\n", "\x20".Trim())}";
+            //ScrollBrowser.DocumentText = $"<center><marquee scrollamount=\"10\" bgcolor=\"red\" style=\"font-size: 50pt; font-family: Arial;\"><h1>{AlertTextStr}</h1></marquee></center>";
             AlertUrlStr = url;
             AlertAudioUrlStr = audio;
             AlertImageUrlStr = image;
@@ -453,3 +453,4 @@ namespace SharpAlert
         }
     }
 }
+

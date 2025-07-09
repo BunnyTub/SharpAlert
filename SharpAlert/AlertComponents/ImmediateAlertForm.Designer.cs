@@ -1,4 +1,4 @@
-﻿namespace SharpAlert
+﻿namespace SharpAlert.AlertComponents
 {
     partial class ImmediateAlertForm
     {
@@ -272,4 +272,5 @@
         //private GMap.NET.WindowsForms.GMapControl GMapPoint;
     }
 }
+
 

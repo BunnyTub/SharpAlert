@@ -1,4 +1,4 @@
-﻿namespace SharpAlert
+﻿namespace SharpAlert.ConfigurationDialogs
 {
     partial class ChooseRegionForm
     {
@@ -39,7 +39,7 @@
             this.RegionMexicoBox = new System.Windows.Forms.CheckBox();
             this.LinkButton = new System.Windows.Forms.Button();
             this.RegionUnitedStatesNWSBox = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.RegionBrazilBox = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -160,19 +160,18 @@
         "");
             this.RegionUnitedStatesNWSBox.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // RegionBrazilBox
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new System.Drawing.Font("Arial", 12F);
-            this.checkBox1.Location = new System.Drawing.Point(111, 154);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(193, 22);
-            this.checkBox1.TabIndex = 16;
-            this.checkBox1.Text = "Brazil (IDAP) - Disabled";
-            this.ToolTipInformation.SetToolTip(this.checkBox1, "You can receive alerts from Brazil via IDAP (Divulgação de Alertas Públicos).");
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.Visible = false;
+            this.RegionBrazilBox.AutoSize = true;
+            this.RegionBrazilBox.Font = new System.Drawing.Font("Arial", 12F);
+            this.RegionBrazilBox.Location = new System.Drawing.Point(111, 154);
+            this.RegionBrazilBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
+            this.RegionBrazilBox.Name = "RegionBrazilBox";
+            this.RegionBrazilBox.Size = new System.Drawing.Size(250, 22);
+            this.RegionBrazilBox.TabIndex = 16;
+            this.RegionBrazilBox.Text = "Brazil (IDAP) [Hover for warning]";
+            this.ToolTipInformation.SetToolTip(this.RegionBrazilBox, resources.GetString("RegionBrazilBox.ToolTip"));
+            this.RegionBrazilBox.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -192,7 +191,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(532, 217);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.RegionBrazilBox);
             this.Controls.Add(this.RegionUnitedStatesNWSBox);
             this.Controls.Add(this.LinkButton);
             this.Controls.Add(this.RegionMexicoBox);
@@ -234,6 +233,6 @@
         private System.Windows.Forms.CheckBox RegionMexicoBox;
         private System.Windows.Forms.Button LinkButton;
         private System.Windows.Forms.CheckBox RegionUnitedStatesNWSBox;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox RegionBrazilBox;
     }
 }

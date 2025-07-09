@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace SharpAlert
+namespace SharpAlert.ConfigurationDialogs
 {
     public partial class CreditsForm : Form
     {
@@ -33,3 +33,4 @@ namespace SharpAlert
 #pragma warning restore IDE1006 // Naming Styles
     }
 }
+

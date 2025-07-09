@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using SharpAlert.Properties;
-using static SharpAlert.AlertProcessor;
+using static SharpAlert.AlertComponents.AlertProcessor;
 using static SharpAlert.AudioManager;
-using static SharpAlert.MainEntryPoint;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
+using static SharpAlert.ProgramWorker.NotificationWorker;
 
-namespace SharpAlert
+namespace SharpAlert.AlertComponents
 {
     public static class AlertDisplayer
     {
@@ -54,7 +55,7 @@ namespace SharpAlert
 
         public static void StartDisplayerCallLoop()
         {
-            ThreadDrool.StartCatchAllThread(() =>
+            ThreadDrool.StartCatchAllThread("Displayer Loop", () =>
             {
                 Console.WriteLine($"[Displayer Loop] Initializing call loop.");
                 while (true)
@@ -79,7 +80,7 @@ namespace SharpAlert
                         Console.WriteLine($"[Displayer Loop] {ex.Message}");
                     }
                 }
-            }, true);
+            }, true, ApartmentState.STA);
         }
 
         private static void ProcessQueueItem(AlertDisplayerInfo alert)
@@ -114,7 +115,7 @@ namespace SharpAlert
 
                 Console.WriteLine("[Alert Displayer] Beginning alert.");
 
-                notify.Icon = Resources.TrayAlertIcon;
+                Notify.Icon = Resources.TrayAlertIcon;
 
                 Console.WriteLine("[Alert Displayer] Beginning playback of start tone.");
                 PlayStartToneFile(alert.Severity, true);
@@ -126,7 +127,7 @@ namespace SharpAlert
                 PlayEndToneFile(true);
                 //PlayFromManagedSource(GenerateHeaderStream("NNNN"));
 
-                notify.Icon = Resources.TrayLightIcon;
+                Notify.Icon = Resources.TrayLightIcon;
 
                 Console.WriteLine("[Alert Displayer] Ending alert.");
 
@@ -196,7 +197,7 @@ namespace SharpAlert
                 {
                     AlertDisplaying = true;
 
-                    notify.Icon = Resources.TrayAlertIcon;
+                    Notify.Icon = Resources.TrayAlertIcon;
 
                     relayPing = true;
 
@@ -272,7 +273,7 @@ namespace SharpAlert
 
                     }
 
-                    notify.Icon = Resources.TrayLightIcon;
+                    Notify.Icon = Resources.TrayLightIcon;
 
                     AlertDisplaying = false;
 
@@ -311,7 +312,7 @@ namespace SharpAlert
 
         public static void StartRelayCallLoop()
         {
-            ThreadDrool.StartCatchAllThread(() =>
+            ThreadDrool.StartCatchAllThread("Relay Ping", () =>
             {
                 relay = new RelayController();
                 Console.WriteLine("[Relay Ping] Getting HID USB relay.");
@@ -365,7 +366,7 @@ namespace SharpAlert
 
         public static void StartAudioCallLoop()
         {
-            ThreadDrool.StartCatchAllThread(() =>
+            ThreadDrool.StartCatchAllThread("Audio Loop", () =>
             {
                 while (true)
                 {
@@ -385,7 +386,7 @@ namespace SharpAlert
 
         public static void StartShakeCallLoop()
         {
-            ThreadDrool.StartCatchAllThread(() =>
+            ThreadDrool.StartCatchAllThread("SHK Loop", () =>
             {
                 Console.WriteLine($"[SHK Loop] Initializing call loop.");
                 Application.EnableVisualStyles();
@@ -399,10 +400,10 @@ namespace SharpAlert
                         if (shk == null || shk.IsDisposed) shk = new ImmediateAlertForm();
                         //shk.UpdateFields(alert.Identifier, DialogAlertTitle, DialogAlertText.Intro, DialogAlertText.Body, DialogAlertURL, DialogAlertType, 16.74151, -95.09448);
                         relayPing = true;
-                        notify.Icon = Resources.TrayAlertIcon;
+                        Notify.Icon = Resources.TrayAlertIcon;
                         shk.ShowDialog();
                         shkPing = false;
-                        notify.Icon = Resources.TrayLightIcon;
+                        Notify.Icon = Resources.TrayLightIcon;
                     }
                     catch (Exception ex)
                     {
@@ -414,3 +415,4 @@ namespace SharpAlert
         }
     }
 }
+

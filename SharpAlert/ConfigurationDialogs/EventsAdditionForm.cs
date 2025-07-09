@@ -2,9 +2,10 @@
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using static SharpAlert.MainEntryPoint;
+using SharpAlert.AlertComponents;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
 
-namespace SharpAlert
+namespace SharpAlert.ConfigurationDialogs
 {
     public partial class EventsAdditionForm : Form
     {
@@ -75,3 +76,4 @@ namespace SharpAlert
         }
     }
 }
+

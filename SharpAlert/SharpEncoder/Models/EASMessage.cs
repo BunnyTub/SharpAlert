@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EASEncoder.Models.SAME;
 
-namespace EASEncoder.Models
+namespace SharpAlert.SharpEncoder.Models
 {
     public static class MessageRegions
     {

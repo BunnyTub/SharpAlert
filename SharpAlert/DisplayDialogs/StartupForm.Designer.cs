@@ -1,4 +1,4 @@
-﻿namespace SharpAlert
+﻿namespace SharpAlert.DisplayDialogs
 {
     partial class StartupForm
     {

@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using System.Linq;
 
-namespace SharpAlert
+namespace SharpAlert.AlertComponents
 {
     public partial class InfoForm : Form
     {
@@ -140,3 +140,4 @@ namespace SharpAlert
         }
     }
 }
+

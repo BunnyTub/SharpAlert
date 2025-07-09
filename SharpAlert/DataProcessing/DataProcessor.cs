@@ -1,16 +1,19 @@
 ﻿using System;
-using static SharpAlert.MainEntryPoint;
+using static SharpAlert.AlertComponents.AlertDisplayer;
+using static SharpAlert.AlertComponents.AlertProcessor;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
+using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.RegexList;
-using static SharpAlert.AlertProcessor;
-using static SharpAlert.AlertDisplayer;
 using System.Linq;
 using System.Threading;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using SharpAlert.AlertComponents;
+using SharpAlert.ProgramWorker;
 
-namespace SharpAlert
+namespace SharpAlert.DataProcessing
 {
     public class DataProcessor
     {
@@ -134,13 +137,9 @@ namespace SharpAlert
                                                 {
                                                     if (ReplayMode)
                                                     {
-                                                        lock (notify)
-                                                        {
-                                                            notify.BalloonTipIcon = ToolTipIcon.Info;
-                                                            notify.BalloonTipTitle = $"{info.AlertEventType}";
-                                                            notify.BalloonTipText = $"The alert has been sent again via replay mode.";
-                                                            notify.ShowBalloonTip(5000);
-                                                        }
+                                                        Notify.ShowNotification("This alert has been sent again via replay mode.",
+                                                            info.AlertEventType,
+                                                            ToolTipIcon.Info);
                                                     }
 
                                                     bool CalledWebhookFunction = false;
@@ -229,25 +228,19 @@ namespace SharpAlert
                                                                 new List<string> { info.AlertImageURL },
                                                                 color))
                                                             {
-                                                                lock (notify)
-                                                                {
-                                                                    notify.BalloonTipIcon = ToolTipIcon.Info;
-                                                                    notify.BalloonTipTitle = $"{info.AlertEventType}";
-                                                                    notify.BalloonTipText = $"The alert was sent {sentDate:g}. The alert expires {expiresDate:g}.";
-                                                                    notify.ShowBalloonTip(5000);
-                                                                }
+                                                                Notify.ShowNotification($"The alert was sent {sentDate:g}. The alert expires {expiresDate:g}.",
+                                                                    info.AlertEventType,
+                                                                    ToolTipIcon.Warning);
                                                                 //AnyAlertRelayed = true;
                                                                 //UsedDiscordHook = true;
                                                             }
                                                             else
                                                             {
-                                                                lock (notify)
-                                                                {
-                                                                    notify.BalloonTipIcon = ToolTipIcon.Warning;
-                                                                    notify.BalloonTipTitle = $"{info.AlertEventType}";
-                                                                    notify.BalloonTipText = $"The alert was sent {sentDate:g}. The alert expires {expiresDate:g}. The alert failed to relay through the webhook.";
-                                                                    notify.ShowBalloonTip(5000);
-                                                                }
+                                                                Notify.ShowNotification($"The alert was sent {sentDate:g}. The alert expires {expiresDate:g}. The alert could not be relayed to Discord.",
+                                                                    info.AlertEventType,
+                                                                    ToolTipIcon.Warning);
+                                                                //AnyAlertRelayed = true;
+                                                                //UsedDiscordHook = true;
                                                             }
                                                         }
                                                     }
@@ -286,6 +279,10 @@ namespace SharpAlert
                                                     Console.WriteLine($"[Data Processor] Finished relaying.");
                                                 }
                                             }
+                                            else
+                                            {
+                                                Console.WriteLine($"[Data Processor] \"{relayItem.Name}\" was discarded. {info.AlertDiscardReason}");
+                                            }
                                         });
 
                                     }
@@ -314,3 +311,4 @@ namespace SharpAlert
         }
     }
 }
+

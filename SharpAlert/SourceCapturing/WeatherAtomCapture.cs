@@ -1,16 +1,16 @@
-﻿using SharpAlert.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
-using static SharpAlert.IceBearWorker;
-using static SharpAlert.MainEntryPoint;
+using SharpAlert.ProgramWorker;
+using static SharpAlert.ProgramWorker.IceBearWorker;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.RegexList;
 
-namespace SharpAlert
+namespace SharpAlert.SourceCapturing
 {
     public class WeatherAtomCapture
     {
@@ -145,7 +145,7 @@ namespace SharpAlert
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"[HTTP Atom Feed Capture] {e.Message}");
+                    Console.WriteLine($"[Atom Feed Capture] {e.Message}");
                     if (e.InnerException != null) Console.WriteLine($"[Atom Feed Capture] {e.InnerException.Message}");
                     //if (LastConnectionSuccessful)
                     //{
@@ -456,3 +456,4 @@ namespace SharpAlert
         }
     }
 }
+

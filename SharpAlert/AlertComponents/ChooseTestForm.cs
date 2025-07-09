@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using SharpAlert.Properties;
 
-namespace SharpAlert
+namespace SharpAlert.AlertComponents
 {
     public partial class ChooseTestForm : Form
     {
@@ -68,3 +68,4 @@ namespace SharpAlert
         }
     }
 }
+

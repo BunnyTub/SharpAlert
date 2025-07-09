@@ -10,10 +10,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using SharpAlert.Properties;
-using static SharpAlert.MainEntryPoint;
-using static SharpAlert.IceBearWorker;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
+using static SharpAlert.ProgramWorker.IceBearWorker;
+using SharpAlert.ProgramWorker;
+using static SharpAlert.ThreadDrool;
 
-namespace SharpAlert
+namespace SharpAlert.WebServer
 {
     public class HyperServer
     {
@@ -40,7 +42,7 @@ namespace SharpAlert
 
         public void ServiceRun()
         {
-            if (!QuickSettings.Instance.EnableServer) return;
+            if (!QuickSettings.Instance.EnableServer) throw new NonRestartableException();
 
             using (var listener = new HttpListener())
             {
@@ -576,3 +578,4 @@ namespace SharpAlert
 #pragma warning restore IDE0060 // Remove unused parameter
     }
 }
+

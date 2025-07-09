@@ -1,4 +1,4 @@
-﻿namespace SharpAlert
+﻿namespace SharpAlert.ConfigurationDialogs
 {
     partial class AlertConfigurationForm
     {
@@ -754,9 +754,9 @@
             // label8
             // 
             this.label8.ForeColor = System.Drawing.Color.Yellow;
-            this.label8.Location = new System.Drawing.Point(134, 18);
+            this.label8.Location = new System.Drawing.Point(149, 18);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(191, 21);
+            this.label8.Size = new System.Drawing.Size(176, 21);
             this.label8.TabIndex = 36;
             this.label8.Text = "Where is the expiry option?";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -768,9 +768,9 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(6, 21);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(58, 15);
+            this.label5.Size = new System.Drawing.Size(68, 15);
             this.label5.TabIndex = 9;
-            this.label5.Text = "Data size";
+            this.label5.Text = "Cache size";
             // 
             // storedMaxSizeInput
             // 
@@ -782,24 +782,24 @@
             0,
             0,
             0});
-            this.storedMaxSizeInput.Location = new System.Drawing.Point(70, 18);
+            this.storedMaxSizeInput.Location = new System.Drawing.Point(80, 18);
             this.storedMaxSizeInput.Maximum = new decimal(new int[] {
-            1000,
+            5000,
             0,
             0,
             0});
             this.storedMaxSizeInput.Minimum = new decimal(new int[] {
-            200,
+            1,
             0,
             0,
             0});
             this.storedMaxSizeInput.Name = "storedMaxSizeInput";
-            this.storedMaxSizeInput.Size = new System.Drawing.Size(58, 21);
+            this.storedMaxSizeInput.Size = new System.Drawing.Size(63, 21);
             this.storedMaxSizeInput.TabIndex = 35;
-            this.ToolTipInformation.SetToolTip(this.storedMaxSizeInput, "Controls how many alerts to have in the history.\r\nOlder alerts are trimmed first " +
-        "from history lists.");
+            this.ToolTipInformation.SetToolTip(this.storedMaxSizeInput, "Controls how many alerts can be cached for later usage.\r\nOlder alerts are trimmed" +
+        " first from history lists.");
             this.storedMaxSizeInput.Value = new decimal(new int[] {
-            500,
+            1000,
             0,
             0,
             0});

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
-using static SharpAlert.MainEntryPoint;
 
 namespace SharpAlert
 {
@@ -74,3 +73,5 @@ namespace SharpAlert
         //}
     }
 }
+
+

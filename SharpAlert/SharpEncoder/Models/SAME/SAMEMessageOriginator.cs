@@ -1,4 +1,4 @@
-﻿namespace EASEncoder.Models.SAME
+﻿namespace SharpAlert.SharpEncoder.Models.SAME
 {
     public class SAMEMessageOriginator
     {

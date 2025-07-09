@@ -2,8 +2,9 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using SharpAlert.ProgramWorker;
 
-namespace SharpAlert
+namespace SharpAlert.DisplayDialogs
 {
     public partial class StartupForm : Form
     {
@@ -215,3 +216,4 @@ namespace SharpAlert
         }
     }
 }
+

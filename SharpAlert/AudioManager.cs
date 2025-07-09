@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using static SharpAlert.MainEntryPoint;
-using static SharpAlert.AlertProcessor;
-using static SharpAlert.IceBearWorker;
 using NAudio.CoreAudioApi;
 using System.Linq;
 using System.Media;
 using System.Speech.Synthesis;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
+using static SharpAlert.ProgramWorker.IceBearWorker;
+using static SharpAlert.AlertComponents.AlertProcessor;
+using static SharpAlert.ProgramWorker.NotificationWorker;
 
 namespace SharpAlert
 {
@@ -28,7 +29,7 @@ namespace SharpAlert
         private static readonly SoundPlayer LegacyAudioPlayer = new SoundPlayer(); 
         private static readonly List<WasapiOut> Outputs = new List<WasapiOut>();
         private static readonly List<WasapiOut> TTSOutputs = new List<WasapiOut>();
-        private static readonly SpeechSynthesizer engine = new SpeechSynthesizer();
+        public static readonly SpeechSynthesizer engine = new SpeechSynthesizer();
         private static bool HoldIt = false;
         private static bool TTSHoldIt = false;
         private static bool DeviceTreeFetched = false;
@@ -415,13 +416,9 @@ namespace SharpAlert
                     catch (Exception ex)
                     {
                         Console.WriteLine($"[Audio Manager] {ex.Message}");
-                        lock (notify)
-                        {
-                            notify.BalloonTipTitle = "SharpAlert is having issues";
-                            notify.BalloonTipText = "Audio playback is not working as expected. Please make sure your audio devices are working!";
-                            notify.BalloonTipIcon = ToolTipIcon.Warning;
-                            notify.ShowBalloonTip(5000);
-                        }
+                        Notify.ShowNotification($"Audio playback is not working as expected. Please make sure your audio devices are working!",
+                            "SharpAlert is having issues",
+                            ToolTipIcon.Warning);
                     }
                 });
             }
@@ -668,13 +665,9 @@ namespace SharpAlert
                         }
                         catch (Exception)
                         {
-                            lock (notify)
-                            {
-                                notify.BalloonTipTitle = "SharpAlert is having issues";
-                                notify.BalloonTipText = "Audio playback is not working as expected. Please make sure your audio devices are working!";
-                                notify.BalloonTipIcon = ToolTipIcon.Warning;
-                                notify.ShowBalloonTip(5000);
-                            }
+                            Notify.ShowNotification($"Audio playback is not working as expected. Please make sure your audio devices are working!",
+                                "SharpAlert is having issues",
+                                ToolTipIcon.Warning);
                         }
                     });
                 }
@@ -738,13 +731,9 @@ namespace SharpAlert
                         catch (Exception ex)
                         {
                             Console.WriteLine($"[Audio Manager] {ex.Message}");
-                            lock (notify)
-                            {
-                                notify.BalloonTipTitle = "SharpAlert is having issues";
-                                notify.BalloonTipText = "Audio playback is not working as expected. Please make sure your audio devices are working!";
-                                notify.BalloonTipIcon = ToolTipIcon.Warning;
-                                notify.ShowBalloonTip(5000);
-                            }
+                            Notify.ShowNotification($"Audio playback is not working as expected. Please make sure your audio devices are working!",
+                                "SharpAlert is having issues",
+                                ToolTipIcon.Warning);
                         }
                     });
                 }
@@ -798,13 +787,9 @@ namespace SharpAlert
             catch (Exception ex)
             {
                 Console.WriteLine($"[Audio Manager] {ex.Message}");
-                lock (notify)
-                {
-                    notify.BalloonTipTitle = "SharpAlert is having issues";
-                    notify.BalloonTipText = "Audio playback is not working as expected. Please make sure your audio devices are working!";
-                    notify.BalloonTipIcon = ToolTipIcon.Warning;
-                    notify.ShowBalloonTip(5000);
-                }
+                Notify.ShowNotification($"Audio playback is not working as expected. Please make sure your audio devices are working!",
+                    "SharpAlert is having issues",
+                    ToolTipIcon.Warning);
             }
         }
 
@@ -922,13 +907,9 @@ namespace SharpAlert
                         catch (Exception ex)
                         {
                             Console.WriteLine($"[Audio Manager] {ex.Message}");
-                            lock (notify)
-                            {
-                                notify.BalloonTipTitle = "SharpAlert is having issues";
-                                notify.BalloonTipText = "TTS playback is not working as expected. Please make sure your audio devices are working!";
-                                notify.BalloonTipIcon = ToolTipIcon.Warning;
-                                notify.ShowBalloonTip(5000);
-                            }
+                            Notify.ShowNotification($"TTS playback is not working as expected. Please make sure your audio devices are working!",
+                                "SharpAlert is having issues",
+                                ToolTipIcon.Warning);
                         }
                         Console.WriteLine("[Audio Manager] Audio queue unlocked.");
                     }
@@ -944,3 +925,5 @@ namespace SharpAlert
         }
     }
 }
+
+

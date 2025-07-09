@@ -1,16 +1,17 @@
-﻿using SharpAlert.Properties;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Drawing;
-using static SharpAlert.MainEntryPoint;
-using static SharpAlert.IceBearWorker;
-using static SharpAlert.AlertProcessor;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
+using static SharpAlert.ProgramWorker.IceBearWorker;
+using static SharpAlert.AlertComponents.AlertProcessor;
+using SharpAlert.ProgramWorker;
+using SharpAlert.AlertComponents;
 
-namespace SharpAlert
+namespace SharpAlert.ConfigurationDialogs
 {
     public partial class AlertListForm : Form
     {
@@ -48,6 +49,8 @@ namespace SharpAlert
 
         private void RefreshAlertHistory()
         {
+            LastKnownHistoryCount = SharpDataHistory.Count;
+
             if (SharpDataHistory.Count != 0)
             {
                 string DataHistory = string.Empty;
@@ -58,8 +61,6 @@ namespace SharpAlert
                         DataHistory = $"{item.Name}\r\n{DataHistory}";
                     }
                     AlertHistoryText.Text = $"Count: {SharpDataHistory.Count} alert(s)";
-
-                    LastKnownHistoryCount = SharpDataHistory.Count;
                 }
                 DataHistory.Trim();
                 AlertHistoryOutput.Text = DataHistory;
@@ -365,3 +366,4 @@ namespace SharpAlert
         }
     }
 }
+

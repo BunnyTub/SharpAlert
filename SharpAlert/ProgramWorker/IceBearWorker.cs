@@ -10,14 +10,21 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using static SharpAlert.MainEntryPoint;
-using static SharpAlert.ServiceThreads;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
+using static SharpAlert.ProgramWorker.NotificationWorker;
+using static SharpAlert.ProgramWorker.ServiceThreads;
 using static SharpAlert.RegexList;
 using static SharpAlert.AudioManager;
 using static SharpAlert.ThreadDrool;
 using SharpAlert.ConfigurationDialogs;
+using SharpAlert.SourceCapturing;
+using SharpAlert.DataProcessing;
+using SharpAlert.WebServer;
+using SharpAlert.DisplayDialogs;
+using SharpAlert.AlertComponents;
+using SharpAlert.SourceCapturing.SystemSpecific;
 
-namespace SharpAlert
+namespace SharpAlert.ProgramWorker
 {
     public static class IceBearWorker
     {
@@ -26,7 +33,9 @@ namespace SharpAlert
             Timeout = TimeSpan.FromSeconds(15)
         };
 
-        public static readonly string SelfUserAgent = "Mozilla/5.0 (compatible; SharpAlert; bunnytub@bunnytub.com)";
+        public static readonly string SelfUserAgent = $"Mozilla/5.0 (compatible; SharpAlert/" +
+            $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}/" +
+            $"{VersionInfo.BuildNumber}; bunnytub@bunnytub.com)";
         public static bool ServiceRunnerScheduled { get; private set; } = false;
 
         /// <summary>
@@ -37,7 +46,8 @@ namespace SharpAlert
         {
             if (QuickSettings.Instance.alertNoGUI) AllocateTerminal(false);
 
-            Console.WriteLine($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | IsBeta = {VersionInfo.BetaVersion} | Safety is never a non-priority. | https://sharpalert.bunnytub.com/");
+            Console.WriteLine($"{VersionInfo.FriendlyVersion}\r\n" +
+                $"Safety is never a non-priority. | https://sharpalert.bunnytub.com/");
             if (ServiceMode) Console.WriteLine($"Running under Service Mode.");
 
             client.DefaultRequestHeaders.UserAgent.ParseAdd(SelfUserAgent);
@@ -74,7 +84,7 @@ namespace SharpAlert
                     Console.WriteLine($"[Ice Bear] Couldn't work with the server.");
                 }
 
-                if (VersionInfo.BetaVersion)
+                if (VersionInfo.IsBetaVersion)
                 {
                     if (DateTime.UtcNow >= VersionInfo.BetaTimeEnd)
                     {
@@ -104,6 +114,8 @@ namespace SharpAlert
             atomfeed = new WeatherAtomCapture();
             Console.WriteLine("[Ice Bear] Initializing Direct Feed Capture.");
             directfeed = new DirectFeedCapture();
+            Console.WriteLine("[Ice Bear] Initializing IDAP Capture.");
+            idapfeed = new IDAPCapture();
             Console.WriteLine("[Ice Bear] Initializing Cache Capture.");
             cache = new CacheCapture();
             Console.WriteLine("[Ice Bear] Initializing Data Processor.");
@@ -147,7 +159,7 @@ namespace SharpAlert
                 SetupExperienceOccurred = true;
             }
 
-            notificationThread = StartCatchAllThread(() =>
+            notificationThread = StartCatchAllThread("Notifications", () =>
             {
                 SystemEvents.PowerModeChanged += (a, b) =>
                 {
@@ -208,7 +220,7 @@ namespace SharpAlert
                 Application.Run();
             }, false);
 
-            while (notify == null) Thread.Sleep(100);
+            while (NotifyIconIsNull()) Thread.Sleep(100);
 
             // migrate users upwards from the minimum limit
             if (QuickSettings.Instance.storedMaxSize < 100) QuickSettings.Instance.storedMaxSize = 500;
@@ -281,7 +293,8 @@ namespace SharpAlert
                 QuickSettings.Instance.RegionUnitedStates ||
                 QuickSettings.Instance.RegionUnitedStatesNWS ||
                 QuickSettings.Instance.RegionCanada ||
-                QuickSettings.Instance.RegionMexico) AnyFeedAvailable = true;
+                QuickSettings.Instance.RegionMexico ||
+                QuickSettings.Instance.RegionBrazil) AnyFeedAvailable = true;
 
             if (!AnyFeedAvailable && !SetupExperienceOccurred)
             {
@@ -320,15 +333,28 @@ namespace SharpAlert
 
             startup.Start();
 
+            cacheThread = StartCatchAllThread("Cache Capture", () => cache.ServiceRun(true), true);
+            dataProcThread = StartCatchAllThread("Data Processor", () => dataproc.ServiceRun(), true);
+            historyProcThread = StartCatchAllThread("History Processor", () => historyproc.ServiceRun(), true);
+            serverThread = StartCatchAllThread("Hyper Server", () => hyper.ServiceRun(), true);
+
             RefreshAudioDevices();
 
             var IPAWSMain = new FeedCapture.ServerInfo { ServerName = "FEMA IPAWS", ServerPath = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}" };
             var IPAWSWireless = new FeedCapture.ServerInfo { ServerName = "FEMA IPAWS (WEA)", ServerPath = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}" };
 
+            bool IPAWSAvailable = false;
+
             if (QuickSettings.Instance.RegionUnitedStates)
             {
                 feed.servers.Add(IPAWSMain);
                 feed.servers.Add(IPAWSWireless);
+                IPAWSAvailable = true;
+            }
+
+            if (IPAWSAvailable || CustomServersAvailable)
+            {
+                feedThread = StartCatchAllThread("Feed Capture", () => feed.ServiceRun(true), false);
             }
 
             var NWSAtom = new WeatherAtomCapture.ServerInfo { ServerName = "NWS Atom", ServerPath = $"api.weather.gov/alerts/active.atom" };
@@ -336,6 +362,7 @@ namespace SharpAlert
             if (QuickSettings.Instance.RegionUnitedStatesNWS)
             {
                 atomfeed.servers.Add(NWSAtom);
+                atomfeedThread = StartCatchAllThread("Atom Feed Capture", () => atomfeed.ServiceRun(true), false);
             }
 
             var NAADSPrimary = new DirectFeedCapture.TCPServerInfo { ServerName = "NAADS Primary", ServerAddress = "streaming1.naad-adna.pelmorex.com", ServerPort = 8080 };
@@ -345,6 +372,7 @@ namespace SharpAlert
             {
                 directfeed.servers.Add(NAADSPrimary);
                 directfeed.servers.Add(NAADSBackup);
+                directfeedThread = StartCatchAllThread("Direct Feed Capture", () => directfeed.ServiceRun(), false);
             }
 
             var SASMEXMain = new FeedCapture.ServerInfo { ServerName = "SASMEX", ServerPath = $"sasmex.net/rss/sasmex.xml" };
@@ -354,13 +382,10 @@ namespace SharpAlert
                 feed.servers.Add(SASMEXMain);
             }
 
-            feedThread = StartCatchAllThread(() => feed.ServiceRun(true), false);
-            atomfeedThread = StartCatchAllThread(() => atomfeed.ServiceRun(true), false);
-            directfeedThread = StartCatchAllThread(() => directfeed.ServiceRun(), false);
-            cacheThread = StartCatchAllThread(() => cache.ServiceRun(true), true);
-            dataProcThread = StartCatchAllThread(() => dataproc.ServiceRun(), true);
-            historyProcThread = StartCatchAllThread(() => historyproc.ServiceRun(), true);
-            serverThread = StartCatchAllThread(() => hyper.ServiceRun(), true);
+            if (QuickSettings.Instance.RegionBrazil)
+            {
+                idapfeedThread = StartCatchAllThread("IDAP Capture", () => idapfeed.ServiceRun(true), false);
+            }
 
             if (QuickSettings.Instance.statusWindow)
             {
@@ -369,31 +394,8 @@ namespace SharpAlert
 
             IdleWindowVisible = QuickSettings.Instance.alertFullscreenIdle;
 
-            if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
-            {
-                if (DiscordWebhook.SendFormattedMessage("SharpAlert has started."))
-                {
-                    lock (notify)
-                    {
-                        notify.BalloonTipIcon = ToolTipIcon.Info;
-                        notify.BalloonTipTitle = $"SharpAlert says hello";
-                        notify.BalloonTipText = "Sent a start message to the webhook.";
-                        notify.ShowBalloonTip(5000);
-                    }
-                }
-                else
-                {
-                    lock (notify)
-                    {
-                        notify.BalloonTipIcon = ToolTipIcon.Warning;
-                        notify.BalloonTipTitle = $"SharpAlert says hello";
-                        notify.BalloonTipText = "Couldn't send a message to the webhook.";
-                        notify.ShowBalloonTip(5000);
-                    }
-                }
-            }
-
-            heartbeatThread = StartCatchAllThread(() => HeartbeatWorker.ServiceRun(), true);
+            heartbeatThread = StartCatchAllThread("Heartbeat Worker", () => HeartbeatWorker.ServiceRun(), true);
+            DiscordWebhook.SendFormattedMessage("SharpAlert has started.");
 
             ServiceRunnerScheduled = true;
 
@@ -434,266 +436,6 @@ namespace SharpAlert
         }
 
         private static readonly object ThreadErrorLockObject = new object();
-
-        private static bool NotifyIconCalled = false;
-        //private static readonly List<string> ChangedPropertiesList = new List<string>();
-        public static bool IgnoreRightClick = false;
-
-        /// <summary>
-        /// Creates a tray icon. Throws NotSupportedException if called more than once.
-        /// </summary>
-        /// <exception cref="NotSupportedException"></exception>
-        private static void CreateNotifyIcon(string RemoteVersion)
-        {
-            if (NotifyIconCalled) throw new NotSupportedException();
-            NotifyIconCalled = true;
-
-            notify = new NotifyIcon
-            {
-                Icon = Resources.TrayLightIcon,
-                Visible = true,
-                Text = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}"
-            };
-
-            ContextMenuStrip contextMenu = new ContextMenuStrip();
-
-            contextMenu.Opening += (a, b) =>
-            {
-                mf?.Hide();
-
-                if (Control.ModifierKeys == Keys.Shift)
-                {
-                    string ForceQuitMsg = "Click YES to immediately shutdown SharpAlert.\r\n" +
-                        "You should only use this feature as a last resort.";
-
-                    //if (ChangedPropertiesList.Count != 0)
-                    //{
-                    //    ForceQuitMsg += "\r\n\r\n" +
-                    //    "You have unsaved changes that will be lost if you continue.";
-                    //}
-
-                    if (MessageBox.Show(ForceQuitMsg,
-                        "SharpAlert",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Exclamation) == DialogResult.Yes)
-                    {
-                        Environment.Exit(0);
-                    }
-
-                    b.Cancel = true;
-                    return;
-                }
-
-                //if (Control.ModifierKeys == Keys.ShiftKey)
-                //{
-                //    IgnoreRightClick = false;
-                //}
-
-                if (IgnoreRightClick)
-                {
-                    b.Cancel = true;
-                    MessageBox.Show("Please close all windows before opening the menu.",
-                        "SharpAlert",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-                    if (b.Cancel) return;
-                }
-            };
-
-            contextMenu.Items.Add(new ToolStripMenuItem("Show Console", null, (sender, arg) =>
-            {
-                IgnoreRightClick = true;
-                if (MessageBox.Show("Do you want to show the console?\r\n" +
-                    "Closing the console will terminate the program.",
-                    "SharpAlert",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    AllocateTerminal();
-                }
-                IgnoreRightClick = false;
-            }));
-            
-            contextMenu.Items.Add(new ToolStripMenuItem("Reset Cache", null, (sender, arg) =>
-            {
-                IgnoreRightClick = true;
-                if (MessageBox.Show("Forcefully reset the cache?",
-                    "SharpAlert",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    cache.ServiceRun(false);
-                }
-                IgnoreRightClick = false;
-            }));
-
-            //IgnoreRightClick = true;
-            //IgnoreRightClick = false;
-
-            contextMenu.Items.Add(new ToolStripSeparator());
-
-            bool UpdatesAvailable = false;
-            
-            if (RemoteVersion == "service")
-            {
-                lock (notify)
-                {
-                    notify.BalloonTipTitle = "SharpAlert is running";
-                    notify.BalloonTipText = $"I'll just be waiting right over here in my tray icon. Service mode active.";
-                    notify.BalloonTipIcon = ToolTipIcon.Info;
-                    notify.ShowBalloonTip(5000);
-                }
-            }
-            else
-            {
-                string[] RemoteVersionSplit = RemoteVersion.Split('.');
-
-                if (RemoteVersionSplit.Length == 2)
-                {
-                    try
-                    {
-                        if (int.Parse(RemoteVersionSplit[0]) > VersionInfo.MajorVersion ||
-                            int.Parse(RemoteVersionSplit[1]) > VersionInfo.MinorVersion)
-                        {
-                            lock (notify)
-                            {
-                                notify.BalloonTipTitle = "SharpAlert is running";
-                                notify.BalloonTipText = $"Update available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
-                                //notify.BalloonTipText = $"You may be running an older version. v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
-                                notify.BalloonTipIcon = ToolTipIcon.Info;
-                                notify.ShowBalloonTip(5000);
-                            }
-                            UpdatesAvailable = true;
-                        }
-                        else
-                        {
-                            if (int.Parse(RemoteVersionSplit[0]) < VersionInfo.MajorVersion ||
-                                int.Parse(RemoteVersionSplit[1]) < VersionInfo.MinorVersion)
-                            {
-                                lock (notify)
-                                {
-                                    notify.BalloonTipTitle = "SharpAlert is running";
-                                    notify.BalloonTipText = $"Downgrade available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}";
-                                    notify.BalloonTipIcon = ToolTipIcon.Info;
-                                    notify.ShowBalloonTip(5000);
-                                }
-                            }
-                            else
-                            {
-                                lock (notify)
-                                {
-                                    notify.BalloonTipTitle = "SharpAlert is running";
-                                    notify.BalloonTipText = $"I'll just be waiting right over here in my tray icon. You're up to date.";
-                                    notify.BalloonTipIcon = ToolTipIcon.Info;
-                                    notify.ShowBalloonTip(5000);
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        lock (notify)
-                        {
-                            notify.BalloonTipTitle = "SharpAlert is running";
-                            notify.BalloonTipText = "I'll just be waiting right over here in my tray icon. Couldn't check for updates.";
-                            notify.BalloonTipIcon = ToolTipIcon.Info;
-                            notify.ShowBalloonTip(5000);
-                        }
-                    }
-                }
-                else
-                {
-                    lock (notify)
-                    {
-                        notify.BalloonTipTitle = "SharpAlert is running";
-                        notify.BalloonTipText = "I'll just be waiting right over here in my tray icon. Couldn't check for updates.";
-                        notify.BalloonTipIcon = ToolTipIcon.Info;
-                        notify.ShowBalloonTip(5000);
-                    }
-                }
-            }
-
-            string home = "https://sharpalert.bunnytub.com";
-
-            contextMenu.Items.Add(new ToolStripLabel($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
-                Resources.AlertIcon, true, (obj, args) =>
-                {
-                    try
-                    {
-                        Process.Start(home);
-                    }
-                    catch (Exception)
-                    {
-                        MessageBox.Show("Enter the following URL in your browser:\r\n" +
-                            $"{home}\r\n\r\n" +
-                            "The link couldn't be opened.",
-                            "SharpAlert",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Exclamation);
-                    }
-                })
-            {
-                ToolTipText = "Very mindful, very demure."
-            });
-
-            if (UpdatesAvailable)
-            {
-                contextMenu.Items.Add(new ToolStripLabel($"Click above to update!")
-                {
-                    ToolTipText = "There's an update available for you to download."
-                });
-            }
-            
-            contextMenu.Items.Add(new ToolStripMenuItem("Open Settings", null, (sender, arg) =>
-            {
-                IgnoreRightClick = true;
-                if (mf == null || mf.IsDisposed) mf = new ConfigurationForm();
-                mf.ShowDialog();
-                IgnoreRightClick = false;
-            }));
-
-            contextMenu.Items.Add(new ToolStripMenuItem("Reset Settings", null, (sender, arg) =>
-            {
-                if (MessageBox.Show("Reset everything to factory defaults now?\r\n" +
-                    "SharpAlert will close if you continue.",
-                    "SharpAlert",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    QuickSettings.Instance.Reset();
-                    QuickSettings.Instance.Save();
-                    Environment.Exit(0);
-                }
-            }));
-
-            contextMenu.Items.Add(new ToolStripSeparator());
-
-#if DEBUG
-            contextMenu.Items.Add(new ToolStripMenuItem("Trigger Intentional Exception", null, (sender, arg) =>
-            {
-                string[] StringOfStrings = { "0", "1" };
-                string StringNumberTwo = StringOfStrings[2].Trim();
-            }));
-#endif   
-            
-            contextMenu.Items.Add(new ToolStripMenuItem("Quit", null, (sender, arg) =>
-            {
-                DialogResult result = MessageBox.Show("Are you sure you want to quit?",
-                    "SharpAlert",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
-
-                if (result == DialogResult.Yes)
-                {
-                    QuickSettings.Instance.Save();
-                    SafeExit();
-                }
-            }));
-
-            notify.ContextMenuStrip = contextMenu;
-        }
-
-        private static ConfigurationForm mf = null;
 
         //[DllImport("user32.dll")]
         //private static extern IntPtr WindowFromPoint(Point Point);
@@ -768,16 +510,9 @@ namespace SharpAlert
                     }
                     else
                     {
-                        if (notify != null)
-                        {
-                            lock (notify)
-                            {
-                                notify.BalloonTipTitle = "SharpAlert is having issues";
-                                notify.BalloonTipText = "The problem has been logged. Check the event log for more information!";
-                                notify.BalloonTipIcon = ToolTipIcon.Error;
-                                notify.ShowBalloonTip(5000);
-                            }
-                        }
+                        Notify.ShowNotification($"The problem has been logged. Check the event log for more information!",
+                            "SharpAlert is having issues",
+                            ToolTipIcon.Error);
                     }
                 }
             }).Start();
@@ -786,9 +521,9 @@ namespace SharpAlert
         public static string LogFault(Exception ex)
         {
             string ExceptionCompiled = $"SharpAlert encountered an exception. {DateTime.UtcNow:s}\r\n" +
-                    $"{ex.Message}\r\n" +
-                    $"{ex.TargetSite}\r\n" +
-                    $"{ex.StackTrace}";
+                $"{ex.Message}\r\n" +
+                $"{ex.TargetSite}\r\n" +
+                $"{ex.StackTrace}";
             
             try
             {
@@ -1233,3 +968,4 @@ namespace SharpAlert
         }
     }
 }
+

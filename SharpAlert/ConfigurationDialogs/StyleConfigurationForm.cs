@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
-using SharpAlert.Properties;
-using static SharpAlert.MainEntryPoint;
+using SharpAlert.ProgramWorker;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
 
-namespace SharpAlert
+namespace SharpAlert.ConfigurationDialogs
 {
     public partial class StyleConfigurationForm : Form
     {
@@ -181,17 +180,17 @@ namespace SharpAlert
                 if (((CheckBox)a).Checked)
                 {
                     MessageBox.Show("The console will now be opened.",
-                    "SharpAlert",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                     IceBearWorker.AllocateTerminal(false);
                 }
                 else
                 {
                     MessageBox.Show("Restart the program to hide the console.",
-                    "SharpAlert",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                 }
             };
 
@@ -216,3 +215,4 @@ namespace SharpAlert
         }
     }
 }
+

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SharpAlert
+namespace SharpAlert.AlertComponents
 {
     public partial class SendForm : Form
     {
@@ -18,3 +18,4 @@ namespace SharpAlert
         }
     }
 }
+

@@ -1,4 +1,4 @@
-﻿namespace SharpAlert
+﻿namespace SharpAlert.AlertComponents
 {
     partial class SendForm
     {

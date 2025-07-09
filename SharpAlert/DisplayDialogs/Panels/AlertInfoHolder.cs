@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SharpAlert
+namespace SharpAlert.DisplayDialogs.Panels
 {
     public partial class AlertInfoHolder : UserControl
     {
@@ -42,3 +42,4 @@ namespace SharpAlert
         }
     }
 }
+

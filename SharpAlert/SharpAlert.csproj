@@ -57,7 +57,7 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>SharpAlert.MainEntryPoint</StartupObject>
+    <StartupObject>SharpAlert.ProgramWorker.MainEntryPoint</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>WarningApp.ico</ApplicationIcon>
@@ -236,12 +236,6 @@
     <Compile Include="AlertComponents\InfoForm.Designer.cs">
       <DependentUpon>InfoForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DisplayDialogs\AltTrayForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DisplayDialogs\AltTrayForm.Designer.cs">
-      <DependentUpon>AltTrayForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="AudioManager.cs" />
     <Compile Include="DisplayDialogs\Panels\AlertInfoHolder.cs">
       <SubType>UserControl</SubType>
@@ -280,7 +274,8 @@
       <DependentUpon>ChooseRegionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgramWorker\HeartbeatWorker.cs" />
-    <Compile Include="ProgramWorker\PipeWorker.cs" />
+    <Compile Include="ProgramWorker\NotificationWorker.cs" />
+    <Compile Include="PipeWorker.cs" />
     <Compile Include="ProgramWorker\ServiceThreads.cs" />
     <Compile Include="ProgramWorker\SetupDoneForm.cs">
       <SubType>Form</SubType>
@@ -300,7 +295,7 @@
     <Compile Include="ProgramWorker\SetupForm.Designer.cs">
       <DependentUpon>SetupForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="QuickSettings.cs" />
+    <Compile Include="ProgramWorker\QuickSettings.cs" />
     <Compile Include="RelayController.cs" />
     <Compile Include="ServiceMonitorForm.cs">
       <SubType>Form</SubType>
@@ -347,8 +342,11 @@
       <DependentUpon>TeleIdleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SourceCapturing\DirectFeedCapture.cs" />
+    <Compile Include="SourceCapturing\SystemSpecific\IDAPCapture.cs" />
     <Compile Include="SourceCapturing\WeatherAtomCapture.cs" />
     <Compile Include="ThreadDrool.cs" />
+    <Compile Include="VersionInfo.cs" />
+    <Compile Include="VersionInfoTemplate.cs" />
     <Compile Include="WebServer\HyperServer.cs" />
     <Compile Include="WinFormsControls\ToolboxStuff.cs" />
     <Compile Include="ToppleForm.cs">
@@ -395,9 +393,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationDialogs\DiscordConfigurationForm.resx">
       <DependentUpon>DiscordConfigurationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DisplayDialogs\AltTrayForm.resx">
-      <DependentUpon>AltTrayForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationDialogs\CreditsForm.resx">
       <DependentUpon>CreditsForm.cs</DependentUpon>
@@ -506,6 +501,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="RegexList.cs" />
+    <None Include="UpdateVersionInfo.ps1" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -577,4 +573,8 @@ del /s /q /f *.dll</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Fody.6.9.2\build\Fody.targets" Condition="Exists('..\packages\Fody.6.9.2\build\Fody.targets')" />
   <Import Project="..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
+  <PropertyGroup>
+    <PreBuildEvent>cd $(ProjectDir)
+powershell -ExecutionPolicy Bypass -File "$(ProjectDir)UpdateVersionInfo.ps1"</PreBuildEvent>
+  </PropertyGroup>
 </Project>

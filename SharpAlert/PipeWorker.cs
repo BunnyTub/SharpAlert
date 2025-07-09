@@ -1,11 +1,11 @@
 ﻿using System.IO.Pipes;
 using System.IO;
-using static SharpAlert.MainEntryPoint;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
 using System.Threading;
 using System.Collections.Generic;
 using System;
 
-namespace SharpAlert
+namespace SharpAlert.ProgramWorker
 {
     public static class PipeWorker
     {
@@ -56,3 +56,4 @@ namespace SharpAlert
         }
     }
 }
+

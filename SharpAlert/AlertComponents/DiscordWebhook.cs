@@ -7,9 +7,10 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using static SharpAlert.IceBearWorker;
+using SharpAlert.ProgramWorker;
+using static SharpAlert.ProgramWorker.IceBearWorker;
 
-namespace SharpAlert
+namespace SharpAlert.AlertComponents
 {
     public static class DiscordWebhook
     {
@@ -194,13 +195,13 @@ namespace SharpAlert
                         AlertCompiled = "## Alert Message\r\n" +
                             $"{description1}\r\n\r\n{description2}";
 
-                        if (AlertCompiled.Length >= 3800)
+                        if (AlertCompiled.Length >= 3600)
                         {
-                            AlertCompiled = AlertCompiled.Substring(0, 3800) + "...(truncuated)";
+                            AlertCompiled = AlertCompiled.Substring(0, 3600) + "...(truncuated)";
                             Console.WriteLine("[Discord Webhook] The length of the message has been truncuated.");
                         }
 
-                        string AuthorName = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} | Safety is never a non-priority.";
+                        string AuthorName = $"{VersionInfo.FriendlyVersion}";
                         if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.StationIdentifier)) AuthorName += $"\x20| Relaying from {QuickSettings.Instance.StationIdentifier} ({QuickSettings.Instance.StationName}).";
 
                         var payloadObject = new
@@ -283,7 +284,6 @@ namespace SharpAlert
                             }
                             catch (Exception)
                             {
-
                             }
                         }
 
@@ -295,6 +295,8 @@ namespace SharpAlert
                         stream.Write(postFileBytes, 0, postFileBytes.Length);
 
                         UploadData(webhook, stream.ToArray());
+
+                        _ = $"{item}"; // unused parameter
                     }
                 }
                 return true;

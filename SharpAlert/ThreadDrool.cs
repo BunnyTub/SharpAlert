@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using static SharpAlert.IceBearWorker;
-using static SharpAlert.MainEntryPoint;
+using static SharpAlert.ProgramWorker.IceBearWorker;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
 
 namespace SharpAlert
 {
@@ -11,9 +11,13 @@ namespace SharpAlert
     {
         public static List<Thread> ServiceThreads = new List<Thread>();
 
-        public static Thread StartCatchAllThread(Action action, bool restartable, ApartmentState apt = ApartmentState.MTA)
+        public class NonRestartableException : Exception
         {
-            Console.WriteLine($"[Thread Drool] Returning thread. (action = {action.Method.Name}, restartable = {restartable})");
+        }
+
+        public static Thread StartCatchAllThread(string FriendlyName, Action action, bool restartable, ApartmentState apt = ApartmentState.MTA)
+        {
+            Console.WriteLine($"[Thread Drool] Returning thread. ({FriendlyName}, restartable = {restartable})");
             Thread thread = new Thread(() =>
             {
                 while (AllowThreadRestarts)
@@ -26,6 +30,10 @@ namespace SharpAlert
                     {
                         return;
                     }
+                    catch (NonRestartableException)
+                    {
+                        restartable = false;
+                    }
                     catch (Exception ex)
                     {
                         UnsafeFault(ex, !restartable);
@@ -33,12 +41,12 @@ namespace SharpAlert
 
                     if (!restartable)
                     {
-                        Console.WriteLine($"[Thread Drool] Closing thread. (action = {action.Method.Name}, restartable = {restartable})");
+                        Console.WriteLine($"[Thread Drool] Closing thread. ({FriendlyName}, restartable = {restartable})");
                         return;
                     }
                     else
                     {
-                        Console.WriteLine($"[Thread Drool] Restarting thread. (action = {action.Method.Name}, restartable = {restartable})");
+                        Console.WriteLine($"[Thread Drool] Restarting thread. ({FriendlyName}, restartable = {restartable})");
                     }
                 }
             });
@@ -75,3 +83,4 @@ namespace SharpAlert
         }
     }
 }
+

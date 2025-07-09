@@ -1,4 +1,4 @@
-﻿namespace SharpAlert
+﻿namespace SharpAlert.AlertComponents
 {
     partial class InfoForm
     {
@@ -35,7 +35,7 @@
             this.DismissButton = new System.Windows.Forms.Button();
             this.AutoExit = new System.Windows.Forms.Timer(this.components);
             this.SubtitlePanel = new System.Windows.Forms.Panel();
-            this.SubtitleText = new SharpAlert.ToolboxStuff.MarqueeLabel();
+            this.SubtitleText = new SharpAlert.WinFormsControls.ToolboxStuff.MarqueeLabel();
             this.EnsureTopWindow = new System.Windows.Forms.Timer(this.components);
             this.FadeInAnimation = new System.Windows.Forms.Timer(this.components);
             this.FadeOutAnimation = new System.Windows.Forms.Timer(this.components);
@@ -184,11 +184,12 @@
         private System.Windows.Forms.Label TitleText;
         private System.Windows.Forms.Panel TitleSpacer;
         private System.Windows.Forms.Panel SubtitlePanel;
-        private SharpAlert.ToolboxStuff.MarqueeLabel SubtitleText;
+        private SharpAlert.WinFormsControls.ToolboxStuff.MarqueeLabel SubtitleText;
         private System.Windows.Forms.Timer EnsureTopWindow;
         private System.Windows.Forms.Timer FadeInAnimation;
         private System.Windows.Forms.Timer FadeOutAnimation;
         private System.Windows.Forms.Button DismissButton;
     }
 }
+
 

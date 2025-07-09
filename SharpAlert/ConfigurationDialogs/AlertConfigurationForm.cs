@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
-using static SharpAlert.MainEntryPoint;
-using static SharpAlert.AlertProcessor;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
+using static SharpAlert.ProgramWorker.NotificationWorker;
+using static SharpAlert.AlertComponents.AlertProcessor;
 
-namespace SharpAlert
+namespace SharpAlert.ConfigurationDialogs
 {
     public partial class AlertConfigurationForm : Form
     {
@@ -195,23 +196,17 @@ namespace SharpAlert
                         if (AudioTinkeringFileDialog.ShowDialog() != DialogResult.OK)
                         {
                             QuickSettings.Instance.StartToneLocation = string.Empty;
-                            lock (notify)
-                            {
-                                notify.BalloonTipTitle = "SharpAlert has audio changes";
-                                notify.BalloonTipText = "Reverted to default audio.";
-                                notify.BalloonTipIcon = ToolTipIcon.Info;
-                                notify.ShowBalloonTip(5000);
-                            }
+                            Notify.ShowNotification($"Reverted to default audio.",
+                                "SharpAlert audio changed",
+                                ToolTipIcon.Warning);
                             return;
                         }
+
                         QuickSettings.Instance.StartToneLocation = AudioTinkeringFileDialog.FileName;
-                        lock (notify)
-                        {
-                            notify.BalloonTipTitle = "SharpAlert has audio changes";
-                            notify.BalloonTipText = "Using linked audio.";
-                            notify.BalloonTipIcon = ToolTipIcon.Info;
-                            notify.ShowBalloonTip(5000);
-                        }
+                        
+                        Notify.ShowNotification($"Using linked audio.",
+                            "SharpAlert audio changed",
+                            ToolTipIcon.Warning);
                     }
                 }
                 catch (Exception ex)
@@ -237,23 +232,16 @@ namespace SharpAlert
                         if (AudioTinkeringFileDialog.ShowDialog() != DialogResult.OK)
                         {
                             QuickSettings.Instance.EndToneLocation = string.Empty;
-                            lock (notify)
-                            {
-                                notify.BalloonTipTitle = "SharpAlert has audio changes";
-                                notify.BalloonTipText = "Reverted to default audio.";
-                                notify.BalloonTipIcon = ToolTipIcon.Info;
-                                notify.ShowBalloonTip(5000);
-                            }
+                            Notify.ShowNotification($"Reverted to default audio.",
+                                "SharpAlert audio changed",
+                                ToolTipIcon.Warning);
                             return;
                         }
                         QuickSettings.Instance.EndToneLocation = AudioTinkeringFileDialog.FileName;
-                        lock (notify)
-                        {
-                            notify.BalloonTipTitle = "SharpAlert has audio changes";
-                            notify.BalloonTipText = "Using linked audio.";
-                            notify.BalloonTipIcon = ToolTipIcon.Info;
-                            notify.ShowBalloonTip(5000);
-                        }
+
+                        Notify.ShowNotification($"Using linked audio.",
+                            "Reverted to default audio.",
+                            ToolTipIcon.Warning);
                     }
                 }
                 catch (Exception ex)
@@ -347,3 +335,4 @@ namespace SharpAlert
         }
     }
 }
+

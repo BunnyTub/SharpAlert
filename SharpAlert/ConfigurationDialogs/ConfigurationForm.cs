@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using SharpAlert.Properties;
-using static SharpAlert.IceBearWorker;
+using static SharpAlert.ProgramWorker.IceBearWorker;
 
 namespace SharpAlert.ConfigurationDialogs
 {
@@ -147,3 +147,4 @@ namespace SharpAlert.ConfigurationDialogs
         }
     }
 }
+

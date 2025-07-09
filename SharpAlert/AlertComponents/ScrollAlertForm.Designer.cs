@@ -1,4 +1,4 @@
-﻿namespace SharpAlert
+﻿namespace SharpAlert.AlertComponents
 {
     partial class ScrollAlertForm
     {
@@ -37,17 +37,17 @@
             this.MouseMoving = new System.Windows.Forms.Timer(this.components);
             this.AutoHideButtons = new System.Windows.Forms.Timer(this.components);
             this.InfoTip = new System.Windows.Forms.ToolTip(this.components);
-            this.DismissButton = new System.Windows.Forms.Button();
             this.LinkButton = new System.Windows.Forms.Button();
+            this.DismissButton = new System.Windows.Forms.Button();
             this.ScreenshotButton = new System.Windows.Forms.Button();
             this.TerminateSelf = new System.Windows.Forms.Timer(this.components);
-            this.OutlineContainerPanel = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.BottomOutlinePanel = new System.Windows.Forms.Panel();
-            this.AlertText = new SharpAlert.ToolboxStuff.MarqueeLabel();
             this.WindowFlash = new System.Windows.Forms.Timer(this.components);
-            this.OutlineContainerPanel.SuspendLayout();
+            this.BottomOutlinePanel = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.OutlineContainerPanel = new System.Windows.Forms.Panel();
+            this.AlertText = new SharpAlert.WinFormsControls.ToolboxStuff.MarqueeLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.OutlineContainerPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // AutoExit
@@ -95,24 +95,6 @@
             this.InfoTip.ReshowDelay = 50;
             this.InfoTip.ToolTipTitle = "What does this do?";
             // 
-            // DismissButton
-            // 
-            this.DismissButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.DismissButton.BackColor = System.Drawing.Color.White;
-            this.DismissButton.Enabled = false;
-            this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DismissButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
-            this.DismissButton.ForeColor = System.Drawing.Color.Black;
-            this.DismissButton.Location = new System.Drawing.Point(1242, 102);
-            this.DismissButton.Name = "DismissButton";
-            this.DismissButton.Size = new System.Drawing.Size(35, 35);
-            this.DismissButton.TabIndex = 11;
-            this.DismissButton.Text = "✖";
-            this.InfoTip.SetToolTip(this.DismissButton, "Closes the alert.");
-            this.DismissButton.UseVisualStyleBackColor = false;
-            this.DismissButton.Visible = false;
-            this.DismissButton.Click += new System.EventHandler(this.DismissButton_Click);
-            // 
             // LinkButton
             // 
             this.LinkButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -130,6 +112,24 @@
             this.LinkButton.UseVisualStyleBackColor = false;
             this.LinkButton.Visible = false;
             this.LinkButton.Click += new System.EventHandler(this.LinkButton_Click);
+            // 
+            // DismissButton
+            // 
+            this.DismissButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.DismissButton.BackColor = System.Drawing.Color.White;
+            this.DismissButton.Enabled = false;
+            this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.DismissButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
+            this.DismissButton.ForeColor = System.Drawing.Color.Black;
+            this.DismissButton.Location = new System.Drawing.Point(1242, 102);
+            this.DismissButton.Name = "DismissButton";
+            this.DismissButton.Size = new System.Drawing.Size(35, 35);
+            this.DismissButton.TabIndex = 11;
+            this.DismissButton.Text = "✖";
+            this.InfoTip.SetToolTip(this.DismissButton, "Closes the alert.");
+            this.DismissButton.UseVisualStyleBackColor = false;
+            this.DismissButton.Visible = false;
+            this.DismissButton.Click += new System.EventHandler(this.DismissButton_Click);
             // 
             // ScreenshotButton
             // 
@@ -155,6 +155,34 @@
             this.TerminateSelf.Interval = 500;
             this.TerminateSelf.Tick += new System.EventHandler(this.TerminateSelf_Tick);
             // 
+            // WindowFlash
+            // 
+            this.WindowFlash.Interval = 1000;
+            this.WindowFlash.Tick += new System.EventHandler(this.WindowFlash_Tick);
+            // 
+            // BottomOutlinePanel
+            // 
+            this.BottomOutlinePanel.BackColor = System.Drawing.Color.Red;
+            this.BottomOutlinePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.BottomOutlinePanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BottomOutlinePanel.ForeColor = System.Drawing.Color.White;
+            this.BottomOutlinePanel.Location = new System.Drawing.Point(0, 90);
+            this.BottomOutlinePanel.Margin = new System.Windows.Forms.Padding(10);
+            this.BottomOutlinePanel.Name = "BottomOutlinePanel";
+            this.BottomOutlinePanel.Size = new System.Drawing.Size(1280, 8);
+            this.BottomOutlinePanel.TabIndex = 18;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.DarkRed;
+            this.pictureBox1.Image = global::SharpAlert.Properties.Resources.AlertIcon;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(90, 90);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 19;
+            this.pictureBox1.TabStop = false;
+            // 
             // OutlineContainerPanel
             // 
             this.OutlineContainerPanel.BackColor = System.Drawing.Color.Magenta;
@@ -171,29 +199,6 @@
             this.OutlineContainerPanel.Size = new System.Drawing.Size(1280, 720);
             this.OutlineContainerPanel.TabIndex = 10;
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.DarkRed;
-            this.pictureBox1.Image = global::SharpAlert.Properties.Resources.AlertIcon;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(90, 90);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 19;
-            this.pictureBox1.TabStop = false;
-            // 
-            // BottomOutlinePanel
-            // 
-            this.BottomOutlinePanel.BackColor = System.Drawing.Color.Red;
-            this.BottomOutlinePanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.BottomOutlinePanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.BottomOutlinePanel.ForeColor = System.Drawing.Color.White;
-            this.BottomOutlinePanel.Location = new System.Drawing.Point(0, 90);
-            this.BottomOutlinePanel.Margin = new System.Windows.Forms.Padding(10);
-            this.BottomOutlinePanel.Name = "BottomOutlinePanel";
-            this.BottomOutlinePanel.Size = new System.Drawing.Size(1280, 8);
-            this.BottomOutlinePanel.TabIndex = 18;
-            // 
             // AlertText
             // 
             this.AlertText.BackColor = System.Drawing.Color.DarkRed;
@@ -203,14 +208,11 @@
             this.AlertText.Name = "AlertText";
             this.AlertText.ScrollSpeed = 5F;
             this.AlertText.Size = new System.Drawing.Size(1280, 90);
+            this.AlertText.Stutter = 25;
             this.AlertText.TabIndex = 15;
             this.AlertText.Text = "Alert Message";
             this.AlertText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // WindowFlash
-            // 
-            this.WindowFlash.Interval = 1000;
-            this.WindowFlash.Tick += new System.EventHandler(this.WindowFlash_Tick);
+            this.AlertText.UseCustomPixelCount = false;
             // 
             // ScrollAlertForm
             // 
@@ -237,8 +239,8 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AlertForm_FormClosed);
             this.Load += new System.EventHandler(this.AlertForm_Load);
             this.Shown += new System.EventHandler(this.AlertForm_Shown);
-            this.OutlineContainerPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.OutlineContainerPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -253,14 +255,15 @@
         private System.Windows.Forms.Timer AutoHideButtons;
         private System.Windows.Forms.ToolTip InfoTip;
         private System.Windows.Forms.Timer TerminateSelf;
-        private System.Windows.Forms.Panel OutlineContainerPanel;
-        private System.Windows.Forms.Button DismissButton;
-        private System.Windows.Forms.Button LinkButton;
-        private System.Windows.Forms.Panel BottomOutlinePanel;
         private System.Windows.Forms.Timer WindowFlash;
+        private System.Windows.Forms.Button LinkButton;
+        private System.Windows.Forms.Button DismissButton;
         private System.Windows.Forms.Button ScreenshotButton;
+        private System.Windows.Forms.Panel BottomOutlinePanel;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private ToolboxStuff.MarqueeLabel AlertText;
+        private System.Windows.Forms.Panel OutlineContainerPanel;
+        private WinFormsControls.ToolboxStuff.MarqueeLabel AlertText;
     }
 }
+
 

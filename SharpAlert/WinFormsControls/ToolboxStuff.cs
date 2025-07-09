@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace SharpAlert
+namespace SharpAlert.WinFormsControls
 {
     public static class ToolboxStuff
     {
@@ -12,6 +12,8 @@ namespace SharpAlert
             private float textPosition = 0;
 
             public float ScrollSpeed { get; set; } = 1.5f;
+            public bool UseCustomPixelCount { get; set; } = false;
+            public int Stutter { get; set; } = 50;
 
             public MarqueeLabel()
             {
@@ -35,6 +37,9 @@ namespace SharpAlert
                 }
 
                 if (this.Text.Length == 0) return;
+
+                float localTextPosition = textPosition;
+                //if (UseCustomPixelCount) localTextPosition += PixelCount;
 
                 SizeF textSize = e.Graphics.MeasureString(this.Text, this.Font);
 
@@ -111,7 +116,16 @@ namespace SharpAlert
 
             private void OnScrollTick(object sender, EventArgs e)
             {
-                textPosition -= ScrollSpeed / 2f;
+                if (!UseCustomPixelCount)
+                {
+                    scrollTimer.Interval = 1;
+                    textPosition -= ScrollSpeed / 2f;
+                }
+                else
+                {
+                    scrollTimer.Interval = 100;
+                    textPosition -= (ScrollSpeed + Stutter * 2) / 2f;
+                }
                 this.Invalidate();
             }
 
@@ -175,3 +189,4 @@ namespace SharpAlert
         }
     }
 }
+

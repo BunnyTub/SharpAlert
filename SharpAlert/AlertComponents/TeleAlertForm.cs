@@ -1,14 +1,15 @@
-﻿using SharpAlert.Properties;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Linq;
 using static SharpAlert.AudioManager;
-using static SharpAlert.AlertProcessor;
+using static SharpAlert.AlertComponents.AlertProcessor;
+using SharpAlert.ProgramWorker;
+using System.Speech.Synthesis;
 
-namespace SharpAlert
+namespace SharpAlert.AlertComponents
 {
     public partial class TeleAlertForm : Form
     {
@@ -90,6 +91,7 @@ namespace SharpAlert
             // We used all this fucking P/Invoke, just to make the taskbar icon flash red!?
             taskbarList = (ITaskbarList3)new CTaskbarList();
             taskbarList.HrInit();
+            //engine.SpeakProgress += Engine_SpeakProgress;
             //ReplayModeText.Visible = replay;
             //ReplayMode = replay;
         }
@@ -371,6 +373,29 @@ namespace SharpAlert
             }
         }
 
+        //public int HighlightCharacterPosition = -1;
+        //public int HighlightCharacterCount = -1;
+
+        private void SelectText_Tick(object sender, EventArgs e)
+        {
+            //Prompt prompt = engine.GetCurrentlySpokenPrompt();
+            
+
+            //if (HighlightCharacterPosition == -1)
+            //{
+
+            //}
+
+            //AlertText.Select();
+            //AlertText.Select(e.CharacterPosition, e.CharacterCount);
+        }
+
+        //private void Engine_SpeakProgress1(object sender, System.Speech.Synthesis.SpeakProgressEventArgs e)
+        //{
+        //    HighlightCharacterPosition = e.CharacterPosition;
+        //    HighlightCharacterCount = e.CharacterCount;
+        //}
+
         private void FadeInAnimation_Tick(object sender, EventArgs e)
         {
             if (this.Opacity == 1)
@@ -559,3 +584,4 @@ namespace SharpAlert
         }
     }
 }
+

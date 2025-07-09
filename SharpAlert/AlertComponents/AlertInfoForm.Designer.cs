@@ -1,4 +1,4 @@
-﻿namespace SharpAlert
+﻿namespace SharpAlert.AlertComponents
 {
     partial class AlertInfoForm
     {
@@ -36,7 +36,7 @@
             this.SubtitlePanel = new System.Windows.Forms.Panel();
             this.SubtitleText = new System.Windows.Forms.Label();
             this.SubtitleSpacer = new System.Windows.Forms.Panel();
-            this.OutlineContainerPanel = new SharpAlert.ToolboxStuff.BorderPanel();
+            this.OutlineContainerPanel = new SharpAlert.WinFormsControls.ToolboxStuff.BorderPanel();
             this.AlertLinkText = new System.Windows.Forms.LinkLabel();
             this.AlertText = new System.Windows.Forms.TextBox();
             this.TitleText = new System.Windows.Forms.Label();
@@ -252,7 +252,7 @@
         private System.Windows.Forms.Panel SubtitlePanel;
         private System.Windows.Forms.Label SubtitleText;
         private System.Windows.Forms.Panel SubtitleSpacer;
-        private ToolboxStuff.BorderPanel OutlineContainerPanel;
+        private WinFormsControls.ToolboxStuff.BorderPanel OutlineContainerPanel;
         private System.Windows.Forms.TextBox AlertText;
         private System.Windows.Forms.Label TitleText;
         private System.Windows.Forms.Button DismissButton;
@@ -262,4 +262,5 @@
         private System.Windows.Forms.Timer TerminateSelf;
     }
 }
+
 

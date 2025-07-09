@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EASEncoderFusion.Properties {
+namespace SharpAlert.SharpEncoder.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -36,3 +36,4 @@ namespace EASEncoderFusion.Properties {
         }
     }
 }
+

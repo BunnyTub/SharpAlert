@@ -2,10 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using SharpAlert.Properties;
-using static SharpAlert.MainEntryPoint;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
 
-namespace SharpAlert
+namespace SharpAlert.ConfigurationDialogs
 {
     public partial class ChooseRegionForm : Form
     {
@@ -43,6 +42,8 @@ namespace SharpAlert
             RegionCanadaBox.CheckedChanged += (a, b) => QuickSettings.Instance.RegionCanada = ((CheckBox)a).Checked;
             RegionMexicoBox.Checked = QuickSettings.Instance.RegionMexico;
             RegionMexicoBox.CheckedChanged += (a, b) => QuickSettings.Instance.RegionMexico = ((CheckBox)a).Checked;
+            RegionBrazilBox.Checked = QuickSettings.Instance.RegionBrazil;
+            RegionBrazilBox.CheckedChanged += (a, b) => QuickSettings.Instance.RegionBrazil = ((CheckBox)a).Checked;
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -118,3 +119,4 @@ namespace SharpAlert
         }
     }
 }
+

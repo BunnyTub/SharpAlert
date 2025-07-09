@@ -5,11 +5,11 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using static SharpAlert.AudioManager;
-using static SharpAlert.MainEntryPoint;
-using static SharpAlert.AlertProcessor;
-using static SharpAlert.AlertDisplayer;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
+using static SharpAlert.AlertComponents.AlertProcessor;
+using static SharpAlert.AlertComponents.AlertDisplayer;
 
-namespace SharpAlert
+namespace SharpAlert.AlertComponents
 {
     public partial class AlertForm : Form
     {
@@ -624,3 +624,4 @@ namespace SharpAlert
         }
     }
 }
+

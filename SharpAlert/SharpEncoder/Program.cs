@@ -1,6 +1,6 @@
 ﻿//using System.Windows.Forms;
 
-//namespace EASEncoderFusion
+//namespace SharpAlert.SharpEncoder
 //{
 //    internal class Program
 //    {
@@ -10,3 +10,4 @@
 //        }
 //    }
 //}
+

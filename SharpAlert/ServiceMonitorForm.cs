@@ -3,8 +3,9 @@ using System.Threading;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static SharpAlert.ServiceThreads;
-using static SharpAlert.MainEntryPoint;
+using static SharpAlert.ProgramWorker.ServiceThreads;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
+using SharpAlert.SourceCapturing;
 
 namespace SharpAlert
 {
@@ -15,7 +16,7 @@ namespace SharpAlert
             InitializeComponent();
         }
 
-        void UpdateStatus(ThreadState threadState, Label statusLabel, ToolboxStuff.BorderPanel borderPanel, string SpecialText = "")
+        void UpdateStatus(ThreadState threadState, Label statusLabel, WinFormsControls.ToolboxStuff.BorderPanel borderPanel, string SpecialText = "")
         {
             switch (threadState)
             {
@@ -147,3 +148,4 @@ namespace SharpAlert
         }
     }
 }
+

@@ -1,4 +1,4 @@
-﻿using SharpAlert.Properties;
+﻿using SharpAlert.ProgramWorker;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +7,12 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using static SharpAlert.IceBearWorker;
-using static SharpAlert.MainEntryPoint;
+using static SharpAlert.ProgramWorker.IceBearWorker;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
+using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.RegexList;
 
-namespace SharpAlert
+namespace SharpAlert.SourceCapturing
 {
     public class DirectFeedCapture
     {
@@ -98,7 +99,6 @@ namespace SharpAlert
 
                                     Console.WriteLine($"[TCP Feed Capture] The connection was closed for {server.ServerName}.");
                                 }
-
                             });
 
                             CaptureThreads.Add(thread);
@@ -185,13 +185,13 @@ namespace SharpAlert
                                 if (Stop) return;
                                 //try
                                 //{
-                                stream.WriteByte(0);
                                 //}
                                 //catch (IOException)
                                 //{
                                 //    return;
                                 //}
                                 Thread.Sleep(1000);
+                                stream.WriteByte(0);
                             }
                             data.Clear();
                             DateTime now = DateTime.UtcNow;
@@ -248,10 +248,17 @@ namespace SharpAlert
                 catch (TimeoutException)
                 {
                     Console.WriteLine($"[TCP Feed Capture] Timed out from {name}.");
+                    Notify.ShowNotification($"Network error occurred. Timed out from {name}.",
+                        "SharpAlert source timed out",
+                        System.Windows.Forms.ToolTipIcon.Warning);
+                    Thread.Sleep(30 * 1000);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"[TCP Feed Capture] Exception caught in {name}. {ex.Message}");
+                    Notify.ShowNotification($"Network error occurred. {ex.Message}",
+                        "SharpAlert source failed",
+                        System.Windows.Forms.ToolTipIcon.Warning);
                 }
                 Thread.Sleep(15 * 1000);
             }
@@ -580,3 +587,4 @@ namespace SharpAlert
         }
     }
 }
+

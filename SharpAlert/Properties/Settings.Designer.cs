@@ -1025,3 +1025,4 @@ namespace SharpAlert.Properties {
         }
     }
 }
+

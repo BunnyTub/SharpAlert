@@ -5,11 +5,12 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Linq;
 using static SharpAlert.AudioManager;
+using SharpAlert.ProgramWorker;
 //using GMap.NET;
 //using GMap.NET.WindowsForms.Markers;
 //using GMap.NET.WindowsForms;
 
-namespace SharpAlert
+namespace SharpAlert.AlertComponents
 {
     public partial class ImmediateAlertForm : Form
     {
@@ -407,3 +408,4 @@ namespace SharpAlert
         }
     }
 }
+

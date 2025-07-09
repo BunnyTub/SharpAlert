@@ -2,9 +2,11 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using static SharpAlert.MainEntryPoint;
+using SharpAlert.ProgramWorker;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
+using static SharpAlert.ProgramWorker.NotificationWorker;
 
-namespace SharpAlert
+namespace SharpAlert.DisplayDialogs
 {
     public partial class TeleIdleForm : Form
     {
@@ -84,13 +86,9 @@ namespace SharpAlert
         private void MinimizeToTaskbar()
         {
             this.WindowState = FormWindowState.Minimized;
-            lock (notify)
-            {
-                notify.BalloonTipIcon = ToolTipIcon.Info;
-                notify.BalloonTipTitle = "SharpAlert minimized";
-                notify.BalloonTipText = "The idle window is on the taskbar, waiting for you to restore it anytime!";
-                notify.ShowBalloonTip(5000);
-            }
+            Notify.ShowNotification($"The idle window is on the taskbar, waiting for you to restore it anytime!",
+                "SharpAlert is minimized",
+                ToolTipIcon.Warning);
             //notify.ContextMenuStrip.Show(Cursor.Position);
         }
 
@@ -147,3 +145,4 @@ namespace SharpAlert
         }
     }
 }
+

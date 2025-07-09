@@ -113,7 +113,8 @@ namespace SharpAlert
         // "MakiVersion" is unused.
         //public string MakiVersion { get; set; } = string.Empty;
         // Data Structure
-        public int storedMaxSize { get; set; } = 500;
+        // storedMaxSize can be any size, but is usually capped to 5000 by the UI.
+        public int storedMaxSize { get; set; } = 1000;
         // First-run
         public bool DisclaimerShown { get; set; } = false;
         public bool SetupExperienceComplete { get; set; } = false;
@@ -125,6 +126,7 @@ namespace SharpAlert
         public bool RegionUnitedStatesNWS { get; set; } = false;
         public bool RegionCanada { get; set; } = false;
         public bool RegionMexico { get; set; } = false;
+        public bool RegionBrazil { get; set; } = false;
         // Discord
         public string DiscordWebhook { get; set; } = string.Empty;
         public string DiscordWebhookAppend { get; set; } = string.Empty;
@@ -149,7 +151,7 @@ namespace SharpAlert
         public bool categoryTransportation { get; set; } = true;
         public bool categoryOtherUnknown { get; set; } = true;
         // Language
-        public bool AllowNonEnglishAlerts { get; set; } = false;
+        public bool AllowNonEnglishAlerts { get; set; } = true;
 #pragma warning restore IDE1006 // Naming Styles
 
         public void Save()
@@ -219,3 +221,4 @@ namespace SharpAlert
     }
 
 }
+

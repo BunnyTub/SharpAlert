@@ -1,9 +1,10 @@
-﻿using SharpAlert.Properties;
+﻿using SharpAlert.AlertComponents;
+using SharpAlert.Properties;
 using System;
 using System.Diagnostics;
 using System.Threading;
 
-namespace SharpAlert
+namespace SharpAlert.ProgramWorker
 {
     public static class HeartbeatWorker
     {
@@ -62,3 +63,4 @@ namespace SharpAlert
         }
     }
 }
+

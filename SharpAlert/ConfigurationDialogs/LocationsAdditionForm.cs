@@ -2,9 +2,9 @@
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using static SharpAlert.MainEntryPoint;
+using SharpAlert.AlertComponents;
 
-namespace SharpAlert
+namespace SharpAlert.ConfigurationDialogs
 {
     public partial class LocationsAdditionForm : Form
     {
@@ -61,3 +61,4 @@ namespace SharpAlert
         }
     }
 }
+

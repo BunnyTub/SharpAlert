@@ -1,4 +1,4 @@
-﻿namespace SharpAlert
+﻿namespace SharpAlert.DisplayDialogs
 {
     partial class TeleIdleForm
     {
@@ -35,7 +35,7 @@
             this.MovePreventBurnIn = new System.Windows.Forms.Timer(this.components);
             this.IdleText = new System.Windows.Forms.Label();
             this.IdleContainer = new System.Windows.Forms.Panel();
-            this.InfoText = new SharpAlert.ToolboxStuff.MarqueeLabel();
+            this.InfoText = new SharpAlert.WinFormsControls.ToolboxStuff.MarqueeLabel();
             this.IdleContainer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -130,7 +130,7 @@
         private System.Windows.Forms.Timer ClockSet;
         private System.Windows.Forms.Timer MovePreventBurnIn;
         private System.Windows.Forms.Label IdleText;
-        private ToolboxStuff.MarqueeLabel InfoText;
+        private WinFormsControls.ToolboxStuff.MarqueeLabel InfoText;
         public System.Windows.Forms.Panel IdleContainer;
     }
 }

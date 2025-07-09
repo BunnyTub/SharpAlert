@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace SharpAlert
+namespace SharpAlert.ConfigurationDialogs
 {
     public partial class ChooseLocationForm : Form
     {
@@ -256,3 +256,4 @@ namespace SharpAlert
 
     }
 }
+

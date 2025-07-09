@@ -1,4 +1,4 @@
-﻿namespace SharpAlert
+﻿namespace SharpAlert.AlertComponents
 {
     partial class TeleAlertForm
     {
@@ -56,6 +56,7 @@
             this.BottomOutlinePanel = new System.Windows.Forms.Panel();
             this.WindowFlash = new System.Windows.Forms.Timer(this.components);
             this.EnsureTopWindow = new System.Windows.Forms.Timer(this.components);
+            this.SelectText = new System.Windows.Forms.Timer(this.components);
             this.AlertPanel.SuspendLayout();
             this.MainPanel.SuspendLayout();
             this.OutlineContainerPanel.SuspendLayout();
@@ -338,6 +339,11 @@
             this.EnsureTopWindow.Interval = 1000;
             this.EnsureTopWindow.Tick += new System.EventHandler(this.EnsureTopWindow_Tick);
             // 
+            // SelectText
+            // 
+            this.SelectText.Enabled = true;
+            this.SelectText.Tick += new System.EventHandler(this.SelectText_Tick);
+            // 
             // TeleAlertForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -399,6 +405,8 @@
         private System.Windows.Forms.Label SubtitleText;
         private System.Windows.Forms.Panel LeftSubtitleSpacer;
         private System.Windows.Forms.Panel RightSubtitleSpacer;
+        private System.Windows.Forms.Timer SelectText;
     }
 }
+
 

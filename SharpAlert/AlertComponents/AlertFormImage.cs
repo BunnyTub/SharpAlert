@@ -2,9 +2,9 @@
 using System.Drawing;
 using System.Net;
 using System.Windows.Forms;
-using static SharpAlert.MainEntryPoint;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
 
-namespace SharpAlert
+namespace SharpAlert.AlertComponents
 {
     public partial class AlertFormImage : Form
     {
@@ -71,3 +71,4 @@ namespace SharpAlert
         }
     }
 }
+

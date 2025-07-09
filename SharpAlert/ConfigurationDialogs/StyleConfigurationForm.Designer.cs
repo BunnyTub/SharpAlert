@@ -1,4 +1,4 @@
-﻿namespace SharpAlert
+﻿namespace SharpAlert.ConfigurationDialogs
 {
     partial class StyleConfigurationForm
     {

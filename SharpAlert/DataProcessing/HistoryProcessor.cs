@@ -1,16 +1,18 @@
 ﻿using System;
-using static SharpAlert.MainEntryPoint;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.RegexList;
 using System.Linq;
 using System.Threading;
-using static SharpAlert.AlertProcessor;
+using static SharpAlert.AlertComponents.AlertProcessor;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using SharpAlert.Properties;
 using System.Windows.Forms;
+using SharpAlert.ProgramWorker;
+using SharpAlert.AlertComponents;
+using static SharpAlert.ProgramWorker.NotificationWorker;
 
-namespace SharpAlert
+namespace SharpAlert.DataProcessing
 {
     internal class HistoryProcessor
     {
@@ -137,23 +139,17 @@ namespace SharpAlert
                                         "Expiry may not mean that the event is over completely.",
                                         $"-# Identifier(s): {FullNames}"))
                                     {
-                                        lock (notify)
-                                        {
-                                            notify.BalloonTipIcon = ToolTipIcon.Info;
-                                            notify.BalloonTipTitle = $"SharpAlert found expired alerts";
-                                            notify.BalloonTipText = "One or more alerts expired.";
-                                            notify.ShowBalloonTip(5000);
-                                        }
+                                        Notify.ShowNotification($"One or more alerts expired.",
+                                            "SharpAlert found expired alerts",
+                                            ToolTipIcon.Warning);
+                                        //AnyAlertRelayed = true;
+                                        //UsedDiscordHook = true;
                                     }
                                     else
                                     {
-                                        lock (notify)
-                                        {
-                                            notify.BalloonTipIcon = ToolTipIcon.Warning;
-                                            notify.BalloonTipTitle = $"SharpAlert found expired alerts";
-                                            notify.BalloonTipText = "One or more alerts expired, but it couldn't be sent through the webhook.";
-                                            notify.ShowBalloonTip(5000);
-                                        }
+                                        Notify.ShowNotification($"One or more alerts expired, but we couldn't say that through Discord.",
+                                            "SharpAlert found expired alerts",
+                                            ToolTipIcon.Warning);
                                     }
                                 }
                                 else
@@ -260,3 +256,4 @@ namespace SharpAlert
         }
     }
 }
+

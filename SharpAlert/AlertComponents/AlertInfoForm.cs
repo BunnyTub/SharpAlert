@@ -4,9 +4,9 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using static SharpAlert.AlertProcessor;
+using static SharpAlert.AlertComponents.AlertProcessor;
 
-namespace SharpAlert
+namespace SharpAlert.AlertComponents
 {
     public partial class AlertInfoForm : Form
     {
@@ -347,3 +347,4 @@ namespace SharpAlert
         }
     }
 }
+

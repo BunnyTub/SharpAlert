@@ -1,4 +1,4 @@
-﻿namespace SharpAlert
+﻿namespace SharpAlert.AlertComponents
 {
     partial class MiniAlertForm
     {
@@ -42,8 +42,8 @@
             this.TitlePanel = new System.Windows.Forms.Panel();
             this.TitleText = new System.Windows.Forms.Label();
             this.SubtitlePanel = new System.Windows.Forms.Panel();
-            this.AlertText = new SharpAlert.ToolboxStuff.MarqueeLabel();
-            this.OutlineContainerPanel = new SharpAlert.ToolboxStuff.BorderPanel();
+            this.AlertText = new SharpAlert.WinFormsControls.ToolboxStuff.MarqueeLabel();
+            this.OutlineContainerPanel = new SharpAlert.WinFormsControls.ToolboxStuff.BorderPanel();
             this.TerminateSelf = new System.Windows.Forms.Timer(this.components);
             this.TitlePanel.SuspendLayout();
             this.SubtitlePanel.SuspendLayout();
@@ -268,9 +268,10 @@
         private System.Windows.Forms.Button DismissButton;
         private System.Windows.Forms.Label TitleText;
         private System.Windows.Forms.Panel SubtitlePanel;
-        private ToolboxStuff.MarqueeLabel AlertText;
-        private ToolboxStuff.BorderPanel OutlineContainerPanel;
+        private WinFormsControls.ToolboxStuff.MarqueeLabel AlertText;
+        private WinFormsControls.ToolboxStuff.BorderPanel OutlineContainerPanel;
         private System.Windows.Forms.Timer TerminateSelf;
     }
 }
+
 

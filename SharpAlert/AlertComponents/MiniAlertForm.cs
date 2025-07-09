@@ -1,4 +1,5 @@
-﻿using SharpAlert.Properties;
+﻿using SharpAlert.ProgramWorker;
+using SharpAlert.Properties;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -6,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using static SharpAlert.AudioManager;
 
-namespace SharpAlert
+namespace SharpAlert.AlertComponents
 {
     public partial class MiniAlertForm : Form
     {
@@ -393,3 +394,4 @@ namespace SharpAlert
         }
     }
 }
+

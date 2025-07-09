@@ -8,27 +8,20 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using static SharpAlert.AudioManager;
-using static SharpAlert.IceBearWorker;
+using static SharpAlert.ProgramWorker.IceBearWorker;
+using SharpAlert.SourceCapturing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
-using System.Globalization;
+using SharpAlert.DataProcessing;
+using SharpAlert.DisplayDialogs;
+using SharpAlert.WebServer;
+using SharpAlert.AlertComponents;
+using SharpAlert.SourceCapturing.SystemSpecific;
+using static SharpAlert.ProgramWorker.NotificationWorker;
 
-namespace SharpAlert
+namespace SharpAlert.ProgramWorker
 {
-    internal static class VersionInfo
-    {
-        public static readonly int MajorVersion = 10;
-        public static readonly int MinorVersion = 0;
-        public static readonly bool BetaVersion = true;
-        public static readonly DateTime BetaTimeEnd = DateTime.ParseExact(
-            "7/27/2025",
-            "M/d/yyyy",
-            CultureInfo.InvariantCulture,
-            DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal
-        );
-    }
-
     public class SharpDataItem
     {
         // public string FriendlyName { get; set; }
@@ -55,9 +48,11 @@ namespace SharpAlert
                 FeedSuccessfulCalls_ = value;
             }
         }
+
         public static FeedCapture feed;
         public static WeatherAtomCapture atomfeed;
         public static DirectFeedCapture directfeed;
+        public static IDAPCapture idapfeed;
         public static CacheCapture cache;
         public static DataProcessor dataproc;
         public static HistoryProcessor historyproc;
@@ -68,7 +63,6 @@ namespace SharpAlert
         public static object IdleWindowLock = new object();
         public static object StatusWindowLock = new object();
         public static object AudioOutputLock = new object();
-        public static NotifyIcon notify;
         public static HyperServer hyper;
         public static object AlertValuesLock = new object();
         private static bool _AlertDisplaying = false;
@@ -103,13 +97,9 @@ namespace SharpAlert
         /// </summary>
         public static void SafeExit()
         {
-            lock (notify)
-            {
-                notify.BalloonTipTitle = "SharpAlert is stopping";
-                notify.BalloonTipText = "Ice Bear is working to get everything shutdown. This may take a few moments.";
-                notify.BalloonTipIcon = ToolTipIcon.Info;
-                notify.ShowBalloonTip(5000);
-            }
+            Notify.ShowNotification($"Ice Bear is working to get everything shutdown. This may take a few moments.",
+                "SharpAlert is stopping",
+                ToolTipIcon.Info);
 
             Console.WriteLine("Preparing for termination.");
             AllowThreadRestarts = false;
@@ -168,19 +158,10 @@ namespace SharpAlert
                 if (Finished)
                 {
                     Console.WriteLine("Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-");
-                    if (notify != null)
-                    {
-                        lock (notify)
-                        {
-                            notify.BalloonTipTitle = "SharpAlert has stopped";
-                            notify.BalloonTipText = "Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-";
-                            notify.BalloonTipIcon = ToolTipIcon.Info;
-                            notify.ShowBalloonTip(5000);
-                            Thread.Sleep(2500);
-                            notify.Visible = false;
-                        }
-                    }
-                    else Thread.Sleep(1000);
+                    Notify.ShowNotification($"Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-",
+                        "SharpAlert has stopped",
+                        ToolTipIcon.Info);
+
                     Environment.Exit(0);
                 }
                 Thread.Sleep(1000);
@@ -188,19 +169,9 @@ namespace SharpAlert
             }
 
             Console.WriteLine("Shutdown timed out. Say thanks to Ice Bear for his hard work... -w-");
-            if (notify != null)
-            {
-                lock (notify)
-                {
-                    notify.BalloonTipTitle = "SharpAlert has stopped";
-                    notify.BalloonTipText = "Shutdown timed out. Say thanks to Ice Bear for his hard work... -w-";
-                    notify.BalloonTipIcon = ToolTipIcon.Info;
-                    notify.ShowBalloonTip(5000);
-                    Thread.Sleep(2500);
-                    notify.Visible = false;
-                }
-            }
-            else Thread.Sleep(1000);
+            Notify.ShowNotification($"Shutdown timed out. Say thanks to Ice Bear for his hard work... -w-",
+                "SharpAlert has stopped",
+                ToolTipIcon.Info);
             Environment.Exit(0);
         }
 
@@ -527,3 +498,4 @@ namespace SharpAlert
         }
     }
 }
+

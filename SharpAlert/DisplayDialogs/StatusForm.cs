@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using static SharpAlert.MainEntryPoint;
+using SharpAlert.AlertComponents;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
 
-namespace SharpAlert
+namespace SharpAlert.DisplayDialogs
 {
     public partial class StatusForm : Form
     {
@@ -44,3 +45,4 @@ namespace SharpAlert
         }
     }
 }
+

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using static SharpAlert.AudioManager;
 
-namespace SharpAlert
+namespace SharpAlert.ConfigurationDialogs
 {
     public partial class ChooseAudioForm : Form
     {
@@ -183,3 +183,4 @@ namespace SharpAlert
         }
     }
 }
+

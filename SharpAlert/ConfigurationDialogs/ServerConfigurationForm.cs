@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using static SharpAlert.MainEntryPoint;
 
-namespace SharpAlert
+namespace SharpAlert.ConfigurationDialogs
 {
     public partial class ServerConfigurationForm : Form
     {
@@ -33,20 +32,6 @@ namespace SharpAlert
             //Environment.Exit(0);
         }
 
-        private void BusyLock_Tick(object sender, EventArgs e)
-        {
-            if (AlertDisplaying)
-            {
-                ConfigurationPanel.Visible = false;
-                BusyLockText.BringToFront();
-            }
-            else
-            {
-                ConfigurationPanel.Visible = true;
-                BusyLockText.SendToBack();
-            }
-        }
-
         private void SaveServerSettingsButton_Click(object sender, EventArgs e)
         {
             SaveServerSettingsButton.BackColor = Color.FromArgb(60, 60, 60);
@@ -66,3 +51,4 @@ namespace SharpAlert
         }
     }
 }
+
