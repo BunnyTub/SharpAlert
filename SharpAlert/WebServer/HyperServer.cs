@@ -400,7 +400,8 @@ namespace SharpAlert.WebServer
         {
             if (AuthenticationFulfilled(ctx))
             {
-                byte[] message = Encoding.UTF8.GetBytes("</center><h1>Self-destruct sequence initiated.</h1></center>");
+                ctx.Response.ContentType = "text/html";
+                byte[] message = Encoding.UTF8.GetBytes("<center><h1>Self-destruct sequence initiated.</h1></center>");
                 ctx.Response.OutputStream.Write(message, 0, message.Length);
                 ctx.Response.OutputStream.Close();
                 Environment.Exit(0);
