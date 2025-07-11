@@ -25,7 +25,11 @@ namespace SharpAlert.ConfigurationDialogs
             DisableDialogsBox.Checked = QuickSettings.Instance.DisableDialogs;
             DisableDialogsBox.CheckedChanged += (a, b) => QuickSettings.Instance.DisableDialogs = ((CheckBox)a).Checked;
             EnableServerBox.Checked = QuickSettings.Instance.EnableServer;
-            EnableServerBox.CheckedChanged += (a, b) => QuickSettings.Instance.EnableServer = ((CheckBox)a).Checked;
+            EnableServerBox.CheckedChanged += (a, b) =>
+            {
+                QuickSettings.Instance.EnableServer = ((CheckBox)a).Checked;
+                MessageBox.Show("This change requires a program restart.", "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            };
         }
 
         private void ServerConfigurationForm_FormClosing(object sender, FormClosingEventArgs e)

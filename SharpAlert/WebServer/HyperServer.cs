@@ -80,8 +80,6 @@ namespace SharpAlert.WebServer
                 {
                     if (resourceName.StartsWith("SharpAlert.WebServer."))
                     {
-                        Console.WriteLine("!!!");
-                        Console.WriteLine(resourceName);
                         if (resourceName.ToLowerInvariant().EndsWith(".html") || resourceName.ToLowerInvariant().EndsWith(".htm"))
                         {
                             // Extract just the filename from the full resource name
@@ -132,7 +130,6 @@ namespace SharpAlert.WebServer
                         }
                     }
                 }
-                Debugger.Break();
 
                 Started = true;
 
