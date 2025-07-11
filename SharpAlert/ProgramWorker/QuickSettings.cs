@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using Newtonsoft.Json;
-//using static SharpAlert.IceBearWorker;
 
 namespace SharpAlert
 {
@@ -47,8 +46,11 @@ namespace SharpAlert
         }
 
 #pragma warning disable IDE1006 // Naming Styles
-        // Status
+        // System
+        public bool NoSystemSleep { get; set; } = false;
+        // Migration
         public bool MigrationOccurred { get; set; } = false;
+        // Status
         public bool statusActual { get; set; } = true;
         public bool statusTest { get; set; } = false;
         public bool statusExercise { get; set; } = false;
@@ -82,7 +84,7 @@ namespace SharpAlert
         public bool weaOnly { get; set; } = false;
         // Changed discard to align with region changes
         public bool discardFirstAlerts { get; set; } = true;
-        // Alert Dialogs
+        // Dialogs
         public int alertDisplayType { get; set; } = 0;
         public int WindowLocation { get; set; } = 0;
         public int alertTimeout { get; set; } = 5;

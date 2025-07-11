@@ -88,7 +88,7 @@ namespace SharpAlert.ProgramWorker
             {
                 IgnoreRightClick = true;
                 if (MessageBox.Show("Do you want to show the console?\r\n" +
-                    "Closing the console will terminate the program.",
+                    "Closing the console may terminate the program.",
                     "SharpAlert",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) == DialogResult.Yes)
@@ -98,15 +98,31 @@ namespace SharpAlert.ProgramWorker
                 IgnoreRightClick = false;
             }));
 
-            contextMenu.Items.Add(new ToolStripMenuItem("Reset Cache", null, (sender, arg) =>
+            contextMenu.Items.Add(new ToolStripSeparator());
+
+            contextMenu.Items.Add(new ToolStripMenuItem("Clear Cache", null, (sender, arg) =>
             {
                 IgnoreRightClick = true;
-                if (MessageBox.Show("Forcefully reset the cache?",
+                if (MessageBox.Show("Forcefully clear (and reset) the cache?\r\n" +
+                    "This may take a few seconds.",
                     "SharpAlert",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     cache.ServiceRun(false);
+                }
+                IgnoreRightClick = false;
+            }));
+            
+            contextMenu.Items.Add(new ToolStripMenuItem("Clear Garbage", null, (sender, arg) =>
+            {
+                IgnoreRightClick = true;
+                if (MessageBox.Show("Forcefully clear garbage (by calling the Garbage Collector)?",
+                    "SharpAlert",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    GC.Collect();
                 }
                 IgnoreRightClick = false;
             }));

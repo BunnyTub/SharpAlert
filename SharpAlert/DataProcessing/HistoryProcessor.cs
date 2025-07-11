@@ -194,13 +194,13 @@ namespace SharpAlert.DataProcessing
             lock (AlertLock)
             {
                 string Sent = SentRegex.Match(relayItem.Data).Groups[1].Value;
-                Console.WriteLine($"Sent: {Sent}");
+                Console.WriteLine($"[History Processor] Sent: {Sent}");
 
                 string Status = StatusRegex.Match(relayItem.Data).Groups[1].Value;
-                Console.WriteLine($"Status: {Status}");
+                Console.WriteLine($"[History Processor] Status: {Status}");
 
                 string MsgType = MessageTypeRegex.Match(relayItem.Data).Groups[1].Value;
-                Console.WriteLine($"Message Type: {MsgType}");
+                Console.WriteLine($"[History Processor] Message Type: {MsgType}");
 
                 MatchCollection infoMatches = InfoRegex.Matches(relayItem.Data);
 
@@ -216,13 +216,13 @@ namespace SharpAlert.DataProcessing
                         string AlertInfo = $"{infoMatch.Groups[1].Value}";
 
                         string Effective = EffectiveRegex.MatchOrDefault(relayItem.Data, $"{DateTime.UtcNow.AddHours(-1):f}");
-                        Console.WriteLine($"Effective: {Effective}");
+                        Console.WriteLine($"[History Processor] Effective: {Effective}");
 
                         string Expiry = ExpiresRegex.MatchOrDefault(relayItem.Data, $"Unknown Date Time");
-                        Console.WriteLine($"Expires: {Expiry}");
+                        Console.WriteLine($"[History Processor] Expires: {Expiry}");
 
                         string EventType = EventRegex.MatchOrDefault(AlertInfo, "Cautionary (Unknown Event)");
-                        Console.WriteLine($"Event Type: {EventType}");
+                        Console.WriteLine($"[History Processor] Event Type: {EventType}");
 
                         if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
                         {

@@ -32,8 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiscordConfigurationForm));
             this.BusyLockText = new System.Windows.Forms.Label();
             this.ApplicationTypeGroup = new System.Windows.Forms.GroupBox();
-            this.ConfigurationPanel = new System.Windows.Forms.Panel();
-            this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
+            this.DisableHeartbeatBox = new System.Windows.Forms.CheckBox();
             this.DiscordWebhookRelayLocallyBox = new System.Windows.Forms.CheckBox();
             this.DiscordWebhookConfirmAlertsBox = new System.Windows.Forms.CheckBox();
             this.SaveDiscordSettingsButton = new System.Windows.Forms.Button();
@@ -43,7 +42,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.DiscordWebhookURLInput = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.DisableHeartbeatBox = new System.Windows.Forms.CheckBox();
+            this.ConfigurationPanel = new System.Windows.Forms.Panel();
+            this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.ApplicationTypeGroup.SuspendLayout();
             this.ConfigurationPanel.SuspendLayout();
             this.SuspendLayout();
@@ -82,25 +82,17 @@
             this.ApplicationTypeGroup.TabStop = false;
             this.ApplicationTypeGroup.Text = "Discord Webhook";
             // 
-            // ConfigurationPanel
+            // DisableHeartbeatBox
             // 
-            this.ConfigurationPanel.Controls.Add(this.ApplicationTypeGroup);
-            this.ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
-            this.ConfigurationPanel.Name = "ConfigurationPanel";
-            this.ConfigurationPanel.Size = new System.Drawing.Size(570, 201);
-            this.ConfigurationPanel.TabIndex = 9;
-            // 
-            // ToolTipInformation
-            // 
-            this.ToolTipInformation.AutomaticDelay = 250;
-            this.ToolTipInformation.AutoPopDelay = 15000;
-            this.ToolTipInformation.BackColor = System.Drawing.Color.White;
-            this.ToolTipInformation.ForeColor = System.Drawing.Color.Black;
-            this.ToolTipInformation.InitialDelay = 250;
-            this.ToolTipInformation.IsBalloon = true;
-            this.ToolTipInformation.ReshowDelay = 50;
-            this.ToolTipInformation.ToolTipTitle = "What does this do?";
+            this.DisableHeartbeatBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.DisableHeartbeatBox.AutoSize = true;
+            this.DisableHeartbeatBox.Location = new System.Drawing.Point(407, 135);
+            this.DisableHeartbeatBox.Name = "DisableHeartbeatBox";
+            this.DisableHeartbeatBox.Size = new System.Drawing.Size(124, 19);
+            this.DisableHeartbeatBox.TabIndex = 19;
+            this.DisableHeartbeatBox.Text = "Disable heartbeat";
+            this.ToolTipInformation.SetToolTip(this.DisableHeartbeatBox, "Relay alerts locally in addition to sending a message.");
+            this.DisableHeartbeatBox.UseVisualStyleBackColor = true;
             // 
             // DiscordWebhookRelayLocallyBox
             // 
@@ -212,17 +204,25 @@
             this.label5.Text = "You can send alerts to a Discord webhook here. Leave the URL blank to disable thi" +
     "s feature.";
             // 
-            // DisableHeartbeatBox
+            // ConfigurationPanel
             // 
-            this.DisableHeartbeatBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.DisableHeartbeatBox.AutoSize = true;
-            this.DisableHeartbeatBox.Location = new System.Drawing.Point(407, 135);
-            this.DisableHeartbeatBox.Name = "DisableHeartbeatBox";
-            this.DisableHeartbeatBox.Size = new System.Drawing.Size(124, 19);
-            this.DisableHeartbeatBox.TabIndex = 19;
-            this.DisableHeartbeatBox.Text = "Disable heartbeat";
-            this.ToolTipInformation.SetToolTip(this.DisableHeartbeatBox, "Relay alerts locally in addition to sending a message.");
-            this.DisableHeartbeatBox.UseVisualStyleBackColor = true;
+            this.ConfigurationPanel.Controls.Add(this.ApplicationTypeGroup);
+            this.ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
+            this.ConfigurationPanel.Name = "ConfigurationPanel";
+            this.ConfigurationPanel.Size = new System.Drawing.Size(570, 201);
+            this.ConfigurationPanel.TabIndex = 9;
+            // 
+            // ToolTipInformation
+            // 
+            this.ToolTipInformation.AutomaticDelay = 250;
+            this.ToolTipInformation.AutoPopDelay = 15000;
+            this.ToolTipInformation.BackColor = System.Drawing.Color.White;
+            this.ToolTipInformation.ForeColor = System.Drawing.Color.Black;
+            this.ToolTipInformation.InitialDelay = 250;
+            this.ToolTipInformation.IsBalloon = true;
+            this.ToolTipInformation.ReshowDelay = 50;
+            this.ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
             // DiscordConfigurationForm
             // 

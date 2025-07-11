@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using NAudio.CoreAudioApi;
 using static SharpAlert.AudioManager;
 
 namespace SharpAlert.ConfigurationDialogs
@@ -79,12 +80,16 @@ namespace SharpAlert.ConfigurationDialogs
 
             if (string.IsNullOrWhiteSpace(QuickSettings.Instance.ProgramAudioOutput))
             {
-                MessageBox.Show("You must choose an audio output.\r\n" +
-                    "If you're having trouble, try the legacy audio player.",
-                    "SharpAlert",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
-                e.Cancel = true;
+                //MessageBox.Show("You must choose an audio output.\r\n" +
+                //    "If you're having trouble, try the legacy audio player.",
+                //    "SharpAlert",
+                //    MessageBoxButtons.OK,
+                //    MessageBoxIcon.Exclamation);
+                //e.Cancel = true;
+
+                CurrentAudioDevice = null;
+                QuickSettings.Instance.ProgramAudioOutput = string.Empty;
+
                 return;
             }
         }

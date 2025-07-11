@@ -58,11 +58,11 @@ namespace SharpAlert.ConfigurationDialogs
                     // 3
                     FriendlyName = "Full scroll"
                 },
-                new ComboItem
-                {
-                    // 4
-                    FriendlyName = "Multi screen"
-                },
+                //new ComboItem
+                //{
+                //    // 4
+                //    FriendlyName = "Multi screen"
+                //},
             };
             AlertFullscreenCombo.SelectedIndex = QuickSettings.Instance.alertDisplayType;
             AlertFullscreenCombo.SelectedIndexChanged += (a, b) => QuickSettings.Instance.alertDisplayType = (byte)((ComboBox)a).SelectedIndex;
@@ -199,6 +199,9 @@ namespace SharpAlert.ConfigurationDialogs
 
             alertPlayStartToneTwiceBox.Checked = QuickSettings.Instance.alertPlayStartToneTwice;
             alertPlayStartToneTwiceBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertPlayStartToneTwice = ((CheckBox)a).Checked;
+            
+            NoSystemSleepBox.Checked = QuickSettings.Instance.NoSystemSleep;
+            NoSystemSleepBox.CheckedChanged += (a, b) => QuickSettings.Instance.NoSystemSleep = ((CheckBox)a).Checked;
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)

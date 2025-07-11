@@ -257,20 +257,19 @@ namespace SharpAlert.AlertComponents
                                 alert.MsgType);
                             saf.ShowDialog();
                             break;
-                        case 4:
-                            // MultiAlertForm
-                            if (saf == null || saf.IsDisposed) saf = new ScrollAlertForm();
-                            saf.UpdateFields(alert.Identifier,
-                                alert.EventTypeFull,
-                                alert._AlertText.Intro,
-                                alert._AlertText.Body,
-                                alert.PrimaryURL,
-                                alert.AudioFiles.FirstOrEmpty(),
-                                alert.ImageFiles.FirstOrEmpty(),
-                                alert.MsgType);
-                            saf.ShowDialog();
-                            break;
-
+                        //case 4:
+                        //    // MultiAlertForm
+                        //    if (saf == null || saf.IsDisposed) saf = new ScrollAlertForm();
+                        //    saf.UpdateFields(alert.Identifier,
+                        //        alert.EventTypeFull,
+                        //        alert._AlertText.Intro,
+                        //        alert._AlertText.Body,
+                        //        alert.PrimaryURL,
+                        //        alert.AudioFiles.FirstOrEmpty(),
+                        //        alert.ImageFiles.FirstOrEmpty(),
+                        //        alert.MsgType);
+                        //    saf.ShowDialog();
+                        //    break;
                     }
 
                     Notify.Icon = Resources.TrayLightIcon;

@@ -52,6 +52,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
+            this.NoSystemSleepBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
@@ -174,9 +175,9 @@
             this.alertFullscreenWindowedBox.AutoSize = true;
             this.alertFullscreenWindowedBox.Location = new System.Drawing.Point(214, 142);
             this.alertFullscreenWindowedBox.Name = "alertFullscreenWindowedBox";
-            this.alertFullscreenWindowedBox.Size = new System.Drawing.Size(157, 19);
+            this.alertFullscreenWindowedBox.Size = new System.Drawing.Size(152, 19);
             this.alertFullscreenWindowedBox.TabIndex = 9;
-            this.alertFullscreenWindowedBox.Text = "Enable window controls";
+            this.alertFullscreenWindowedBox.Text = "Enable titlebar controls";
             this.ToolTipInformation.SetToolTip(this.alertFullscreenWindowedBox, "Enables titlebar window controls for alert panels.");
             this.alertFullscreenWindowedBox.UseVisualStyleBackColor = true;
             // 
@@ -194,7 +195,7 @@
             // alertIncreaseSizeBox
             // 
             this.alertIncreaseSizeBox.AutoSize = true;
-            this.alertIncreaseSizeBox.Location = new System.Drawing.Point(387, 67);
+            this.alertIncreaseSizeBox.Location = new System.Drawing.Point(383, 67);
             this.alertIncreaseSizeBox.Name = "alertIncreaseSizeBox";
             this.alertIncreaseSizeBox.Size = new System.Drawing.Size(106, 19);
             this.alertIncreaseSizeBox.TabIndex = 12;
@@ -205,7 +206,7 @@
             // alertNoGUIBox
             // 
             this.alertNoGUIBox.AutoSize = true;
-            this.alertNoGUIBox.Location = new System.Drawing.Point(387, 42);
+            this.alertNoGUIBox.Location = new System.Drawing.Point(383, 42);
             this.alertNoGUIBox.Name = "alertNoGUIBox";
             this.alertNoGUIBox.Size = new System.Drawing.Size(98, 19);
             this.alertNoGUIBox.TabIndex = 11;
@@ -244,23 +245,22 @@
             // alertPlayStartToneTwiceBox
             // 
             this.alertPlayStartToneTwiceBox.AutoSize = true;
-            this.alertPlayStartToneTwiceBox.Location = new System.Drawing.Point(387, 92);
+            this.alertPlayStartToneTwiceBox.Location = new System.Drawing.Point(383, 92);
             this.alertPlayStartToneTwiceBox.Name = "alertPlayStartToneTwiceBox";
             this.alertPlayStartToneTwiceBox.Size = new System.Drawing.Size(117, 19);
             this.alertPlayStartToneTwiceBox.TabIndex = 13;
             this.alertPlayStartToneTwiceBox.Text = "Extend alert tone";
             this.ToolTipInformation.SetToolTip(this.alertPlayStartToneTwiceBox, "Extends the start tone by instructing the audio stack to play it twice.");
             this.alertPlayStartToneTwiceBox.UseVisualStyleBackColor = true;
-            this.alertPlayStartToneTwiceBox.Visible = false;
             // 
             // statusWindowBox
             // 
             this.statusWindowBox.AutoSize = true;
             this.statusWindowBox.Location = new System.Drawing.Point(214, 67);
             this.statusWindowBox.Name = "statusWindowBox";
-            this.statusWindowBox.Size = new System.Drawing.Size(106, 19);
+            this.statusWindowBox.Size = new System.Drawing.Size(95, 19);
             this.statusWindowBox.TabIndex = 6;
-            this.statusWindowBox.Text = "Status window";
+            this.statusWindowBox.Text = "Status panel";
             this.ToolTipInformation.SetToolTip(this.statusWindowBox, "Shows the status window.");
             this.statusWindowBox.UseVisualStyleBackColor = true;
             // 
@@ -315,12 +315,24 @@
             this.label11.TabIndex = 39;
             this.label11.Text = "Display where";
             // 
+            // NoSystemSleepBox
+            // 
+            this.NoSystemSleepBox.AutoSize = true;
+            this.NoSystemSleepBox.Location = new System.Drawing.Point(383, 117);
+            this.NoSystemSleepBox.Name = "NoSystemSleepBox";
+            this.NoSystemSleepBox.Size = new System.Drawing.Size(136, 19);
+            this.NoSystemSleepBox.TabIndex = 40;
+            this.NoSystemSleepBox.Text = "Prevent sleep mode";
+            this.ToolTipInformation.SetToolTip(this.NoSystemSleepBox, "Prevents the system from entering sleep mode at all times.");
+            this.NoSystemSleepBox.UseVisualStyleBackColor = true;
+            // 
             // StyleConfigurationForm
             // 
             this.AcceptButton = this.DoneButton;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(532, 225);
+            this.Controls.Add(this.NoSystemSleepBox);
             this.Controls.Add(this.statusWindowBox);
             this.Controls.Add(this.alertPlayStartToneTwiceBox);
             this.Controls.Add(this.label11);
@@ -388,5 +400,6 @@
         private System.Windows.Forms.ComboBox WindowLocationCombo;
         private System.Windows.Forms.CheckBox alertPlayStartToneTwiceBox;
         private System.Windows.Forms.CheckBox statusWindowBox;
+        private System.Windows.Forms.CheckBox NoSystemSleepBox;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -76,28 +77,36 @@ namespace SharpAlert.SourceCapturing
                         if (servers.Any())
                         {
                             int count = servers.Count;
-                            foreach (ServerInfo server in servers)
+
+                            List<ServerInfo> localServers = new List<ServerInfo>();
+
+                            lock (servers)
                             {
-                                try
-                                {
-                                    count--;
-                                    Console.WriteLine($"[HTTP Feed Capture] Getting data from {server.ServerName}. URL -> {server.ServerPath}");
-                                    HttpResponseMessage message = client.GetAsync($"{URLPrefix}://{server.ServerPath}").Result;
-                                    message.EnsureSuccessStatusCode();
-
-                                    FeedSuccessfulCalls++;
-
-                                    string Result = message.Content.ReadAsStringAsync().Result;
-                                    EnrollAlerts(Result);
-                                }
-                                catch (Exception ex)
-                                {
-                                    count++;
-                                    Console.WriteLine($"[HTTP Feed Capture] {ex.Message}");
-                                    AllConnectionsSuccessful = false;
-                                    server.LastRunSuccess = false;
-                                }
+                                localServers = servers.ToList();
                             }
+
+                            foreach (ServerInfo server in localServers)
+                                {
+                                    try
+                                    {
+                                        count--;
+                                        Console.WriteLine($"[HTTP Feed Capture] Getting data from {server.ServerName}. URL -> {server.ServerPath}");
+                                        HttpResponseMessage message = client.GetAsync($"{URLPrefix}://{server.ServerPath}").Result;
+                                        message.EnsureSuccessStatusCode();
+
+                                        FeedSuccessfulCalls++;
+
+                                        string Result = message.Content.ReadAsStringAsync().Result;
+                                        EnrollAlerts(Result);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        count++;
+                                        Console.WriteLine($"[HTTP Feed Capture] {ex.Message}");
+                                        AllConnectionsSuccessful = false;
+                                        server.LastRunSuccess = false;
+                                    }
+                                }
 
                             if (count >= servers.Count)
                             {
@@ -138,6 +147,7 @@ namespace SharpAlert.SourceCapturing
                 }
                 catch (Exception e)
                 {
+                    Debugger.Break();
                     Console.WriteLine($"[HTTP Feed Capture] {e.Message}");
                     if (e.InnerException != null) Console.WriteLine($"[HTTP Feed Capture] {e.InnerException.Message}");
                     //if (LastConnectionSuccessful)

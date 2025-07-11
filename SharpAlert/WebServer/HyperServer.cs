@@ -14,6 +14,7 @@ using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.ProgramWorker.IceBearWorker;
 using SharpAlert.ProgramWorker;
 using static SharpAlert.ThreadDrool;
+using System.Diagnostics;
 
 namespace SharpAlert.WebServer
 {
@@ -79,6 +80,8 @@ namespace SharpAlert.WebServer
                 {
                     if (resourceName.StartsWith("SharpAlert.WebServer."))
                     {
+                        Console.WriteLine("!!!");
+                        Console.WriteLine(resourceName);
                         if (resourceName.ToLowerInvariant().EndsWith(".html") || resourceName.ToLowerInvariant().EndsWith(".htm"))
                         {
                             // Extract just the filename from the full resource name
@@ -129,6 +132,7 @@ namespace SharpAlert.WebServer
                         }
                     }
                 }
+                Debugger.Break();
 
                 Started = true;
 

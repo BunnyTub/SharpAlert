@@ -827,14 +827,24 @@ namespace SharpAlert.AlertComponents
                     StringCollection locations = new StringCollection();
                     lock (QuickSettings.Instance.AllowedSAMELocations_Geocodes)
                     {
+                        string AllAboveLocation = "00000";
+
                         foreach (string location in QuickSettings.Instance.AllowedSAMELocations_Geocodes)
                         {
-                            if (!locations.Contains(location))
+                            string loc = location;
+                            if (loc.Length == 6) loc = loc.Remove(1);
+                            if (loc.Length != 5)
                             {
-                                locations.Add(location);
+                                Console.WriteLine($"[Alert Processor] \"{loc}\" is not a valid SAME code.");
                             }
 
-                            string AllAboveLocation = location.Substring(0, location.Length - 3) + "000";
+                            if (!locations.Contains(loc))
+                            {
+                                locations.Add(loc);
+                            }
+
+                            // remove last three characters, replace with zeros, because it means that it is all locations
+                            AllAboveLocation = loc.Substring(0, loc.Length - 3) + "000";
 
                             if (!locations.Contains(AllAboveLocation))
                             {
@@ -850,6 +860,18 @@ namespace SharpAlert.AlertComponents
                         foreach (Match match in matches)
                         {
                             string geocode = match.Groups[1].Value;
+
+                            if (geocode.Length == 6) geocode = geocode.Remove(1);
+                            if (geocode.Length != 5)
+                            {
+                                Console.WriteLine($"[Alert Processor] \"{geocode}\" is not a valid SAME code (from alert).");
+                            }
+
+                            //foreach (string loc in locations)
+                            //{
+                            //    if (loc == geocode) GeoMatch = true;
+                            //}
+
                             if (locations.Contains(geocode))
                             {
                                 GeoMatch = true;

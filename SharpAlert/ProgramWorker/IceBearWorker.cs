@@ -396,7 +396,7 @@ namespace SharpAlert.ProgramWorker
 
             heartbeatThread = StartCatchAllThread("Heartbeat Worker", () => HeartbeatWorker.ServiceRun(), true);
             DiscordWebhook.SendFormattedMessage("SharpAlert has started.");
-
+            
             ServiceRunnerScheduled = true;
 
             new Thread(() =>
@@ -431,9 +431,32 @@ namespace SharpAlert.ProgramWorker
 
             new Thread(() =>
             {
+                while (AllowThreadRestarts)
+                {
+                    if (QuickSettings.Instance.NoSystemSleep)
+                    {
+                        SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED);
+                    }
+                    else
+                    {
+                        SetThreadExecutionState(ES_CONTINUOUS);
+                    }
+                    Thread.Sleep(1000);
+                }
+            }).Start();
+
+            new Thread(() =>
+            {
                 PipeWorker.ServerServiceRun();
             }).Start();
         }
+
+        [DllImport("kernel32.dll")]
+        static extern uint SetThreadExecutionState(uint esFlags);
+
+        const uint ES_CONTINUOUS = 0x80000000;
+        const uint ES_SYSTEM_REQUIRED = 0x00000001;
+        const uint ES_DISPLAY_REQUIRED = 0x00000002;
 
         private static readonly object ThreadErrorLockObject = new object();
 

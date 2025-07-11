@@ -267,6 +267,7 @@ namespace SharpAlert.AlertComponents
                                 //var targetFormat = new WaveFormat(44100, 16, 1);
 
                                 Task<byte[]> task = IceBearWorker.client.GetByteArrayAsync(AudioURL);
+                                task.Wait(5000);
                                 if (task.IsFaulted) throw task.Exception;
 
                                 var audio = new MemoryStream(task.Result)

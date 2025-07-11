@@ -108,47 +108,53 @@ namespace SharpAlert.ProgramWorker
             bool Finished = false;
             new Thread(() =>
             {
-                while (!ServiceRunnerScheduled)
+                try
                 {
-                    LogFault(new Exception("The program cannot exit safely, because the service runner hasn't indicated a successful startup."));
-                    Thread.Sleep(2500);
-                    Finished = true;
-                    return;
-                }
+                    while (!ServiceRunnerScheduled)
+                    {
+                        LogFault(new Exception("The program cannot exit safely, because the service runner hasn't indicated a successful startup."));
+                        Thread.Sleep(2500);
+                        Finished = true;
+                        return;
+                    }
 
-                //if (ServiceRunnerScheduled)
+                    //if (ServiceRunnerScheduled)
+                    {
+                        Console.WriteLine("Hyper Server is shutting down.");
+                        hyper?.ServiceStop();
+                        Console.WriteLine("Feed Capture is shutting down.");
+                        feed?.ServiceStop();
+                        Console.WriteLine("Direct Feed Capture is shutting down.");
+                        directfeed?.ServiceStop();
+                        Console.WriteLine("Cache Capture is shutting down.");
+                        cache?.ServiceStop();
+                        Console.WriteLine("Data Processor is shutting down.");
+                        dataproc?.ServiceStop();
+                        Console.WriteLine("Alert Processor is shutting down.");
+                        lock (AlertProcessor.AlertLock)
+                        {
+                        }
+                        Console.WriteLine("Idle Window is shutting down.");
+                        if (idle != null) IdleWindowVisible = false;
+                        Console.WriteLine("Status Window is shutting down.");
+                        if (status != null) StatusWindowVisible = false;
+                        Console.WriteLine("Stopping all sounds.");
+                        try
+                        {
+                            StopAllAudioSilently();
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Cannot stop some sounds.");
+                        }
+                        if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
+                        {
+                            DiscordWebhook.SendFormattedMessage("SharpAlert has stopped.");
+                        }
+                    }
+                }
+                catch (Exception)
                 {
-                    Console.WriteLine("Hyper Server is shutting down.");
-                    hyper?.ServiceStop();
-                    Console.WriteLine("Feed Capture is shutting down.");
-                    feed?.ServiceStop();
-                    Console.WriteLine("Direct Feed Capture is shutting down.");
-                    directfeed?.ServiceStop();
-                    Console.WriteLine("Cache Capture is shutting down.");
-                    cache?.ServiceStop();
-                    Console.WriteLine("Data Processor is shutting down.");
-                    dataproc?.ServiceStop();
-                    Console.WriteLine("Alert Processor is shutting down.");
-                    lock (AlertProcessor.AlertLock)
-                    {
-                    }
-                    Console.WriteLine("Idle Window is shutting down.");
-                    if (idle != null) IdleWindowVisible = false;
-                    Console.WriteLine("Status Window is shutting down.");
-                    if (status != null) StatusWindowVisible = false;
-                    Console.WriteLine("Stopping all sounds.");
-                    try
-                    {
-                        StopAllAudioSilently();
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("Cannot stop some sounds.");
-                    }
-                    if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
-                    {
-                        DiscordWebhook.SendFormattedMessage("SharpAlert has stopped.");
-                    }
                 }
                 Finished = true;
             }).Start();

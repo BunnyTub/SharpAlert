@@ -9,9 +9,9 @@ namespace SharpAlert
         // You can change the release, minor, and cutting edge variables.
         // ---
         // Use VersionInfoTemplate.cs!
-        public const int BuildNumber = 1260;
-        public const string BuiltOnDate = "2025-07-09";
-        public const string BuiltOnTime = "04:01";
+        public const int BuildNumber = 1292;
+        public const string BuiltOnDate = "2025-07-11";
+        public const string BuiltOnTime = "13:00";
         public const string BuiltTimeZone = "Eastern Standard Time";
         public static int MajorVersion { get; } = 10;
         public static int MinorVersion { get; } = 0;

@@ -24,6 +24,8 @@ namespace SharpAlert.ConfigurationDialogs
             WebServerPasswordInput.TextChanged += (a, b) => QuickSettings.Instance.ServerPassword = ((TextBox)a).Text.Trim();
             DisableDialogsBox.Checked = QuickSettings.Instance.DisableDialogs;
             DisableDialogsBox.CheckedChanged += (a, b) => QuickSettings.Instance.DisableDialogs = ((CheckBox)a).Checked;
+            EnableServerBox.Checked = QuickSettings.Instance.EnableServer;
+            EnableServerBox.CheckedChanged += (a, b) => QuickSettings.Instance.EnableServer = ((CheckBox)a).Checked;
         }
 
         private void ServerConfigurationForm_FormClosing(object sender, FormClosingEventArgs e)

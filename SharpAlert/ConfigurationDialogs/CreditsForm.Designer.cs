@@ -126,7 +126,7 @@
             this.MinimizeBox = false;
             this.Name = "CreditsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "SharpAlert Credits";
+            this.Text = "SharpAlert - Credits";
             this.Load += new System.EventHandler(this.CreditsForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

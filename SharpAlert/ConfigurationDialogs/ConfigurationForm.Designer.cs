@@ -47,13 +47,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DoneButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DoneButton.Font = new System.Drawing.Font("Arial", 12F);
+            this.DoneButton.Font = new System.Drawing.Font("Arial", 16F);
             this.DoneButton.ForeColor = System.Drawing.Color.White;
             this.DoneButton.Location = new System.Drawing.Point(12, 181);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(396, 40);
             this.DoneButton.TabIndex = 0;
-            this.DoneButton.Text = "Done";
+            this.DoneButton.Text = "Close";
             this.DoneButton.UseMnemonic = false;
             this.DoneButton.UseVisualStyleBackColor = false;
             this.DoneButton.Click += new System.EventHandler(this.DoneButton_Click);
@@ -204,6 +204,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(420, 233);
+            this.ControlBox = false;
             this.Controls.Add(this.ProgramCreditsButton);
             this.Controls.Add(this.SaveSettingsButton);
             this.Controls.Add(this.MigrateSettingsButton);
@@ -216,9 +217,11 @@
             this.Controls.Add(this.DoneButton);
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ConfigurationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert - Global Settings";

@@ -139,6 +139,10 @@ namespace SharpAlert.ConfigurationDialogs
         private void SaveSettingsButton_Click(object sender, EventArgs e)
         {
             QuickSettings.Instance.Save();
+            MessageBox.Show("Settings manually saved.\r\nYour settings are already saved when you click \"Done\".",
+                "SharpAlert",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
 
         private void ProgramCreditsButton_Click(object sender, EventArgs e)
