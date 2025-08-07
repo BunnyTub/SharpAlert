@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -62,6 +64,8 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
 
                         string Result = idapclient.DownloadString($"{URLPrefix}://{serverPath}");
                         
+                        // DO NOT TRIM RESULT
+
                         if (Calls >= 100000) Calls = 0;
                         Calls++;
                         // HEY YOU ABSOLUTE FUCKING IDIOT
@@ -131,6 +135,90 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
 
         public void EnrollEntries(string data)
         {
+            int EntriesIndex = 0;
+            int EntriesDiscardCount = 0;
+            int AlertCount = 0;
+
+            string[] DataSplit = data.Split('\n');
+            string AlertList = string.Empty;
+
+            Console.WriteLine($"[IDAP Capture] Processing {DataSplit.LongCount()} lines.");
+
+            foreach (string line in DataSplit)
+            {
+                //<a href="10000020122022-PR.xml">10000020122022-PR.xml</a> 20-Dec-2022 15:47 74861
+                string line_ = Regex.Replace(line, @"\s{2,}", " ");
+                MatchCollection entries = HrefRegex.Matches(line_);
+                if (entries.Count == 0) continue;
+                
+                // I stole this regex from somewhere lol
+                Match dateMatch = Regex.Match(line_, @"\d{2}-[A-Za-z]{3}-\d{4} \d{2}:\d{2}");
+                if (dateMatch.Success)
+                {
+                    DateTime parsedDate = DateTime.ParseExact(
+                        dateMatch.Value,
+                        "dd-MMM-yyyy HH:mm",
+                        CultureInfo.InvariantCulture
+                    );
+
+                    double totalDays = (DateTime.UtcNow - parsedDate).TotalDays;
+
+                    if ((int)totalDays > 15)
+                    {
+                        //Console.WriteLine($"[IDAP Capture] The current alert is {(int)totalDays} day(s) old, so it will be discarded.");
+                        continue;
+                    }
+                    else
+                    {
+                        foreach (Match entry in entries)
+                        {
+                            //if (AlertCount >= 10)
+                            //{
+                            //    //Console.WriteLine($"[IDAP Capture] Give up.");
+                            //    EnrollAlerts(AlertList);
+                            //    AlertCount = 0;
+                            //    AlertList = string.Empty;
+                            //    break;
+                            //}
+
+                            if (Stop) return;
+
+                            EntriesIndex++;
+                            AlertCount++;
+
+                            Console.WriteLine($"[IDAP Capture] {EntriesIndex} links(s) processed out of (maybe) {DataSplit.LongCount()}.");
+
+                            string EntryStr = entry.Groups[1].Value;
+
+                            if (EntryStr.StartsWith(".")) continue;
+
+                            try
+                            {
+                                Console.WriteLine($"[IDAP Capture] Getting additional data from IDAP. URL -> {serverPath}/{EntryStr}");
+                                // This should help with accented characters hopefully
+                                string value = Encoding.UTF8.GetString(idapclient.DownloadData($"https://{serverPath}/{EntryStr}"));
+                                AlertList += $"{value}\r\n";
+                            }
+                            catch (Exception ex)
+                            {
+                                EntriesDiscardCount++;
+                                Console.WriteLine($"[IDAP Capture] Couldn't get data for an IDAP alert. {ex.GetBaseException().Message}");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("[IDAP Capture] No date and time found.");
+                }
+            }
+
+            Console.WriteLine($"[IDAP Capture] {EntriesIndex} tag(s) saved, and {EntriesDiscardCount} tag(s) discarded. Tags remaining: {EntriesIndex - EntriesDiscardCount}");
+            EnrollAlerts(AlertList);
+        }
+        
+        public void LegacyEnrollEntries(string data)
+        {
             MatchCollection entries = HrefRegex.Matches(data);
 
             string AlertList = string.Empty;
@@ -145,14 +233,14 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
 
             foreach (Match entry in entries)
             {
-                if (AlertCount >= 10)
-                {
-                    //Console.WriteLine($"[IDAP Capture] Give up.");
-                    EnrollAlerts(AlertList);
-                    AlertCount = 0;
-                    AlertList = string.Empty;
-                    break;
-                }
+                //if (AlertCount >= 10)
+                //{
+                //    //Console.WriteLine($"[IDAP Capture] Give up.");
+                //    EnrollAlerts(AlertList);
+                //    AlertCount = 0;
+                //    AlertList = string.Empty;
+                //    break;
+                //}
 
                 if (Stop) return;
 
@@ -184,11 +272,8 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                 try
                 {
                     Console.WriteLine($"[IDAP Capture] Getting additional data from IDAP. URL -> {serverPath}/{EntryStr}");
-                    HttpResponseMessage message = client.GetAsync($"https://{serverPath}/{EntryStr}").Result;
-                    message.EnsureSuccessStatusCode();
-                    Task<string> value = message.Content.ReadAsStringAsync();
-                    value.Wait(30000);
-                    AlertList += $"{value.Result}\r\n";
+                    string value = idapclient.DownloadString($"https://{serverPath}/{EntryStr}");
+                    AlertList += $"{value}\r\n";
                 }
                 catch (Exception ex)
                 {

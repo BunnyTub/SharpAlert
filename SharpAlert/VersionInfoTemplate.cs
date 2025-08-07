@@ -15,7 +15,7 @@ namespace SharpAlert
         public const string BuiltTimeZone = "";
         public static int MajorVersion { get; } = 10;
         public static int MinorVersion { get; } = 0;
-        public static readonly bool IsBetaVersion = true;
+        public static bool IsBetaVersion { get; } = true;
         public static string FriendlyVersion
         {
             get
@@ -34,7 +34,7 @@ namespace SharpAlert
         }
 
         public static readonly DateTime BetaTimeEnd = DateTime.ParseExact(
-            "7/27/2025",
+            "8/16/2025",
             "M/d/yyyy",
             CultureInfo.InvariantCulture,
             DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal

@@ -15,39 +15,46 @@ namespace SharpAlert.ProgramWorker
         {
             while (AllowThreadRestarts)
             {
-                var server = new NamedPipeServerStream("SharpAlert_EASCulture_AlertIngest");
-                
-                Console.WriteLine("[Pipe Worker] Waiting for the next connection.");
-                server.WaitForConnection();
-
-                Console.WriteLine("[Pipe Worker] Connection attached. Waiting for incoming data.");
-
-                //lock (notify)
-                //{
-                //    notify.BalloonTipIcon = ToolTipIcon.Info;
-                //    notify.BalloonTipTitle = "Attached";
-                //    notify.BalloonTipText = "Connected to an app locally on your machine.";
-                //    notify.ShowBalloonTip(5000);
-                //}
-
-                using (var reader = new StreamReader(server))
+                try
                 {
-                    while (server.IsConnected)
-                    {
-                        while (reader.EndOfStream)
-                        {
-                            if (!server.IsConnected) break;
-                            Thread.Sleep(50);
-                        }
-                        string line = reader.ReadLine();
-                        if (line == null) break;
-                        Console.WriteLine($"[Pipe Worker] Incoming alert text -> {line}");
-                        dataproc?.ap?.ProcessExternalAlert("External Alert", "This alert has been relayed from an external source.", line);
-                    }
-                }
+                    var server = new NamedPipeServerStream("SharpAlert_EASCulture_AlertIngest");
+                
+                    Console.WriteLine("[Pipe Worker] Waiting for the next connection.");
+                    server.WaitForConnection();
 
-                Console.WriteLine("[Pipe Worker] Connection ended.");
-                server.Dispose();
+                    Console.WriteLine("[Pipe Worker] Connection attached. Waiting for incoming data.");
+
+                    //lock (notify)
+                    //{
+                    //    notify.BalloonTipIcon = ToolTipIcon.Info;
+                    //    notify.BalloonTipTitle = "Attached";
+                    //    notify.BalloonTipText = "Connected to an app locally on your machine.";
+                    //    notify.ShowBalloonTip(5000);
+                    //}
+
+                    using (var reader = new StreamReader(server))
+                    {
+                        while (server.IsConnected)
+                        {
+                            while (reader.EndOfStream)
+                            {
+                                if (!server.IsConnected) break;
+                                Thread.Sleep(50);
+                            }
+                            string line = reader.ReadLine();
+                            if (line == null) break;
+                            Console.WriteLine($"[Pipe Worker] Incoming alert text -> {line}");
+                            dataproc?.ap?.ProcessExternalAlert("External Alert", "This alert has been relayed from an external source.", line);
+                        }
+                    }
+
+                    Console.WriteLine("[Pipe Worker] Connection ended.");
+                    server.Dispose();
+                }
+                catch (Exception)
+                {
+
+                }
             }
         }
 

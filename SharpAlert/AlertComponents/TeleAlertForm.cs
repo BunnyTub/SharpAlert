@@ -7,7 +7,6 @@ using System.Linq;
 using static SharpAlert.AudioManager;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using SharpAlert.ProgramWorker;
-using System.Speech.Synthesis;
 
 namespace SharpAlert.AlertComponents
 {
@@ -20,6 +19,7 @@ namespace SharpAlert.AlertComponents
         private string AlertAudioUrlStr = string.Empty;
         private string AlertImageUrlStr = string.Empty;
         private string AlertType = string.Empty;
+        private string AlertSeverity = string.Empty;
 
         //private const int HWND_TOPMOST = -1;
         //private const int SWP_NOMOVE = 0x0002;
@@ -96,7 +96,7 @@ namespace SharpAlert.AlertComponents
             //ReplayMode = replay;
         }
 
-        public void UpdateFields(string id, string alert, string intro, string text, string url, string audio, string image, string type)
+        public void UpdateFields(string id, string alert, string intro, string text, string url, string audio, string image, string type, string severity)
         {
             _ = id.ToLower();
             //this.Text = $"SharpAlert - {id}";
@@ -109,6 +109,7 @@ namespace SharpAlert.AlertComponents
             AlertAudioUrlStr = audio;
             AlertImageUrlStr = image;
             AlertType = type;
+            AlertSeverity = severity;
             AlertText.SelectionStart = 0;
 
             var message = GetTextFromMessageType(type);
@@ -204,7 +205,7 @@ namespace SharpAlert.AlertComponents
             //    PlayFromUnmanagedSource(Resources.ui_cancellation_1);
             //}
 
-            PlayStartToneFile();
+            PlayStartToneFile(AlertSeverity);
 
             AutoTTS.Start();
             AlertText.Focus();
@@ -274,6 +275,7 @@ namespace SharpAlert.AlertComponents
 
         private void DismissButton_Click(object sender, EventArgs e)
         {
+            SpeakingManager.DismissingWindow();
             this.Close();
         }
 

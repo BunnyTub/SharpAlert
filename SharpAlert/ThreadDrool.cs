@@ -15,7 +15,7 @@ namespace SharpAlert
         {
         }
 
-        public static Thread StartCatchAllThread(string FriendlyName, Action action, bool restartable, ApartmentState apt = ApartmentState.MTA)
+        public static Thread StartCatchAllThread(string FriendlyName, Action action, bool restartable, bool exceptionCausesUnsafeBehavior = true, ApartmentState apt = ApartmentState.MTA)
         {
             Console.WriteLine($"[Thread Drool] Returning thread. ({FriendlyName}, restartable = {restartable})");
             Thread thread = new Thread(() =>
@@ -36,7 +36,7 @@ namespace SharpAlert
                     }
                     catch (Exception ex)
                     {
-                        UnsafeFault(ex, !restartable);
+                        if (exceptionCausesUnsafeBehavior) UnsafeFault(ex, !restartable);
                     }
 
                     if (!restartable)

@@ -19,6 +19,7 @@ using SharpAlert.WebServer;
 using SharpAlert.AlertComponents;
 using SharpAlert.SourceCapturing.SystemSpecific;
 using static SharpAlert.ProgramWorker.NotificationWorker;
+using SharpAlert.ConfigurationDialogs;
 
 namespace SharpAlert.ProgramWorker
 {
@@ -182,6 +183,8 @@ namespace SharpAlert.ProgramWorker
         }
 
         public static bool ServiceMode { get; private set; } = false;
+        public static string[] Args { get; private set; } = null;
+        // --alt-config-1/2/3/4
 
         /// <summary>
         /// Starts everything.
@@ -190,29 +193,36 @@ namespace SharpAlert.ProgramWorker
         private static void Main()
         {
             //watchdog self-child process
-            string[] args = Environment.GetCommandLineArgs();
+            Args = Environment.GetCommandLineArgs();
             Application.EnableVisualStyles();
+            //Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
             Application.SetCompatibleTextRenderingDefault(false);
-
-            if (args.Length >= 2)
+            Application.ThreadException += (a, b) =>
             {
-                if (args.Contains("--service-mode"))
+                UnsafeFault(b.Exception, true);
+            };
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+
+            //ThreadDrool.StartAndForget(() => { while (true) new AlertTableForm().ShowDialog(); });
+
+            if (Args.Length >= 2)
+            {
+                if (Args.Contains("--service-mode"))
                 {
                     AllocateTerminal(false);
                     Console.WriteLine("SERVICE MODE ACTIVE --- PERFORMANCE MAY BE IMPACTED --- THIS IS FOR TESTING PURPOSES");
                     ServiceMode = true;
-                    Thread.Sleep(1000);
                     new Thread(() => { while (true) new ServiceMonitorForm().ShowDialog(); }).Start();
                 }
                 else
                 {
-                    if (args.Contains("--console"))
+                    if (Args.Contains("--console"))
                     {
                         AllocateTerminal(false);
                     }
                 }
 
-                if (args.Contains("--monitored") || ServiceMode)
+                if (Args.Contains("--monitored") || ServiceMode)
                 {
                     Mutex mutex = new Mutex(false, "BUNNYTUB_EASCULTURE_SharpAlert_ProtectEZ");
 
@@ -220,7 +230,7 @@ namespace SharpAlert.ProgramWorker
                     {
                         if (!ServiceMode)
                         {
-                            if (!args.Contains("--ignore-duplicates"))
+                            if (!Args.Contains("--ignore-duplicates"))
                             {
                                 if (!mutex.WaitOne(0, false))
                                 {
@@ -298,7 +308,7 @@ namespace SharpAlert.ProgramWorker
                 };
 
                 string arguments = "--monitored";
-                foreach (string arg in args)
+                foreach (string arg in Args)
                 {
                     arguments += $"\x20{arg}";
                 }

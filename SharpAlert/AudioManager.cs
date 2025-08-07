@@ -430,10 +430,24 @@ namespace SharpAlert
 
         public static bool ToneDone = true;
 
-        public static void PlayStartToneFile(string severity = "???", bool wait = false)
+        public static void PlayStartToneFile(string severity, bool wait = false)
         {
             StopAllAudioSilently();
             ToneDone = false;
+
+            Stream stream;
+
+            switch (severity.ToLowerInvariant())
+            {
+                case "extreme":
+                case "severe":
+                    stream = Resources.major_alert;
+                    break;
+                default:
+                    stream = Resources.minor_alert;
+                    break;
+            }
+
 
             //if (!QuickSettings.Instance.alertPlayStartTone)
             //{
@@ -447,7 +461,7 @@ namespace SharpAlert
                 {
                     lock (LegacyAudioPlayer)
                     {
-                        LegacyAudioPlayer.Stream = Resources.ui_warning_1;
+                        LegacyAudioPlayer.Stream = stream;
                         if (wait) LegacyAudioPlayer.PlaySync();
                         else ThreadDrool.StartAndForget(() =>
                         {
@@ -468,8 +482,8 @@ namespace SharpAlert
                             if (string.IsNullOrWhiteSpace(path))
                             {
                                 Console.WriteLine("[Audio Manager] No audio file specified inside the configuration.");
-                                PlayFromUnmanagedSourceAndWait(Resources.ui_warning_1, false);
-                                if (QuickSettings.Instance.alertPlayStartToneTwice && !HoldIt) PlayFromUnmanagedSourceAndWait(Resources.ui_warning_1, false);
+                                PlayFromUnmanagedSourceAndWait((UnmanagedMemoryStream)stream, false);
+                                if (QuickSettings.Instance.alertPlayStartToneTwice && !HoldIt) PlayFromUnmanagedSourceAndWait((UnmanagedMemoryStream)stream, false);
                             }
                             else
                             {

@@ -167,10 +167,11 @@
             this.RegionBrazilBox.Location = new System.Drawing.Point(111, 154);
             this.RegionBrazilBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             this.RegionBrazilBox.Name = "RegionBrazilBox";
-            this.RegionBrazilBox.Size = new System.Drawing.Size(250, 22);
+            this.RegionBrazilBox.Size = new System.Drawing.Size(221, 22);
             this.RegionBrazilBox.TabIndex = 16;
-            this.RegionBrazilBox.Text = "Brazil (IDAP) [Hover for warning]";
-            this.ToolTipInformation.SetToolTip(this.RegionBrazilBox, resources.GetString("RegionBrazilBox.ToolTip"));
+            this.RegionBrazilBox.Text = "Brazil (IDAP) [Hover for info]";
+            this.ToolTipInformation.SetToolTip(this.RegionBrazilBox, "You can receive alerts from Brazil via IDAP (Divulgação de Alertas Públicos).\r\nID" +
+        "AP retrival is currently experimental. Please give us feedback on it!");
             this.RegionBrazilBox.UseVisualStyleBackColor = true;
             // 
             // label1

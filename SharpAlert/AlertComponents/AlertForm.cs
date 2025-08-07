@@ -191,7 +191,7 @@ namespace SharpAlert.AlertComponents
             //    //PlayFromUnmanagedSource(Resources.ui_cancellation_1);
             //}
 
-            PlayStartToneFile("");
+            PlayStartToneFile(AlertSeverity);
 
             if (QuickSettings.Instance.alertTitlebarControls)
             {
@@ -292,6 +292,7 @@ namespace SharpAlert.AlertComponents
 
         private void DismissButton_Click(object sender, EventArgs e)
         {
+            SpeakingManager.DismissingWindow();
             this.Close();
         }
 

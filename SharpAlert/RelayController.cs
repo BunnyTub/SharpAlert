@@ -7,7 +7,7 @@ namespace SharpAlert
     public class RelayController
     {
         private const int USB_CFG_VENDOR_ID = 0x16c0;
-        private const int USB_CFG_DEVICE_ID = 0x05DF;
+        private const int USB_CFG_DEVICE_ID = 0x05dF;
         private HidDevice device;
         private byte[] lastRowStatus;
 

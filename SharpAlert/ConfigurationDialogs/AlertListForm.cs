@@ -115,7 +115,9 @@ namespace SharpAlert.ConfigurationDialogs
                         lock (SharpDataHistory)
                         {
                             var alert = SharpDataHistory.Last();
-                            //SharpDataHistory.Remove(alert);
+
+                            SharpDataHistory.Remove(alert);
+
                             if (alert.Data.Contains("<SharpAlertReplay>false</SharpAlertReplay>"))
                             {
                                 alert.Data = alert.Data.Replace("<SharpAlertReplay>false</SharpAlertReplay>", "<SharpAlertReplay>true</SharpAlertReplay>");
@@ -125,26 +127,27 @@ namespace SharpAlert.ConfigurationDialogs
                                 alert.Data += "<SharpAlertReplay>true</SharpAlertReplay>";
                             }
 
-                            AlertInfo alertInfo = dataproc.ap.ProcessAlertItem(alert, true, false);
+                            SharpDataQueue.Add(alert);
 
-                            if (alertInfo == null)
-                            {
-                                MessageBox.Show("The alert does not meet the requirements you've set, so it has not been relayed.",
-                                    "SharpAlert",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Exclamation);
-                            }
-                            else
-                            {
-                                if (!string.IsNullOrWhiteSpace(alertInfo.AlertDiscardReason))
-                                {
-                                    MessageBox.Show($"{alertInfo.AlertDiscardReason}",
-                                        "SharpAlert",
-                                        MessageBoxButtons.OK,
-                                        MessageBoxIcon.Exclamation);
-                                }
-                            }
-                            //SharpDataQueue.Add(alert);
+                            //AlertInfo alertInfo = dataproc.ap.ProcessAlertItem(alert, true, false);
+
+                            //if (alertInfo == null)
+                            //{
+                            //    MessageBox.Show("The alert does not meet the requirements you've set, so it has not been relayed.",
+                            //        "SharpAlert",
+                            //        MessageBoxButtons.OK,
+                            //        MessageBoxIcon.Exclamation);
+                            //}
+                            //else
+                            //{
+                            //    if (!string.IsNullOrWhiteSpace(alertInfo.AlertDiscardReason))
+                            //    {
+                            //        MessageBox.Show($"{alertInfo.AlertDiscardReason}",
+                            //            "SharpAlert",
+                            //            MessageBoxButtons.OK,
+                            //            MessageBoxIcon.Exclamation);
+                            //    }
+                            //}
                         }
                     }
                 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using SharpAlert.ProgramWorker;
 using static SharpAlert.ProgramWorker.IceBearWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
@@ -87,26 +88,31 @@ namespace SharpAlert.SourceCapturing
                                 {
                                     count--;
                                     Console.WriteLine($"[Atom Feed Capture] Getting data from {server.ServerName}. URL -> {server.ServerPath}");
-                                    HttpResponseMessage message = client.GetAsync($"{URLPrefix}://{server.ServerPath}").Result;
-                                    message.EnsureSuccessStatusCode();
+                                    Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server.ServerPath}");
+                                    message.Wait();
+                                    message.Result.EnsureSuccessStatusCode();
 
                                     if (Calls >= 100000) Calls = 0;
                                     Calls++;
                                     // HEY YOU ABSOLUTE FUCKING IDIOT
 
-                                    string Result = message.Content.ReadAsStringAsync().Result;
+                                    string Result = message.Result.Content.ReadAsStringAsync().Result;
+
                                     EnrollEntries(Result);
                                 }
                                 catch (Exception ex)
                                 {
                                     count++;
-                                    Console.WriteLine($"[Atom Feed Capture] {ex.Message}");
-                                    AllConnectionsSuccessful = false;
+                                    Console.WriteLine($"[Atom Feed Capture] {ex.GetBaseException().Message}");
                                     server.LastRunSuccess = false;
                                 }
                             }
 
                             if (count >= servers.Count)
+                            {
+                                AllConnectionsSuccessful = false;
+                            }
+                            else
                             {
                                 AllConnectionsSuccessful = true;
                             }
@@ -230,8 +236,43 @@ namespace SharpAlert.SourceCapturing
                 EntryStr = EntryStr.Replace("<cap:", "<");
                 EntryStr = EntryStr.Replace("</cap:", "</");
                 EntryStr = EntryStr.Replace("<summary>", "<description>").Replace("</summary>", "</description>");
-                EntryStr = DescriptionRegex.Replace(EntryStr,
-                    $"<description>{DescriptionRegex.MatchOrDefault(EntryStr).Replace("\r", "").Replace("\n", " ").Trim()}</description>");
+                
+                if (QuickSettings.Instance.RemoveNWSDescCode)
+                {
+                    string desc = DescriptionRegex.MatchOrDefault(EntryStr).Trim();
+
+                    if (desc.Length > 6)
+                    {
+                        string subDesc = desc.Substring(0, 6);
+
+                        if (!subDesc.Contains('\x20') && !subDesc.Contains('\n'))
+                        {
+                            bool AllUpper = true;
+
+                            foreach (char character in subDesc)
+                            {
+                                if (!char.IsLetter(character)) break;
+                                if (!char.IsUpper(character))
+                                {
+                                    AllUpper = false;
+                                    break;
+                                }
+                            }
+
+                            if (AllUpper)
+                            {
+                                EntryStr = DescriptionRegex.Replace(EntryStr,
+                                    $"<description>{desc.Substring(6).Trim()}</description>");
+                            }
+                        }
+                    }
+                }
+
+                if (QuickSettings.Instance.RemoveNWSNewLines)
+                {
+                    EntryStr = DescriptionRegex.Replace(EntryStr,
+                        $"<description>{DescriptionRegex.MatchOrDefault(EntryStr).Replace("\r", "").Replace("\n", " ").Trim()}</description>");
+                }
 
                 //Console.WriteLine($"[Atom Feed Capture] {EntriesCount} -> {CreateMD5(entry.Groups[1].Value)} (entry name is unused)");
                 string Effective = AtomEffectiveRegex.MatchOrDefault(EntryStr, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));

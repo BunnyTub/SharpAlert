@@ -142,7 +142,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(84, 21);
             this.label7.TabIndex = 23;
-            this.label7.Text = "Check Interval";
+            this.label7.Text = "Check Time";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ToolTipInformation.SetToolTip(this.label7, ".");
             // 
@@ -152,7 +152,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(84, 21);
             this.label4.TabIndex = 10;
-            this.label4.Text = "Dead Interval";
+            this.label4.Text = "Dead Time";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ToolTipInformation.SetToolTip(this.label4, ".");
             // 
@@ -517,9 +517,10 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(319, 47);
             this.label1.TabIndex = 37;
-            this.label1.Text = "SAME Events Coming Soon";
+            this.label1.Text = "Where are SAME Events?";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.ToolTipInformation.SetToolTip(this.label1, "c o m i n g\r\ns o o n");
+            this.ToolTipInformation.SetToolTip(this.label1, "SAME Events will not be coming to SharpAlert due to some complications we\'ve had " +
+        "with execution.");
             // 
             // groupBox9
             // 
@@ -708,11 +709,14 @@
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.Yellow;
             this.label2.Location = new System.Drawing.Point(6, 17);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(195, 15);
             this.label2.TabIndex = 8;
             this.label2.Text = "To clear, click change, then cancel.";
+            this.ToolTipInformation.SetToolTip(this.label2, "If you choose custom sounds, you will not be able to control the severity level t" +
+        "hey play at.");
             // 
             // ChangeEndButton
             // 

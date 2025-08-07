@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using SharpAlert.ProgramWorker;
+using SharpAlert.Properties;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 
 namespace SharpAlert.ConfigurationDialogs
@@ -58,11 +59,11 @@ namespace SharpAlert.ConfigurationDialogs
                     // 3
                     FriendlyName = "Full scroll"
                 },
-                //new ComboItem
-                //{
-                //    // 4
-                //    FriendlyName = "Multi screen"
-                //},
+                new ComboItem
+                {
+                    // 4
+                    FriendlyName = "Full board"
+                },
             };
             AlertFullscreenCombo.SelectedIndex = QuickSettings.Instance.alertDisplayType;
             AlertFullscreenCombo.SelectedIndexChanged += (a, b) => QuickSettings.Instance.alertDisplayType = (byte)((ComboBox)a).SelectedIndex;
@@ -202,6 +203,9 @@ namespace SharpAlert.ConfigurationDialogs
             
             NoSystemSleepBox.Checked = QuickSettings.Instance.NoSystemSleep;
             NoSystemSleepBox.CheckedChanged += (a, b) => QuickSettings.Instance.NoSystemSleep = ((CheckBox)a).Checked;
+            
+            alertAutoPrintingEnabledBox.Checked = QuickSettings.Instance.alertAutoPrintingEnabled;
+            alertAutoPrintingEnabledBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertAutoPrintingEnabled = ((CheckBox)a).Checked;
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -215,6 +219,19 @@ namespace SharpAlert.ConfigurationDialogs
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
             e.Cancel = true;
+        }
+
+        private AlertTextConfigurationForm atcf = null;
+
+        private void AlertTextButton_Click(object sender, EventArgs e)
+        {
+            if (atcf == null || atcf.IsDisposed) atcf = new AlertTextConfigurationForm(false);
+            atcf.ShowDialog();
+        }
+
+        private void pictureBox1_DoubleClick(object sender, EventArgs e)
+        {
+            PrinterController.Print("Test Message", $"This is a test to ensure the function of your printer and its current settings. {Resources.TestScript}");
         }
     }
 }

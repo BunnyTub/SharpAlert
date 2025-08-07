@@ -80,7 +80,7 @@ namespace SharpAlert.AlertComponents
                         Console.WriteLine($"[Displayer Loop] {ex.Message}");
                     }
                 }
-            }, true, ApartmentState.STA);
+            }, true, true, ApartmentState.STA);
         }
 
         private static void ProcessQueueItem(AlertDisplayerInfo alert)
@@ -108,6 +108,8 @@ namespace SharpAlert.AlertComponents
                 AlertDisplaying = false;
                 return;
             }
+
+            if (QuickSettings.Instance.alertAutoPrintingEnabled) PrinterController.Print(alert.EventTypeFull, $"{alert._AlertText.Intro}\r\n\r\n{alert._AlertText.Body}".Trim());
 
             if (QuickSettings.Instance.alertNoGUI)
             {
@@ -201,6 +203,17 @@ namespace SharpAlert.AlertComponents
 
                     relayPing = true;
 
+                    switch (alert.Severity.ToLowerInvariant())
+                    {
+                        case "extreme":
+                        case "severe":
+                            SpeakingManager.SevereOrHigher();
+                            break;
+                        default:
+                            SpeakingManager.ModerateOrLower();
+                            break;
+                    }
+
                     switch (QuickSettings.Instance.alertDisplayType)
                     {
                         default:
@@ -228,7 +241,8 @@ namespace SharpAlert.AlertComponents
                                 alert.PrimaryURL,
                                 alert.AudioFiles.FirstOrEmpty(),
                                 alert.ImageFiles.FirstOrEmpty(),
-                                alert.MsgType);
+                                alert.MsgType,
+                                alert.Severity);
                             maf.ShowDialog();
                             break;
                         case 2:
@@ -241,7 +255,8 @@ namespace SharpAlert.AlertComponents
                                 alert.PrimaryURL,
                                 alert.AudioFiles.FirstOrEmpty(),
                                 alert.ImageFiles.FirstOrEmpty(),
-                                alert.MsgType);
+                                alert.MsgType,
+                                alert.Severity);
                             taf.ShowDialog();
                             break;
                         case 3:
@@ -254,22 +269,24 @@ namespace SharpAlert.AlertComponents
                                 alert.PrimaryURL,
                                 alert.AudioFiles.FirstOrEmpty(),
                                 alert.ImageFiles.FirstOrEmpty(),
-                                alert.MsgType);
+                                alert.MsgType,
+                                alert.Severity);
                             saf.ShowDialog();
                             break;
-                        //case 4:
-                        //    // MultiAlertForm
-                        //    if (saf == null || saf.IsDisposed) saf = new ScrollAlertForm();
-                        //    saf.UpdateFields(alert.Identifier,
-                        //        alert.EventTypeFull,
-                        //        alert._AlertText.Intro,
-                        //        alert._AlertText.Body,
-                        //        alert.PrimaryURL,
-                        //        alert.AudioFiles.FirstOrEmpty(),
-                        //        alert.ImageFiles.FirstOrEmpty(),
-                        //        alert.MsgType);
-                        //    saf.ShowDialog();
-                        //    break;
+                        case 4:
+                            // MultiAlertForm
+                            if (baf == null || baf.IsDisposed) baf = new BoardAlertForm();
+                            baf.UpdateFields(alert.Identifier,
+                                alert.EventTypeFull,
+                                alert._AlertText.Intro,
+                                alert._AlertText.Body,
+                                alert.PrimaryURL,
+                                alert.AudioFiles.FirstOrEmpty(),
+                                alert.ImageFiles.FirstOrEmpty(),
+                                alert.MsgType,
+                                alert.Severity);
+                            baf.ShowDialog();
+                            break;
                     }
 
                     Notify.Icon = Resources.TrayLightIcon;
@@ -305,6 +322,7 @@ namespace SharpAlert.AlertComponents
         private static TeleAlertForm taf = null;
         private static MiniAlertForm maf = null;
         private static ScrollAlertForm saf = null;
+        private static BoardAlertForm baf = null;
 
         private static RelayController relay = null;
         private static bool relayPing = false;

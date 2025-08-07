@@ -47,12 +47,14 @@
             this.WindowLocationCombo = new System.Windows.Forms.ComboBox();
             this.alertPlayStartToneTwiceBox = new System.Windows.Forms.CheckBox();
             this.statusWindowBox = new System.Windows.Forms.CheckBox();
+            this.NoSystemSleepBox = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.NoSystemSleepBox = new System.Windows.Forms.CheckBox();
+            this.AlertTextButton = new System.Windows.Forms.Button();
+            this.alertAutoPrintingEnabledBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
@@ -82,6 +84,7 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.DoubleClick += new System.EventHandler(this.pictureBox1_DoubleClick);
             // 
             // TitleText
             // 
@@ -264,6 +267,17 @@
             this.ToolTipInformation.SetToolTip(this.statusWindowBox, "Shows the status window.");
             this.statusWindowBox.UseVisualStyleBackColor = true;
             // 
+            // NoSystemSleepBox
+            // 
+            this.NoSystemSleepBox.AutoSize = true;
+            this.NoSystemSleepBox.Location = new System.Drawing.Point(383, 117);
+            this.NoSystemSleepBox.Name = "NoSystemSleepBox";
+            this.NoSystemSleepBox.Size = new System.Drawing.Size(136, 19);
+            this.NoSystemSleepBox.TabIndex = 40;
+            this.NoSystemSleepBox.Text = "Prevent sleep mode";
+            this.ToolTipInformation.SetToolTip(this.NoSystemSleepBox, "Prevents the system from entering sleep mode at all times.");
+            this.NoSystemSleepBox.UseVisualStyleBackColor = true;
+            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -315,16 +329,30 @@
             this.label11.TabIndex = 39;
             this.label11.Text = "Display where";
             // 
-            // NoSystemSleepBox
+            // AlertTextButton
             // 
-            this.NoSystemSleepBox.AutoSize = true;
-            this.NoSystemSleepBox.Location = new System.Drawing.Point(383, 117);
-            this.NoSystemSleepBox.Name = "NoSystemSleepBox";
-            this.NoSystemSleepBox.Size = new System.Drawing.Size(136, 19);
-            this.NoSystemSleepBox.TabIndex = 40;
-            this.NoSystemSleepBox.Text = "Prevent sleep mode";
-            this.ToolTipInformation.SetToolTip(this.NoSystemSleepBox, "Prevents the system from entering sleep mode at all times.");
-            this.NoSystemSleepBox.UseVisualStyleBackColor = true;
+            this.AlertTextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.AlertTextButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.AlertTextButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.AlertTextButton.Location = new System.Drawing.Point(451, 167);
+            this.AlertTextButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
+            this.AlertTextButton.Name = "AlertTextButton";
+            this.AlertTextButton.Size = new System.Drawing.Size(72, 23);
+            this.AlertTextButton.TabIndex = 41;
+            this.AlertTextButton.Text = "Alert Text";
+            this.AlertTextButton.UseVisualStyleBackColor = false;
+            this.AlertTextButton.Click += new System.EventHandler(this.AlertTextButton_Click);
+            // 
+            // alertAutoPrintingEnabledBox
+            // 
+            this.alertAutoPrintingEnabledBox.AutoSize = true;
+            this.alertAutoPrintingEnabledBox.Location = new System.Drawing.Point(383, 142);
+            this.alertAutoPrintingEnabledBox.Name = "alertAutoPrintingEnabledBox";
+            this.alertAutoPrintingEnabledBox.Size = new System.Drawing.Size(128, 19);
+            this.alertAutoPrintingEnabledBox.TabIndex = 42;
+            this.alertAutoPrintingEnabledBox.Text = "Print relayed alerts";
+            this.ToolTipInformation.SetToolTip(this.alertAutoPrintingEnabledBox, "Prints relayed alerts. This feature is only available if dialogs are enabled.");
+            this.alertAutoPrintingEnabledBox.UseVisualStyleBackColor = true;
             // 
             // StyleConfigurationForm
             // 
@@ -332,6 +360,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(532, 225);
+            this.Controls.Add(this.alertAutoPrintingEnabledBox);
+            this.Controls.Add(this.AlertTextButton);
             this.Controls.Add(this.NoSystemSleepBox);
             this.Controls.Add(this.statusWindowBox);
             this.Controls.Add(this.alertPlayStartToneTwiceBox);
@@ -401,5 +431,7 @@
         private System.Windows.Forms.CheckBox alertPlayStartToneTwiceBox;
         private System.Windows.Forms.CheckBox statusWindowBox;
         private System.Windows.Forms.CheckBox NoSystemSleepBox;
+        private System.Windows.Forms.Button AlertTextButton;
+        private System.Windows.Forms.CheckBox alertAutoPrintingEnabledBox;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
-using NAudio.CoreAudioApi;
 using static SharpAlert.AudioManager;
 
 namespace SharpAlert.ConfigurationDialogs
@@ -63,11 +62,31 @@ namespace SharpAlert.ConfigurationDialogs
                 QuickSettings.Instance.LegacyAudioPlayer = ((CheckBox)a).Checked;
                 QuickSettings.Instance.Save();
                 MessageBox.Show("Your settings have been saved.\r\n" +
-                    "The program will now close.",
+                    "Closing now to use the new sound subsystem.",
                     "SharpAlert",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
                 Environment.Exit(0);
+            };
+            
+            EnableBasicSpeakingBox.Checked = QuickSettings.Instance.EnableBasicSpeaking;
+            EnableBasicSpeakingBox.CheckedChanged += (a, b) =>
+            {
+                if (((CheckBox)a).Checked)
+                {
+                    MessageBox.Show("Please take note!\r\n" +
+                        "Basic Speaking will always use the default sound device regardless of your audio settings.",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                    SpeakingManager.EnabledBasicSpeaking();
+                }
+                else
+                {
+                    SpeakingManager.DisabledBasicSpeaking();
+                }
+
+                QuickSettings.Instance.EnableBasicSpeaking = ((CheckBox)a).Checked;
             };
         }
 
@@ -185,6 +204,28 @@ namespace SharpAlert.ConfigurationDialogs
         {
             Process.Start("C:\\Windows\\system32\\rundll32.exe", "shell32.dll,Control_RunDLL C:\\Windows\\system32\\speech\\speechux\\sapi.cpl");
             return;
+        }
+
+        private void SupportedLinesButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Supported Voice Lines --- (must be *.wav)" +
+                "\r\n\r\n" +
+                "EnabledBasicSpeaking.wav - Called when Basic Speaking is enabled.\r\n" +
+                "DisabledBasicSpeaking.wav - Called when Basic Speaking is disabled.\r\n" +
+                "DismissedWindow.wav - Called when an alert window is dismissed.\r\n" +
+                "ForwardThisMessageToDiscord.wav - Called when asking for consent.\r\n" +
+                "FullDaySinceQueuedAlert.wav - Called when it has been 24 hours since the last alert.\r\n" +
+                "HalfDaySinceQueuedAlert.wav - Called when it has been 12 horus since the last alert.\r\n" +
+                "ModerateOrLower.wav - Called when an alert is issued with a severity that is moderate or lower.\r\n" +
+                "SevereOrHigher.wav - Called when an alert is issued with a severity that is severe or higher.\r\n" +
+                "TopOfTheHour.wav - Called when the clock minute resets to zero.\r\n" +
+                "UpdatesFound.wav - Called on startup if updates are found.\r\n" +
+                "SettingsSaved.wav - Called when settings are saved.\r\n" +
+                "ProgramRunning.wav - Called when the program starts.\r\n" +
+                "SetupComplete.wav - Called when the user completes setup.\r\n" +
+                "BetaVersionInUse.wav - Called when running a beta version." +
+                "\r\n\r\n" +
+                "Place these files in the executable directory to override the built-in sound files!", "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

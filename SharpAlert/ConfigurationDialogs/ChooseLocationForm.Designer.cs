@@ -155,7 +155,8 @@
             this.AreaSAMEInput.Name = "AreaSAMEInput";
             this.AreaSAMEInput.Size = new System.Drawing.Size(124, 21);
             this.AreaSAMEInput.TabIndex = 22;
-            this.ToolTipInformation.SetToolTip(this.AreaSAMEInput, "Enter a SAME code here.");
+            this.ToolTipInformation.SetToolTip(this.AreaSAMEInput, "Enter a SAME code here.\r\nSAME codes are 6 digits long, but the first digit is cur" +
+        "rently ignored. You can input the first digit anyway.");
             // 
             // label2
             // 

@@ -14,7 +14,6 @@ using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.ProgramWorker.IceBearWorker;
 using SharpAlert.ProgramWorker;
 using static SharpAlert.ThreadDrool;
-using System.Diagnostics;
 
 namespace SharpAlert.WebServer
 {
@@ -554,6 +553,19 @@ namespace SharpAlert.WebServer
                 Alerts += alert.Data + "\r\n";
             }
             Alerts = Alerts.Trim() + "</SharpAlertHyperServer>";
+            return Alerts;
+        }
+        
+        [Mapping("AlertXML-Unbranded")]
+        public object AlertXMLUnbranded(HttpListenerContext ctx)
+        {
+            ctx.Response.ContentType = "application/xml";
+            string Alerts = "<alerts>";
+            foreach (var alert in SharpDataHistory)
+            {
+                Alerts += alert.Data + "\r\n";
+            }
+            Alerts = Alerts.Trim() + "</alerts>";
             return Alerts;
         }
         

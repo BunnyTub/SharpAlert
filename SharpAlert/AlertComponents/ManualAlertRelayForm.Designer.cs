@@ -158,7 +158,7 @@
             this.ToolTipInformation.ReshowDelay = 50;
             this.ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
-            // ManualAlertRelay
+            // ManualAlertRelayForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -178,9 +178,9 @@
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "ManualAlertRelay";
+            this.Name = "ManualAlertRelayForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SharpAlert - Relay Consent";
+            this.Text = "SharpAlert - Forward Consent";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.ManualAlertRelay_Load);
             this.Shown += new System.EventHandler(this.ManualAlertRelay_Shown);

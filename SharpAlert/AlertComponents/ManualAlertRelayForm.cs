@@ -2,7 +2,6 @@
 using System.Media;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using SharpAlert.Properties;
 
 namespace SharpAlert.AlertComponents
 {
@@ -165,6 +164,7 @@ namespace SharpAlert.AlertComponents
         {
             GotHandle = this.Handle;
             SystemSounds.Asterisk.Play();
+            SpeakingManager.ForwardThisMessageToDiscord();
         }
 
         private void DenyButton_Click(object sender, EventArgs e)

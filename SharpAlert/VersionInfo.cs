@@ -9,13 +9,13 @@ namespace SharpAlert
         // You can change the release, minor, and cutting edge variables.
         // ---
         // Use VersionInfoTemplate.cs!
-        public const int BuildNumber = 1294;
-        public const string BuiltOnDate = "2025-07-11";
-        public const string BuiltOnTime = "13:15";
+        public const int BuildNumber = 1461;
+        public const string BuiltOnDate = "2025-08-07";
+        public const string BuiltOnTime = "08:00";
         public const string BuiltTimeZone = "Eastern Standard Time";
         public static int MajorVersion { get; } = 10;
         public static int MinorVersion { get; } = 0;
-        public static readonly bool IsBetaVersion = true;
+        public static bool IsBetaVersion { get; } = true;
         public static string FriendlyVersion
         {
             get
@@ -34,7 +34,7 @@ namespace SharpAlert
         }
 
         public static readonly DateTime BetaTimeEnd = DateTime.ParseExact(
-            "7/27/2025",
+            "8/16/2025",
             "M/d/yyyy",
             CultureInfo.InvariantCulture,
             DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal

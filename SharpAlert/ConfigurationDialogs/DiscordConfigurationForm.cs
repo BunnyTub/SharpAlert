@@ -27,7 +27,7 @@ namespace SharpAlert.ConfigurationDialogs
             
             DisableHeartbeatBox.Checked = QuickSettings.Instance.DiscordWebhookDisableHeartbeat;
             DisableHeartbeatBox.CheckedChanged += (a, b) => QuickSettings.Instance.DiscordWebhookDisableHeartbeat = ((CheckBox)a).Checked;
-
+            
             DiscordWebhookRelayLocallyBox.Checked = QuickSettings.Instance.DiscordWebhookRelayLocally;
             DiscordWebhookRelayLocallyBox.CheckedChanged += (a, b) =>
             {
@@ -42,6 +42,9 @@ namespace SharpAlert.ConfigurationDialogs
                     //AlertAppearanceAndSoundsGroup.Enabled = true;
                 }
             };
+
+            BatteryReportingMatchesPowerPlanBox.Checked = QuickSettings.Instance.BatteryReportingMatchesPowerPlan;
+            BatteryReportingMatchesPowerPlanBox.CheckedChanged += (a, b) => QuickSettings.Instance.BatteryReportingMatchesPowerPlan = ((CheckBox)a).Checked;
         }
 
         private void ServerConfigurationForm_FormClosing(object sender, FormClosingEventArgs e)

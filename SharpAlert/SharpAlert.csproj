@@ -179,7 +179,6 @@
     <Compile Include="AlertComponents\MiniAlertForm.Designer.cs">
       <DependentUpon>MiniAlertForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="AlertComponents\SAMEGenerator.cs" />
     <Compile Include="AlertComponents\ScrollAlertForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,11 +191,23 @@
     <Compile Include="AlertComponents\ImmediateAlertForm.Designer.cs">
       <DependentUpon>ImmediateAlertForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AlertComponents\BoardAlertForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlertComponents\BoardAlertForm.Designer.cs">
+      <DependentUpon>BoardAlertForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationDialogs\AlertConfigurationForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ConfigurationDialogs\AlertConfigurationForm.Designer.cs">
       <DependentUpon>AlertConfigurationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationDialogs\AlertTableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigurationDialogs\AlertTableForm.Designer.cs">
+      <DependentUpon>AlertTableForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ConfigurationDialogs\EventsAdditionForm.cs">
       <SubType>Form</SubType>
@@ -227,6 +238,18 @@
     </Compile>
     <Compile Include="ConfigurationDialogs\DiscordConfigurationForm.Designer.cs">
       <DependentUpon>DiscordConfigurationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationDialogs\AlertTextConfigurationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigurationDialogs\AlertTextConfigurationForm.Designer.cs">
+      <DependentUpon>AlertTextConfigurationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationDialogs\PresetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigurationDialogs\PresetForm.Designer.cs">
+      <DependentUpon>PresetForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ConsoleExt.cs" />
     <Compile Include="DataProcessing\HistoryProcessor.cs" />
@@ -273,6 +296,7 @@
     <Compile Include="ConfigurationDialogs\ChooseRegionForm.Designer.cs">
       <DependentUpon>ChooseRegionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PrinterController.cs" />
     <Compile Include="ProgramWorker\HeartbeatWorker.cs" />
     <Compile Include="ProgramWorker\NotificationWorker.cs" />
     <Compile Include="PipeWorker.cs" />
@@ -343,7 +367,9 @@
     </Compile>
     <Compile Include="SourceCapturing\DirectFeedCapture.cs" />
     <Compile Include="SourceCapturing\SystemSpecific\IDAPCapture.cs" />
+    <Compile Include="SourceCapturing\SystemSpecific\NonCompliant\UKAtomCapture.cs" />
     <Compile Include="SourceCapturing\WeatherAtomCapture.cs" />
+    <Compile Include="SpeakingManager.cs" />
     <Compile Include="ThreadDrool.cs" />
     <Compile Include="VersionInfo.cs" />
     <Compile Include="VersionInfoTemplate.cs" />
@@ -376,11 +402,17 @@
     <EmbeddedResource Include="AlertComponents\ImmediateAlertForm.resx">
       <DependentUpon>ImmediateAlertForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AlertComponents\BoardAlertForm.resx">
+      <DependentUpon>BoardAlertForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationDialogs\AlertConfigurationForm.resx">
       <DependentUpon>AlertConfigurationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AlertComponents\InfoForm.resx">
       <DependentUpon>InfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationDialogs\AlertTableForm.resx">
+      <DependentUpon>AlertTableForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationDialogs\EventsAdditionForm.resx">
       <DependentUpon>EventsAdditionForm.cs</DependentUpon>
@@ -402,6 +434,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationDialogs\ServerConfigurationForm.resx">
       <DependentUpon>ServerConfigurationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationDialogs\AlertTextConfigurationForm.resx">
+      <DependentUpon>AlertTextConfigurationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationDialogs\PresetForm.resx">
+      <DependentUpon>PresetForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DisplayDialogs\Panels\AlertInfoHolder.resx">
       <DependentUpon>AlertInfoHolder.cs</DependentUpon>
@@ -507,12 +545,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ui-bar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\warning.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ui_alert.wav" />
   </ItemGroup>
   <ItemGroup>
@@ -522,10 +554,31 @@
     <None Include="Resources\AlertIcon.ico" />
     <None Include="Resources\LightIcon.ico" />
     <None Include="Resources\ui_shakewarning.wav" />
-    <None Include="Resources\jnjnjnjn.png" />
     <None Include="Resources\ui_beep.wav" />
     <None Include="Resources\WarningApp_Splash.png" />
     <None Include="Resources\WarningApp Splash.png" />
+    <None Include="Resources\minor_alert.wav" />
+    <None Include="Resources\ui_beep_1.wav" />
+    <None Include="Resources\ui_cancellation_1.wav" />
+    <None Include="Resources\ui_end_1.wav" />
+    <None Include="Resources\ui_nothing_1.wav" />
+    <None Include="Resources\ui_shakewarning_1.wav" />
+    <None Include="Resources\ui_warning_1.wav" />
+    <None Include="Resources\major_alert.wav" />
+    <EmbeddedResource Include="SpeakingAssets\BetaVersionInUse.wav" />
+    <EmbeddedResource Include="SpeakingAssets\DisabledBasicSpeaking.wav" />
+    <EmbeddedResource Include="SpeakingAssets\DismissedWindow.wav" />
+    <EmbeddedResource Include="SpeakingAssets\EnabledBasicSpeaking.wav" />
+    <EmbeddedResource Include="SpeakingAssets\ForwardThisMessageToDiscord.wav" />
+    <EmbeddedResource Include="SpeakingAssets\FullDaySinceQueuedAlert.wav" />
+    <EmbeddedResource Include="SpeakingAssets\HalfDaySinceQueuedAlert.wav" />
+    <EmbeddedResource Include="SpeakingAssets\ModerateOrLower.wav" />
+    <EmbeddedResource Include="SpeakingAssets\ProgramRunning.wav" />
+    <EmbeddedResource Include="SpeakingAssets\SettingsSaved.wav" />
+    <EmbeddedResource Include="SpeakingAssets\SetupComplete.wav" />
+    <EmbeddedResource Include="SpeakingAssets\SevereOrHigher.wav" />
+    <EmbeddedResource Include="SpeakingAssets\TopOfTheHour.wav" />
+    <EmbeddedResource Include="SpeakingAssets\UpdatesFound.wav" />
     <Content Include="WarningApp.ico" />
     <None Include="Resources\WarningApp.png" />
     <Content Include="FodyWeavers.xml" />
@@ -575,6 +628,7 @@ del /s /q /f *.dll</PostBuildEvent>
   <Import Project="..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
   <PropertyGroup>
     <PreBuildEvent>cd $(ProjectDir)
-powershell -ExecutionPolicy Bypass -File "$(ProjectDir)UpdateVersionInfo.ps1"</PreBuildEvent>
+powershell -ExecutionPolicy Bypass -File "$(ProjectDir)UpdateVersionInfo.ps1"
+ping 127.0.0.1 -n 2</PreBuildEvent>
   </PropertyGroup>
 </Project>

@@ -22,6 +22,7 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void DoneButton_Click(object sender, EventArgs e)
         {
+            SpeakingManager.SettingsSaved();
             this.Close();
         }
 
@@ -93,13 +94,13 @@ namespace SharpAlert.ConfigurationDialogs
                 }
             }
 
-            DialogResult result = MessageBox.Show("Start migration from old settings?\r\n" +
-                "The program will immediately close after it's successful, and all of your current new settings will be overwritten by your old settings.",
+            DialogResult resultX = MessageBox.Show("Start migration from v8.x (or older) settings store?\r\n\r\n" +
+                "The program will immediately close after the migration is complete, and all of your current new settings will be overwritten by your old program settings.",
                 "SharpAlert",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
-            if (result == DialogResult.Yes)
+            if (resultX == DialogResult.Yes)
             {
                 try
                 {
@@ -139,7 +140,9 @@ namespace SharpAlert.ConfigurationDialogs
         private void SaveSettingsButton_Click(object sender, EventArgs e)
         {
             QuickSettings.Instance.Save();
-            MessageBox.Show("Settings manually saved.\r\nYour settings are already saved when you click \"Done\".",
+            SpeakingManager.SettingsSaved();
+
+            MessageBox.Show("Settings manually saved.\r\nYour settings are already saved when you click \"Close\".",
                 "SharpAlert",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);

@@ -30,12 +30,13 @@ namespace SharpAlert.ProgramWorker
     {
         public static readonly HttpClient client = new HttpClient
         {
-            Timeout = TimeSpan.FromSeconds(15)
+            Timeout = TimeSpan.FromMinutes(1)
         };
 
         public static readonly string SelfUserAgent = $"Mozilla/5.0 (compatible; SharpAlert/" +
             $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}/" +
             $"{VersionInfo.BuildNumber}; bunnytub@bunnytub.com)";
+
         public static bool ServiceRunnerScheduled { get; private set; } = false;
 
         /// <summary>
@@ -49,6 +50,11 @@ namespace SharpAlert.ProgramWorker
             Console.WriteLine($"{VersionInfo.FriendlyVersion}\r\n" +
                 $"Safety is never a non-priority. | https://sharpalert.bunnytub.com/");
             if (ServiceMode) Console.WriteLine($"Running under Service Mode.");
+
+            // force instance creation before anything else
+            _ = QuickSettings.Instance;
+
+            QuickSettings.Instance.DisableAlertProcessing = false;
 
             client.DefaultRequestHeaders.UserAgent.ParseAdd(SelfUserAgent);
 
@@ -310,8 +316,9 @@ namespace SharpAlert.ProgramWorker
                 //crf.ShowDialog();
             }
 
-            Thread startup = new Thread(() =>
+            StartAndForget(() =>
             {
+                if (VersionInfo.IsBetaVersion) SpeakingManager.BetaVersionInUse();
                 StartupForm sf = new StartupForm(Resources.WarningApp_Splash);
                 sf.ShowDialog();
                 sf.Dispose();
@@ -330,8 +337,6 @@ namespace SharpAlert.ProgramWorker
                     QuickSettings.Instance.Save();
                 }
             });
-
-            startup.Start();
 
             cacheThread = StartCatchAllThread("Cache Capture", () => cache.ServiceRun(true), true);
             dataProcThread = StartCatchAllThread("Data Processor", () => dataproc.ServiceRun(), true);
@@ -387,11 +392,9 @@ namespace SharpAlert.ProgramWorker
                 idapfeedThread = StartCatchAllThread("IDAP Capture", () => idapfeed.ServiceRun(true), false);
             }
 
-            if (QuickSettings.Instance.statusWindow)
-            {
-                StatusWindowVisible = true;
-            }
+            // just assign statusWindow to the boolean... dumb fuck
 
+            StatusWindowVisible = QuickSettings.Instance.statusWindow;
             IdleWindowVisible = QuickSettings.Instance.alertFullscreenIdle;
 
             heartbeatThread = StartCatchAllThread("Heartbeat Worker", () => HeartbeatWorker.ServiceRun(), true);
@@ -399,7 +402,7 @@ namespace SharpAlert.ProgramWorker
             
             ServiceRunnerScheduled = true;
 
-            new Thread(() =>
+            StartCatchAllThread("Battery Manager", () =>
             {
                 while (AllowThreadRestarts)
                 {
@@ -407,29 +410,34 @@ namespace SharpAlert.ProgramWorker
 
                     if (powerStatus.BatteryLifePercent == -1)
                     {
+                        // if no battery, we should probably exit
                         return;
                     }
 
                     float batteryLevel = powerStatus.BatteryLifePercent * 100;
                     bool batteryCharging = powerStatus.PowerLineStatus == PowerLineStatus.Online;
 
-                    if (!batteryCharging && (int)batteryLevel < 10)
+                    // unused
+                    LowPower = QuickSettings.Instance.BatteryReportingCautionLevel;
+                    CriticalPower = QuickSettings.Instance.BatteryReportingCriticalLevel;
+
+                    if (!batteryCharging && (int)batteryLevel <= CriticalPower)
                     {
                         DiscordWebhook.SendFormattedMessage($"The host is running critically low on battery power. ({(int)batteryLevel}%)\r\nPerformance may be impacted.", 16711680);
                     }
                     else
                     {
-                        if (!batteryCharging && (int)batteryLevel < 20)
+                        if (!batteryCharging && (int)batteryLevel <= LowPower)
                         {
                             DiscordWebhook.SendFormattedMessage($"The host is running low on battery power. ({(int)batteryLevel}%)", 16776960);
                         }
                     }
 
-                    Thread.Sleep(1000 * 60);
+                    Thread.Sleep(1000 * 120);
                 }
-            }).Start();
+            }, true);
 
-            new Thread(() =>
+            StartCatchAllThread("Execution Manager", () =>
             {
                 while (AllowThreadRestarts)
                 {
@@ -443,13 +451,36 @@ namespace SharpAlert.ProgramWorker
                     }
                     Thread.Sleep(1000);
                 }
-            }).Start();
+            }, true);
 
-            new Thread(() =>
+            StartCatchAllThread("Hour Counter", () =>
             {
-                PipeWorker.ServerServiceRun();
-            }).Start();
+                // The top of the hour sound plays when Basic Speaking is enabled.
+                // Checks are made every 5 seconds, then the loop should stop for a little bit before checking again if it is top of the hour.
+
+                DateTime dt = DateTime.Now;
+
+                while (AllowThreadRestarts)
+                {
+                    if (QuickSettings.Instance.alertTimeZoneUTC) dt = DateTime.UtcNow;
+                    else dt = DateTime.Now;
+
+                    if (dt.Minute == 0)
+                    {
+                        SpeakingManager.TopOfTheHour();
+                        Thread.Sleep(1000 * 300);
+                    }
+
+                    Thread.Sleep(5000);
+                }
+            }, true);
+
+
+            StartCatchAllThread("Pipe Worker", () => PipeWorker.ServerServiceRun(), false, false);
         }
+
+        public static int LowPower = 20;
+        public static int CriticalPower = 20;
 
         [DllImport("kernel32.dll")]
         static extern uint SetThreadExecutionState(uint esFlags);

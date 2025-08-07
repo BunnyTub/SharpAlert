@@ -35,6 +35,7 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label3 = new System.Windows.Forms.Label();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // label5
@@ -59,6 +60,7 @@
             this.label1.Size = new System.Drawing.Size(102, 15);
             this.label1.TabIndex = 8;
             this.label1.Text = "NuGet packages:";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -66,7 +68,7 @@
             this.label2.Location = new System.Drawing.Point(9, 54);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(530, 60);
+            this.label2.Size = new System.Drawing.Size(530, 45);
             this.label2.TabIndex = 9;
             this.label2.Text = "Costura.Fody | Fody | NAudio";
             // 
@@ -106,11 +108,25 @@
             this.linkLabel2.Text = "Credit to BoxedApplePie for character drawings.";
             this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
+            // linkLabel3
+            // 
+            this.linkLabel3.AutoSize = true;
+            this.linkLabel3.LinkColor = System.Drawing.Color.Pink;
+            this.linkLabel3.Location = new System.Drawing.Point(9, 99);
+            this.linkLabel3.Margin = new System.Windows.Forms.Padding(0);
+            this.linkLabel3.Name = "linkLabel3";
+            this.linkLabel3.Size = new System.Drawing.Size(191, 15);
+            this.linkLabel3.TabIndex = 14;
+            this.linkLabel3.TabStop = true;
+            this.linkLabel3.Text = "Credit to BunnyTub for SharpAlert.";
+            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
+            // 
             // CreditsForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(548, 153);
+            this.Controls.Add(this.linkLabel3);
             this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.linkLabel1);
@@ -127,6 +143,7 @@
             this.Name = "CreditsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "SharpAlert - Credits";
+            this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.CreditsForm_HelpButtonClicked);
             this.Load += new System.EventHandler(this.CreditsForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -141,5 +158,6 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.LinkLabel linkLabel3;
     }
 }

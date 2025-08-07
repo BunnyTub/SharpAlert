@@ -44,8 +44,12 @@
             this.label5 = new System.Windows.Forms.Label();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.BatteryReportingMatchesPowerPlanBox = new System.Windows.Forms.CheckBox();
             this.ApplicationTypeGroup.SuspendLayout();
             this.ConfigurationPanel.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // BusyLockText
@@ -64,6 +68,7 @@
             this.ApplicationTypeGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.ApplicationTypeGroup.Controls.Add(this.groupBox1);
             this.ApplicationTypeGroup.Controls.Add(this.DisableHeartbeatBox);
             this.ApplicationTypeGroup.Controls.Add(this.DiscordWebhookRelayLocallyBox);
             this.ApplicationTypeGroup.Controls.Add(this.DiscordWebhookConfirmAlertsBox);
@@ -224,6 +229,43 @@
             this.ToolTipInformation.ReshowDelay = 50;
             this.ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.BatteryReportingMatchesPowerPlanBox);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.ForeColor = System.Drawing.Color.White;
+            this.groupBox1.Location = new System.Drawing.Point(6, 85);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(392, 86);
+            this.groupBox1.TabIndex = 20;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Battery Reporting";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 17);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(364, 30);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Battery measurements are reported to Discord webhooks when a\r\ncertain percentage " +
+    "is reached.";
+            // 
+            // BatteryReportingMatchesPowerPlanBox
+            // 
+            this.BatteryReportingMatchesPowerPlanBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BatteryReportingMatchesPowerPlanBox.AutoSize = true;
+            this.BatteryReportingMatchesPowerPlanBox.Location = new System.Drawing.Point(217, 61);
+            this.BatteryReportingMatchesPowerPlanBox.Name = "BatteryReportingMatchesPowerPlanBox";
+            this.BatteryReportingMatchesPowerPlanBox.Size = new System.Drawing.Size(169, 19);
+            this.BatteryReportingMatchesPowerPlanBox.TabIndex = 21;
+            this.BatteryReportingMatchesPowerPlanBox.Text = "Match power plan settings";
+            this.ToolTipInformation.SetToolTip(this.BatteryReportingMatchesPowerPlanBox, resources.GetString("BatteryReportingMatchesPowerPlanBox.ToolTip"));
+            this.BatteryReportingMatchesPowerPlanBox.UseVisualStyleBackColor = true;
+            // 
             // DiscordConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -244,6 +286,8 @@
             this.ApplicationTypeGroup.ResumeLayout(false);
             this.ApplicationTypeGroup.PerformLayout();
             this.ConfigurationPanel.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -263,5 +307,8 @@
         private System.Windows.Forms.TextBox DiscordWebhookURLInput;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox DisableHeartbeatBox;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.CheckBox BatteryReportingMatchesPowerPlanBox;
+        private System.Windows.Forms.Label label3;
     }
 }

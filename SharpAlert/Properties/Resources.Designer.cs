@@ -81,12 +81,20 @@ namespace SharpAlert.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.Drawing.Bitmap jnjnjnjn {
+        internal static System.IO.UnmanagedMemoryStream major_alert {
             get {
-                object obj = ResourceManager.GetObject("jnjnjnjn", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetStream("major_alert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream minor_alert {
+            get {
+                return ResourceManager.GetStream("minor_alert", resourceCulture);
             }
         }
         
@@ -204,4 +212,3 @@ namespace SharpAlert.Properties {
         }
     }
 }
-

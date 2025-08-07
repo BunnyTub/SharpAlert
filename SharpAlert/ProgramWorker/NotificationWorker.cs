@@ -36,7 +36,8 @@ namespace SharpAlert.ProgramWorker
             {
                 Icon = Resources.TrayLightIcon,
                 Visible = true,
-                Text = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}"
+                Text = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}" // We can't use the friendly version here, it is too long
+                //Text = $"{VersionInfo.FriendlyVersion}"
             };
 
             ContextMenuStrip contextMenu = new ContextMenuStrip();
@@ -100,6 +101,8 @@ namespace SharpAlert.ProgramWorker
 
             contextMenu.Items.Add(new ToolStripSeparator());
 
+            contextMenu.Items.Add(new ToolStripLabel($"Using {Path.GetFileName(QuickSettings.ConfigPath)}"));
+            
             contextMenu.Items.Add(new ToolStripMenuItem("Clear Cache", null, (sender, arg) =>
             {
                 IgnoreRightClick = true;
@@ -134,6 +137,8 @@ namespace SharpAlert.ProgramWorker
 
             bool UpdatesAvailable = false;
 
+            SpeakingManager.ProgramRunning();
+
             if (RemoteVersion == "service")
             {
                 Notify.ShowNotification("I'll just be waiting right over here in my tray icon. Service mode active.",
@@ -151,6 +156,7 @@ namespace SharpAlert.ProgramWorker
                         if (int.Parse(RemoteVersionSplit[0]) > VersionInfo.MajorVersion ||
                             int.Parse(RemoteVersionSplit[1]) > VersionInfo.MinorVersion)
                         {
+                            SpeakingManager.UpdatesFound();
                             Notify.ShowNotification($"Update available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}",
                                 "SharpAlert found updates",
                                 ToolTipIcon.Info);
@@ -161,6 +167,7 @@ namespace SharpAlert.ProgramWorker
                             if (int.Parse(RemoteVersionSplit[0]) < VersionInfo.MajorVersion ||
                                 int.Parse(RemoteVersionSplit[1]) < VersionInfo.MinorVersion)
                             {
+                                SpeakingManager.UpdatesFound();
                                 Notify.ShowNotification($"Downgrade available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}",
                                     "SharpAlert found updates",
                                     ToolTipIcon.Info);
@@ -247,8 +254,8 @@ namespace SharpAlert.ProgramWorker
             contextMenu.Items.Add(new ToolStripMenuItem("Reset Settings", null, (sender, arg) =>
             {
                 if (MessageBox.Show("Reset everything to factory defaults now?\r\n" +
-                    "SharpAlert will close if you continue.",
-                    "SharpAlert",
+                    "SharpAlert will immediately close if you continue.",
+                    "SharpAlert - Reset Settings",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) == DialogResult.Yes)
                 {
@@ -268,10 +275,43 @@ namespace SharpAlert.ProgramWorker
 //            }));
 //#endif
 
-            contextMenu.Items.Add(new ToolStripMenuItem("Export Logs", null, (sender, arg) =>
+            //contextMenu.Items.Add(new ToolStripMenuItem("Export Logs", null, (sender, arg) =>
+            //{
+            //    string filepath = Path.GetTempFileName();
+            //    File.WriteAllText(filepath, $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}\r\n\r\n{NotificationHistory}");
+            //}));
+            
+            contextMenu.Items.Add(new ToolStripMenuItem("Do Not Disturb", null, (sender, arg) =>
             {
-                string filepath = Path.GetTempFileName();
-                File.WriteAllText(filepath, $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}\r\n\r\n{NotificationHistory}");
+                if (QuickSettings.Instance.DisableAlertProcessing)
+                {
+                    if (MessageBox.Show("Do you want to disable Do Not Disturb?\r\n" +
+                        "Alerts will be relayed until it becomes enabled.",
+                        "SharpAlert - Do Not Disturb",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        QuickSettings.Instance.DisableAlertProcessing = false;
+                        Notify.ShowNotification("You can now receive alerts.", "DND has been disabled", ToolTipIcon.Info);
+                    }
+                }
+                else
+                {
+                    if (MessageBox.Show("Do you want to enable Do Not Disturb?\r\n" +
+                        "Alerts will not be relayed until it becomes disabled.\r\n\r\n" +
+                        "This will be disabled next time you start SharpAlert.",
+                        "SharpAlert - Do Not Disturb",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        QuickSettings.Instance.DisableAlertProcessing = true;
+                        Notify.ShowNotification("You cannot receive alerts.", "DND has been enabled", ToolTipIcon.Info);
+                    }
+                }
+
+                ((ToolStripMenuItem)sender).Checked = QuickSettings.Instance.DisableAlertProcessing;
+
+
             }));
             
             contextMenu.Items.Add(new ToolStripMenuItem("Quit", null, (sender, arg) =>
@@ -299,7 +339,7 @@ namespace SharpAlert.ProgramWorker
             //    return;
             //}
 
-            Notify.ContextMenuStrip.Show(Cursor.Position);
+            //Notify.ContextMenuStrip.Show(Cursor.Position);
         }
 
         private static string NotificationHistory = string.Empty;
@@ -323,21 +363,21 @@ namespace SharpAlert.ProgramWorker
 
                     NotificationHistory += $"[{DateTime.UtcNow:R}]\r\nIcon: {icon}\r\nTitle: {title.Trim()}\r\nText: {text.Trim()}\r\n\r\n";
 
-                    if (PreviousCount >= 3)
-                    {
-                        notify.BalloonTipText = "Subsequent similar notifications have been logged.";
-                        notify.BalloonTipTitle = "SharpAlert hid this one";
-                        notify.BalloonTipIcon = icon;
-                    }
-                    else
-                    {
-                        PreviousNotification = text.Trim();
-                        notify.BalloonTipText = text;
-                        notify.BalloonTipTitle = title;
-                        notify.BalloonTipIcon = icon;
-                    }
+                    //if (PreviousCount >= 2)
+                    //{
+                    //    notify.BalloonTipText = "Subsequent similar notifications have been logged.";
+                    //    notify.BalloonTipTitle = "SharpAlert hid this one";
+                    //    notify.BalloonTipIcon = icon;
+                    //}
+                    //else
+                    //{
+                    PreviousNotification = text.Trim();
+                    notify.BalloonTipText = text;
+                    notify.BalloonTipTitle = title;
+                    notify.BalloonTipIcon = icon;
+                    //}
 
-                    notify.ShowBalloonTip(10000);
+                    if (!(PreviousCount >= 4)) notify.ShowBalloonTip(10000);
                 }
             }
         }

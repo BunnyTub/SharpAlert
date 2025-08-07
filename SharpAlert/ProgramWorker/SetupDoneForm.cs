@@ -12,6 +12,7 @@ namespace SharpAlert.ProgramWorker
 
         private void DoneButton_Click(object sender, EventArgs e)
         {
+            SpeakingManager.SetupComplete();
             this.Close();
         }
     }

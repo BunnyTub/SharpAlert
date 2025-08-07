@@ -120,13 +120,6 @@
   <metadata name="ToolTipInformation.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="RegionBrazilBox.ToolTip" xml:space="preserve">
-    <value>You can receive alerts from Brazil via IDAP (Divulgação de Alertas Públicos).
-
-WARNING!
-The current IDAP retrival method downloads potentially above 500 MBs of data for each server check.
-Alerts will take an especially long time to be retrieved, especially on a slow internet connection.</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

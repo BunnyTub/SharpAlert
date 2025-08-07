@@ -1,5 +1,4 @@
 ﻿using SharpAlert.ProgramWorker;
-using SharpAlert.Properties;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -19,6 +18,7 @@ namespace SharpAlert.AlertComponents
         private string AlertAudioUrlStr = string.Empty;
         private string AlertImageUrlStr = string.Empty;
         private string AlertType = string.Empty;
+        private string AlertSeverity = string.Empty;
 
         private const int HWND_TOPMOST = -1;
         private const int SWP_NOMOVE = 0x0002;
@@ -92,7 +92,7 @@ namespace SharpAlert.AlertComponents
             taskbarList.HrInit();
         }
 
-        public void UpdateFields(string id, string alert, string intro, string text, string url, string audio, string image, string type)
+        public void UpdateFields(string id, string alert, string intro, string text, string url, string audio, string image, string type, string severity)
         {
             AlertIDStr = id;
             this.Text = $"SharpAlert - {AlertIDStr}";
@@ -106,6 +106,7 @@ namespace SharpAlert.AlertComponents
             AlertAudioUrlStr = audio;
             AlertImageUrlStr = image;
             AlertType = type;
+            AlertSeverity = severity;
 
             switch (type)
             {
@@ -197,7 +198,7 @@ namespace SharpAlert.AlertComponents
             //    PlayFromUnmanagedSource(Resources.ui_cancellation_1);
             //}
 
-            PlayStartToneFile();
+            PlayStartToneFile(AlertSeverity);
 
             if (QuickSettings.Instance.alertTitlebarControls)
             {
@@ -211,15 +212,16 @@ namespace SharpAlert.AlertComponents
             int LocationMargin = 10;
 
             this.Location = new Point(
-                        Screen.PrimaryScreen.WorkingArea.Width - this.Width - LocationMargin,
-                        Screen.PrimaryScreen.WorkingArea.Height - this.Height - LocationMargin
-                    );
+                Screen.PrimaryScreen.WorkingArea.Width - this.Width - LocationMargin,
+                Screen.PrimaryScreen.WorkingArea.Height - this.Height - LocationMargin
+            );
 
             Console.WriteLine("[Alert GUI] Window shown.");
         }
 
         private void DismissButton_Click(object sender, EventArgs e)
         {
+            SpeakingManager.DismissingWindow();
             this.Close();
         }
 

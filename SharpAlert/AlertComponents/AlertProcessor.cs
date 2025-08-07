@@ -10,7 +10,8 @@ using static SharpAlert.AlertComponents.AlertDisplayer;
 using static SharpAlert.AlertComponents.AlertDetails;
 using System.Drawing;
 using SharpAlert.ProgramWorker;
-using System.Runtime.InteropServices;
+using SharpAlert.SourceCapturing;
+using System.Text.Json;
 
 namespace SharpAlert.AlertComponents
 {
@@ -86,6 +87,7 @@ namespace SharpAlert.AlertComponents
                 }
             }
         }
+
         public bool AlertInProcessing { get; private set; } = false;
 
         //bool DoNotAddToCount
@@ -192,11 +194,11 @@ namespace SharpAlert.AlertComponents
 
                 if (!AnyInfoTagsPass)
                 {
-                    Console.WriteLine($"[Alert Processor] Alert discarded due to urgency/category settings.");
+                    Console.WriteLine($"[Alert Processor] Alert discarded due to location/urgency/category settings.");
                     //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
                     if (!IgnoreDiscards)
                     {
-                        return new AlertInfo { AlertDiscardReason = "The alert was blocked because of your urgency, or category settings." };
+                        return new AlertInfo { AlertDiscardReason = "The alert was blocked because of your location, urgency, or category settings." };
                     }
                 }
 
@@ -509,8 +511,8 @@ namespace SharpAlert.AlertComponents
                         foreach (var kext in AlertTextList)
                         {
                             IncrementedList++;
-                            FullIntro += $"\r\n\r\n{IncrementedList}.\x20" + kext.Intro;
-                            FullBody += $"\r\n\r\n{IncrementedList}.\x20" + kext.Body;
+                            if (!string.IsNullOrWhiteSpace(kext.Intro)) FullIntro += $"\r\n\r\n{IncrementedList}.\x20" + kext.Intro;
+                            if (!string.IsNullOrWhiteSpace(kext.Body)) FullBody += $"\r\n\r\n{IncrementedList}.\x20" + kext.Body;
                         }
                         FullIntro = FullIntro.Trim();
                         FullBody = FullBody.Trim();
@@ -519,8 +521,8 @@ namespace SharpAlert.AlertComponents
                     {
                         foreach (var kext in AlertTextList)
                         {
-                            FullIntro += kext.Intro;
-                            FullBody += kext.Body;
+                            if (!string.IsNullOrWhiteSpace(kext.Intro)) FullIntro += kext.Intro;
+                            if (!string.IsNullOrWhiteSpace(kext.Body)) FullBody += kext.Body;
                         }
                         FullIntro = FullIntro.Trim();
                         FullBody = FullBody.Trim();
@@ -539,7 +541,7 @@ namespace SharpAlert.AlertComponents
 
                     if (!IgnoreDiscards)
                     {
-                        
+                        // ???
                     }
                 }
 
@@ -567,8 +569,8 @@ namespace SharpAlert.AlertComponents
                     AlertEventType = EventTypeFull,
                     AlertMessageType = MsgType,
                     AlertSeverity = MaxSeverity.ToString(),
-                    AlertIntroText = FullIntro,
-                    AlertBodyText = FullBody,
+                    AlertIntroText = FullIntro.Trim(),
+                    AlertBodyText = FullBody.Trim(),
                     AlertURL = PrimaryURL,
                     AlertAudioURL = AudioURL,
                     AlertImageURL = ImageURL
@@ -654,7 +656,7 @@ namespace SharpAlert.AlertComponents
             if (string.IsNullOrWhiteSpace(code)) return ("Cautionary (Unknown Event)", false);
             try
             {
-                var alertEvent = AlertDetails.AlertCodes.DefaultIfEmpty(AlertDetails.cautionary);
+                var alertEvent = AlertCodes.DefaultIfEmpty(cautionary);
                 var alertInfo = alertEvent.FirstOrDefault(y => y.ID == code.ToUpperInvariant());
 
                 if (alertInfo != null) return (alertInfo.Name, true);
@@ -794,7 +796,7 @@ namespace SharpAlert.AlertComponents
                 }
                 else
                 {
-                    Console.WriteLine($"[Alert Processor] Severity ({SeverityValue}) | Urgency ({UrgencyValue}) | Category ({CategoryValue}). Checks were not passed.\r\n");
+                    Console.WriteLine($"[Alert Processor] Severity ({SeverityValue}) | Urgency ({UrgencyValue}) | Category ({CategoryValue}). Checks were not passed.");
                 }
             }
             catch (Exception ex)
@@ -827,15 +829,13 @@ namespace SharpAlert.AlertComponents
                     StringCollection locations = new StringCollection();
                     lock (QuickSettings.Instance.AllowedSAMELocations_Geocodes)
                     {
-                        string AllAboveLocation = "00000";
-
                         foreach (string location in QuickSettings.Instance.AllowedSAMELocations_Geocodes)
                         {
                             string loc = location;
-                            if (loc.Length == 6) loc = loc.Remove(1);
+                            if (loc.Length == 6) loc = loc.Substring(1);
                             if (loc.Length != 5)
                             {
-                                Console.WriteLine($"[Alert Processor] \"{loc}\" is not a valid SAME code.");
+                                Console.WriteLine($"[Alert Processor] \"{loc}\" (from local) is not a valid SAME code.");
                             }
 
                             if (!locations.Contains(loc))
@@ -844,7 +844,7 @@ namespace SharpAlert.AlertComponents
                             }
 
                             // remove last three characters, replace with zeros, because it means that it is all locations
-                            AllAboveLocation = loc.Substring(0, loc.Length - 3) + "000";
+                            string AllAboveLocation = loc.Substring(0, loc.Length - 3) + "000";
 
                             if (!locations.Contains(AllAboveLocation))
                             {
@@ -861,10 +861,10 @@ namespace SharpAlert.AlertComponents
                         {
                             string geocode = match.Groups[1].Value;
 
-                            if (geocode.Length == 6) geocode = geocode.Remove(1);
+                            if (geocode.Length == 6) geocode = geocode.Substring(1);
                             if (geocode.Length != 5)
                             {
-                                Console.WriteLine($"[Alert Processor] \"{geocode}\" is not a valid SAME code (from alert).");
+                                Console.WriteLine($"[Alert Processor] \"{geocode}\" (from alert) is not a valid SAME code.");
                             }
 
                             //foreach (string loc in locations)
@@ -875,7 +875,12 @@ namespace SharpAlert.AlertComponents
                             if (locations.Contains(geocode))
                             {
                                 GeoMatch = true;
+                                Console.WriteLine($"[Alert Processor] \"{geocode}\" (from alert) matched one of the local SAME codes.");
                                 break;
+                            }
+                            else
+                            {
+                                Console.WriteLine($"[Alert Processor] \"{geocode}\" (from alert) did not match any local SAME codes.");
                             }
                         }
 
@@ -1465,14 +1470,18 @@ namespace SharpAlert.AlertComponents
 
             string IntroText = string.Empty;
 
-            IntroText += SentenceAppendSpace($"This alert goes into effect starting {BeginFormatted}, and ending at {EndFormatted}.");
-            IntroText += $"Issued by {SenderName}. Event type is {EventType}. {MsgPrefix} For the following areas, {SentenceAppendEnd(AreaDesc)}".Replace("\x20\x20", "\x20");
-            IntroText = IntroText.Replace("\r\n", "\n").Replace("\n", "\r\n"); // fix mixed newline problems hopefully
-
+            if (QuickSettings.Instance.AddIntroText)
+            {
+                if (QuickSettings.Instance.AddAlertEffectiveAndEndingTimes) IntroText += $"This alert goes into effect starting {BeginFormatted}, and ending at {EndFormatted}." + "\x20";
+                if (QuickSettings.Instance.AddAlertIssuer) IntroText += $"Issued by {SenderName}." + "\x20";
+                IntroText += $"Event type is {EventType}. {MsgPrefix} For the following areas, {SentenceAppendEnd(AreaDesc)}".Replace("\x20\x20", "\x20");
+                IntroText = IntroText.Replace("\r\n", "\n").Replace("\n", "\r\n"); // fix mixed newline problems hopefully
+            }
+            
             Console.WriteLine("[Alert Processor] Finished compiling intro text.");
 
-            BroadcastText += SentenceAppendSpace(SentenceAppendEnd(Description));
-            if (Description != Instruction) BroadcastText += SentenceAppendSpace(SentenceAppendEnd(Instruction));
+            BroadcastText += SentenceAppendEnd(Description) + "\x20";
+            if (Description != Instruction) BroadcastText += SentenceAppendEnd(Instruction) + "\x20";
             BroadcastText = BroadcastText.Replace("###", string.Empty);
             BroadcastText = BroadcastText.Replace(" E A S ", " EAS ");
             BroadcastText = BroadcastText.Replace(" 9 1 1 ", " 9-1-1 ");
@@ -1586,54 +1595,66 @@ namespace SharpAlert.AlertComponents
         {
             // stop reliance on external sources for retriving locations
             // and as a benefit, we can finally get full state names
-            return GetFriendlyNameFromSAMELocationLocally(code);
+            var codeValue = GetFriendlyNameFromSAMELocationLocally(code);
 
-            //try
-            //{
-            //    if (string.IsNullOrWhiteSpace(CacheCapture.SAME_US_JSON)) cache.ServiceRun(false);
-            //    if (!string.IsNullOrWhiteSpace(CacheCapture.SAME_US_JSON))
-            //    {
-            //        using (JsonDocument doc = JsonDocument.Parse(CacheCapture.SAME_US_JSON))
-            //        {
-            //            JsonElement root = doc.RootElement;
-            //            JsonElement same = root.GetProperty("SAME");
+            if (codeValue.Item2)
+            {
+                return codeValue.Item1;
+            }
 
-            //            if (same.TryGetProperty(code, out JsonElement rawSAME))
-            //            {
-            //                return rawSAME.GetString();
-            //            }
-            //            else
-            //            {
-            //                if (code.Length == 6)
-            //                {
-            //                    if (same.TryGetProperty(code.Substring(1), out JsonElement subSAME))
-            //                    {
-            //                        return subSAME.GetString();
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("[Alert Processor] The cache is unavailable.");
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine($"[Alert Processor] {ex.Message}");
-            //}
+            try
+            {
+                //if (string.IsNullOrWhiteSpace(CacheCapture.SAME_US_JSON)) MainEntryPoint.cache.ServiceRun(false);
+                if (!string.IsNullOrWhiteSpace(CacheCapture.SAME_US_JSON))
+                {
+                    using (JsonDocument doc = JsonDocument.Parse(CacheCapture.SAME_US_JSON))
+                    {
+                        JsonElement root = doc.RootElement;
+                        JsonElement same = root.GetProperty("SAME");
 
-            //return $"{code} (Cache Unavailable)";
+                        if (same.TryGetProperty(code, out JsonElement hereSAME))
+                        {
+                            return hereSAME.GetString();
+                        }
+                        else
+                        {
+                            if (code.Length == 6)
+                            {
+                                if (same.TryGetProperty(code.Substring(1), out JsonElement subSAME))
+                                {
+                                    return subSAME.GetString();
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("[Alert Processor] The SAME location cache is unavailable.");
+                    return $"{code} (Cache Unavailable)";
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Alert Processor] {ex.Message}");
+                return $"{code} (Unavailable For Translation)";
+            }
+
+            return $"{code} (Unknown Location)";
         }
 
-        public static string GetFriendlyNameFromSAMELocationLocally(string code)
+        public static (string, bool) GetFriendlyNameFromSAMELocationLocally(string code)
         {
+            code = code.Trim();
+
             string UnknownLocation = $"{code} (Unknown Location)";
+            string InvalidLocation = $"{code} (Invalid Location)";
+            string NonIntegerLocation = $"{code} (Non-Integer Location)";
 
             if (!int.TryParse(code, out int _))
             {
-                return UnknownLocation;
+                Console.WriteLine($"[Alert Processor] The SAME location code \"{code}\" is not an integer.");
+                return (NonIntegerLocation, false);
             }
 
             try
@@ -1650,9 +1671,12 @@ namespace SharpAlert.AlertComponents
                     }
                     else
                     {
-                        return $"{code} (Unknown Location)";
+                        Console.WriteLine($"[Alert Processor] The SAME location code \"{code}\" is not within a correct length (5-6).");
+                        return (InvalidLocation, false);
                     }
                 }
+
+                Console.WriteLine($"[Alert Processor] The SAME location code \"{code}\" is not an integer.");
 
                 // This might be inefficient, but we're not running this software on fucking a Pentium II.
                 // Save the optimization tricks for a rainy day.
@@ -1668,6 +1692,7 @@ namespace SharpAlert.AlertComponents
                 {
                     if (state.Id == StateCode)
                     {
+                        Console.WriteLine($"[Alert Processor] State detected from \"{code}\" SAME location code as {state.Name}.");
                         SavedState = state;
                         break;
                     }
@@ -1675,7 +1700,7 @@ namespace SharpAlert.AlertComponents
 
                 if (SavedState == null)
                 {
-                    return UnknownLocation;
+                    return (UnknownLocation, false);
                 }
 
                 // we found a state, wow!
@@ -1691,6 +1716,7 @@ namespace SharpAlert.AlertComponents
                     {
                         if (county.Id == CountyCode)
                         {
+                            Console.WriteLine($"[Alert Processor] County detected from \"{code}\" SAME location code as {county.Name}.");
                             SavedCountyCode = county.Id;
                             SavedCounty = county;
                             break;
@@ -1701,16 +1727,18 @@ namespace SharpAlert.AlertComponents
                 if (SavedCounty == null)
                 {
                     // we only found a state
-                    return $"{CountyCode}, {SavedState.Name} (Unknown County)";
+
+                    // do we return true for partial matches? or return false?
+                    return ($"{CountyCode}, {SavedState.Name} (Unknown County)", true);
                 }
 
-                return $"{SavedCounty.Name}, {SavedCounty.State.Name}";
+                return ($"{SavedCounty.Name}, {SavedCounty.State.Name}", true);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[Alert Processor] Processing of SAME location failed. {ex.Message}");
+                Console.WriteLine($"[Alert Processor] Processing of the SAME location failed. {ex.Message}");
                 //IceBearWorker.UnsafeFault(ex, false);
-                return $"{code} (Unknown Location)";
+                return ($"{code} (Unknown Location)", false);
             }
         }
 
@@ -1728,13 +1756,6 @@ namespace SharpAlert.AlertComponents
                 return value.Substring(0, value.Length - 1) + ".";
             }
             else return value += ".";
-        }
-
-        string SentenceAppendSpace(string value)
-        {
-            value = value.Trim();
-            if (string.IsNullOrWhiteSpace(value)) return string.Empty;
-            else return value += "\x20";
         }
 
         string SentencePuncuationCorrection(string value)

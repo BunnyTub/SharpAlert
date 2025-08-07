@@ -236,6 +236,7 @@ namespace SharpAlert.AlertComponents
 
         private void DismissButton_Click(object sender, EventArgs e)
         {
+            SpeakingManager.DismissingWindow();
             this.Close();
         }
 

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using SharpAlert.ProgramWorker;
 
 namespace SharpAlert
 {
@@ -23,7 +25,8 @@ namespace SharpAlert
     {
         // NEVER CHANGE ANY OF THESE STRINGS BELOW!
 
-        public static readonly string ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        // configuration.json
+        public static string ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SharpAlert", "configuration.json");
         
         public static readonly string ConfigDirPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -106,7 +109,9 @@ namespace SharpAlert
         public bool alertTTSonly { get; set; } = false;
         public bool alertPlayStartToneTwice { get; set; } = false;
         public bool alertPlayEndTone { get; set; } = false;
+        public bool alertAutoPrintingEnabled { get; set; } = false;
         public bool LegacyAudioPlayer { get; set; } = false;
+        public bool EnableBasicSpeaking { get; set; } = false;
         public int alertVolume { get; set; } = 8;
         public string StartToneLocation { get; set; } = string.Empty;
         public string EndToneLocation { get; set; } = string.Empty;
@@ -135,6 +140,11 @@ namespace SharpAlert
         public bool DiscordWebhookConfirmAlerts { get; set; } = true;
         public bool DiscordWebhookRelayLocally { get; set; } = false;
         public bool DiscordWebhookDisableHeartbeat { get; set; } = false;
+        public bool BatteryReportingMatchesPowerPlan { get; set; } = false;
+        // This value is inclusive. (example: 20 and under)
+        public int BatteryReportingCautionLevel { get; set; } = 20;
+        // This value is inclusive. (example: 10 and under)
+        public int BatteryReportingCriticalLevel { get; set; } = 10;
         // Server
         public bool EnableServer { get; set; } = false;
         public string ServerUsername { get; set; } = "username";
@@ -154,6 +164,12 @@ namespace SharpAlert
         public bool categoryOtherUnknown { get; set; } = true;
         // Language
         public bool AllowNonEnglishAlerts { get; set; } = true;
+        // Alert Text
+        public bool AddIntroText { get; set; } = true;
+        public bool AddAlertEffectiveAndEndingTimes { get; set; } = true;
+        public bool AddAlertIssuer { get; set; } = true;
+        public bool RemoveNWSDescCode { get; set; } = true;
+        public bool RemoveNWSNewLines { get; set; } = true;
 #pragma warning restore IDE1006 // Naming Styles
 
         public void Save()
@@ -171,6 +187,30 @@ namespace SharpAlert
         {
             try
             {
+                if (MainEntryPoint.Args.Contains("--alt-config-1"))
+                {
+                    ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "SharpAlert", "configuration-alt1.json");
+                }
+                
+                if (MainEntryPoint.Args.Contains("--alt-config-2"))
+                {
+                    ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "SharpAlert", "configuration-alt2.json");
+                }
+                
+                if (MainEntryPoint.Args.Contains("--alt-config-3"))
+                {
+                    ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "SharpAlert", "configuration-alt3.json");
+                }
+                
+                if (MainEntryPoint.Args.Contains("--alt-config-4"))
+                {
+                    ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "SharpAlert", "configuration-alt4.json");
+                }
+
                 if (File.Exists(ConfigPath))
                 {
                     var json = File.ReadAllText(ConfigPath);
@@ -197,7 +237,7 @@ namespace SharpAlert
                         break;
                 }
 
-                Environment.Exit(-1);
+                Environment.Exit(9009);
                 return null;
             }
 

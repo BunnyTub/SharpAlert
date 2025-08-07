@@ -92,6 +92,7 @@
             this.AlertText.Multiline = true;
             this.AlertText.Name = "AlertText";
             this.AlertText.ReadOnly = true;
+            this.AlertText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.AlertText.Size = new System.Drawing.Size(1264, 559);
             this.AlertText.TabIndex = 3;
             this.AlertText.TextChanged += new System.EventHandler(this.AlertText_TextChanged);

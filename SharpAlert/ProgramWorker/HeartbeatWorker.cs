@@ -36,13 +36,19 @@ namespace SharpAlert.ProgramWorker
                     {
                         // if there haven't been any relayed alerts, send heartbeat message
                         WarningCount++;
-                        if (WarningCount > 12)
+                        if (WarningCount == 12)
                         {
                             DiscordWebhook.SendUnformattedMessage($"No alerts have been queued for a long time. (uptime: {(int)(DateTime.UtcNow - MainEntryPoint.startDT).TotalHours}h)");
+                            SpeakingManager.FullDaySinceQueuedAlert();
                             WarningCount = 0;
                         }
                         else
                         {
+                            if (WarningCount == 6)
+                            {
+                                SpeakingManager.HalfDaySinceQueuedAlert();
+                            }
+
                             if (!QuickSettings.Instance.DiscordWebhookDisableHeartbeat)
                             {
                                 DiscordWebhook.SendUnformattedMessage($"My heart is still beating. (uptime: {(int)(DateTime.UtcNow - MainEntryPoint.startDT).TotalHours}h)");

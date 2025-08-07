@@ -41,11 +41,16 @@
             this.alertPlayEndToneBox = new System.Windows.Forms.CheckBox();
             this.AudioOutputClearLink = new System.Windows.Forms.LinkLabel();
             this.TTSButton = new System.Windows.Forms.Button();
+            this.EnableBasicSpeakingBox = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.AudioOutputLabel = new System.Windows.Forms.Label();
             this.GlobalVolumeLabel = new System.Windows.Forms.Label();
+            this.ApplicationTypeGroup = new System.Windows.Forms.GroupBox();
+            this.SupportedLinesButton = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
+            this.ApplicationTypeGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // DoneButton
@@ -53,7 +58,7 @@
             this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DoneButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DoneButton.Location = new System.Drawing.Point(451, 161);
+            this.DoneButton.Location = new System.Drawing.Point(506, 247);
             this.DoneButton.Margin = new System.Windows.Forms.Padding(0);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(72, 23);
@@ -100,7 +105,7 @@
             this.RefreshOutputsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.RefreshOutputsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.RefreshOutputsButton.Font = new System.Drawing.Font("Arial", 9F);
-            this.RefreshOutputsButton.Location = new System.Drawing.Point(497, 57);
+            this.RefreshOutputsButton.Location = new System.Drawing.Point(552, 57);
             this.RefreshOutputsButton.Name = "RefreshOutputsButton";
             this.RefreshOutputsButton.Size = new System.Drawing.Size(23, 23);
             this.RefreshOutputsButton.TabIndex = 42;
@@ -123,7 +128,7 @@
             "Refresh the outputs..."});
             this.AudioDeviceCombo.Location = new System.Drawing.Point(110, 57);
             this.AudioDeviceCombo.Name = "AudioDeviceCombo";
-            this.AudioDeviceCombo.Size = new System.Drawing.Size(381, 23);
+            this.AudioDeviceCombo.Size = new System.Drawing.Size(436, 23);
             this.AudioDeviceCombo.TabIndex = 40;
             this.ToolTipInformation.SetToolTip(this.AudioDeviceCombo, "Choose the audio output device to use for sounds.");
             this.AudioDeviceCombo.SelectedIndexChanged += new System.EventHandler(this.AudioDeviceCombo_SelectedIndexChanged);
@@ -157,7 +162,7 @@
             // 
             this.alertPlayEndToneBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.alertPlayEndToneBox.AutoSize = true;
-            this.alertPlayEndToneBox.Location = new System.Drawing.Point(423, 134);
+            this.alertPlayEndToneBox.Location = new System.Drawing.Point(478, 134);
             this.alertPlayEndToneBox.Name = "alertPlayEndToneBox";
             this.alertPlayEndToneBox.Size = new System.Drawing.Size(100, 19);
             this.alertPlayEndToneBox.TabIndex = 46;
@@ -171,7 +176,7 @@
             this.AudioOutputClearLink.AutoSize = true;
             this.AudioOutputClearLink.Font = new System.Drawing.Font("Arial", 9F);
             this.AudioOutputClearLink.LinkColor = System.Drawing.Color.Pink;
-            this.AudioOutputClearLink.Location = new System.Drawing.Point(342, 39);
+            this.AudioOutputClearLink.Location = new System.Drawing.Point(397, 39);
             this.AudioOutputClearLink.Name = "AudioOutputClearLink";
             this.AudioOutputClearLink.Size = new System.Drawing.Size(149, 15);
             this.AudioOutputClearLink.TabIndex = 47;
@@ -186,7 +191,7 @@
             this.TTSButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.TTSButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.TTSButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.TTSButton.Location = new System.Drawing.Point(348, 161);
+            this.TTSButton.Location = new System.Drawing.Point(403, 247);
             this.TTSButton.Name = "TTSButton";
             this.TTSButton.Size = new System.Drawing.Size(100, 23);
             this.TTSButton.TabIndex = 48;
@@ -196,11 +201,26 @@
             this.TTSButton.UseVisualStyleBackColor = false;
             this.TTSButton.Click += new System.EventHandler(this.TTSButton_Click);
             // 
+            // EnableBasicSpeakingBox
+            // 
+            this.EnableBasicSpeakingBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.EnableBasicSpeakingBox.AutoSize = true;
+            this.EnableBasicSpeakingBox.Location = new System.Drawing.Point(307, 20);
+            this.EnableBasicSpeakingBox.Name = "EnableBasicSpeakingBox";
+            this.EnableBasicSpeakingBox.Size = new System.Drawing.Size(152, 19);
+            this.EnableBasicSpeakingBox.TabIndex = 14;
+            this.EnableBasicSpeakingBox.Text = "Enable basic speaking";
+            this.EnableBasicSpeakingBox.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ToolTipInformation.SetToolTip(this.EnableBasicSpeakingBox, "Causes the alert displayer to toggle the alert display boolean on for 5 seconds.\r" +
+        "\nUseful if you\'re only wanting to send alerts out via the web server, or for oth" +
+        "er purposes.");
+            this.EnableBasicSpeakingBox.UseVisualStyleBackColor = true;
+            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.Font = new System.Drawing.Font("Arial", 9F);
-            this.label1.Location = new System.Drawing.Point(9, 158);
+            this.label1.Location = new System.Drawing.Point(9, 244);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(332, 26);
@@ -229,12 +249,53 @@
             this.GlobalVolumeLabel.Text = "Global\r\nVolume";
             this.GlobalVolumeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // ApplicationTypeGroup
+            // 
+            this.ApplicationTypeGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ApplicationTypeGroup.Controls.Add(this.SupportedLinesButton);
+            this.ApplicationTypeGroup.Controls.Add(this.EnableBasicSpeakingBox);
+            this.ApplicationTypeGroup.Controls.Add(this.label3);
+            this.ApplicationTypeGroup.ForeColor = System.Drawing.Color.White;
+            this.ApplicationTypeGroup.Location = new System.Drawing.Point(110, 162);
+            this.ApplicationTypeGroup.Name = "ApplicationTypeGroup";
+            this.ApplicationTypeGroup.Size = new System.Drawing.Size(465, 82);
+            this.ApplicationTypeGroup.TabIndex = 49;
+            this.ApplicationTypeGroup.TabStop = false;
+            this.ApplicationTypeGroup.Text = "Basic Speaking (Actions)";
+            // 
+            // SupportedLinesButton
+            // 
+            this.SupportedLinesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.SupportedLinesButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.SupportedLinesButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.SupportedLinesButton.Location = new System.Drawing.Point(307, 42);
+            this.SupportedLinesButton.Margin = new System.Windows.Forms.Padding(0);
+            this.SupportedLinesButton.Name = "SupportedLinesButton";
+            this.SupportedLinesButton.Size = new System.Drawing.Size(152, 23);
+            this.SupportedLinesButton.TabIndex = 50;
+            this.SupportedLinesButton.Text = "Supported Lines";
+            this.SupportedLinesButton.UseVisualStyleBackColor = false;
+            this.SupportedLinesButton.Click += new System.EventHandler(this.SupportedLinesButton_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 17);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(236, 45);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "The program can speak basic information\r\nabout your current actions, or of an ale" +
+    "rt\r\nvia pre-recorded voice lines or sounds.";
+            // 
             // ChooseAudioForm
             // 
             this.AcceptButton = this.DoneButton;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(532, 193);
+            this.ClientSize = new System.Drawing.Size(587, 279);
+            this.Controls.Add(this.ApplicationTypeGroup);
             this.Controls.Add(this.TTSButton);
             this.Controls.Add(this.AudioOutputClearLink);
             this.Controls.Add(this.alertPlayEndToneBox);
@@ -264,6 +325,8 @@
             this.Load += new System.EventHandler(this.ChooseRegionForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).EndInit();
+            this.ApplicationTypeGroup.ResumeLayout(false);
+            this.ApplicationTypeGroup.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -285,5 +348,9 @@
         private System.Windows.Forms.CheckBox alertPlayEndToneBox;
         private System.Windows.Forms.LinkLabel AudioOutputClearLink;
         private System.Windows.Forms.Button TTSButton;
+        private System.Windows.Forms.GroupBox ApplicationTypeGroup;
+        private System.Windows.Forms.CheckBox EnableBasicSpeakingBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button SupportedLinesButton;
     }
 }
