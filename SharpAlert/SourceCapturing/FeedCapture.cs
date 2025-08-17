@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 using SharpAlert.ProgramWorker;
-using static SharpAlert.ProgramWorker.IceBearWorker;
+using static SharpAlert.ProgramWorker.TuyeWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
+using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.RegexList;
 
 namespace SharpAlert.SourceCapturing
@@ -112,6 +113,10 @@ namespace SharpAlert.SourceCapturing
                             {
                                 AllConnectionsSuccessful = true;
                             }
+                            else
+                            {
+                                AllConnectionsSuccessful = false;
+                            }
 
                             if (AllConnectionsSuccessful)
                             {
@@ -139,28 +144,21 @@ namespace SharpAlert.SourceCapturing
                 catch (TimeoutException)
                 {
                     Console.WriteLine($"[HTTP Feed Capture] Timed out.");
+                    Notify.ShowNotification($"Network error occurred. Timed out from feed.",
+                        "SharpAlert source timed out",
+                        ToolTipIcon.Warning);
                     Thread.Sleep(15 * 1000);
                 }
                 catch (ThreadAbortException)
                 {
                     return;
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Debugger.Break();
-                    Console.WriteLine($"[HTTP Feed Capture] {e.Message}");
-                    if (e.InnerException != null) Console.WriteLine($"[HTTP Feed Capture] {e.InnerException.Message}");
-                    //if (LastConnectionSuccessful)
-                    //{
-                    //    lock (notify)
-                    //    {
-                    //        notify.BalloonTipTitle = "SharpAlert is having issues";
-                    //        notify.BalloonTipText = "There was an issue when trying to connect to the server. Check your internet connection!";
-                    //        notify.BalloonTipIcon = ToolTipIcon.Warning;
-                    //        notify.ShowBalloonTip(5000);
-                    //    }
-                    //}
-                    //LastConnectionSuccessful = false;
+                    Console.WriteLine($"[HTTP Feed Capture] {ex.GetBaseException().Message}");
+                    Notify.ShowNotification($"Network error occurred. {ex.GetBaseException().Message}",
+                        "SharpAlert source problem",
+                        ToolTipIcon.Warning);
                     Thread.Sleep(15 * 1000);
                 }
                 if (FirstRun) FirstRun = false;

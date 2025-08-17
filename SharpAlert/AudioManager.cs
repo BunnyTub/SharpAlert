@@ -10,7 +10,7 @@ using System.Linq;
 using System.Media;
 using System.Speech.Synthesis;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
-using static SharpAlert.ProgramWorker.IceBearWorker;
+using static SharpAlert.ProgramWorker.TuyeWorker;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using static SharpAlert.ProgramWorker.NotificationWorker;
 

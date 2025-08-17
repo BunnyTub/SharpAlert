@@ -43,8 +43,10 @@ namespace SharpAlert.ConfigurationDialogs
                 }
             };
 
-            BatteryReportingMatchesPowerPlanBox.Checked = QuickSettings.Instance.BatteryReportingMatchesPowerPlan;
-            BatteryReportingMatchesPowerPlanBox.CheckedChanged += (a, b) => QuickSettings.Instance.BatteryReportingMatchesPowerPlan = ((CheckBox)a).Checked;
+            BatteryReportingCautionLevelInput.Value = QuickSettings.Instance.BatteryReportingCautionLevel;
+            BatteryReportingCautionLevelInput.ValueChanged += (a, b) => QuickSettings.Instance.BatteryReportingCautionLevel = (int)((NumericUpDown)a).Value;
+            BatteryReportingCriticalLevelInput.Value = QuickSettings.Instance.BatteryReportingCriticalLevel;
+            BatteryReportingCriticalLevelInput.ValueChanged += (a, b) => QuickSettings.Instance.BatteryReportingCriticalLevel = (int)((NumericUpDown)a).Value;
         }
 
         private void ServerConfigurationForm_FormClosing(object sender, FormClosingEventArgs e)

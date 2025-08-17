@@ -30,8 +30,8 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.LogoBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -62,16 +62,16 @@
             this.label2.Text = "This alert was issued at 02:10 AM UTC. It expires at 02:20 AM UTC.";
             this.label2.UseMnemonic = false;
             // 
-            // pictureBox1
+            // LogoBox
             // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pictureBox1.Image = global::SharpAlert.Properties.Resources.AlertIcon;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(100, 100);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
+            this.LogoBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.LogoBox.Image = global::SharpAlert.Properties.Resources.AlertIcon;
+            this.LogoBox.Location = new System.Drawing.Point(0, 0);
+            this.LogoBox.Name = "LogoBox";
+            this.LogoBox.Size = new System.Drawing.Size(100, 100);
+            this.LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LogoBox.TabIndex = 2;
+            this.LogoBox.TabStop = false;
             // 
             // AlertInfoHolder
             // 
@@ -79,13 +79,13 @@
             this.BackColor = System.Drawing.Color.Red;
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.LogoBox);
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.Black;
             this.Name = "AlertInfoHolder";
             this.Size = new System.Drawing.Size(650, 100);
             this.Load += new System.EventHandler(this.AlertInfoHolder_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -94,7 +94,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox LogoBox;
     }
 }
 

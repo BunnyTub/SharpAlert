@@ -33,11 +33,11 @@
             this.DoneButton = new System.Windows.Forms.Button();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.TitleText = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.LogoBox = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.AutoClose = new System.Windows.Forms.Timer(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             this.SuspendLayout();
             // 
             // DoneButton
@@ -75,16 +75,16 @@
             this.TitleText.TabIndex = 23;
             this.TitleText.Text = "You\'re using an unstable build";
             // 
-            // pictureBox1
+            // LogoBox
             // 
-            this.pictureBox1.Image = global::SharpAlert.Properties.Resources.CrashIcon;
-            this.pictureBox1.Location = new System.Drawing.Point(9, 9);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(96, 96);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 22;
-            this.pictureBox1.TabStop = false;
+            this.LogoBox.Image = global::SharpAlert.Properties.Resources.CrashIcon;
+            this.LogoBox.Location = new System.Drawing.Point(9, 9);
+            this.LogoBox.Margin = new System.Windows.Forms.Padding(0);
+            this.LogoBox.Name = "LogoBox";
+            this.LogoBox.Size = new System.Drawing.Size(96, 96);
+            this.LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LogoBox.TabIndex = 22;
+            this.LogoBox.TabStop = false;
             // 
             // label2
             // 
@@ -122,7 +122,7 @@
             this.ControlBox = false;
             this.Controls.Add(this.label3);
             this.Controls.Add(this.TitleText);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.LogoBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.DoneButton);
             this.Font = new System.Drawing.Font("Arial", 9F);
@@ -136,7 +136,7 @@
             this.Text = "SharpAlert - Unstable Warning";
             this.TopMost = true;
             this.Shown += new System.EventHandler(this.SetupForm_Shown);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -145,7 +145,7 @@
         private System.Windows.Forms.ToolTip ToolTipInformation;
         private System.Windows.Forms.Button DoneButton;
         private System.Windows.Forms.Label TitleText;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox LogoBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Timer AutoClose;

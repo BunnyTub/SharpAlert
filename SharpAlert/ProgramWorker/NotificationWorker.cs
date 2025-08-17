@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using SharpAlert.ConfigurationDialogs;
 using SharpAlert.Properties;
-using static SharpAlert.ProgramWorker.IceBearWorker;
+using static SharpAlert.ProgramWorker.TuyeWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 
 namespace SharpAlert.ProgramWorker
@@ -20,7 +20,6 @@ namespace SharpAlert.ProgramWorker
         public static NotifyIcon Notify = null;
         private static ConfigurationForm mf = null;
         private static bool NotifyIconCalled = false;
-        //private static readonly List<string> ChangedPropertiesList = new List<string>();
         public static bool IgnoreRightClick = false;
 
         /// <summary>
@@ -77,10 +76,12 @@ namespace SharpAlert.ProgramWorker
                 if (IgnoreRightClick)
                 {
                     b.Cancel = true;
-                    MessageBox.Show("Please close all windows before opening the menu.",
-                        "SharpAlert",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    Notify.ShowNotification("Please close open windows before opening the tray menu again. Try using ALT+TAB to find them!",
+                        "Before you right-click again...", ToolTipIcon.Info);
+                    //MessageBox.Show("Please close all windows before opening the menu.",
+                    //    "SharpAlert",
+                    //    MessageBoxButtons.OK,
+                    //    MessageBoxIcon.Information);
                     if (b.Cancel) return;
                 }
             };
@@ -160,6 +161,8 @@ namespace SharpAlert.ProgramWorker
                             Notify.ShowNotification($"Update available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}",
                                 "SharpAlert found updates",
                                 ToolTipIcon.Info);
+
+                            UpdateWorker.TryUpdate($"{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}");
                             UpdatesAvailable = true;
                         }
                         else
@@ -195,8 +198,8 @@ namespace SharpAlert.ProgramWorker
                 }
             }
 
-            string home = "https://bunnytub.com/SharpAlert.html";
-            string update = "https://bunnytub.com/SharpAlert.html?update=1";
+            string home = "https://bunnytub.com/SharpAlert";
+            string update = "https://bunnytub.com/SharpAlert?update=1";
 
             contextMenu.Items.Add(new ToolStripLabel($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
                 Resources.AlertIcon, true, (obj, args) =>
@@ -283,6 +286,7 @@ namespace SharpAlert.ProgramWorker
             
             contextMenu.Items.Add(new ToolStripMenuItem("Do Not Disturb", null, (sender, arg) =>
             {
+                IgnoreRightClick = true;
                 if (QuickSettings.Instance.DisableAlertProcessing)
                 {
                     if (MessageBox.Show("Do you want to disable Do Not Disturb?\r\n" +
@@ -291,27 +295,31 @@ namespace SharpAlert.ProgramWorker
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        QuickSettings.Instance.DisableAlertProcessing = false;
-                        Notify.ShowNotification("You can now receive alerts.", "DND has been disabled", ToolTipIcon.Info);
+                        DoNotDisturbMode.StopDND();
                     }
                 }
                 else
                 {
-                    if (MessageBox.Show("Do you want to enable Do Not Disturb?\r\n" +
-                        "Alerts will not be relayed until it becomes disabled.\r\n\r\n" +
-                        "This will be disabled next time you start SharpAlert.",
-                        "SharpAlert - Do Not Disturb",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question) == DialogResult.Yes)
+                    DoNotDisturbForm dndf = new DoNotDisturbForm();
+
+                    DialogResult result = dndf.ShowDialog();
+
+                    //MessageBox.Show("Do you want to enable Do Not Disturb?\r\n" +
+                    //    "Alerts will not be relayed until it becomes disabled.\r\n\r\n" +
+                    //    "This will be disabled next time you start SharpAlert.",
+                    //    "SharpAlert - Do Not Disturb",
+                    //    MessageBoxButtons.YesNo,
+                    //    MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
                     {
-                        QuickSettings.Instance.DisableAlertProcessing = true;
-                        Notify.ShowNotification("You cannot receive alerts.", "DND has been enabled", ToolTipIcon.Info);
+                        DoNotDisturbMode.StartDND(dndf.DNDTimeInMinutes, dndf.RelayIgnoredAlertsAfterDND.Checked);
                     }
                 }
 
                 ((ToolStripMenuItem)sender).Checked = QuickSettings.Instance.DisableAlertProcessing;
 
-
+                IgnoreRightClick = false;
             }));
             
             contextMenu.Items.Add(new ToolStripMenuItem("Quit", null, (sender, arg) =>
@@ -377,7 +385,7 @@ namespace SharpAlert.ProgramWorker
                     notify.BalloonTipIcon = icon;
                     //}
 
-                    if (!(PreviousCount >= 4)) notify.ShowBalloonTip(10000);
+                    if (!(PreviousCount > 2)) notify.ShowBalloonTip(15000);
                 }
             }
         }

@@ -26,8 +26,6 @@ namespace SharpAlert.AlertComponents
                 EventDescription = AlertDescriptionInput.Text;
             }
 
-            if (EarthquakeAlertBox.Checked) EventURL = "https://sasmex.net";
-
             this.DialogResult = DialogResult.Yes;
             this.Close();
         }

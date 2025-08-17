@@ -8,13 +8,13 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using SharpAlert.ProgramWorker;
-using static SharpAlert.ProgramWorker.IceBearWorker;
+using static SharpAlert.ProgramWorker.TuyeWorker;
 
 namespace SharpAlert.AlertComponents
 {
     public static class DiscordWebhook
     {
-        private static readonly WebClient client = new WebClient();
+        private static readonly WebClient discordClient = new WebClient();
 
         /// <summary>
         /// Sends data to a webhook after converting the string to a byte array using UTF8.
@@ -32,12 +32,12 @@ namespace SharpAlert.AlertComponents
         /// <returns>Returns True if the upload is successful.</returns>
         private static bool UploadData(string webhook, byte[] data)
         {
-            lock (client)
+            lock (discordClient)
             {
                 try
                 {
                     Thread.Sleep(1000 + 100);
-                    client.UploadData(webhook, data);
+                    discordClient.UploadData(webhook, data);
                     return true;
                 }
                 catch (Exception ex)
@@ -46,7 +46,7 @@ namespace SharpAlert.AlertComponents
                     try
                     {
                         Thread.Sleep(2000 + 100);
-                        client.UploadData(webhook, data);
+                        discordClient.UploadData(webhook, data);
                         return true;
                     }
                     catch (Exception exx)
@@ -56,7 +56,7 @@ namespace SharpAlert.AlertComponents
                         {
                             Console.WriteLine($"[Discord Webhook] Rate limiting possibly occurring. Pausing for 15 seconds to cool down.");
                             Thread.Sleep((15 * 1000) + 100);
-                            client.UploadData(webhook, data);
+                            discordClient.UploadData(webhook, data);
                             return true;
                         }
                         catch (Exception exxx)
@@ -76,12 +76,12 @@ namespace SharpAlert.AlertComponents
                 string webhook = $"{QuickSettings.Instance.DiscordWebhook}";
                 if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                 {
-                    lock (client)
+                    lock (discordClient)
                     {
                         var payloadObject = new { content = message };
                         string payloadJson = JsonSerializer.Serialize(payloadObject);
-                        client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
-                        client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
+                        discordClient.Headers.Set(HttpRequestHeader.ContentType, "application/json");
+                        discordClient.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
                         return UploadData(webhook, payloadJson);
                     }
                 }
@@ -102,7 +102,7 @@ namespace SharpAlert.AlertComponents
                 string webhook = $"{QuickSettings.Instance.DiscordWebhook}";
                 if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                 {
-                    lock (client)
+                    lock (discordClient)
                     {
                         var payloadObject = new
                         {
@@ -116,8 +116,8 @@ namespace SharpAlert.AlertComponents
                             }
                         };
                         string payloadJson = JsonSerializer.Serialize(payloadObject);
-                        client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
-                        client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
+                        discordClient.Headers.Set(HttpRequestHeader.ContentType, "application/json");
+                        discordClient.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
                         return UploadData(webhook, payloadJson);
                     }
                 }
@@ -138,7 +138,7 @@ namespace SharpAlert.AlertComponents
                 string webhook = $"{QuickSettings.Instance.DiscordWebhook}";
                 if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                 {
-                    lock (client)
+                    lock (discordClient)
                     {
                         var payloadObject = new
                         {
@@ -154,8 +154,8 @@ namespace SharpAlert.AlertComponents
                             content = normal
                         };
                         string payloadJson = JsonSerializer.Serialize(payloadObject);
-                        client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
-                        client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
+                        discordClient.Headers.Set(HttpRequestHeader.ContentType, "application/json");
+                        discordClient.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
                         UploadData(webhook, payloadJson);
                     }
                     return true;
@@ -170,18 +170,18 @@ namespace SharpAlert.AlertComponents
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0037:Use inferred member name", Justification = "<Pending>")]
-        public static bool SendEmbeddedMessage(string message, string title, string description1, string description2, SharpDataItem item, List<string> AudioFileURL, List<string> ImageFileURL, int color = 16711680)
+        public static bool SendEmbeddedMessage(string message, string title, string description1, string description2, string URL, List<string> AudioFileURL, List<string> ImageFileURL, int color = 16711680)
         {
             try
             {
                 string webhook = $"{QuickSettings.Instance.DiscordWebhook}";
                 if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                 {
-                    lock (client)
+                    lock (discordClient)
                     {
                         string boundary = "----SharpBoundary" + DateTime.Now.Ticks;
-                        client.Headers.Set(HttpRequestHeader.ContentType, $"multipart/form-data; boundary={boundary}");
-                        client.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
+                        discordClient.Headers.Set(HttpRequestHeader.ContentType, $"multipart/form-data; boundary={boundary}");
+                        discordClient.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
 
                         string AudioURL = string.Empty;
                         string ImageURL = string.Empty;
@@ -201,8 +201,8 @@ namespace SharpAlert.AlertComponents
                             Console.WriteLine("[Discord Webhook] The length of the message has been truncuated.");
                         }
 
-                        string AuthorName = $"{VersionInfo.FriendlyVersion}";
-                        if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.StationIdentifier)) AuthorName += $"\x20| Relaying from {QuickSettings.Instance.StationIdentifier} ({QuickSettings.Instance.StationName}).";
+                        //string AuthorName = $"{VersionInfo.FriendlyVersion}";
+                        //if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.StationIdentifier)) AuthorName += $"\x20| Relaying from {QuickSettings.Instance.StationIdentifier} ({QuickSettings.Instance.StationName}).";
 
                         var payloadObject = new
                         {
@@ -211,15 +211,16 @@ namespace SharpAlert.AlertComponents
                             {
                                 new
                                 {
-                                    author = new
-                                    {
-                                        name = $"",
-                                        url = "https://sharpalert.bunnytub.com",
-                                        icon_url = "https://bunnytub.com/media/SharpAlert.png"
-                                    },
                                     title = title,
                                     description = AlertCompiled,
+                                    url = URL,
                                     color = color,
+                                    author = new
+                                    {
+                                        name = $"Powered by SharpAlert",
+                                        url = "https://sharpalert.bunnytub.com",
+                                        icon_url = "https://bunnytub.com/media/SharpAlert_Small.png"
+                                    },
                                     image = new
                                     {
                                         url = ImageURL
@@ -266,8 +267,8 @@ namespace SharpAlert.AlertComponents
                             {
                                 //var targetFormat = new WaveFormat(44100, 16, 1);
 
-                                Task<byte[]> task = IceBearWorker.client.GetByteArrayAsync(AudioURL);
-                                task.Wait(5000);
+                                Task<byte[]> task = client.GetByteArrayAsync(AudioURL);
+                                task.Wait(10000);
                                 if (task.IsFaulted) throw task.Exception;
 
                                 var audio = new MemoryStream(task.Result)
@@ -296,8 +297,6 @@ namespace SharpAlert.AlertComponents
                         stream.Write(postFileBytes, 0, postFileBytes.Length);
 
                         UploadData(webhook, stream.ToArray());
-
-                        _ = $"{item}"; // unused parameter
                     }
                 }
                 return true;

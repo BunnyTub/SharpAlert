@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChooseTestForm));
             this.DoneButton = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.LogoBox = new System.Windows.Forms.PictureBox();
             this.TitleText = new System.Windows.Forms.Label();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.AlertTypeInput = new System.Windows.Forms.TextBox();
@@ -39,8 +39,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.EarthquakeAlertBox = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.MarkAlertAsModerateInsteadOfSevereBox = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             this.SuspendLayout();
             // 
             // DoneButton
@@ -48,7 +48,7 @@
             this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DoneButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DoneButton.Location = new System.Drawing.Point(451, 193);
+            this.DoneButton.Location = new System.Drawing.Point(471, 193);
             this.DoneButton.Margin = new System.Windows.Forms.Padding(0);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(72, 23);
@@ -57,16 +57,16 @@
             this.DoneButton.UseVisualStyleBackColor = false;
             this.DoneButton.Click += new System.EventHandler(this.DoneButton_Click);
             // 
-            // pictureBox1
+            // LogoBox
             // 
-            this.pictureBox1.Image = global::SharpAlert.Properties.Resources.WarningApp;
-            this.pictureBox1.Location = new System.Drawing.Point(9, 9);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(96, 96);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            this.LogoBox.Image = global::SharpAlert.Properties.Resources.WarningApp;
+            this.LogoBox.Location = new System.Drawing.Point(9, 9);
+            this.LogoBox.Margin = new System.Windows.Forms.Padding(0);
+            this.LogoBox.Name = "LogoBox";
+            this.LogoBox.Size = new System.Drawing.Size(96, 96);
+            this.LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LogoBox.TabIndex = 1;
+            this.LogoBox.TabStop = false;
             // 
             // TitleText
             // 
@@ -149,31 +149,31 @@
             this.label3.Text = "Alert Description";
             this.label3.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
-            // EarthquakeAlertBox
+            // MarkAlertAsModerateInsteadOfSevereBox
             // 
-            this.EarthquakeAlertBox.AutoSize = true;
-            this.EarthquakeAlertBox.Location = new System.Drawing.Point(356, 58);
-            this.EarthquakeAlertBox.Name = "EarthquakeAlertBox";
-            this.EarthquakeAlertBox.Size = new System.Drawing.Size(164, 19);
-            this.EarthquakeAlertBox.TabIndex = 40;
-            this.EarthquakeAlertBox.Text = "Send as earthquake alert";
-            this.EarthquakeAlertBox.UseVisualStyleBackColor = true;
-            this.EarthquakeAlertBox.Visible = false;
+            this.MarkAlertAsModerateInsteadOfSevereBox.AutoSize = true;
+            this.MarkAlertAsModerateInsteadOfSevereBox.Location = new System.Drawing.Point(356, 58);
+            this.MarkAlertAsModerateInsteadOfSevereBox.Name = "MarkAlertAsModerateInsteadOfSevereBox";
+            this.MarkAlertAsModerateInsteadOfSevereBox.Size = new System.Drawing.Size(185, 19);
+            this.MarkAlertAsModerateInsteadOfSevereBox.TabIndex = 40;
+            this.MarkAlertAsModerateInsteadOfSevereBox.Text = "Moderate- instead of severe+";
+            this.MarkAlertAsModerateInsteadOfSevereBox.UseVisualStyleBackColor = true;
+            this.MarkAlertAsModerateInsteadOfSevereBox.Visible = false;
             // 
             // ChooseTestForm
             // 
             this.AcceptButton = this.DoneButton;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(532, 225);
-            this.Controls.Add(this.EarthquakeAlertBox);
+            this.ClientSize = new System.Drawing.Size(552, 225);
+            this.Controls.Add(this.MarkAlertAsModerateInsteadOfSevereBox);
             this.Controls.Add(this.AlertDescriptionInput);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.AlertTypeInput);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TitleText);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.LogoBox);
             this.Controls.Add(this.DoneButton);
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
@@ -188,7 +188,7 @@
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.ChooseRegionForm_HelpButtonClicked);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChooseRegionForm_FormClosing);
             this.Load += new System.EventHandler(this.ChooseRegionForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -197,7 +197,7 @@
         #endregion
 
         private System.Windows.Forms.Button DoneButton;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox LogoBox;
         private System.Windows.Forms.Label TitleText;
         private System.Windows.Forms.ToolTip ToolTipInformation;
         private System.Windows.Forms.Label label1;
@@ -205,6 +205,6 @@
         private System.Windows.Forms.TextBox AlertTypeInput;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox AlertDescriptionInput;
-        private System.Windows.Forms.CheckBox EarthquakeAlertBox;
+        public System.Windows.Forms.CheckBox MarkAlertAsModerateInsteadOfSevereBox;
     }
 }

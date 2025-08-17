@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StyleConfigurationForm));
             this.DoneButton = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.LogoBox = new System.Windows.Forms.PictureBox();
             this.TitleText = new System.Windows.Forms.Label();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.alertTimeZoneUTCBox = new System.Windows.Forms.CheckBox();
@@ -55,7 +55,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.AlertTextButton = new System.Windows.Forms.Button();
             this.alertAutoPrintingEnabledBox = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
             this.SuspendLayout();
@@ -74,17 +74,17 @@
             this.DoneButton.UseVisualStyleBackColor = false;
             this.DoneButton.Click += new System.EventHandler(this.DoneButton_Click);
             // 
-            // pictureBox1
+            // LogoBox
             // 
-            this.pictureBox1.Image = global::SharpAlert.Properties.Resources.WarningApp;
-            this.pictureBox1.Location = new System.Drawing.Point(9, 9);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(96, 96);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.DoubleClick += new System.EventHandler(this.pictureBox1_DoubleClick);
+            this.LogoBox.Image = global::SharpAlert.Properties.Resources.WarningApp;
+            this.LogoBox.Location = new System.Drawing.Point(9, 9);
+            this.LogoBox.Margin = new System.Windows.Forms.Padding(0);
+            this.LogoBox.Name = "LogoBox";
+            this.LogoBox.Size = new System.Drawing.Size(96, 96);
+            this.LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LogoBox.TabIndex = 1;
+            this.LogoBox.TabStop = false;
+            this.LogoBox.DoubleClick += new System.EventHandler(this.LogoBox_DoubleClick);
             // 
             // TitleText
             // 
@@ -382,7 +382,7 @@
             this.Controls.Add(this.alertFullscreenIdleBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TitleText);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.LogoBox);
             this.Controls.Add(this.DoneButton);
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
@@ -398,7 +398,7 @@
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.ChooseRegionForm_HelpButtonClicked);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChooseRegionForm_FormClosing);
             this.Load += new System.EventHandler(this.ChooseRegionForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).EndInit();
             this.ResumeLayout(false);
@@ -409,7 +409,7 @@
         #endregion
 
         private System.Windows.Forms.Button DoneButton;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox LogoBox;
         private System.Windows.Forms.Label TitleText;
         private System.Windows.Forms.ToolTip ToolTipInformation;
         private System.Windows.Forms.Label label1;

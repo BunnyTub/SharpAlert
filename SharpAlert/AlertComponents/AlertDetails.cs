@@ -26,8 +26,8 @@ namespace SharpAlert.AlertComponents
         public static List<SAME_EventCode> AlertCodes = new List<SAME_EventCode>
         {
             // Used in the EBS (Emergency Broadcast System).
-            new SAME_EventCode("EAN", "National Emergency Message", true),
-            new SAME_EventCode("EAT", "National Emergency Message Termination", true),
+            new SAME_EventCode("EAN", "National Emergency Message", true), // former is "Emergency Action Notification"
+            new SAME_EventCode("EAT", "National Emergency Message Termination", true), // former is "Emergency Action Termination"
             
             // These are national alert codes.
             new SAME_EventCode("NIC", "National Information Center", true),
@@ -118,19 +118,18 @@ namespace SharpAlert.AlertComponents
             new SAME_EventCode("TXB", "Transmitter Backup On"),
             new SAME_EventCode("TXO", "Transmitter Carrier On"),
             new SAME_EventCode("TXF", "Transmitter Carrier Off"),
-
-            // Some weather radios may use the end of the alert code to try and filter the type of alert it is. For example, if a Squall Warning (SQW) is issued, and the weather radio doesn't know what an SQW is, it will use the end of the code, W (Warning).
-            // This also works for bad signals.
-
-            new SAME_EventCode("11E", "Unrecognized Emergency (**E)"),
-            new SAME_EventCode("11W", "Unrecognized Warning (**W)"),
-            new SAME_EventCode("11A", "Unrecognized Watch (**A)"),
-            new SAME_EventCode("11S", "Unrecognized Statement (**S)"),
-            new SAME_EventCode("111", "Unrecognized Message (***)"),
         };
 
         public class SAME_CountyCode
         {
+            /// <summary>
+            /// matchAnyCountiesForStatewideUse is used for statewide codes only. It should not be used for individual counties.
+            /// ...
+            /// If the value is TRUE, Alert Processor matches any county that is inside the current State. 
+            /// If the value is FALSE, Alert Processor only matches statewide codes.
+            /// ...
+            /// how the fuck do I code this
+            /// </summary>
             public SAME_CountyCode(int id, string name, SAME_StateCode state)
             {
                 Id = id;
@@ -147,7 +146,7 @@ namespace SharpAlert.AlertComponents
         public static List<SAME_CountyCode> Counties = new List<SAME_CountyCode>
         {
             //National - 00
-            new SAME_CountyCode(000, "United States", new SAME_StateCode(00, "All of United States")),
+            new SAME_CountyCode(000, "United States", new SAME_StateCode(00, "All of United States (Nationwide only)")),
 
             //Mock - 999
             //new SAME_CountyCode(999, "Mock State", new SAME_StateCode(999, "Mock State")),

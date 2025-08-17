@@ -51,6 +51,7 @@ namespace SharpAlert
         {
             UpdateStatus(feedThread.ThreadState, FeedCaptureStatusText, FeedCapturePanel); // HTTP
             UpdateStatus(atomfeedThread.ThreadState, AtomFeedCaptureStatusText, AtomFeedCapturePanel); // ATOM
+            UpdateStatus(idapfeedThread.ThreadState, IDAPCaptureStatusText, IDAPCapturePanel); // IDAP
 
             // moved DirectFeedCapture to separate timer
 

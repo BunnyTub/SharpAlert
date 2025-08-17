@@ -43,10 +43,10 @@
             this.TerminateSelf = new System.Windows.Forms.Timer(this.components);
             this.WindowFlash = new System.Windows.Forms.Timer(this.components);
             this.BottomOutlinePanel = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.LogoBox = new System.Windows.Forms.PictureBox();
             this.OutlineContainerPanel = new System.Windows.Forms.Panel();
             this.AlertText = new SharpAlert.WinFormsControls.ToolboxStuff.MarqueeLabel();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             this.OutlineContainerPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -172,21 +172,21 @@
             this.BottomOutlinePanel.Size = new System.Drawing.Size(1280, 8);
             this.BottomOutlinePanel.TabIndex = 18;
             // 
-            // pictureBox1
+            // LogoBox
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.DarkRed;
-            this.pictureBox1.Image = global::SharpAlert.Properties.Resources.AlertIcon;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(90, 90);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 19;
-            this.pictureBox1.TabStop = false;
+            this.LogoBox.BackColor = System.Drawing.Color.DarkRed;
+            this.LogoBox.Image = global::SharpAlert.Properties.Resources.AlertIcon;
+            this.LogoBox.Location = new System.Drawing.Point(0, 0);
+            this.LogoBox.Name = "LogoBox";
+            this.LogoBox.Size = new System.Drawing.Size(90, 90);
+            this.LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LogoBox.TabIndex = 19;
+            this.LogoBox.TabStop = false;
             // 
             // OutlineContainerPanel
             // 
             this.OutlineContainerPanel.BackColor = System.Drawing.Color.Magenta;
-            this.OutlineContainerPanel.Controls.Add(this.pictureBox1);
+            this.OutlineContainerPanel.Controls.Add(this.LogoBox);
             this.OutlineContainerPanel.Controls.Add(this.BottomOutlinePanel);
             this.OutlineContainerPanel.Controls.Add(this.ScreenshotButton);
             this.OutlineContainerPanel.Controls.Add(this.DismissButton);
@@ -239,7 +239,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AlertForm_FormClosed);
             this.Load += new System.EventHandler(this.AlertForm_Load);
             this.Shown += new System.EventHandler(this.AlertForm_Shown);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
             this.OutlineContainerPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -260,7 +260,7 @@
         private System.Windows.Forms.Button DismissButton;
         private System.Windows.Forms.Button ScreenshotButton;
         private System.Windows.Forms.Panel BottomOutlinePanel;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox LogoBox;
         private System.Windows.Forms.Panel OutlineContainerPanel;
         private WinFormsControls.ToolboxStuff.MarqueeLabel AlertText;
     }

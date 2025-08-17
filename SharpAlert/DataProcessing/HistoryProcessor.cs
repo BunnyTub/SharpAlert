@@ -243,7 +243,7 @@ namespace SharpAlert.DataProcessing
                     }
                     catch (Exception ex)
                     {
-                        IceBearWorker.LogFault(ex);
+                        TuyeWorker.LogFault(ex);
                     }
                 }
 

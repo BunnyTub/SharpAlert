@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SharpAlert.Properties;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
-using static SharpAlert.ProgramWorker.IceBearWorker;
+using static SharpAlert.ProgramWorker.TuyeWorker;
 using SharpAlert.ProgramWorker;
 using static SharpAlert.ThreadDrool;
 

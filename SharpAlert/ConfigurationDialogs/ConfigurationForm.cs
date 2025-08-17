@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using SharpAlert.Properties;
-using static SharpAlert.ProgramWorker.IceBearWorker;
+using static SharpAlert.ProgramWorker.TuyeWorker;
 
 namespace SharpAlert.ConfigurationDialogs
 {
@@ -11,6 +11,7 @@ namespace SharpAlert.ConfigurationDialogs
         public ConfigurationForm()
         {
             InitializeComponent();
+            //WindowSounds.AddClickAndHover(this);
         }
 
         private void ManagementForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -31,7 +32,8 @@ namespace SharpAlert.ConfigurationDialogs
         private void CAPSettingsButton_Click(object sender, EventArgs e)
         {
             if (acf == null || acf.IsDisposed) acf = new AlertConfigurationForm();
-            acf.ShowDialog();
+            acf.Show();
+            acf.Activate();
         }
 
         private StyleConfigurationForm csf = null;
@@ -39,7 +41,8 @@ namespace SharpAlert.ConfigurationDialogs
         private void StyleSettingsButton_Click(object sender, EventArgs e)
         {
             if (csf == null || csf.IsDisposed) csf = new StyleConfigurationForm(false);
-            csf.ShowDialog();
+            csf.Show();
+            csf.Activate();
         }
 
         private ChooseAudioForm caf = null;
@@ -47,7 +50,8 @@ namespace SharpAlert.ConfigurationDialogs
         private void SoundSettingsButton_Click(object sender, EventArgs e)
         {
             if (caf == null || caf.IsDisposed) caf = new ChooseAudioForm(false);
-            caf.ShowDialog();
+            caf.Show();
+            caf.Activate();
         }
 
 
@@ -56,11 +60,8 @@ namespace SharpAlert.ConfigurationDialogs
         private void RegionButton_Click(object sender, EventArgs e)
         {
             if (crf == null || crf.IsDisposed) crf = new ChooseRegionForm(false);
-            crf.ShowDialog();
-            MessageBox.Show("Restart the program to apply region changes.",
-                "SharpAlert",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            crf.Show();
+            crf.Activate();
         }
 
         private ServerConfigurationForm scf = null;
@@ -68,7 +69,8 @@ namespace SharpAlert.ConfigurationDialogs
         private void ServerSettingsButton_Click(object sender, EventArgs e)
         {
             if (scf == null || scf.IsDisposed) scf = new ServerConfigurationForm();
-            scf.ShowDialog();
+            scf.Show();
+            scf.Activate();
         }
 
         private DiscordConfigurationForm dcf = null;
@@ -76,7 +78,8 @@ namespace SharpAlert.ConfigurationDialogs
         private void DiscordSettingsButton_Click(object sender, EventArgs e)
         {
             if (dcf == null || dcf.IsDisposed) dcf = new DiscordConfigurationForm();
-            dcf.ShowDialog();
+            dcf.Show();
+            dcf.Activate();
         }
 
         private void MigrateSettingsButton_Click(object sender, EventArgs e)
@@ -127,7 +130,7 @@ namespace SharpAlert.ConfigurationDialogs
                 }
                 catch (Exception ex)
                 {
-                    Exception exception = new Exception($"Migration from old settings to new settings failed.\r\n{ex.Message}");
+                    Exception exception = new Exception($"Migration from old settings to new settings failed.\r\n{ex.Message}\r\n{ex.StackTrace}");
                     UnsafeFault(exception, true);
                     //MessageBox.Show($"Migration has failed. {ex.Message}",
                     //    "SharpAlert",
@@ -148,9 +151,17 @@ namespace SharpAlert.ConfigurationDialogs
                 MessageBoxIcon.Information);
         }
 
+        private CreditsForm cf = null;
+
         private void ProgramCreditsButton_Click(object sender, EventArgs e)
         {
-            new CreditsForm().ShowDialog();
+            if (cf == null || cf.IsDisposed) cf = new CreditsForm();
+            cf.Show();
+            cf.Activate();
+        }
+
+        private void ConfigurationForm_Load(object sender, EventArgs e)
+        {
         }
     }
 }

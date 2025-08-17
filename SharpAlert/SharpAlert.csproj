@@ -245,11 +245,17 @@
     <Compile Include="ConfigurationDialogs\AlertTextConfigurationForm.Designer.cs">
       <DependentUpon>AlertTextConfigurationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConfigurationDialogs\PresetForm.cs">
+    <Compile Include="ConfigurationDialogs\DoNotDisturbForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConfigurationDialogs\PresetForm.Designer.cs">
-      <DependentUpon>PresetForm.cs</DependentUpon>
+    <Compile Include="ConfigurationDialogs\DoNotDisturbForm.Designer.cs">
+      <DependentUpon>DoNotDisturbForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationDialogs\ChoosePresetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigurationDialogs\ChoosePresetForm.Designer.cs">
+      <DependentUpon>ChoosePresetForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ConsoleExt.cs" />
     <Compile Include="DataProcessing\HistoryProcessor.cs" />
@@ -297,6 +303,7 @@
       <DependentUpon>ChooseRegionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PrinterController.cs" />
+    <Compile Include="ProgramWorker\DoNotDisturbMode.cs" />
     <Compile Include="ProgramWorker\HeartbeatWorker.cs" />
     <Compile Include="ProgramWorker\NotificationWorker.cs" />
     <Compile Include="PipeWorker.cs" />
@@ -320,6 +327,7 @@
       <DependentUpon>SetupForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgramWorker\QuickSettings.cs" />
+    <Compile Include="ProgramWorker\UpdateWorker.cs" />
     <Compile Include="RelayController.cs" />
     <Compile Include="ServiceMonitorForm.cs">
       <SubType>Form</SubType>
@@ -340,7 +348,7 @@
     <Compile Include="AlertComponents\SendForm.Designer.cs">
       <DependentUpon>SendForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProgramWorker\IceBearWorker.cs" />
+    <Compile Include="ProgramWorker\TuyeWorker.cs" />
     <Compile Include="ConfigurationDialogs\ServerConfigurationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -366,7 +374,7 @@
       <DependentUpon>TeleIdleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="SourceCapturing\DirectFeedCapture.cs" />
-    <Compile Include="SourceCapturing\SystemSpecific\IDAPCapture.cs" />
+    <Compile Include="SourceCapturing\SystemSpecific\IDAPFeedCapture.cs" />
     <Compile Include="SourceCapturing\SystemSpecific\NonCompliant\UKAtomCapture.cs" />
     <Compile Include="SourceCapturing\WeatherAtomCapture.cs" />
     <Compile Include="SpeakingManager.cs" />
@@ -432,14 +440,17 @@
     <EmbeddedResource Include="AlertComponents\SendForm.resx">
       <DependentUpon>SendForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationDialogs\DoNotDisturbForm.resx">
+      <DependentUpon>DoNotDisturbForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationDialogs\ServerConfigurationForm.resx">
       <DependentUpon>ServerConfigurationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationDialogs\AlertTextConfigurationForm.resx">
       <DependentUpon>AlertTextConfigurationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\PresetForm.resx">
-      <DependentUpon>PresetForm.cs</DependentUpon>
+    <EmbeddedResource Include="ConfigurationDialogs\ChoosePresetForm.resx">
+      <DependentUpon>ChoosePresetForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DisplayDialogs\Panels\AlertInfoHolder.resx">
       <DependentUpon>AlertInfoHolder.cs</DependentUpon>
@@ -579,6 +590,10 @@
     <EmbeddedResource Include="SpeakingAssets\SevereOrHigher.wav" />
     <EmbeddedResource Include="SpeakingAssets\TopOfTheHour.wav" />
     <EmbeddedResource Include="SpeakingAssets\UpdatesFound.wav" />
+    <None Include="Resources\button-click.wav" />
+    <None Include="Resources\button-hover.wav" />
+    <None Include="Resources\button_click.wav" />
+    <None Include="Resources\button_hover.wav" />
     <Content Include="WarningApp.ico" />
     <None Include="Resources\WarningApp.png" />
     <Content Include="FodyWeavers.xml" />

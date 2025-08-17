@@ -153,7 +153,7 @@ namespace SharpAlert.DisplayDialogs
 
         private void AutoClose_Tick(object sender, EventArgs e)
         {
-            if (IceBearWorker.ServiceRunnerScheduled)
+            if (TuyeWorker.ServiceRunnerScheduled)
             {
                 // introduce fade-in and fade-out animation if I ever figure out how to use the Windows API
                 this.Close();
@@ -170,7 +170,7 @@ namespace SharpAlert.DisplayDialogs
 
         private void IconBox_Click(object sender, EventArgs e)
         {
-            IceBearWorker.UnsafeFault(new Exception("User initiated failure manually."), true);
+            TuyeWorker.UnsafeFault(new Exception("User initiated failure manually."), true);
         }
 
         private void StartupForm_Shown(object sender, EventArgs e)

@@ -120,6 +120,17 @@
   <metadata name="ToolTipInformation.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="label7.ToolTip" xml:space="preserve">
+    <value>SAME location restrictions are applied ONLY to alerts that arrive from IPAWS (or alerts that have the SAME location parameter).
+
+If you want to receive any alerts for a specific state, add it as such (replace the last three numbers with asterisks): 059***
+If you want to receive statewide alerts only, add it as such (replace the last three numbers with zeros): 059000
+
+At the moment, county zones are not supported, and thus, the first digit in a six character location code will be ignored.
+
+Trying to remove a specific location?
+Type the location's code, then click "Add". You'll be prompted to remove it.</value>
+  </data>
   <data name="label2.ToolTip" xml:space="preserve">
     <value>Custom location restrictions are applied to all alerts that don't contain SAME or CAP-CP location types.
 

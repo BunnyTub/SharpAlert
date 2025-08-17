@@ -63,6 +63,13 @@ namespace SharpAlert.ConfigurationDialogs
                 MessageBoxIcon.Information);
             e.Cancel = true;
         }
+
+        private void SkipButton_Click(object sender, EventArgs e)
+        {
+            StationIdentifierInput.Clear();
+            StationNameInput.Clear();
+            DoneButton.PerformClick();
+        }
     }
 }
 

@@ -59,7 +59,7 @@ namespace SharpAlert.AlertComponents
             {
                 Console.WriteLine($"[Displayer Loop] Initializing call loop.");
                 while (true)
-                {
+                {   
                     try
                     {
                         if (Alerts.Any())
@@ -68,6 +68,11 @@ namespace SharpAlert.AlertComponents
                             {
                                 AlertDisplayerInfo alert = Alerts.First();
                                 Alerts.Remove(alert);
+                                if (QuickSettings.Instance.DisableAlertProcessing)
+                                {
+                                    Console.WriteLine($"[Displayer Loop] Discarded, the Alert Processor is disabled -> {alert.Identifier}");
+                                    continue;
+                                }
                                 Console.WriteLine($"[Displayer Loop] Processing -> {alert.Identifier}");
                                 ProcessQueueItem(alert);
                                 //Console.WriteLine($"[Displayer Loop] Waiting for queued items.");

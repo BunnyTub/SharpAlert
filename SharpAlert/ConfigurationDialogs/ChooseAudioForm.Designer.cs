@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChooseAudioForm));
             this.DoneButton = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.LogoBox = new System.Windows.Forms.PictureBox();
             this.TitleText = new System.Windows.Forms.Label();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.RefreshOutputsButton = new System.Windows.Forms.Button();
@@ -48,9 +48,15 @@
             this.ApplicationTypeGroup = new System.Windows.Forms.GroupBox();
             this.SupportedLinesButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ChangeEndButton = new System.Windows.Forms.Button();
+            this.ChangeStartButton = new System.Windows.Forms.Button();
+            this.AudioTinkeringFileDialog = new System.Windows.Forms.OpenFileDialog();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
             this.ApplicationTypeGroup.SuspendLayout();
+            this.groupBox10.SuspendLayout();
             this.SuspendLayout();
             // 
             // DoneButton
@@ -58,7 +64,7 @@
             this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DoneButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DoneButton.Location = new System.Drawing.Point(506, 247);
+            this.DoneButton.Location = new System.Drawing.Point(506, 349);
             this.DoneButton.Margin = new System.Windows.Forms.Padding(0);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(72, 23);
@@ -67,16 +73,16 @@
             this.DoneButton.UseVisualStyleBackColor = false;
             this.DoneButton.Click += new System.EventHandler(this.DoneButton_Click);
             // 
-            // pictureBox1
+            // LogoBox
             // 
-            this.pictureBox1.Image = global::SharpAlert.Properties.Resources.WarningApp;
-            this.pictureBox1.Location = new System.Drawing.Point(9, 9);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(96, 96);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            this.LogoBox.Image = global::SharpAlert.Properties.Resources.WarningApp;
+            this.LogoBox.Location = new System.Drawing.Point(9, 9);
+            this.LogoBox.Margin = new System.Windows.Forms.Padding(0);
+            this.LogoBox.Name = "LogoBox";
+            this.LogoBox.Size = new System.Drawing.Size(96, 96);
+            this.LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LogoBox.TabIndex = 1;
+            this.LogoBox.TabStop = false;
             // 
             // TitleText
             // 
@@ -136,9 +142,9 @@
             // volumeBar
             // 
             this.volumeBar.LargeChange = 1;
-            this.volumeBar.Location = new System.Drawing.Point(162, 83);
+            this.volumeBar.Location = new System.Drawing.Point(174, 83);
             this.volumeBar.Name = "volumeBar";
-            this.volumeBar.Size = new System.Drawing.Size(358, 45);
+            this.volumeBar.Size = new System.Drawing.Size(401, 45);
             this.volumeBar.TabIndex = 44;
             this.volumeBar.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.ToolTipInformation.SetToolTip(this.volumeBar, "Controls the global volume of the application.");
@@ -191,7 +197,7 @@
             this.TTSButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.TTSButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.TTSButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.TTSButton.Location = new System.Drawing.Point(403, 247);
+            this.TTSButton.Location = new System.Drawing.Point(403, 349);
             this.TTSButton.Name = "TTSButton";
             this.TTSButton.Size = new System.Drawing.Size(100, 23);
             this.TTSButton.TabIndex = 48;
@@ -220,7 +226,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.Font = new System.Drawing.Font("Arial", 9F);
-            this.label1.Location = new System.Drawing.Point(9, 244);
+            this.label1.Location = new System.Drawing.Point(9, 346);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(332, 26);
@@ -244,7 +250,7 @@
             // 
             this.GlobalVolumeLabel.Location = new System.Drawing.Point(108, 83);
             this.GlobalVolumeLabel.Name = "GlobalVolumeLabel";
-            this.GlobalVolumeLabel.Size = new System.Drawing.Size(48, 45);
+            this.GlobalVolumeLabel.Size = new System.Drawing.Size(60, 45);
             this.GlobalVolumeLabel.TabIndex = 43;
             this.GlobalVolumeLabel.Text = "Global\r\nVolume";
             this.GlobalVolumeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -260,14 +266,14 @@
             this.ApplicationTypeGroup.ForeColor = System.Drawing.Color.White;
             this.ApplicationTypeGroup.Location = new System.Drawing.Point(110, 162);
             this.ApplicationTypeGroup.Name = "ApplicationTypeGroup";
-            this.ApplicationTypeGroup.Size = new System.Drawing.Size(465, 82);
+            this.ApplicationTypeGroup.Size = new System.Drawing.Size(465, 76);
             this.ApplicationTypeGroup.TabIndex = 49;
             this.ApplicationTypeGroup.TabStop = false;
-            this.ApplicationTypeGroup.Text = "Basic Speaking (Actions)";
+            this.ApplicationTypeGroup.Text = "Basic Speaking";
             // 
             // SupportedLinesButton
             // 
-            this.SupportedLinesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.SupportedLinesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.SupportedLinesButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.SupportedLinesButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.SupportedLinesButton.Location = new System.Drawing.Point(307, 42);
@@ -289,12 +295,62 @@
             this.label3.Text = "The program can speak basic information\r\nabout your current actions, or of an ale" +
     "rt\r\nvia pre-recorded voice lines or sounds.";
             // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.label2);
+            this.groupBox10.Controls.Add(this.ChangeEndButton);
+            this.groupBox10.Controls.Add(this.ChangeStartButton);
+            this.groupBox10.ForeColor = System.Drawing.Color.White;
+            this.groupBox10.Location = new System.Drawing.Point(110, 244);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(465, 95);
+            this.groupBox10.TabIndex = 50;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "Program Events";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.Yellow;
+            this.label2.Location = new System.Drawing.Point(6, 17);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(344, 15);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "To clear an alert sound, click the button for it, then click cancel.";
+            this.ToolTipInformation.SetToolTip(this.label2, "If you choose custom sounds, you will not be able to control the severity level t" +
+        "hey play at.");
+            // 
+            // ChangeEndButton
+            // 
+            this.ChangeEndButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.ChangeEndButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ChangeEndButton.Location = new System.Drawing.Point(6, 64);
+            this.ChangeEndButton.Name = "ChangeEndButton";
+            this.ChangeEndButton.Size = new System.Drawing.Size(453, 23);
+            this.ChangeEndButton.TabIndex = 50;
+            this.ChangeEndButton.Text = "Select End Tone Location";
+            this.ChangeEndButton.UseVisualStyleBackColor = false;
+            this.ChangeEndButton.Click += new System.EventHandler(this.ChangeEndButton_Click);
+            // 
+            // ChangeStartButton
+            // 
+            this.ChangeStartButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.ChangeStartButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ChangeStartButton.Location = new System.Drawing.Point(6, 35);
+            this.ChangeStartButton.Name = "ChangeStartButton";
+            this.ChangeStartButton.Size = new System.Drawing.Size(453, 23);
+            this.ChangeStartButton.TabIndex = 49;
+            this.ChangeStartButton.Text = "Select Start Tone Location";
+            this.ChangeStartButton.UseVisualStyleBackColor = false;
+            this.ChangeStartButton.Click += new System.EventHandler(this.ChangeStartButton_Click);
+            // 
             // ChooseAudioForm
             // 
             this.AcceptButton = this.DoneButton;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(587, 279);
+            this.ClientSize = new System.Drawing.Size(587, 381);
+            this.Controls.Add(this.groupBox10);
             this.Controls.Add(this.ApplicationTypeGroup);
             this.Controls.Add(this.TTSButton);
             this.Controls.Add(this.AudioOutputClearLink);
@@ -307,7 +363,7 @@
             this.Controls.Add(this.AudioDeviceCombo);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TitleText);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.LogoBox);
             this.Controls.Add(this.DoneButton);
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
@@ -323,10 +379,12 @@
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.ChooseRegionForm_HelpButtonClicked);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChooseRegionForm_FormClosing);
             this.Load += new System.EventHandler(this.ChooseRegionForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).EndInit();
             this.ApplicationTypeGroup.ResumeLayout(false);
             this.ApplicationTypeGroup.PerformLayout();
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -335,7 +393,7 @@
         #endregion
 
         private System.Windows.Forms.Button DoneButton;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox LogoBox;
         private System.Windows.Forms.Label TitleText;
         private System.Windows.Forms.ToolTip ToolTipInformation;
         private System.Windows.Forms.Label label1;
@@ -352,5 +410,10 @@
         private System.Windows.Forms.CheckBox EnableBasicSpeakingBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button SupportedLinesButton;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button ChangeEndButton;
+        private System.Windows.Forms.Button ChangeStartButton;
+        private System.Windows.Forms.OpenFileDialog AudioTinkeringFileDialog;
     }
 }

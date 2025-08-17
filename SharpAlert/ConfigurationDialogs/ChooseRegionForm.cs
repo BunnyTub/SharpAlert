@@ -64,7 +64,6 @@ namespace SharpAlert.ConfigurationDialogs
 
             if (AtLeastOneChecked)
             {
-                DialogResult = DialogResult.OK;
             }
             else
             {
@@ -77,6 +76,11 @@ namespace SharpAlert.ConfigurationDialogs
                     e.Cancel = true;
                 }
             }
+
+            MessageBox.Show("Restart the program to apply region changes.",
+                "SharpAlert",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
 
         private void ChooseRegionForm_HelpButtonClicked(object sender, System.ComponentModel.CancelEventArgs e)

@@ -6,7 +6,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Drawing;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
-using static SharpAlert.ProgramWorker.IceBearWorker;
+using static SharpAlert.ProgramWorker.TuyeWorker;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using SharpAlert.ProgramWorker;
 using SharpAlert.AlertComponents;

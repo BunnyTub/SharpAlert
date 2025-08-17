@@ -60,29 +60,27 @@
             this.statusActualBox = new System.Windows.Forms.CheckBox();
             this.statusTestBox = new System.Windows.Forms.CheckBox();
             this.LocationsAndEventsGroup = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.EventWhitelistModeBox = new System.Windows.Forms.CheckBox();
+            this.NamedEventsInfoButton = new System.Windows.Forms.Button();
+            this.EventSelectButton = new System.Windows.Forms.Button();
             this.EventAddButton = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.EventBlacklistOutput = new System.Windows.Forms.TextBox();
             this.EventBlacklistInput = new System.Windows.Forms.TextBox();
             this.EventClearButton = new System.Windows.Forms.Button();
             this.LocationsClearButton = new System.Windows.Forms.Button();
             this.LocationsButton = new System.Windows.Forms.Button();
-            this.ConfigurationPanel = new System.Windows.Forms.Panel();
-            this.alertNoRelayBox = new System.Windows.Forms.CheckBox();
-            this.StationButton = new System.Windows.Forms.Button();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.LanguageButton = new System.Windows.Forms.Button();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.ChangeEndButton = new System.Windows.Forms.Button();
-            this.ChangeStartButton = new System.Windows.Forms.Button();
+            this.StationButton = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
+            this.BypassAlertFilteringButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.alertNoRelayBox = new System.Windows.Forms.CheckBox();
             this.storedMaxSizeInput = new System.Windows.Forms.NumericUpDown();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.CategoryInfoButton = new System.Windows.Forms.Button();
             this.categoryOtherBox = new System.Windows.Forms.CheckBox();
             this.categoryCBRNEBox = new System.Windows.Forms.CheckBox();
             this.categoryInfraBox = new System.Windows.Forms.CheckBox();
@@ -97,9 +95,7 @@
             this.categoryGeoBox = new System.Windows.Forms.CheckBox();
             this.AlertListButton = new System.Windows.Forms.Button();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
-            this.BusyLockText = new System.Windows.Forms.Label();
-            this.BusyLock = new System.Windows.Forms.Timer(this.components);
-            this.AudioTinkeringFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.BypassFilteringFlasher = new System.Windows.Forms.Timer(this.components);
             this.AlertFunctionalityGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlertDeadIntervalInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AlertCheckIntervalInput)).BeginInit();
@@ -110,8 +106,7 @@
             this.groupBox1.SuspendLayout();
             this.LocationsAndEventsGroup.SuspendLayout();
             this.groupBox9.SuspendLayout();
-            this.ConfigurationPanel.SuspendLayout();
-            this.groupBox10.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.storedMaxSizeInput)).BeginInit();
             this.groupBox3.SuspendLayout();
@@ -499,33 +494,21 @@
             // 
             // LocationsAndEventsGroup
             // 
-            this.LocationsAndEventsGroup.Controls.Add(this.label1);
             this.LocationsAndEventsGroup.Controls.Add(this.groupBox9);
             this.LocationsAndEventsGroup.ForeColor = System.Drawing.Color.White;
             this.LocationsAndEventsGroup.Location = new System.Drawing.Point(328, 142);
             this.LocationsAndEventsGroup.Name = "LocationsAndEventsGroup";
-            this.LocationsAndEventsGroup.Size = new System.Drawing.Size(331, 168);
+            this.LocationsAndEventsGroup.Size = new System.Drawing.Size(331, 120);
             this.LocationsAndEventsGroup.TabIndex = 5;
             this.LocationsAndEventsGroup.TabStop = false;
             this.LocationsAndEventsGroup.Text = "Event Filters";
             // 
-            // label1
-            // 
-            this.label1.Font = new System.Drawing.Font("Arial", 18F);
-            this.label1.ForeColor = System.Drawing.Color.Yellow;
-            this.label1.Location = new System.Drawing.Point(6, 116);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(319, 47);
-            this.label1.TabIndex = 37;
-            this.label1.Text = "Where are SAME Events?";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.ToolTipInformation.SetToolTip(this.label1, "SAME Events will not be coming to SharpAlert due to some complications we\'ve had " +
-        "with execution.");
-            // 
             // groupBox9
             // 
+            this.groupBox9.Controls.Add(this.EventWhitelistModeBox);
+            this.groupBox9.Controls.Add(this.NamedEventsInfoButton);
+            this.groupBox9.Controls.Add(this.EventSelectButton);
             this.groupBox9.Controls.Add(this.EventAddButton);
-            this.groupBox9.Controls.Add(this.label6);
             this.groupBox9.Controls.Add(this.label3);
             this.groupBox9.Controls.Add(this.EventBlacklistOutput);
             this.groupBox9.Controls.Add(this.EventBlacklistInput);
@@ -538,12 +521,50 @@
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Named Events";
             // 
+            // EventWhitelistModeBox
+            // 
+            this.EventWhitelistModeBox.AutoSize = true;
+            this.EventWhitelistModeBox.Location = new System.Drawing.Point(169, 16);
+            this.EventWhitelistModeBox.Name = "EventWhitelistModeBox";
+            this.EventWhitelistModeBox.Size = new System.Drawing.Size(108, 19);
+            this.EventWhitelistModeBox.TabIndex = 54;
+            this.EventWhitelistModeBox.Text = "Whitelist mode";
+            this.ToolTipInformation.SetToolTip(this.EventWhitelistModeBox, "Treat this as a whitelist instead of a blacklist.");
+            this.EventWhitelistModeBox.UseVisualStyleBackColor = true;
+            // 
+            // NamedEventsInfoButton
+            // 
+            this.NamedEventsInfoButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.NamedEventsInfoButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.NamedEventsInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.NamedEventsInfoButton.ForeColor = System.Drawing.Color.Yellow;
+            this.NamedEventsInfoButton.Location = new System.Drawing.Point(290, 13);
+            this.NamedEventsInfoButton.Name = "NamedEventsInfoButton";
+            this.NamedEventsInfoButton.Size = new System.Drawing.Size(23, 23);
+            this.NamedEventsInfoButton.TabIndex = 53;
+            this.NamedEventsInfoButton.Text = "?";
+            this.NamedEventsInfoButton.UseVisualStyleBackColor = false;
+            this.NamedEventsInfoButton.Click += new System.EventHandler(this.NamedEventsInfoButton_Click);
+            // 
+            // EventSelectButton
+            // 
+            this.EventSelectButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.EventSelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.EventSelectButton.Font = new System.Drawing.Font("Arial", 8F);
+            this.EventSelectButton.Location = new System.Drawing.Point(102, 64);
+            this.EventSelectButton.Name = "EventSelectButton";
+            this.EventSelectButton.Size = new System.Drawing.Size(48, 23);
+            this.EventSelectButton.TabIndex = 36;
+            this.EventSelectButton.Text = "Select";
+            this.EventSelectButton.UseVisualStyleBackColor = false;
+            this.EventSelectButton.Click += new System.EventHandler(this.EventSelectButton_Click);
+            // 
             // EventAddButton
             // 
             this.EventAddButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.EventAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.EventAddButton.Font = new System.Drawing.Font("Arial", 8F);
-            this.EventAddButton.Location = new System.Drawing.Point(108, 64);
+            this.EventAddButton.Location = new System.Drawing.Point(54, 64);
             this.EventAddButton.Name = "EventAddButton";
             this.EventAddButton.Size = new System.Drawing.Size(42, 23);
             this.EventAddButton.TabIndex = 35;
@@ -551,26 +572,14 @@
             this.EventAddButton.UseVisualStyleBackColor = false;
             this.EventAddButton.Click += new System.EventHandler(this.EventAddButton_Click);
             // 
-            // label6
-            // 
-            this.label6.ForeColor = System.Drawing.Color.Yellow;
-            this.label6.Location = new System.Drawing.Point(217, 15);
-            this.label6.Margin = new System.Windows.Forms.Padding(0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(96, 19);
-            this.label6.TabIndex = 7;
-            this.label6.Text = "We\'ve changed!";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.ToolTipInformation.SetToolTip(this.label6, resources.GetString("label6.ToolTip"));
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(6, 17);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(205, 15);
+            this.label3.Size = new System.Drawing.Size(144, 15);
             this.label3.TabIndex = 6;
-            this.label3.Text = "You can add events to blacklist here.";
+            this.label3.Text = "You can add events here.";
             // 
             // EventBlacklistOutput
             // 
@@ -604,7 +613,7 @@
             this.EventClearButton.Font = new System.Drawing.Font("Arial", 8F);
             this.EventClearButton.Location = new System.Drawing.Point(6, 64);
             this.EventClearButton.Name = "EventClearButton";
-            this.EventClearButton.Size = new System.Drawing.Size(96, 23);
+            this.EventClearButton.Size = new System.Drawing.Size(42, 23);
             this.EventClearButton.TabIndex = 32;
             this.EventClearButton.Text = "Clear";
             this.EventClearButton.UseVisualStyleBackColor = false;
@@ -612,7 +621,7 @@
             // 
             // LocationsClearButton
             // 
-            this.LocationsClearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.LocationsClearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.LocationsClearButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.LocationsClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.LocationsClearButton.Font = new System.Drawing.Font("Arial", 12F);
@@ -626,7 +635,7 @@
             // 
             // LocationsButton
             // 
-            this.LocationsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.LocationsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.LocationsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.LocationsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.LocationsButton.Font = new System.Drawing.Font("Arial", 18F);
@@ -638,42 +647,36 @@
             this.LocationsButton.UseVisualStyleBackColor = false;
             this.LocationsButton.Click += new System.EventHandler(this.LocationsButton_Click);
             // 
-            // ConfigurationPanel
+            // groupBox7
             // 
-            this.ConfigurationPanel.Controls.Add(this.alertNoRelayBox);
-            this.ConfigurationPanel.Controls.Add(this.StationButton);
-            this.ConfigurationPanel.Controls.Add(this.LanguageButton);
-            this.ConfigurationPanel.Controls.Add(this.groupBox10);
-            this.ConfigurationPanel.Controls.Add(this.groupBox6);
-            this.ConfigurationPanel.Controls.Add(this.groupBox3);
-            this.ConfigurationPanel.Controls.Add(this.AlertFunctionalityGroup);
-            this.ConfigurationPanel.Controls.Add(this.LocationsAndEventsGroup);
-            this.ConfigurationPanel.Controls.Add(this.LocationsClearButton);
-            this.ConfigurationPanel.Controls.Add(this.AlertListButton);
-            this.ConfigurationPanel.Controls.Add(this.LocationsButton);
-            this.ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
-            this.ConfigurationPanel.Name = "ConfigurationPanel";
-            this.ConfigurationPanel.Size = new System.Drawing.Size(671, 507);
-            this.ConfigurationPanel.TabIndex = 6;
+            this.groupBox7.Controls.Add(this.LanguageButton);
+            this.groupBox7.ForeColor = System.Drawing.Color.White;
+            this.groupBox7.Location = new System.Drawing.Point(534, 371);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(125, 66);
+            this.groupBox7.TabIndex = 36;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Language Filters";
             // 
-            // alertNoRelayBox
+            // LanguageButton
             // 
-            this.alertNoRelayBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.alertNoRelayBox.AutoSize = true;
-            this.alertNoRelayBox.Location = new System.Drawing.Point(271, 475);
-            this.alertNoRelayBox.Name = "alertNoRelayBox";
-            this.alertNoRelayBox.Size = new System.Drawing.Size(126, 19);
-            this.alertNoRelayBox.TabIndex = 16;
-            this.alertNoRelayBox.Text = "Disable USB relay";
-            this.ToolTipInformation.SetToolTip(this.alertNoRelayBox, "Stops USB relays from being triggered when alerts are being relayed.");
-            this.alertNoRelayBox.UseVisualStyleBackColor = true;
+            this.LanguageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.LanguageButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LanguageButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.LanguageButton.Location = new System.Drawing.Point(3, 17);
+            this.LanguageButton.Margin = new System.Windows.Forms.Padding(0);
+            this.LanguageButton.Name = "LanguageButton";
+            this.LanguageButton.Size = new System.Drawing.Size(119, 46);
+            this.LanguageButton.TabIndex = 52;
+            this.LanguageButton.Text = "Language\r\nSettings";
+            this.LanguageButton.UseVisualStyleBackColor = false;
+            this.LanguageButton.Click += new System.EventHandler(this.LanguageButton_Click);
             // 
             // StationButton
             // 
             this.StationButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.StationButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.StationButton.Location = new System.Drawing.Point(403, 472);
+            this.StationButton.Location = new System.Drawing.Point(534, 443);
             this.StationButton.Name = "StationButton";
             this.StationButton.Size = new System.Drawing.Size(125, 23);
             this.StationButton.TabIndex = 51;
@@ -681,91 +684,33 @@
             this.StationButton.UseVisualStyleBackColor = false;
             this.StationButton.Click += new System.EventHandler(this.StationButton_Click);
             // 
-            // LanguageButton
-            // 
-            this.LanguageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.LanguageButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.LanguageButton.Location = new System.Drawing.Point(534, 472);
-            this.LanguageButton.Name = "LanguageButton";
-            this.LanguageButton.Size = new System.Drawing.Size(125, 23);
-            this.LanguageButton.TabIndex = 52;
-            this.LanguageButton.Text = "Language Settings";
-            this.LanguageButton.UseVisualStyleBackColor = false;
-            this.LanguageButton.Click += new System.EventHandler(this.LanguageButton_Click);
-            // 
-            // groupBox10
-            // 
-            this.groupBox10.Controls.Add(this.label2);
-            this.groupBox10.Controls.Add(this.ChangeEndButton);
-            this.groupBox10.Controls.Add(this.ChangeStartButton);
-            this.groupBox10.ForeColor = System.Drawing.Color.White;
-            this.groupBox10.Location = new System.Drawing.Point(449, 371);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(210, 95);
-            this.groupBox10.TabIndex = 18;
-            this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "Program Sounds";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.Yellow;
-            this.label2.Location = new System.Drawing.Point(6, 17);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(195, 15);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "To clear, click change, then cancel.";
-            this.ToolTipInformation.SetToolTip(this.label2, "If you choose custom sounds, you will not be able to control the severity level t" +
-        "hey play at.");
-            // 
-            // ChangeEndButton
-            // 
-            this.ChangeEndButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.ChangeEndButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.ChangeEndButton.Location = new System.Drawing.Point(6, 66);
-            this.ChangeEndButton.Name = "ChangeEndButton";
-            this.ChangeEndButton.Size = new System.Drawing.Size(198, 23);
-            this.ChangeEndButton.TabIndex = 50;
-            this.ChangeEndButton.Text = "Select End Tone Location";
-            this.ChangeEndButton.UseVisualStyleBackColor = false;
-            this.ChangeEndButton.Click += new System.EventHandler(this.ChangeEndButton_Click);
-            // 
-            // ChangeStartButton
-            // 
-            this.ChangeStartButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.ChangeStartButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.ChangeStartButton.Location = new System.Drawing.Point(6, 37);
-            this.ChangeStartButton.Name = "ChangeStartButton";
-            this.ChangeStartButton.Size = new System.Drawing.Size(198, 23);
-            this.ChangeStartButton.TabIndex = 49;
-            this.ChangeStartButton.Text = "Select Start Tone Location";
-            this.ChangeStartButton.UseVisualStyleBackColor = false;
-            this.ChangeStartButton.Click += new System.EventHandler(this.ChangeStartButton_Click);
-            // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.label8);
+            this.groupBox6.Controls.Add(this.BypassAlertFilteringButton);
             this.groupBox6.Controls.Add(this.label5);
+            this.groupBox6.Controls.Add(this.alertNoRelayBox);
             this.groupBox6.Controls.Add(this.storedMaxSizeInput);
             this.groupBox6.ForeColor = System.Drawing.Color.White;
-            this.groupBox6.Location = new System.Drawing.Point(328, 316);
+            this.groupBox6.Location = new System.Drawing.Point(328, 268);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(331, 49);
+            this.groupBox6.Size = new System.Drawing.Size(331, 97);
             this.groupBox6.TabIndex = 17;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Message Miscellaneous";
             // 
-            // label8
+            // BypassAlertFilteringButton
             // 
-            this.label8.ForeColor = System.Drawing.Color.Yellow;
-            this.label8.Location = new System.Drawing.Point(149, 18);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(176, 21);
-            this.label8.TabIndex = 36;
-            this.label8.Text = "Where is the expiry option?";
-            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.ToolTipInformation.SetToolTip(this.label8, "The expiry display option has been removed.\r\nIt may be replaced with something el" +
-        "se in the future.");
+            this.BypassAlertFilteringButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BypassAlertFilteringButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.BypassAlertFilteringButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.BypassAlertFilteringButton.Font = new System.Drawing.Font("Arial", 18F);
+            this.BypassAlertFilteringButton.Location = new System.Drawing.Point(6, 45);
+            this.BypassAlertFilteringButton.Name = "BypassAlertFilteringButton";
+            this.BypassAlertFilteringButton.Size = new System.Drawing.Size(319, 46);
+            this.BypassAlertFilteringButton.TabIndex = 37;
+            this.BypassAlertFilteringButton.Text = "Bypass Alert Filtering";
+            this.BypassAlertFilteringButton.UseVisualStyleBackColor = false;
+            this.BypassAlertFilteringButton.Click += new System.EventHandler(this.BypassAlertFilteringButton_Click);
             // 
             // label5
             // 
@@ -775,6 +720,18 @@
             this.label5.Size = new System.Drawing.Size(68, 15);
             this.label5.TabIndex = 9;
             this.label5.Text = "Cache size";
+            // 
+            // alertNoRelayBox
+            // 
+            this.alertNoRelayBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.alertNoRelayBox.AutoSize = true;
+            this.alertNoRelayBox.Location = new System.Drawing.Point(199, 19);
+            this.alertNoRelayBox.Name = "alertNoRelayBox";
+            this.alertNoRelayBox.Size = new System.Drawing.Size(126, 19);
+            this.alertNoRelayBox.TabIndex = 16;
+            this.alertNoRelayBox.Text = "Disable USB relay";
+            this.ToolTipInformation.SetToolTip(this.alertNoRelayBox, "Stops USB relays from being triggered when alerts are being relayed.");
+            this.alertNoRelayBox.UseVisualStyleBackColor = true;
             // 
             // storedMaxSizeInput
             // 
@@ -810,6 +767,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.CategoryInfoButton);
             this.groupBox3.Controls.Add(this.categoryOtherBox);
             this.groupBox3.Controls.Add(this.categoryCBRNEBox);
             this.groupBox3.Controls.Add(this.categoryInfraBox);
@@ -825,7 +783,7 @@
             this.groupBox3.ForeColor = System.Drawing.Color.White;
             this.groupBox3.Location = new System.Drawing.Point(12, 371);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(431, 95);
+            this.groupBox3.Size = new System.Drawing.Size(516, 95);
             this.groupBox3.TabIndex = 17;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Category Filters";
@@ -833,10 +791,24 @@
         "ries embedded within them, to their specific event.\r\nSome alerts may have multip" +
         "le categories for their event.");
             // 
+            // CategoryInfoButton
+            // 
+            this.CategoryInfoButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.CategoryInfoButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.CategoryInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.CategoryInfoButton.ForeColor = System.Drawing.Color.Yellow;
+            this.CategoryInfoButton.Location = new System.Drawing.Point(487, 14);
+            this.CategoryInfoButton.Name = "CategoryInfoButton";
+            this.CategoryInfoButton.Size = new System.Drawing.Size(23, 23);
+            this.CategoryInfoButton.TabIndex = 52;
+            this.CategoryInfoButton.Text = "?";
+            this.CategoryInfoButton.UseVisualStyleBackColor = false;
+            this.CategoryInfoButton.Click += new System.EventHandler(this.CategoryInfoButton_Click);
+            // 
             // categoryOtherBox
             // 
             this.categoryOtherBox.AutoSize = true;
-            this.categoryOtherBox.Location = new System.Drawing.Point(311, 70);
+            this.categoryOtherBox.Location = new System.Drawing.Point(374, 70);
             this.categoryOtherBox.Name = "categoryOtherBox";
             this.categoryOtherBox.Size = new System.Drawing.Size(111, 19);
             this.categoryOtherBox.TabIndex = 48;
@@ -847,7 +819,7 @@
             // categoryCBRNEBox
             // 
             this.categoryCBRNEBox.AutoSize = true;
-            this.categoryCBRNEBox.Location = new System.Drawing.Point(311, 45);
+            this.categoryCBRNEBox.Location = new System.Drawing.Point(374, 45);
             this.categoryCBRNEBox.Name = "categoryCBRNEBox";
             this.categoryCBRNEBox.Size = new System.Drawing.Size(91, 19);
             this.categoryCBRNEBox.TabIndex = 47;
@@ -858,7 +830,7 @@
             // categoryInfraBox
             // 
             this.categoryInfraBox.AutoSize = true;
-            this.categoryInfraBox.Location = new System.Drawing.Point(311, 20);
+            this.categoryInfraBox.Location = new System.Drawing.Point(374, 20);
             this.categoryInfraBox.Name = "categoryInfraBox";
             this.categoryInfraBox.Size = new System.Drawing.Size(67, 19);
             this.categoryInfraBox.TabIndex = 46;
@@ -869,7 +841,7 @@
             // categoryTransportBox
             // 
             this.categoryTransportBox.AutoSize = true;
-            this.categoryTransportBox.Location = new System.Drawing.Point(199, 70);
+            this.categoryTransportBox.Location = new System.Drawing.Point(239, 70);
             this.categoryTransportBox.Name = "categoryTransportBox";
             this.categoryTransportBox.Size = new System.Drawing.Size(106, 19);
             this.categoryTransportBox.TabIndex = 45;
@@ -880,7 +852,7 @@
             // categoryEnvBox
             // 
             this.categoryEnvBox.AutoSize = true;
-            this.categoryEnvBox.Location = new System.Drawing.Point(199, 45);
+            this.categoryEnvBox.Location = new System.Drawing.Point(239, 45);
             this.categoryEnvBox.Name = "categoryEnvBox";
             this.categoryEnvBox.Size = new System.Drawing.Size(105, 19);
             this.categoryEnvBox.TabIndex = 44;
@@ -891,7 +863,7 @@
             // categoryHealthBox
             // 
             this.categoryHealthBox.AutoSize = true;
-            this.categoryHealthBox.Location = new System.Drawing.Point(199, 20);
+            this.categoryHealthBox.Location = new System.Drawing.Point(239, 20);
             this.categoryHealthBox.Name = "categoryHealthBox";
             this.categoryHealthBox.Size = new System.Drawing.Size(68, 19);
             this.categoryHealthBox.TabIndex = 43;
@@ -902,7 +874,7 @@
             // categoryFireBox
             // 
             this.categoryFireBox.AutoSize = true;
-            this.categoryFireBox.Location = new System.Drawing.Point(119, 70);
+            this.categoryFireBox.Location = new System.Drawing.Point(138, 70);
             this.categoryFireBox.Name = "categoryFireBox";
             this.categoryFireBox.Size = new System.Drawing.Size(47, 19);
             this.categoryFireBox.TabIndex = 42;
@@ -913,7 +885,7 @@
             // categoryRescueBox
             // 
             this.categoryRescueBox.AutoSize = true;
-            this.categoryRescueBox.Location = new System.Drawing.Point(119, 45);
+            this.categoryRescueBox.Location = new System.Drawing.Point(138, 45);
             this.categoryRescueBox.Name = "categoryRescueBox";
             this.categoryRescueBox.Size = new System.Drawing.Size(69, 19);
             this.categoryRescueBox.TabIndex = 41;
@@ -924,7 +896,7 @@
             // categorySecurityBox
             // 
             this.categorySecurityBox.AutoSize = true;
-            this.categorySecurityBox.Location = new System.Drawing.Point(119, 20);
+            this.categorySecurityBox.Location = new System.Drawing.Point(138, 20);
             this.categorySecurityBox.Name = "categorySecurityBox";
             this.categorySecurityBox.Size = new System.Drawing.Size(69, 19);
             this.categorySecurityBox.TabIndex = 40;
@@ -967,7 +939,7 @@
             // 
             // AlertListButton
             // 
-            this.AlertListButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.AlertListButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.AlertListButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.AlertListButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.AlertListButton.Font = new System.Drawing.Font("Arial", 18F);
@@ -990,29 +962,25 @@
             this.ToolTipInformation.ReshowDelay = 50;
             this.ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
-            // BusyLockText
+            // BypassFilteringFlasher
             // 
-            this.BusyLockText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BusyLockText.Font = new System.Drawing.Font("Arial", 12F);
-            this.BusyLockText.Location = new System.Drawing.Point(0, 0);
-            this.BusyLockText.Name = "BusyLockText";
-            this.BusyLockText.Size = new System.Drawing.Size(671, 507);
-            this.BusyLockText.TabIndex = 15;
-            this.BusyLockText.Text = "Please wait or dismiss all alerts to configure settings.";
-            this.BusyLockText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.ToolTipInformation.SetToolTip(this.BusyLockText, "You\'ll need to wait for all alerts to finish before continuing.");
-            // 
-            // BusyLock
-            // 
-            this.BusyLock.Tick += new System.EventHandler(this.BusyLock_Tick);
+            this.BypassFilteringFlasher.Interval = 500;
+            this.BypassFilteringFlasher.Tick += new System.EventHandler(this.BypassFilteringFlasher_Tick);
             // 
             // AlertConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(671, 507);
-            this.Controls.Add(this.ConfigurationPanel);
-            this.Controls.Add(this.BusyLockText);
+            this.ClientSize = new System.Drawing.Size(671, 477);
+            this.Controls.Add(this.groupBox7);
+            this.Controls.Add(this.StationButton);
+            this.Controls.Add(this.AlertFunctionalityGroup);
+            this.Controls.Add(this.groupBox6);
+            this.Controls.Add(this.LocationsButton);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.AlertListButton);
+            this.Controls.Add(this.LocationsClearButton);
+            this.Controls.Add(this.LocationsAndEventsGroup);
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -1022,7 +990,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AlertConfigurationForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert - CAP Settings";
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.AlertConfigurationForm_HelpButtonClicked);
             this.Load += new System.EventHandler(this.AlertConfigurationForm_Load);
@@ -1042,10 +1010,7 @@
             this.LocationsAndEventsGroup.ResumeLayout(false);
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
-            this.ConfigurationPanel.ResumeLayout(false);
-            this.ConfigurationPanel.PerformLayout();
-            this.groupBox10.ResumeLayout(false);
-            this.groupBox10.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.storedMaxSizeInput)).EndInit();
@@ -1087,10 +1052,7 @@
         private System.Windows.Forms.TextBox EventBlacklistOutput;
         private System.Windows.Forms.Button EventClearButton;
         private System.Windows.Forms.TextBox EventBlacklistInput;
-        private System.Windows.Forms.Panel ConfigurationPanel;
         private System.Windows.Forms.ToolTip ToolTipInformation;
-        private System.Windows.Forms.Timer BusyLock;
-        private System.Windows.Forms.Label BusyLockText;
         private System.Windows.Forms.CheckBox statusExerciseBox;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox categoryGeoBox;
@@ -1108,12 +1070,6 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.NumericUpDown storedMaxSizeInput;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.GroupBox groupBox10;
-        private System.Windows.Forms.Button ChangeEndButton;
-        private System.Windows.Forms.Button ChangeStartButton;
-        private System.Windows.Forms.OpenFileDialog AudioTinkeringFileDialog;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown AlertDeadIntervalInput;
         private System.Windows.Forms.CheckBox messageTypeTestBox;
@@ -1125,7 +1081,12 @@
         private System.Windows.Forms.CheckBox alertNoRelayBox;
         private System.Windows.Forms.Button LocationsClearButton;
         private System.Windows.Forms.Button AlertListButton;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button EventSelectButton;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.Button CategoryInfoButton;
+        private System.Windows.Forms.Button BypassAlertFilteringButton;
+        private System.Windows.Forms.Timer BypassFilteringFlasher;
+        private System.Windows.Forms.Button NamedEventsInfoButton;
+        private System.Windows.Forms.CheckBox EventWhitelistModeBox;
     }
 }

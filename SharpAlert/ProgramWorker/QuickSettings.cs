@@ -23,6 +23,8 @@ namespace SharpAlert
 
     public class QuickSettings
     {
+        public static bool ReadOnlyMode { get; set; } = false;
+
         // NEVER CHANGE ANY OF THESE STRINGS BELOW!
 
         // configuration.json
@@ -81,12 +83,14 @@ namespace SharpAlert
         public List<CustomGeocodeValues> AllowedCustomLocations_GeocodesList { get; set; } = new List<CustomGeocodeValues>();
         // Blacklist
         public StringCollection EnforceEventBlacklist { get; set; } = new StringCollection();
+        public bool EventWhitelistMode { get; set; } = false;
         public StringCollection EnforceSAMEEventBlacklist { get; set; } = new StringCollection();
         // Alert Stuff
         public int AlertCheckInterval { get; set; } = 30;
         public bool weaOnly { get; set; } = false;
         // Changed discard to align with region changes
         public bool discardFirstAlerts { get; set; } = true;
+        public bool BypassAllFilters { get; set; } = false;
         // Dialogs
         public int alertDisplayType { get; set; } = 0;
         public int WindowLocation { get; set; } = 0;
@@ -103,6 +107,7 @@ namespace SharpAlert
         public bool alertNoRelay { get; set; } = true;
         public bool DisableDialogs { get; set; } = false;
         public bool DisableAlertProcessing { get; set; } = false;
+        public bool PauseDataProcessing { get; set; } = false;
         public bool alertIncreaseSize { get; set; } = false;
         public bool alertTitlebarControls { get; set; } = false;
         public bool alertTimeZoneUTC { get; set; } = false;
@@ -174,6 +179,12 @@ namespace SharpAlert
 
         public void Save()
         {
+            if (ReadOnlyMode)
+            {
+                Console.WriteLine($"[Configuration Handler] The current configuration is not being saved due to read only mode.");
+                return;
+            }
+
             Console.WriteLine($"[Configuration Handler] The current configuration is being saved.");
             var dir = Path.GetDirectoryName(ConfigPath);
             if (!Directory.Exists(dir))
@@ -246,6 +257,12 @@ namespace SharpAlert
 
         public void Reset()
         {
+            if (ReadOnlyMode)
+            {
+                Console.WriteLine($"[Configuration Handler] The current configuration is not being saved due to read only mode.");
+                return;
+            }
+
             var dir = Path.GetDirectoryName(ConfigPath);
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);

@@ -57,6 +57,10 @@
             this.borderPanel1 = new SharpAlert.WinFormsControls.ToolboxStuff.BorderPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.IDAPCapturePanel = new SharpAlert.WinFormsControls.ToolboxStuff.BorderPanel();
+            this.IDAPCaptureStatusText = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.FeedCapturePanel.SuspendLayout();
             this.AtomFeedCapturePanel.SuspendLayout();
             this.DirectFeedCapturePanel.SuspendLayout();
@@ -65,17 +69,18 @@
             this.HistoryProcessorPanel.SuspendLayout();
             this.AlertProcessorPanel.SuspendLayout();
             this.borderPanel1.SuspendLayout();
+            this.IDAPCapturePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 9);
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(251, 15);
+            this.label1.Size = new System.Drawing.Size(420, 15);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Details concerning services are shown here.";
+            this.label1.Text = "Capturing";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FeedCapturePanel
             // 
@@ -83,7 +88,7 @@
             this.FeedCapturePanel.BorderThickness = 8;
             this.FeedCapturePanel.Controls.Add(this.FeedCaptureStatusText);
             this.FeedCapturePanel.Controls.Add(this.label3);
-            this.FeedCapturePanel.Location = new System.Drawing.Point(12, 27);
+            this.FeedCapturePanel.Location = new System.Drawing.Point(12, 123);
             this.FeedCapturePanel.Name = "FeedCapturePanel";
             this.FeedCapturePanel.Size = new System.Drawing.Size(420, 90);
             this.FeedCapturePanel.TabIndex = 1;
@@ -120,7 +125,7 @@
             this.AtomFeedCapturePanel.BorderThickness = 8;
             this.AtomFeedCapturePanel.Controls.Add(this.AtomFeedCaptureStatusText);
             this.AtomFeedCapturePanel.Controls.Add(this.label4);
-            this.AtomFeedCapturePanel.Location = new System.Drawing.Point(12, 123);
+            this.AtomFeedCapturePanel.Location = new System.Drawing.Point(12, 219);
             this.AtomFeedCapturePanel.Name = "AtomFeedCapturePanel";
             this.AtomFeedCapturePanel.Size = new System.Drawing.Size(420, 90);
             this.AtomFeedCapturePanel.TabIndex = 2;
@@ -157,7 +162,7 @@
             this.DirectFeedCapturePanel.BorderThickness = 8;
             this.DirectFeedCapturePanel.Controls.Add(this.DirectFeedCaptureStatusText);
             this.DirectFeedCapturePanel.Controls.Add(this.label6);
-            this.DirectFeedCapturePanel.Location = new System.Drawing.Point(12, 219);
+            this.DirectFeedCapturePanel.Location = new System.Drawing.Point(12, 315);
             this.DirectFeedCapturePanel.Name = "DirectFeedCapturePanel";
             this.DirectFeedCapturePanel.Size = new System.Drawing.Size(420, 90);
             this.DirectFeedCapturePanel.TabIndex = 3;
@@ -194,7 +199,7 @@
             this.CacheCapturePanel.BorderThickness = 8;
             this.CacheCapturePanel.Controls.Add(this.CacheCaptureStatusText);
             this.CacheCapturePanel.Controls.Add(this.label8);
-            this.CacheCapturePanel.Location = new System.Drawing.Point(12, 315);
+            this.CacheCapturePanel.Location = new System.Drawing.Point(12, 27);
             this.CacheCapturePanel.Name = "CacheCapturePanel";
             this.CacheCapturePanel.Size = new System.Drawing.Size(420, 90);
             this.CacheCapturePanel.TabIndex = 4;
@@ -385,11 +390,60 @@
             this.label7.Text = "Pipe Worker";
             this.label7.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
+            // IDAPCapturePanel
+            // 
+            this.IDAPCapturePanel.BorderColor = System.Drawing.Color.White;
+            this.IDAPCapturePanel.BorderThickness = 8;
+            this.IDAPCapturePanel.Controls.Add(this.IDAPCaptureStatusText);
+            this.IDAPCapturePanel.Controls.Add(this.label11);
+            this.IDAPCapturePanel.Location = new System.Drawing.Point(12, 411);
+            this.IDAPCapturePanel.Name = "IDAPCapturePanel";
+            this.IDAPCapturePanel.Size = new System.Drawing.Size(420, 90);
+            this.IDAPCapturePanel.TabIndex = 9;
+            // 
+            // IDAPCaptureStatusText
+            // 
+            this.IDAPCaptureStatusText.BackColor = System.Drawing.Color.Transparent;
+            this.IDAPCaptureStatusText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.IDAPCaptureStatusText.Font = new System.Drawing.Font("Arial", 30F);
+            this.IDAPCaptureStatusText.Location = new System.Drawing.Point(0, 31);
+            this.IDAPCaptureStatusText.Margin = new System.Windows.Forms.Padding(0);
+            this.IDAPCaptureStatusText.Name = "IDAPCaptureStatusText";
+            this.IDAPCaptureStatusText.Size = new System.Drawing.Size(420, 59);
+            this.IDAPCaptureStatusText.TabIndex = 1;
+            this.IDAPCaptureStatusText.Text = "...";
+            this.IDAPCaptureStatusText.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label11
+            // 
+            this.label11.BackColor = System.Drawing.Color.Transparent;
+            this.label11.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label11.Font = new System.Drawing.Font("Arial", 12F);
+            this.label11.Location = new System.Drawing.Point(0, 0);
+            this.label11.Margin = new System.Windows.Forms.Padding(0);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(420, 31);
+            this.label11.TabIndex = 0;
+            this.label11.Text = "IDAP Feed Capture";
+            this.label11.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
+            // label9
+            // 
+            this.label9.Location = new System.Drawing.Point(438, 9);
+            this.label9.Margin = new System.Windows.Forms.Padding(0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(420, 15);
+            this.label9.TabIndex = 10;
+            this.label9.Text = "Processing";
+            this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // ServiceMonitorForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(870, 424);
+            this.ClientSize = new System.Drawing.Size(870, 511);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.IDAPCapturePanel);
             this.Controls.Add(this.borderPanel1);
             this.Controls.Add(this.AlertProcessorPanel);
             this.Controls.Add(this.HistoryProcessorPanel);
@@ -415,8 +469,8 @@
             this.HistoryProcessorPanel.ResumeLayout(false);
             this.AlertProcessorPanel.ResumeLayout(false);
             this.borderPanel1.ResumeLayout(false);
+            this.IDAPCapturePanel.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -449,5 +503,9 @@
         private WinFormsControls.ToolboxStuff.BorderPanel borderPanel1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label7;
+        private WinFormsControls.ToolboxStuff.BorderPanel IDAPCapturePanel;
+        private System.Windows.Forms.Label IDAPCaptureStatusText;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label9;
     }
 }

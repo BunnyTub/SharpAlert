@@ -181,7 +181,17 @@ namespace SharpAlert.ConfigurationDialogs
             if (result == DialogResult.OK)
             {
                 string lefted = $"{laf.SelectedState.Id.ToString().PadLeft(3, '0')}";
-                string righted = $"{laf.SelectedCounty.Id.ToString().PadLeft(3, '0')}";
+                string righted;
+
+                if (laf.AnyAlertsInThisStateBox.Enabled && laf.AnyAlertsInThisStateBox.Checked && laf.SelectedCounty.Id == 0)
+                {
+                    righted = "***";
+                }
+                else
+                {
+                    righted = $"{laf.SelectedCounty.Id.ToString().PadLeft(3, '0')}";
+                }
+                
                 AreaSAMEInput.Enabled = false;
                 AreaSAMEInput.Text = lefted + righted;
                 SAMEAddButton.PerformClick();
@@ -253,7 +263,6 @@ namespace SharpAlert.ConfigurationDialogs
                 ListAreaCustomOutput.Clear();
             }
         }
-
     }
 }
 

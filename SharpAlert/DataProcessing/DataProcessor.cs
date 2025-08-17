@@ -59,6 +59,8 @@ namespace SharpAlert.DataProcessing
                         return;
                     }
 
+                    if (QuickSettings.Instance.PauseDataProcessing) continue;
+
                     lock (SharpDataQueue)
                     {
                         if (SharpDataQueue.Any())
@@ -223,7 +225,7 @@ namespace SharpAlert.DataProcessing
 
                                                             if (DiscordWebhook.SendEmbeddedMessage(CompiledMessage, $"{info.AlertSeverity} Emergency {info.AlertMessageType.First().ToString().ToUpper() + info.AlertMessageType.Substring(1)}",
                                                                 info.AlertIntroText, info.AlertBodyText + $"\r\n\r\n||${LocationList}$||",
-                                                                relayItem,
+                                                                info.AlertURL,
                                                                 new List<string> { info.AlertAudioURL },
                                                                 new List<string> { info.AlertImageURL },
                                                                 color))

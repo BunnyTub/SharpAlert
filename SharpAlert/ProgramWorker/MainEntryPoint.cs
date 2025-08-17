@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using static SharpAlert.AudioManager;
-using static SharpAlert.ProgramWorker.IceBearWorker;
+using static SharpAlert.ProgramWorker.TuyeWorker;
 using SharpAlert.SourceCapturing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -20,6 +20,7 @@ using SharpAlert.AlertComponents;
 using SharpAlert.SourceCapturing.SystemSpecific;
 using static SharpAlert.ProgramWorker.NotificationWorker;
 using SharpAlert.ConfigurationDialogs;
+using Microsoft.Win32;
 
 namespace SharpAlert.ProgramWorker
 {
@@ -47,13 +48,17 @@ namespace SharpAlert.ProgramWorker
             set
             {
                 FeedSuccessfulCalls_ = value;
+                if (FeedSuccessfulCalls_ >= 10000000)
+                {
+                    FeedSuccessfulCalls_ = 0;
+                }
             }
         }
 
         public static FeedCapture feed;
         public static WeatherAtomCapture atomfeed;
         public static DirectFeedCapture directfeed;
-        public static IDAPCapture idapfeed;
+        public static IDAPFeedCapture idapfeed;
         public static CacheCapture cache;
         public static DataProcessor dataproc;
         public static HistoryProcessor historyproc;
@@ -98,7 +103,7 @@ namespace SharpAlert.ProgramWorker
         /// </summary>
         public static void SafeExit()
         {
-            Notify.ShowNotification($"Ice Bear is working to get everything shutdown. This may take a few moments.",
+            Notify.ShowNotification($"Tuye is working to get everything shutdown. This may take a few moments.",
                 "SharpAlert is stopping",
                 ToolTipIcon.Info);
 
@@ -123,10 +128,12 @@ namespace SharpAlert.ProgramWorker
                     {
                         Console.WriteLine("Hyper Server is shutting down.");
                         hyper?.ServiceStop();
-                        Console.WriteLine("Feed Capture is shutting down.");
-                        feed?.ServiceStop();
-                        Console.WriteLine("Direct Feed Capture is shutting down.");
-                        directfeed?.ServiceStop();
+                        QuickSettings.Instance.DisableAlertProcessing = true;
+                        QuickSettings.Instance.PauseDataProcessing = true;
+                        //Console.WriteLine("Feed Capture is shutting down.");
+                        //feed?.ServiceStop();
+                        //Console.WriteLine("Direct Feed Capture is shutting down.");
+                        //directfeed?.ServiceStop();
                         Console.WriteLine("Cache Capture is shutting down.");
                         cache?.ServiceStop();
                         Console.WriteLine("Data Processor is shutting down.");
@@ -164,8 +171,8 @@ namespace SharpAlert.ProgramWorker
             {
                 if (Finished)
                 {
-                    Console.WriteLine("Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-");
-                    Notify.ShowNotification($"Shutdown was successful. Say thanks to Ice Bear for his hard work... -w-",
+                    Console.WriteLine("Shutdown was successful. Say thanks to Tuye for his hard work... -w-");
+                    Notify.ShowNotification($"Shutdown was successful. Say thanks to Tuye for his hard work... -w-",
                         "SharpAlert has stopped",
                         ToolTipIcon.Info);
 
@@ -175,15 +182,15 @@ namespace SharpAlert.ProgramWorker
                 i++;
             }
 
-            Console.WriteLine("Shutdown timed out. Say thanks to Ice Bear for his hard work... -w-");
-            Notify.ShowNotification($"Shutdown timed out. Say thanks to Ice Bear for his hard work... -w-",
+            Console.WriteLine("Shutdown timed out. Say thanks to Tuye for his hard work... -w-");
+            Notify.ShowNotification($"Shutdown timed out. Say thanks to Tuye for his hard work... -w-",
                 "SharpAlert has stopped",
                 ToolTipIcon.Info);
             Environment.Exit(0);
         }
 
         public static bool ServiceMode { get; private set; } = false;
-        public static string[] Args { get; private set; } = null;
+        public static List<string> Args { get; private set; } = null;
         // --alt-config-1/2/3/4
 
         /// <summary>
@@ -193,7 +200,7 @@ namespace SharpAlert.ProgramWorker
         private static void Main()
         {
             //watchdog self-child process
-            Args = Environment.GetCommandLineArgs();
+            Args = Environment.GetCommandLineArgs().ToList();
             Application.EnableVisualStyles();
             //Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
             Application.SetCompatibleTextRenderingDefault(false);
@@ -205,8 +212,80 @@ namespace SharpAlert.ProgramWorker
 
             //ThreadDrool.StartAndForget(() => { while (true) new AlertTableForm().ShowDialog(); });
 
-            if (Args.Length >= 2)
+            // Thank you Microsoft
+
+            (string, bool) CheckFor45PlusVersion(int? releaseKey)
             {
+                if (releaseKey == null) return ("Unknown", false);
+                if (releaseKey >= 533320) return ("4.8.1 or later", true);
+                if (releaseKey >= 528040) return ("4.8", true);
+                if (releaseKey >= 461808) return ("4.7.2", false);
+                if (releaseKey >= 461308) return ("4.7.1", false);
+                if (releaseKey >= 460798) return ("4.7", false);
+                if (releaseKey >= 394802) return ("4.6.2", false);
+                if (releaseKey >= 394254) return ("4.6.1", false);
+                if (releaseKey >= 393295) return ("4.6", false);
+                if (releaseKey >= 379893) return ("4.5.2", false);
+                if (releaseKey >= 378675) return ("4.5.1", false);
+                if (releaseKey >= 378389) return ("4.5", false);
+
+                return ("Unknown", false);
+            }
+
+            string SubKey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
+
+            using (RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
+            using (RegistryKey ndpKey = baseKey.OpenSubKey(SubKey))
+            {
+                if (ndpKey != null && ndpKey.GetValue("Release") != null)
+                {
+                    var Version = CheckFor45PlusVersion((int)ndpKey.GetValue("Release"));
+                    if (!Version.Item2)
+                    {
+                        MessageBox.Show($"You're running .NET Framework {Version.Item1}, which is not supported by SharpAlert. Please update to .NET Framework 4.8 or higher. https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net48-offline-installer",
+                            "SharpAlert - Unsupported .NET Framework Version",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+                        Environment.Exit(8008); // equivalent to NOT FOUND %ERRORLEVEL% in Command Prompt
+                        return;
+                    }
+                }
+            }
+
+            if (Args.Count >= 2)
+            {
+                if (Args.Contains("--wait-until-parent-closes"))
+                {
+                    try
+                    {
+                        GetParentProcess().WaitForExit(10000);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogFault(new Exception("Couldn't identify the parent process to wait for it to exit. It may have already exited.", ex));
+                        Thread.Sleep(1000);
+                    }
+
+                    // remove the wait argument, so it doesn't accidentally get parsed by a child process under watchdog
+                    Args.RemoveAll(delegate (string str) {
+                        return str == "--wait-until-parent-closes";
+                    });
+                }
+
+                if (Args.Contains("--internal-remove-old"))
+                {
+                    try
+                    {
+                        if (File.Exists(AssemblyFile + "_"))
+                        {
+                            File.Delete(AssemblyFile + "_");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+
                 if (Args.Contains("--service-mode"))
                 {
                     AllocateTerminal(false);
@@ -280,7 +359,7 @@ namespace SharpAlert.ProgramWorker
                             $"{ex.Message}\r\n" +
                             $"Please report this.\r\n" +
                             $"If this is your first time running SharpAlert,\r\n" +
-                            $"check that you have .NET Framework 4.8 installed.\r\n" +
+                            $"check that you have .NET Framework 4.8+ installed.\r\n" +
                             $"Make sure no compatibility options are enabled.",
                             "SharpAlert",
                             MessageBoxButtons.OK,
@@ -298,6 +377,10 @@ namespace SharpAlert.ProgramWorker
 
             bool restartable = true;
             bool debuggable = false;
+            bool forceNewWatchdogProcess = false;
+
+            // prevent writing to the config if this is the monitoring process, just in case
+            QuickSettings.ReadOnlyMode = true;
 
             while (restartable)
             {
@@ -307,19 +390,26 @@ namespace SharpAlert.ProgramWorker
                     ErrorDialog = false
                 };
 
-                string arguments = "--monitored";
-                foreach (string arg in Args)
+                if (!forceNewWatchdogProcess)
                 {
-                    arguments += $"\x20{arg}";
-                }
+                    string arguments = "--monitored";
+                    foreach (string arg in Args)
+                    {
+                        arguments += $"\x20{arg}";
+                    }
 
-                if (debuggable)
+                    if (debuggable)
+                    {
+                        arguments += $"\x20--call-debugger";
+                        debuggable = false;
+                    }
+
+                    self.Arguments = arguments;
+                }
+                else
                 {
-                    arguments += $"\x20--call-debugger";
-                    debuggable = false;
+                    self.Arguments = "--wait-until-parent-closes";
                 }
-
-                self.Arguments = arguments;
 
                 Process monitorSelf = new Process
                 {
@@ -327,6 +417,13 @@ namespace SharpAlert.ProgramWorker
                 };
 
                 monitorSelf.Start();
+
+                if (forceNewWatchdogProcess)
+                {
+                    Environment.Exit(0);
+                    return;
+                }
+                
                 monitorSelf.WaitForExit();
             
                 switch (unchecked(monitorSelf.ExitCode))
@@ -339,12 +436,40 @@ namespace SharpAlert.ProgramWorker
                         restartable = false;
                         Environment.Exit(0);
                         return;
+                    case 100:
+                        restartable = true;
+                        QuickSettings.Instance.Reload();
+                        if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
+                        {
+                            DiscordWebhook.SendFormattedMessage($"SharpAlert is restarting.");
+                        }
+
+                        break;
                     default:
                         restartable = true;
                         QuickSettings.Instance.Reload();
                         if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                         {
-                            DiscordWebhook.SendFormattedMessage($"SharpAlert has terminated unexpectedly. ({monitorSelf.ExitCode})");
+                            switch (unchecked(monitorSelf.ExitCode))
+                            {
+                                case 1073807364:
+                                    DiscordWebhook.SendFormattedMessage($"SharpAlert has stopped abruptly because the system is shutting down.");
+                                    break;
+                                case -1073741571:
+                                    DiscordWebhook.SendFormattedMessage($"SharpAlert has stopped abruptly due to a recursion problem.");
+                                    break;
+                                case -1073741819:
+                                case -1073740791:
+                                case -1073740940:
+                                case -1073741553:
+                                case -1073741800:
+                                case -1073740988:
+                                    DiscordWebhook.SendFormattedMessage($"SharpAlert has stopped abruptly due to a security problem.");
+                                    break;
+                                default:
+                                    DiscordWebhook.SendFormattedMessage($"SharpAlert has terminated unexpectedly. ({monitorSelf.ExitCode})");
+                                    break;
+                            }
                         }
                         string Details = $"SharpAlert closed with a non-zero exit code. ({unchecked(monitorSelf.ExitCode)})\r\n" +
                             $"{new Win32Exception(unchecked(monitorSelf.ExitCode)).Message}";

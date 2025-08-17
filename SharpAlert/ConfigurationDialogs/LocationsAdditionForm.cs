@@ -22,11 +22,14 @@ namespace SharpAlert.ConfigurationDialogs
         {
             if (Initialized) return;
             Initialized = true;
+            AnyAlertsInThisStateBox.Enabled = false;
             StateCombo.Items.AddRange(AlertDetails.States.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
         }
 
         private void StateCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
+            AnyAlertsInThisStateBox.Enabled = false;
+
             SelectedState = AlertDetails.States.FirstOrDefault(x => x.Name == StateCombo.Text);
             if (SelectedState != null)
             {
@@ -46,6 +49,14 @@ namespace SharpAlert.ConfigurationDialogs
             SelectedCounty =
                 AlertDetails.Counties.FirstOrDefault(
                     x => x.State.Id == SelectedState.Id && x.Name == CountyCombo.Text);
+            if (SelectedCounty.Name.ToLowerInvariant().StartsWith("all of"))
+            {
+                AnyAlertsInThisStateBox.Enabled = true;
+            }
+            else
+            {
+                AnyAlertsInThisStateBox.Enabled = false;
+            }
         }
 
         private void SAMEAddButton_Click(object sender, EventArgs e)

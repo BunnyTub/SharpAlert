@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ServerConfigurationForm));
             this.BusyLockText = new System.Windows.Forms.Label();
             this.ApplicationTypeGroup = new System.Windows.Forms.GroupBox();
+            this.EnableServerBox = new System.Windows.Forms.CheckBox();
             this.SaveServerSettingsButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.WebServerPasswordInput = new System.Windows.Forms.TextBox();
@@ -41,7 +42,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
-            this.EnableServerBox = new System.Windows.Forms.CheckBox();
             this.ApplicationTypeGroup.SuspendLayout();
             this.ConfigurationPanel.SuspendLayout();
             this.SuspendLayout();
@@ -77,6 +77,20 @@
             this.ApplicationTypeGroup.TabIndex = 2;
             this.ApplicationTypeGroup.TabStop = false;
             this.ApplicationTypeGroup.Text = "Server";
+            // 
+            // EnableServerBox
+            // 
+            this.EnableServerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.EnableServerBox.AutoSize = true;
+            this.EnableServerBox.Location = new System.Drawing.Point(427, 45);
+            this.EnableServerBox.Name = "EnableServerBox";
+            this.EnableServerBox.Size = new System.Drawing.Size(102, 19);
+            this.EnableServerBox.TabIndex = 20;
+            this.EnableServerBox.Text = "Enable server";
+            this.ToolTipInformation.SetToolTip(this.EnableServerBox, "Causes the alert displayer to toggle the alert display boolean on for 5 seconds.\r" +
+        "\nUseful if you\'re only wanting to send alerts out via the web server, or for oth" +
+        "er purposes.");
+            this.EnableServerBox.UseVisualStyleBackColor = true;
             // 
             // SaveServerSettingsButton
             // 
@@ -184,20 +198,6 @@
             this.ToolTipInformation.ReshowDelay = 50;
             this.ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
-            // EnableServerBox
-            // 
-            this.EnableServerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.EnableServerBox.AutoSize = true;
-            this.EnableServerBox.Location = new System.Drawing.Point(427, 45);
-            this.EnableServerBox.Name = "EnableServerBox";
-            this.EnableServerBox.Size = new System.Drawing.Size(102, 19);
-            this.EnableServerBox.TabIndex = 20;
-            this.EnableServerBox.Text = "Enable server";
-            this.ToolTipInformation.SetToolTip(this.EnableServerBox, "Causes the alert displayer to toggle the alert display boolean on for 5 seconds.\r" +
-        "\nUseful if you\'re only wanting to send alerts out via the web server, or for oth" +
-        "er purposes.");
-            this.EnableServerBox.UseVisualStyleBackColor = true;
-            // 
             // ServerConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -211,7 +211,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ServerConfigurationForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert - Server Settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ServerConfigurationForm_FormClosing);
             this.Load += new System.EventHandler(this.ServerConfigurationForm_Load);

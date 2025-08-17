@@ -2,19 +2,16 @@
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using SharpAlert.ProgramWorker;
-using static SharpAlert.ProgramWorker.IceBearWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.RegexList;
 
 namespace SharpAlert.SourceCapturing.SystemSpecific
 {
-    public class IDAPCapture
+    public class IDAPFeedCapture
     {
         private bool FirstRun = true;
         private bool Stop = false;
@@ -38,12 +35,11 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
             }
         }
 
-        public static int Calls { get; private set; } = 0;
 
         private static readonly string serverPath = "idapcap.mdr.gov.br";
 
         /// <summary>
-        /// Starts the IDAP Capture service in the current thread as a client.
+        /// Starts the IDAP Feed Capture service in the current thread as a client.
         /// </summary>
         /// <param name="useHTTPS">Use the secure version of Hypertext Transfer Protocol to connect to the target server.</param>
         public void ServiceRun(bool useHTTPS)
@@ -60,26 +56,24 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
 
                     try
                     {
-                        Console.WriteLine($"[IDAP Capture] Getting data from IDAP. URL -> {serverPath}");
+                        Console.WriteLine($"[IDAP Feed Capture] Getting data from IDAP. URL -> {serverPath}");
 
                         string Result = idapclient.DownloadString($"{URLPrefix}://{serverPath}");
-                        
+
                         // DO NOT TRIM RESULT
 
-                        if (Calls >= 100000) Calls = 0;
-                        Calls++;
-                        // HEY YOU ABSOLUTE FUCKING IDIOT
+                        FeedSuccessfulCalls++;
 
                         EnrollEntries(Result);
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"[IDAP Capture] {ex.GetBaseException().Message}");
+                        Console.WriteLine($"[IDAP Feed Capture] {ex.GetBaseException().Message}");
                     }
                 }
                 catch (TimeoutException)
                 {
-                    Console.WriteLine($"[IDAP Capture] Timed out.");
+                    Console.WriteLine($"[IDAP Feed Capture] Timed out.");
                     Thread.Sleep(15 * 1000);
                 }
                 catch (ThreadAbortException)
@@ -88,8 +82,8 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"[IDAP Capture] {e.Message}");
-                    if (e.InnerException != null) Console.WriteLine($"[IDAP Capture] {e.InnerException.Message}");
+                    Console.WriteLine($"[IDAP Feed Capture] {e.Message}");
+                    if (e.InnerException != null) Console.WriteLine($"[IDAP Feed Capture] {e.InnerException.Message}");
                     //if (LastConnectionSuccessful)
                     //{
                     //    lock (notify)
@@ -126,7 +120,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"[IDAP Capture] {e.StackTrace} {e.Message}");
+                    Console.WriteLine($"[IDAP Feed Capture] {e.StackTrace} {e.Message}");
                 }
             }
         }
@@ -142,7 +136,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
             string[] DataSplit = data.Split('\n');
             string AlertList = string.Empty;
 
-            Console.WriteLine($"[IDAP Capture] Processing {DataSplit.LongCount()} lines.");
+            Console.WriteLine($"[IDAP Feed Capture] Processing {DataSplit.LongCount()} lines.");
 
             foreach (string line in DataSplit)
             {
@@ -165,7 +159,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
 
                     if ((int)totalDays > 15)
                     {
-                        //Console.WriteLine($"[IDAP Capture] The current alert is {(int)totalDays} day(s) old, so it will be discarded.");
+                        //Console.WriteLine($"[IDAP Feed Capture] The current alert is {(int)totalDays} day(s) old, so it will be discarded.");
                         continue;
                     }
                     else
@@ -174,7 +168,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                         {
                             //if (AlertCount >= 10)
                             //{
-                            //    //Console.WriteLine($"[IDAP Capture] Give up.");
+                            //    //Console.WriteLine($"[IDAP Feed Capture] Give up.");
                             //    EnrollAlerts(AlertList);
                             //    AlertCount = 0;
                             //    AlertList = string.Empty;
@@ -186,7 +180,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                             EntriesIndex++;
                             AlertCount++;
 
-                            Console.WriteLine($"[IDAP Capture] {EntriesIndex} links(s) processed out of (maybe) {DataSplit.LongCount()}.");
+                            Console.WriteLine($"[IDAP Feed Capture] {EntriesIndex} links(s) processed out of (maybe) {DataSplit.LongCount()}.");
 
                             string EntryStr = entry.Groups[1].Value;
 
@@ -194,7 +188,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
 
                             try
                             {
-                                Console.WriteLine($"[IDAP Capture] Getting additional data from IDAP. URL -> {serverPath}/{EntryStr}");
+                                Console.WriteLine($"[IDAP Feed Capture] Getting additional data from IDAP. URL -> {serverPath}/{EntryStr}");
                                 // This should help with accented characters hopefully
                                 string value = Encoding.UTF8.GetString(idapclient.DownloadData($"https://{serverPath}/{EntryStr}"));
                                 AlertList += $"{value}\r\n";
@@ -202,18 +196,18 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                             catch (Exception ex)
                             {
                                 EntriesDiscardCount++;
-                                Console.WriteLine($"[IDAP Capture] Couldn't get data for an IDAP alert. {ex.GetBaseException().Message}");
+                                Console.WriteLine($"[IDAP Feed Capture] Couldn't get data for an IDAP alert. {ex.GetBaseException().Message}");
                             }
                         }
                     }
                 }
                 else
                 {
-                    Console.WriteLine("[IDAP Capture] No date and time found.");
+                    Console.WriteLine("[IDAP Feed Capture] No date and time found.");
                 }
             }
 
-            Console.WriteLine($"[IDAP Capture] {EntriesIndex} tag(s) saved, and {EntriesDiscardCount} tag(s) discarded. Tags remaining: {EntriesIndex - EntriesDiscardCount}");
+            Console.WriteLine($"[IDAP Feed Capture] {EntriesIndex} tag(s) saved, and {EntriesDiscardCount} tag(s) discarded. Tags remaining: {EntriesIndex - EntriesDiscardCount}");
             EnrollAlerts(AlertList);
         }
         
@@ -227,7 +221,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
             int EntriesDiscardCount = 0;
             int AlertCount = 0;
 
-            Console.WriteLine($"[IDAP Capture] Processing {entries.Count} tag(s).");
+            Console.WriteLine($"[IDAP Feed Capture] Processing {entries.Count} tag(s).");
 
             int ThreadsRunning = 0;
 
@@ -235,7 +229,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
             {
                 //if (AlertCount >= 10)
                 //{
-                //    //Console.WriteLine($"[IDAP Capture] Give up.");
+                //    //Console.WriteLine($"[IDAP Feed Capture] Give up.");
                 //    EnrollAlerts(AlertList);
                 //    AlertCount = 0;
                 //    AlertList = string.Empty;
@@ -248,19 +242,19 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                 AlertCount++;
                 if (EntriesIndex.ToString().Last() == "0".ToCharArray()[0])
                 {
-                    Console.WriteLine($"[IDAP Capture] {EntriesIndex} links(s) processed out of {entries.Count}. {ThreadsRunning} threads working.");
+                    Console.WriteLine($"[IDAP Feed Capture] {EntriesIndex} links(s) processed out of {entries.Count}. {ThreadsRunning} threads working.");
                 }
                 else
                 {
                     if (entries.Count == EntriesIndex)
                     {
-                        Console.WriteLine($"[IDAP Capture] Processing last link.");
+                        Console.WriteLine($"[IDAP Feed Capture] Processing last link.");
                     }
                     else
                     {
                         if (EntriesIndex == 1)
                         {
-                            Console.WriteLine($"[IDAP Capture] Processing first link.");
+                            Console.WriteLine($"[IDAP Feed Capture] Processing first link.");
                         }
                     }
                 }
@@ -271,20 +265,20 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
 
                 try
                 {
-                    Console.WriteLine($"[IDAP Capture] Getting additional data from IDAP. URL -> {serverPath}/{EntryStr}");
+                    Console.WriteLine($"[IDAP Feed Capture] Getting additional data from IDAP. URL -> {serverPath}/{EntryStr}");
                     string value = idapclient.DownloadString($"https://{serverPath}/{EntryStr}");
                     AlertList += $"{value}\r\n";
                 }
                 catch (Exception ex)
                 {
                     EntriesDiscardCount++;
-                    Console.WriteLine($"[IDAP Capture] Couldn't get data for an IDAP alert. {ex.GetBaseException().Message}");
+                    Console.WriteLine($"[IDAP Feed Capture] Couldn't get data for an IDAP alert. {ex.GetBaseException().Message}");
                 }
             }
 
             while (ThreadsRunning != 0) Thread.Sleep(50);
 
-            Console.WriteLine($"[IDAP Capture] {EntriesIndex} tag(s) saved, and {EntriesDiscardCount} tag(s) discarded. Tags remaining: {EntriesIndex - EntriesDiscardCount}");
+            Console.WriteLine($"[IDAP Feed Capture] {EntriesIndex} tag(s) saved, and {EntriesDiscardCount} tag(s) discarded. Tags remaining: {EntriesIndex - EntriesDiscardCount}");
         }
 
         public void EnrollAlerts(string data, bool reset = false)
@@ -297,7 +291,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
 
                 if (alertMatches != null || alertMatches.Count != 0)
                 {
-                    Console.WriteLine($"[IDAP Capture] Processing {alertMatches.Count} alert(s).");
+                    Console.WriteLine($"[IDAP Feed Capture] Processing {alertMatches.Count} alert(s).");
 
                     foreach (Match alert in alertMatches)
                     {
@@ -307,19 +301,19 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                             if (alert.Value is null) continue;
                             if (alertIndex.ToString().Last() == "0".ToCharArray()[0])
                             {
-                                Console.WriteLine($"[IDAP Capture] {alertIndex} alert(s) processed out of {alertMatches.Count}.");
+                                Console.WriteLine($"[IDAP Feed Capture] {alertIndex} alert(s) processed out of {alertMatches.Count}.");
                             }
                             else
                             {
                                 if (alertMatches.Count == alertIndex)
                                 {
-                                    Console.WriteLine($"[IDAP Capture] Processing last alert.");
+                                    Console.WriteLine($"[IDAP Feed Capture] Processing last alert.");
                                 }
                                 else
                                 {
                                     if (alertIndex == 1)
                                     {
-                                        Console.WriteLine($"[IDAP Capture] Processing first alert.");
+                                        Console.WriteLine($"[IDAP Feed Capture] Processing first alert.");
                                     }
                                 }
                             }
@@ -337,7 +331,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                             {
                                 if (TryAddDataToHistory(item))
                                 {
-                                    //Console.WriteLine($"[IDAP Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
+                                    //Console.WriteLine($"[IDAP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
                                     alertDiscardCount++;
                                 }
                             }
@@ -345,29 +339,29 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                             {
                                 if (TryAddDataToQueue(item))
                                 {
-                                    //Console.WriteLine($"[IDAP Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
+                                    //Console.WriteLine($"[IDAP Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
                                 }
                                 else
                                 {
-                                    //Console.WriteLine($"[IDAP Capture] Alert {alertIndex} ({filename}) has been discarded (already in queue or history).");
+                                    //Console.WriteLine($"[IDAP Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already in queue or history).");
                                     alertDiscardCount++;
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"[IDAP Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
+                            Console.WriteLine($"[IDAP Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
                         }
                     }
                     if (alertIndex != 0)
                     {
-                        Console.WriteLine($"[IDAP Capture] {alertIndex} alert(s) checked, and {alertDiscardCount} alert(s) discarded. Alerts remaining: {alertIndex - alertDiscardCount}");
+                        Console.WriteLine($"[IDAP Feed Capture] {alertIndex} alert(s) checked, and {alertDiscardCount} alert(s) discarded. Alerts remaining: {alertIndex - alertDiscardCount}");
                     }
-                    else Console.WriteLine($"[IDAP Capture] No alerts were checked.");
+                    else Console.WriteLine($"[IDAP Feed Capture] No alerts were checked.");
                 }
                 else
                 {
-                    Console.WriteLine("[IDAP Capture] There are no alerts to enroll.");
+                    Console.WriteLine("[IDAP Feed Capture] There are no alerts to enroll.");
                 }
             }
         }
@@ -392,7 +386,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"[IDAP Capture] {e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[IDAP Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }
@@ -419,7 +413,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"[IDAP Capture] {e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[IDAP Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }
@@ -445,7 +439,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"[IDAP Capture] {e.StackTrace} {e.Message}");
+                        Console.WriteLine($"[IDAP Feed Capture] {e.StackTrace} {e.Message}");
                         return false;
                     }
                 }

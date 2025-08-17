@@ -26,7 +26,7 @@ using SharpAlert.SourceCapturing.SystemSpecific;
 
 namespace SharpAlert.ProgramWorker
 {
-    public static class IceBearWorker
+    public static class TuyeWorker
     {
         public static readonly HttpClient client = new HttpClient
         {
@@ -37,24 +37,27 @@ namespace SharpAlert.ProgramWorker
             $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}/" +
             $"{VersionInfo.BuildNumber}; bunnytub@bunnytub.com)";
 
+        public static readonly string IdentityURL = "https://bunnytub.com/SharpAlert";
+
         public static bool ServiceRunnerScheduled { get; private set; } = false;
 
         /// <summary>
-        /// Starts the Ice Bear Worker as a client.
+        /// Starts the Tuye Worker as a client.
         /// </summary>
         [MTAThread]
         public static void ServiceRun()
         {
             if (QuickSettings.Instance.alertNoGUI) AllocateTerminal(false);
 
-            Console.WriteLine($"{VersionInfo.FriendlyVersion}\r\n" +
+            Console.WriteLine($"{VersionInfo.LongFriendlyVersion}\r\n" +
                 $"Safety is never a non-priority. | https://sharpalert.bunnytub.com/");
             if (ServiceMode) Console.WriteLine($"Running under Service Mode.");
 
-            // force instance creation before anything else
-            _ = QuickSettings.Instance;
-
+            // force instance reload here
+            QuickSettings.Instance.Reload();
             QuickSettings.Instance.DisableAlertProcessing = false;
+            QuickSettings.Instance.PauseDataProcessing = false;
+            QuickSettings.Instance.BypassAllFilters = false;
 
             client.DefaultRequestHeaders.UserAgent.ParseAdd(SelfUserAgent);
 
@@ -67,27 +70,92 @@ namespace SharpAlert.ProgramWorker
                 icon = SystemIcons.Application;
             }
 
+            double Scaling = GetWindowsScreenScalingFactor();
+
+            //if (Scaling > 100)
+            {
+                try
+                {
+                    string SubKey = @"Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers";
+
+                    RegistryKey key = Registry.CurrentUser.CreateSubKey(SubKey) ?? throw new Exception("Cannot create compatibility key.");
+                    object value = key.GetValue(AssemblyFile);
+                    bool valid = false;
+
+                    //string DPIScalingUnderCompatibilityOptions = "~ GDIDPISCALING DPIUNAWARE";
+                    string DPIScalingUnderCompatibilityOptions = "~ DPIUNAWARE";
+
+                    if (value != null)
+                    {
+                        string valueString = (string)value;
+                        if (valueString == DPIScalingUnderCompatibilityOptions)
+                        {
+                            valid = true;
+                        }
+                        else
+                        {
+                            if (Scaling > 100)
+                            {
+                                Console.WriteLine($"[Tuye] The system DPI is larger than 100%.");
+                                MessageBox.Show($"Your display scaling of {Math.Floor(Scaling)}% may cause panels to display incorrectly. SharpAlert will attempt to correct this behavior, and then automatically restart.",
+                                    "SharpAlert - DPI Scaling Warning",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning);
+                            }
+                            else
+                            {
+                                Console.WriteLine($"[Tuye] The compatibility settings have been modified, which may cause problems.");
+                                MessageBox.Show($"There are currently unsupported compatibility settings enabled for this program. SharpAlert will attempt to correct your settings, and then automatically restart.",
+                                    "SharpAlert - Compatibility Settings Warning",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning);
+                            }
+                        }
+                    }
+
+                    if (!valid)
+                    {
+                        key.SetValue(AssemblyFile, DPIScalingUnderCompatibilityOptions, RegistryValueKind.String);
+                        key.Close();
+                        key.Dispose();
+
+                        Console.WriteLine($"[Tuye] Adjusted the program compatibility settings.");
+                        Environment.Exit(100);
+                        return;
+                    }
+                    else
+                    {
+                        //Console.WriteLine($"[Tuye] The scaling issues have previously been already corrected.");
+                    }
+
+                    key.Close();
+                    key.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Tuye] Cannot adjust program DPI settings. {ex.Message}");
+                }
+            }
+
             string RemoteVersion = string.Empty;
 
             if (!ServiceMode)
             {
-                Console.WriteLine("[Ice Bear] Checking application version.");
-
-                string IdentityURL = "https://bunnytub.com";
+                Console.WriteLine("[Tuye] Checking application version.");
 
                 try
                 {
-                    HttpResponseMessage latest = client.GetAsync($"{IdentityURL}/SharpAlert/SharpAlert.txt").Result;
+                    HttpResponseMessage latest = client.GetAsync($"{IdentityURL}/SharpAlert.txt").Result;
 
-                    Console.WriteLine($"[Ice Bear] The server responded with status code {latest.StatusCode}.");
+                    Console.WriteLine($"[Tuye] The server responded with status code {latest.StatusCode}.");
 
                     RemoteVersion = latest.Content.ReadAsStringAsync().Result.Trim();
                     if (string.IsNullOrWhiteSpace(RemoteVersion) || RemoteVersion.Length == 0 || RemoteVersion.Length >= 10) RemoteVersion = "0.0";
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[Ice Bear] {ex.StackTrace} {ex.Message}");
-                    Console.WriteLine($"[Ice Bear] Couldn't work with the server.");
+                    Console.WriteLine($"[Tuye] {ex.StackTrace} {ex.Message}");
+                    Console.WriteLine($"[Tuye] Couldn't work with the server.");
                 }
 
                 if (VersionInfo.IsBetaVersion)
@@ -108,37 +176,46 @@ namespace SharpAlert.ProgramWorker
             }
             else
             {
-                Console.WriteLine("[Ice Bear] Version checking skipped due to service mode.");
+                Console.WriteLine("[Tuye] Version checking skipped due to service mode.");
                 RemoteVersion = "service";
             }
 
-            Console.WriteLine("[Ice Bear] Initializing services.");
+            Console.WriteLine("[Tuye] Initializing services.");
             // use threads you moron
-            Console.WriteLine("[Ice Bear] Initializing Feed Capture.");
-            feed = new FeedCapture();
-            Console.WriteLine("[Ice Bear] Initializing Atom Feed Capture.");
-            atomfeed = new WeatherAtomCapture();
-            Console.WriteLine("[Ice Bear] Initializing Direct Feed Capture.");
-            directfeed = new DirectFeedCapture();
-            Console.WriteLine("[Ice Bear] Initializing IDAP Capture.");
-            idapfeed = new IDAPCapture();
-            Console.WriteLine("[Ice Bear] Initializing Cache Capture.");
-            cache = new CacheCapture();
-            Console.WriteLine("[Ice Bear] Initializing Data Processor.");
+            // I AM YOU BICH
+
+            Console.WriteLine("[Tuye] Initializing Feed Capture.");
+            feed = new FeedCapture(); // FEED
+
+            Console.WriteLine("[Tuye] Initializing Atom Feed Capture.");
+            atomfeed = new WeatherAtomCapture(); // FEED
+
+            Console.WriteLine("[Tuye] Initializing Direct Feed Capture.");
+            directfeed = new DirectFeedCapture(); // FEED
+
+            Console.WriteLine("[Tuye] Initializing IDAP Capture.");
+            idapfeed = new IDAPFeedCapture(); // FEED
+
+            Console.WriteLine("[Tuye] Initializing Cache Capture.");
+            cache = new CacheCapture(); // TECHNICALLY FEED
+
+            Console.WriteLine("[Tuye] Initializing Data Processor.");
             dataproc = new DataProcessor();
-            Console.WriteLine("[Ice Bear] Initializing History Processor.");
+
+            Console.WriteLine("[Tuye] Initializing History Processor.");
             historyproc = new HistoryProcessor();
-            Console.WriteLine("[Ice Bear] Initializing Hyper Server.");
+
+            Console.WriteLine("[Tuye] Initializing Hyper Server.");
             hyper = new HyperServer();
                 
-            Console.WriteLine("[Ice Bear] Starting services momentarily.");
+            Console.WriteLine("[Tuye] Starting services momentarily.");
 
             bool AnyFeedAvailable = false;
             bool SetupExperienceOccurred = false;
 
             if (!QuickSettings.Instance.SetupExperienceComplete)
             {
-                Console.WriteLine("[Ice Bear] Starting program setup experience.");
+                Console.WriteLine("[Tuye] Starting program setup experience.");
 
                 SetupForm sf = new SetupForm();
                 sf.ShowDialog();
@@ -146,6 +223,9 @@ namespace SharpAlert.ProgramWorker
                 ChooseRegionForm crf = new ChooseRegionForm(true);
                 crf.ShowDialog();
                 crf.Dispose();
+                ChoosePresetForm cpf = new ChoosePresetForm();
+                cpf.ShowDialog();
+                cpf.Dispose();
                 StyleConfigurationForm csf = new StyleConfigurationForm(true);
                 csf.ShowDialog();
                 csf.Dispose();
@@ -241,7 +321,7 @@ namespace SharpAlert.ProgramWorker
                         int LineNumber = 0;
                         bool FoundValidServer = false;
 
-                        Console.WriteLine($"[Ice Bear] Checking \"{CustomURLsFileName}\" for server candidates.");
+                        Console.WriteLine($"[Tuye] Checking \"{CustomURLsFileName}\" for server candidates.");
 
                         foreach (string raw in ServerList)
                         {
@@ -250,7 +330,7 @@ namespace SharpAlert.ProgramWorker
                             LineNumber++;
                             if (server.StartsWith("#"))
                             {
-                                Console.WriteLine($"[Ice Bear] Comment skipped on line {LineNumber}.");
+                                Console.WriteLine($"[Tuye] Comment skipped on line {LineNumber}.");
                                 continue;
                             }
                             else
@@ -258,7 +338,7 @@ namespace SharpAlert.ProgramWorker
                                 if (server.StartsWith("http://") || server.StartsWith("https://"))
                                 {
                                     server = server.Replace("http://", string.Empty).Replace("https://", string.Empty);
-                                    Console.WriteLine($"[Ice Bear] Adding server \"{server}\" on line {LineNumber}.");
+                                    Console.WriteLine($"[Tuye] Adding server \"{server}\" on line {LineNumber}.");
                                     var VisualServer = new FeedCapture.ServerInfo { ServerName = $"{CustomURLsFileName} | Line {LineNumber}", ServerPath = $"{server}" };
                                     feed.servers.Add(VisualServer);
                                     FoundValidServer = true;
@@ -268,11 +348,11 @@ namespace SharpAlert.ProgramWorker
                                 {
                                     if (string.IsNullOrWhiteSpace(server))
                                     {
-                                        Console.WriteLine($"[Ice Bear] Whitespace skipped on line {LineNumber}.");
+                                        Console.WriteLine($"[Tuye] Whitespace skipped on line {LineNumber}.");
                                     }
                                     else
                                     {
-                                        Console.WriteLine($"[Ice Bear] Invalid server skipped on line {LineNumber}.");
+                                        Console.WriteLine($"[Tuye] Invalid server skipped on line {LineNumber}.");
                                     }
                                     continue;
                                 }
@@ -283,12 +363,12 @@ namespace SharpAlert.ProgramWorker
                     }
                     else
                     {
-                        Console.WriteLine($"[Ice Bear] No custom server file found named \"{CustomURLsFileName}\".");
+                        Console.WriteLine($"[Tuye] No custom server file found named \"{CustomURLsFileName}\".");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[Ice Bear] Couldn't get custom servers. {ex.Message}");
+                    Console.WriteLine($"[Tuye] Couldn't get custom servers. {ex.Message}");
                 }
                 return false;
             }
@@ -311,7 +391,7 @@ namespace SharpAlert.ProgramWorker
                 //    notify.BalloonTipText = "There are currently no feeds enabled.";
                 //    notify.ShowBalloonTip(5000);
                 //}
-                //Console.WriteLine("[Ice Bear] Prompting user for region information.");
+                //Console.WriteLine("[Tuye] Prompting user for region information.");
                 //ChooseRegionForm crf = new ChooseRegionForm(false);
                 //crf.ShowDialog();
             }
@@ -348,16 +428,24 @@ namespace SharpAlert.ProgramWorker
             var IPAWSMain = new FeedCapture.ServerInfo { ServerName = "FEMA IPAWS", ServerPath = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}" };
             var IPAWSWireless = new FeedCapture.ServerInfo { ServerName = "FEMA IPAWS (WEA)", ServerPath = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}" };
 
-            bool IPAWSAvailable = false;
+            bool IPAWSOrSASMEXAvailable = false;
 
             if (QuickSettings.Instance.RegionUnitedStates)
             {
                 feed.servers.Add(IPAWSMain);
                 feed.servers.Add(IPAWSWireless);
-                IPAWSAvailable = true;
+                IPAWSOrSASMEXAvailable = true;
             }
 
-            if (IPAWSAvailable || CustomServersAvailable)
+            var SASMEXMain = new FeedCapture.ServerInfo { ServerName = "SASMEX", ServerPath = $"sasmex.net/rss/sasmex.xml" };
+
+            if (QuickSettings.Instance.RegionMexico)
+            {
+                feed.servers.Add(SASMEXMain);
+                IPAWSOrSASMEXAvailable = true;
+            }
+
+            if (IPAWSOrSASMEXAvailable || CustomServersAvailable)
             {
                 feedThread = StartCatchAllThread("Feed Capture", () => feed.ServiceRun(true), false);
             }
@@ -380,16 +468,9 @@ namespace SharpAlert.ProgramWorker
                 directfeedThread = StartCatchAllThread("Direct Feed Capture", () => directfeed.ServiceRun(), false);
             }
 
-            var SASMEXMain = new FeedCapture.ServerInfo { ServerName = "SASMEX", ServerPath = $"sasmex.net/rss/sasmex.xml" };
-
-            if (QuickSettings.Instance.RegionMexico)
-            {
-                feed.servers.Add(SASMEXMain);
-            }
-
             if (QuickSettings.Instance.RegionBrazil)
             {
-                idapfeedThread = StartCatchAllThread("IDAP Capture", () => idapfeed.ServiceRun(true), false);
+                idapfeedThread = StartCatchAllThread("IDAP Feed Capture", () => idapfeed.ServiceRun(true), false);
             }
 
             // just assign statusWindow to the boolean... dumb fuck
@@ -477,6 +558,38 @@ namespace SharpAlert.ProgramWorker
 
 
             StartCatchAllThread("Pipe Worker", () => PipeWorker.ServerServiceRun(), false, false);
+        }
+
+        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+        public static extern int GetDeviceCaps(IntPtr hDC, int nIndex);
+
+        public enum DeviceCap
+        {
+            VERTRES = 10,
+            DESKTOPVERTRES = 117
+        }
+
+        // Taken from this: https://stackoverflow.com/a/63229584
+
+        public static double GetWindowsScreenScalingFactor()
+        {
+            try
+            {
+                Graphics GraphicsObject = Graphics.FromHwnd(IntPtr.Zero);
+                IntPtr DeviceContextHandle = GraphicsObject.GetHdc();
+                double LogicalScreenHeight = GetDeviceCaps(DeviceContextHandle, (int)DeviceCap.VERTRES);
+                double PhysicalScreenHeight = GetDeviceCaps(DeviceContextHandle, (int)DeviceCap.DESKTOPVERTRES);
+                double ScreenScalingFactor = Math.Round(PhysicalScreenHeight / LogicalScreenHeight, 2);
+                ScreenScalingFactor *= 100.0;
+                GraphicsObject.ReleaseHdc(DeviceContextHandle);
+                GraphicsObject.Dispose();
+                return ScreenScalingFactor;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Tuye] Unable to retrieve the DPI settings. {ex.Message}");
+                return 100;
+            }
         }
 
         public static int LowPower = 20;
@@ -595,7 +708,7 @@ namespace SharpAlert.ProgramWorker
             {
                 if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                 {
-                    DiscordWebhook.SendUnformattedMessage(ExceptionCompiled + "\r\n\r\nPlease report this issue to my owner!\r\nIf you are the owner, contact <@603429346736341013> (https://bunnytub.com/SharpAlert.html | bunnytub@bunnytub.com) for help.");
+                    DiscordWebhook.SendUnformattedMessage(ExceptionCompiled + "\r\n\r\nPlease report this issue to my owner!\r\nIf you are the owner, contact <@603429346736341013> (https://bunnytub.com/SharpAlert | bunnytub@bunnytub.com) for help.");
                 }
             }
             catch (Exception)
@@ -704,7 +817,7 @@ namespace SharpAlert.ProgramWorker
 
                 //if (!GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE), out uint mode))
                 //{
-                //    Console.WriteLine("[Ice Bear] Couldn't get console mode.");
+                //    Console.WriteLine("[Tuye] Couldn't get console mode.");
                 //    //var MarshalException = new Win32Exception(unchecked(Marshal.GetLastWin32Error()));
                 //}
 
@@ -730,16 +843,16 @@ namespace SharpAlert.ProgramWorker
 
                 //if (stdinHandle == IntPtr.Zero || stdinHandle == new IntPtr(-1))
                 //{
-                //    Console.WriteLine("[Ice Bear] Failed to get stdin handle.");
+                //    Console.WriteLine("[Tuye] Failed to get stdin handle.");
                 //}
                 //else
                 //{
-                //    Console.WriteLine("[Ice Bear] Got stdin handle.");
+                //    Console.WriteLine("[Tuye] Got stdin handle.");
                 //}
 
                 //if (!GetConsoleMode(stdinHandle, out uint stdInMode))
                 //{
-                //    Console.WriteLine("[Ice Bear] Failed to get console mode.");
+                //    Console.WriteLine("[Tuye] Failed to get console mode.");
                 //    return;
                 //}
 
@@ -749,7 +862,7 @@ namespace SharpAlert.ProgramWorker
 
                 //if (!SetConsoleMode(stdinHandle, stdInMode))
                 //{
-                //    Console.WriteLine("[Ice Bear] Failed to set console mode.");
+                //    Console.WriteLine("[Tuye] Failed to set console mode.");
                 //}
 
                 object LockObject = new object();
@@ -820,7 +933,7 @@ namespace SharpAlert.ProgramWorker
             {
                 try
                 {
-                    Console.WriteLine("[Ice Bear] Opening the file picker.");
+                    Console.WriteLine("[Tuye] Opening the file picker.");
 
                     string selectedSafePath = string.Empty;
 
@@ -835,11 +948,11 @@ namespace SharpAlert.ProgramWorker
 
                     if (fbd.ShowDialog() != DialogResult.OK)
                     {
-                        Console.WriteLine("[Ice Bear] No file chosen from the file picker.");
+                        Console.WriteLine("[Tuye] No file chosen from the file picker.");
                         return;
                     }
 
-                    Console.WriteLine("[Ice Bear] Processing chosen file(s).");
+                    Console.WriteLine("[Tuye] Processing chosen file(s).");
 
                     foreach (string selectedPath in fbd.FileNames)
                     {

@@ -141,7 +141,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CreditsForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert - Credits";
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.CreditsForm_HelpButtonClicked);
             this.Load += new System.EventHandler(this.CreditsForm_Load);

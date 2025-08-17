@@ -53,7 +53,7 @@
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(396, 40);
             this.DoneButton.TabIndex = 0;
-            this.DoneButton.Text = "Close";
+            this.DoneButton.Text = "Close ";
             this.DoneButton.UseMnemonic = false;
             this.DoneButton.UseVisualStyleBackColor = false;
             this.DoneButton.Click += new System.EventHandler(this.DoneButton_Click);
@@ -226,6 +226,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert - Global Settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ManagementForm_FormClosing);
+            this.Load += new System.EventHandler(this.ConfigurationForm_Load);
             this.ResumeLayout(false);
 
         }

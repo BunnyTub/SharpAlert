@@ -38,12 +38,12 @@
             this.ReportButton = new System.Windows.Forms.Button();
             this.AutoTerminate = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.LogoBox = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.TerminateButton = new System.Windows.Forms.Button();
             this.ResetButton = new System.Windows.Forms.Button();
             this.DebuggerButton = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
@@ -147,15 +147,15 @@
             this.label1.Text = "0s";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // pictureBox1
+            // LogoBox
             // 
-            this.pictureBox1.Image = global::SharpAlert.Properties.Resources.CrashIcon;
-            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(96, 128);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.LogoBox.Image = global::SharpAlert.Properties.Resources.CrashIcon;
+            this.LogoBox.Location = new System.Drawing.Point(12, 12);
+            this.LogoBox.Name = "LogoBox";
+            this.LogoBox.Size = new System.Drawing.Size(96, 128);
+            this.LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.LogoBox.TabIndex = 0;
+            this.LogoBox.TabStop = false;
             // 
             // pictureBox2
             // 
@@ -232,7 +232,7 @@
             this.Controls.Add(this.ProblemDetailsText);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ProblemTitleText);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.LogoBox);
             this.Controls.Add(this.SubtitleText);
             this.Controls.Add(this.TitleText);
             this.Controls.Add(this.pictureBox2);
@@ -251,7 +251,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ToppleForm_FormClosed);
             this.Load += new System.EventHandler(this.ToppleForm_Load);
             this.Shown += new System.EventHandler(this.ToppleForm_Shown);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -260,7 +260,7 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox LogoBox;
         private System.Windows.Forms.Label TitleText;
         private System.Windows.Forms.Label SubtitleText;
         private System.Windows.Forms.TextBox ProblemDetailsText;

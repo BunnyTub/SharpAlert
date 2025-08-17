@@ -12,6 +12,7 @@ using System.Drawing;
 using SharpAlert.ProgramWorker;
 using SharpAlert.SourceCapturing;
 using System.Text.Json;
+using System.Text;
 
 namespace SharpAlert.AlertComponents
 {
@@ -142,6 +143,7 @@ namespace SharpAlert.AlertComponents
             lock (AlertLock)
             {
                 Console.WriteLine($"[Alert Processor] Processing alert -> {relayItem.Name}");
+                if (QuickSettings.Instance.BypassAllFilters) Console.WriteLine($"[Alert Processor] Due to BypassAllFilters being enabled, this alert will pass/succeed, regardless of set filters.");
 
                 DateTime startProc = DateTime.UtcNow;
 
@@ -248,21 +250,6 @@ namespace SharpAlert.AlertComponents
                     var (EventTypeTranslated, TranslationSuccessful) = GetAlertNameFromSAME(EventType);
                     Console.WriteLine($"[Alert Processor] Event: {EventType}");
                     Console.WriteLine($"[Alert Processor] Event (SAME Translation): {EventTypeTranslated}");
-
-                    if (!IgnoreDiscards)
-                    {
-                        if (!PrimaryURL.Contains("sasmex.net"))
-                        {
-                            if (!QuickSettings.Instance.AllowNonEnglishAlerts)
-                            {
-                                if (!BCP47Language.ToLowerInvariant().StartsWith("en-"))
-                                {
-                                    Console.WriteLine("[Alert Processor] Info tag discarded because it does not contain English information.");
-                                    continue;
-                                }
-                            }
-                        }
-                    }
 
                     if (TranslationSuccessful)
                     {
@@ -382,6 +369,21 @@ namespace SharpAlert.AlertComponents
 
                     if (!IgnoreDiscards)
                     {
+                        if (!PrimaryURL.Contains("sasmex.net"))
+                        {
+                            if (!QuickSettings.Instance.AllowNonEnglishAlerts)
+                            {
+                                if (!BCP47Language.ToLowerInvariant().StartsWith("en-"))
+                                {
+                                    Console.WriteLine("[Alert Processor] Info tag discarded because it does not contain English information.");
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+
+                    if (!IgnoreDiscards)
+                    {
                         if (!ReplayMode)
                         {
                             try
@@ -410,38 +412,79 @@ namespace SharpAlert.AlertComponents
                     bool EventBlacklisted = false;
 
                     if (ProcessParameterX(AlertInfo) ||
-                        BroadcastImmediatelyRegex.MatchOrDefault(AlertInfo, "no").ToLowerInvariant() == "yes" || IgnoreDiscards)
+                        BroadcastImmediatelyRegex.MatchOrDefault(AlertInfo, "no").ToLowerInvariant() == "yes" || 
+                        IgnoreDiscards ||
+                        QuickSettings.Instance.BypassAllFilters)
                     {
-                        if (!IgnoreDiscards)
+                        if (!QuickSettings.Instance.BypassAllFilters)
                         {
-                            foreach (string Event in QuickSettings.Instance.EnforceEventBlacklist)
+                            if (!IgnoreDiscards)
                             {
-                                if (EventName.ToLowerInvariant().Contains(Event.ToLowerInvariant()))
+                                string RemoveDiacritics(string input)
                                 {
-                                    EventBlacklisted = true;
-                                    break;
-                                }
-                            }
+                                    var normalized = input.Normalize(NormalizationForm.FormD);
+                                    var builder = new StringBuilder();
 
-                            foreach (string SAMEEvent in QuickSettings.Instance.EnforceSAMEEventBlacklist)
-                            {
-                                if (EventType.ToLowerInvariant().Contains(SAMEEvent.ToLowerInvariant()))
+                                    foreach (var c in normalized)
+                                    {
+                                        var category = CharUnicodeInfo.GetUnicodeCategory(c);
+                                        if (category != UnicodeCategory.NonSpacingMark)
+                                        {
+                                            builder.Append(c);
+                                        }
+                                    }
+
+                                    return builder.ToString().Normalize(NormalizationForm.FormC);
+                                }
+
+                                lock (QuickSettings.Instance.EnforceEventBlacklist)
                                 {
-                                    EventBlacklisted = true;
-                                    break;
+                                    foreach (string Event in QuickSettings.Instance.EnforceEventBlacklist)
+                                    {
+                                        if (RemoveDiacritics(EventName.ToLowerInvariant()).Contains(RemoveDiacritics(Event.ToLowerInvariant())))
+                                        {
+                                            EventBlacklisted = true;
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
 
-                            if (EventBlacklisted)
+                                //lock (QuickSettings.Instance.EnforceSAMEEventBlacklist)
+                                //{
+                                //    foreach (string SAMEEvent in QuickSettings.Instance.EnforceSAMEEventBlacklist)
+                                //    {
+                                //        if (EventType.ToLowerInvariant().Contains(SAMEEvent.ToLowerInvariant()))
+                                //        {
+                                //            EventBlacklisted = true;
+                                //            break;
+                                //        }
+                                //    }
+                                //}
+
+                                if (QuickSettings.Instance.EventWhitelistMode)
+                                {
+                                    if (!EventBlacklisted)
+                                    {
+                                        Console.WriteLine($"[Alert Processor] Info tag discarded because the event is not on the whitelist.");
+                                        continue;
+                                    }
+                                }
+                                else
+                                {
+                                    if (EventBlacklisted)
+                                    {
+                                        Console.WriteLine($"[Alert Processor] Info tag discarded because the event is on the blacklist.");
+                                        continue;
+                                    }
+                                }
+
+                            }
+                            else
                             {
-                                Console.WriteLine($"[Alert Processor] Info tag discarded due to one or more blacklisted items.");
-                                continue;
+                                Console.WriteLine($"[Alert Processor] Blacklist/whitelist check skipped because discards are being ignored.");
                             }
                         }
-                        else
-                        {
-                            Console.WriteLine($"[Alert Processor] Blacklist check skipped because discards are being ignored.");
-                        }
+
 
                         // removal of replay boolean
                         var (Intro, Body) = CompiledBody(AlertInfo, MsgType, Sent);
@@ -500,7 +543,7 @@ namespace SharpAlert.AlertComponents
                 if (AlertTextList.Count == 0)
                 {
                     Console.WriteLine("[Alert Processor] There is no alert text to process.");
-                    return new AlertInfo { AlertDiscardReason = "The alert cannot be processed because no alert text exists (somehow)." };
+                    return new AlertInfo { AlertDiscardReason = "The alert cannot be processed because no alert text exists." };
                 }
                 else
                 {
@@ -530,7 +573,7 @@ namespace SharpAlert.AlertComponents
 
                     if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.StationIdentifier))
                     {
-                        FullIntro = $"This message originates from {QuickSettings.Instance.StationIdentifier} ({QuickSettings.Instance.StationName}). {FullIntro}".Trim();
+                        FullIntro = $"This message originates from {QuickSettings.Instance.StationIdentifier} ({QuickSettings.Instance.StationName}).\r\n\r\n{FullIntro}".Trim();
                     }
 
                     AlertTextClass _AlertText = new AlertTextClass
@@ -628,13 +671,20 @@ namespace SharpAlert.AlertComponents
 
                 if (result == DialogResult.Yes) ThreadDrool.StartAndForget(() =>
                 {
+                    string Severity = "severe";
+
+                    if (ctf.MarkAlertAsModerateInsteadOfSevereBox.Checked)
+                    {
+                        Severity = "moderate";
+                    }
+
                     RelayWindow($"TEST_{DateTime.UtcNow.Ticks}",
                         ctf.EventType,
                         new AlertTextClass
                         { Intro = "Test. Test. Test.", Body = $"{ctf.EventDescription}" },
                         ctf.EventURL,
                         "alert",
-                        "minor",
+                        Severity,
                         new List<string>() { "" },
                         new List<string>() { "" });
                 });
@@ -835,7 +885,9 @@ namespace SharpAlert.AlertComponents
                             if (loc.Length == 6) loc = loc.Substring(1);
                             if (loc.Length != 5)
                             {
-                                Console.WriteLine($"[Alert Processor] \"{loc}\" (from local) is not a valid SAME code.");
+                                Console.WriteLine($"[Alert Processor] \"{loc}\" (from local) may not be a valid SAME code.");
+
+                                // not returning?
                             }
 
                             if (!locations.Contains(loc))
@@ -844,12 +896,18 @@ namespace SharpAlert.AlertComponents
                             }
 
                             // remove last three characters, replace with zeros, because it means that it is all locations
-                            string AllAboveLocation = loc.Substring(0, loc.Length - 3) + "000";
+                            //string StatewideOnlyLocation = loc.Substring(0, loc.Length - 3) + "000";
+                            //string AnyCountyLocation = loc.Substring(0, loc.Length - 3) + "***";
 
-                            if (!locations.Contains(AllAboveLocation))
-                            {
-                                locations.Add(AllAboveLocation);
-                            }
+                            //if (!locations.Contains(StatewideOnlyLocation))
+                            //{
+                            //    locations.Add(StatewideOnlyLocation);
+                            //}
+                            
+                            //if (!locations.Contains(AnyCountyLocation))
+                            //{
+                            //    locations.Add(AnyCountyLocation);
+                            //}
                         }
                     }
 
@@ -864,23 +922,18 @@ namespace SharpAlert.AlertComponents
                             if (geocode.Length == 6) geocode = geocode.Substring(1);
                             if (geocode.Length != 5)
                             {
-                                Console.WriteLine($"[Alert Processor] \"{geocode}\" (from alert) is not a valid SAME code.");
+                                Console.WriteLine($"[Alert Processor] \"{geocode}\" (from alert) may not be a valid SAME code.");
                             }
 
-                            //foreach (string loc in locations)
-                            //{
-                            //    if (loc == geocode) GeoMatch = true;
-                            //}
-
-                            if (locations.Contains(geocode))
+                            if (locations.Contains(geocode) || locations.Contains(geocode.Substring(0, 2) + "***"))
                             {
                                 GeoMatch = true;
-                                Console.WriteLine($"[Alert Processor] \"{geocode}\" (from alert) matched one of the local SAME codes.");
+                                Console.WriteLine($"[Alert Processor] \"{geocode}\" (from alert) matched one of the local SAME locations.");
                                 break;
                             }
                             else
                             {
-                                Console.WriteLine($"[Alert Processor] \"{geocode}\" (from alert) did not match any local SAME codes.");
+                                Console.WriteLine($"[Alert Processor] \"{geocode}\" (from alert) did not match any local SAME locations.");
                             }
                         }
 
@@ -891,7 +944,7 @@ namespace SharpAlert.AlertComponents
                         }
                         else
                         {
-                            Console.WriteLine("[Alert Processor] No locations matched the SAME list.");
+                            Console.WriteLine("[Alert Processor] No SAME locations in the alert (including statewide codes) matched the local SAME locations.");
                         }
                     }
                     catch (Exception ex)
@@ -1645,6 +1698,11 @@ namespace SharpAlert.AlertComponents
 
         public static (string, bool) GetFriendlyNameFromSAMELocationLocally(string code)
         {
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                return ("??? (Empty Location)", false);
+            }
+
             code = code.Trim();
 
             string UnknownLocation = $"{code} (Unknown Location)";

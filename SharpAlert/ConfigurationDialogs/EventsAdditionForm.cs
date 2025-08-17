@@ -14,8 +14,7 @@ namespace SharpAlert.ConfigurationDialogs
             InitializeComponent();
         }
 
-        public AlertDetails.SAME_StateCode SelectedState;
-        public AlertDetails.SAME_CountyCode SelectedCounty;
+        public AlertDetails.SAME_EventCode SelectedEvent;
 
         private bool Initialized = false;
 
@@ -23,37 +22,19 @@ namespace SharpAlert.ConfigurationDialogs
         {
             if (Initialized) return;
             Initialized = true;
-            StateCombo.Items.AddRange(AlertDetails.States.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
+            EventCombo.Items.AddRange(AlertDetails.AlertCodes.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
         }
 
         private void StateCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedState = AlertDetails.States.FirstOrDefault(x => x.Name == StateCombo.Text);
-            if (SelectedState != null)
-            {
-                CountyCombo.Items.Clear();
-                CountyCombo.Text = string.Empty;
-                SelectedCounty = null;
-                foreach (var thisCounty in
-                        AlertDetails.Counties.Where(x => x.State.Id == SelectedState.Id).OrderBy(x => x.Name))
-                {
-                    CountyCombo.Items.Add(thisCounty.Name);
-                }
-            }
-        }
-
-        private void CountyCombo_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SelectedCounty =
-                AlertDetails.Counties.FirstOrDefault(
-                    x => x.State.Id == SelectedState.Id && x.Name == CountyCombo.Text);
+            SelectedEvent = AlertDetails.AlertCodes.FirstOrDefault(x => x.Name == EventCombo.Text);
         }
 
         private void SAMEAddButton_Click(object sender, EventArgs e)
         {
-            if (SelectedState == null || SelectedCounty == null)
+            if (SelectedEvent == null)
             {
-                MessageBox.Show("You must select an option from both fields.", "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("You must select an option from the field.", "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else
             {

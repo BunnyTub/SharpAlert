@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using static SharpAlert.ProgramWorker.IceBearWorker;
+using static SharpAlert.ProgramWorker.TuyeWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 
 namespace SharpAlert
@@ -59,14 +59,14 @@ namespace SharpAlert
         private static int ThreadCount = 0;
         private static readonly int ThreadCountRateLimit = 50;
 
-        public static void StartAndForget(Action action)
+        public static void StartAndForget(Action action, bool NoStartMessage = false)
         {
             if (ThreadCount > ThreadCountRateLimit)
             {
                 Console.WriteLine($"[Thread Drool] Fire and forget is being rate limited. (action = {action.Method.Name})");
-                Thread.Sleep(5000);
+                Thread.Sleep(1000);
             }
-            Console.WriteLine($"[Thread Drool] Starting fire and forget. (action = {action.Method.Name})");
+            if (!NoStartMessage) Console.WriteLine($"[Thread Drool] Starting fire and forget. (action = {action.Method.Name})");
             Task.Run(() =>
             {
                 ThreadCount++;

@@ -184,7 +184,7 @@ namespace SharpAlert.ConfigurationDialogs
                         "SharpAlert",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
-                    IceBearWorker.AllocateTerminal(false);
+                    TuyeWorker.AllocateTerminal(false);
                 }
                 else
                 {
@@ -229,7 +229,7 @@ namespace SharpAlert.ConfigurationDialogs
             atcf.ShowDialog();
         }
 
-        private void pictureBox1_DoubleClick(object sender, EventArgs e)
+        private void LogoBox_DoubleClick(object sender, EventArgs e)
         {
             PrinterController.Print("Test Message", $"This is a test to ensure the function of your printer and its current settings. {Resources.TestScript}");
         }

@@ -33,10 +33,10 @@
             this.DoneButton = new System.Windows.Forms.Button();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.TitleText = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.LogoBox = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             this.SuspendLayout();
             // 
             // DoneButton
@@ -44,7 +44,7 @@
             this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DoneButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DoneButton.Location = new System.Drawing.Point(451, 161);
+            this.DoneButton.Location = new System.Drawing.Point(451, 171);
             this.DoneButton.Margin = new System.Windows.Forms.Padding(0);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(72, 23);
@@ -74,28 +74,28 @@
             this.TitleText.TabIndex = 23;
             this.TitleText.Text = "All done!";
             // 
-            // pictureBox1
+            // LogoBox
             // 
-            this.pictureBox1.Image = global::SharpAlert.Properties.Resources.WarningApp;
-            this.pictureBox1.Location = new System.Drawing.Point(9, 9);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(96, 96);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 22;
-            this.pictureBox1.TabStop = false;
+            this.LogoBox.Image = global::SharpAlert.Properties.Resources.WarningApp;
+            this.LogoBox.Location = new System.Drawing.Point(9, 9);
+            this.LogoBox.Margin = new System.Windows.Forms.Padding(0);
+            this.LogoBox.Name = "LogoBox";
+            this.LogoBox.Size = new System.Drawing.Size(96, 96);
+            this.LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LogoBox.TabIndex = 22;
+            this.LogoBox.TabStop = false;
             // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.Font = new System.Drawing.Font("Arial", 9F);
-            this.label2.Location = new System.Drawing.Point(9, 143);
+            this.label2.Location = new System.Drawing.Point(9, 153);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(342, 41);
+            this.label2.Size = new System.Drawing.Size(442, 41);
             this.label2.TabIndex = 26;
             this.label2.Text = "To go through the setup more than once, reset the program.\r\nCreated by BunnyTub. " +
-    "More credits can be found in Settings.";
+    "Credits can be found in Settings under Program Credits.";
             this.label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // label3
@@ -104,20 +104,19 @@
             this.label3.Location = new System.Drawing.Point(108, 39);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(400, 91);
+            this.label3.Size = new System.Drawing.Size(400, 111);
             this.label3.TabIndex = 27;
-            this.label3.Text = "We\'ll start polling for alerts immediately after you close this window. Safety is" +
-    " never a non-priority.";
+            this.label3.Text = resources.GetString("label3.Text");
             // 
             // SetupDoneForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(532, 193);
+            this.ClientSize = new System.Drawing.Size(532, 203);
             this.ControlBox = false;
             this.Controls.Add(this.label3);
             this.Controls.Add(this.TitleText);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.LogoBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.DoneButton);
             this.Font = new System.Drawing.Font("Arial", 9F);
@@ -128,9 +127,9 @@
             this.MinimizeBox = false;
             this.Name = "SetupDoneForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SharpAlert - Setup";
+            this.Text = "SharpAlert - Setup Complete";
             this.TopMost = true;
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -139,7 +138,7 @@
         private System.Windows.Forms.ToolTip ToolTipInformation;
         private System.Windows.Forms.Button DoneButton;
         private System.Windows.Forms.Label TitleText;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox LogoBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
     }

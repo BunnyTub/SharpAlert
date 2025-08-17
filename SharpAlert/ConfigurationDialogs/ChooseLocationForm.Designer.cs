@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChooseLocationForm));
             this.DoneButton = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.LogoBox = new System.Windows.Forms.PictureBox();
             this.TitleText = new System.Windows.Forms.Label();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.label8 = new System.Windows.Forms.Label();
@@ -57,7 +57,7 @@
             this.ListAreaCustomOutput = new System.Windows.Forms.TextBox();
             this.CustomClearButton = new System.Windows.Forms.Button();
             this.CustomAddButton = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -77,16 +77,16 @@
             this.DoneButton.UseVisualStyleBackColor = false;
             this.DoneButton.Click += new System.EventHandler(this.DoneButton_Click);
             // 
-            // pictureBox1
+            // LogoBox
             // 
-            this.pictureBox1.Image = global::SharpAlert.Properties.Resources.WarningApp;
-            this.pictureBox1.Location = new System.Drawing.Point(9, 9);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(96, 96);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            this.LogoBox.Image = global::SharpAlert.Properties.Resources.WarningApp;
+            this.LogoBox.Location = new System.Drawing.Point(9, 9);
+            this.LogoBox.Margin = new System.Windows.Forms.Padding(0);
+            this.LogoBox.Name = "LogoBox";
+            this.LogoBox.Size = new System.Drawing.Size(96, 96);
+            this.LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LogoBox.TabIndex = 1;
+            this.LogoBox.TabStop = false;
             // 
             // TitleText
             // 
@@ -142,9 +142,7 @@
             this.label7.Size = new System.Drawing.Size(14, 15);
             this.label7.TabIndex = 8;
             this.label7.Text = "?";
-            this.ToolTipInformation.SetToolTip(this.label7, "SAME location restrictions are applied ONLY to alerts that arrive from IPAWS.\r\n\r\n" +
-        "Trying to remove a specific location?\r\nType the location\'s code, then click \"Add" +
-        "\". You\'ll be prompted to remove it.");
+            this.ToolTipInformation.SetToolTip(this.label7, resources.GetString("label7.ToolTip"));
             // 
             // AreaSAMEInput
             // 
@@ -431,7 +429,7 @@
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TitleText);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.LogoBox);
             this.Controls.Add(this.DoneButton);
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
@@ -447,7 +445,7 @@
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.ChooseRegionForm_HelpButtonClicked);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChooseRegionForm_FormClosing);
             this.Load += new System.EventHandler(this.ChooseRegionForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             this.groupBox7.ResumeLayout(false);
@@ -461,7 +459,7 @@
         #endregion
 
         private System.Windows.Forms.Button DoneButton;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox LogoBox;
         private System.Windows.Forms.Label TitleText;
         private System.Windows.Forms.ToolTip ToolTipInformation;
         private System.Windows.Forms.Label label1;

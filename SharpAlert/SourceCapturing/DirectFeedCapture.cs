@@ -7,7 +7,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using static SharpAlert.ProgramWorker.IceBearWorker;
+using System.Windows.Forms;
+using static SharpAlert.ProgramWorker.TuyeWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.RegexList;
@@ -206,6 +207,8 @@ namespace SharpAlert.SourceCapturing
                                 }
                             }
 
+                            FeedSuccessfulCalls++;
+
                             Console.WriteLine($"[TCP Feed Capture] Processing data from {name}.");
                             string chunk = Encoding.UTF8.GetString(data.ToArray(), 0, data.Count);
 
@@ -215,8 +218,6 @@ namespace SharpAlert.SourceCapturing
 
                             if (chunk.Contains(delimiter))
                             {
-                                FeedSuccessfulCalls++;
-
                                 dataReceived = dataReceived.Substring(0, dataReceived.IndexOf(delimiter)) + delimiter;
 
                                 string capturedSent = SentRegex.MatchOrDefault(dataReceived);
@@ -250,7 +251,7 @@ namespace SharpAlert.SourceCapturing
                     Console.WriteLine($"[TCP Feed Capture] Timed out from {name}.");
                     Notify.ShowNotification($"Network error occurred. Timed out from {name}.",
                         "SharpAlert source timed out",
-                        System.Windows.Forms.ToolTipIcon.Warning);
+                        ToolTipIcon.Warning);
                     Thread.Sleep(30 * 1000);
                 }
                 catch (Exception ex)
@@ -258,7 +259,7 @@ namespace SharpAlert.SourceCapturing
                     Console.WriteLine($"[TCP Feed Capture] Exception caught in {name}. {ex.Message}");
                     Notify.ShowNotification($"Network error occurred. {ex.Message}",
                         "SharpAlert source failed",
-                        System.Windows.Forms.ToolTipIcon.Warning);
+                        ToolTipIcon.Warning);
                 }
                 Thread.Sleep(15 * 1000);
             }

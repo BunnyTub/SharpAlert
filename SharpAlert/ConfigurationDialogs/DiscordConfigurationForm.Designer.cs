@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiscordConfigurationForm));
             this.BusyLockText = new System.Windows.Forms.Label();
             this.ApplicationTypeGroup = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.DisableHeartbeatBox = new System.Windows.Forms.CheckBox();
             this.DiscordWebhookRelayLocallyBox = new System.Windows.Forms.CheckBox();
             this.DiscordWebhookConfirmAlertsBox = new System.Windows.Forms.CheckBox();
@@ -44,12 +46,15 @@
             this.label5 = new System.Windows.Forms.Label();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.BatteryReportingMatchesPowerPlanBox = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.BatteryReportingCautionLevelInput = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.BatteryReportingCriticalLevelInput = new System.Windows.Forms.NumericUpDown();
             this.ApplicationTypeGroup.SuspendLayout();
-            this.ConfigurationPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.ConfigurationPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BatteryReportingCautionLevelInput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BatteryReportingCriticalLevelInput)).BeginInit();
             this.SuspendLayout();
             // 
             // BusyLockText
@@ -87,6 +92,33 @@
             this.ApplicationTypeGroup.TabStop = false;
             this.ApplicationTypeGroup.Text = "Discord Webhook";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.BatteryReportingCriticalLevelInput);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.BatteryReportingCautionLevelInput);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.ForeColor = System.Drawing.Color.White;
+            this.groupBox1.Location = new System.Drawing.Point(6, 85);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(392, 86);
+            this.groupBox1.TabIndex = 20;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Battery Reporting";
+            // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(6, 17);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(233, 63);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Battery measurements are reported to Discord webhooks when a\r\ncertain percentage " +
+    "is reached.";
+            // 
             // DisableHeartbeatBox
             // 
             this.DisableHeartbeatBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -96,7 +128,7 @@
             this.DisableHeartbeatBox.Size = new System.Drawing.Size(124, 19);
             this.DisableHeartbeatBox.TabIndex = 19;
             this.DisableHeartbeatBox.Text = "Disable heartbeat";
-            this.ToolTipInformation.SetToolTip(this.DisableHeartbeatBox, "Relay alerts locally in addition to sending a message.");
+            this.ToolTipInformation.SetToolTip(this.DisableHeartbeatBox, "Disables the \"I\'m\"\r\nThis is not related ");
             this.DisableHeartbeatBox.UseVisualStyleBackColor = true;
             // 
             // DiscordWebhookRelayLocallyBox
@@ -229,42 +261,67 @@
             this.ToolTipInformation.ReshowDelay = 50;
             this.ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
-            // groupBox1
+            // label1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.BatteryReportingMatchesPowerPlanBox);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(6, 85);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(392, 86);
-            this.groupBox1.TabIndex = 20;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Battery Reporting";
+            this.label1.Location = new System.Drawing.Point(242, 32);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(84, 21);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "Caution";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ToolTipInformation.SetToolTip(this.label1, ".");
             // 
-            // label3
+            // BatteryReportingCautionLevelInput
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 17);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(364, 30);
-            this.label3.TabIndex = 14;
-            this.label3.Text = "Battery measurements are reported to Discord webhooks when a\r\ncertain percentage " +
-    "is reached.";
+            this.BatteryReportingCautionLevelInput.BackColor = System.Drawing.Color.Black;
+            this.BatteryReportingCautionLevelInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.BatteryReportingCautionLevelInput.ForeColor = System.Drawing.Color.White;
+            this.BatteryReportingCautionLevelInput.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.BatteryReportingCautionLevelInput.Location = new System.Drawing.Point(332, 32);
+            this.BatteryReportingCautionLevelInput.Name = "BatteryReportingCautionLevelInput";
+            this.BatteryReportingCautionLevelInput.Size = new System.Drawing.Size(54, 21);
+            this.BatteryReportingCautionLevelInput.TabIndex = 24;
+            this.ToolTipInformation.SetToolTip(this.BatteryReportingCautionLevelInput, "The level at which reporting starts for caution.");
+            this.BatteryReportingCautionLevelInput.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
             // 
-            // BatteryReportingMatchesPowerPlanBox
+            // label2
             // 
-            this.BatteryReportingMatchesPowerPlanBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BatteryReportingMatchesPowerPlanBox.AutoSize = true;
-            this.BatteryReportingMatchesPowerPlanBox.Location = new System.Drawing.Point(217, 61);
-            this.BatteryReportingMatchesPowerPlanBox.Name = "BatteryReportingMatchesPowerPlanBox";
-            this.BatteryReportingMatchesPowerPlanBox.Size = new System.Drawing.Size(169, 19);
-            this.BatteryReportingMatchesPowerPlanBox.TabIndex = 21;
-            this.BatteryReportingMatchesPowerPlanBox.Text = "Match power plan settings";
-            this.ToolTipInformation.SetToolTip(this.BatteryReportingMatchesPowerPlanBox, resources.GetString("BatteryReportingMatchesPowerPlanBox.ToolTip"));
-            this.BatteryReportingMatchesPowerPlanBox.UseVisualStyleBackColor = true;
+            this.label2.Location = new System.Drawing.Point(242, 59);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(84, 21);
+            this.label2.TabIndex = 27;
+            this.label2.Text = "Critical";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ToolTipInformation.SetToolTip(this.label2, ".");
+            // 
+            // BatteryReportingCriticalLevelInput
+            // 
+            this.BatteryReportingCriticalLevelInput.BackColor = System.Drawing.Color.Black;
+            this.BatteryReportingCriticalLevelInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.BatteryReportingCriticalLevelInput.ForeColor = System.Drawing.Color.White;
+            this.BatteryReportingCriticalLevelInput.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.BatteryReportingCriticalLevelInput.Location = new System.Drawing.Point(332, 59);
+            this.BatteryReportingCriticalLevelInput.Name = "BatteryReportingCriticalLevelInput";
+            this.BatteryReportingCriticalLevelInput.Size = new System.Drawing.Size(54, 21);
+            this.BatteryReportingCriticalLevelInput.TabIndex = 26;
+            this.ToolTipInformation.SetToolTip(this.BatteryReportingCriticalLevelInput, "The level at which reporting starts for critical.");
+            this.BatteryReportingCriticalLevelInput.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             // 
             // DiscordConfigurationForm
             // 
@@ -285,9 +342,10 @@
             this.Load += new System.EventHandler(this.ServerConfigurationForm_Load);
             this.ApplicationTypeGroup.ResumeLayout(false);
             this.ApplicationTypeGroup.PerformLayout();
-            this.ConfigurationPanel.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.ConfigurationPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.BatteryReportingCautionLevelInput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BatteryReportingCriticalLevelInput)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -308,7 +366,10 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox DisableHeartbeatBox;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox BatteryReportingMatchesPowerPlanBox;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown BatteryReportingCautionLevelInput;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown BatteryReportingCriticalLevelInput;
     }
 }

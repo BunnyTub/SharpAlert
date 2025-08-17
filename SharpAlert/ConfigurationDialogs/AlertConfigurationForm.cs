@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.AlertComponents.AlertProcessor;
+using System.Drawing;
 
 namespace SharpAlert.ConfigurationDialogs
 {
@@ -20,12 +21,6 @@ namespace SharpAlert.ConfigurationDialogs
         {
             if (Initialized) return;
             Initialized = true;
-
-            AudioTinkeringFileDialog.Filter = "Audio Files (*.mp3, *.wav)|*.mp3;*.wav";
-            AudioTinkeringFileDialog.FilterIndex = 0;
-            AudioTinkeringFileDialog.CheckFileExists = true;
-            AudioTinkeringFileDialog.Multiselect = false;
-            AudioTinkeringFileDialog.Title = "SharpAlert - Audio Selection";
 
             alertNoRelayBox.Checked = QuickSettings.Instance.alertNoRelay;
             alertNoRelayBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertNoRelay = ((CheckBox)a).Checked;
@@ -118,6 +113,9 @@ namespace SharpAlert.ConfigurationDialogs
             foreach (string SAME_event in QuickSettings.Instance.EnforceEventBlacklist) Events += SAME_event + "\r\n";
             Events = Events.Trim();
             EventBlacklistOutput.Text = Events;
+
+            EventWhitelistModeBox.Checked = QuickSettings.Instance.EventWhitelistMode;
+            EventWhitelistModeBox.CheckedChanged += (a, b) => QuickSettings.Instance.EventWhitelistMode = ((CheckBox)a).Checked;
         }
 
         private void EventAddButton_Click(object sender, EventArgs e)
@@ -127,7 +125,7 @@ namespace SharpAlert.ConfigurationDialogs
                 if (QuickSettings.Instance.EnforceEventBlacklist.Contains(EventBlacklistInput.Text))
                 {
                     var removal = MessageBox.Show("The event name is already in the list. Remove it?",
-                        "SharpAlert",
+                        Text,
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question);
                     if (removal == DialogResult.Yes) QuickSettings.Instance.EnforceEventBlacklist.Remove(EventBlacklistInput.Text);
@@ -153,7 +151,7 @@ namespace SharpAlert.ConfigurationDialogs
             else
             {
                 MessageBox.Show("Enter an event name to add it.",
-                    "SharpAlert",
+                    Text,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation);
             }
@@ -162,7 +160,7 @@ namespace SharpAlert.ConfigurationDialogs
         private void EventClearButton_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Clear event blacklist data?",
-                "SharpAlert",
+                Text,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question) == DialogResult.Yes)
             {
@@ -171,97 +169,6 @@ namespace SharpAlert.ConfigurationDialogs
             }
         }
 
-        private void BusyLock_Tick(object sender, EventArgs e)
-        {
-            if (AlertDisplaying)
-            {
-                ConfigurationPanel.Visible = false;
-                BusyLockText.BringToFront();
-            }
-            else
-            {
-                ConfigurationPanel.Visible = true;
-                BusyLockText.SendToBack();
-            }
-        }
-
-        private void ChangeStartButton_Click(object sender, EventArgs e)
-        {
-            Thread staThread = new Thread(() =>
-            {
-                try
-                {
-                    lock (AudioTinkeringFileDialog)
-                    {
-                        if (AudioTinkeringFileDialog.ShowDialog() != DialogResult.OK)
-                        {
-                            QuickSettings.Instance.StartToneLocation = string.Empty;
-                            Notify.ShowNotification($"Reverted to default audio.",
-                                "SharpAlert audio changed",
-                                ToolTipIcon.Warning);
-                            return;
-                        }
-
-                        QuickSettings.Instance.StartToneLocation = AudioTinkeringFileDialog.FileName;
-                        
-                        Notify.ShowNotification($"Using linked audio.",
-                            "SharpAlert audio changed",
-                            ToolTipIcon.Warning);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"{ex.StackTrace} {ex.Message}",
-                        "SharpAlert",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                }
-            });
-            staThread.SetApartmentState(ApartmentState.STA);
-            staThread.Start();
-        }
-
-        private void ChangeEndButton_Click(object sender, EventArgs e)
-        {
-            Thread staThread = new Thread(() =>
-            {
-                try
-                {
-                    lock (AudioTinkeringFileDialog)
-                    {
-                        if (AudioTinkeringFileDialog.ShowDialog() != DialogResult.OK)
-                        {
-                            QuickSettings.Instance.EndToneLocation = string.Empty;
-                            Notify.ShowNotification($"Reverted to default audio.",
-                                "SharpAlert audio changed",
-                                ToolTipIcon.Warning);
-                            return;
-                        }
-                        QuickSettings.Instance.EndToneLocation = AudioTinkeringFileDialog.FileName;
-
-                        Notify.ShowNotification($"Using linked audio.",
-                            "Reverted to default audio.",
-                            ToolTipIcon.Warning);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"{ex.StackTrace} {ex.Message}",
-                        "SharpAlert",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                }
-            });
-            staThread.SetApartmentState(ApartmentState.STA);
-            staThread.Start();
-        }
-
-        private void AlertCheckIntervalLabel_Click(object sender, EventArgs e)
-        {
-        }
-
-        //int[] states = (AlertDetails.States.OrderBy(x => x.Id).Select(x => x.Id).ToArray());
-
         private void ListAreaSAMEOutput_Format(object sender, ListControlConvertEventArgs e)
         {
             e.Value = GetFriendlyNameFromSAMELocation((string)e.Value);
@@ -269,10 +176,8 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void LanguageButton_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("By default, alerts are only shown if they have English text.\r\n" +
-                "Do you want to allow alerts of all languages to be relayed?\r\n\r\n" +
-                $"AllowNonEnglishLanguages is currently set to {QuickSettings.Instance.AllowNonEnglishAlerts}.\r\nThis setting is always ignored for SASMEX alerts.",
-                "SharpAlert",
+            DialogResult result = MessageBox.Show($"Choose YES to allow any language. Choose NO to only allow the English language. AllowNonEnglishLanguages is currently set to {QuickSettings.Instance.AllowNonEnglishAlerts}.",
+                Text,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
@@ -307,8 +212,8 @@ namespace SharpAlert.ConfigurationDialogs
         {
             MessageBox.Show("This area has controls for CAP filtering.\r\n" +
                 "Uncheck a checkbox to deny all alerts with that parameter.\r\n\r\n" +
-                "Some CAP alerts may not work properly with event and location filtering depending on the CAP server.",
-                "SharpAlert",
+                "CAP filtering may not be applied to all alerts, especially alerts from external sources, such as plugins, or messages from pipes.",
+                Text,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
             e.Cancel = true;
@@ -321,7 +226,7 @@ namespace SharpAlert.ConfigurationDialogs
             QuickSettings.Instance.AllowedCustomLocations_GeocodesList.Clear();
             MessageBox.Show("Cleared all locations.\r\n" +
                 "Alerts from all locations are now allowed.",
-                "SharpAlert",
+                Text,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
         }
@@ -332,6 +237,77 @@ namespace SharpAlert.ConfigurationDialogs
         {
             if (alf == null || alf.IsDisposed) alf = new AlertListForm();
             alf.ShowDialog();
+        }
+
+        private EventsAdditionForm eaf = null;
+
+        private void EventSelectButton_Click(object sender, EventArgs e)
+        {
+            if (eaf == null || eaf.IsDisposed) eaf = new EventsAdditionForm();
+            var result = eaf.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                EventBlacklistInput.Enabled = false;
+                EventBlacklistInput.Text = eaf.SelectedEvent.Name;
+                EventAddButton.PerformClick();
+                EventBlacklistInput.Enabled = true;
+            }
+        }
+
+        private void CategoryInfoButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This area has controls for category filtering specifically.\r\n" +
+                "Uncheck a checkbox to deny all alerts with that category.\r\n\r\n" +
+                "Category may not be the best way to choose which alerts you receive, not all alert authorities use categories the same way.",
+                Text,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+        private void BypassAlertFilteringButton_Click(object sender, EventArgs e)
+        {
+            QuickSettings.Instance.BypassAllFilters = !QuickSettings.Instance.BypassAllFilters;
+
+            if (QuickSettings.Instance.BypassAllFilters)
+            {
+                BypassFilteringFlasher_Tick(null, null);
+                BypassFilteringFlasher.Start();
+                MessageBox.Show("The Alert Processor will now ignore alert filtering. This setting will be reverted the next time you open SharpAlert.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                BypassFilteringFlasher.Stop();
+                BypassAlertFilteringButton.BackColor = Color.FromArgb(60, 60, 60);
+                MessageBox.Show("The Alert Processor will no longer ignore alert filtering.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private bool FlashOne = true;
+
+        private void BypassFilteringFlasher_Tick(object sender, EventArgs e)
+        {
+            if (FlashOne)
+            {
+                BypassAlertFilteringButton.BackColor = Color.DarkRed;
+            }
+            else
+            {
+                BypassAlertFilteringButton.BackColor = Color.Green;
+            }
+
+            FlashOne = !FlashOne;
+        }
+
+        private void NamedEventsInfoButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("If the event of the alert matches any blacklisted events, it will be discarded. (case-insensitive)\r\n\r\n" +
+                "For example, if \"Practice\" is in the list, any event names with \"Practice\" inside are discarded.\r\n" +
+                "Another example, is using \"Required Weekly Test\", NOT \"RWT\" (it will match words with \"RWT\" inside).\r\n\r\n" +
+                "This feature was changed, because not all alerts will have the included SAME event codes required for matching to work properly.\r\n" +
+                "It is more flexible to name events by their full name, as even without the SAME event codes included, events can be named.",
+                Text,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
     }
 }

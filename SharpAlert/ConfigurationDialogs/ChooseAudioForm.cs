@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Windows.Forms;
 using static SharpAlert.AudioManager;
+using static SharpAlert.ProgramWorker.NotificationWorker;
 
 namespace SharpAlert.ConfigurationDialogs
 {
@@ -37,6 +39,12 @@ namespace SharpAlert.ConfigurationDialogs
 
             if (Initialized) return;
             Initialized = true;
+
+            AudioTinkeringFileDialog.Filter = "Audio Files (*.mp3, *.wav)|*.mp3;*.wav";
+            AudioTinkeringFileDialog.FilterIndex = 0;
+            AudioTinkeringFileDialog.CheckFileExists = true;
+            AudioTinkeringFileDialog.Multiselect = false;
+            AudioTinkeringFileDialog.Title = "SharpAlert - Audio Selection";
 
             volumeBar.Value = QuickSettings.Instance.alertVolume;
             volumeBar.Scroll += (a, b) =>
@@ -215,7 +223,7 @@ namespace SharpAlert.ConfigurationDialogs
                 "DismissedWindow.wav - Called when an alert window is dismissed.\r\n" +
                 "ForwardThisMessageToDiscord.wav - Called when asking for consent.\r\n" +
                 "FullDaySinceQueuedAlert.wav - Called when it has been 24 hours since the last alert.\r\n" +
-                "HalfDaySinceQueuedAlert.wav - Called when it has been 12 horus since the last alert.\r\n" +
+                "HalfDaySinceQueuedAlert.wav - Called when it has been 12 hours since the last alert.\r\n" +
                 "ModerateOrLower.wav - Called when an alert is issued with a severity that is moderate or lower.\r\n" +
                 "SevereOrHigher.wav - Called when an alert is issued with a severity that is severe or higher.\r\n" +
                 "TopOfTheHour.wav - Called when the clock minute resets to zero.\r\n" +
@@ -226,6 +234,77 @@ namespace SharpAlert.ConfigurationDialogs
                 "BetaVersionInUse.wav - Called when running a beta version." +
                 "\r\n\r\n" +
                 "Place these files in the executable directory to override the built-in sound files!", "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void ChangeStartButton_Click(object sender, EventArgs e)
+        {
+            Thread staThread = new Thread(() =>
+            {
+                try
+                {
+                    lock (AudioTinkeringFileDialog)
+                    {
+                        if (AudioTinkeringFileDialog.ShowDialog() != DialogResult.OK)
+                        {
+                            QuickSettings.Instance.StartToneLocation = string.Empty;
+                            Notify.ShowNotification($"Reverted to default audio.",
+                                "SharpAlert audio changed",
+                                ToolTipIcon.Warning);
+                            return;
+                        }
+
+                        QuickSettings.Instance.StartToneLocation = AudioTinkeringFileDialog.FileName;
+
+                        Notify.ShowNotification($"Using linked audio.",
+                            "SharpAlert audio changed",
+                            ToolTipIcon.Warning);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"{ex.StackTrace} {ex.Message}",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            });
+            staThread.SetApartmentState(ApartmentState.STA);
+            staThread.Start();
+        }
+
+        private void ChangeEndButton_Click(object sender, EventArgs e)
+        {
+            Thread staThread = new Thread(() =>
+            {
+                try
+                {
+                    lock (AudioTinkeringFileDialog)
+                    {
+                        if (AudioTinkeringFileDialog.ShowDialog() != DialogResult.OK)
+                        {
+                            QuickSettings.Instance.EndToneLocation = string.Empty;
+                            Notify.ShowNotification($"Reverted to default audio.",
+                                "SharpAlert audio changed",
+                                ToolTipIcon.Warning);
+                            return;
+                        }
+                        QuickSettings.Instance.EndToneLocation = AudioTinkeringFileDialog.FileName;
+
+                        Notify.ShowNotification($"Using linked audio.",
+                            "Reverted to default audio.",
+                            ToolTipIcon.Warning);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"{ex.StackTrace} {ex.Message}",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            });
+            staThread.SetApartmentState(ApartmentState.STA);
+            staThread.Start();
         }
     }
 }

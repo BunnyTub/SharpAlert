@@ -38,6 +38,7 @@
             this.SAMEAddButton = new System.Windows.Forms.Button();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
             this.BusyLockText = new System.Windows.Forms.Label();
+            this.AnyAlertsInThisStateBox = new System.Windows.Forms.CheckBox();
             this.groupBox7.SuspendLayout();
             this.ConfigurationPanel.SuspendLayout();
             this.SuspendLayout();
@@ -47,6 +48,7 @@
             this.groupBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox7.Controls.Add(this.AnyAlertsInThisStateBox);
             this.groupBox7.Controls.Add(this.label3);
             this.groupBox7.Controls.Add(this.label2);
             this.groupBox7.Controls.Add(this.CountyCombo);
@@ -56,15 +58,16 @@
             this.groupBox7.ForeColor = System.Drawing.Color.White;
             this.groupBox7.Location = new System.Drawing.Point(12, 12);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(401, 145);
+            this.groupBox7.Size = new System.Drawing.Size(401, 165);
             this.groupBox7.TabIndex = 4;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "SAME Locations";
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 87);
+            this.label3.Location = new System.Drawing.Point(6, 129);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(279, 30);
             this.label3.TabIndex = 32;
@@ -125,7 +128,7 @@
             this.SAMEAddButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.SAMEAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.SAMEAddButton.Font = new System.Drawing.Font("Arial", 9F);
-            this.SAMEAddButton.Location = new System.Drawing.Point(330, 116);
+            this.SAMEAddButton.Location = new System.Drawing.Point(330, 136);
             this.SAMEAddButton.Name = "SAMEAddButton";
             this.SAMEAddButton.Size = new System.Drawing.Size(65, 23);
             this.SAMEAddButton.TabIndex = 1;
@@ -139,7 +142,7 @@
             this.ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
             this.ConfigurationPanel.Name = "ConfigurationPanel";
-            this.ConfigurationPanel.Size = new System.Drawing.Size(425, 169);
+            this.ConfigurationPanel.Size = new System.Drawing.Size(425, 189);
             this.ConfigurationPanel.TabIndex = 5;
             // 
             // BusyLockText
@@ -148,16 +151,26 @@
             this.BusyLockText.Font = new System.Drawing.Font("Arial", 12F);
             this.BusyLockText.Location = new System.Drawing.Point(0, 0);
             this.BusyLockText.Name = "BusyLockText";
-            this.BusyLockText.Size = new System.Drawing.Size(425, 169);
+            this.BusyLockText.Size = new System.Drawing.Size(425, 189);
             this.BusyLockText.TabIndex = 16;
             this.BusyLockText.Text = "Please wait or dismiss all alerts to configure settings.";
             this.BusyLockText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // AnyAlertsInThisStateBox
+            // 
+            this.AnyAlertsInThisStateBox.Location = new System.Drawing.Point(98, 78);
+            this.AnyAlertsInThisStateBox.Name = "AnyAlertsInThisStateBox";
+            this.AnyAlertsInThisStateBox.Size = new System.Drawing.Size(297, 34);
+            this.AnyAlertsInThisStateBox.TabIndex = 33;
+            this.AnyAlertsInThisStateBox.Text = "I want to receive any alerts in this state instead\r\nof receiving statewide alerts" +
+    " only";
+            this.AnyAlertsInThisStateBox.UseVisualStyleBackColor = true;
             // 
             // LocationsAdditionForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(425, 169);
+            this.ClientSize = new System.Drawing.Size(425, 189);
             this.Controls.Add(this.ConfigurationPanel);
             this.Controls.Add(this.BusyLockText);
             this.Font = new System.Drawing.Font("Arial", 9F);
@@ -169,7 +182,7 @@
             this.MinimizeBox = false;
             this.Name = "LocationsAdditionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "SharpAlert - Locations";
+            this.Text = "SharpAlert - SAME Locations";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.LocationsAdditionForm_Load);
             this.groupBox7.ResumeLayout(false);
@@ -190,5 +203,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel ConfigurationPanel;
         private System.Windows.Forms.Label BusyLockText;
+        public System.Windows.Forms.CheckBox AnyAlertsInThisStateBox;
     }
 }

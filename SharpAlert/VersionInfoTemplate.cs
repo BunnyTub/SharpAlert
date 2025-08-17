@@ -14,9 +14,25 @@ namespace SharpAlert
         public const string BuiltOnTime = "";
         public const string BuiltTimeZone = "";
         public static int MajorVersion { get; } = 10;
-        public static int MinorVersion { get; } = 0;
-        public static bool IsBetaVersion { get; } = true;
-        public static string FriendlyVersion
+        public static int MinorVersion { get; } = 2;
+        public static bool IsBetaVersion { get; } = false;
+        public static string ShortFriendlyVersion
+        {
+            get
+            {
+                if (!IsBetaVersion)
+                {
+                    //return $"SharpAlert | Release v{MajorVersion}.{MinorVersion} (Build {BuildNumber}) | Built on {BuiltOnDate} {BuiltOnTime} ({BuiltTimeZone})";
+                    return $"SharpAlert v{MajorVersion}.{MinorVersion} (Build {BuildNumber})";
+                }
+                else
+                {
+                    //return $"SharpAlert | Beta v{MajorVersion}.{MinorVersion}-b (Build {BuildNumber}) | Built on {BuiltOnDate} {BuiltOnTime} ({BuiltTimeZone})";
+                    return $"SharpAlert v{MajorVersion}.{MinorVersion}-b (Build {BuildNumber})";
+                }
+            }
+        }
+        public static string LongFriendlyVersion
         {
             get
             {

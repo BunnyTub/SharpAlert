@@ -151,7 +151,7 @@
             this.ServerRequestsText.Name = "ServerRequestsText";
             this.ServerRequestsText.Size = new System.Drawing.Size(268, 52);
             this.ServerRequestsText.TabIndex = 9;
-            this.ServerRequestsText.Text = "0";
+            this.ServerRequestsText.Text = "10000000";
             this.ServerRequestsText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ToolTipInformation.SetToolTip(this.ServerRequestsText, "The number of successful server requests.\r\n\r\nFor HTTP servers, this indicates a r" +
         "equest returning code 200.\r\nFor TCP servers, this indicates that the \"</alert>\" " +
@@ -165,7 +165,7 @@
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(268, 20);
             this.label10.TabIndex = 8;
-            this.label10.Text = "Server Requests (successful only)";
+            this.label10.Text = "Server Messages (resets at 10,000,000)";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // UptimeMeterText

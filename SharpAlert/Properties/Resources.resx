@@ -16176,7 +16176,7 @@
   <data name="WarningApp_Splash" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAmwAAAHgCAYAAAAYDzEbAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vgAADr4B6kKxwAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAD7HSURBVHhe7d0J
+        vAAADrwBlbxySQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAD7HSURBVHhe7d0J
         mJxVmfZxFhWED0VEREUEYVQGFQFxYTMIsgvjMrJHYESysYUlEBbZF+GbwQGUMYAxDGBw2CSgA2GPIUAI
         hDQ7yKYEQkLYApGQ9Hfunnr4Hs48b3VVd9Xbb3f+v+u6r/FSSFe6Tl3nnnPec2oJAAAAAAAAAAAAAAAA
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -16453,5 +16453,11 @@
   </data>
   <data name="major_alert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\major_alert.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_click" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button_click.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\button_hover.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

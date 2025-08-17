@@ -63,7 +63,7 @@ namespace SharpAlert.ProgramWorker
                 }
                 catch (Exception ex)
                 {
-                    IceBearWorker.LogFault(ex);
+                    TuyeWorker.LogFault(ex);
                 }
             }
         }
