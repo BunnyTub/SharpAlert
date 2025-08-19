@@ -23,17 +23,6 @@ namespace SharpAlert.AlertComponents
         private string AlertType = string.Empty;
         private string AlertSeverity = string.Empty;
 
-        private const int HWND_TOPMOST = -1;
-        private const int SWP_NOMOVE = 0x0002;
-        private const int SWP_NOSIZE = 0x0001;
-        private const int SWP_SHOWWINDOW = 0x0040;
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
-
-        [DllImport("user32.dll")]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
-
         private enum TaskbarProgressState
         {
             NoProgress = 0,
@@ -72,10 +61,6 @@ namespace SharpAlert.AlertComponents
         private class CTaskbarList { }
 
         private readonly ITaskbarList3 taskbarList;
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
 
         [StructLayout(LayoutKind.Sequential)]
         private struct FLASHWINFO
@@ -343,8 +328,8 @@ namespace SharpAlert.AlertComponents
 
         private void EnsureTopWindow_Tick(object sender, EventArgs e)
         {
-            SetWindowPos(GotHandle, (IntPtr)HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
-            SetForegroundWindow(GotHandle);
+            this.BringToFront();
+            this.Activate();
             EnsureForTick--;
 
             if (EnsureForTick == 0)

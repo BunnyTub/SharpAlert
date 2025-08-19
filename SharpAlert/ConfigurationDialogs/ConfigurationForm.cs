@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using SharpAlert.Properties;
-using static SharpAlert.ProgramWorker.TuyeWorker;
+using static SharpAlert.ProgramWorker.HaidaWorker;
 
 namespace SharpAlert.ConfigurationDialogs
 {

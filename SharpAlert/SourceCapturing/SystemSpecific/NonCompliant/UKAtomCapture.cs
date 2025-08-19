@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using SharpAlert.ProgramWorker;
-using static SharpAlert.ProgramWorker.TuyeWorker;
+using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.RegexList;
 

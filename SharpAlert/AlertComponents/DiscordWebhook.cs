@@ -7,8 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using SharpAlert.ProgramWorker;
-using static SharpAlert.ProgramWorker.TuyeWorker;
+using static SharpAlert.ProgramWorker.HaidaWorker;
 
 namespace SharpAlert.AlertComponents
 {
@@ -16,12 +15,14 @@ namespace SharpAlert.AlertComponents
     {
         private static readonly WebClient discordClient = new WebClient();
 
-        /// <summary>
-        /// Sends data to a webhook after converting the string to a byte array using UTF8.
-        /// </summary>
-        private static bool UploadData(string webhook, string payload)
+		/// <summary>
+		/// Sends data to a webhook after converting the string to a byte array using UTF8.
+		/// </summary>
+		/// <param name="webhook">The webhook to send data to.</param>
+		/// <param name="payload">The payload to send to the webhook.</param>
+		private static void UploadData(string webhook, string payload)
         {
-            return UploadData(webhook, Encoding.UTF8.GetBytes(payload));
+            UploadData(webhook, Encoding.UTF8.GetBytes(payload));
         }
 
         /// <summary>
@@ -29,47 +30,52 @@ namespace SharpAlert.AlertComponents
         /// </summary>
         /// <param name="webhook">The webhook to send data to.</param>
         /// <param name="data">The data to send to the webhook.</param>
-        /// <returns>Returns True if the upload is successful.</returns>
-        private static bool UploadData(string webhook, byte[] data)
+        private static void UploadData(string webhook, byte[] data)
         {
-            lock (discordClient)
+            ThreadDrool.StartAndForget(() =>
             {
-                try
+                lock (discordClient)
                 {
-                    Thread.Sleep(1000 + 100);
-                    discordClient.UploadData(webhook, data);
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[Discord Webhook] {ex.Message}");
                     try
                     {
-                        Thread.Sleep(2000 + 100);
+                        Thread.Sleep(1000 + 100);
                         discordClient.UploadData(webhook, data);
-                        return true;
+                        Console.WriteLine("[Discord Webhook] Request completed.");
+                        return;
                     }
-                    catch (Exception exx)
+                    catch (Exception ex)
                     {
-                        Console.WriteLine($"[Discord Webhook] {exx.Message}");
+                        Console.WriteLine($"[Discord Webhook] {ex.Message}");
                         try
                         {
-                            Console.WriteLine($"[Discord Webhook] Rate limiting possibly occurring. Pausing for 15 seconds to cool down.");
-                            Thread.Sleep((15 * 1000) + 100);
+                            Thread.Sleep(2000 + 100);
                             discordClient.UploadData(webhook, data);
-                            return true;
+							Console.WriteLine("[Discord Webhook] Request completed.");
+							return;
                         }
-                        catch (Exception exxx)
+                        catch (Exception exx)
                         {
-                            Console.WriteLine($"[Discord Webhook] {exxx.Message}");
+                            Console.WriteLine($"[Discord Webhook] {exx.Message}");
+                            try
+                            {
+                                Console.WriteLine($"[Discord Webhook] Rate limited or bad connection. Pausing for 15 seconds to cool down.");
+                                Thread.Sleep((15 * 1000) + 100);
+                                discordClient.UploadData(webhook, data);
+								Console.WriteLine("[Discord Webhook] Request completed.");
+								return;
+                            }
+                            catch (Exception exxx)
+                            {
+                                Console.WriteLine($"[Discord Webhook] Request failed after multiple retries. {exxx.Message}");
+                            }
                         }
                     }
+                    return;
                 }
-                return false;
-            }
+            });
         }
 
-        public static bool SendUnformattedMessage(string message)
+        public static void SendUnformattedMessage(string message)
         {
             try
             {
@@ -82,20 +88,18 @@ namespace SharpAlert.AlertComponents
                         string payloadJson = JsonSerializer.Serialize(payloadObject);
                         discordClient.Headers.Set(HttpRequestHeader.ContentType, "application/json");
                         discordClient.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
-                        return UploadData(webhook, payloadJson);
+                        UploadData(webhook, payloadJson);
                     }
                 }
-                return false;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return false;
+                Console.WriteLine($"[Discord Webhook] {ex.Message}");
             }
         }
         
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0037:Use inferred member name", Justification = "<Pending>")]
-        public static bool SendFormattedMessage(string message, int color = 16777215)
+        public static void SendFormattedMessage(string message, int color = 16777215)
         {
             try
             {
@@ -118,20 +122,18 @@ namespace SharpAlert.AlertComponents
                         string payloadJson = JsonSerializer.Serialize(payloadObject);
                         discordClient.Headers.Set(HttpRequestHeader.ContentType, "application/json");
                         discordClient.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
-                        return UploadData(webhook, payloadJson);
+                        UploadData(webhook, payloadJson);
                     }
                 }
-                return false;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return false;
+                Console.WriteLine($"[Discord Webhook] {ex.Message}");
             }
         }
         
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0037:Use inferred member name", Justification = "<Pending>")]
-        public static bool SendFormattedMessage(string message, string description, string normal, int color = 16777215)
+        public static void SendFormattedMessage(string message, string description, string normal, int color = 16777215)
         {
             try
             {
@@ -158,19 +160,16 @@ namespace SharpAlert.AlertComponents
                         discordClient.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
                         UploadData(webhook, payloadJson);
                     }
-                    return true;
                 }
-                return false;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return false;
+				Console.WriteLine($"[Discord Webhook] {ex.Message}");
             }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0037:Use inferred member name", Justification = "<Pending>")]
-        public static bool SendEmbeddedMessage(string message, string title, string description1, string description2, string URL, List<string> AudioFileURL, List<string> ImageFileURL, int color = 16711680)
+        public static void SendEmbeddedMessage(string message, string title, string description1, string description2, string URL, List<string> AudioFileURL, List<string> ImageFileURL, int color = 16711680)
         {
             try
             {
@@ -218,7 +217,7 @@ namespace SharpAlert.AlertComponents
                                     author = new
                                     {
                                         name = $"Powered by SharpAlert",
-                                        url = "https://sharpalert.bunnytub.com",
+                                        url = "https://bunnytub.com/SharpAlert",
                                         icon_url = "https://bunnytub.com/media/SharpAlert_Small.png"
                                     },
                                     image = new
@@ -299,12 +298,11 @@ namespace SharpAlert.AlertComponents
                         UploadData(webhook, stream.ToArray());
                     }
                 }
-                return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
-            }
+				Console.WriteLine($"[Discord Webhook] {ex.Message}");
+			}
         }
     }
 }

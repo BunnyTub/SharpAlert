@@ -122,46 +122,46 @@ namespace SharpAlert.ConfigurationDialogs
             alertTimeZoneUTCBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertTimeZoneUTC = ((CheckBox)a).Checked;
 
             bool alertFullscreenDisplayIgnoreInput = false;
-            alertFullscreenDisplayInput.Value = QuickSettings.Instance.alertFullscreenDisplay;
+            alertFullscreenDisplayInput.Value = QuickSettings.Instance.alertFullscreenDisplay + 1;
             alertFullscreenDisplayInput.ValueChanged += (a, b) =>
             {
                 if (alertFullscreenDisplayIgnoreInput) return;
 
                 //bool MonitorNonExistant = false
 
-                if ((int)((NumericUpDown)a).Value >= Screen.AllScreens.Count())
+                if ((int)((NumericUpDown)a).Value > Screen.AllScreens.Count())
                 {
                     if (MessageBox.Show("The monitor you've chosen doesn't exist right now, and the idle and alert panels will be shown on the default monitor until it does exist. Do you want to use it anyway?",
                         "SharpAlert",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
-                        QuickSettings.Instance.alertFullscreenDisplay = (int)((NumericUpDown)a).Value;
+                        QuickSettings.Instance.alertFullscreenDisplay = (int)((NumericUpDown)a).Value - 1;
                         //MonitorNonExistant = true;
                     }
                     else
                     {
                         alertFullscreenDisplayIgnoreInput = true;
-                        ((NumericUpDown)a).Value = QuickSettings.Instance.alertFullscreenDisplay;
+                        ((NumericUpDown)a).Value = QuickSettings.Instance.alertFullscreenDisplay + 1;
                         alertFullscreenDisplayIgnoreInput = false;
                         return;
                     }
                 }
                 else
                 {
-                    Screen screen = Screen.AllScreens[(int)((NumericUpDown)a).Value];
+                    Screen screen = Screen.AllScreens[(int)((NumericUpDown)a).Value - 1];
 
                     if (MessageBox.Show($"Use \"{screen.DeviceName}\" ({screen.Bounds.Width} x {screen.Bounds.Height})?",
                         "SharpAlert",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        QuickSettings.Instance.alertFullscreenDisplay = (int)((NumericUpDown)a).Value;
+                        QuickSettings.Instance.alertFullscreenDisplay = (int)((NumericUpDown)a).Value - 1;
                     }
                     else
                     {
                         alertFullscreenDisplayIgnoreInput = true;
-                        ((NumericUpDown)a).Value = QuickSettings.Instance.alertFullscreenDisplay;
+                        ((NumericUpDown)a).Value = QuickSettings.Instance.alertFullscreenDisplay + 1;
                         alertFullscreenDisplayIgnoreInput = false;
                         return;
                     }
@@ -184,7 +184,7 @@ namespace SharpAlert.ConfigurationDialogs
                         "SharpAlert",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
-                    TuyeWorker.AllocateTerminal(false);
+                    HaidaWorker.AllocateTerminal(false);
                 }
                 else
                 {

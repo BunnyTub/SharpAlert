@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SharpAlert.ConfigurationDialogs
@@ -39,6 +32,8 @@ namespace SharpAlert.ConfigurationDialogs
             QuickSettings.Instance.urgencyImmediate = true;
             QuickSettings.Instance.urgencyPast = false;
             QuickSettings.Instance.urgencyUnknown = true;
+
+            this.Close();
         }
 
         private void PreferSevereButton_Click(object sender, EventArgs e)
@@ -63,6 +58,8 @@ namespace SharpAlert.ConfigurationDialogs
             QuickSettings.Instance.urgencyImmediate = true;
             QuickSettings.Instance.urgencyPast = false;
             QuickSettings.Instance.urgencyUnknown = false;
+
+            this.Close();
         }
 
         private void PreferAllButton_Click(object sender, EventArgs e)
@@ -87,6 +84,8 @@ namespace SharpAlert.ConfigurationDialogs
             QuickSettings.Instance.urgencyImmediate = true;
             QuickSettings.Instance.urgencyPast = true;
             QuickSettings.Instance.urgencyUnknown = true;
+
+            this.Close();
         }
 
         private void SkipButton_Click(object sender, EventArgs e)
@@ -95,6 +94,7 @@ namespace SharpAlert.ConfigurationDialogs
                 Text,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
+
             this.Close();
         }
     }

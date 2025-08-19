@@ -42,6 +42,7 @@
             this.AudioOutputClearLink = new System.Windows.Forms.LinkLabel();
             this.TTSButton = new System.Windows.Forms.Button();
             this.EnableBasicSpeakingBox = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.AudioOutputLabel = new System.Windows.Forms.Label();
             this.GlobalVolumeLabel = new System.Windows.Forms.Label();
@@ -49,10 +50,10 @@
             this.SupportedLinesButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.ChangeEndButton = new System.Windows.Forms.Button();
             this.ChangeStartButton = new System.Windows.Forms.Button();
             this.AudioTinkeringFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.ShowRefreshTip = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
             this.ApplicationTypeGroup.SuspendLayout();
@@ -127,7 +128,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.AudioDeviceCombo.BackColor = System.Drawing.Color.Black;
             this.AudioDeviceCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.AudioDeviceCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AudioDeviceCombo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.AudioDeviceCombo.ForeColor = System.Drawing.Color.White;
             this.AudioDeviceCombo.FormattingEnabled = true;
             this.AudioDeviceCombo.Items.AddRange(new object[] {
@@ -222,6 +223,18 @@
         "er purposes.");
             this.EnableBasicSpeakingBox.UseVisualStyleBackColor = true;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.Yellow;
+            this.label2.Location = new System.Drawing.Point(6, 17);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(344, 15);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "To clear an alert sound, click the button for it, then click cancel.";
+            this.ToolTipInformation.SetToolTip(this.label2, "If you choose custom sounds, you will not be able to control the severity level t" +
+        "hey play at.");
+            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -308,18 +321,6 @@
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Program Events";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.Yellow;
-            this.label2.Location = new System.Drawing.Point(6, 17);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(344, 15);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "To clear an alert sound, click the button for it, then click cancel.";
-            this.ToolTipInformation.SetToolTip(this.label2, "If you choose custom sounds, you will not be able to control the severity level t" +
-        "hey play at.");
-            // 
             // ChangeEndButton
             // 
             this.ChangeEndButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
@@ -343,6 +344,12 @@
             this.ChangeStartButton.Text = "Select Start Tone Location";
             this.ChangeStartButton.UseVisualStyleBackColor = false;
             this.ChangeStartButton.Click += new System.EventHandler(this.ChangeStartButton_Click);
+            // 
+            // ShowRefreshTip
+            // 
+            this.ShowRefreshTip.Enabled = true;
+            this.ShowRefreshTip.Interval = 1000;
+            this.ShowRefreshTip.Tick += new System.EventHandler(this.ShowRefreshTip_Tick);
             // 
             // ChooseAudioForm
             // 
@@ -415,5 +422,6 @@
         private System.Windows.Forms.Button ChangeEndButton;
         private System.Windows.Forms.Button ChangeStartButton;
         private System.Windows.Forms.OpenFileDialog AudioTinkeringFileDialog;
+        private System.Windows.Forms.Timer ShowRefreshTip;
     }
 }

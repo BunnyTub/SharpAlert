@@ -13,6 +13,7 @@ using SharpAlert.ProgramWorker;
 using SharpAlert.SourceCapturing;
 using System.Text.Json;
 using System.Text;
+using SharpAlert.Properties;
 
 namespace SharpAlert.AlertComponents
 {
@@ -662,34 +663,75 @@ namespace SharpAlert.AlertComponents
             }
         }
         
-        public void ProcessAlertTest()
+        public static void ProcessAlertTest(bool AutoFillInfo = false)
         {
             try
             {
-                ChooseTestForm ctf = new ChooseTestForm(false);
-                var result = ctf.ShowDialog();
-
-                if (result == DialogResult.Yes) ThreadDrool.StartAndForget(() =>
+                if (AutoFillInfo)
                 {
-                    string Severity = "severe";
+                    string TestIdentifier = $"TEST_{DateTime.UtcNow.Ticks}";
 
-                    if (ctf.MarkAlertAsModerateInsteadOfSevereBox.Checked)
-                    {
-                        Severity = "moderate";
-                    }
+                    string CompiledMessage = $"Test Alert | Location(s): Test Location\r\n-# Identifier: {TestIdentifier}"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
+                    if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + QuickSettings.Instance.DiscordWebhookAppend;
 
-                    RelayWindow($"TEST_{DateTime.UtcNow.Ticks}",
-                        ctf.EventType,
-                        new AlertTextClass
-                        { Intro = "Test. Test. Test.", Body = $"{ctf.EventDescription}" },
-                        ctf.EventURL,
-                        "alert",
-                        Severity,
+                    DiscordWebhook.SendEmbeddedMessage(CompiledMessage,
+                        "Test Message",
+                        "Test. Test. Test.",
+                        Resources.TestScript,
+                        "https://bunnytub.com/SharpAlert",
                         new List<string>() { "" },
                         new List<string>() { "" });
-                });
 
-                ctf.Dispose();
+                    RelayWindow(TestIdentifier,
+                        "Standard Test",
+                        new AlertTextClass
+                        { Intro = "Test. Test. Test.", Body = Resources.TestScript },
+                        "https://bunnytub.com/SharpAlert",
+                        "alert",
+                        "severe",
+                        new List<string>() { "" },
+                        new List<string>() { "" });
+                }
+                else
+                {
+                    ChooseTestForm ctf = new ChooseTestForm(false);
+                    var result = ctf.ShowDialog();
+
+                    if (result == DialogResult.Yes) ThreadDrool.StartAndForget(() =>
+                    {
+                        string Severity = "severe";
+
+                        if (ctf.MarkAlertAsModerateInsteadOfSevereBox.Checked)
+                        {
+                            Severity = "moderate";
+                        }
+
+                        string TestIdentifier = $"TEST_{DateTime.UtcNow.Ticks}";
+
+                        string CompiledMessage = $"{ctf.EventType} | Location(s): Test Location\r\n-# Identifier: {TestIdentifier}"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
+                        if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + QuickSettings.Instance.DiscordWebhookAppend;
+
+                        DiscordWebhook.SendEmbeddedMessage(CompiledMessage,
+                            "Test Message",
+                            "Test. Test. Test.",
+                            ctf.EventDescription,
+                            ctf.EventURL,
+                            new List<string>() { "" },
+                            new List<string>() { "" });
+
+                        RelayWindow(TestIdentifier,
+                            ctf.EventType,
+                            new AlertTextClass
+                            { Intro = "Test. Test. Test.", Body = $"{ctf.EventDescription}" },
+                            ctf.EventURL,
+                            "alert",
+                            Severity,
+                            new List<string>() { "" },
+                            new List<string>() { "" });
+                    });
+
+                    ctf.Dispose();
+                }
             }
             catch (Exception ex)
             {
@@ -1734,7 +1776,7 @@ namespace SharpAlert.AlertComponents
                     }
                 }
 
-                Console.WriteLine($"[Alert Processor] The SAME location code \"{code}\" is not an integer.");
+                Console.WriteLine($"[Alert Processor] The SAME location code \"{code}\" is being processed.");
 
                 // This might be inefficient, but we're not running this software on fucking a Pentium II.
                 // Save the optimization tricks for a rainy day.

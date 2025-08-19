@@ -8,9 +8,12 @@ namespace SharpAlert.ConfigurationDialogs
 {
     public partial class ChooseRegionForm : Form
     {
-        public ChooseRegionForm(bool ShowNextInsteadOfDone)
+        bool ShowNextInsteadOfDone = false;
+
+        public ChooseRegionForm(bool ShowNextInsteadOfDone_)
         {
             InitializeComponent();
+            ShowNextInsteadOfDone = ShowNextInsteadOfDone_;
             if (ShowNextInsteadOfDone) DoneButton.Text = "Next";
             else DoneButton.Text = "Done";
         }
@@ -77,10 +80,13 @@ namespace SharpAlert.ConfigurationDialogs
                 }
             }
 
-            MessageBox.Show("Restart the program to apply region changes.",
-                "SharpAlert",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            if (!ShowNextInsteadOfDone)
+            {
+                MessageBox.Show("Restart the program to apply region changes.",
+                    "SharpAlert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
         }
 
         private void ChooseRegionForm_HelpButtonClicked(object sender, System.ComponentModel.CancelEventArgs e)

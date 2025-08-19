@@ -304,6 +304,7 @@
     </Compile>
     <Compile Include="PrinterController.cs" />
     <Compile Include="ProgramWorker\DoNotDisturbMode.cs" />
+    <Compile Include="ProgramWorker\GlobalHotkeyManager.cs" />
     <Compile Include="ProgramWorker\HeartbeatWorker.cs" />
     <Compile Include="ProgramWorker\NotificationWorker.cs" />
     <Compile Include="PipeWorker.cs" />
@@ -348,7 +349,7 @@
     <Compile Include="AlertComponents\SendForm.Designer.cs">
       <DependentUpon>SendForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProgramWorker\TuyeWorker.cs" />
+    <Compile Include="ProgramWorker\HaidaWorker.cs" />
     <Compile Include="ConfigurationDialogs\ServerConfigurationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -594,6 +595,10 @@
     <None Include="Resources\button-hover.wav" />
     <None Include="Resources\button_click.wav" />
     <None Include="Resources\button_hover.wav" />
+    <None Include="Resources\TrayLightIcon.ico" />
+    <None Include="Resources\TrayAlertIcon.ico" />
+    <None Include="Resources\AlertIcon.png" />
+    <None Include="Resources\Topple1.png" />
     <Content Include="WarningApp.ico" />
     <None Include="Resources\WarningApp.png" />
     <Content Include="FodyWeavers.xml" />

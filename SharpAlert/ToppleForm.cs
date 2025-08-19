@@ -15,11 +15,11 @@ namespace SharpAlert
             InitializeComponent();
             ToppleReason = Reason;
             HostProcessOfSubProcess = _HostProcessOfSubProcess;
-            if (!HostProcessOfSubProcess)
-            {
-                DebuggerButton.Enabled = false;
-                DebuggerButton.Text = "Debugger Unavailable";
-            }
+            //if (!HostProcessOfSubProcess)
+            //{
+            //    DebuggerButton.Enabled = false;
+            //    DebuggerButton.Text = "Debugger Unavailable";
+            //}
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
@@ -70,8 +70,11 @@ namespace SharpAlert
 
         private void ResetButton_Click(object sender, EventArgs e)
         {
+            QuickSettings.ReadOnlyMode = false;
             QuickSettings.Instance.Reset();
             QuickSettings.Instance.Save();
+            MessageBox.Show("Settings reset. You'll need to reopen SharpAlert manually.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Environment.Exit(-1);
         }
 
         private void DebuggerButton_Click(object sender, EventArgs e)

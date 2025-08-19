@@ -158,7 +158,6 @@
             this.MarkAlertAsModerateInsteadOfSevereBox.TabIndex = 40;
             this.MarkAlertAsModerateInsteadOfSevereBox.Text = "Moderate- instead of severe+";
             this.MarkAlertAsModerateInsteadOfSevereBox.UseVisualStyleBackColor = true;
-            this.MarkAlertAsModerateInsteadOfSevereBox.Visible = false;
             // 
             // ChooseTestForm
             // 

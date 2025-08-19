@@ -23,10 +23,11 @@ using SharpAlert.WebServer;
 using SharpAlert.DisplayDialogs;
 using SharpAlert.AlertComponents;
 using SharpAlert.SourceCapturing.SystemSpecific;
+using static SharpAlert.ProgramWorker.GlobalHotkeyManager;
 
 namespace SharpAlert.ProgramWorker
 {
-    public static class TuyeWorker
+    public static class HaidaWorker
     {
         public static readonly HttpClient client = new HttpClient
         {
@@ -42,7 +43,7 @@ namespace SharpAlert.ProgramWorker
         public static bool ServiceRunnerScheduled { get; private set; } = false;
 
         /// <summary>
-        /// Starts the Tuye Worker as a client.
+        /// Starts the Haida Worker as a client.
         /// </summary>
         [MTAThread]
         public static void ServiceRun()
@@ -50,7 +51,7 @@ namespace SharpAlert.ProgramWorker
             if (QuickSettings.Instance.alertNoGUI) AllocateTerminal(false);
 
             Console.WriteLine($"{VersionInfo.LongFriendlyVersion}\r\n" +
-                $"Safety is never a non-priority. | https://sharpalert.bunnytub.com/");
+                $"https://bunnytub.com/SharpAlert");
             if (ServiceMode) Console.WriteLine($"Running under Service Mode.");
 
             // force instance reload here
@@ -96,7 +97,7 @@ namespace SharpAlert.ProgramWorker
                         {
                             if (Scaling > 100)
                             {
-                                Console.WriteLine($"[Tuye] The system DPI is larger than 100%.");
+                                Console.WriteLine($"[Haida] The system DPI is larger than 100%.");
                                 MessageBox.Show($"Your display scaling of {Math.Floor(Scaling)}% may cause panels to display incorrectly. SharpAlert will attempt to correct this behavior, and then automatically restart.",
                                     "SharpAlert - DPI Scaling Warning",
                                     MessageBoxButtons.OK,
@@ -104,7 +105,7 @@ namespace SharpAlert.ProgramWorker
                             }
                             else
                             {
-                                Console.WriteLine($"[Tuye] The compatibility settings have been modified, which may cause problems.");
+                                Console.WriteLine($"[Haida] The compatibility settings have been modified, which may cause problems.");
                                 MessageBox.Show($"There are currently unsupported compatibility settings enabled for this program. SharpAlert will attempt to correct your settings, and then automatically restart.",
                                     "SharpAlert - Compatibility Settings Warning",
                                     MessageBoxButtons.OK,
@@ -119,13 +120,13 @@ namespace SharpAlert.ProgramWorker
                         key.Close();
                         key.Dispose();
 
-                        Console.WriteLine($"[Tuye] Adjusted the program compatibility settings.");
+                        Console.WriteLine($"[Haida] Adjusted the program compatibility settings.");
                         Environment.Exit(100);
                         return;
                     }
                     else
                     {
-                        //Console.WriteLine($"[Tuye] The scaling issues have previously been already corrected.");
+                        //Console.WriteLine($"[Haida] The scaling issues have previously been already corrected.");
                     }
 
                     key.Close();
@@ -133,7 +134,7 @@ namespace SharpAlert.ProgramWorker
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[Tuye] Cannot adjust program DPI settings. {ex.Message}");
+                    Console.WriteLine($"[Haida] Cannot adjust program DPI settings. {ex.Message}");
                 }
             }
 
@@ -141,21 +142,21 @@ namespace SharpAlert.ProgramWorker
 
             if (!ServiceMode)
             {
-                Console.WriteLine("[Tuye] Checking application version.");
+                Console.WriteLine("[Haida] Checking application version.");
 
                 try
                 {
                     HttpResponseMessage latest = client.GetAsync($"{IdentityURL}/SharpAlert.txt").Result;
 
-                    Console.WriteLine($"[Tuye] The server responded with status code {latest.StatusCode}.");
+                    Console.WriteLine($"[Haida] The server responded with status code {latest.StatusCode}.");
 
                     RemoteVersion = latest.Content.ReadAsStringAsync().Result.Trim();
                     if (string.IsNullOrWhiteSpace(RemoteVersion) || RemoteVersion.Length == 0 || RemoteVersion.Length >= 10) RemoteVersion = "0.0";
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[Tuye] {ex.StackTrace} {ex.Message}");
-                    Console.WriteLine($"[Tuye] Couldn't work with the server.");
+                    Console.WriteLine($"[Haida] {ex.StackTrace} {ex.Message}");
+                    Console.WriteLine($"[Haida] Couldn't work with the server.");
                 }
 
                 if (VersionInfo.IsBetaVersion)
@@ -176,46 +177,46 @@ namespace SharpAlert.ProgramWorker
             }
             else
             {
-                Console.WriteLine("[Tuye] Version checking skipped due to service mode.");
+                Console.WriteLine("[Haida] Version checking skipped due to service mode.");
                 RemoteVersion = "service";
             }
 
-            Console.WriteLine("[Tuye] Initializing services.");
+            Console.WriteLine("[Haida] Initializing services.");
             // use threads you moron
             // I AM YOU BICH
 
-            Console.WriteLine("[Tuye] Initializing Feed Capture.");
+            Console.WriteLine("[Haida] Initializing Feed Capture.");
             feed = new FeedCapture(); // FEED
 
-            Console.WriteLine("[Tuye] Initializing Atom Feed Capture.");
+            Console.WriteLine("[Haida] Initializing Atom Feed Capture.");
             atomfeed = new WeatherAtomCapture(); // FEED
 
-            Console.WriteLine("[Tuye] Initializing Direct Feed Capture.");
+            Console.WriteLine("[Haida] Initializing Direct Feed Capture.");
             directfeed = new DirectFeedCapture(); // FEED
 
-            Console.WriteLine("[Tuye] Initializing IDAP Capture.");
+            Console.WriteLine("[Haida] Initializing IDAP Capture.");
             idapfeed = new IDAPFeedCapture(); // FEED
 
-            Console.WriteLine("[Tuye] Initializing Cache Capture.");
+            Console.WriteLine("[Haida] Initializing Cache Capture.");
             cache = new CacheCapture(); // TECHNICALLY FEED
 
-            Console.WriteLine("[Tuye] Initializing Data Processor.");
+            Console.WriteLine("[Haida] Initializing Data Processor.");
             dataproc = new DataProcessor();
 
-            Console.WriteLine("[Tuye] Initializing History Processor.");
+            Console.WriteLine("[Haida] Initializing History Processor.");
             historyproc = new HistoryProcessor();
 
-            Console.WriteLine("[Tuye] Initializing Hyper Server.");
+            Console.WriteLine("[Haida] Initializing Hyper Server.");
             hyper = new HyperServer();
                 
-            Console.WriteLine("[Tuye] Starting services momentarily.");
+            Console.WriteLine("[Haida] Starting services momentarily.");
 
             bool AnyFeedAvailable = false;
             bool SetupExperienceOccurred = false;
 
             if (!QuickSettings.Instance.SetupExperienceComplete)
             {
-                Console.WriteLine("[Tuye] Starting program setup experience.");
+                Console.WriteLine("[Haida] Starting program setup experience.");
 
                 SetupForm sf = new SetupForm();
                 sf.ShowDialog();
@@ -321,7 +322,7 @@ namespace SharpAlert.ProgramWorker
                         int LineNumber = 0;
                         bool FoundValidServer = false;
 
-                        Console.WriteLine($"[Tuye] Checking \"{CustomURLsFileName}\" for server candidates.");
+                        Console.WriteLine($"[Haida] Checking \"{CustomURLsFileName}\" for server candidates.");
 
                         foreach (string raw in ServerList)
                         {
@@ -330,7 +331,7 @@ namespace SharpAlert.ProgramWorker
                             LineNumber++;
                             if (server.StartsWith("#"))
                             {
-                                Console.WriteLine($"[Tuye] Comment skipped on line {LineNumber}.");
+                                Console.WriteLine($"[Haida] Comment skipped on line {LineNumber}.");
                                 continue;
                             }
                             else
@@ -338,7 +339,7 @@ namespace SharpAlert.ProgramWorker
                                 if (server.StartsWith("http://") || server.StartsWith("https://"))
                                 {
                                     server = server.Replace("http://", string.Empty).Replace("https://", string.Empty);
-                                    Console.WriteLine($"[Tuye] Adding server \"{server}\" on line {LineNumber}.");
+                                    Console.WriteLine($"[Haida] Adding server \"{server}\" on line {LineNumber}.");
                                     var VisualServer = new FeedCapture.ServerInfo { ServerName = $"{CustomURLsFileName} | Line {LineNumber}", ServerPath = $"{server}" };
                                     feed.servers.Add(VisualServer);
                                     FoundValidServer = true;
@@ -348,11 +349,11 @@ namespace SharpAlert.ProgramWorker
                                 {
                                     if (string.IsNullOrWhiteSpace(server))
                                     {
-                                        Console.WriteLine($"[Tuye] Whitespace skipped on line {LineNumber}.");
+                                        Console.WriteLine($"[Haida] Whitespace skipped on line {LineNumber}.");
                                     }
                                     else
                                     {
-                                        Console.WriteLine($"[Tuye] Invalid server skipped on line {LineNumber}.");
+                                        Console.WriteLine($"[Haida] Invalid server skipped on line {LineNumber}.");
                                     }
                                     continue;
                                 }
@@ -363,12 +364,12 @@ namespace SharpAlert.ProgramWorker
                     }
                     else
                     {
-                        Console.WriteLine($"[Tuye] No custom server file found named \"{CustomURLsFileName}\".");
+                        Console.WriteLine($"[Haida] No custom server file found named \"{CustomURLsFileName}\".");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[Tuye] Couldn't get custom servers. {ex.Message}");
+                    Console.WriteLine($"[Haida] Couldn't get custom servers. {ex.Message}");
                 }
                 return false;
             }
@@ -391,7 +392,7 @@ namespace SharpAlert.ProgramWorker
                 //    notify.BalloonTipText = "There are currently no feeds enabled.";
                 //    notify.ShowBalloonTip(5000);
                 //}
-                //Console.WriteLine("[Tuye] Prompting user for region information.");
+                //Console.WriteLine("[Haida] Prompting user for region information.");
                 //ChooseRegionForm crf = new ChooseRegionForm(false);
                 //crf.ShowDialog();
             }
@@ -518,7 +519,7 @@ namespace SharpAlert.ProgramWorker
                 }
             }, true);
 
-            StartCatchAllThread("Execution Manager", () =>
+            StartCatchAllThread("Sleep Manager", () =>
             {
                 while (AllowThreadRestarts)
                 {
@@ -555,6 +556,11 @@ namespace SharpAlert.ProgramWorker
                     Thread.Sleep(5000);
                 }
             }, true);
+            
+            StartCatchAllThread("Hotkey Detector", () =>
+            {
+                Application.Run(new MessageWindow());
+            }, true);
 
 
             StartCatchAllThread("Pipe Worker", () => PipeWorker.ServerServiceRun(), false, false);
@@ -587,7 +593,7 @@ namespace SharpAlert.ProgramWorker
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[Tuye] Unable to retrieve the DPI settings. {ex.Message}");
+                Console.WriteLine($"[Haida] Unable to retrieve the DPI settings. {ex.Message}");
                 return 100;
             }
         }
@@ -817,7 +823,7 @@ namespace SharpAlert.ProgramWorker
 
                 //if (!GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE), out uint mode))
                 //{
-                //    Console.WriteLine("[Tuye] Couldn't get console mode.");
+                //    Console.WriteLine("[Haida] Couldn't get console mode.");
                 //    //var MarshalException = new Win32Exception(unchecked(Marshal.GetLastWin32Error()));
                 //}
 
@@ -843,16 +849,16 @@ namespace SharpAlert.ProgramWorker
 
                 //if (stdinHandle == IntPtr.Zero || stdinHandle == new IntPtr(-1))
                 //{
-                //    Console.WriteLine("[Tuye] Failed to get stdin handle.");
+                //    Console.WriteLine("[Haida] Failed to get stdin handle.");
                 //}
                 //else
                 //{
-                //    Console.WriteLine("[Tuye] Got stdin handle.");
+                //    Console.WriteLine("[Haida] Got stdin handle.");
                 //}
 
                 //if (!GetConsoleMode(stdinHandle, out uint stdInMode))
                 //{
-                //    Console.WriteLine("[Tuye] Failed to get console mode.");
+                //    Console.WriteLine("[Haida] Failed to get console mode.");
                 //    return;
                 //}
 
@@ -862,7 +868,7 @@ namespace SharpAlert.ProgramWorker
 
                 //if (!SetConsoleMode(stdinHandle, stdInMode))
                 //{
-                //    Console.WriteLine("[Tuye] Failed to set console mode.");
+                //    Console.WriteLine("[Haida] Failed to set console mode.");
                 //}
 
                 object LockObject = new object();
@@ -933,7 +939,7 @@ namespace SharpAlert.ProgramWorker
             {
                 try
                 {
-                    Console.WriteLine("[Tuye] Opening the file picker.");
+                    Console.WriteLine("[Haida] Opening the file picker.");
 
                     string selectedSafePath = string.Empty;
 
@@ -948,11 +954,11 @@ namespace SharpAlert.ProgramWorker
 
                     if (fbd.ShowDialog() != DialogResult.OK)
                     {
-                        Console.WriteLine("[Tuye] No file chosen from the file picker.");
+                        Console.WriteLine("[Haida] No file chosen from the file picker.");
                         return;
                     }
 
-                    Console.WriteLine("[Tuye] Processing chosen file(s).");
+                    Console.WriteLine("[Haida] Processing chosen file(s).");
 
                     foreach (string selectedPath in fbd.FileNames)
                     {

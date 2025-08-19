@@ -135,22 +135,26 @@ namespace SharpAlert.DataProcessing
                                     FullNames = FullNames.Trim().Substring(0, FullNames.Length - 1);
                                     FullNames = FullNames.Substring(0, FullNames.Length - 1);
 
-                                    if (DiscordWebhook.SendFormattedMessage(CompiledString,
+                                    DiscordWebhook.SendFormattedMessage(CompiledString,
                                         "Expiry may not mean that the event is over completely.",
-                                        $"-# Identifier(s): {FullNames}"))
-                                    {
-                                        Notify.ShowNotification($"One or more alerts expired.",
-                                            "SharpAlert found expired alerts",
-                                            ToolTipIcon.Warning);
-                                        //AnyAlertRelayed = true;
-                                        //UsedDiscordHook = true;
-                                    }
-                                    else
-                                    {
-                                        Notify.ShowNotification($"One or more alerts expired, but we couldn't say that through Discord.",
-                                            "SharpAlert found expired alerts",
-                                            ToolTipIcon.Warning);
-                                    }
+                                        $"-# Identifier(s): {FullNames}");
+
+                                    //if (DiscordWebhook.SendFormattedMessage(CompiledString,
+                                    //    "Expiry may not mean that the event is over completely.",
+                                    //    $"-# Identifier(s): {FullNames}"))
+                                    //{
+                                    //    Notify.ShowNotification($"One or more alerts expired.",
+                                    //        "SharpAlert found expired alerts",
+                                    //        ToolTipIcon.Warning);
+                                    //    //AnyAlertRelayed = true;
+                                    //    //UsedDiscordHook = true;
+                                    //}
+                                    //else
+                                    //{
+                                    //    Notify.ShowNotification($"One or more alerts expired, but we couldn't say that through Discord.",
+                                    //        "SharpAlert found expired alerts",
+                                    //        ToolTipIcon.Warning);
+                                    //}
                                 }
                                 else
                                 {
@@ -243,7 +247,7 @@ namespace SharpAlert.DataProcessing
                     }
                     catch (Exception ex)
                     {
-                        TuyeWorker.LogFault(ex);
+                        HaidaWorker.LogFault(ex);
                     }
                 }
 

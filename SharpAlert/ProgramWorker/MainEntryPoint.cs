@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using static SharpAlert.AudioManager;
-using static SharpAlert.ProgramWorker.TuyeWorker;
+using static SharpAlert.ProgramWorker.HaidaWorker;
 using SharpAlert.SourceCapturing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -89,9 +89,9 @@ namespace SharpAlert.ProgramWorker
 
         public static Icon icon = SystemIcons.Information;
 
-        public static List<SharpDataItem> SharpDataQueue = new List<SharpDataItem>();
-        public static List<SharpDataItem> SharpDataHistory = new List<SharpDataItem>();
-        public static List<string> SharpDataRelayedNamesHistory = new List<string>();
+        public static List<SharpDataItem> SharpDataQueue { get; } = new List<SharpDataItem>();
+        public static List<SharpDataItem> SharpDataHistory { get; } = new List<SharpDataItem>();
+        public static List<string> SharpDataRelayedNamesHistory { get; }  = new List<string>();
         
         public static readonly string AssemblyFile = Process.GetCurrentProcess().MainModule.FileName;
         public static readonly string AssemblyDirectory = Path.GetDirectoryName(AssemblyFile);
@@ -101,9 +101,9 @@ namespace SharpAlert.ProgramWorker
         /// <summary>
         /// Stops everything safely. Hopefully.
         /// </summary>
-        public static void SafeExit()
+        public static void SafeExit(bool restart = false)
         {
-            Notify.ShowNotification($"Tuye is working to get everything shutdown. This may take a few moments.",
+            Notify.ShowNotification($"Haida is working to get everything shutdown. This may take a few moments.",
                 "SharpAlert is stopping",
                 ToolTipIcon.Info);
 
@@ -167,26 +167,41 @@ namespace SharpAlert.ProgramWorker
                 Finished = true;
             }).Start();
 
+            void Restart()
+            {
+                // Only restarts if the watchdog is running, maybe we need to do something to avoid this, or not.
+                Environment.Exit(100);
+            }
+
+            // The shutdown messages are just for fun lol
+
             for (int i = 0; !(i >= 15);)
             {
                 if (Finished)
                 {
-                    Console.WriteLine("Shutdown was successful. Say thanks to Tuye for his hard work... -w-");
-                    Notify.ShowNotification($"Shutdown was successful. Say thanks to Tuye for his hard work... -w-",
+                    Console.WriteLine("Shutdown was successful. Say thanks to Haida for his hard work... -w-");
+                    Notify.ShowNotification($"Shutdown was successful. Say thanks to Haida for his hard work... -w-",
                         "SharpAlert has stopped",
                         ToolTipIcon.Info);
 
-                    Environment.Exit(0);
+                    if (restart) Restart();
+                    else Environment.Exit(0);
+
+                    return;
                 }
                 Thread.Sleep(1000);
                 i++;
             }
 
-            Console.WriteLine("Shutdown timed out. Say thanks to Tuye for his hard work... -w-");
-            Notify.ShowNotification($"Shutdown timed out. Say thanks to Tuye for his hard work... -w-",
+            Console.WriteLine("Shutdown timed out. Say thanks to Haida for his hard work... -w-");
+            Notify.ShowNotification($"Shutdown timed out. Say thanks to Haida for his hard work... -w-",
                 "SharpAlert has stopped",
                 ToolTipIcon.Info);
-            Environment.Exit(0);
+            
+            if (restart) Restart();
+            else Environment.Exit(0);
+
+            return;
         }
 
         public static bool ServiceMode { get; private set; } = false;
@@ -443,7 +458,6 @@ namespace SharpAlert.ProgramWorker
                         {
                             DiscordWebhook.SendFormattedMessage($"SharpAlert is restarting.");
                         }
-
                         break;
                     default:
                         restartable = true;

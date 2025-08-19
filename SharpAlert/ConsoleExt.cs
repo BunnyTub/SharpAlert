@@ -25,7 +25,7 @@ namespace SharpAlert
                 //while ((chr = reader.Read()) != -1)
                 //{
                 //    char c = (char)chr;
-                //    Console.WriteLine($"[Tuye] Read character: {c}");
+                //    Console.WriteLine($"[Haida] Read character: {c}");
                 //}
                 if (Console.ReadKey(true).Key == ConsoleKey.Escape)
                 {

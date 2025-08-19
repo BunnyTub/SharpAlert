@@ -89,7 +89,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CountyCombo.BackColor = System.Drawing.Color.Black;
             this.CountyCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CountyCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CountyCombo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.CountyCombo.ForeColor = System.Drawing.Color.White;
             this.CountyCombo.FormattingEnabled = true;
             this.CountyCombo.Location = new System.Drawing.Point(98, 49);
@@ -113,7 +113,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.StateCombo.BackColor = System.Drawing.Color.Black;
             this.StateCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.StateCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StateCombo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.StateCombo.ForeColor = System.Drawing.Color.White;
             this.StateCombo.FormattingEnabled = true;
             this.StateCombo.Location = new System.Drawing.Point(98, 20);

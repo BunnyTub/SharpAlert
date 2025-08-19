@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SharpAlert.Properties;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
-using static SharpAlert.ProgramWorker.TuyeWorker;
+using static SharpAlert.ProgramWorker.HaidaWorker;
 using SharpAlert.ProgramWorker;
 using static SharpAlert.ThreadDrool;
 
@@ -196,8 +196,10 @@ namespace SharpAlert.WebServer
 
                 if (string.IsNullOrEmpty(methodName))
                 {
-                    await WriteResponseAsync(ctx, 404, "You must specify an endpoint.");
-                    return;
+                    methodName = "index.html";
+
+                    //await WriteResponseAsync(ctx, 404, "You must specify an endpoint.");
+                    //return;
                 }
 
                 string[] strParams = ctx.Request.Url
@@ -394,13 +396,29 @@ namespace SharpAlert.WebServer
             return $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}";
         }
 
-        [Mapping("self-destruct")]
+        [Mapping("shutdown")]
+        public object SelfDestructSafely(HttpListenerContext ctx)
+        {
+            if (AuthenticationFulfilled(ctx))
+            {
+                ctx.Response.ContentType = "text/html";
+                byte[] message = Encoding.UTF8.GetBytes("Shutdown queued.");
+                ctx.Response.OutputStream.Write(message, 0, message.Length);
+                ctx.Response.OutputStream.Close();
+                SafeExit();
+                return new NullClass();
+            }
+
+            return "You cannot just try an initiate a self-destruct sequence without authenticating!";
+        }
+        
+        [Mapping("shutdown-forcefully")]
         public object SelfDestruct(HttpListenerContext ctx)
         {
             if (AuthenticationFulfilled(ctx))
             {
                 ctx.Response.ContentType = "text/html";
-                byte[] message = Encoding.UTF8.GetBytes("<center><h1>Self-destruct sequence initiated.</h1></center>");
+                byte[] message = Encoding.UTF8.GetBytes("Shutdown queued.");
                 ctx.Response.OutputStream.Write(message, 0, message.Length);
                 ctx.Response.OutputStream.Close();
                 Environment.Exit(0);

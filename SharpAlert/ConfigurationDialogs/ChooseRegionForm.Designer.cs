@@ -140,7 +140,7 @@
             this.LinkButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             this.LinkButton.Name = "LinkButton";
             this.LinkButton.Size = new System.Drawing.Size(72, 23);
-            this.LinkButton.TabIndex = 15;
+            this.LinkButton.TabIndex = 16;
             this.LinkButton.Text = "Custom";
             this.ToolTipInformation.SetToolTip(this.LinkButton, "Click this button if you have custom servers (XML feed only).");
             this.LinkButton.UseVisualStyleBackColor = false;
@@ -168,7 +168,7 @@
             this.RegionBrazilBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             this.RegionBrazilBox.Name = "RegionBrazilBox";
             this.RegionBrazilBox.Size = new System.Drawing.Size(221, 22);
-            this.RegionBrazilBox.TabIndex = 16;
+            this.RegionBrazilBox.TabIndex = 15;
             this.RegionBrazilBox.Text = "Brazil (IDAP) [Hover for info]";
             this.ToolTipInformation.SetToolTip(this.RegionBrazilBox, "You can receive alerts from Brazil via IDAP (Divulgação de Alertas Públicos).\r\nID" +
         "AP retrival is currently experimental. Please give us feedback on it!");

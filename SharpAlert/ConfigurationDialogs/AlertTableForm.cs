@@ -6,7 +6,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Drawing;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
-using static SharpAlert.ProgramWorker.TuyeWorker;
+using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using SharpAlert.ProgramWorker;
 using SharpAlert.AlertComponents;
@@ -202,11 +202,6 @@ namespace SharpAlert.ConfigurationDialogs
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation);
             }
-        }
-
-        private void PlayTestButton_Click(object sender, EventArgs e)
-        {
-            dataproc?.ap?.ProcessAlertTest();
         }
 
         private void ConfigurationForm_VisibleChanged(object sender, EventArgs e)

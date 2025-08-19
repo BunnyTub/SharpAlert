@@ -33,6 +33,8 @@ namespace SharpAlert.DataProcessing
             while (Stop) Thread.Sleep(100);
         }
 
+        private static readonly object DiscordConfirmLockObject = new object();
+
         public void ServiceRun()
         {
             while (true)
@@ -155,11 +157,14 @@ namespace SharpAlert.DataProcessing
 
                                                         if (QuickSettings.Instance.DiscordWebhookConfirmAlerts)
                                                         {
-                                                            ManualAlertRelayForm mar = new ManualAlertRelayForm();
-                                                            mar.UpdateFields(relayItem.Name, info.AlertEventType, info.AlertIntroText, info.AlertBodyText, info.AlertURL, string.Empty, string.Empty, info.AlertMessageType);
-                                                            mar.ShowDialog();
-                                                            result = mar.DialogResult;
-                                                            mar.Dispose();
+                                                            lock (DiscordConfirmLockObject)
+                                                            {
+                                                                ManualAlertRelayForm mar = new ManualAlertRelayForm();
+                                                                mar.UpdateFields(relayItem.Name, info.AlertEventType, info.AlertIntroText, info.AlertBodyText, info.AlertURL, string.Empty, string.Empty, info.AlertMessageType);
+                                                                mar.ShowDialog();
+                                                                result = mar.DialogResult;
+                                                                mar.Dispose();
+                                                            }
                                                         }
 
                                                         if (result != DialogResult.No)
@@ -223,27 +228,42 @@ namespace SharpAlert.DataProcessing
                                                             if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + QuickSettings.Instance.DiscordWebhookAppend;
                                                             //DiscordWebhook.SendUnformattedMessage(CompiledMessage);
 
-                                                            if (DiscordWebhook.SendEmbeddedMessage(CompiledMessage, $"{info.AlertSeverity} Emergency {info.AlertMessageType.First().ToString().ToUpper() + info.AlertMessageType.Substring(1)}",
-                                                                info.AlertIntroText, info.AlertBodyText + $"\r\n\r\n||${LocationList}$||",
+                                                            DiscordWebhook.SendEmbeddedMessage(CompiledMessage,
+                                                                $"{info.AlertSeverity} Emergency {info.AlertMessageType.First().ToString().ToUpper() + info.AlertMessageType.Substring(1)}",
+                                                                info.AlertIntroText,
+                                                                info.AlertBodyText + $"\r\n\r\n||${LocationList}$||",
                                                                 info.AlertURL,
                                                                 new List<string> { info.AlertAudioURL },
                                                                 new List<string> { info.AlertImageURL },
-                                                                color))
-                                                            {
-                                                                Notify.ShowNotification($"The alert was sent {sentDate:g}. The alert expires {expiresDate:g}.",
-                                                                    info.AlertEventType,
-                                                                    ToolTipIcon.Warning);
-                                                                //AnyAlertRelayed = true;
-                                                                //UsedDiscordHook = true;
-                                                            }
-                                                            else
-                                                            {
-                                                                Notify.ShowNotification($"The alert was sent {sentDate:g}. The alert expires {expiresDate:g}. The alert could not be relayed to Discord.",
-                                                                    info.AlertEventType,
-                                                                    ToolTipIcon.Warning);
-                                                                //AnyAlertRelayed = true;
-                                                                //UsedDiscordHook = true;
-                                                            }
+                                                                color);
+
+                                                            Notify.ShowNotification($"The alert was sent {sentDate:g}. The alert expires {expiresDate:g}.",
+                                                                info.AlertEventType,
+                                                                ToolTipIcon.Info);
+
+                                                            //if (DiscordWebhook.SendEmbeddedMessage(CompiledMessage,
+                                                            //    $"{info.AlertSeverity} Emergency {info.AlertMessageType.First().ToString().ToUpper() + info.AlertMessageType.Substring(1)}",
+                                                            //    info.AlertIntroText,
+                                                            //    info.AlertBodyText + $"\r\n\r\n||${LocationList}$||",
+                                                            //    info.AlertURL,
+                                                            //    new List<string> { info.AlertAudioURL },
+                                                            //    new List<string> { info.AlertImageURL },
+                                                            //    color))
+                                                            //{
+                                                            //    Notify.ShowNotification($"The alert was sent {sentDate:g}. The alert expires {expiresDate:g}.",
+                                                            //        info.AlertEventType,
+                                                            //        ToolTipIcon.Info);
+                                                            //    //AnyAlertRelayed = true;
+                                                            //    //UsedDiscordHook = true;
+                                                            //}
+                                                            //else
+                                                            //{
+                                                            //    Notify.ShowNotification($"The alert was unable to be relayed to Discord.",
+                                                            //        info.AlertEventType,
+                                                            //        ToolTipIcon.Warning);
+                                                            //    //AnyAlertRelayed = true;
+                                                            //    //UsedDiscordHook = true;
+                                                            //}
                                                         }
                                                     }
 

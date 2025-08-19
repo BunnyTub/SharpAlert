@@ -48,13 +48,13 @@
             this.alertPlayStartToneTwiceBox = new System.Windows.Forms.CheckBox();
             this.statusWindowBox = new System.Windows.Forms.CheckBox();
             this.NoSystemSleepBox = new System.Windows.Forms.CheckBox();
+            this.alertAutoPrintingEnabledBox = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.AlertTextButton = new System.Windows.Forms.Button();
-            this.alertAutoPrintingEnabledBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
@@ -153,7 +153,12 @@
             // 
             this.alertFullscreenDisplayInput.Location = new System.Drawing.Point(168, 86);
             this.alertFullscreenDisplayInput.Maximum = new decimal(new int[] {
-            8,
+            16,
+            0,
+            0,
+            0});
+            this.alertFullscreenDisplayInput.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
@@ -161,6 +166,11 @@
             this.alertFullscreenDisplayInput.Size = new System.Drawing.Size(37, 21);
             this.alertFullscreenDisplayInput.TabIndex = 2;
             this.ToolTipInformation.SetToolTip(this.alertFullscreenDisplayInput, "The screen to display the alert and idle panels on.");
+            this.alertFullscreenDisplayInput.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // alertFullscreenIdleBox
             // 
@@ -222,7 +232,7 @@
             // 
             this.AlertFullscreenCombo.BackColor = System.Drawing.Color.Black;
             this.AlertFullscreenCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.AlertFullscreenCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AlertFullscreenCombo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.AlertFullscreenCombo.ForeColor = System.Drawing.Color.White;
             this.AlertFullscreenCombo.FormattingEnabled = true;
             this.AlertFullscreenCombo.Location = new System.Drawing.Point(110, 57);
@@ -235,7 +245,7 @@
             // 
             this.WindowLocationCombo.BackColor = System.Drawing.Color.Black;
             this.WindowLocationCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.WindowLocationCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.WindowLocationCombo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.WindowLocationCombo.ForeColor = System.Drawing.Color.White;
             this.WindowLocationCombo.FormattingEnabled = true;
             this.WindowLocationCombo.Location = new System.Drawing.Point(110, 162);
@@ -277,6 +287,17 @@
             this.NoSystemSleepBox.Text = "Prevent sleep mode";
             this.ToolTipInformation.SetToolTip(this.NoSystemSleepBox, "Prevents the system from entering sleep mode at all times.");
             this.NoSystemSleepBox.UseVisualStyleBackColor = true;
+            // 
+            // alertAutoPrintingEnabledBox
+            // 
+            this.alertAutoPrintingEnabledBox.AutoSize = true;
+            this.alertAutoPrintingEnabledBox.Location = new System.Drawing.Point(383, 142);
+            this.alertAutoPrintingEnabledBox.Name = "alertAutoPrintingEnabledBox";
+            this.alertAutoPrintingEnabledBox.Size = new System.Drawing.Size(128, 19);
+            this.alertAutoPrintingEnabledBox.TabIndex = 42;
+            this.alertAutoPrintingEnabledBox.Text = "Print relayed alerts";
+            this.ToolTipInformation.SetToolTip(this.alertAutoPrintingEnabledBox, "Prints relayed alerts. This feature is only available if dialogs are enabled.");
+            this.alertAutoPrintingEnabledBox.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -342,17 +363,6 @@
             this.AlertTextButton.Text = "Alert Text";
             this.AlertTextButton.UseVisualStyleBackColor = false;
             this.AlertTextButton.Click += new System.EventHandler(this.AlertTextButton_Click);
-            // 
-            // alertAutoPrintingEnabledBox
-            // 
-            this.alertAutoPrintingEnabledBox.AutoSize = true;
-            this.alertAutoPrintingEnabledBox.Location = new System.Drawing.Point(383, 142);
-            this.alertAutoPrintingEnabledBox.Name = "alertAutoPrintingEnabledBox";
-            this.alertAutoPrintingEnabledBox.Size = new System.Drawing.Size(128, 19);
-            this.alertAutoPrintingEnabledBox.TabIndex = 42;
-            this.alertAutoPrintingEnabledBox.Text = "Print relayed alerts";
-            this.ToolTipInformation.SetToolTip(this.alertAutoPrintingEnabledBox, "Prints relayed alerts. This feature is only available if dialogs are enabled.");
-            this.alertAutoPrintingEnabledBox.UseVisualStyleBackColor = true;
             // 
             // StyleConfigurationForm
             // 

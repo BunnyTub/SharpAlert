@@ -35,7 +35,7 @@ namespace SharpAlert.AlertComponents
             // reset to defaults every time
             EventType = "Standard Test";
             EventDescription = Resources.TestScript;
-            EventURL = "https://sharpalert.bunnytub.com";
+            EventURL = "https://bunnytub.com/SharpAlert";
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)

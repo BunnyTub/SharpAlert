@@ -141,7 +141,7 @@ namespace SharpAlert.ConfigurationDialogs
                 {
                     QuickSettings.Instance.EnforceEventBlacklist.Add(EventBlacklistInput.Text);
                     EventBlacklistOutput.Clear();
-                    foreach (string area in QuickSettings.Instance.AllowedCAPCPLocations_Geocodes)
+                    foreach (string area in QuickSettings.Instance.EnforceEventBlacklist)
                     {
                         EventBlacklistOutput.Text = $"{area}\r\n{EventBlacklistOutput.Text}";
                     }

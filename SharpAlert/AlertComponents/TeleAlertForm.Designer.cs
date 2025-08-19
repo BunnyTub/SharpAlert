@@ -41,7 +41,6 @@
             this.MainPanel = new System.Windows.Forms.Panel();
             this.AutoHideButtons = new System.Windows.Forms.Timer(this.components);
             this.InfoTip = new System.Windows.Forms.ToolTip(this.components);
-            this.ScreenshotButton = new System.Windows.Forms.Button();
             this.DismissButton = new System.Windows.Forms.Button();
             this.LinkButton = new System.Windows.Forms.Button();
             this.TerminateSelf = new System.Windows.Forms.Timer(this.components);
@@ -153,30 +152,12 @@
             this.InfoTip.ReshowDelay = 50;
             this.InfoTip.ToolTipTitle = "What does this do?";
             // 
-            // ScreenshotButton
-            // 
-            this.ScreenshotButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ScreenshotButton.BackColor = System.Drawing.Color.White;
-            this.ScreenshotButton.Enabled = false;
-            this.ScreenshotButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ScreenshotButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
-            this.ScreenshotButton.ForeColor = System.Drawing.Color.Black;
-            this.ScreenshotButton.Location = new System.Drawing.Point(1192, 3);
-            this.ScreenshotButton.Name = "ScreenshotButton";
-            this.ScreenshotButton.Size = new System.Drawing.Size(35, 35);
-            this.ScreenshotButton.TabIndex = 12;
-            this.ScreenshotButton.Text = "📸";
-            this.InfoTip.SetToolTip(this.ScreenshotButton, "Takes a screenshot of the alert window, and saves the image to the disk.");
-            this.ScreenshotButton.UseVisualStyleBackColor = false;
-            this.ScreenshotButton.Visible = false;
-            this.ScreenshotButton.Click += new System.EventHandler(this.ScreenshotButton_Click);
-            // 
             // DismissButton
             // 
             this.DismissButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.DismissButton.BackColor = System.Drawing.Color.White;
             this.DismissButton.Enabled = false;
-            this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.DismissButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
             this.DismissButton.ForeColor = System.Drawing.Color.Black;
             this.DismissButton.Location = new System.Drawing.Point(1233, 3);
@@ -194,7 +175,7 @@
             this.LinkButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.LinkButton.BackColor = System.Drawing.Color.White;
             this.LinkButton.Enabled = false;
-            this.LinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.LinkButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
             this.LinkButton.ForeColor = System.Drawing.Color.Black;
             this.LinkButton.Location = new System.Drawing.Point(1192, 3);
@@ -217,7 +198,6 @@
             // 
             this.OutlineContainerPanel.Controls.Add(this.LinkButton);
             this.OutlineContainerPanel.Controls.Add(this.MainPanel);
-            this.OutlineContainerPanel.Controls.Add(this.ScreenshotButton);
             this.OutlineContainerPanel.Controls.Add(this.DismissButton);
             this.OutlineContainerPanel.Controls.Add(this.SubtitlePanel);
             this.OutlineContainerPanel.Controls.Add(this.TitleText);
@@ -393,7 +373,6 @@
         private System.Windows.Forms.ToolTip InfoTip;
         private System.Windows.Forms.Timer TerminateSelf;
         private System.Windows.Forms.Panel OutlineContainerPanel;
-        private System.Windows.Forms.Button ScreenshotButton;
         private System.Windows.Forms.Button DismissButton;
         private System.Windows.Forms.Button LinkButton;
         private System.Windows.Forms.Label TitleText;

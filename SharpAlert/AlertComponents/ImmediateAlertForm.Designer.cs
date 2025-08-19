@@ -129,7 +129,7 @@
             this.DismissButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.DismissButton.BackColor = System.Drawing.Color.White;
             this.DismissButton.Enabled = false;
-            this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.DismissButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
             this.DismissButton.ForeColor = System.Drawing.Color.Black;
             this.DismissButton.Location = new System.Drawing.Point(1233, 3);

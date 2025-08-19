@@ -37,6 +37,8 @@ namespace SharpAlert.ConfigurationDialogs
 
             AudioDeviceCombo.SelectedItem = QuickSettings.Instance.ProgramAudioOutput;
 
+            ShowRefreshTip.Start();
+
             if (Initialized) return;
             Initialized = true;
 
@@ -305,6 +307,12 @@ namespace SharpAlert.ConfigurationDialogs
             });
             staThread.SetApartmentState(ApartmentState.STA);
             staThread.Start();
+        }
+
+        private void ShowRefreshTip_Tick(object sender, EventArgs e)
+        {
+            ShowRefreshTip.Stop();
+            ToolTipInformation.Show("Click here to repopulate the audio outputs list.", this, 5000, 552, 57);
         }
     }
 }

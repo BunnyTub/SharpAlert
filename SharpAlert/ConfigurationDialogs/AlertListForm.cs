@@ -6,10 +6,11 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Drawing;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
-using static SharpAlert.ProgramWorker.TuyeWorker;
+using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using SharpAlert.ProgramWorker;
 using SharpAlert.AlertComponents;
+using System.Collections.Generic;
 
 namespace SharpAlert.ConfigurationDialogs
 {
@@ -171,6 +172,81 @@ namespace SharpAlert.ConfigurationDialogs
             PastAlertsGroup.Enabled = true;
         }
 
+        private void AlertHistoryReplayAllButton_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Do you want to process all alerts again?\r\nThis may take some time.", "SharpAlert",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question) != DialogResult.Yes)
+            {
+                return;
+            }
+
+            PastAlertsGroup.Enabled = false;
+            Thread.Sleep(500);
+            try
+            {
+                RefreshAlertHistory();
+                if (SharpDataHistory.Count != 0)
+                {
+                    lock (SharpDataQueue)
+                    {
+                        lock (SharpDataHistory)
+                        {
+                            List<SharpDataItem> DataItems = new List<SharpDataItem>();
+                            DataItems.AddRange(SharpDataHistory);
+                            SharpDataHistory.Clear();
+                            SharpDataQueue.AddRange(DataItems);
+
+                            //if (alert.Data.Contains("<SharpAlertReplay>false</SharpAlertReplay>"))
+                            //{
+                            //    alert.Data = alert.Data.Replace("<SharpAlertReplay>false</SharpAlertReplay>", "<SharpAlertReplay>true</SharpAlertReplay>");
+                            //}
+                            //else
+                            //{
+                            //    alert.Data += "<SharpAlertReplay>true</SharpAlertReplay>";
+                            //}
+
+                            //AlertInfo alertInfo = dataproc.ap.ProcessAlertItem(alert, true, false);
+
+                            //if (alertInfo == null)
+                            //{
+                            //    MessageBox.Show("The alert does not meet the requirements you've set, so it has not been relayed.",
+                            //        "SharpAlert",
+                            //        MessageBoxButtons.OK,
+                            //        MessageBoxIcon.Exclamation);
+                            //}
+                            //else
+                            //{
+                            //    if (!string.IsNullOrWhiteSpace(alertInfo.AlertDiscardReason))
+                            //    {
+                            //        MessageBox.Show($"{alertInfo.AlertDiscardReason}",
+                            //            "SharpAlert",
+                            //            MessageBoxButtons.OK,
+                            //            MessageBoxIcon.Exclamation);
+                            //    }
+                            //}
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show($"There are no items in the history.",
+                        "SharpAlert",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}",
+                    "SharpAlert",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+            }
+
+            Thread.Sleep(500);
+            PastAlertsGroup.Enabled = true;
+        }
         private void AlertHistoryDumpLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             DialogResult result = MessageBox.Show("Export all alerts separately?\r\n" +
@@ -192,13 +268,21 @@ namespace SharpAlert.ConfigurationDialogs
                         //BundledAlerts_Timestamp.cap
                         if (result == DialogResult.Yes)
                         {
+                            char[] invalidChars = Path.GetInvalidFileNameChars();
+
                             foreach (var item in SharpDataHistory)
                             {
                                 string name = item.Name;
-                                // some names relayed love having illegal filepath characters
-                                // this is the best fix I can think of, other than just using an MD5 of the data
-                                name = string.Join("_", name.Split(Path.GetInvalidFileNameChars()));
-                                File.WriteAllText(directory + "\\" + name + ".cap", item.Data);
+
+                                foreach (char character in name)
+                                {
+                                    if (invalidChars.Contains(character))
+                                    {
+                                        name = name.Replace(character, '_');
+                                    }
+                                }
+
+                                File.WriteAllText(directory + "\\" + name + ".xml", item.Data);
                             }
                         }
                         else
@@ -212,7 +296,7 @@ namespace SharpAlert.ConfigurationDialogs
                                     FullData += $"{item.Data}";
                                 }
 
-                                File.WriteAllText(directory + $"\\Bundled_{DateTime.UtcNow.Ticks}.cap", FullData);
+                                File.WriteAllText(directory + $"\\Bundled_{DateTime.UtcNow.Ticks}.xml", FullData);
                             }
                         }
                     }
@@ -243,7 +327,7 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void PlayTestButton_Click(object sender, EventArgs e)
         {
-            dataproc?.ap?.ProcessAlertTest();
+            ProcessAlertTest();
         }
 
         private void ImportFileButton_Click(object sender, EventArgs e)
@@ -265,20 +349,6 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void ConfigurationForm_VisibleChanged(object sender, EventArgs e)
         {
-        }
-
-        private void AudioDeviceMessage_Tick(object sender, EventArgs e)
-        {
-        }
-
-        private void AppliedLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            MessageBox.Show("All settings (except select few) are applied immediately.\r\n" +
-                "You'll be notified if a setting requires a restart.\r\n\r\n" +
-                "Your changes are saved upon exiting the program.",
-                "SharpAlert",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
         }
 
         private void RevealButton_Click(object sender, EventArgs e)
@@ -361,11 +431,6 @@ namespace SharpAlert.ConfigurationDialogs
             }
             Thread.Sleep(500);
             PastAlertsGroup.Enabled = true;
-        }
-
-        private void ConfigurationPanel_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

@@ -321,7 +321,6 @@ namespace SharpAlert.AlertComponents
         private void UnlockButtons(bool unlocked)
         {
             DismissButton.Enabled = unlocked;
-            ScreenshotButton.Enabled = unlocked;
             LinkButton.Enabled = unlocked;
         }
 
@@ -372,7 +371,6 @@ namespace SharpAlert.AlertComponents
                 MouseMoving.Stop();
                 DismissButton.Visible = true;
                 LinkButton.Visible = true;
-                ScreenshotButton.Visible = true;
                 AutoHideButtons.Start();
             }
         }
@@ -382,51 +380,8 @@ namespace SharpAlert.AlertComponents
             AutoHideButtons.Stop();
             DismissButton.Visible = true;
             LinkButton.Visible = true;
-            ScreenshotButton.Visible = true;
             localCursorPosition = Cursor.Position;
             MouseMoving.Start();
-        }
-
-        private void ScreenshotButton_Click(object sender, EventArgs e)
-        {
-            AutoExit.Stop();
-            MouseMoving.Stop();
-            AutoHideButtons.Stop();
-            UnlockButtons(false);
-            
-            try
-            {
-                Bitmap bitmap = new Bitmap(this.ClientSize.Width, this.ClientSize.Height);
-                this.DrawToBitmap(bitmap, Bounds);
-                using (Graphics g = Graphics.FromImage(bitmap))
-                {
-                    int barHeight = 30;
-                    int imageWidth = bitmap.Width;
-                    int imageHeight = bitmap.Height;
-
-                    using (SolidBrush coolTransparency = new SolidBrush(Color.FromArgb(140, 255, 0, 0)))
-                    {
-                        g.FillRectangle(coolTransparency, new Rectangle(0, imageHeight - barHeight, imageWidth, barHeight));
-                    }
-
-                    using (Font drawFont = new Font("Arial", 12, FontStyle.Bold))
-                    using (SolidBrush drawBrush = new SolidBrush(Color.White))
-                    {
-                        string text = "SharpAlert | Safety is never a non-priority. | https://sharpalert.bunnytub.com/";
-                        SizeF textSize = g.MeasureString(text, drawFont);
-                        float x = (imageWidth - textSize.Width) / 2;
-                        float y = imageHeight - barHeight + (barHeight - textSize.Height) / 2;
-                        g.DrawString(text, drawFont, drawBrush, new PointF(x, y));
-                    }
-                }
-                bitmap.Save($"SharpAlert-{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.bmp");
-                bitmap.Dispose();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "SharpAlert");
-            }
-            this.Close();
         }
 
         private void TerminateSelf_Tick(object sender, EventArgs e)
@@ -453,6 +408,21 @@ namespace SharpAlert.AlertComponents
                 //BottomOutlinePanel.BackColor = Color.SlateGray;
             }
             FlashTwo = !FlashTwo;
+        }
+
+        private int EnsureForTick = 5;
+
+        private void EnsureTopWindow_Tick(object sender, EventArgs e)
+        {
+            this.BringToFront();
+            this.Activate();
+            EnsureForTick--;
+
+            if (EnsureForTick == 0)
+            {
+                EnsureTopWindow.Stop();
+                return;
+            }
         }
     }
 }

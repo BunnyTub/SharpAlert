@@ -244,7 +244,11 @@ namespace SharpAlert
                         Process.Start($"{ConfigDirPath}");
                         break;
                     case DialogResult.Retry:
-                        _instance.Reset();
+                        File.Delete(ConfigPath);
+                        Environment.Exit(100);
+                        break;
+                    case DialogResult.Ignore:
+                        Environment.Exit(0);
                         break;
                 }
 

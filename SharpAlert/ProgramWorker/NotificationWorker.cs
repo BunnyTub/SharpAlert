@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using SharpAlert.ConfigurationDialogs;
 using SharpAlert.Properties;
-using static SharpAlert.ProgramWorker.TuyeWorker;
+using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 
 namespace SharpAlert.ProgramWorker

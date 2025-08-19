@@ -39,13 +39,13 @@
             this.InfoTip = new System.Windows.Forms.ToolTip(this.components);
             this.LinkButton = new System.Windows.Forms.Button();
             this.DismissButton = new System.Windows.Forms.Button();
-            this.ScreenshotButton = new System.Windows.Forms.Button();
             this.TerminateSelf = new System.Windows.Forms.Timer(this.components);
             this.WindowFlash = new System.Windows.Forms.Timer(this.components);
             this.BottomOutlinePanel = new System.Windows.Forms.Panel();
             this.LogoBox = new System.Windows.Forms.PictureBox();
             this.OutlineContainerPanel = new System.Windows.Forms.Panel();
             this.AlertText = new SharpAlert.WinFormsControls.ToolboxStuff.MarqueeLabel();
+            this.EnsureTopWindow = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             this.OutlineContainerPanel.SuspendLayout();
             this.SuspendLayout();
@@ -103,7 +103,7 @@
             this.LinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.LinkButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
             this.LinkButton.ForeColor = System.Drawing.Color.Black;
-            this.LinkButton.Location = new System.Drawing.Point(1160, 102);
+            this.LinkButton.Location = new System.Drawing.Point(1201, 102);
             this.LinkButton.Name = "LinkButton";
             this.LinkButton.Size = new System.Drawing.Size(35, 35);
             this.LinkButton.TabIndex = 13;
@@ -130,24 +130,6 @@
             this.DismissButton.UseVisualStyleBackColor = false;
             this.DismissButton.Visible = false;
             this.DismissButton.Click += new System.EventHandler(this.DismissButton_Click);
-            // 
-            // ScreenshotButton
-            // 
-            this.ScreenshotButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ScreenshotButton.BackColor = System.Drawing.Color.White;
-            this.ScreenshotButton.Enabled = false;
-            this.ScreenshotButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.ScreenshotButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
-            this.ScreenshotButton.ForeColor = System.Drawing.Color.Black;
-            this.ScreenshotButton.Location = new System.Drawing.Point(1201, 102);
-            this.ScreenshotButton.Name = "ScreenshotButton";
-            this.ScreenshotButton.Size = new System.Drawing.Size(35, 35);
-            this.ScreenshotButton.TabIndex = 12;
-            this.ScreenshotButton.Text = "📸";
-            this.InfoTip.SetToolTip(this.ScreenshotButton, "Takes a screenshot of the alert window, and saves the image to the disk.");
-            this.ScreenshotButton.UseVisualStyleBackColor = false;
-            this.ScreenshotButton.Visible = false;
-            this.ScreenshotButton.Click += new System.EventHandler(this.ScreenshotButton_Click);
             // 
             // TerminateSelf
             // 
@@ -188,7 +170,6 @@
             this.OutlineContainerPanel.BackColor = System.Drawing.Color.Magenta;
             this.OutlineContainerPanel.Controls.Add(this.LogoBox);
             this.OutlineContainerPanel.Controls.Add(this.BottomOutlinePanel);
-            this.OutlineContainerPanel.Controls.Add(this.ScreenshotButton);
             this.OutlineContainerPanel.Controls.Add(this.DismissButton);
             this.OutlineContainerPanel.Controls.Add(this.LinkButton);
             this.OutlineContainerPanel.Controls.Add(this.AlertText);
@@ -213,6 +194,12 @@
             this.AlertText.Text = "Alert Message";
             this.AlertText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.AlertText.UseCustomPixelCount = false;
+            // 
+            // EnsureTopWindow
+            // 
+            this.EnsureTopWindow.Enabled = true;
+            this.EnsureTopWindow.Interval = 1000;
+            this.EnsureTopWindow.Tick += new System.EventHandler(this.EnsureTopWindow_Tick);
             // 
             // ScrollAlertForm
             // 
@@ -258,11 +245,11 @@
         private System.Windows.Forms.Timer WindowFlash;
         private System.Windows.Forms.Button LinkButton;
         private System.Windows.Forms.Button DismissButton;
-        private System.Windows.Forms.Button ScreenshotButton;
         private System.Windows.Forms.Panel BottomOutlinePanel;
         private System.Windows.Forms.PictureBox LogoBox;
         private System.Windows.Forms.Panel OutlineContainerPanel;
         private WinFormsControls.ToolboxStuff.MarqueeLabel AlertText;
+        private System.Windows.Forms.Timer EnsureTopWindow;
     }
 }
 

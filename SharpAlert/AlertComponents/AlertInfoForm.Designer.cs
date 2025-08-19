@@ -63,7 +63,7 @@
             // 
             this.DismissButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DismissButton.BackColor = System.Drawing.Color.White;
-            this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.DismissButton.Font = new System.Drawing.Font("Arial", 16F);
             this.DismissButton.ForeColor = System.Drawing.Color.Black;
             this.DismissButton.Location = new System.Drawing.Point(598, 329);
@@ -161,7 +161,7 @@
             this.AlertLinkText.Size = new System.Drawing.Size(545, 35);
             this.AlertLinkText.TabIndex = 11;
             this.AlertLinkText.TabStop = true;
-            this.AlertLinkText.Text = "https://sharpalert.bunnytub.com/";
+            this.AlertLinkText.Text = "https://bunnytub.com/SharpAlert";
             this.AlertLinkText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.AlertLinkText.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AlertLinkText_LinkClicked);
             // 

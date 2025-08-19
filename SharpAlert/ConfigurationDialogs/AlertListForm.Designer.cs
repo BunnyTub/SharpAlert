@@ -42,6 +42,7 @@
             this.RevealAlertIdentifierInput = new System.Windows.Forms.TextBox();
             this.RevealButton = new System.Windows.Forms.Button();
             this.RevealRecentButton = new System.Windows.Forms.Button();
+            this.AlertHistoryReplayAllButton = new System.Windows.Forms.Button();
             this.PastAlertsGroup = new System.Windows.Forms.GroupBox();
             this.AlertHistoryText = new System.Windows.Forms.Label();
             this.ConfigurationPanel = new System.Windows.Forms.Panel();
@@ -70,7 +71,7 @@
             this.AlertHistoryClearButton.Location = new System.Drawing.Point(592, 78);
             this.AlertHistoryClearButton.Name = "AlertHistoryClearButton";
             this.AlertHistoryClearButton.Size = new System.Drawing.Size(72, 93);
-            this.AlertHistoryClearButton.TabIndex = 26;
+            this.AlertHistoryClearButton.TabIndex = 27;
             this.AlertHistoryClearButton.Text = "Clear\r\nHistory";
             this.ToolTipInformation.SetToolTip(this.AlertHistoryClearButton, "Clears the history list.");
             this.AlertHistoryClearButton.UseVisualStyleBackColor = false;
@@ -100,8 +101,8 @@
             this.AlertHistoryReplayRecentButton.Size = new System.Drawing.Size(72, 23);
             this.AlertHistoryReplayRecentButton.TabIndex = 22;
             this.AlertHistoryReplayRecentButton.Text = "Replay";
-            this.ToolTipInformation.SetToolTip(this.AlertHistoryReplayRecentButton, "Immediately calls the Alert Proccessor to process the most recent alert again.\r\nE" +
-        "xpiry does not affect whether or not an alert can be replayed.");
+            this.ToolTipInformation.SetToolTip(this.AlertHistoryReplayRecentButton, "Reimports the most recent alert after removing it from history.\r\nExpiry does not " +
+        "affect whether or not an alert can be replayed.");
             this.AlertHistoryReplayRecentButton.UseVisualStyleBackColor = false;
             this.AlertHistoryReplayRecentButton.Click += new System.EventHandler(this.AlertHistoryReplayRecentButton_Click);
             // 
@@ -113,7 +114,7 @@
             this.AlertHistoryDumpLink.Location = new System.Drawing.Point(401, 17);
             this.AlertHistoryDumpLink.Name = "AlertHistoryDumpLink";
             this.AlertHistoryDumpLink.Size = new System.Drawing.Size(107, 15);
-            this.AlertHistoryDumpLink.TabIndex = 16;
+            this.AlertHistoryDumpLink.TabIndex = 30;
             this.AlertHistoryDumpLink.TabStop = true;
             this.AlertHistoryDumpLink.Text = "Export alert history";
             this.ToolTipInformation.SetToolTip(this.AlertHistoryDumpLink, "Dumps the alert history to a folder named \"dump\", then opens the folder in File E" +
@@ -163,7 +164,7 @@
             this.PlayTestButton.Location = new System.Drawing.Point(592, 20);
             this.PlayTestButton.Name = "PlayTestButton";
             this.PlayTestButton.Size = new System.Drawing.Size(72, 23);
-            this.PlayTestButton.TabIndex = 24;
+            this.PlayTestButton.TabIndex = 23;
             this.PlayTestButton.Text = "New Alert";
             this.ToolTipInformation.SetToolTip(this.PlayTestButton, "Opens the alert editor window.");
             this.PlayTestButton.UseVisualStyleBackColor = false;
@@ -177,10 +178,10 @@
             this.ImportFileButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.ImportFileButton.Font = new System.Drawing.Font("Arial", 9F);
             this.ImportFileButton.ForeColor = System.Drawing.Color.White;
-            this.ImportFileButton.Location = new System.Drawing.Point(514, 49);
+            this.ImportFileButton.Location = new System.Drawing.Point(514, 78);
             this.ImportFileButton.Name = "ImportFileButton";
-            this.ImportFileButton.Size = new System.Drawing.Size(72, 122);
-            this.ImportFileButton.TabIndex = 23;
+            this.ImportFileButton.Size = new System.Drawing.Size(72, 93);
+            this.ImportFileButton.TabIndex = 26;
             this.ImportFileButton.Text = "Add File To Queue";
             this.ToolTipInformation.SetToolTip(this.ImportFileButton, resources.GetString("ImportFileButton.ToolTip"));
             this.ImportFileButton.UseVisualStyleBackColor = false;
@@ -195,7 +196,7 @@
             this.RevealAlertIdentifierInput.ForeColor = System.Drawing.Color.White;
             this.RevealAlertIdentifierInput.Location = new System.Drawing.Point(6, 150);
             this.RevealAlertIdentifierInput.Name = "RevealAlertIdentifierInput";
-            this.RevealAlertIdentifierInput.Size = new System.Drawing.Size(380, 21);
+            this.RevealAlertIdentifierInput.Size = new System.Drawing.Size(370, 21);
             this.RevealAlertIdentifierInput.TabIndex = 19;
             this.ToolTipInformation.SetToolTip(this.RevealAlertIdentifierInput, "The alert identifier you want to access.");
             this.RevealAlertIdentifierInput.UseSystemPasswordChar = true;
@@ -206,10 +207,10 @@
             this.RevealButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.RevealButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.RevealButton.Font = new System.Drawing.Font("Arial", 9F);
-            this.RevealButton.Location = new System.Drawing.Point(392, 148);
+            this.RevealButton.Location = new System.Drawing.Point(382, 148);
             this.RevealButton.Name = "RevealButton";
-            this.RevealButton.Size = new System.Drawing.Size(55, 23);
-            this.RevealButton.TabIndex = 20;
+            this.RevealButton.Size = new System.Drawing.Size(60, 23);
+            this.RevealButton.TabIndex = 28;
             this.RevealButton.Text = "Show";
             this.ToolTipInformation.SetToolTip(this.RevealButton, "Reveal more information about a specific identifier in the list.");
             this.RevealButton.UseMnemonic = false;
@@ -222,21 +223,36 @@
             this.RevealRecentButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.RevealRecentButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.RevealRecentButton.Font = new System.Drawing.Font("Arial", 9F);
-            this.RevealRecentButton.Location = new System.Drawing.Point(453, 148);
+            this.RevealRecentButton.Location = new System.Drawing.Point(448, 148);
             this.RevealRecentButton.Name = "RevealRecentButton";
-            this.RevealRecentButton.Size = new System.Drawing.Size(55, 23);
-            this.RevealRecentButton.TabIndex = 21;
+            this.RevealRecentButton.Size = new System.Drawing.Size(60, 23);
+            this.RevealRecentButton.TabIndex = 29;
             this.RevealRecentButton.Text = "Recent";
             this.ToolTipInformation.SetToolTip(this.RevealRecentButton, "Reveal more information about the most recent alert in the list.");
             this.RevealRecentButton.UseMnemonic = false;
             this.RevealRecentButton.UseVisualStyleBackColor = false;
             this.RevealRecentButton.Click += new System.EventHandler(this.RevealRecentButton_Click);
             // 
+            // AlertHistoryReplayAllButton
+            // 
+            this.AlertHistoryReplayAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.AlertHistoryReplayAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.AlertHistoryReplayAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.AlertHistoryReplayAllButton.Location = new System.Drawing.Point(514, 49);
+            this.AlertHistoryReplayAllButton.Name = "AlertHistoryReplayAllButton";
+            this.AlertHistoryReplayAllButton.Size = new System.Drawing.Size(72, 23);
+            this.AlertHistoryReplayAllButton.TabIndex = 24;
+            this.AlertHistoryReplayAllButton.Text = "Replay All";
+            this.ToolTipInformation.SetToolTip(this.AlertHistoryReplayAllButton, "Processes all alerts in the history again.\r\nThey will be processed as normal.");
+            this.AlertHistoryReplayAllButton.UseVisualStyleBackColor = false;
+            this.AlertHistoryReplayAllButton.Click += new System.EventHandler(this.AlertHistoryReplayAllButton_Click);
+            // 
             // PastAlertsGroup
             // 
             this.PastAlertsGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.PastAlertsGroup.Controls.Add(this.AlertHistoryReplayAllButton);
             this.PastAlertsGroup.Controls.Add(this.RevealRecentButton);
             this.PastAlertsGroup.Controls.Add(this.RevealButton);
             this.PastAlertsGroup.Controls.Add(this.RevealAlertIdentifierInput);
@@ -273,7 +289,6 @@
             this.ConfigurationPanel.Name = "ConfigurationPanel";
             this.ConfigurationPanel.Size = new System.Drawing.Size(694, 201);
             this.ConfigurationPanel.TabIndex = 13;
-            this.ConfigurationPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.ConfigurationPanel_Paint);
             // 
             // AlertListRefresher
             // 
@@ -323,5 +338,6 @@
         private System.Windows.Forms.Button RevealRecentButton;
         private System.Windows.Forms.Button RevealButton;
         private System.Windows.Forms.TextBox RevealAlertIdentifierInput;
+        private System.Windows.Forms.Button AlertHistoryReplayAllButton;
     }
 }

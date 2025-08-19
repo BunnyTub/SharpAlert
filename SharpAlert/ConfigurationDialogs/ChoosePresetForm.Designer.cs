@@ -133,7 +133,7 @@
             this.label1.Text = "To change these options later, go to Settings (under CAP Settings).";
             this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
-            // PresetForm
+            // ChoosePresetForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
@@ -147,11 +147,12 @@
             this.Controls.Add(this.LogoBox);
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "PresetForm";
+            this.Name = "ChoosePresetForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert - Alert Presets";
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();

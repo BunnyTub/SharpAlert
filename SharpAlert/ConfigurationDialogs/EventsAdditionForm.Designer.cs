@@ -84,7 +84,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.EventCombo.BackColor = System.Drawing.Color.Black;
             this.EventCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.EventCombo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EventCombo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.EventCombo.ForeColor = System.Drawing.Color.White;
             this.EventCombo.FormattingEnabled = true;
             this.EventCombo.Location = new System.Drawing.Point(49, 20);

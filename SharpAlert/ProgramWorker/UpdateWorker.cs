@@ -22,7 +22,7 @@ namespace SharpAlert.ProgramWorker
                         Timeout = TimeSpan.FromMinutes(5)
                     };
 
-                    UpdateClient_.DefaultRequestHeaders.UserAgent.ParseAdd(TuyeWorker.SelfUserAgent);
+                    UpdateClient_.DefaultRequestHeaders.UserAgent.ParseAdd(HaidaWorker.SelfUserAgent);
                 }
 
                 return UpdateClient_;
@@ -45,7 +45,7 @@ namespace SharpAlert.ProgramWorker
 
             try
             {
-                Task<byte[]> result = UpdateClient.GetByteArrayAsync(TuyeWorker.IdentityURL + $"/Releases/v{UpdateToVersion}/SharpAlert.exe");
+                Task<byte[]> result = UpdateClient.GetByteArrayAsync(HaidaWorker.IdentityURL + $"/Releases/v{UpdateToVersion}/SharpAlert.exe");
                 Console.WriteLine($"[Update Worker] SharpAlert v{UpdateToVersion} executable is downloading.");
                 result.Wait();
                 if (File.Exists(MainEntryPoint.AssemblyFile + "_")) File.Delete(MainEntryPoint.AssemblyFile + "_");
