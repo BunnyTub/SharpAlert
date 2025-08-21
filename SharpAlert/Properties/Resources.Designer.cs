@@ -117,6 +117,16 @@ namespace SharpAlert.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TaskBarExample {
+            get {
+                object obj = ResourceManager.GetObject("TaskBarExample", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Just like songs in the radio. Every memory will come and go. Sometimes I wonder if I&apos;m to blame. That those wistful days are now long gone. Coincidentally our faces met again. I kept stumbling, my hands trembling, I&apos;m struggling. Even so, you&apos;re sentimental since the day it all began. You are guilty of this crime you made me fall in love. How many of you took the bait? How many of you can relate? Are we playing fair? Oh wеll, nobody cares. So, Sing along, it&apos;s such a silly song. The cackling carousel, it sp [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TestScript {
@@ -206,6 +216,16 @@ namespace SharpAlert.Properties {
         internal static System.IO.UnmanagedMemoryStream ui_warning_1 {
             get {
                 return ResourceManager.GetStream("ui_warning_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap V_Sign {
+            get {
+                object obj = ResourceManager.GetObject("V-Sign", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

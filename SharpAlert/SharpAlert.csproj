@@ -617,6 +617,8 @@
     <None Include="Resources\TrayAlertIcon.ico" />
     <None Include="Resources\AlertIcon.png" />
     <None Include="Resources\Topple1.png" />
+    <None Include="Resources\IMG_1399.png" />
+    <None Include="Resources\TaskBarExample.png" />
     <Content Include="WarningApp.ico" />
     <None Include="Resources\WarningApp.png" />
     <Content Include="FodyWeavers.xml" />

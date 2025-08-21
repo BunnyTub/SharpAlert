@@ -121,7 +121,14 @@
     <value>27, 16</value>
   </metadata>
   <data name="label3.Text" xml:space="preserve">
-    <value>Get alerts easily with SharpAlert. This setup will guide you through quickly setting up the program. You can find more customization options by right-clicking the notification icon, and opening Settings.</value>
+    <value>Get alerts easily with SharpAlert.
+
+This setup will guide you through quickly setting up the program. You can find more customization options by right-clicking the notification icon, and opening Settings.
+
+
+
+
+If you need help, visit the SharpAlert website anytime, and use the most up to date contact info for support.</value>
   </data>
   <metadata name="FadeInAnimation.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>258, 18</value>

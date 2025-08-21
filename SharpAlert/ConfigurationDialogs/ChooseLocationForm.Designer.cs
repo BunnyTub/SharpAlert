@@ -97,7 +97,7 @@
             this.TitleText.Name = "TitleText";
             this.TitleText.Size = new System.Drawing.Size(614, 30);
             this.TitleText.TabIndex = 3;
-            this.TitleText.Text = "Customize your location(s).";
+            this.TitleText.Text = "Receive alerts for only some locations?";
             // 
             // ToolTipInformation
             // 
@@ -429,7 +429,7 @@
             this.SkipButton.Name = "SkipButton";
             this.SkipButton.Size = new System.Drawing.Size(209, 23);
             this.SkipButton.TabIndex = 17;
-            this.SkipButton.Text = "I don\'t want to configure this now.";
+            this.SkipButton.Text = "I don\'t want to add locations now.";
             this.SkipButton.UseVisualStyleBackColor = false;
             this.SkipButton.Click += new System.EventHandler(this.SkipButton_Click);
             // 

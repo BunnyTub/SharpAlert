@@ -95,7 +95,7 @@
             this.TitleText.Location = new System.Drawing.Point(105, 9);
             this.TitleText.Margin = new System.Windows.Forms.Padding(0);
             this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(400, 30);
+            this.TitleText.Size = new System.Drawing.Size(504, 30);
             this.TitleText.TabIndex = 3;
             this.TitleText.Text = "Choose your style settings.";
             this.TitleText.Click += new System.EventHandler(this.TitleText_Click);

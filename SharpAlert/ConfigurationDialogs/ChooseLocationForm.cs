@@ -11,11 +11,13 @@ namespace SharpAlert.ConfigurationDialogs
             if (ShowNextInsteadOfDone)
             {
                 DoneButton.Text = "Next";
+                TitleText.Text = "Receive alerts for only some locations?";
                 SkipButton.Visible = true;
             }
             else
             {
                 DoneButton.Text = "Done";
+                TitleText.Text = "Customize your location(s) here.";
                 SkipButton.Visible = false;
             }
         }

@@ -13,8 +13,16 @@ namespace SharpAlert.ConfigurationDialogs
         public StyleConfigurationForm(bool ShowNextInsteadOfDone)
         {
             InitializeComponent();
-            if (ShowNextInsteadOfDone) DoneButton.Text = "Next";
-            else DoneButton.Text = "Done";
+            if (ShowNextInsteadOfDone)
+            {
+                DoneButton.Text = "Next";
+                TitleText.Text = "How do you want everything to look?";
+            }
+            else
+            {
+                DoneButton.Text = "Done";
+                TitleText.Text = "Choose your style settings.";
+            }
         }
 
         private void DoneButton_Click(object sender, EventArgs e)

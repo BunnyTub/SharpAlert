@@ -91,7 +91,7 @@
             this.TitleText.Location = new System.Drawing.Point(105, 9);
             this.TitleText.Margin = new System.Windows.Forms.Padding(0);
             this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(400, 30);
+            this.TitleText.Size = new System.Drawing.Size(473, 30);
             this.TitleText.TabIndex = 3;
             this.TitleText.Text = "Choose your audio settings.";
             // 
@@ -183,14 +183,13 @@
             this.AudioOutputClearLink.AutoSize = true;
             this.AudioOutputClearLink.Font = new System.Drawing.Font("Arial", 9F);
             this.AudioOutputClearLink.LinkColor = System.Drawing.Color.Pink;
-            this.AudioOutputClearLink.Location = new System.Drawing.Point(429, 39);
+            this.AudioOutputClearLink.Location = new System.Drawing.Point(394, 39);
             this.AudioOutputClearLink.Name = "AudioOutputClearLink";
-            this.AudioOutputClearLink.Size = new System.Drawing.Size(149, 15);
+            this.AudioOutputClearLink.Size = new System.Drawing.Size(184, 15);
             this.AudioOutputClearLink.TabIndex = 47;
             this.AudioOutputClearLink.TabStop = true;
-            this.AudioOutputClearLink.Text = "Use default device (Clear)";
-            this.ToolTipInformation.SetToolTip(this.AudioOutputClearLink, "Mostly everything is immediately applied. Some settings may require a program res" +
-        "tart.");
+            this.AudioOutputClearLink.Text = "Use first available device (Clear)";
+            this.ToolTipInformation.SetToolTip(this.AudioOutputClearLink, "Uses the first available audio device.");
             this.AudioOutputClearLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AudioOutputClearLink_LinkClicked);
             // 
             // TTSButton

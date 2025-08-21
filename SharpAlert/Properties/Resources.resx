@@ -121,20 +121,23 @@
   <data name="ui_cancellation_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ui_cancellation_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="major_alert" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\major_alert.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="TestScript" xml:space="preserve">
     <value>Just like songs in the radio. Every memory will come and go. Sometimes I wonder if I'm to blame. That those wistful days are now long gone. Coincidentally our faces met again. I kept stumbling, my hands trembling, I'm struggling. Even so, you're sentimental since the day it all began. You are guilty of this crime you made me fall in love. How many of you took the bait? How many of you can relate? Are we playing fair? Oh wеll, nobody cares. So, Sing along, it's such a silly song. The cackling carousel, it spins and never stops. The acrobat who's waiting at the top. Should do a Circus Hop. Why is it comforting to know that we are done? Although these feelings are bitter and blunt? It feels immoral that I celebrate alone. The relief is real. I'm freed from your embrace, oh darlin'. Hey, look. I know it's been a long time. But you're not around with us. Over here anymore, and I'm. So sick of feelin' like. Like you're just a ghost. Missing out on our toast. This party is a banger. I can hear the waters. The rivers won't stop and lament. And I see, see the scene in black and white. Lilies without their stems.</value>
   </data>
   <data name="button_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\button_hover.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Topple" xml:space="preserve">
-    <value />
-  </data>
   <data name="ui_warning_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ui_warning_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Topple" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Topple1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TrayLightIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TrayLightIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ui_nothing_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ui_nothing_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="WarningApp_Splash" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WarningApp_Splash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -154,17 +157,17 @@
   <data name="ui_shakewarning_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ui_shakewarning_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="ui_nothing_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ui_nothing_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="AlertIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AlertIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TrayAlertIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TrayAlertIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TrayLightIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TrayLightIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="major_alert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\major_alert.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="V-Sign" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IMG_1399.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ui_beep_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ui_beep_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -172,7 +175,7 @@
   <data name="ui_end_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ui_end_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Topple" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Topple1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="TaskBarExample" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TaskBarExample.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -34,7 +34,6 @@
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.TitleText = new System.Windows.Forms.Label();
             this.LogoBox = new System.Windows.Forms.PictureBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             this.SuspendLayout();
@@ -44,7 +43,7 @@
             this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DoneButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DoneButton.Location = new System.Drawing.Point(451, 171);
+            this.DoneButton.Location = new System.Drawing.Point(363, 124);
             this.DoneButton.Margin = new System.Windows.Forms.Padding(0);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(72, 23);
@@ -85,39 +84,26 @@
             this.LogoBox.TabIndex = 22;
             this.LogoBox.TabStop = false;
             // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.Font = new System.Drawing.Font("Arial", 9F);
-            this.label2.Location = new System.Drawing.Point(9, 153);
-            this.label2.Margin = new System.Windows.Forms.Padding(0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(442, 41);
-            this.label2.TabIndex = 26;
-            this.label2.Text = "To go through the setup more than once, reset the program.\r\nCreated by BunnyTub. " +
-    "Credits can be found in Settings under Program Credits.";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            // 
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Arial", 12F);
             this.label3.Location = new System.Drawing.Point(108, 39);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(400, 111);
+            this.label3.Size = new System.Drawing.Size(327, 66);
             this.label3.TabIndex = 27;
-            this.label3.Text = resources.GetString("label3.Text");
+            this.label3.Text = "We\'ll start checking for alerts as soon as you close this window. If you want to " +
+    "change any of your settings, feel free to do so!";
             // 
             // SetupDoneForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(532, 203);
+            this.ClientSize = new System.Drawing.Size(444, 156);
             this.ControlBox = false;
             this.Controls.Add(this.label3);
             this.Controls.Add(this.TitleText);
             this.Controls.Add(this.LogoBox);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.DoneButton);
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
@@ -129,6 +115,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert - Setup Complete";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.SetupDoneForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
             this.ResumeLayout(false);
 
@@ -139,7 +126,6 @@
         private System.Windows.Forms.Button DoneButton;
         private System.Windows.Forms.Label TitleText;
         private System.Windows.Forms.PictureBox LogoBox;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
     }
 }

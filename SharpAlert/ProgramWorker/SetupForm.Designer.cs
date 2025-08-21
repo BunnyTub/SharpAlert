@@ -37,7 +37,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.FadeInAnimation = new System.Windows.Forms.Timer(this.components);
+            this.SideLogoBox = new System.Windows.Forms.PictureBox();
+            this.ExampleBarBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SideLogoBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ExampleBarBox)).BeginInit();
             this.SuspendLayout();
             // 
             // DoneButton
@@ -45,7 +49,7 @@
             this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DoneButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DoneButton.Location = new System.Drawing.Point(451, 161);
+            this.DoneButton.Location = new System.Drawing.Point(518, 257);
             this.DoneButton.Margin = new System.Windows.Forms.Padding(0);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(72, 23);
@@ -68,20 +72,20 @@
             // TitleText
             // 
             this.TitleText.Font = new System.Drawing.Font("Arial", 16F);
-            this.TitleText.Location = new System.Drawing.Point(105, 9);
+            this.TitleText.Location = new System.Drawing.Point(196, 9);
             this.TitleText.Margin = new System.Windows.Forms.Padding(0);
             this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(400, 30);
+            this.TitleText.Size = new System.Drawing.Size(394, 30);
             this.TitleText.TabIndex = 23;
             this.TitleText.Text = "Welcome to SharpAlert!";
             // 
             // LogoBox
             // 
             this.LogoBox.Image = global::SharpAlert.Properties.Resources.WarningApp;
-            this.LogoBox.Location = new System.Drawing.Point(9, 9);
+            this.LogoBox.Location = new System.Drawing.Point(40, 21);
             this.LogoBox.Margin = new System.Windows.Forms.Padding(0);
             this.LogoBox.Name = "LogoBox";
-            this.LogoBox.Size = new System.Drawing.Size(96, 96);
+            this.LogoBox.Size = new System.Drawing.Size(48, 48);
             this.LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.LogoBox.TabIndex = 22;
             this.LogoBox.TabStop = false;
@@ -90,7 +94,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.Font = new System.Drawing.Font("Arial", 9F);
-            this.label2.Location = new System.Drawing.Point(9, 143);
+            this.label2.Location = new System.Drawing.Point(9, 239);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(342, 41);
@@ -102,10 +106,10 @@
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Arial", 12F);
-            this.label3.Location = new System.Drawing.Point(108, 39);
+            this.label3.Location = new System.Drawing.Point(199, 39);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(400, 91);
+            this.label3.Size = new System.Drawing.Size(391, 207);
             this.label3.TabIndex = 27;
             this.label3.Text = resources.GetString("label3.Text");
             // 
@@ -114,17 +118,41 @@
             this.FadeInAnimation.Interval = 12;
             this.FadeInAnimation.Tick += new System.EventHandler(this.FadeInAnimation_Tick);
             // 
+            // SideLogoBox
+            // 
+            this.SideLogoBox.Image = global::SharpAlert.Properties.Resources.V_Sign;
+            this.SideLogoBox.Location = new System.Drawing.Point(12, 9);
+            this.SideLogoBox.Margin = new System.Windows.Forms.Padding(0);
+            this.SideLogoBox.Name = "SideLogoBox";
+            this.SideLogoBox.Size = new System.Drawing.Size(184, 230);
+            this.SideLogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.SideLogoBox.TabIndex = 28;
+            this.SideLogoBox.TabStop = false;
+            // 
+            // ExampleBarBox
+            // 
+            this.ExampleBarBox.Image = global::SharpAlert.Properties.Resources.TaskBarExample;
+            this.ExampleBarBox.Location = new System.Drawing.Point(196, 143);
+            this.ExampleBarBox.Margin = new System.Windows.Forms.Padding(0);
+            this.ExampleBarBox.Name = "ExampleBarBox";
+            this.ExampleBarBox.Size = new System.Drawing.Size(394, 47);
+            this.ExampleBarBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ExampleBarBox.TabIndex = 29;
+            this.ExampleBarBox.TabStop = false;
+            // 
             // SetupForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(532, 193);
+            this.ClientSize = new System.Drawing.Size(599, 289);
             this.ControlBox = false;
+            this.Controls.Add(this.ExampleBarBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.TitleText);
-            this.Controls.Add(this.LogoBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.DoneButton);
+            this.Controls.Add(this.LogoBox);
+            this.Controls.Add(this.SideLogoBox);
             this.Font = new System.Drawing.Font("Arial", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -138,6 +166,8 @@
             this.TopMost = true;
             this.Shown += new System.EventHandler(this.SetupForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SideLogoBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ExampleBarBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -150,5 +180,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Timer FadeInAnimation;
+        private System.Windows.Forms.PictureBox SideLogoBox;
+        private System.Windows.Forms.PictureBox ExampleBarBox;
     }
 }

@@ -12,8 +12,16 @@ namespace SharpAlert.ConfigurationDialogs
         public ChooseAudioForm(bool ShowNextInsteadOfDone)
         {
             InitializeComponent();
-            if (ShowNextInsteadOfDone) DoneButton.Text = "Next";
-            else DoneButton.Text = "Done";
+            if (ShowNextInsteadOfDone)
+            {
+                DoneButton.Text = "Next";
+                TitleText.Text = "How do you like your audio settings?";
+            }
+            else
+            {
+                DoneButton.Text = "Done";
+                TitleText.Text = "Choose your audio settings.";
+            }
         }
 
         private void DoneButton_Click(object sender, EventArgs e)
@@ -76,7 +84,7 @@ namespace SharpAlert.ConfigurationDialogs
                     "SharpAlert",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
-                Environment.Exit(0);
+                Environment.Exit(100);
             };
             
             EnableBasicSpeakingBox.Checked = QuickSettings.Instance.EnableBasicSpeaking;
@@ -167,6 +175,8 @@ namespace SharpAlert.ConfigurationDialogs
                 return;
             }
 
+            this.UseWaitCursor = true;
+
             var result = MessageBox.Show("Refresh audio outputs?\r\nThe window may freeze for a few moments.",
                 "SharpAlert",
                 MessageBoxButtons.YesNo,
@@ -184,6 +194,8 @@ namespace SharpAlert.ConfigurationDialogs
 
                 AudioDeviceCombo.SelectedItem = QuickSettings.Instance.ProgramAudioOutput;
             }
+
+            this.UseWaitCursor = false;
         }
 
         private void AudioOutputClearLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -197,7 +209,7 @@ namespace SharpAlert.ConfigurationDialogs
                 return;
             }
 
-            DialogResult result = MessageBox.Show("Use the default audio device?\r\n" +
+            DialogResult result = MessageBox.Show("Use the first available audio device?\r\n" +
                 "It's better to use a specific audio device.",
                 "SharpAlert",
                 MessageBoxButtons.YesNo,

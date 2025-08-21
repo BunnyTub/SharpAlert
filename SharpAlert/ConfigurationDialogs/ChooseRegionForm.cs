@@ -14,8 +14,16 @@ namespace SharpAlert.ConfigurationDialogs
         {
             InitializeComponent();
             ShowNextInsteadOfDone = ShowNextInsteadOfDone_;
-            if (ShowNextInsteadOfDone) DoneButton.Text = "Next";
-            else DoneButton.Text = "Done";
+            if (ShowNextInsteadOfDone)
+            {
+                TitleText.Text = "Where do you want alerts from?";
+                DoneButton.Text = "Next";
+            }
+            else
+            {
+                TitleText.Text = "Choose your region settings.";
+                DoneButton.Text = "Done";
+            }
         }
 
         private void DoneButton_Click(object sender, EventArgs e)

@@ -224,12 +224,12 @@ namespace SharpAlert.ProgramWorker
                 ChooseRegionForm crf = new ChooseRegionForm(true);
                 crf.ShowDialog();
                 crf.Dispose();
-                ChoosePresetForm cpf = new ChoosePresetForm();
-                cpf.ShowDialog();
-                cpf.Dispose();
                 ChooseLocationForm clf = new ChooseLocationForm(true);
                 clf.ShowDialog();
                 clf.Dispose();
+                ChoosePresetForm cpf = new ChoosePresetForm();
+                cpf.ShowDialog();
+                cpf.Dispose();
                 StyleConfigurationForm csf = new StyleConfigurationForm(true);
                 csf.ShowDialog();
                 csf.Dispose();
