@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.ProgramWorker.NotificationWorker;
@@ -229,12 +230,12 @@ namespace SharpAlert.SourceCapturing
                                 if (capturedStatus.ToLowerInvariant() == "system" & capturedSender.ToLowerInvariant().Contains("naads-heartbeat"))
                                 {
                                     Console.WriteLine($"[TCP Feed Capture] Heartbeat detected from {name}.");
-                                    EnrollNAADSHeartbeat(dataReceived, FirstRun);
+                                    EnrollNAADSHeartbeat(dataReceived, FirstRun, name);
                                 }
                                 else
                                 {
                                     Console.WriteLine($"[TCP Feed Capture] Alert detected from {name}.");
-                                    EnrollAlerts(dataReceived, FirstRun);
+                                    EnrollAlerts(dataReceived, FirstRun, name);
                                 }
 
                                 FirstRun = false;
@@ -267,7 +268,7 @@ namespace SharpAlert.SourceCapturing
 
         private readonly object EnrollObject = new object();
 
-        public void EnrollAlerts(string data, bool FirstRunner)
+        public void EnrollAlerts(string data, bool FirstRunner, string name)
         {
             lock (EnrollObject)
             {
@@ -292,8 +293,10 @@ namespace SharpAlert.SourceCapturing
                             //}
 
                             Console.WriteLine($"[TCP Feed Capture] {alertIndex} -> {filename}");
-                            string alertReplayValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
-                            SharpDataItem item = new SharpDataItem(filename, alert.Value);
+
+                            string CombinedAlertValue = $"<SharpAlertSource>{name}</SharpAlertSource>{alert.Value}";
+
+                            SharpDataItem item = new SharpDataItem(filename, CombinedAlertValue);
 
                             if (FirstRunner && QuickSettings.Instance.discardFirstAlerts)
                             {
@@ -332,7 +335,7 @@ namespace SharpAlert.SourceCapturing
             }
         }
 
-        public void EnrollNAADSHeartbeat(string data, bool FirstRunner)
+        public void EnrollNAADSHeartbeat(string data, bool FirstRunner, string name)
         {
             lock (EnrollObject)
             {
@@ -386,12 +389,12 @@ namespace SharpAlert.SourceCapturing
 
                                     foreach (string reference in ReferencesList)
                                     {
-                                        string name = string.Empty;
+                                        string subfilename = string.Empty;
                                         string[] k = reference.Split(',');
                                         string sentDTFull = k[2].Replace("-", "_").Replace(":", "_").Replace("+", "p");
                                         string sentDT = sentDTFull.Substring(0, 10).Replace("_", "-");
-                                        name += sentDTFull;
-                                        name += "I" + k[1].Replace("-", "_").Replace(":", "_");
+                                        subfilename += sentDTFull;
+                                        subfilename += "I" + k[1].Replace("-", "_").Replace(":", "_");
                                         //string filenameShort = sentDTFull.Replace("_", "-");
 
                                         string PrimaryURL = "capcp1.naad-adna.pelmorex.com";
@@ -404,13 +407,13 @@ namespace SharpAlert.SourceCapturing
                                         //}
 
                                         Found++;
-                                        string url1 = $"http://{PrimaryURL}/{sentDT}/{name}.xml";
-                                        string url2 = $"http://{SecondaryURL}/{sentDT}/{name}.xml";
+                                        string url1 = $"http://{PrimaryURL}/{sentDT}/{subfilename}.xml";
+                                        string url2 = $"http://{SecondaryURL}/{sentDT}/{subfilename}.xml";
                                         string result = string.Empty;
 
                                         try
                                         {
-                                            Console.WriteLine($"[TCP Feed Capture] {Found} -> {name} ({url1})");
+                                            Console.WriteLine($"[TCP Feed Capture] {Found} -> {subfilename} ({url1})");
                                             Task<string> xml = client.GetStringAsync(url1);
                                             xml.Wait();
                                             result = xml.Result;
@@ -421,7 +424,7 @@ namespace SharpAlert.SourceCapturing
                                             try
                                             {
                                                 Console.WriteLine($"[TCP Feed Capture] Stage 1 failed. {e1.Message}");
-                                                Console.WriteLine($"[TCP Feed Capture] {Found} -> {name} ({url2}) (retrying)");
+                                                Console.WriteLine($"[TCP Feed Capture] {Found} -> {subfilename} ({url2}) (retrying)");
                                                 Task<string> xml = client.GetStringAsync(url2);
                                                 xml.Wait();
                                                 result = xml.Result;
@@ -435,7 +438,7 @@ namespace SharpAlert.SourceCapturing
                                             }
                                         }
 
-                                        if (!string.IsNullOrWhiteSpace(result)) EnrollAlerts(result, FirstRunner);
+                                        if (!string.IsNullOrWhiteSpace(result)) EnrollAlerts(result, FirstRunner, name);
                                     }
                                     
                                     if (!HeartbeatFailure) LastHeartbeat = DateTime.UtcNow;

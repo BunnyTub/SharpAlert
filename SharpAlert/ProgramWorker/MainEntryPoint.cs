@@ -467,7 +467,9 @@ namespace SharpAlert.ProgramWorker
                             switch (unchecked(monitorSelf.ExitCode))
                             {
                                 case 1073807364:
-                                    DiscordWebhook.SendFormattedMessage($"SharpAlert has stopped abruptly because the system is shutting down.");
+                                    DiscordWebhook.SendFormattedMessage($"SharpAlert has stopped because the host is shutting down.");
+                                    Thread.Sleep(5000);
+                                    Environment.Exit(0);
                                     break;
                                 case -1073741571:
                                     DiscordWebhook.SendFormattedMessage($"SharpAlert has stopped abruptly due to a recursion problem.");
@@ -485,6 +487,7 @@ namespace SharpAlert.ProgramWorker
                                     break;
                             }
                         }
+
                         string Details = $"SharpAlert closed with a non-zero exit code. ({unchecked(monitorSelf.ExitCode)})\r\n" +
                             $"{new Win32Exception(unchecked(monitorSelf.ExitCode)).Message}";
                         LogFault(new Exception(Details));

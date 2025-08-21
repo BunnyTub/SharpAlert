@@ -147,6 +147,7 @@ namespace SharpAlert.AlertComponents
 
         private void AlertForm_Load(object sender, EventArgs e)
         {
+            //AlertText.ScrollSpeed = QuickSettings.Instance.ScrollSpeed;
         }
 
         private void AutoExit_Tick(object sender, EventArgs e)

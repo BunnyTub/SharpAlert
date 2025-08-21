@@ -227,6 +227,9 @@ namespace SharpAlert.AlertComponents
 
                     string AlertInfo = $"{infoMatch.Groups[1].Value}";
 
+                    string Source = SourceRegex.MatchOrDefault(relayItem.Data, "External Source");
+                    Console.WriteLine($"[Alert Processor] Source (if any): {Source}");
+                    
                     string Effective = EffectiveRegex.MatchOrDefault(relayItem.Data, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
                     Console.WriteLine($"[Alert Processor] Effective: {Effective}");
 
@@ -488,7 +491,7 @@ namespace SharpAlert.AlertComponents
 
 
                         // removal of replay boolean
-                        var (Intro, Body) = CompiledBody(AlertInfo, MsgType, Sent);
+                        var (Intro, Body) = CompiledBody(AlertInfo, MsgType, Sent, Source);
 
                         Console.WriteLine($"[Alert Processor] Intro: {Intro}");
                         Console.WriteLine($"[Alert Processor] Body: {Body}");
@@ -1189,7 +1192,7 @@ namespace SharpAlert.AlertComponents
         /// <param name="MsgType">The overall message type.</param>
         /// <param name="Sent">The date and time the message was sent.</param>
         /// <returns>Returns a compiled message body.</returns>
-        public (string Intro, string Body) CompiledBody(string InfoData, string MsgType, string Sent)
+        public (string Intro, string Body) CompiledBody(string InfoData, string MsgType, string Sent, string Source)
         {
             Console.WriteLine("[Alert Processor] Compiling body text.");
             string BroadcastText = string.Empty;
@@ -1568,6 +1571,7 @@ namespace SharpAlert.AlertComponents
             if (QuickSettings.Instance.AddIntroText)
             {
                 if (QuickSettings.Instance.AddAlertEffectiveAndEndingTimes) IntroText += $"This alert goes into effect starting {BeginFormatted}, and ending at {EndFormatted}." + "\x20";
+                IntroText += $"Sourced from {Source}." + "\x20";
                 if (QuickSettings.Instance.AddAlertIssuer) IntroText += $"Issued by {SenderName}." + "\x20";
                 IntroText += $"Event type is {EventType}. {MsgPrefix} For the following areas, {SentenceAppendEnd(AreaDesc)}".Replace("\x20\x20", "\x20");
                 IntroText = IntroText.Replace("\r\n", "\n").Replace("\n", "\r\n"); // fix mixed newline problems hopefully

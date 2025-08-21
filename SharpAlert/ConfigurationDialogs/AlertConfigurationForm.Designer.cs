@@ -96,6 +96,7 @@
             this.AlertListButton = new System.Windows.Forms.Button();
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.BypassFilteringFlasher = new System.Windows.Forms.Timer(this.components);
+            this.ArchiveSettingsButton = new System.Windows.Forms.Button();
             this.AlertFunctionalityGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlertDeadIntervalInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AlertCheckIntervalInput)).BeginInit();
@@ -628,7 +629,7 @@
             this.LocationsClearButton.Location = new System.Drawing.Point(328, 104);
             this.LocationsClearButton.Name = "LocationsClearButton";
             this.LocationsClearButton.Size = new System.Drawing.Size(331, 32);
-            this.LocationsClearButton.TabIndex = 35;
+            this.LocationsClearButton.TabIndex = 37;
             this.LocationsClearButton.Text = "Clear Locations";
             this.LocationsClearButton.UseVisualStyleBackColor = false;
             this.LocationsClearButton.Click += new System.EventHandler(this.LocationsClearButton_Click);
@@ -642,7 +643,7 @@
             this.LocationsButton.Location = new System.Drawing.Point(328, 58);
             this.LocationsButton.Name = "LocationsButton";
             this.LocationsButton.Size = new System.Drawing.Size(331, 40);
-            this.LocationsButton.TabIndex = 34;
+            this.LocationsButton.TabIndex = 36;
             this.LocationsButton.Text = "Location Manager";
             this.LocationsButton.UseVisualStyleBackColor = false;
             this.LocationsButton.Click += new System.EventHandler(this.LocationsButton_Click);
@@ -707,7 +708,7 @@
             this.BypassAlertFilteringButton.Location = new System.Drawing.Point(6, 45);
             this.BypassAlertFilteringButton.Name = "BypassAlertFilteringButton";
             this.BypassAlertFilteringButton.Size = new System.Drawing.Size(319, 46);
-            this.BypassAlertFilteringButton.TabIndex = 37;
+            this.BypassAlertFilteringButton.TabIndex = 38;
             this.BypassAlertFilteringButton.Text = "Bypass Alert Filtering";
             this.BypassAlertFilteringButton.UseVisualStyleBackColor = false;
             this.BypassAlertFilteringButton.Click += new System.EventHandler(this.BypassAlertFilteringButton_Click);
@@ -945,8 +946,8 @@
             this.AlertListButton.Font = new System.Drawing.Font("Arial", 18F);
             this.AlertListButton.Location = new System.Drawing.Point(328, 12);
             this.AlertListButton.Name = "AlertListButton";
-            this.AlertListButton.Size = new System.Drawing.Size(331, 40);
-            this.AlertListButton.TabIndex = 36;
+            this.AlertListButton.Size = new System.Drawing.Size(250, 40);
+            this.AlertListButton.TabIndex = 34;
             this.AlertListButton.Text = "Alert Manager";
             this.AlertListButton.UseVisualStyleBackColor = false;
             this.AlertListButton.Click += new System.EventHandler(this.AlertListButton_Click);
@@ -967,11 +968,26 @@
             this.BypassFilteringFlasher.Interval = 500;
             this.BypassFilteringFlasher.Tick += new System.EventHandler(this.BypassFilteringFlasher_Tick);
             // 
+            // ArchiveSettingsButton
+            // 
+            this.ArchiveSettingsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ArchiveSettingsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.ArchiveSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ArchiveSettingsButton.Font = new System.Drawing.Font("Arial", 9F);
+            this.ArchiveSettingsButton.Location = new System.Drawing.Point(584, 12);
+            this.ArchiveSettingsButton.Name = "ArchiveSettingsButton";
+            this.ArchiveSettingsButton.Size = new System.Drawing.Size(75, 40);
+            this.ArchiveSettingsButton.TabIndex = 35;
+            this.ArchiveSettingsButton.Text = "Archive\r\nManager";
+            this.ArchiveSettingsButton.UseVisualStyleBackColor = false;
+            this.ArchiveSettingsButton.Click += new System.EventHandler(this.ArchiveSettingsButton_Click);
+            // 
             // AlertConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(671, 477);
+            this.Controls.Add(this.ArchiveSettingsButton);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.StationButton);
             this.Controls.Add(this.AlertFunctionalityGroup);
@@ -1088,5 +1104,6 @@
         private System.Windows.Forms.Timer BypassFilteringFlasher;
         private System.Windows.Forms.Button NamedEventsInfoButton;
         private System.Windows.Forms.CheckBox EventWhitelistModeBox;
+        private System.Windows.Forms.Button ArchiveSettingsButton;
     }
 }

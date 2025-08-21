@@ -57,6 +57,7 @@
             this.ListAreaCustomOutput = new System.Windows.Forms.TextBox();
             this.CustomClearButton = new System.Windows.Forms.Button();
             this.CustomAddButton = new System.Windows.Forms.Button();
+            this.SkipButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -69,7 +70,7 @@
             this.DoneButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.DoneButton.Location = new System.Drawing.Point(647, 309);
-            this.DoneButton.Margin = new System.Windows.Forms.Padding(0);
+            this.DoneButton.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(72, 23);
             this.DoneButton.TabIndex = 0;
@@ -94,7 +95,7 @@
             this.TitleText.Location = new System.Drawing.Point(105, 9);
             this.TitleText.Margin = new System.Windows.Forms.Padding(0);
             this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(400, 30);
+            this.TitleText.Size = new System.Drawing.Size(614, 30);
             this.TitleText.TabIndex = 3;
             this.TitleText.Text = "Customize your location(s).";
             // 
@@ -217,7 +218,7 @@
             this.groupBox8.Size = new System.Drawing.Size(156, 246);
             this.groupBox8.TabIndex = 15;
             this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "CAP-CP Locations";
+            this.groupBox8.Text = "CAP-CP (Canada)";
             // 
             // ListAreaCAPCPOutput
             // 
@@ -277,7 +278,7 @@
             this.groupBox7.Size = new System.Drawing.Size(156, 246);
             this.groupBox7.TabIndex = 14;
             this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "SAME Locations";
+            this.groupBox7.Text = "SAME (United States)";
             // 
             // ListAreaSAMEOutput
             // 
@@ -418,12 +419,27 @@
             this.CustomAddButton.UseVisualStyleBackColor = false;
             this.CustomAddButton.Click += new System.EventHandler(this.CustomAddButton_Click);
             // 
+            // SkipButton
+            // 
+            this.SkipButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.SkipButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.SkipButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.SkipButton.Location = new System.Drawing.Point(435, 309);
+            this.SkipButton.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            this.SkipButton.Name = "SkipButton";
+            this.SkipButton.Size = new System.Drawing.Size(209, 23);
+            this.SkipButton.TabIndex = 17;
+            this.SkipButton.Text = "I don\'t want to configure this now.";
+            this.SkipButton.UseVisualStyleBackColor = false;
+            this.SkipButton.Click += new System.EventHandler(this.SkipButton_Click);
+            // 
             // ChooseLocationForm
             // 
             this.AcceptButton = this.DoneButton;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(728, 341);
+            this.Controls.Add(this.SkipButton);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.groupBox7);
@@ -485,5 +501,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox ListAreaCustomOutput;
+        private System.Windows.Forms.Button SkipButton;
     }
 }

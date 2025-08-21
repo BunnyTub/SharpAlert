@@ -2,7 +2,7 @@
 using System.Drawing.Printing;
 using System.Windows.Forms;
 
-namespace SharpAlert
+namespace SharpAlert.PrinterStuff
 {
     public class PrinterController
     {
@@ -20,12 +20,12 @@ namespace SharpAlert
 
             doc.PrinterSettings.PrintToFile = true;
 
-            PrintDialog dlg = new PrintDialog
-            {
-                Document = doc
-            };
+            //PrintDialog dlg = new PrintDialog
+            //{
+            //    Document = doc
+            //};
 
-            if (dlg.ShowDialog() == DialogResult.OK)
+            //if (dlg.ShowDialog() == DialogResult.OK)
             {
                 doc.Print();
             }

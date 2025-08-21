@@ -28,8 +28,10 @@ namespace SharpAlert.ProgramWorker
         /// <exception cref="NotSupportedException"></exception>
         public static void CreateNotifyIcon(string RemoteVersion)
         {
-            if (NotifyIconCalled) throw new NotSupportedException("You cannot create more than one instance at any given point.");
+            //if (NotifyIconCalled) throw new NotSupportedException("You cannot create more than one instance at any given point.");
             NotifyIconCalled = true;
+
+            if (Notify != null) Notify.Dispose();
 
             Notify = new NotifyIcon
             {
@@ -338,6 +340,8 @@ namespace SharpAlert.ProgramWorker
 
             Notify.ContextMenuStrip = contextMenu;
             Notify.BalloonTipClicked += Notify_BalloonTipClicked;
+
+            QuickSettings.Instance.LastVersionOpened = $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}";
         }
 
         private static void Notify_BalloonTipClicked(object sender, EventArgs e)

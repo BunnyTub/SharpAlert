@@ -227,6 +227,9 @@ namespace SharpAlert.ProgramWorker
                 ChoosePresetForm cpf = new ChoosePresetForm();
                 cpf.ShowDialog();
                 cpf.Dispose();
+                ChooseLocationForm clf = new ChooseLocationForm(true);
+                clf.ShowDialog();
+                clf.Dispose();
                 StyleConfigurationForm csf = new StyleConfigurationForm(true);
                 csf.ShowDialog();
                 csf.Dispose();
@@ -303,7 +306,20 @@ namespace SharpAlert.ProgramWorker
                 //    SafeExit();
                 //};
 
-                CreateNotifyIcon(RemoteVersion);
+                void CreateIcon()
+                {
+                    CreateNotifyIcon(RemoteVersion);
+                }
+
+                Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+                Application.ThreadException += (a, b) =>
+                {
+                    MessageBox.Show($"An error has occurred. If the problem is related to settings, you should reset them and start over. {b.Exception.GetBaseException().Message}", "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    CreateIcon();
+                };
+
+                CreateIcon();
+
                 Application.Run();
             }, false);
 

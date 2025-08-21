@@ -309,6 +309,14 @@ namespace SharpAlert.ConfigurationDialogs
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
         }
+
+        private ArchiveConfigurationForm acf = null;
+
+        private void ArchiveSettingsButton_Click(object sender, EventArgs e)
+        {
+            if (acf == null || acf.IsDisposed) acf = new ArchiveConfigurationForm();
+            acf.ShowDialog();
+        }
     }
 }
 

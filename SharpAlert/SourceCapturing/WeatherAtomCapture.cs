@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using SharpAlert.ProgramWorker;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
@@ -96,7 +97,7 @@ namespace SharpAlert.SourceCapturing
 
                                     string Result = message.Result.Content.ReadAsStringAsync().Result;
 
-                                    EnrollEntries(Result);
+                                    EnrollEntries(Result, server.ServerName);
                                 }
                                 catch (Exception ex)
                                 {
@@ -193,7 +194,7 @@ namespace SharpAlert.SourceCapturing
 
         private readonly object EnrollObject = new object();
 
-        public void EnrollEntries(string data)
+        public void EnrollEntries(string data, string name)
         {
             MatchCollection entries = EntryRegex.Matches(data);
 
@@ -326,10 +327,10 @@ namespace SharpAlert.SourceCapturing
 
             Console.WriteLine($"[Atom Feed Capture] {EntriesIndex} tag(s) saved, and {EntriesDiscardCount} tag(s) discarded. Tags remaining: {EntriesIndex - EntriesDiscardCount}");
 
-            EnrollAlerts(AlertList);
+            EnrollAlerts(AlertList, name);
         }
 
-        public void EnrollAlerts(string data, bool reset = false)
+        public void EnrollAlerts(string data, string name)
         {
             lock (EnrollObject)
             {
@@ -368,12 +369,9 @@ namespace SharpAlert.SourceCapturing
 
                             string filename = IdentifierRegex.MatchOrDefault(alert.Value, CreateMD5(alert.Value));
 
-                            SharpDataItem item = new SharpDataItem(filename, alert.Value);
+                            string CombinedAlertValue = $"<SharpAlertSource>{name}</SharpAlertSource>{alert.Value}";
 
-                            if (reset)
-                            {
-                                TryRemoveDataFromHistory(item);
-                            }
+                            SharpDataItem item = new SharpDataItem(filename, CombinedAlertValue);
 
                             if (FirstRun && QuickSettings.Instance.discardFirstAlerts)
                             {

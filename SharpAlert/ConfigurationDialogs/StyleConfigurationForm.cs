@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using SharpAlert.PrinterStuff;
 using SharpAlert.ProgramWorker;
 using SharpAlert.Properties;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
@@ -206,6 +207,9 @@ namespace SharpAlert.ConfigurationDialogs
             
             alertAutoPrintingEnabledBox.Checked = QuickSettings.Instance.alertAutoPrintingEnabled;
             alertAutoPrintingEnabledBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertAutoPrintingEnabled = ((CheckBox)a).Checked;
+
+            ScrollSpeedBar.Value = QuickSettings.Instance.ScrollSpeed;
+            ScrollSpeedBar.ValueChanged += (a, b) => QuickSettings.Instance.ScrollSpeed = ((TrackBar)a).Value;
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -232,6 +236,11 @@ namespace SharpAlert.ConfigurationDialogs
         private void LogoBox_DoubleClick(object sender, EventArgs e)
         {
             PrinterController.Print("Test Message", $"This is a test to ensure the function of your printer and its current settings. {Resources.TestScript}");
+        }
+
+        private void TitleText_Click(object sender, EventArgs e)
+        {
+            //throw new OutOfMemoryException();
         }
     }
 }

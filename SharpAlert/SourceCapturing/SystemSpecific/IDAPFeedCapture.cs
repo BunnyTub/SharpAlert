@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Xml.Linq;
 using SharpAlert.ProgramWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.RegexList;
@@ -281,7 +282,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
             Console.WriteLine($"[IDAP Feed Capture] {EntriesIndex} tag(s) saved, and {EntriesDiscardCount} tag(s) discarded. Tags remaining: {EntriesIndex - EntriesDiscardCount}");
         }
 
-        public void EnrollAlerts(string data, bool reset = false)
+        public void EnrollAlerts(string data)
         {
             lock (EnrollObject)
             {
@@ -320,12 +321,9 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
 
                             string filename = IdentifierRegex.MatchOrDefault(alert.Value, CreateMD5(alert.Value));
 
-                            SharpDataItem item = new SharpDataItem(filename, alert.Value);
+                            string CombinedAlertValue = $"<SharpAlertSource>IDAP</SharpAlertSource>{alert.Value}";
 
-                            if (reset)
-                            {
-                                TryRemoveDataFromHistory(item);
-                            }
+                            SharpDataItem item = new SharpDataItem(filename, CombinedAlertValue);
 
                             if (FirstRun && QuickSettings.Instance.discardFirstAlerts)
                             {

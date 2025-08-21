@@ -51,6 +51,8 @@ namespace SharpAlert
         }
 
 #pragma warning disable IDE1006 // Naming Styles
+        // Version
+        public string LastVersionOpened { get; set; } = "v0.0";
         // System
         public bool NoSystemSleep { get; set; } = false;
         // Migration
@@ -86,7 +88,7 @@ namespace SharpAlert
         public bool EventWhitelistMode { get; set; } = false;
         public StringCollection EnforceSAMEEventBlacklist { get; set; } = new StringCollection();
         // Alert Stuff
-        public int AlertCheckInterval { get; set; } = 30;
+        public int AlertCheckInterval { get; set; } = 15;
         public bool weaOnly { get; set; } = false;
         // Changed discard to align with region changes
         public bool discardFirstAlerts { get; set; } = true;
@@ -118,6 +120,7 @@ namespace SharpAlert
         public bool LegacyAudioPlayer { get; set; } = false;
         public bool EnableBasicSpeaking { get; set; } = false;
         public int alertVolume { get; set; } = 8;
+        public int ScrollSpeed { get; set; } = 10;
         public string StartToneLocation { get; set; } = string.Empty;
         public string EndToneLocation { get; set; } = string.Empty;
         public string ProgramVoice { get; set; } = string.Empty;
@@ -175,6 +178,10 @@ namespace SharpAlert
         public bool AddAlertIssuer { get; set; } = true;
         public bool RemoveNWSDescCode { get; set; } = true;
         public bool RemoveNWSNewLines { get; set; } = true;
+        // Archiving
+        public bool ArchivingSaveAllAlerts { get; set; } = false;
+        public bool ArchivingDeleteOldAlertsOver48h { get; set; } = true;
+
 #pragma warning restore IDE1006 // Naming Styles
 
         public void Save()

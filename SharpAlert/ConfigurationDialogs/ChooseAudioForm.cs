@@ -312,7 +312,7 @@ namespace SharpAlert.ConfigurationDialogs
         private void ShowRefreshTip_Tick(object sender, EventArgs e)
         {
             ShowRefreshTip.Stop();
-            ToolTipInformation.Show("Click here to repopulate the audio outputs list.", this, 5000, 552, 57);
+            //ToolTipInformation.Show("Click here to repopulate the audio outputs list.", this, 5000, 552, 57);
         }
     }
 }

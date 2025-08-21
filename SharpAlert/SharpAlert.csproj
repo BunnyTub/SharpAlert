@@ -203,6 +203,18 @@
     <Compile Include="ConfigurationDialogs\AlertConfigurationForm.Designer.cs">
       <DependentUpon>AlertConfigurationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationDialogs\AlertSearchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigurationDialogs\AlertSearchForm.Designer.cs">
+      <DependentUpon>AlertSearchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationDialogs\ArchiveConfigurationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigurationDialogs\ArchiveConfigurationForm.Designer.cs">
+      <DependentUpon>ArchiveConfigurationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationDialogs\AlertTableForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -302,7 +314,7 @@
     <Compile Include="ConfigurationDialogs\ChooseRegionForm.Designer.cs">
       <DependentUpon>ChooseRegionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PrinterController.cs" />
+    <Compile Include="PrinterStuff\PrinterController.cs" />
     <Compile Include="ProgramWorker\DoNotDisturbMode.cs" />
     <Compile Include="ProgramWorker\GlobalHotkeyManager.cs" />
     <Compile Include="ProgramWorker\HeartbeatWorker.cs" />
@@ -419,6 +431,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AlertComponents\InfoForm.resx">
       <DependentUpon>InfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationDialogs\AlertSearchForm.resx">
+      <DependentUpon>AlertSearchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationDialogs\ArchiveConfigurationForm.resx">
+      <DependentUpon>ArchiveConfigurationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurationDialogs\AlertTableForm.resx">
       <DependentUpon>AlertTableForm.cs</DependentUpon>

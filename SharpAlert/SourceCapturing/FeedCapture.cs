@@ -71,7 +71,6 @@ namespace SharpAlert.SourceCapturing
                 try
                 {
                     string URLPrefix = useHTTPS ? "https" : "http";
-                    bool AllConnectionsSuccessful = true;
 
                     lock (servers)
                     {
@@ -87,44 +86,26 @@ namespace SharpAlert.SourceCapturing
                             }
 
                             foreach (ServerInfo server in localServers)
+                            {
+                                try
                                 {
-                                    try
-                                    {
-                                        count--;
-                                        Console.WriteLine($"[HTTP Feed Capture] Getting data from {server.ServerName}. URL -> {server.ServerPath}");
-                                        HttpResponseMessage message = client.GetAsync($"{URLPrefix}://{server.ServerPath}").Result;
-                                        message.EnsureSuccessStatusCode();
+                                    count--;
+                                    Console.WriteLine($"[HTTP Feed Capture] Getting data from {server.ServerName}. URL -> {server.ServerPath}");
+                                    HttpResponseMessage message = client.GetAsync($"{URLPrefix}://{server.ServerPath}").Result;
+                                    message.EnsureSuccessStatusCode();
 
-                                        FeedSuccessfulCalls++;
+                                    FeedSuccessfulCalls++;
 
-                                        string Result = message.Content.ReadAsStringAsync().Result;
-                                        EnrollAlerts(Result);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        count++;
-                                        Console.WriteLine($"[HTTP Feed Capture] {ex.Message}");
-                                        AllConnectionsSuccessful = false;
-                                        server.LastRunSuccess = false;
-                                    }
+                                    string Result = message.Content.ReadAsStringAsync().Result;
+                                    EnrollAlerts(Result, server.ServerName);
+                                    server.LastRunSuccess = true;
                                 }
-
-                            if (count >= servers.Count)
-                            {
-                                AllConnectionsSuccessful = true;
-                            }
-                            else
-                            {
-                                AllConnectionsSuccessful = false;
-                            }
-
-                            if (AllConnectionsSuccessful)
-                            {
-                                Console.WriteLine($"[HTTP Feed Capture] Fetched from all feeds successfully.");
-                            }
-                            else
-                            {
-                                Console.WriteLine("[HTTP Feed Capture] Not all feeds were fetched from successfully.");
+                                catch (Exception ex)
+                                {
+                                    count++;
+                                    Console.WriteLine($"[HTTP Feed Capture] {ex.Message}");
+                                    server.LastRunSuccess = false;
+                                }
                             }
                         }
                     }
@@ -190,7 +171,7 @@ namespace SharpAlert.SourceCapturing
 
         private readonly object EnrollObject = new object();
 
-        public void EnrollAlerts(string data, bool reset = false)
+        public void EnrollAlerts(string data, string name)
         {
             lock (EnrollObject)
             {
@@ -223,12 +204,14 @@ namespace SharpAlert.SourceCapturing
                             //    string alertReplayValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
                             //}
 
-                            SharpDataItem item = new SharpDataItem(filename, alert.Value);
+                            string CombinedAlertValue = $"<SharpAlertSource>{name}</SharpAlertSource>{alert.Value}";
 
-                            if (reset)
-                            {
-                                TryRemoveDataFromHistory(item);
-                            }
+                            SharpDataItem item = new SharpDataItem(filename, CombinedAlertValue);
+
+                            //if (reset)
+                            //{
+                            //    TryRemoveDataFromHistory(item);
+                            //}
 
                             if (FirstRun && QuickSettings.Instance.discardFirstAlerts)
                             {

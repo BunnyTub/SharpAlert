@@ -8,8 +8,16 @@ namespace SharpAlert.ConfigurationDialogs
         public ChooseLocationForm(bool ShowNextInsteadOfDone)
         {
             InitializeComponent();
-            if (ShowNextInsteadOfDone) DoneButton.Text = "Next";
-            else DoneButton.Text = "Done";
+            if (ShowNextInsteadOfDone)
+            {
+                DoneButton.Text = "Next";
+                SkipButton.Visible = true;
+            }
+            else
+            {
+                DoneButton.Text = "Done";
+                SkipButton.Visible = false;
+            }
         }
 
         private void DoneButton_Click(object sender, EventArgs e)
@@ -44,7 +52,8 @@ namespace SharpAlert.ConfigurationDialogs
         private void ChooseRegionForm_HelpButtonClicked(object sender, System.ComponentModel.CancelEventArgs e)
         {
             MessageBox.Show("Hover over the options for their respective info.\r\n" +
-                "Locations are used to control what alerts you receive.",
+                "Locations are used to control what alerts you receive.\r\n" +
+                "You'll only receive alerts for the locations you specify.",
                 "SharpAlert",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
@@ -262,6 +271,11 @@ namespace SharpAlert.ConfigurationDialogs
                 QuickSettings.Instance.AllowedCustomLocations_GeocodesList.Clear();
                 ListAreaCustomOutput.Clear();
             }
+        }
+
+        private void SkipButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

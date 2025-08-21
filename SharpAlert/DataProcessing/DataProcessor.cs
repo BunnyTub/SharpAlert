@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using SharpAlert.AlertComponents;
 using SharpAlert.ProgramWorker;
+using System.IO;
 
 namespace SharpAlert.DataProcessing
 {
@@ -34,6 +35,7 @@ namespace SharpAlert.DataProcessing
         }
 
         private static readonly object DiscordConfirmLockObject = new object();
+        private static readonly string ArchivePath = QuickSettings.ConfigDirPath + "\\Archive";
 
         public void ServiceRun()
         {
@@ -41,7 +43,63 @@ namespace SharpAlert.DataProcessing
             {
                 try
                 {
-                    Thread.Sleep(100);
+                    if (QuickSettings.Instance.ArchivingSaveAllAlerts)
+                    {
+                        try
+                        {
+                            Directory.CreateDirectory(ArchivePath);
+
+                            string[] files = Directory.GetFiles(ArchivePath);
+
+                            foreach (string file in files)
+                            {
+                                try
+                                {
+                                    DateTime dt = File.GetCreationTimeUtc(file);
+
+                                    if (DateTime.UtcNow - dt > TimeSpan.FromHours(48))
+                                    {
+                                        File.Delete(file);
+                                        Console.WriteLine($"[Data Processor] Deleted old file from archive -> {Path.GetFileName(file)}");
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine($"[Data Processor] Could not delete an alert from disk. {ex.Message}");
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"[Data Processor] {ex.Message}");
+                        }
+
+                        lock (SharpDataHistory)
+                        {
+                            if (SharpDataHistory.Any())
+                            {
+                                foreach (SharpDataItem item in SharpDataHistory)
+                                {
+                                    string ItemName = string.Join("_", item.Name.Split(Path.GetInvalidFileNameChars()));
+
+                                    try
+                                    {
+                                        string AlertPath = $"{ArchivePath}\\{ItemName}.xml";
+                                        if (File.Exists(AlertPath)) continue;
+                                        File.WriteAllText(AlertPath, item.Data);
+                                        
+                                        Console.WriteLine($"[Data Processor] Wrote alert to file on disk -> {Path.GetFileName(AlertPath)}");
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine($"[Data Processor] Could not read/write an alert to disk. {ex.Message}");
+                                    }
+                                }
+                            }
+                        }
+
+                        Thread.Sleep(1000);
+                    }
 
                     // Trim history for memory saving
                     if (SharpDataHistory.Count > QuickSettings.Instance.storedMaxSize)

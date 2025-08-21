@@ -112,11 +112,11 @@
             this.RefreshOutputsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.RefreshOutputsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.RefreshOutputsButton.Font = new System.Drawing.Font("Arial", 9F);
-            this.RefreshOutputsButton.Location = new System.Drawing.Point(552, 57);
+            this.RefreshOutputsButton.Location = new System.Drawing.Point(506, 57);
             this.RefreshOutputsButton.Name = "RefreshOutputsButton";
-            this.RefreshOutputsButton.Size = new System.Drawing.Size(23, 23);
+            this.RefreshOutputsButton.Size = new System.Drawing.Size(72, 23);
             this.RefreshOutputsButton.TabIndex = 42;
-            this.RefreshOutputsButton.Text = "⭐";
+            this.RefreshOutputsButton.Text = "Refresh";
             this.ToolTipInformation.SetToolTip(this.RefreshOutputsButton, "Refreshes the audio output list.");
             this.RefreshOutputsButton.UseMnemonic = false;
             this.RefreshOutputsButton.UseVisualStyleBackColor = false;
@@ -135,7 +135,7 @@
             "Refresh the outputs..."});
             this.AudioDeviceCombo.Location = new System.Drawing.Point(110, 57);
             this.AudioDeviceCombo.Name = "AudioDeviceCombo";
-            this.AudioDeviceCombo.Size = new System.Drawing.Size(436, 23);
+            this.AudioDeviceCombo.Size = new System.Drawing.Size(390, 23);
             this.AudioDeviceCombo.TabIndex = 40;
             this.ToolTipInformation.SetToolTip(this.AudioDeviceCombo, "Choose the audio output device to use for sounds.");
             this.AudioDeviceCombo.SelectedIndexChanged += new System.EventHandler(this.AudioDeviceCombo_SelectedIndexChanged);
@@ -145,7 +145,7 @@
             this.volumeBar.LargeChange = 1;
             this.volumeBar.Location = new System.Drawing.Point(174, 83);
             this.volumeBar.Name = "volumeBar";
-            this.volumeBar.Size = new System.Drawing.Size(401, 45);
+            this.volumeBar.Size = new System.Drawing.Size(404, 45);
             this.volumeBar.TabIndex = 44;
             this.volumeBar.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.ToolTipInformation.SetToolTip(this.volumeBar, "Controls the global volume of the application.");
@@ -183,7 +183,7 @@
             this.AudioOutputClearLink.AutoSize = true;
             this.AudioOutputClearLink.Font = new System.Drawing.Font("Arial", 9F);
             this.AudioOutputClearLink.LinkColor = System.Drawing.Color.Pink;
-            this.AudioOutputClearLink.Location = new System.Drawing.Point(397, 39);
+            this.AudioOutputClearLink.Location = new System.Drawing.Point(429, 39);
             this.AudioOutputClearLink.Name = "AudioOutputClearLink";
             this.AudioOutputClearLink.Size = new System.Drawing.Size(149, 15);
             this.AudioOutputClearLink.TabIndex = 47;
@@ -212,7 +212,7 @@
             // 
             this.EnableBasicSpeakingBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.EnableBasicSpeakingBox.AutoSize = true;
-            this.EnableBasicSpeakingBox.Location = new System.Drawing.Point(307, 20);
+            this.EnableBasicSpeakingBox.Location = new System.Drawing.Point(311, 20);
             this.EnableBasicSpeakingBox.Name = "EnableBasicSpeakingBox";
             this.EnableBasicSpeakingBox.Size = new System.Drawing.Size(152, 19);
             this.EnableBasicSpeakingBox.TabIndex = 14;
@@ -279,7 +279,7 @@
             this.ApplicationTypeGroup.ForeColor = System.Drawing.Color.White;
             this.ApplicationTypeGroup.Location = new System.Drawing.Point(110, 162);
             this.ApplicationTypeGroup.Name = "ApplicationTypeGroup";
-            this.ApplicationTypeGroup.Size = new System.Drawing.Size(465, 76);
+            this.ApplicationTypeGroup.Size = new System.Drawing.Size(468, 76);
             this.ApplicationTypeGroup.TabIndex = 49;
             this.ApplicationTypeGroup.TabStop = false;
             this.ApplicationTypeGroup.Text = "Basic Speaking";
@@ -289,10 +289,10 @@
             this.SupportedLinesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.SupportedLinesButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.SupportedLinesButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SupportedLinesButton.Location = new System.Drawing.Point(307, 42);
+            this.SupportedLinesButton.Location = new System.Drawing.Point(311, 42);
             this.SupportedLinesButton.Margin = new System.Windows.Forms.Padding(0);
             this.SupportedLinesButton.Name = "SupportedLinesButton";
-            this.SupportedLinesButton.Size = new System.Drawing.Size(152, 23);
+            this.SupportedLinesButton.Size = new System.Drawing.Size(151, 23);
             this.SupportedLinesButton.TabIndex = 50;
             this.SupportedLinesButton.Text = "Supported Lines";
             this.SupportedLinesButton.UseVisualStyleBackColor = false;
@@ -316,7 +316,7 @@
             this.groupBox10.ForeColor = System.Drawing.Color.White;
             this.groupBox10.Location = new System.Drawing.Point(110, 244);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(465, 95);
+            this.groupBox10.Size = new System.Drawing.Size(468, 95);
             this.groupBox10.TabIndex = 50;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Program Events";
@@ -327,7 +327,7 @@
             this.ChangeEndButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.ChangeEndButton.Location = new System.Drawing.Point(6, 64);
             this.ChangeEndButton.Name = "ChangeEndButton";
-            this.ChangeEndButton.Size = new System.Drawing.Size(453, 23);
+            this.ChangeEndButton.Size = new System.Drawing.Size(456, 23);
             this.ChangeEndButton.TabIndex = 50;
             this.ChangeEndButton.Text = "Select End Tone Location";
             this.ChangeEndButton.UseVisualStyleBackColor = false;
@@ -339,7 +339,7 @@
             this.ChangeStartButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.ChangeStartButton.Location = new System.Drawing.Point(6, 35);
             this.ChangeStartButton.Name = "ChangeStartButton";
-            this.ChangeStartButton.Size = new System.Drawing.Size(453, 23);
+            this.ChangeStartButton.Size = new System.Drawing.Size(456, 23);
             this.ChangeStartButton.TabIndex = 49;
             this.ChangeStartButton.Text = "Select Start Tone Location";
             this.ChangeStartButton.UseVisualStyleBackColor = false;

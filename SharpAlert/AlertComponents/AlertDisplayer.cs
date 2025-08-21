@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using SharpAlert.PrinterStuff;
 using SharpAlert.Properties;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using static SharpAlert.AudioManager;
@@ -114,7 +115,10 @@ namespace SharpAlert.AlertComponents
                 return;
             }
 
-            if (QuickSettings.Instance.alertAutoPrintingEnabled) PrinterController.Print(alert.EventTypeFull, $"{alert._AlertText.Intro}\r\n\r\n{alert._AlertText.Body}".Trim());
+            if (QuickSettings.Instance.alertAutoPrintingEnabled)
+            {
+                PrinterController.Print(alert.EventTypeFull, $"{alert._AlertText.Intro}\r\n\r\n{alert._AlertText.Body}".Trim());
+            }
 
             if (QuickSettings.Instance.alertNoGUI)
             {

@@ -49,15 +49,18 @@
             this.statusWindowBox = new System.Windows.Forms.CheckBox();
             this.NoSystemSleepBox = new System.Windows.Forms.CheckBox();
             this.alertAutoPrintingEnabledBox = new System.Windows.Forms.CheckBox();
+            this.ScrollSpeedBar = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.AlertTextButton = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScrollSpeedBar)).BeginInit();
             this.SuspendLayout();
             // 
             // DoneButton
@@ -65,7 +68,7 @@
             this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DoneButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DoneButton.Location = new System.Drawing.Point(451, 193);
+            this.DoneButton.Location = new System.Drawing.Point(537, 228);
             this.DoneButton.Margin = new System.Windows.Forms.Padding(0);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(72, 23);
@@ -95,6 +98,7 @@
             this.TitleText.Size = new System.Drawing.Size(400, 30);
             this.TitleText.TabIndex = 3;
             this.TitleText.Text = "Choose your style settings.";
+            this.TitleText.Click += new System.EventHandler(this.TitleText_Click);
             // 
             // ToolTipInformation
             // 
@@ -299,11 +303,22 @@
             this.ToolTipInformation.SetToolTip(this.alertAutoPrintingEnabledBox, "Prints relayed alerts. This feature is only available if dialogs are enabled.");
             this.alertAutoPrintingEnabledBox.UseVisualStyleBackColor = true;
             // 
+            // ScrollSpeedBar
+            // 
+            this.ScrollSpeedBar.Location = new System.Drawing.Point(383, 186);
+            this.ScrollSpeedBar.Maximum = 20;
+            this.ScrollSpeedBar.Name = "ScrollSpeedBar";
+            this.ScrollSpeedBar.Size = new System.Drawing.Size(136, 45);
+            this.ScrollSpeedBar.TabIndex = 44;
+            this.ToolTipInformation.SetToolTip(this.ScrollSpeedBar, "Controls the scroll speed on panels with scrolling text. This cannot control the " +
+        "idle panel scroll speed.");
+            this.ScrollSpeedBar.Value = 5;
+            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.Font = new System.Drawing.Font("Arial", 9F);
-            this.label1.Location = new System.Drawing.Point(9, 190);
+            this.label1.Location = new System.Drawing.Point(9, 225);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(332, 26);
@@ -355,7 +370,7 @@
             this.AlertTextButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.AlertTextButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.AlertTextButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.AlertTextButton.Location = new System.Drawing.Point(451, 167);
+            this.AlertTextButton.Location = new System.Drawing.Point(537, 202);
             this.AlertTextButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             this.AlertTextButton.Name = "AlertTextButton";
             this.AlertTextButton.Size = new System.Drawing.Size(72, 23);
@@ -364,12 +379,23 @@
             this.AlertTextButton.UseVisualStyleBackColor = false;
             this.AlertTextButton.Click += new System.EventHandler(this.AlertTextButton_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(380, 168);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(204, 15);
+            this.label3.TabIndex = 43;
+            this.label3.Text = "Scroll speed (only affects Full scroll)";
+            // 
             // StyleConfigurationForm
             // 
             this.AcceptButton = this.DoneButton;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(532, 225);
+            this.ClientSize = new System.Drawing.Size(618, 260);
+            this.Controls.Add(this.ScrollSpeedBar);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.alertAutoPrintingEnabledBox);
             this.Controls.Add(this.AlertTextButton);
             this.Controls.Add(this.NoSystemSleepBox);
@@ -411,6 +437,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertTimeoutInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.alertFullscreenDisplayInput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ScrollSpeedBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -443,5 +470,7 @@
         private System.Windows.Forms.CheckBox NoSystemSleepBox;
         private System.Windows.Forms.Button AlertTextButton;
         private System.Windows.Forms.CheckBox alertAutoPrintingEnabledBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TrackBar ScrollSpeedBar;
     }
 }

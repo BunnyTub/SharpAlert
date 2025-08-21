@@ -33,6 +33,10 @@ namespace SharpAlert
             @"<SharpAlertReplay>\s*(.*?)\s*</SharpAlertReplay>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 		
+		public static readonly Regex SourceRegex = new Regex(
+            @"<SharpAlertSource>\s*(.*?)\s*</SharpAlertSource>",
+			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
 		public static readonly Regex AlertTitleRegex = new Regex(
             @"<SharpAlert-AlertTitle>\s*(.*?)\s*</SharpAlert-AlertTitle>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
