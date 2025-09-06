@@ -36,7 +36,7 @@
             this.AlertDeadIntervalInput = new System.Windows.Forms.NumericUpDown();
             this.AlertCheckIntervalInput = new System.Windows.Forms.NumericUpDown();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
-            this.discardFirstAlertsBox = new System.Windows.Forms.CheckBox();
+            this.PreferCMAMTextWhereAvailableBox = new System.Windows.Forms.CheckBox();
             this.weaOnlyBox = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.urgencyUnknownBox = new System.Windows.Forms.CheckBox();
@@ -59,6 +59,7 @@
             this.statusExerciseBox = new System.Windows.Forms.CheckBox();
             this.statusActualBox = new System.Windows.Forms.CheckBox();
             this.statusTestBox = new System.Windows.Forms.CheckBox();
+            this.discardFirstAlertsBox = new System.Windows.Forms.CheckBox();
             this.LocationsAndEventsGroup = new System.Windows.Forms.GroupBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.EventWhitelistModeBox = new System.Windows.Forms.CheckBox();
@@ -71,7 +72,6 @@
             this.EventClearButton = new System.Windows.Forms.Button();
             this.LocationsClearButton = new System.Windows.Forms.Button();
             this.LocationsButton = new System.Windows.Forms.Button();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.LanguageButton = new System.Windows.Forms.Button();
             this.StationButton = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -97,6 +97,7 @@
             this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
             this.BypassFilteringFlasher = new System.Windows.Forms.Timer(this.components);
             this.ArchiveSettingsButton = new System.Windows.Forms.Button();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.AlertFunctionalityGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlertDeadIntervalInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AlertCheckIntervalInput)).BeginInit();
@@ -107,10 +108,10 @@
             this.groupBox1.SuspendLayout();
             this.LocationsAndEventsGroup.SuspendLayout();
             this.groupBox9.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.storedMaxSizeInput)).BeginInit();
             this.groupBox3.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // AlertFunctionalityGroup
@@ -214,7 +215,7 @@
             // 
             // groupBox11
             // 
-            this.groupBox11.Controls.Add(this.discardFirstAlertsBox);
+            this.groupBox11.Controls.Add(this.PreferCMAMTextWhereAvailableBox);
             this.groupBox11.Controls.Add(this.weaOnlyBox);
             this.groupBox11.ForeColor = System.Drawing.Color.White;
             this.groupBox11.Location = new System.Drawing.Point(6, 277);
@@ -224,16 +225,17 @@
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Message Extras";
             // 
-            // discardFirstAlertsBox
+            // PreferCMAMTextWhereAvailableBox
             // 
-            this.discardFirstAlertsBox.AutoSize = true;
-            this.discardFirstAlertsBox.Location = new System.Drawing.Point(6, 45);
-            this.discardFirstAlertsBox.Name = "discardFirstAlertsBox";
-            this.discardFirstAlertsBox.Size = new System.Drawing.Size(129, 19);
-            this.discardFirstAlertsBox.TabIndex = 10;
-            this.discardFirstAlertsBox.Text = "Discard all on start";
-            this.ToolTipInformation.SetToolTip(this.discardFirstAlertsBox, "Throw all alerts into the history instead of the queue on startup.");
-            this.discardFirstAlertsBox.UseVisualStyleBackColor = true;
+            this.PreferCMAMTextWhereAvailableBox.AutoSize = true;
+            this.PreferCMAMTextWhereAvailableBox.Location = new System.Drawing.Point(6, 45);
+            this.PreferCMAMTextWhereAvailableBox.Name = "PreferCMAMTextWhereAvailableBox";
+            this.PreferCMAMTextWhereAvailableBox.Size = new System.Drawing.Size(118, 19);
+            this.PreferCMAMTextWhereAvailableBox.TabIndex = 11;
+            this.PreferCMAMTextWhereAvailableBox.Text = "Favor mobile text";
+            this.ToolTipInformation.SetToolTip(this.PreferCMAMTextWhereAvailableBox, "Favors mobile text where available instead of the alert description and instructi" +
+        "on text.");
+            this.PreferCMAMTextWhereAvailableBox.UseVisualStyleBackColor = true;
             // 
             // weaOnlyBox
             // 
@@ -493,6 +495,17 @@
             this.ToolTipInformation.SetToolTip(this.statusTestBox, "Allow messages with this status.");
             this.statusTestBox.UseVisualStyleBackColor = true;
             // 
+            // discardFirstAlertsBox
+            // 
+            this.discardFirstAlertsBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.discardFirstAlertsBox.Location = new System.Drawing.Point(3, 17);
+            this.discardFirstAlertsBox.Name = "discardFirstAlertsBox";
+            this.discardFirstAlertsBox.Size = new System.Drawing.Size(119, 23);
+            this.discardFirstAlertsBox.TabIndex = 10;
+            this.discardFirstAlertsBox.Text = "Ignore first alerts";
+            this.ToolTipInformation.SetToolTip(this.discardFirstAlertsBox, "Throw all alerts into the history instead of the queue on startup.");
+            this.discardFirstAlertsBox.UseVisualStyleBackColor = true;
+            // 
             // LocationsAndEventsGroup
             // 
             this.LocationsAndEventsGroup.Controls.Add(this.groupBox9);
@@ -648,28 +661,17 @@
             this.LocationsButton.UseVisualStyleBackColor = false;
             this.LocationsButton.Click += new System.EventHandler(this.LocationsButton_Click);
             // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.LanguageButton);
-            this.groupBox7.ForeColor = System.Drawing.Color.White;
-            this.groupBox7.Location = new System.Drawing.Point(534, 371);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(125, 66);
-            this.groupBox7.TabIndex = 36;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Language Filters";
-            // 
             // LanguageButton
             // 
             this.LanguageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.LanguageButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LanguageButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.LanguageButton.Location = new System.Drawing.Point(3, 17);
+            this.LanguageButton.Font = new System.Drawing.Font("Arial", 8.8F);
+            this.LanguageButton.Location = new System.Drawing.Point(534, 368);
             this.LanguageButton.Margin = new System.Windows.Forms.Padding(0);
             this.LanguageButton.Name = "LanguageButton";
-            this.LanguageButton.Size = new System.Drawing.Size(119, 46);
+            this.LanguageButton.Size = new System.Drawing.Size(125, 23);
             this.LanguageButton.TabIndex = 52;
-            this.LanguageButton.Text = "Language\r\nSettings";
+            this.LanguageButton.Text = "Language Settings";
             this.LanguageButton.UseVisualStyleBackColor = false;
             this.LanguageButton.Click += new System.EventHandler(this.LanguageButton_Click);
             // 
@@ -677,7 +679,7 @@
             // 
             this.StationButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.StationButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.StationButton.Location = new System.Drawing.Point(534, 443);
+            this.StationButton.Location = new System.Drawing.Point(534, 394);
             this.StationButton.Name = "StationButton";
             this.StationButton.Size = new System.Drawing.Size(125, 23);
             this.StationButton.TabIndex = 51;
@@ -697,7 +699,7 @@
             this.groupBox6.Size = new System.Drawing.Size(331, 97);
             this.groupBox6.TabIndex = 17;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Message Miscellaneous";
+            this.groupBox6.Text = "Miscellaneous";
             // 
             // BypassAlertFilteringButton
             // 
@@ -982,13 +984,25 @@
             this.ArchiveSettingsButton.UseVisualStyleBackColor = false;
             this.ArchiveSettingsButton.Click += new System.EventHandler(this.ArchiveSettingsButton_Click);
             // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.discardFirstAlertsBox);
+            this.groupBox7.ForeColor = System.Drawing.Color.White;
+            this.groupBox7.Location = new System.Drawing.Point(534, 423);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(125, 43);
+            this.groupBox7.TabIndex = 53;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "General Filters";
+            // 
             // AlertConfigurationForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(671, 477);
-            this.Controls.Add(this.ArchiveSettingsButton);
             this.Controls.Add(this.groupBox7);
+            this.Controls.Add(this.LanguageButton);
+            this.Controls.Add(this.ArchiveSettingsButton);
             this.Controls.Add(this.StationButton);
             this.Controls.Add(this.AlertFunctionalityGroup);
             this.Controls.Add(this.groupBox6);
@@ -1026,12 +1040,12 @@
             this.LocationsAndEventsGroup.ResumeLayout(false);
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.storedMaxSizeInput)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1098,12 +1112,13 @@
         private System.Windows.Forms.Button LocationsClearButton;
         private System.Windows.Forms.Button AlertListButton;
         private System.Windows.Forms.Button EventSelectButton;
-        private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Button CategoryInfoButton;
         private System.Windows.Forms.Button BypassAlertFilteringButton;
         private System.Windows.Forms.Timer BypassFilteringFlasher;
         private System.Windows.Forms.Button NamedEventsInfoButton;
         private System.Windows.Forms.CheckBox EventWhitelistModeBox;
         private System.Windows.Forms.Button ArchiveSettingsButton;
+        private System.Windows.Forms.CheckBox PreferCMAMTextWhereAvailableBox;
+        private System.Windows.Forms.GroupBox groupBox7;
     }
 }

@@ -38,8 +38,9 @@
             this.AddAlertIssuerBox = new System.Windows.Forms.CheckBox();
             this.AddIntroTextBox = new System.Windows.Forms.CheckBox();
             this.UpdateTextField = new System.Windows.Forms.Timer(this.components);
-            this.RemoveNWSDescCodeBox = new System.Windows.Forms.CheckBox();
-            this.RemoveNWSNewLinesBox = new System.Windows.Forms.CheckBox();
+            this.AddSourcedFromBox = new System.Windows.Forms.CheckBox();
+            this.AddEventNameBox = new System.Windows.Forms.CheckBox();
+            this.Use24HrTimeBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -128,28 +129,38 @@
             this.UpdateTextField.Interval = 1000;
             this.UpdateTextField.Tick += new System.EventHandler(this.UpdateTextField_Tick);
             // 
-            // RemoveNWSDescCodeBox
+            // AddSourcedFromBox
             // 
-            this.RemoveNWSDescCodeBox.AutoSize = true;
-            this.RemoveNWSDescCodeBox.Location = new System.Drawing.Point(110, 117);
-            this.RemoveNWSDescCodeBox.Name = "RemoveNWSDescCodeBox";
-            this.RemoveNWSDescCodeBox.Size = new System.Drawing.Size(327, 19);
-            this.RemoveNWSDescCodeBox.TabIndex = 5;
-            this.RemoveNWSDescCodeBox.Text = "Attempt to remove 6 character short code in NWS alerts";
-            this.ToolTipInformation.SetToolTip(this.RemoveNWSDescCodeBox, resources.GetString("RemoveNWSDescCodeBox.ToolTip"));
-            this.RemoveNWSDescCodeBox.UseVisualStyleBackColor = true;
+            this.AddSourcedFromBox.AutoSize = true;
+            this.AddSourcedFromBox.Location = new System.Drawing.Point(110, 117);
+            this.AddSourcedFromBox.Name = "AddSourcedFromBox";
+            this.AddSourcedFromBox.Size = new System.Drawing.Size(192, 19);
+            this.AddSourcedFromBox.TabIndex = 7;
+            this.AddSourcedFromBox.Text = "Include the \"Sourced from\" text";
+            this.ToolTipInformation.SetToolTip(this.AddSourcedFromBox, "The source of the current alert.");
+            this.AddSourcedFromBox.UseVisualStyleBackColor = true;
             // 
-            // RemoveNWSNewLinesBox
+            // AddEventNameBox
             // 
-            this.RemoveNWSNewLinesBox.AutoSize = true;
-            this.RemoveNWSNewLinesBox.Location = new System.Drawing.Point(110, 142);
-            this.RemoveNWSNewLinesBox.Name = "RemoveNWSNewLinesBox";
-            this.RemoveNWSNewLinesBox.Size = new System.Drawing.Size(323, 19);
-            this.RemoveNWSNewLinesBox.TabIndex = 6;
-            this.RemoveNWSNewLinesBox.Text = "Forcefully remove all newline characters in NWS alerts";
-            this.ToolTipInformation.SetToolTip(this.RemoveNWSNewLinesBox, "Removes newline characters anywhere in the alert text, and splices everything tog" +
-        "ether with spaces.");
-            this.RemoveNWSNewLinesBox.UseVisualStyleBackColor = true;
+            this.AddEventNameBox.AutoSize = true;
+            this.AddEventNameBox.Location = new System.Drawing.Point(110, 142);
+            this.AddEventNameBox.Name = "AddEventNameBox";
+            this.AddEventNameBox.Size = new System.Drawing.Size(153, 19);
+            this.AddEventNameBox.TabIndex = 8;
+            this.AddEventNameBox.Text = "Include the event name";
+            this.ToolTipInformation.SetToolTip(this.AddEventNameBox, "The event of the current alert.");
+            this.AddEventNameBox.UseVisualStyleBackColor = true;
+            // 
+            // Use24HrTimeBox
+            // 
+            this.Use24HrTimeBox.AutoSize = true;
+            this.Use24HrTimeBox.Location = new System.Drawing.Point(110, 167);
+            this.Use24HrTimeBox.Name = "Use24HrTimeBox";
+            this.Use24HrTimeBox.Size = new System.Drawing.Size(250, 19);
+            this.Use24HrTimeBox.TabIndex = 9;
+            this.Use24HrTimeBox.Text = "Use 24 hour time instead of 12 hour time";
+            this.ToolTipInformation.SetToolTip(this.Use24HrTimeBox, "The event of the current alert.");
+            this.Use24HrTimeBox.UseVisualStyleBackColor = true;
             // 
             // AlertTextConfigurationForm
             // 
@@ -157,8 +168,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(501, 219);
-            this.Controls.Add(this.RemoveNWSNewLinesBox);
-            this.Controls.Add(this.RemoveNWSDescCodeBox);
+            this.Controls.Add(this.Use24HrTimeBox);
+            this.Controls.Add(this.AddEventNameBox);
+            this.Controls.Add(this.AddSourcedFromBox);
             this.Controls.Add(this.AddIntroTextBox);
             this.Controls.Add(this.AddAlertIssuerBox);
             this.Controls.Add(this.AddAlertEffectiveAndEndingTimesBox);
@@ -195,7 +207,8 @@
         private System.Windows.Forms.Timer UpdateTextField;
         private System.Windows.Forms.CheckBox AddAlertIssuerBox;
         private System.Windows.Forms.CheckBox AddIntroTextBox;
-        private System.Windows.Forms.CheckBox RemoveNWSDescCodeBox;
-        private System.Windows.Forms.CheckBox RemoveNWSNewLinesBox;
+        private System.Windows.Forms.CheckBox AddSourcedFromBox;
+        private System.Windows.Forms.CheckBox AddEventNameBox;
+        private System.Windows.Forms.CheckBox Use24HrTimeBox;
     }
 }

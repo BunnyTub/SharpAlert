@@ -43,6 +43,8 @@
             this.TTSButton = new System.Windows.Forms.Button();
             this.EnableBasicSpeakingBox = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.alertTTSonlyBox = new System.Windows.Forms.CheckBox();
+            this.alertPlayStartToneTwiceBox = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.AudioOutputLabel = new System.Windows.Forms.Label();
             this.GlobalVolumeLabel = new System.Windows.Forms.Label();
@@ -54,6 +56,7 @@
             this.ChangeStartButton = new System.Windows.Forms.Button();
             this.AudioTinkeringFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.ShowRefreshTip = new System.Windows.Forms.Timer(this.components);
+            this.ChangeStartLowButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.volumeBar)).BeginInit();
             this.ApplicationTypeGroup.SuspendLayout();
@@ -65,7 +68,7 @@
             this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DoneButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DoneButton.Location = new System.Drawing.Point(506, 349);
+            this.DoneButton.Location = new System.Drawing.Point(506, 372);
             this.DoneButton.Margin = new System.Windows.Forms.Padding(0);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(72, 23);
@@ -197,7 +200,7 @@
             this.TTSButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.TTSButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.TTSButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.TTSButton.Location = new System.Drawing.Point(403, 349);
+            this.TTSButton.Location = new System.Drawing.Point(403, 372);
             this.TTSButton.Name = "TTSButton";
             this.TTSButton.Size = new System.Drawing.Size(100, 23);
             this.TTSButton.TabIndex = 48;
@@ -217,9 +220,7 @@
             this.EnableBasicSpeakingBox.TabIndex = 14;
             this.EnableBasicSpeakingBox.Text = "Enable basic speaking";
             this.EnableBasicSpeakingBox.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.ToolTipInformation.SetToolTip(this.EnableBasicSpeakingBox, "Causes the alert displayer to toggle the alert display boolean on for 5 seconds.\r" +
-        "\nUseful if you\'re only wanting to send alerts out via the web server, or for oth" +
-        "er purposes.");
+            this.ToolTipInformation.SetToolTip(this.EnableBasicSpeakingBox, "Enables Basic Speaking.");
             this.EnableBasicSpeakingBox.UseVisualStyleBackColor = true;
             // 
             // label2
@@ -234,11 +235,33 @@
             this.ToolTipInformation.SetToolTip(this.label2, "If you choose custom sounds, you will not be able to control the severity level t" +
         "hey play at.");
             // 
+            // alertTTSonlyBox
+            // 
+            this.alertTTSonlyBox.AutoSize = true;
+            this.alertTTSonlyBox.Location = new System.Drawing.Point(313, 134);
+            this.alertTTSonlyBox.Name = "alertTTSonlyBox";
+            this.alertTTSonlyBox.Size = new System.Drawing.Size(159, 19);
+            this.alertTTSonlyBox.TabIndex = 51;
+            this.alertTTSonlyBox.Text = "Never play remote audio";
+            this.ToolTipInformation.SetToolTip(this.alertTTSonlyBox, "Turn off requests for remote audio. Only plays TTS.");
+            this.alertTTSonlyBox.UseVisualStyleBackColor = true;
+            // 
+            // alertPlayStartToneTwiceBox
+            // 
+            this.alertPlayStartToneTwiceBox.AutoSize = true;
+            this.alertPlayStartToneTwiceBox.Location = new System.Drawing.Point(313, 159);
+            this.alertPlayStartToneTwiceBox.Name = "alertPlayStartToneTwiceBox";
+            this.alertPlayStartToneTwiceBox.Size = new System.Drawing.Size(117, 19);
+            this.alertPlayStartToneTwiceBox.TabIndex = 52;
+            this.alertPlayStartToneTwiceBox.Text = "Extend alert tone";
+            this.ToolTipInformation.SetToolTip(this.alertPlayStartToneTwiceBox, "Extends the start tone by instructing the audio stack to play it twice.");
+            this.alertPlayStartToneTwiceBox.UseVisualStyleBackColor = true;
+            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.Font = new System.Drawing.Font("Arial", 9F);
-            this.label1.Location = new System.Drawing.Point(9, 346);
+            this.label1.Location = new System.Drawing.Point(9, 369);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(332, 26);
@@ -269,14 +292,11 @@
             // 
             // ApplicationTypeGroup
             // 
-            this.ApplicationTypeGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.ApplicationTypeGroup.Controls.Add(this.SupportedLinesButton);
             this.ApplicationTypeGroup.Controls.Add(this.EnableBasicSpeakingBox);
             this.ApplicationTypeGroup.Controls.Add(this.label3);
             this.ApplicationTypeGroup.ForeColor = System.Drawing.Color.White;
-            this.ApplicationTypeGroup.Location = new System.Drawing.Point(110, 162);
+            this.ApplicationTypeGroup.Location = new System.Drawing.Point(110, 184);
             this.ApplicationTypeGroup.Name = "ApplicationTypeGroup";
             this.ApplicationTypeGroup.Size = new System.Drawing.Size(468, 76);
             this.ApplicationTypeGroup.TabIndex = 49;
@@ -309,11 +329,12 @@
             // 
             // groupBox10
             // 
+            this.groupBox10.Controls.Add(this.ChangeStartLowButton);
             this.groupBox10.Controls.Add(this.label2);
             this.groupBox10.Controls.Add(this.ChangeEndButton);
             this.groupBox10.Controls.Add(this.ChangeStartButton);
             this.groupBox10.ForeColor = System.Drawing.Color.White;
-            this.groupBox10.Location = new System.Drawing.Point(110, 244);
+            this.groupBox10.Location = new System.Drawing.Point(110, 266);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(468, 95);
             this.groupBox10.TabIndex = 50;
@@ -324,10 +345,10 @@
             // 
             this.ChangeEndButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.ChangeEndButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.ChangeEndButton.Location = new System.Drawing.Point(6, 64);
+            this.ChangeEndButton.Location = new System.Drawing.Point(287, 35);
             this.ChangeEndButton.Name = "ChangeEndButton";
-            this.ChangeEndButton.Size = new System.Drawing.Size(456, 23);
-            this.ChangeEndButton.TabIndex = 50;
+            this.ChangeEndButton.Size = new System.Drawing.Size(175, 52);
+            this.ChangeEndButton.TabIndex = 51;
             this.ChangeEndButton.Text = "Select End Tone Location";
             this.ChangeEndButton.UseVisualStyleBackColor = false;
             this.ChangeEndButton.Click += new System.EventHandler(this.ChangeEndButton_Click);
@@ -338,9 +359,9 @@
             this.ChangeStartButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.ChangeStartButton.Location = new System.Drawing.Point(6, 35);
             this.ChangeStartButton.Name = "ChangeStartButton";
-            this.ChangeStartButton.Size = new System.Drawing.Size(456, 23);
+            this.ChangeStartButton.Size = new System.Drawing.Size(275, 23);
             this.ChangeStartButton.TabIndex = 49;
-            this.ChangeStartButton.Text = "Select Start Tone Location";
+            this.ChangeStartButton.Text = "Select (Severe+) Start Tone Location";
             this.ChangeStartButton.UseVisualStyleBackColor = false;
             this.ChangeStartButton.Click += new System.EventHandler(this.ChangeStartButton_Click);
             // 
@@ -350,12 +371,26 @@
             this.ShowRefreshTip.Interval = 1000;
             this.ShowRefreshTip.Tick += new System.EventHandler(this.ShowRefreshTip_Tick);
             // 
+            // ChangeStartLowButton
+            // 
+            this.ChangeStartLowButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.ChangeStartLowButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ChangeStartLowButton.Location = new System.Drawing.Point(6, 64);
+            this.ChangeStartLowButton.Name = "ChangeStartLowButton";
+            this.ChangeStartLowButton.Size = new System.Drawing.Size(275, 23);
+            this.ChangeStartLowButton.TabIndex = 50;
+            this.ChangeStartLowButton.Text = "Select (Moderate-) Start Tone Location";
+            this.ChangeStartLowButton.UseVisualStyleBackColor = false;
+            this.ChangeStartLowButton.Click += new System.EventHandler(this.ChangeStartLowButton_Click);
+            // 
             // ChooseAudioForm
             // 
             this.AcceptButton = this.DoneButton;
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(587, 381);
+            this.ClientSize = new System.Drawing.Size(587, 404);
+            this.Controls.Add(this.alertPlayStartToneTwiceBox);
+            this.Controls.Add(this.alertTTSonlyBox);
             this.Controls.Add(this.groupBox10);
             this.Controls.Add(this.ApplicationTypeGroup);
             this.Controls.Add(this.TTSButton);
@@ -422,5 +457,8 @@
         private System.Windows.Forms.Button ChangeStartButton;
         private System.Windows.Forms.OpenFileDialog AudioTinkeringFileDialog;
         private System.Windows.Forms.Timer ShowRefreshTip;
+        private System.Windows.Forms.CheckBox alertTTSonlyBox;
+        private System.Windows.Forms.CheckBox alertPlayStartToneTwiceBox;
+        private System.Windows.Forms.Button ChangeStartLowButton;
     }
 }

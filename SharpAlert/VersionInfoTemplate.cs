@@ -13,9 +13,9 @@ namespace SharpAlert
         public const string BuiltOnDate = "";
         public const string BuiltOnTime = "";
         public const string BuiltTimeZone = "";
-        public static int MajorVersion { get; } = 11;
+        public static int MajorVersion { get; } = 12;
         public static int MinorVersion { get; } = 0;
-        public static bool IsBetaVersion { get; } = false;
+        public static bool IsBetaVersion { get; } = true;
         public static string ShortFriendlyVersion
         {
             get

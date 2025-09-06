@@ -327,6 +327,18 @@
     <Compile Include="ProgramWorker\SetupDoneForm.Designer.cs">
       <DependentUpon>SetupDoneForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProgramWorker\PerformUpdateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgramWorker\PerformUpdateForm.Designer.cs">
+      <DependentUpon>PerformUpdateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProgramWorker\UpdateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgramWorker\UpdateForm.Designer.cs">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProgramWorker\TimedForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -395,6 +407,7 @@
     <Compile Include="VersionInfo.cs" />
     <Compile Include="VersionInfoTemplate.cs" />
     <Compile Include="WebServer\HyperServer.cs" />
+    <Compile Include="WinFormsControls\RoundedCorners.cs" />
     <Compile Include="WinFormsControls\ToolboxStuff.cs" />
     <Compile Include="ToppleForm.cs">
       <SubType>Form</SubType>
@@ -501,6 +514,12 @@
     <EmbeddedResource Include="ProgramWorker\SetupDoneForm.resx">
       <DependentUpon>SetupDoneForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ProgramWorker\PerformUpdateForm.resx">
+      <DependentUpon>PerformUpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgramWorker\UpdateForm.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProgramWorker\TimedForm.resx">
       <DependentUpon>TimedForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -583,17 +602,11 @@
     <None Include="Resources\WarningApp1.png" />
     <None Include="Resources\AlertIcon.ico" />
     <None Include="Resources\LightIcon.ico" />
-    <None Include="Resources\ui_shakewarning.wav" />
-    <None Include="Resources\ui_beep.wav" />
     <None Include="Resources\WarningApp_Splash.png" />
     <None Include="Resources\WarningApp Splash.png" />
     <None Include="Resources\minor_alert.wav" />
-    <None Include="Resources\ui_beep_1.wav" />
-    <None Include="Resources\ui_cancellation_1.wav" />
     <None Include="Resources\ui_end_1.wav" />
     <None Include="Resources\ui_nothing_1.wav" />
-    <None Include="Resources\ui_shakewarning_1.wav" />
-    <None Include="Resources\ui_warning_1.wav" />
     <None Include="Resources\major_alert.wav" />
     <EmbeddedResource Include="SpeakingAssets\BetaVersionInUse.wav" />
     <EmbeddedResource Include="SpeakingAssets\DisabledBasicSpeaking.wav" />
@@ -609,23 +622,19 @@
     <EmbeddedResource Include="SpeakingAssets\SevereOrHigher.wav" />
     <EmbeddedResource Include="SpeakingAssets\TopOfTheHour.wav" />
     <EmbeddedResource Include="SpeakingAssets\UpdatesFound.wav" />
-    <None Include="Resources\button-click.wav" />
-    <None Include="Resources\button-hover.wav" />
-    <None Include="Resources\button_click.wav" />
-    <None Include="Resources\button_hover.wav" />
     <None Include="Resources\TrayLightIcon.ico" />
     <None Include="Resources\TrayAlertIcon.ico" />
     <None Include="Resources\AlertIcon.png" />
     <None Include="Resources\Topple1.png" />
     <None Include="Resources\IMG_1399.png" />
     <None Include="Resources\TaskBarExample.png" />
+    <None Include="Resources\V-Sign.png" />
+    <EmbeddedResource Include="SpeakingAssets\DisabledDoNotDisturb.wav" />
+    <EmbeddedResource Include="SpeakingAssets\EnabledDoNotDisturb.wav" />
     <Content Include="WarningApp.ico" />
     <None Include="Resources\WarningApp.png" />
     <Content Include="FodyWeavers.xml" />
     <None Include="Resources\ui_nothing.wav" />
-    <None Include="Resources\ui_end.wav" />
-    <None Include="Resources\ui_cancellation.wav" />
-    <None Include="Resources\ui_warning.wav" />
     <None Include="Resources\CrashIcon.png" />
     <None Include="Resources\Topple.png" />
   </ItemGroup>

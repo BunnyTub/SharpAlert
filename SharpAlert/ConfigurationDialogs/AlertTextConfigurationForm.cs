@@ -43,11 +43,14 @@ namespace SharpAlert.ConfigurationDialogs
             AddAlertIssuerBox.Checked = QuickSettings.Instance.AddAlertIssuer;
             AddAlertIssuerBox.CheckedChanged += (a, b) => QuickSettings.Instance.AddAlertIssuer = ((CheckBox)a).Checked;
             
-            RemoveNWSDescCodeBox.Checked = QuickSettings.Instance.RemoveNWSDescCode;
-            RemoveNWSDescCodeBox.CheckedChanged += (a, b) => QuickSettings.Instance.RemoveNWSDescCode = ((CheckBox)a).Checked;
+            AddSourcedFromBox.Checked = QuickSettings.Instance.AddSourcedFrom;
+            AddSourcedFromBox.CheckedChanged += (a, b) => QuickSettings.Instance.AddSourcedFrom = ((CheckBox)a).Checked;
+            
+            AddEventNameBox.Checked = QuickSettings.Instance.AddEventName;
+            AddEventNameBox.CheckedChanged += (a, b) => QuickSettings.Instance.AddEventName = ((CheckBox)a).Checked;
 
-            RemoveNWSNewLinesBox.Checked = QuickSettings.Instance.RemoveNWSNewLines;
-            RemoveNWSNewLinesBox.CheckedChanged += (a, b) => QuickSettings.Instance.RemoveNWSNewLines = ((CheckBox)a).Checked;
+            Use24HrTimeBox.Checked = QuickSettings.Instance.Use24HrTime;
+            Use24HrTimeBox.CheckedChanged += (a, b) => QuickSettings.Instance.Use24HrTime = ((CheckBox)a).Checked;
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -56,7 +59,7 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void ChooseRegionForm_HelpButtonClicked(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            MessageBox.Show("You can enable/disable certain parts of the alert text.",
+            MessageBox.Show("You can change certain parts of the alert text.",
                 "SharpAlert",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);

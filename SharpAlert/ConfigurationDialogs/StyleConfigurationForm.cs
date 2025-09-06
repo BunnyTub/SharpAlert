@@ -180,9 +180,6 @@ namespace SharpAlert.ConfigurationDialogs
             alertCompatibilityModeBox.Checked = QuickSettings.Instance.alertCompatibilityMode;
             alertCompatibilityModeBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertCompatibilityMode = ((CheckBox)a).Checked;
 
-            alertTTSonlyBox.Checked = QuickSettings.Instance.alertTTSonly;
-            alertTTSonlyBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertTTSonly = ((CheckBox)a).Checked;
-
             alertNoGUIBox.Checked = QuickSettings.Instance.alertNoGUI;
             alertNoGUIBox.CheckedChanged += (a, b) =>
             {
@@ -206,15 +203,15 @@ namespace SharpAlert.ConfigurationDialogs
 
             alertIncreaseSizeBox.Checked = QuickSettings.Instance.alertIncreaseSize;
             alertIncreaseSizeBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertIncreaseSize = ((CheckBox)a).Checked;
-
-            alertPlayStartToneTwiceBox.Checked = QuickSettings.Instance.alertPlayStartToneTwice;
-            alertPlayStartToneTwiceBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertPlayStartToneTwice = ((CheckBox)a).Checked;
             
             NoSystemSleepBox.Checked = QuickSettings.Instance.NoSystemSleep;
             NoSystemSleepBox.CheckedChanged += (a, b) => QuickSettings.Instance.NoSystemSleep = ((CheckBox)a).Checked;
             
             alertAutoPrintingEnabledBox.Checked = QuickSettings.Instance.alertAutoPrintingEnabled;
             alertAutoPrintingEnabledBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertAutoPrintingEnabled = ((CheckBox)a).Checked;
+
+            HideNetworkErrorsBox.Checked = QuickSettings.Instance.HideNetworkErrors;
+            HideNetworkErrorsBox.CheckedChanged += (a, b) => QuickSettings.Instance.HideNetworkErrors = ((CheckBox)a).Checked;
 
             ScrollSpeedBar.Value = QuickSettings.Instance.ScrollSpeed;
             ScrollSpeedBar.ValueChanged += (a, b) => QuickSettings.Instance.ScrollSpeed = ((TrackBar)a).Value;
@@ -249,6 +246,21 @@ namespace SharpAlert.ConfigurationDialogs
         private void TitleText_Click(object sender, EventArgs e)
         {
             //throw new OutOfMemoryException();
+        }
+
+        private void DisplayStyleInfoButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("These are the following display styles.\r\n\r\n" +
+                "Windowed - Displays the alert in a window.\r\n" +
+                "Minified - Displays the alert in a notification like window.\r\n" +
+                "Full screen - Displays the alert in full screen, and TTS is spoken automatically.\r\n" +
+                "Full scroll - Displays the alert in a scrolling bar, and TTS is spoken automatically.\r\n" +
+                "Full board - Like full screen, but for digital signage. Removes fade animations.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void DisplayWhereInfoButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This option only affects the windowed style.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

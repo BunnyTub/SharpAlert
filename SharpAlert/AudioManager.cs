@@ -435,12 +435,15 @@ namespace SharpAlert
             StopAllAudioSilently();
             ToneDone = false;
 
+            bool UseSevere = false;
+
             Stream stream;
 
             switch (severity.ToLowerInvariant())
             {
                 case "extreme":
                 case "severe":
+                    UseSevere = true;
                     stream = Resources.major_alert;
                     break;
                 default:
@@ -475,7 +478,20 @@ namespace SharpAlert
                 {
                     void playAudio()
                     {
-                        string path = QuickSettings.Instance.StartToneLocation;
+                        string path1 = QuickSettings.Instance.StartToneLocation;
+                        string path2 = QuickSettings.Instance.StartToneLowLocation;
+
+                        string path;
+
+                        if (UseSevere)
+                        {
+                            path = path1;
+                        }
+                        else
+                        {
+                            path = path2;
+                        }
+
                         //if (!string.IsNullOrWhiteSpace(path))
                         try
                         {
@@ -544,10 +560,6 @@ namespace SharpAlert
 
         public static void PlayEndToneFile(bool wait = false)
         {
-            return;
-
-            // deprecated
-            
             StopAllAudioSilently();
             ToneDone = false;
 

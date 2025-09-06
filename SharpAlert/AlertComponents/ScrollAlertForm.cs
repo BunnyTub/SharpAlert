@@ -110,7 +110,7 @@ namespace SharpAlert.AlertComponents
             AlertType = type;
             AlertSeverity = severity;
 
-            var message = GetTextFromMessageType(type);
+            var message = GetTextFromMessageSeverityAndType(severity, type);
             BottomOutlinePanel.BackColor = message.MainColor;
             AlertText.BackColor = message.SubColor;
         }

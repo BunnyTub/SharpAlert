@@ -8,7 +8,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.ProgramWorker.NotificationWorker;
@@ -250,15 +249,16 @@ namespace SharpAlert.SourceCapturing
                 catch (TimeoutException)
                 {
                     Console.WriteLine($"[TCP Feed Capture] Timed out from {name}.");
-                    Notify.ShowNotification($"Network error occurred. Timed out from {name}.",
+                    if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. Timed out from {name}.",
                         "SharpAlert source timed out",
                         ToolTipIcon.Warning);
+
                     Thread.Sleep(30 * 1000);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"[TCP Feed Capture] Exception caught in {name}. {ex.Message}");
-                    Notify.ShowNotification($"Network error occurred. {ex.Message}",
+                    if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. {ex.Message}",
                         "SharpAlert source failed",
                         ToolTipIcon.Warning);
                 }

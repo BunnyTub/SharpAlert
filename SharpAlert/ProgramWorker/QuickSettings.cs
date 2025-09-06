@@ -53,6 +53,9 @@ namespace SharpAlert
 #pragma warning disable IDE1006 // Naming Styles
         // Version
         public string LastVersionOpened { get; set; } = "v0.0";
+        // Updating
+        public bool AllowPerformingUpdates { get; set; } = false;
+        public bool PerformUpdatesAutomatically { get; set; } = false;
         // System
         public bool NoSystemSleep { get; set; } = false;
         // Migration
@@ -90,6 +93,7 @@ namespace SharpAlert
         // Alert Stuff
         public int AlertCheckInterval { get; set; } = 15;
         public bool weaOnly { get; set; } = false;
+        public bool UseCMAMTextWhereAvailable { get; set; } = true;
         // Changed discard to align with region changes
         public bool discardFirstAlerts { get; set; } = true;
         public bool BypassAllFilters { get; set; } = false;
@@ -122,6 +126,7 @@ namespace SharpAlert
         public int alertVolume { get; set; } = 8;
         public int ScrollSpeed { get; set; } = 10;
         public string StartToneLocation { get; set; } = string.Empty;
+        public string StartToneLowLocation { get; set; } = string.Empty;
         public string EndToneLocation { get; set; } = string.Empty;
         public string ProgramVoice { get; set; } = string.Empty;
         public string ProgramAudioOutput { get; set; } = string.Empty;
@@ -142,13 +147,37 @@ namespace SharpAlert
         public bool RegionCanada { get; set; } = false;
         public bool RegionMexico { get; set; } = false;
         public bool RegionBrazil { get; set; } = false;
-        // Discord
+        // Discord Webhooks
+        #region Webhooks
+        // Default
         public string DiscordWebhook { get; set; } = string.Empty;
         public string DiscordWebhookAppend { get; set; } = string.Empty;
+        // FEMA IPAWS (EAS)
+        public string DiscordWebhook_FEMA_IPAWS_EAS { get; set; } = string.Empty;
+        public string DiscordWebhookAppend_FEMA_IPAWS_EAS { get; set; } = string.Empty;
+
+        public string DiscordWebhook_FEMA_IPAWS_WEA { get; set; } = string.Empty;
+        public string DiscordWebhookAppend_FEMA_IPAWS_WEA { get; set; } = string.Empty;
+        
+        public string DiscordWebhook_NWS_ATOM { get; set; } = string.Empty;
+        public string DiscordWebhookAppend_NWS_ATOM { get; set; } = string.Empty;
+        
+        public string DiscordWebhook_SASMEX { get; set; } = string.Empty;
+        public string DiscordWebhookAppend_SASMEX { get; set; } = string.Empty;
+        
+        public string DiscordWebhook_NAADS_PRIMARY { get; set; } = string.Empty;
+        public string DiscordWebhookAppend_NAADS_PRIMARY { get; set; } = string.Empty;
+
+        public string DiscordWebhook_NAADS_BACKUP { get; set; } = string.Empty;
+        public string DiscordWebhookAppend_NAADS_BACKUP { get; set; } = string.Empty;
+        
+        public string DiscordWebhook_IDAP { get; set; } = string.Empty;
+        public string DiscordWebhookAppend_IDAP { get; set; } = string.Empty;
+        #endregion
+        // Discord Settings
         public bool DiscordWebhookConfirmAlerts { get; set; } = true;
         public bool DiscordWebhookRelayLocally { get; set; } = false;
         public bool DiscordWebhookDisableHeartbeat { get; set; } = false;
-        public bool BatteryReportingMatchesPowerPlan { get; set; } = false;
         // This value is inclusive. (example: 20 and under)
         public int BatteryReportingCautionLevel { get; set; } = 20;
         // This value is inclusive. (example: 10 and under)
@@ -176,12 +205,17 @@ namespace SharpAlert
         public bool AddIntroText { get; set; } = true;
         public bool AddAlertEffectiveAndEndingTimes { get; set; } = true;
         public bool AddAlertIssuer { get; set; } = true;
-        public bool RemoveNWSDescCode { get; set; } = true;
-        public bool RemoveNWSNewLines { get; set; } = true;
+        public bool AddSourcedFrom { get; set; } = true;
+        public bool AddEventName { get; set; } = true;
+        public bool Use24HrTime { get; set; } = false;
+        //public bool RemoveNWSDescCode { get; set; } = true;
+        //public bool RemoveNWSNewLines { get; set; } = true;
         // Archiving
         public bool ArchivingSaveAllAlerts { get; set; } = false;
         public bool ArchivingDeleteOldAlertsOver48h { get; set; } = true;
-
+        public bool ArchivingAggressiveProcessing { get; set; } = false;
+        // Networking
+        public bool HideNetworkErrors { get; set; } = true;
 #pragma warning restore IDE1006 // Naming Styles
 
         public void Save()

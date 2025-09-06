@@ -71,24 +71,6 @@ namespace SharpAlert.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream button_click {
-            get {
-                return ResourceManager.GetStream("button_click", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream button_hover {
-            get {
-                return ResourceManager.GetStream("button_hover", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap CrashIcon {
@@ -168,24 +150,6 @@ namespace SharpAlert.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream ui_beep_1 {
-            get {
-                return ResourceManager.GetStream("ui_beep_1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream ui_cancellation_1 {
-            get {
-                return ResourceManager.GetStream("ui_cancellation_1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
         internal static System.IO.UnmanagedMemoryStream ui_end_1 {
             get {
                 return ResourceManager.GetStream("ui_end_1", resourceCulture);
@@ -198,24 +162,6 @@ namespace SharpAlert.Properties {
         internal static System.IO.UnmanagedMemoryStream ui_nothing_1 {
             get {
                 return ResourceManager.GetStream("ui_nothing_1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream ui_shakewarning_1 {
-            get {
-                return ResourceManager.GetStream("ui_shakewarning_1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream ui_warning_1 {
-            get {
-                return ResourceManager.GetStream("ui_warning_1", resourceCulture);
             }
         }
         

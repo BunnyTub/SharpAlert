@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using System.Drawing;
-using static SharpAlert.ProgramWorker.MainEntryPoint;
-using static SharpAlert.ProgramWorker.HaidaWorker;
-using static SharpAlert.AlertComponents.AlertProcessor;
-using SharpAlert.ProgramWorker;
-using SharpAlert.AlertComponents;
-using System.Collections.Generic;
+using SharpAlert.DataProcessing;
 
 namespace SharpAlert.ConfigurationDialogs
 {
@@ -50,6 +43,8 @@ namespace SharpAlert.ConfigurationDialogs
                     }
                 }
             };
+            ArchivingAggressiveProcessingBox.Checked = QuickSettings.Instance.ArchivingAggressiveProcessing;
+            ArchivingAggressiveProcessingBox.CheckedChanged += (a, b) => QuickSettings.Instance.ArchivingAggressiveProcessing = ((CheckBox)a).Checked;
 
             //lock (notify)
             //{
@@ -63,6 +58,43 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void ConfigurationForm_VisibleChanged(object sender, EventArgs e)
         {
+        }
+
+        private void DeleteArchiveButton_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Delete the archive?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+
+            UseWaitCursor = true;
+
+            QuickSettings.Instance.ArchivingSaveAllAlerts = false;
+
+            Thread.Sleep(1000);
+
+            Directory.CreateDirectory(DataProcessor.ArchivePath);
+
+            string[] files = Directory.GetFiles(DataProcessor.ArchivePath);
+
+            foreach (string file in files)
+            {
+                try
+                {
+                    File.Delete(file);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Unable to delete a file. {ex.Message}", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            UseWaitCursor = false;
+
+            MessageBox.Show("Finished deleting the archive. You'll need to enable \"Save all alerts to disk\" to start archiving alerts again.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ArchivingSaveAllAlertsBox.Checked = false;
+        }
+
+        private void OpenArchiveButton_Click(object sender, EventArgs e)
+        {
+            Process.Start(DataProcessor.ArchivePath);
         }
     }
 }

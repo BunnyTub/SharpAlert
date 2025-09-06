@@ -49,11 +49,14 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void SoundSettingsButton_Click(object sender, EventArgs e)
         {
+            string OldTitle = this.Text;
+            this.Text = $"{OldTitle} (Please wait...)";
+            // added this stuff because the window freezes while waiting for the audio form to load
             if (caf == null || caf.IsDisposed) caf = new ChooseAudioForm(false);
             caf.Show();
             caf.Activate();
+            this.Text = OldTitle;
         }
-
 
         private ChooseRegionForm crf = null;
 
@@ -165,4 +168,3 @@ namespace SharpAlert.ConfigurationDialogs
         }
     }
 }
-

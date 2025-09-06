@@ -19,8 +19,7 @@ using SharpAlert.WebServer;
 using SharpAlert.AlertComponents;
 using SharpAlert.SourceCapturing.SystemSpecific;
 using static SharpAlert.ProgramWorker.NotificationWorker;
-using SharpAlert.ConfigurationDialogs;
-using Microsoft.Win32;
+using System.Security.Principal;
 
 namespace SharpAlert.ProgramWorker
 {
@@ -138,10 +137,6 @@ namespace SharpAlert.ProgramWorker
                         cache?.ServiceStop();
                         Console.WriteLine("Data Processor is shutting down.");
                         dataproc?.ServiceStop();
-                        Console.WriteLine("Alert Processor is shutting down.");
-                        lock (AlertProcessor.AlertLock)
-                        {
-                        }
                         Console.WriteLine("Idle Window is shutting down.");
                         if (idle != null) IdleWindowVisible = false;
                         Console.WriteLine("Status Window is shutting down.");
@@ -186,7 +181,6 @@ namespace SharpAlert.ProgramWorker
 
                     if (restart) Restart();
                     else Environment.Exit(0);
-
                     return;
                 }
                 Thread.Sleep(1000);
@@ -204,6 +198,7 @@ namespace SharpAlert.ProgramWorker
             return;
         }
 
+        public static bool IsAdministrator => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
         public static bool ServiceMode { get; private set; } = false;
         public static List<string> Args { get; private set; } = null;
         // --alt-config-1/2/3/4
@@ -216,6 +211,7 @@ namespace SharpAlert.ProgramWorker
         {
             //watchdog self-child process
             Args = Environment.GetCommandLineArgs().ToList();
+            QuickSettings.Instance.Reload();
             Application.EnableVisualStyles();
             //Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
             Application.SetCompatibleTextRenderingDefault(false);
@@ -228,44 +224,45 @@ namespace SharpAlert.ProgramWorker
             //ThreadDrool.StartAndForget(() => { while (true) new AlertTableForm().ShowDialog(); });
 
             // Thank you Microsoft
+            // nvm, this seems to cause SharpAlert to be detected as malware, so I'm commenting :/
 
-            (string, bool) CheckFor45PlusVersion(int? releaseKey)
-            {
-                if (releaseKey == null) return ("Unknown", false);
-                if (releaseKey >= 533320) return ("4.8.1 or later", true);
-                if (releaseKey >= 528040) return ("4.8", true);
-                if (releaseKey >= 461808) return ("4.7.2", false);
-                if (releaseKey >= 461308) return ("4.7.1", false);
-                if (releaseKey >= 460798) return ("4.7", false);
-                if (releaseKey >= 394802) return ("4.6.2", false);
-                if (releaseKey >= 394254) return ("4.6.1", false);
-                if (releaseKey >= 393295) return ("4.6", false);
-                if (releaseKey >= 379893) return ("4.5.2", false);
-                if (releaseKey >= 378675) return ("4.5.1", false);
-                if (releaseKey >= 378389) return ("4.5", false);
+            //(string, bool) CheckFor45PlusVersion(int? releaseKey)
+            //{
+            //    if (releaseKey == null) return ("Unknown", false);
+            //    if (releaseKey >= 533320) return ("4.8.1 or later", true);
+            //    if (releaseKey >= 528040) return ("4.8", true);
+            //    if (releaseKey >= 461808) return ("4.7.2", false);
+            //    if (releaseKey >= 461308) return ("4.7.1", false);
+            //    if (releaseKey >= 460798) return ("4.7", false);
+            //    if (releaseKey >= 394802) return ("4.6.2", false);
+            //    if (releaseKey >= 394254) return ("4.6.1", false);
+            //    if (releaseKey >= 393295) return ("4.6", false);
+            //    if (releaseKey >= 379893) return ("4.5.2", false);
+            //    if (releaseKey >= 378675) return ("4.5.1", false);
+            //    if (releaseKey >= 378389) return ("4.5", false);
 
-                return ("Unknown", false);
-            }
+            //    return ("Unknown", false);
+            //}
 
-            string SubKey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
+            //string SubKey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
 
-            using (RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
-            using (RegistryKey ndpKey = baseKey.OpenSubKey(SubKey))
-            {
-                if (ndpKey != null && ndpKey.GetValue("Release") != null)
-                {
-                    var Version = CheckFor45PlusVersion((int)ndpKey.GetValue("Release"));
-                    if (!Version.Item2)
-                    {
-                        MessageBox.Show($"You're running .NET Framework {Version.Item1}, which is not supported by SharpAlert. Please update to .NET Framework 4.8 or higher. https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net48-offline-installer",
-                            "SharpAlert - Unsupported .NET Framework Version",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
-                        Environment.Exit(8008); // equivalent to NOT FOUND %ERRORLEVEL% in Command Prompt
-                        return;
-                    }
-                }
-            }
+            //using (RegistryKey baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
+            //using (RegistryKey ndpKey = baseKey.OpenSubKey(SubKey))
+            //{
+            //    if (ndpKey != null && ndpKey.GetValue("Release") != null)
+            //    {
+            //        var Version = CheckFor45PlusVersion((int)ndpKey.GetValue("Release"));
+            //        if (!Version.Item2)
+            //        {
+            //            MessageBox.Show($"You're running .NET Framework {Version.Item1}, which is not supported by SharpAlert. Please update to .NET Framework 4.8 or higher. https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net48-offline-installer",
+            //                "SharpAlert - Unsupported .NET Framework Version",
+            //                MessageBoxButtons.OK,
+            //                MessageBoxIcon.Error);
+            //            Environment.Exit(8008); //idk
+            //            return;
+            //        }
+            //    }
+            //}
 
             if (Args.Count >= 2)
             {
@@ -277,7 +274,7 @@ namespace SharpAlert.ProgramWorker
                     }
                     catch (Exception ex)
                     {
-                        LogFault(new Exception("Couldn't identify the parent process to wait for it to exit. It may have already exited.", ex));
+                        Console.WriteLine($"Couldn't identify the parent process to wait for it to exit. It may have already exited. {ex.Message}");
                         Thread.Sleep(1000);
                     }
 
@@ -314,6 +311,12 @@ namespace SharpAlert.ProgramWorker
                     {
                         AllocateTerminal(false);
                     }
+                }
+
+                if (Args.Contains("--update"))
+                {
+                    UpdateWorker.TryUpdate(UpdateWorker.TryGetRemoteVersion(), true);
+                    return;
                 }
 
                 if (Args.Contains("--monitored") || ServiceMode)

@@ -7,10 +7,8 @@ using static SharpAlert.AlertComponents.AlertProcessor;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using SharpAlert.ProgramWorker;
 using SharpAlert.AlertComponents;
-using static SharpAlert.ProgramWorker.NotificationWorker;
 
 namespace SharpAlert.DataProcessing
 {
@@ -91,7 +89,11 @@ namespace SharpAlert.DataProcessing
                                     if (SharpDataHistory.Any(x => x.Name == name))
                                     {
                                         var historicItem = SharpDataHistory.FirstOrDefault(x => x.Name == name);
-                                        if (historicItem == null) continue;
+                                        if (historicItem == null)
+                                        {
+                                            SharpDataRelayedNamesHistory.Remove(name);
+                                            continue;
+                                        }
 
                                         var historicResult = ProcessHistoricItem(historicItem);
                                         if (historicResult.Item1)
@@ -99,8 +101,11 @@ namespace SharpAlert.DataProcessing
                                             SharpDataRelayedNamesHistory.Remove(name);
                                             ExpiredNames.Add(name);
                                             Console.WriteLine($"[History Processor] Alert {alertIndex} ({historicItem.Name}) is expired.");
-                                            //expired,type,sent,effective,expiry
-                                            CompiledString += $"Event type of {historicResult.Item2}, effective {historicResult.Item3}, has recently expired at {historicResult.Item4}.\x20";
+                                            //expired,type,sent,effective,expiry,source
+                                            DiscordWebhook.SendFormattedMessage(historicResult.Item6, $"Event type of {historicResult.Item2}, effective {historicResult.Item3}, has recently expired at {historicResult.Item5}.",
+                                                "Expiry may not mean that the event is over completely.",
+                                                $"-# Identifier(s): {historicItem.Name}");
+                                            //CompiledString += $"Event type of {historicResult.Item2}, effective {historicResult.Item3}, has recently expired at {historicResult.Item4}.\x20";
                                             Expired = true;
                                         }
                                         else
@@ -122,52 +127,52 @@ namespace SharpAlert.DataProcessing
 
                             if (Expired)
                             {
-                                CompiledString = CompiledString.Trim();
-                                if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
-                                {
-                                    string FullNames = string.Empty;
+                                //CompiledString = CompiledString.Trim();
+                                //if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
+                                //{
+                                //    string FullNames = string.Empty;
                                     
-                                    foreach (string name in ExpiredNames)
-                                    {
-                                        FullNames += $"{name};\x20";
-                                    }
+                                //    foreach (string name in ExpiredNames)
+                                //    {
+                                //        FullNames += $"{name};\x20";
+                                //    }
 
-                                    FullNames = FullNames.Trim().Substring(0, FullNames.Length - 1);
-                                    FullNames = FullNames.Substring(0, FullNames.Length - 1);
+                                //    FullNames = FullNames.Trim().Substring(0, FullNames.Length - 1);
+                                //    FullNames = FullNames.Substring(0, FullNames.Length - 1);
 
-                                    DiscordWebhook.SendFormattedMessage(CompiledString,
-                                        "Expiry may not mean that the event is over completely.",
-                                        $"-# Identifier(s): {FullNames}");
+                                //    //DiscordWebhook.SendFormattedMessage(CompiledString,
+                                //    //    "Expiry may not mean that the event is over completely.",
+                                //    //    $"-# Identifier(s): {FullNames}");
 
-                                    //if (DiscordWebhook.SendFormattedMessage(CompiledString,
-                                    //    "Expiry may not mean that the event is over completely.",
-                                    //    $"-# Identifier(s): {FullNames}"))
-                                    //{
-                                    //    Notify.ShowNotification($"One or more alerts expired.",
-                                    //        "SharpAlert found expired alerts",
-                                    //        ToolTipIcon.Warning);
-                                    //    //AnyAlertRelayed = true;
-                                    //    //UsedDiscordHook = true;
-                                    //}
-                                    //else
-                                    //{
-                                    //    Notify.ShowNotification($"One or more alerts expired, but we couldn't say that through Discord.",
-                                    //        "SharpAlert found expired alerts",
-                                    //        ToolTipIcon.Warning);
-                                    //}
-                                }
-                                else
-                                {
-                                    //if (QuickSettings.Instance.alertNoGUI) continue;
-                                    //else
-                                    //{
-                                    //    if (!QuickSettings.Instance.showExpiryMessages) continue;
-                                    //    else
-                                    //    {
+                                //    //if (DiscordWebhook.SendFormattedMessage(CompiledString,
+                                //    //    "Expiry may not mean that the event is over completely.",
+                                //    //    $"-# Identifier(s): {FullNames}"))
+                                //    //{
+                                //    //    Notify.ShowNotification($"One or more alerts expired.",
+                                //    //        "SharpAlert found expired alerts",
+                                //    //        ToolTipIcon.Warning);
+                                //    //    //AnyAlertRelayed = true;
+                                //    //    //UsedDiscordHook = true;
+                                //    //}
+                                //    //else
+                                //    //{
+                                //    //    Notify.ShowNotification($"One or more alerts expired, but we couldn't say that through Discord.",
+                                //    //        "SharpAlert found expired alerts",
+                                //    //        ToolTipIcon.Warning);
+                                //    //}
+                                //}
+                                //else
+                                //{
+                                //    //if (QuickSettings.Instance.alertNoGUI) continue;
+                                //    //else
+                                //    //{
+                                //    //    if (!QuickSettings.Instance.showExpiryMessages) continue;
+                                //    //    else
+                                //    //    {
                                             
-                                    //    }
-                                    //}
-                                }
+                                //    //    }
+                                //    //}
+                                //}
                             }
                             else
                             {
@@ -193,10 +198,13 @@ namespace SharpAlert.DataProcessing
         /// </summary>
         /// <param name="relayItem"></param>
         /// <returns>True if the alert provided is expired. Also provides the alert type.</returns>
-        public (bool, string, string, string, string) ProcessHistoricItem(SharpDataItem relayItem)
+        public (bool, string, string, string, string, string) ProcessHistoricItem(SharpDataItem relayItem)
         {
             lock (AlertLock)
             {
+                string Source = SourceRegex.Match(relayItem.Data).Groups[1].Value;
+                Console.WriteLine($"[History Processor] Source: {Source}");
+
                 string Sent = SentRegex.Match(relayItem.Data).Groups[1].Value;
                 Console.WriteLine($"[History Processor] Sent: {Sent}");
 
@@ -234,7 +242,8 @@ namespace SharpAlert.DataProcessing
                                 EventType,
                                 Sent,
                                 Effective,
-                                Expiry);
+                                Expiry,
+                                Source);
                         }
                         else
                         {
@@ -242,7 +251,8 @@ namespace SharpAlert.DataProcessing
                                 EventType,
                                 Sent,
                                 Effective,
-                                Expiry);
+                                Expiry,
+                                Source);
                         }
                     }
                     catch (Exception ex)
@@ -255,7 +265,8 @@ namespace SharpAlert.DataProcessing
                     "Cautionary (Unknown Event)",
                     "Unknown Date Time",
                     "Unknown Date Time",
-                    "Unknown Date Time");
+                    "Unknown Date Time",
+                    string.Empty);
             }
         }
     }

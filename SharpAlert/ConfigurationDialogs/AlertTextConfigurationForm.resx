@@ -129,12 +129,6 @@ and may cause alert text formatting to occur in unintended ways.</value>
   <metadata name="UpdateTextField.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>172, 17</value>
   </metadata>
-  <data name="RemoveNWSDescCodeBox.ToolTip" xml:space="preserve">
-    <value>When enabled, the NWS atom capture mechanism will try to remove
-the 6 character short code displayed before the rest of the body text.
-
-"SMWLIX The National Weather Service in..." -&gt; "The National Weather Service in..."</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

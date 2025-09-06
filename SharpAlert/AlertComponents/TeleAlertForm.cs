@@ -112,7 +112,7 @@ namespace SharpAlert.AlertComponents
             AlertSeverity = severity;
             AlertText.SelectionStart = 0;
 
-            var message = GetTextFromMessageType(type);
+            var message = GetTextFromMessageSeverityAndType(severity, type);
             TitleText.Text = message.text;
             ColorTitleAndBordersOne = message.MainColor;
             ColorSubtitleOnlyOne = message.SubColor;

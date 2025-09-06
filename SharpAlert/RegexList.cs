@@ -28,6 +28,10 @@ namespace SharpAlert
         public static readonly Regex HrefRegex = new Regex(
 			@"<a\s+[^>]*?href\s*=\s*[""']([^""']+)[""']", // yeah I just copied this, I can't even read it, but at least it works.
 			RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+		
+		public static readonly Regex LinkRegex = new Regex(
+			@"<link\s+[^>]*?href\s*=\s*[""']([^""']+)[""']", //<link rel="alternate" href="https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0-KEEPALIVE-57752.cap"/>
+            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public static readonly Regex ReplayedAlertRegex = new Regex(
             @"<SharpAlertReplay>\s*(.*?)\s*</SharpAlertReplay>",
@@ -224,7 +228,7 @@ namespace SharpAlert
 			@"<alert[^>]*>\s*(.*?)\s*</alert>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        public static readonly Regex CMAMShortRegex = new Regex(
+        public static readonly Regex CMAMRegex = new Regex(
             @"<valueName>CMAMtext</valueName>\s*<value>\s*(.*?)\s*</value>",
             RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 		
@@ -240,8 +244,12 @@ namespace SharpAlert
             @"<geocode>\s*<valueName>SAME</valueName>\s*<value>\s*(.*?)\s*</value>\s*</geocode>",
             RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 		
-		public static readonly Regex GeocodeCommonAlertingProtocolCanadaCodeRegex = new Regex(
+		public static readonly Regex GeocodeCommonAlertingProtocolCanadaLocationCodeRegex = new Regex(
             @"<geocode>\s*<valueName>profile:CAP-CP:Location:0.3</valueName>\s*<value>\s*(.*?)\s*</value>\s*</geocode>",
+            RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+		public static readonly Regex GeocodeCommonAlertingProtocolCanadaEventCodeRegex = new Regex(
+            @"<geocode>\s*<valueName>profile:CAP-CP:Event:0.4</valueName>\s*<value>\s*(.*?)\s*</value>\s*</geocode>",
             RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public static Regex GeocodeRegex = new Regex(

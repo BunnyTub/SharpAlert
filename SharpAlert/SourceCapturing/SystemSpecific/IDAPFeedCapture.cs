@@ -5,9 +5,10 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Xml.Linq;
+using System.Windows.Forms;
 using SharpAlert.ProgramWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
+using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.RegexList;
 
 namespace SharpAlert.SourceCapturing.SystemSpecific
@@ -75,27 +76,23 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                 catch (TimeoutException)
                 {
                     Console.WriteLine($"[IDAP Feed Capture] Timed out.");
+                    if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. Timed out from IDAP.",
+                        "SharpAlert source failed",
+                        ToolTipIcon.Warning);
+
                     Thread.Sleep(15 * 1000);
                 }
                 catch (ThreadAbortException)
                 {
                     return;
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Console.WriteLine($"[IDAP Feed Capture] {e.Message}");
-                    if (e.InnerException != null) Console.WriteLine($"[IDAP Feed Capture] {e.InnerException.Message}");
-                    //if (LastConnectionSuccessful)
-                    //{
-                    //    lock (notify)
-                    //    {
-                    //        notify.BalloonTipTitle = "SharpAlert is having issues";
-                    //        notify.BalloonTipText = "There was an issue when trying to connect to the server. Check your internet connection!";
-                    //        notify.BalloonTipIcon = ToolTipIcon.Warning;
-                    //        notify.ShowBalloonTip(5000);
-                    //    }
-                    //}
-                    //LastConnectionSuccessful = false;
+                    Console.WriteLine($"[IDAP Feed Capture] {ex.Message}");
+                    if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. {ex.Message}",
+                        "SharpAlert source failed",
+                        ToolTipIcon.Warning);
+
                     Thread.Sleep(15 * 1000);
                 }
                 if (FirstRun) FirstRun = false;

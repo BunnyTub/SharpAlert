@@ -118,7 +118,7 @@ namespace SharpAlert.AlertComponents
                 AlertLinkText.Text = AlertUrlStr;
             }
 
-            TitleText.Text = GetTextFromMessageType(type).text;
+            TitleText.Text = GetTextFromMessageSeverityAndType(string.Empty, type).text;
         }
 
         private void AlertForm_Load(object sender, EventArgs e)

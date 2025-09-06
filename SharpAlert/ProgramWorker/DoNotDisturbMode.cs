@@ -44,6 +44,8 @@ namespace SharpAlert.ProgramWorker
                     Console.WriteLine($"[Do Not Disturb] DND started.");
                     NotificationWorker.Notify.ShowNotification($"You cannot receive alerts. You'll need to manually disable DND to start receive alerts again.", "DND has been enabled", ToolTipIcon.Info);
                 }
+
+                SpeakingManager.EnabledDoNotDisturb();
             }
         }
 
@@ -56,6 +58,7 @@ namespace SharpAlert.ProgramWorker
                 QuickSettings.Instance.PauseDataProcessing = false;
                 Console.WriteLine($"[Do Not Disturb] DND stopped.");
                 NotificationWorker.Notify.ShowNotification("You can now receive alerts.", "DND has been disabled", ToolTipIcon.Info);
+                SpeakingManager.DisabledDoNotDisturb();
             }
         }
 

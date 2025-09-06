@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using SharpAlert.AlertComponents;
 using SharpAlert.ProgramWorker;
 using System.IO;
+using System.Diagnostics;
 
 namespace SharpAlert.DataProcessing
 {
@@ -35,7 +36,7 @@ namespace SharpAlert.DataProcessing
         }
 
         private static readonly object DiscordConfirmLockObject = new object();
-        private static readonly string ArchivePath = QuickSettings.ConfigDirPath + "\\Archive";
+        public static readonly string ArchivePath = QuickSettings.ConfigDirPath + "\\Archive";
 
         public void ServiceRun()
         {
@@ -61,7 +62,10 @@ namespace SharpAlert.DataProcessing
                                     {
                                         File.Delete(file);
                                         Console.WriteLine($"[Data Processor] Deleted old file from archive -> {Path.GetFileName(file)}");
+                                        if (!QuickSettings.Instance.ArchivingAggressiveProcessing) Thread.Sleep(100);
                                     }
+                                    else continue;
+
                                 }
                                 catch (Exception ex)
                                 {
@@ -89,6 +93,7 @@ namespace SharpAlert.DataProcessing
                                         File.WriteAllText(AlertPath, item.Data);
                                         
                                         Console.WriteLine($"[Data Processor] Wrote alert to file on disk -> {Path.GetFileName(AlertPath)}");
+                                        if (!QuickSettings.Instance.ArchivingAggressiveProcessing) Thread.Sleep(100);
                                     }
                                     catch (Exception ex)
                                     {
@@ -98,7 +103,7 @@ namespace SharpAlert.DataProcessing
                             }
                         }
 
-                        Thread.Sleep(1000);
+                        if (!QuickSettings.Instance.ArchivingAggressiveProcessing) Thread.Sleep(1000);
                     }
 
                     // Trim history for memory saving
@@ -282,15 +287,17 @@ namespace SharpAlert.DataProcessing
                                                             LocationList = LocationList.Trim().Substring(0, LocationList.Length - 2).Trim();
                                                             if (LocationList.EndsWith(";")) LocationList = LocationList.Substring(0, LocationList.Length - 1);
 
-                                                            string CompiledMessage = $"{ProcessedEvent} | Location(s): {LocationList}\r\n-# Identifier: {relayItem.Name}"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
-                                                            if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + QuickSettings.Instance.DiscordWebhookAppend;
+                                                            string CompiledMessage = $"{ProcessedEvent} | Location(s): {LocationList}"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
+                                                            if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + $"{DiscordWebhook.GetDiscordWebhookURLFromSourceName(info.AlertSource).Append}";
                                                             //DiscordWebhook.SendUnformattedMessage(CompiledMessage);
 
-                                                            DiscordWebhook.SendEmbeddedMessage(CompiledMessage,
+                                                            DiscordWebhook.SendEmbeddedMessage(info.AlertSource,
+                                                                CompiledMessage,
                                                                 $"{info.AlertSeverity} Emergency {info.AlertMessageType.First().ToString().ToUpper() + info.AlertMessageType.Substring(1)}",
                                                                 info.AlertIntroText,
-                                                                info.AlertBodyText + $"\r\n\r\n||${LocationList}$||",
+                                                                info.AlertBodyText, //+ $"\r\n\r\n||${LocationList}$||",
                                                                 info.AlertURL,
+                                                                relayItem.Name,
                                                                 new List<string> { info.AlertAudioURL },
                                                                 new List<string> { info.AlertImageURL },
                                                                 color);

@@ -38,8 +38,6 @@ namespace SharpAlert.ProgramWorker
             $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}/" +
             $"{VersionInfo.BuildNumber}; bunnytub@bunnytub.com)";
 
-        public static readonly string IdentityURL = "https://bunnytub.com/SharpAlert";
-
         public static bool ServiceRunnerScheduled { get; private set; } = false;
 
         /// <summary>
@@ -55,7 +53,6 @@ namespace SharpAlert.ProgramWorker
             if (ServiceMode) Console.WriteLine($"Running under Service Mode.");
 
             // force instance reload here
-            QuickSettings.Instance.Reload();
             QuickSettings.Instance.DisableAlertProcessing = false;
             QuickSettings.Instance.PauseDataProcessing = false;
             QuickSettings.Instance.BypassAllFilters = false;
@@ -73,7 +70,9 @@ namespace SharpAlert.ProgramWorker
 
             double Scaling = GetWindowsScreenScalingFactor();
 
-            //if (Scaling > 100)
+            // this code is so ass, but I don't want to deal with scaling right now
+
+            if (Scaling > 100)
             {
                 try
                 {
@@ -138,46 +137,21 @@ namespace SharpAlert.ProgramWorker
                 }
             }
 
-            string RemoteVersion = string.Empty;
+            string RemoteVersion = UpdateWorker.TryGetRemoteVersion();
 
             if (!ServiceMode)
             {
-                Console.WriteLine("[Haida] Checking application version.");
-
-                try
-                {
-                    HttpResponseMessage latest = client.GetAsync($"{IdentityURL}/SharpAlert.txt").Result;
-
-                    Console.WriteLine($"[Haida] The server responded with status code {latest.StatusCode}.");
-
-                    RemoteVersion = latest.Content.ReadAsStringAsync().Result.Trim();
-                    if (string.IsNullOrWhiteSpace(RemoteVersion) || RemoteVersion.Length == 0 || RemoteVersion.Length >= 10) RemoteVersion = "0.0";
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[Haida] {ex.StackTrace} {ex.Message}");
-                    Console.WriteLine($"[Haida] Couldn't work with the server.");
-                }
-
                 if (VersionInfo.IsBetaVersion)
                 {
-                    if (DateTime.UtcNow >= VersionInfo.BetaTimeEnd)
-                    {
-                        TimedForm tf = new TimedForm(true);
-                        tf.ShowDialog();
-                        tf.Dispose();
-                    }
-                    else
-                    {
-                        TimedForm tf = new TimedForm(false);
-                        tf.ShowDialog();
-                        tf.Dispose();
-                    }
+                    // oh my god I can integrate if statements into things like this
+                    // that's kinda cool
+                    TimedForm tf = new TimedForm(DateTime.UtcNow >= VersionInfo.BetaTimeEnd);
+                    tf.ShowDialog();
+                    tf.Dispose();
                 }
             }
             else
             {
-                Console.WriteLine("[Haida] Version checking skipped due to service mode.");
                 RemoteVersion = "service";
             }
 
@@ -221,29 +195,40 @@ namespace SharpAlert.ProgramWorker
                 SetupForm sf = new SetupForm();
                 sf.ShowDialog();
                 sf.Dispose();
-                ChooseRegionForm crf = new ChooseRegionForm(true);
-                crf.ShowDialog();
-                crf.Dispose();
-                ChooseLocationForm clf = new ChooseLocationForm(true);
-                clf.ShowDialog();
-                clf.Dispose();
-                ChoosePresetForm cpf = new ChoosePresetForm();
-                cpf.ShowDialog();
-                cpf.Dispose();
-                StyleConfigurationForm csf = new StyleConfigurationForm(true);
-                csf.ShowDialog();
-                csf.Dispose();
-                ChooseAudioForm caf = new ChooseAudioForm(true);
-                caf.ShowDialog();
-                caf.Dispose();
-                ChooseOwnershipForm cof = new ChooseOwnershipForm(true);
-                cof.ShowDialog();
-                cof.Dispose();
-                SetupDoneForm sdf = new SetupDoneForm();
-                sdf.ShowDialog();
-                sdf.Dispose();
 
-                QuickSettings.Instance.SetupExperienceComplete = true;
+                if (!QuickSettings.Instance.SetupExperienceComplete)
+                {
+                    ChooseRegionForm crf = new ChooseRegionForm(true);
+                    crf.ShowDialog();
+                    crf.Dispose();
+
+                    ChooseLocationForm clf = new ChooseLocationForm(true);
+                    clf.ShowDialog();
+                    clf.Dispose();
+
+                    ChoosePresetForm cpf = new ChoosePresetForm();
+                    cpf.ShowDialog();
+                    cpf.Dispose();
+
+                    StyleConfigurationForm csf = new StyleConfigurationForm(true);
+                    csf.ShowDialog();
+                    csf.Dispose();
+
+                    ChooseAudioForm caf = new ChooseAudioForm(true);
+                    caf.ShowDialog();
+                    caf.Dispose();
+
+                    ChooseOwnershipForm cof = new ChooseOwnershipForm(true);
+                    cof.ShowDialog();
+                    cof.Dispose();
+
+                    SetupDoneForm sdf = new SetupDoneForm();
+                    sdf.ShowDialog();
+                    sdf.Dispose();
+
+                    QuickSettings.Instance.SetupExperienceComplete = true;
+                }
+
                 QuickSettings.Instance.Save();
 
                 SetupExperienceOccurred = true;
@@ -442,7 +427,7 @@ namespace SharpAlert.ProgramWorker
 
             RefreshAudioDevices();
 
-            var IPAWSMain = new FeedCapture.ServerInfo { ServerName = "FEMA IPAWS", ServerPath = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}" };
+            var IPAWSMain = new FeedCapture.ServerInfo { ServerName = "FEMA IPAWS (EAS)", ServerPath = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}" };
             var IPAWSWireless = new FeedCapture.ServerInfo { ServerName = "FEMA IPAWS (WEA)", ServerPath = $"apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/PublicWEA/recent/{DateTime.UtcNow.AddDays(-30):yyyy-MM-ddTHH:mm:ssZ}" };
 
             bool IPAWSOrSASMEXAvailable = false;
@@ -577,7 +562,25 @@ namespace SharpAlert.ProgramWorker
             {
                 Application.Run(new MessageWindow());
             }, true);
+            
+            StartCatchAllThread("Update Worker", () =>
+            {
+                Thread.Sleep(1000 * 10);
 
+                while (AllowThreadRestarts)
+                {
+                    if (QuickSettings.Instance.PerformUpdatesAutomatically)
+                    {
+                        string SubRemoteVersion = UpdateWorker.TryGetRemoteVersion();
+                        if (SubRemoteVersion != $"{VersionInfo.MajorVersion}.{VersionInfo.MajorVersion}")
+                        {
+                            UpdateWorker.TryUpdate(SubRemoteVersion, false);
+                        }
+                    }
+
+                    Thread.Sleep(1000 * 30);
+                }
+            }, true);
 
             StartCatchAllThread("Pipe Worker", () => PipeWorker.ServerServiceRun(), false, false);
         }
@@ -828,7 +831,7 @@ namespace SharpAlert.ProgramWorker
             }
             else
             {
-                Console.Title = "SharpAlert Console Window";
+                Console.Title = $"{VersionInfo.ShortFriendlyVersion}";
                 IntPtr consoleHandle = CreateFile("CONOUT$", GENERIC_WRITE, 0, IntPtr.Zero, OPEN_EXISTING, 0, IntPtr.Zero);
                 
                 if (consoleHandle == IntPtr.Zero)

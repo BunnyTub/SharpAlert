@@ -16,11 +16,13 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void ServerConfigurationForm_Load(object sender, EventArgs e)
         {
+            DropChangesButton.PerformClick();
+
             if (Initialized) return;
             Initialized = true;
 
-            DiscordWebhookURLInput.Text = QuickSettings.Instance.DiscordWebhook;
-            DiscordWebhookAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend;
+            //DiscordWebhookURLInput.Text = QuickSettings.Instance.DiscordWebhook;
+            //DiscordWebhookAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend;
 
             DiscordWebhookConfirmAlertsBox.Checked = QuickSettings.Instance.DiscordWebhookConfirmAlerts;
             DiscordWebhookConfirmAlertsBox.CheckedChanged += (a, b) => QuickSettings.Instance.DiscordWebhookConfirmAlerts = ((CheckBox)a).Checked;
@@ -43,6 +45,23 @@ namespace SharpAlert.ConfigurationDialogs
                 }
             };
 
+            //DiscordWebhookCombo.SelectedIndexChanged += (a, b) =>
+            //{
+            //    while (DiscordGroup.Controls.Count > 0)
+            //    {
+            //        DiscordGroup.Controls[0].Dispose();
+            //        //DiscordGroup.Controls.RemoveAt(0);
+            //    }
+
+            //    DiscordSubConfigurationForm sub = new DiscordSubConfigurationForm
+            //    {
+            //        TopLevel = false
+            //    };
+            //    DiscordGroup.Controls.Add(sub);
+            //    sub.Dock = DockStyle.Fill;
+            //    sub.Show();
+            //};
+
             BatteryReportingCautionLevelInput.Value = QuickSettings.Instance.BatteryReportingCautionLevel;
             BatteryReportingCautionLevelInput.ValueChanged += (a, b) => QuickSettings.Instance.BatteryReportingCautionLevel = (int)((NumericUpDown)a).Value;
             BatteryReportingCriticalLevelInput.Value = QuickSettings.Instance.BatteryReportingCriticalLevel;
@@ -55,42 +74,58 @@ namespace SharpAlert.ConfigurationDialogs
             //Environment.Exit(0);
         }
 
-        private void BusyLock_Tick(object sender, EventArgs e)
-        {
-            if (AlertDisplaying)
-            {
-                ConfigurationPanel.Visible = false;
-                BusyLockText.BringToFront();
-            }
-            else
-            {
-                ConfigurationPanel.Visible = true;
-                BusyLockText.SendToBack();
-            }
-        }
-
         private void SaveDiscordSettingsButton_Click(object sender, EventArgs e)
         {
-            SaveDiscordSettingsButton.BackColor = Color.FromArgb(60, 60, 60);
+            QuickSettings.Instance.DiscordWebhook = DefaultURLInput.Text;
+            QuickSettings.Instance.DiscordWebhookAppend = DefaultAppendInput.Text;
 
-            QuickSettings.Instance.DiscordWebhook = DiscordWebhookURLInput.Text.Trim();
-            QuickSettings.Instance.DiscordWebhookAppend = DiscordWebhookAppendInput.Text.Trim();
+            QuickSettings.Instance.DiscordWebhook_FEMA_IPAWS_EAS = EASURLInput.Text;
+            QuickSettings.Instance.DiscordWebhookAppend_FEMA_IPAWS_EAS = EASAppendInput.Text;
+
+            QuickSettings.Instance.DiscordWebhook_FEMA_IPAWS_WEA = WEAURLInput.Text;
+            QuickSettings.Instance.DiscordWebhookAppend_FEMA_IPAWS_WEA = WEAAppendInput.Text;
+
+            QuickSettings.Instance.DiscordWebhook_NWS_ATOM = NWSAtomURLInput.Text;
+            QuickSettings.Instance.DiscordWebhookAppend_NWS_ATOM = NWSAtomAppendInput.Text;
+
+            QuickSettings.Instance.DiscordWebhook_NAADS_PRIMARY = NAADSPrimaryURLInput.Text;
+            QuickSettings.Instance.DiscordWebhookAppend_NAADS_PRIMARY = NAADSPrimaryAppendInput.Text;
+
+            QuickSettings.Instance.DiscordWebhook_NAADS_BACKUP = NAADSBackupURLInput.Text;
+            QuickSettings.Instance.DiscordWebhookAppend_NAADS_BACKUP = NAADSBackupAppendInput.Text;
+            
+            QuickSettings.Instance.DiscordWebhook_SASMEX = SASMEXURLInput.Text;
+            QuickSettings.Instance.DiscordWebhookAppend_SASMEX = SASMEXAppendInput.Text;
+
+            QuickSettings.Instance.DiscordWebhook_IDAP = IDAPURLInput.Text;
+            QuickSettings.Instance.DiscordWebhookAppend_IDAP = IDAPAppendInput.Text;
         }
 
-        private void NS_UnhideSecureBox_CheckedChanged(object sender, EventArgs e)
+        private void DropChangesButton_Click(object sender, EventArgs e)
         {
-            DiscordWebhookURLInput.UseSystemPasswordChar = ((CheckBox)sender).Checked;
-            DiscordWebhookAppendInput.UseSystemPasswordChar = ((CheckBox)sender).Checked;
-        }
+            DefaultURLInput.Text = QuickSettings.Instance.DiscordWebhook;
+            DefaultAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend;
 
-        private void DiscordWebhookURLInput_TextChanged(object sender, EventArgs e)
-        {
-            SaveDiscordSettingsButton.BackColor = Color.FromArgb(200, 60, 60);
-        }
+            EASURLInput.Text = QuickSettings.Instance.DiscordWebhook_FEMA_IPAWS_EAS;
+            EASAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend_FEMA_IPAWS_EAS;
 
-        private void DiscordWebhookAppendInput_TextChanged(object sender, EventArgs e)
-        {
-            SaveDiscordSettingsButton.BackColor = Color.FromArgb(200, 60, 60);
+            WEAURLInput.Text = QuickSettings.Instance.DiscordWebhook_FEMA_IPAWS_WEA;
+            WEAAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend_FEMA_IPAWS_WEA;
+
+            NWSAtomURLInput.Text = QuickSettings.Instance.DiscordWebhook_NWS_ATOM;
+            NWSAtomAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend_NWS_ATOM;
+
+            NAADSPrimaryURLInput.Text = QuickSettings.Instance.DiscordWebhook_NAADS_PRIMARY;
+            NAADSPrimaryAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend_NAADS_PRIMARY;
+
+            NAADSBackupURLInput.Text = QuickSettings.Instance.DiscordWebhook_NAADS_BACKUP;
+            NAADSBackupAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend_NAADS_BACKUP;
+
+            SASMEXURLInput.Text = QuickSettings.Instance.DiscordWebhook_SASMEX;
+            SASMEXAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend_SASMEX;
+
+            IDAPURLInput.Text = QuickSettings.Instance.DiscordWebhook_IDAP;
+            IDAPAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend_IDAP;
         }
     }
 }

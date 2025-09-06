@@ -98,7 +98,6 @@
             // 
             this.SpeakerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.SpeakerButton.BackColor = System.Drawing.Color.White;
-            this.SpeakerButton.Enabled = false;
             this.SpeakerButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.SpeakerButton.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
             this.SpeakerButton.ForeColor = System.Drawing.Color.Black;
@@ -116,7 +115,6 @@
             this.DismissButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DismissButton.BackColor = System.Drawing.Color.White;
             this.DismissButton.ContextMenuStrip = this.ButtonOptionsStrip;
-            this.DismissButton.Enabled = false;
             this.DismissButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.DismissButton.Font = new System.Drawing.Font("Arial", 16F);
             this.DismissButton.ForeColor = System.Drawing.Color.Black;

@@ -14,6 +14,8 @@ using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 using SharpAlert.ProgramWorker;
 using static SharpAlert.ThreadDrool;
+using System.Text.Json;
+using static SharpAlert.AlertComponents.AlertDisplayer;
 
 namespace SharpAlert.WebServer
 {
@@ -37,8 +39,6 @@ namespace SharpAlert.WebServer
             Stop = true;
             while (Stop) Thread.Sleep(100);
         }
-
-        public static bool IsAdministrator => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 
         public void ServiceRun()
         {
@@ -428,39 +428,42 @@ namespace SharpAlert.WebServer
             return "You cannot just try an initiate a self-destruct sequence without authenticating!";
         }
 
-        //[Mapping("AlertInfo")]
-        //public object AlertInfo(HttpListenerContext ctx)
-        //{
-        //    ctx.Response.ContentType = "application/json";
-        //    if (AlertDisplaying)
-        //    {
-        //        var alert = new AlertInformation
-        //        {
-        //            AlertInProgress = true,
-        //            MatchTime = $"{AlertDisplayingBeginTime.Ticks}",
-        //            AlertID = AlertDisplayer.DialogAlertID,
-        //            AlertType = AlertDisplayer.DialogAlertType,
-        //            AlertTitle = AlertDisplayer.DialogAlertTitle,
-        //            AlertText = $"{AlertDisplayer.DialogAlertText.Intro} {AlertDisplayer.DialogAlertText.Body}"
-        //        };
+        public AlertDisplayerInfo RecentAlert = null;
 
-        //        return JsonSerializer.Serialize(alert);
-        //    }
-        //    else
-        //    {
-        //        var alert = new AlertInformation
-        //        {
-        //            AlertInProgress = false,
-        //            MatchTime = string.Empty,
-        //            AlertID = string.Empty,
-        //            AlertType = string.Empty,
-        //            AlertTitle = string.Empty,
-        //            AlertText = string.Empty
-        //        };
+        [Mapping("AlertInfo")]
+        public object AlertInfo(HttpListenerContext ctx)
+        {
+            ctx.Response.ContentType = "application/json";
+            if (AlertDisplaying)
+            {
+                if (RecentAlert != null)
+                {
+                    var alert = new AlertInformation
+                    {
+                        AlertInProgress = true,
+                        MatchTime = $"{AlertDisplayingBeginTime.Ticks}",
+                        AlertID = RecentAlert.Identifier,
+                        AlertType = RecentAlert.MsgType,
+                        AlertTitle = RecentAlert.EventTypeFull,
+                        AlertText = $"{RecentAlert._AlertText.Intro} {RecentAlert._AlertText.Body}"
+                    };
 
-        //        return JsonSerializer.Serialize(alert);
-        //    }
-        //}
+                    return JsonSerializer.Serialize(alert);
+                }
+            }
+
+            var EmptyAlert = new AlertInformation
+            {
+                AlertInProgress = false,
+                MatchTime = string.Empty,
+                AlertID = string.Empty,
+                AlertType = string.Empty,
+                AlertTitle = string.Empty,
+                AlertText = string.Empty
+            };
+
+            return JsonSerializer.Serialize(EmptyAlert);
+        }
 
         private bool AuthenticationFulfilled(HttpListenerContext ctx)
         {

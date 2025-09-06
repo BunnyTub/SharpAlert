@@ -19,7 +19,7 @@ namespace SharpAlert.ProgramWorker
 
         public static NotifyIcon Notify = null;
         private static ConfigurationForm mf = null;
-        private static bool NotifyIconCalled = false;
+        //private static bool NotifyIconCalled = false;
         public static bool IgnoreRightClick = false;
 
         /// <summary>
@@ -29,9 +29,9 @@ namespace SharpAlert.ProgramWorker
         public static void CreateNotifyIcon(string RemoteVersion)
         {
             //if (NotifyIconCalled) throw new NotSupportedException("You cannot create more than one instance at any given point.");
-            NotifyIconCalled = true;
+            //NotifyIconCalled = true;
 
-            if (Notify != null) Notify.Dispose();
+            Notify?.Dispose();
 
             Notify = new NotifyIcon
             {
@@ -159,12 +159,11 @@ namespace SharpAlert.ProgramWorker
                         if (int.Parse(RemoteVersionSplit[0]) > VersionInfo.MajorVersion ||
                             int.Parse(RemoteVersionSplit[1]) > VersionInfo.MinorVersion)
                         {
-                            SpeakingManager.UpdatesFound();
                             Notify.ShowNotification($"Update available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}",
                                 "SharpAlert found updates",
                                 ToolTipIcon.Info);
 
-                            UpdateWorker.TryUpdate($"{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}");
+                            //UpdateWorker.TryUpdate($"{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}");
                             UpdatesAvailable = true;
                         }
                         else
@@ -172,7 +171,6 @@ namespace SharpAlert.ProgramWorker
                             if (int.Parse(RemoteVersionSplit[0]) < VersionInfo.MajorVersion ||
                                 int.Parse(RemoteVersionSplit[1]) < VersionInfo.MinorVersion)
                             {
-                                SpeakingManager.UpdatesFound();
                                 Notify.ShowNotification($"Downgrade available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}",
                                     "SharpAlert found updates",
                                     ToolTipIcon.Info);
@@ -354,7 +352,7 @@ namespace SharpAlert.ProgramWorker
             //Notify.ContextMenuStrip.Show(Cursor.Position);
         }
 
-        private static string NotificationHistory = string.Empty;
+        //private static string NotificationHistory = string.Empty;
         private static string PreviousNotification = string.Empty;
         private static int PreviousCount = 0;
 
@@ -364,7 +362,7 @@ namespace SharpAlert.ProgramWorker
             {
                 lock (notify)
                 {
-                    if (PreviousNotification == text.Trim())
+                    if (PreviousNotification.Contains(text))
                     {
                         PreviousCount++;
                     }
@@ -373,7 +371,7 @@ namespace SharpAlert.ProgramWorker
                         PreviousCount = 0;
                     }
 
-                    NotificationHistory += $"[{DateTime.UtcNow:R}]\r\nIcon: {icon}\r\nTitle: {title.Trim()}\r\nText: {text.Trim()}\r\n\r\n";
+                    //NotificationHistory += $"[{DateTime.UtcNow:R}]\r\nIcon: {icon}\r\nTitle: {title.Trim()}\r\nText: {text.Trim()}\r\n\r\n";
 
                     //if (PreviousCount >= 2)
                     //{
@@ -383,7 +381,7 @@ namespace SharpAlert.ProgramWorker
                     //}
                     //else
                     //{
-                    PreviousNotification = text.Trim();
+                    PreviousNotification = text;
                     notify.BalloonTipText = text;
                     notify.BalloonTipTitle = title;
                     notify.BalloonTipIcon = icon;

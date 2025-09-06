@@ -8,6 +8,8 @@ using static SharpAlert.AudioManager;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using static SharpAlert.AlertComponents.AlertDisplayer;
+using System.Drawing.Drawing2D;
+using SharpAlert.WinFormsControls;
 
 namespace SharpAlert.AlertComponents
 {
@@ -80,6 +82,21 @@ namespace SharpAlert.AlertComponents
             taskbarList.HrInit();
         }
 
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            //int radius = 5;
+            //using (GraphicsPath path = RoundedCorners.Create(
+            //    new Rectangle(0, 0, this.Width, this.Height),
+            //    radius,
+            //    RoundedCorners.RectangleCorners.All
+            //))
+            //{
+            //    this.Region = new Region(path);
+            //}
+        }
+
         public void UpdateFields(string id, string alert, string intro, string text, string url, string audio, string image, string type, string severity)
         {
             AlertIDStr = id;
@@ -108,7 +125,7 @@ namespace SharpAlert.AlertComponents
                 AlertLinkText.Text = AlertUrlStr;
             }
 
-            var message = GetTextFromMessageType(type);
+            var message = GetTextFromMessageSeverityAndType(severity, type);
             TitleText.Text = message.text;
             ColorTitleAndBordersOne = message.MainColor;
             ColorSubtitleOnlyOne = message.SubColor;
@@ -143,6 +160,8 @@ namespace SharpAlert.AlertComponents
 
         private void AlertForm_Shown(object sender, EventArgs e)
         {
+            ExitToneCalled = false;
+
             AutoExit.Interval = QuickSettings.Instance.alertTimeout * 60000;
             AutoExit.Start();
 
@@ -160,7 +179,7 @@ namespace SharpAlert.AlertComponents
                 FlashTaskbarStatus.Stop();
                 UpdateTaskbarProgress(TaskbarProgressState.NoProgress, 0, 0);
                 this.Opacity = 1;
-                UnlockButtons(true);
+                //UnlockButtons(true);
             }
 
             StopAllAudioSilently();
@@ -295,11 +314,13 @@ namespace SharpAlert.AlertComponents
             AlertLinkText.Enabled = unlocked;
         }
 
+        private bool ExitToneCalled = false;
+
         private void AlertForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             HideImage();
             if (!AllowThreadRestarts) return;
-            UnlockButtons(false);
+            //UnlockButtons(false);
             AutoExit.Stop();
             if (!QuickSettings.Instance.alertCompatibilityMode)
             {
@@ -312,12 +333,14 @@ namespace SharpAlert.AlertComponents
                     e.Cancel = true;
                     FadeOutAnimation.Start();
                 }
-                PlayEndToneFile(false);
+                if (!ExitToneCalled) PlayEndToneFile(false);
+                ExitToneCalled = true;
             }
             else
             {
                 WindowFlash.Stop();
-                PlayEndToneFile(true);
+                if (!ExitToneCalled) PlayEndToneFile(true);
+                ExitToneCalled = true;
             }
 
         }
@@ -388,7 +411,7 @@ namespace SharpAlert.AlertComponents
             if (this.Opacity == 1)
             {
                 FadeInAnimation.Stop();
-                UnlockButtons(true);
+                //UnlockButtons(true);
                 return;
             }
             else

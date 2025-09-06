@@ -35,10 +35,11 @@
             this.TitleText = new System.Windows.Forms.Label();
             this.LogoBox = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.DescriptionText = new System.Windows.Forms.Label();
             this.FadeInAnimation = new System.Windows.Forms.Timer(this.components);
             this.SideLogoBox = new System.Windows.Forms.PictureBox();
             this.ExampleBarBox = new System.Windows.Forms.PictureBox();
+            this.SkipButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SideLogoBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ExampleBarBox)).BeginInit();
@@ -103,15 +104,15 @@
     "More credits can be found in Settings.";
             this.label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
-            // label3
+            // DescriptionText
             // 
-            this.label3.Font = new System.Drawing.Font("Arial", 12F);
-            this.label3.Location = new System.Drawing.Point(199, 39);
-            this.label3.Margin = new System.Windows.Forms.Padding(0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(391, 207);
-            this.label3.TabIndex = 27;
-            this.label3.Text = resources.GetString("label3.Text");
+            this.DescriptionText.Font = new System.Drawing.Font("Arial", 12F);
+            this.DescriptionText.Location = new System.Drawing.Point(199, 39);
+            this.DescriptionText.Margin = new System.Windows.Forms.Padding(0);
+            this.DescriptionText.Name = "DescriptionText";
+            this.DescriptionText.Size = new System.Drawing.Size(391, 207);
+            this.DescriptionText.TabIndex = 27;
+            this.DescriptionText.Text = resources.GetString("DescriptionText.Text");
             // 
             // FadeInAnimation
             // 
@@ -128,6 +129,8 @@
             this.SideLogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.SideLogoBox.TabIndex = 28;
             this.SideLogoBox.TabStop = false;
+            this.ToolTipInformation.SetToolTip(this.SideLogoBox, "Double-click me! >w<");
+            this.SideLogoBox.Click += new System.EventHandler(this.SideLogoBox_Click);
             // 
             // ExampleBarBox
             // 
@@ -139,6 +142,21 @@
             this.ExampleBarBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ExampleBarBox.TabIndex = 29;
             this.ExampleBarBox.TabStop = false;
+            this.ToolTipInformation.SetToolTip(this.ExampleBarBox, "This is an example image of SharpAlert\'s task tray icon on the taskbar.");
+            // 
+            // SkipButton
+            // 
+            this.SkipButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.SkipButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.SkipButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.SkipButton.Location = new System.Drawing.Point(443, 257);
+            this.SkipButton.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.SkipButton.Name = "SkipButton";
+            this.SkipButton.Size = new System.Drawing.Size(72, 23);
+            this.SkipButton.TabIndex = 30;
+            this.SkipButton.Text = "Skip";
+            this.SkipButton.UseVisualStyleBackColor = false;
+            this.SkipButton.Click += new System.EventHandler(this.SkipButton_Click);
             // 
             // SetupForm
             // 
@@ -146,8 +164,9 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(599, 289);
             this.ControlBox = false;
+            this.Controls.Add(this.SkipButton);
             this.Controls.Add(this.ExampleBarBox);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.DescriptionText);
             this.Controls.Add(this.TitleText);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.DoneButton);
@@ -164,6 +183,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SharpAlert - Setup";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.SetupForm_Load);
             this.Shown += new System.EventHandler(this.SetupForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SideLogoBox)).EndInit();
@@ -178,9 +198,10 @@
         private System.Windows.Forms.Label TitleText;
         private System.Windows.Forms.PictureBox LogoBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label DescriptionText;
         private System.Windows.Forms.Timer FadeInAnimation;
         private System.Windows.Forms.PictureBox SideLogoBox;
         private System.Windows.Forms.PictureBox ExampleBarBox;
+        private System.Windows.Forms.Button SkipButton;
     }
 }

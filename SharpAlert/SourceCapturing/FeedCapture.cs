@@ -125,21 +125,19 @@ namespace SharpAlert.SourceCapturing
                 catch (TimeoutException)
                 {
                     Console.WriteLine($"[HTTP Feed Capture] Timed out.");
-                    Notify.ShowNotification($"Network error occurred. Timed out from feed.",
+                    if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. Timed out from the feed.",
                         "SharpAlert source timed out",
                         ToolTipIcon.Warning);
+
                     Thread.Sleep(15 * 1000);
-                }
-                catch (ThreadAbortException)
-                {
-                    return;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"[HTTP Feed Capture] {ex.GetBaseException().Message}");
-                    Notify.ShowNotification($"Network error occurred. {ex.GetBaseException().Message}",
+                    if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. {ex.GetBaseException().Message}",
                         "SharpAlert source problem",
                         ToolTipIcon.Warning);
+
                     Thread.Sleep(15 * 1000);
                 }
                 if (FirstRun) FirstRun = false;

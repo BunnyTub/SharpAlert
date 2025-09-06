@@ -149,34 +149,52 @@ namespace SharpAlert
             PlaySoundFileFromLocalFolder("TopOfTheHour");
         }
 
+        // Statement
         public static void ModerateOrLower()
         {
             PlaySoundFileFromLocalFolderNoThreading("ModerateOrLower");
         }
 
+        // Statement
         public static void SevereOrHigher()
         {
             PlaySoundFileFromLocalFolderNoThreading("SevereOrHigher");
         }
-        
+
+        // Statement
         public static void FullDaySinceQueuedAlert()
         {
             PlaySoundFileFromLocalFolder("FullDaySinceQueuedAlert");
         }
-        
+
+        // Statement
         public static void HalfDaySinceQueuedAlert()
         {
             PlaySoundFileFromLocalFolder("HalfDaySinceQueuedAlert");
         }
-        
+
+        // Statement
         public static void SettingsSaved()
         {
             PlaySoundFileFromLocalFolder("SettingsSaved");
         }
-        
+
+        // Statement
         public static void SetupComplete()
         {
             PlaySoundFileFromLocalFolder("SetupComplete");
+        }
+
+        // Statement
+        public static void EnabledDoNotDisturb()
+        {
+            PlaySoundFileFromLocalFolder("EnabledDoNotDisturb");
+        }
+
+        // Statement
+        public static void DisabledDoNotDisturb()
+        {
+            PlaySoundFileFromLocalFolder("DisabledDoNotDisturb");
         }
     }
 }

@@ -115,15 +115,15 @@ namespace SharpAlert.ConfigurationDialogs
         {
             if (!string.IsNullOrWhiteSpace(AreaCAPCPInput.Text))
             {
-                if (!(AreaCAPCPInput.Text.Length >= 5))
-                {
-                    MessageBox.Show("The CAP-CP location must be at least 5-6 characters.",
-                        "SharpAlert",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation);
-                    AreaCAPCPInput.Clear();
-                    return;
-                }
+                //if (!(AreaCAPCPInput.Text.Length >= 5))
+                //{
+                //    MessageBox.Show("The CAP-CP location must be at least 5-6 characters.",
+                //        "SharpAlert",
+                //        MessageBoxButtons.OK,
+                //        MessageBoxIcon.Exclamation);
+                //    AreaCAPCPInput.Clear();
+                //    return;
+                //}
 
                 if (QuickSettings.Instance.AllowedCAPCPLocations_Geocodes.Contains(AreaCAPCPInput.Text))
                 {

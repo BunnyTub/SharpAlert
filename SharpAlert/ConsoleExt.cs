@@ -15,29 +15,29 @@ namespace SharpAlert
             {
                 while (true)
                 {
-                    Console.Title = $"SharpAlert Console Window | CPU: {Math.Floor(GetUsageOfCPUAsPercent())}% - RAM: {Math.Floor(GetUsageOfRAMAsMB())} MB";
+                    Console.Title = $"{VersionInfo.ShortFriendlyVersion} | CPU: {Math.Floor(GetUsageOfCPUAsPercent())}% - RAM: {Math.Floor(GetUsageOfRAMAsMB())} MB";
                     Thread.Sleep(500);
                 }
             });
 
-            while (true)
-            {
-                //while ((chr = reader.Read()) != -1)
-                //{
-                //    char c = (char)chr;
-                //    Console.WriteLine($"[Haida] Read character: {c}");
-                //}
-                if (Console.ReadKey(true).Key == ConsoleKey.Escape)
-                {
-                    lock (WriteLock)
-                    {
-                        Console.WriteLine("[Console Extensions] Logging has been locked.");
-                        Console.WriteLine("[Console Extensions] Press any key to continue.");
-                        Console.ReadKey(true);
-                    }
-                    //Console.WriteLine("Debug key struck.");
-                }
-            }
+            //while (true)
+            //{
+            //    //while ((chr = reader.Read()) != -1)
+            //    //{
+            //    //    char c = (char)chr;
+            //    //    Console.WriteLine($"[Haida] Read character: {c}");
+            //    //}
+            //    if (Console.ReadKey(true).Key == ConsoleKey.Escape)
+            //    {
+            //        lock (WriteLock)
+            //        {
+            //            Console.WriteLine("[Console Extensions] Logging has been locked.");
+            //            Console.WriteLine("[Console Extensions] Press any key to continue.");
+            //            Console.ReadKey(true);
+            //        }
+            //        //Console.WriteLine("Debug key struck.");
+            //    }
+            //}
         }
 
         private static double GetUsageOfCPUAsPercent()

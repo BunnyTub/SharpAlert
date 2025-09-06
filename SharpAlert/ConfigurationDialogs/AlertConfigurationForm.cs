@@ -80,6 +80,8 @@ namespace SharpAlert.ConfigurationDialogs
             weaOnlyBox.CheckedChanged += (a, b) => QuickSettings.Instance.weaOnly = ((CheckBox)a).Checked;
             discardFirstAlertsBox.Checked = QuickSettings.Instance.discardFirstAlerts;
             discardFirstAlertsBox.CheckedChanged += (a, b) => QuickSettings.Instance.discardFirstAlerts = ((CheckBox)a).Checked;
+            PreferCMAMTextWhereAvailableBox.Checked = QuickSettings.Instance.UseCMAMTextWhereAvailable;
+            PreferCMAMTextWhereAvailableBox.CheckedChanged += (a, b) => QuickSettings.Instance.UseCMAMTextWhereAvailable = ((CheckBox)a).Checked;
             
             categoryGeoBox.Checked = QuickSettings.Instance.categoryGeophysical;
             categoryGeoBox.CheckedChanged += (a, b) => QuickSettings.Instance.categoryGeophysical = ((CheckBox)a).Checked;

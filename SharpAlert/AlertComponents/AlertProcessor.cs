@@ -106,7 +106,7 @@ namespace SharpAlert.AlertComponents
                 AlertsProcessing--;
                 Console.WriteLine($"[Alert Processor] Finished processing -> {relayItem.Name}");
                 AlertInProcessing = false;
-                return info;
+                return info[0];
             }
             else
             {
@@ -121,6 +121,7 @@ namespace SharpAlert.AlertComponents
         public class AlertInfo
         {
             public string AlertDiscardReason { get; set; } = string.Empty;
+            public string AlertSource { get; set; } = string.Empty;
             public string AlertID { get; set; } = string.Empty;
             public string AlertSentDate { get; set; } = string.Empty;
             public string AlertExpiryDate { get; set; } = string.Empty;
@@ -139,489 +140,536 @@ namespace SharpAlert.AlertComponents
         /// Processes and relays the alert item.
         /// </summary>
         /// <param name="relayItem">The item to be processed.</param>
-        private AlertInfo SubProcessAlertItem(SharpDataItem relayItem, bool ReplayMode, bool IgnoreDiscards)
+        private AlertInfo[] SubProcessAlertItem(SharpDataItem relayItem, bool ReplayMode, bool IgnoreDiscards)
         {
+            // support multi alerts inside the alert processor
+            
             lock (AlertLock)
             {
-                Console.WriteLine($"[Alert Processor] Processing alert -> {relayItem.Name}");
-                if (QuickSettings.Instance.BypassAllFilters) Console.WriteLine($"[Alert Processor] Due to BypassAllFilters being enabled, this alert will pass/succeed, regardless of set filters.");
+                if (relayItem == null) return new AlertInfo[] { new AlertInfo { AlertDiscardReason = "No alert(s) provided." } };
 
-                DateTime startProc = DateTime.UtcNow;
+                List<AlertInfo> AlertInfoList = new List<AlertInfo>();
 
-                //DiscordWebhook.SendUnformattedMessage($"Processing incoming alert item. ({startProc:O} UTC)");
+                MatchCollection alertMatches = AlertRegex.Matches(relayItem.Name);
+                List<string> AlertList = new List<string>();
 
-                //bool AnyAlertRelayed = false;
-                //bool UsedDiscordHook = false;
-
-                string Sent = SentRegex.MatchOrDefault(relayItem.Data, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
-
-                Console.WriteLine($"[Alert Processor] Sent: {Sent}");
-
-                string Status = StatusRegex.MatchOrDefault(relayItem.Data, "actual");
-                Console.WriteLine($"[Alert Processor] Status: {Status}");
-
-                string MsgType = MessageTypeRegex.MatchOrDefault(relayItem.Data, "alert");
-                Console.WriteLine($"[Alert Processor] Message Type: {MsgType}");
-
-                Console.WriteLine($"[Alert Processor] Replay (internal flag): {ReplayMode}");
-
-                MatchCollection infoMatches = InfoRegex.Matches(relayItem.Data);
-
-                bool AnyInfoTagsPass = false;
-
-                if (!ProcessAlertX(Status, MsgType))
+                foreach (Match alertMatch in alertMatches)
                 {
-                    Console.WriteLine($"[Alert Processor] Alert discarded due to status/message_type settings.");
-                    //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
-                    if (!IgnoreDiscards)
-                    {
-                        return new AlertInfo { AlertDiscardReason = "The alert was blocked because of your status, or message type settings." };
-                    }
+                    AlertList.Add(alertMatch.Value);
                 }
 
-                for (int ii = 0; ii < infoMatches.Count; ii++)
+                Console.WriteLine($"[Alert Processor] Found {alertMatches.Count} alert(s).");
+                if (alertMatches.Count == 0)
                 {
-                    try
-                    {
-                        if (ProcessInfoX(infoMatches[ii].Groups[1].Value))
-                        {
-                            AnyInfoTagsPass = true;
-                            break;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"[Alert Processor] An info tag couldn't processed. {ex.Message}");
-                    }
+                    Console.WriteLine($"[Alert Processor] The provided data will be processed as one, because no alert tags were found.");
+                    AlertList.Add(relayItem.Data);
                 }
 
-                if (!AnyInfoTagsPass)
+                if (QuickSettings.Instance.BypassAllFilters) Console.WriteLine($"[Alert Processor] Due to BypassAllFilters being enabled, any alerts will pass/succeed (if valid), regardless of set filters.");
+
+                foreach (string alert in AlertList)
                 {
-                    Console.WriteLine($"[Alert Processor] Alert discarded due to location/urgency/category settings.");
-                    //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
-                    if (!IgnoreDiscards)
+                    //if (alertMatches.Count != 1)
+                    //{
+                    //    Console.WriteLine($"[Alert Processor] Cannot process multiple or zero alerts within the same call -> {relayItem.Name}");
+                    //    return new AlertInfo[]
+                    //    {
+                    //        new AlertInfo
+                    //        {
+                    //            AlertDiscardReason = "The Alert Processor does not support processing multiple or zero alerts within a single call."
+                    //        }
+                    //    };
+                    //}
+
+                    //Console.WriteLine($"[Alert Processor] Processing alert -> {relayItem.Name}"); 
+
+                    DateTime startProc = DateTime.UtcNow;
+
+                    //DiscordWebhook.SendUnformattedMessage($"Processing incoming alert item. ({startProc:O} UTC)");
+
+                    //bool AnyAlertRelayed = false;
+                    //bool UsedDiscordHook = false;
+
+                    string Sent = SentRegex.MatchOrDefault(alert, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
+
+                    Console.WriteLine($"[Alert Processor] Sent: {Sent}");
+
+                    string Status = StatusRegex.MatchOrDefault(alert, "actual");
+                    Console.WriteLine($"[Alert Processor] Status: {Status}");
+
+                    string MsgType = MessageTypeRegex.MatchOrDefault(alert, "alert");
+                    Console.WriteLine($"[Alert Processor] Message Type: {MsgType}");
+
+                    Console.WriteLine($"[Alert Processor] Replay (internal flag): {ReplayMode}");
+
+                    MatchCollection infoMatches = InfoRegex.Matches(relayItem.Data);
+
+                    bool AnyInfoTagsPass = false;
+
+                    if (!ProcessAlertX(Status, MsgType))
                     {
-                        return new AlertInfo { AlertDiscardReason = "The alert was blocked because of your location, urgency, or category settings." };
-                    }
-                }
-
-                int infoProc = 0;
-
-                List<string> AllEvents = new List<string>();
-                List<string> AllLocations = new List<string>();
-                SeverityLevel MaxSeverity = SeverityLevel.Unknown;
-
-                List<string> AudioFiles = new List<string>();
-                List<string> DerefAudioFiles = new List<string>();
-                List<string> ImageFiles = new List<string>();
-                List<string> DerefImageFiles = new List<string>();
-                List<AlertTextClass> AlertTextList = new List<AlertTextClass>();
-                string Expiry = string.Empty;
-                string EventTypeFull = string.Empty;
-                string PrimaryURL = string.Empty;
-
-                foreach (Match infoMatch in infoMatches)
-                {
-                    infoProc++;
-                    Console.WriteLine($"[Alert Processor] Processing {infoProc} of {infoMatches.Count}.");
-
-                    string AlertInfo = $"{infoMatch.Groups[1].Value}";
-
-                    string Source = SourceRegex.MatchOrDefault(relayItem.Data, "External Source");
-                    Console.WriteLine($"[Alert Processor] Source (if any): {Source}");
-                    
-                    string Effective = EffectiveRegex.MatchOrDefault(relayItem.Data, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
-                    Console.WriteLine($"[Alert Processor] Effective: {Effective}");
-
-                    Expiry = ExpiresRegex.MatchOrDefault(relayItem.Data, DateTime.UtcNow.AddHours(1).ToString("O", CultureInfo.InvariantCulture));
-                    Console.WriteLine($"[Alert Processor] Expires: {Expiry}");
-
-                    //https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
-                    string BCP47Language = LanguageRegex.MatchOrDefault(AlertInfo, "en-US");
-                    Console.WriteLine($"[Alert Processor] Language: {BCP47Language}");
-
-                    string URL = WebRegex.MatchOrDefault(AlertInfo, string.Empty);
-                    string Web = WebRegex.MatchOrDefault(AlertInfo, string.Empty);
-                    Console.WriteLine($"[Alert Processor] Associated URL (if any): {URL}");
-                    Console.WriteLine($"[Alert Processor] Associated Web (if any): {Web}");
-                    if (string.IsNullOrWhiteSpace(PrimaryURL)) PrimaryURL = URL;
-                    if (string.IsNullOrWhiteSpace(PrimaryURL)) PrimaryURL = Web;
-
-                    string EventName = Regex.Replace(EventRegex.MatchOrDefault(AlertInfo, "Cautionary (Unknown Event)"), @"(^\w)|(\s\w)", m => m.Value.ToUpperInvariant());
-                    Console.WriteLine($"[Alert Processor] Event Name: {EventName}");
-
-                    string EventType = EventCodeRegex.MatchOrDefault(AlertInfo, "???");
-                    var (EventTypeTranslated, TranslationSuccessful) = GetAlertNameFromSAME(EventType);
-                    Console.WriteLine($"[Alert Processor] Event: {EventType}");
-                    Console.WriteLine($"[Alert Processor] Event (SAME Translation): {EventTypeTranslated}");
-
-                    if (TranslationSuccessful)
-                    {
-                        if (string.IsNullOrEmpty(EventTypeFull))
+                        Console.WriteLine($"[Alert Processor] Alert discarded due to status/message_type settings.");
+                        //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
+                        if (!IgnoreDiscards)
                         {
-                            EventTypeFull = EventTypeTranslated;
+                            AlertInfoList.Add(new AlertInfo { AlertDiscardReason = "The alert was blocked because of your status, or message type settings." });
+                            continue;
                         }
-                        else if (!EventTypeFull.Contains(EventTypeTranslated)) EventTypeFull += $"; {EventTypeTranslated}";
                     }
-                    else
+
+                    for (int ii = 0; ii < infoMatches.Count; ii++)
                     {
-                        if (string.IsNullOrEmpty(EventTypeFull))
+                        try
                         {
-                            EventTypeFull = EventName;
+                            if (ProcessInfoX(infoMatches[ii].Groups[1].Value))
+                            {
+                                AnyInfoTagsPass = true;
+                                break;
+                            }
                         }
-                        else if (!EventTypeFull.Contains(EventName)) EventTypeFull += $"; {EventName}";
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"[Alert Processor] An info tag couldn't processed. {ex.Message}");
+                        }
                     }
 
-                    string Urgency = UrgencyRegex.MatchOrDefault(AlertInfo, "Unknown");
-                    Console.WriteLine($"[Alert Processor] Urgency: {Urgency}");
-
-                    string Severity = SeverityRegex.MatchOrDefault(AlertInfo, "Unknown");
-                    Console.WriteLine($"[Alert Processor] Severity: {Severity}");
-
-                    int ResourceCount = 0;
-                    MatchCollection MatchedResources = ResourceRegex.Matches(AlertInfo);
-                    foreach (Match resource in MatchedResources)
+                    if (!AnyInfoTagsPass)
                     {
-                        ResourceCount++;
-                        Console.WriteLine($"[Alert Processor] Resource {ResourceCount} Value: {resource.Groups[1].Value}");
-                        var desc = ResourceDescRegex.MatchOrDefault(resource.Groups[1].Value);
-                        Console.WriteLine($"[Alert Processor] Resource {ResourceCount} Description: {desc}");
-                        var mime = MIMETypeRegex.MatchOrDefault(resource.Groups[1].Value);
-                        Console.WriteLine($"[Alert Processor] Resource {ResourceCount} MIME Type: {mime}");
-                        var size = SizeRegex.MatchOrDefault(resource.Groups[1].Value);
-                        Console.WriteLine($"[Alert Processor] Resource {ResourceCount} Size (if any): {size}");
-                        var uri = URIRegex.MatchOrDefault(resource.Groups[1].Value);
-                        Console.WriteLine($"[Alert Processor] Resource {ResourceCount} URI (if any): {uri}");
-                        var derefUri = DerefURIRegex.MatchOrDefault(resource.Groups[1].Value);
-                        Console.WriteLine($"[Alert Processor] Resource {ResourceCount} Dereference URI (if any): {derefUri}");
-                        var digest = DigestSecureHashAlgorithmOneRegex.MatchOrDefault(resource.Groups[1].Value);
-                        Console.WriteLine($"[Alert Processor] Resource {ResourceCount} SHA-1 (if any | unused): {digest}");
-
-                        void AddAudioToList()
+                        Console.WriteLine($"[Alert Processor] Alert discarded due to location/urgency/category settings.");
+                        //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
+                        if (!IgnoreDiscards)
                         {
+                            AlertInfoList.Add(new AlertInfo { AlertDiscardReason = "The alert was blocked because of your location, urgency, or category settings." });
+                            continue;
+                        }
+                    }
+
+                    int infoProc = 0;
+
+                    List<string> AllEvents = new List<string>();
+                    List<string> AllLocations = new List<string>();
+                    SeverityLevel MaxSeverity = SeverityLevel.Unknown;
+
+                    List<string> AudioFiles = new List<string>();
+                    List<string> DerefAudioFiles = new List<string>();
+                    List<string> ImageFiles = new List<string>();
+                    List<string> DerefImageFiles = new List<string>();
+                    List<AlertTextClass> AlertTextList = new List<AlertTextClass>();
+                    string Expiry = string.Empty;
+                    string EventTypeFull = string.Empty;
+                    string PrimaryURL = string.Empty;
+                    string Source = string.Empty;
+
+                    foreach (Match infoMatch in infoMatches)
+                    {
+                        infoProc++;
+                        Console.WriteLine($"[Alert Processor] Processing {infoProc} of {infoMatches.Count}.");
+
+                        string AlertInfo = $"{infoMatch.Groups[1].Value}";
+
+                        Source = SourceRegex.MatchOrDefault(alert, "External Source");
+                        Console.WriteLine($"[Alert Processor] Source (if any): {Source}");
+
+                        string Effective = EffectiveRegex.MatchOrDefault(alert, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
+                        Console.WriteLine($"[Alert Processor] Effective: {Effective}");
+
+                        Expiry = ExpiresRegex.MatchOrDefault(alert, DateTime.UtcNow.AddHours(1).ToString("O", CultureInfo.InvariantCulture));
+                        Console.WriteLine($"[Alert Processor] Expires: {Expiry}");
+
+                        //https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
+                        string BCP47Language = LanguageRegex.MatchOrDefault(AlertInfo, "en-US");
+                        Console.WriteLine($"[Alert Processor] Language: {BCP47Language}");
+
+                        string URL = WebRegex.MatchOrDefault(AlertInfo, string.Empty);
+                        string Web = WebRegex.MatchOrDefault(AlertInfo, string.Empty);
+                        Console.WriteLine($"[Alert Processor] Associated URL (if any): {URL}");
+                        Console.WriteLine($"[Alert Processor] Associated Web (if any): {Web}");
+                        if (string.IsNullOrWhiteSpace(PrimaryURL)) PrimaryURL = URL;
+                        if (string.IsNullOrWhiteSpace(PrimaryURL)) PrimaryURL = Web;
+
+                        string EventName = Regex.Replace(EventRegex.MatchOrDefault(AlertInfo, "Cautionary (Unknown Event)"), @"(^\w)|(\s\w)", m => m.Value.ToUpperInvariant());
+                        Console.WriteLine($"[Alert Processor] Event Name: {EventName}");
+
+                        string EventType = EventCodeRegex.MatchOrDefault(AlertInfo, "???");
+                        var (EventTypeTranslated, TranslationSuccessful) = GetAlertNameFromSAME(EventType);
+                        Console.WriteLine($"[Alert Processor] Event: {EventType}");
+                        Console.WriteLine($"[Alert Processor] Event (SAME Translation): {EventTypeTranslated}");
+
+                        if (TranslationSuccessful)
+                        {
+                            if (string.IsNullOrEmpty(EventTypeFull))
+                            {
+                                EventTypeFull = EventTypeTranslated;
+                            }
+                            else if (!EventTypeFull.Contains(EventTypeTranslated)) EventTypeFull += $"; {EventTypeTranslated}";
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(EventTypeFull))
+                            {
+                                EventTypeFull = EventName;
+                            }
+                            else if (!EventTypeFull.Contains(EventName)) EventTypeFull += $"; {EventName}";
+                        }
+
+                        string Urgency = UrgencyRegex.MatchOrDefault(AlertInfo, "Unknown");
+                        Console.WriteLine($"[Alert Processor] Urgency: {Urgency}");
+
+                        string Severity = SeverityRegex.MatchOrDefault(AlertInfo, "Unknown");
+                        Console.WriteLine($"[Alert Processor] Severity: {Severity}");
+
+                        int ResourceCount = 0;
+                        MatchCollection MatchedResources = ResourceRegex.Matches(AlertInfo);
+                        foreach (Match resource in MatchedResources)
+                        {
+                            ResourceCount++;
+                            Console.WriteLine($"[Alert Processor] Resource {ResourceCount} Value: {resource.Groups[1].Value}");
+                            var desc = ResourceDescRegex.MatchOrDefault(resource.Groups[1].Value);
+                            Console.WriteLine($"[Alert Processor] Resource {ResourceCount} Description: {desc}");
+                            var mime = MIMETypeRegex.MatchOrDefault(resource.Groups[1].Value);
+                            Console.WriteLine($"[Alert Processor] Resource {ResourceCount} MIME Type: {mime}");
+                            var size = SizeRegex.MatchOrDefault(resource.Groups[1].Value);
+                            Console.WriteLine($"[Alert Processor] Resource {ResourceCount} Size (if any): {size}");
+                            var uri = URIRegex.MatchOrDefault(resource.Groups[1].Value);
+                            Console.WriteLine($"[Alert Processor] Resource {ResourceCount} URI (if any): {uri}");
+                            var derefUri = DerefURIRegex.MatchOrDefault(resource.Groups[1].Value);
+                            Console.WriteLine($"[Alert Processor] Resource {ResourceCount} Dereference URI (if any): {derefUri}");
+                            var digest = DigestSecureHashAlgorithmOneRegex.MatchOrDefault(resource.Groups[1].Value);
+                            Console.WriteLine($"[Alert Processor] Resource {ResourceCount} SHA-1 (if any | unused): {digest}");
+
+                            void AddAudioToList()
+                            {
+                                if (!string.IsNullOrWhiteSpace(uri))
+                                {
+                                    //if (string.IsNullOrWhiteSpace(derefUri))
+                                    {
+                                        AudioFiles.Add(uri);
+                                        Console.WriteLine($"[Alert Processor] Resource {ResourceCount} was added to the audio list.");
+                                    }
+                                    //else
+                                    {
+                                        // work on this
+                                    }
+                                }
+                                else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} has no URI.");
+                            }
+
+                            void AddImageToList()
+                            {
+                                if (!string.IsNullOrWhiteSpace(uri))
+                                {
+                                    ImageFiles.Add(uri);
+                                    Console.WriteLine($"[Alert Processor] Resource {ResourceCount} was added to the image list.");
+                                }
+                                else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} has no URI.");
+                            }
+
                             if (!string.IsNullOrWhiteSpace(uri))
                             {
-                                //if (string.IsNullOrWhiteSpace(derefUri))
+                                switch (mime)
                                 {
-                                    AudioFiles.Add(uri);
-                                    Console.WriteLine($"[Alert Processor] Resource {ResourceCount} was added to the audio list.");
-                                }
-                                //else
-                                {
-                                    // work on this
+                                    case "audio/ogg":
+                                        AddAudioToList();
+                                        break;
+                                    case "audio/opus":
+                                        AddAudioToList();
+                                        break;
+                                    case "audio/vorbis":
+                                        AddAudioToList();
+                                        break;
+                                    case "audio/aac":
+                                        AddAudioToList();
+                                        break;
+                                    case "audio/mpeg":
+                                        AddAudioToList();
+                                        break;
+                                    case "audio/x-ipaws-audio-mp3":
+                                        AddAudioToList();
+                                        break;
+                                    case "audio/x-ipaws-audio-wav":
+                                        AddAudioToList();
+                                        break;
+                                    case "application/x-url":
+                                        AddAudioToList();
+                                        break;
+                                    case "image/bmp":
+                                        AddImageToList();
+                                        break;
+                                    case "image/gif":
+                                        AddImageToList();
+                                        break;
+                                    case "image/jpeg":
+                                        AddImageToList();
+                                        break;
+                                    case "image/png":
+                                        AddImageToList();
+                                        break;
+                                    default:
+                                        AddAudioToList();
+                                        break;
                                 }
                             }
-                            else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} has no URI.");
-                        }
-                        
-                        void AddImageToList()
-                        {
-                            if (!string.IsNullOrWhiteSpace(uri))
-                            {
-                                ImageFiles.Add(uri);
-                                Console.WriteLine($"[Alert Processor] Resource {ResourceCount} was added to the image list.");
-                            }
-                            else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} has no URI.");
                         }
 
-                        if (!string.IsNullOrWhiteSpace(uri))
+                        if (!IgnoreDiscards)
                         {
-                            switch (mime)
+                            if (!PrimaryURL.Contains("sasmex.net"))
                             {
-                                case "audio/ogg":
-                                    AddAudioToList();
-                                    break;
-                                case "audio/opus":
-                                    AddAudioToList();
-                                    break;
-                                case "audio/vorbis":
-                                    AddAudioToList();
-                                    break;
-                                case "audio/aac":
-                                    AddAudioToList();
-                                    break;
-                                case "audio/mpeg":
-                                    AddAudioToList();
-                                    break;
-                                case "audio/x-ipaws-audio-mp3":
-                                    AddAudioToList();
-                                    break;
-                                case "audio/x-ipaws-audio-wav":
-                                    AddAudioToList();
-                                    break;
-                                case "application/x-url":
-                                    AddAudioToList();
-                                    break;
-                                case "image/bmp":
-                                    AddImageToList();
-                                    break;
-                                case "image/gif":
-                                    AddImageToList();
-                                    break;
-                                case "image/jpeg":
-                                    AddImageToList();
-                                    break;
-                                case "image/png":
-                                    AddImageToList();
-                                    break;
-                                default:
-                                    AddAudioToList();
-                                    break;
-                            }
-                        }
-                    }
-
-                    if (!IgnoreDiscards)
-                    {
-                        if (!PrimaryURL.Contains("sasmex.net"))
-                        {
-                            if (!QuickSettings.Instance.AllowNonEnglishAlerts)
-                            {
-                                if (!BCP47Language.ToLowerInvariant().StartsWith("en-"))
+                                if (!QuickSettings.Instance.AllowNonEnglishAlerts)
                                 {
-                                    Console.WriteLine("[Alert Processor] Info tag discarded because it does not contain English information.");
-                                    continue;
+                                    if (!BCP47Language.ToLowerInvariant().StartsWith("en-"))
+                                    {
+                                        Console.WriteLine("[Alert Processor] Info tag discarded because it does not contain English information.");
+                                        continue;
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    if (!IgnoreDiscards)
-                    {
-                        if (!ReplayMode)
+                        if (!IgnoreDiscards)
                         {
-                            try
+                            if (!ReplayMode)
                             {
-                                if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
+                                try
                                 {
-                                    Console.WriteLine($"[Alert Processor] Info tag discarded because it has expired.");
-                                    continue;
+                                    if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
+                                    {
+                                        Console.WriteLine($"[Alert Processor] Info tag discarded because it has expired.");
+                                        continue;
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine($"[Alert Processor] Expiry check skipped because it has failed. {ex.Message}");
                                 }
                             }
-                            catch (Exception ex)
+                            else
                             {
-                                Console.WriteLine($"[Alert Processor] Expiry check skipped because it has failed. {ex.Message}");
+                                Console.WriteLine($"[Alert Processor] Expiry check skipped because the alert is being replayed.");
                             }
                         }
                         else
                         {
-                            Console.WriteLine($"[Alert Processor] Expiry check skipped because the alert is being replayed.");
+                            Console.WriteLine($"[Alert Processor] Expiry check skipped because discards are being ignored.");
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine($"[Alert Processor] Expiry check skipped because discards are being ignored.");
-                    }
 
-                    bool EventBlacklisted = false;
+                        bool EventBlacklisted = false;
 
-                    if (ProcessParameterX(AlertInfo) ||
-                        BroadcastImmediatelyRegex.MatchOrDefault(AlertInfo, "no").ToLowerInvariant() == "yes" || 
-                        IgnoreDiscards ||
-                        QuickSettings.Instance.BypassAllFilters)
-                    {
-                        if (!QuickSettings.Instance.BypassAllFilters)
+                        if (ProcessParameterX(AlertInfo) ||
+                            BroadcastImmediatelyRegex.MatchOrDefault(AlertInfo, "no").ToLowerInvariant() == "yes" ||
+                            IgnoreDiscards ||
+                            QuickSettings.Instance.BypassAllFilters)
                         {
-                            if (!IgnoreDiscards)
+                            if (!QuickSettings.Instance.BypassAllFilters)
                             {
-                                string RemoveDiacritics(string input)
+                                if (!IgnoreDiscards)
                                 {
-                                    var normalized = input.Normalize(NormalizationForm.FormD);
-                                    var builder = new StringBuilder();
-
-                                    foreach (var c in normalized)
+                                    string RemoveDiacritics(string input)
                                     {
-                                        var category = CharUnicodeInfo.GetUnicodeCategory(c);
-                                        if (category != UnicodeCategory.NonSpacingMark)
+                                        var normalized = input.Normalize(NormalizationForm.FormD);
+                                        var builder = new StringBuilder();
+
+                                        foreach (var c in normalized)
                                         {
-                                            builder.Append(c);
+                                            var category = CharUnicodeInfo.GetUnicodeCategory(c);
+                                            if (category != UnicodeCategory.NonSpacingMark)
+                                            {
+                                                builder.Append(c);
+                                            }
+                                        }
+
+                                        return builder.ToString().Normalize(NormalizationForm.FormC);
+                                    }
+
+                                    lock (QuickSettings.Instance.EnforceEventBlacklist)
+                                    {
+                                        foreach (string Event in QuickSettings.Instance.EnforceEventBlacklist)
+                                        {
+                                            if (RemoveDiacritics(EventName.ToLowerInvariant()).Contains(RemoveDiacritics(Event.ToLowerInvariant())))
+                                            {
+                                                EventBlacklisted = true;
+                                                break;
+                                            }
                                         }
                                     }
 
-                                    return builder.ToString().Normalize(NormalizationForm.FormC);
-                                }
+                                    //lock (QuickSettings.Instance.EnforceSAMEEventBlacklist)
+                                    //{
+                                    //    foreach (string SAMEEvent in QuickSettings.Instance.EnforceSAMEEventBlacklist)
+                                    //    {
+                                    //        if (EventType.ToLowerInvariant().Contains(SAMEEvent.ToLowerInvariant()))
+                                    //        {
+                                    //            EventBlacklisted = true;
+                                    //            break;
+                                    //        }
+                                    //    }
+                                    //}
 
-                                lock (QuickSettings.Instance.EnforceEventBlacklist)
-                                {
-                                    foreach (string Event in QuickSettings.Instance.EnforceEventBlacklist)
+                                    if (QuickSettings.Instance.EventWhitelistMode)
                                     {
-                                        if (RemoveDiacritics(EventName.ToLowerInvariant()).Contains(RemoveDiacritics(Event.ToLowerInvariant())))
+                                        if (!EventBlacklisted)
                                         {
-                                            EventBlacklisted = true;
-                                            break;
+                                            Console.WriteLine($"[Alert Processor] Info tag discarded because the event is not on the whitelist.");
+                                            continue;
                                         }
                                     }
-                                }
-
-                                //lock (QuickSettings.Instance.EnforceSAMEEventBlacklist)
-                                //{
-                                //    foreach (string SAMEEvent in QuickSettings.Instance.EnforceSAMEEventBlacklist)
-                                //    {
-                                //        if (EventType.ToLowerInvariant().Contains(SAMEEvent.ToLowerInvariant()))
-                                //        {
-                                //            EventBlacklisted = true;
-                                //            break;
-                                //        }
-                                //    }
-                                //}
-
-                                if (QuickSettings.Instance.EventWhitelistMode)
-                                {
-                                    if (!EventBlacklisted)
+                                    else
                                     {
-                                        Console.WriteLine($"[Alert Processor] Info tag discarded because the event is not on the whitelist.");
-                                        continue;
+                                        if (EventBlacklisted)
+                                        {
+                                            Console.WriteLine($"[Alert Processor] Info tag discarded because the event is on the blacklist.");
+                                            continue;
+                                        }
                                     }
+
                                 }
                                 else
                                 {
-                                    if (EventBlacklisted)
-                                    {
-                                        Console.WriteLine($"[Alert Processor] Info tag discarded because the event is on the blacklist.");
-                                        continue;
-                                    }
+                                    Console.WriteLine($"[Alert Processor] Blacklist/whitelist check skipped because discards are being ignored.");
                                 }
-
                             }
-                            else
+
+
+                            // removal of replay boolean
+                            var (Intro, Body) = CompiledBody(AlertInfo, MsgType, Sent, Source);
+
+                            Console.WriteLine($"[Alert Processor] Intro: {Intro}");
+                            Console.WriteLine($"[Alert Processor] Body: {Body}");
+
+                            List<string> LocationsText = CompiledLocations(AlertInfo);
+
+                            if (!AllEvents.Contains(EventName)) AllEvents.Add(EventName);
+                            foreach (string location in LocationsText)
                             {
-                                Console.WriteLine($"[Alert Processor] Blacklist/whitelist check skipped because discards are being ignored.");
+                                if (!AllLocations.Contains(location)) AllLocations.Add(location);
                             }
-                        }
 
-
-                        // removal of replay boolean
-                        var (Intro, Body) = CompiledBody(AlertInfo, MsgType, Sent, Source);
-
-                        Console.WriteLine($"[Alert Processor] Intro: {Intro}");
-                        Console.WriteLine($"[Alert Processor] Body: {Body}");
-
-                        List<string> LocationsText = CompiledLocations(AlertInfo);
-
-                        if (!AllEvents.Contains(EventName)) AllEvents.Add(EventName);
-                        foreach (string location in LocationsText)
-                        {
-                            if (!AllLocations.Contains(location)) AllLocations.Add(location);
-                        }
-
-                        if (Enum.TryParse<SeverityLevel>(Severity, out var newSeverity))
-                        {
-                            if (newSeverity > MaxSeverity)
+                            if (Enum.TryParse<SeverityLevel>(Severity, out var newSeverity))
                             {
-                                MaxSeverity = newSeverity;
+                                if (newSeverity > MaxSeverity)
+                                {
+                                    MaxSeverity = newSeverity;
+                                }
                             }
-                        }
 
-                        AlertTextClass text = new AlertTextClass { Intro = Intro, Body = Body };
+                            AlertTextClass text = new AlertTextClass { Intro = Intro, Body = Body };
 
-                        bool MatchFound = false;
+                            bool MatchFound = false;
 
-                        foreach (var kext in AlertTextList)
-                        {
-                            if (kext.Intro == Intro & kext.Body == Body)
+                            foreach (var kext in AlertTextList)
                             {
-                                Console.WriteLine($"[Alert Processor] The contents of the current info tag match a previously processed tag.");
-                                MatchFound = true;
+                                if (kext.Intro == Intro & kext.Body == Body)
+                                {
+                                    Console.WriteLine($"[Alert Processor] The contents of the current info tag match a previously processed tag.");
+                                    MatchFound = true;
+                                    continue;
+                                }
+                            }
+
+                            if (!MatchFound)
+                            {
+                                AlertTextList.Add(text);
+                                Console.WriteLine($"[Alert Processor] The contents of the current info tag have been added.");
                                 continue;
                             }
                         }
-
-                        if (!MatchFound)
+                        else
                         {
-                            AlertTextList.Add(text);
-                            Console.WriteLine($"[Alert Processor] The contents of the current info tag have been added.");
-                            continue;
+                            Console.WriteLine($"[Alert Processor] Alert discarded due to mobile alert settings, or other things.");
                         }
+                    }
+
+                    Console.WriteLine("[Alert Processor] There is no further data to process.");
+
+                    string FullIntro = string.Empty;
+                    string FullBody = string.Empty;
+
+                    if (AlertTextList.Count == 0)
+                    {
+                        Console.WriteLine("[Alert Processor] There is no alert text to process.");
+                        AlertInfoList.Add(new AlertInfo { AlertDiscardReason = "The alert cannot be processed because no alert text exists." });
+                        continue;
                     }
                     else
                     {
-                        Console.WriteLine($"[Alert Processor] Alert discarded due to mobile alert settings, or other things.");
-                    }
-                }
+                        int IncrementedList = 0;
 
-                Console.WriteLine("[Alert Processor] There is no further data to process.");
-
-                string FullIntro = string.Empty;
-                string FullBody = string.Empty;
-
-                if (AlertTextList.Count == 0)
-                {
-                    Console.WriteLine("[Alert Processor] There is no alert text to process.");
-                    return new AlertInfo { AlertDiscardReason = "The alert cannot be processed because no alert text exists." };
-                }
-                else
-                {
-                    int IncrementedList = 0;
-
-                    if (AlertTextList.Count > 1)
-                    {
-                        foreach (var kext in AlertTextList)
+                        if (AlertTextList.Count > 1)
                         {
-                            IncrementedList++;
-                            if (!string.IsNullOrWhiteSpace(kext.Intro)) FullIntro += $"\r\n\r\n{IncrementedList}.\x20" + kext.Intro;
-                            if (!string.IsNullOrWhiteSpace(kext.Body)) FullBody += $"\r\n\r\n{IncrementedList}.\x20" + kext.Body;
+                            foreach (var kext in AlertTextList)
+                            {
+                                IncrementedList++;
+                                if (!string.IsNullOrWhiteSpace(kext.Intro)) FullIntro += $"\r\n\r\n{IncrementedList}.\x20" + kext.Intro;
+                                if (!string.IsNullOrWhiteSpace(kext.Body)) FullBody += $"\r\n\r\n{IncrementedList}.\x20" + kext.Body;
+                            }
+                            FullIntro = FullIntro.Trim();
+                            FullBody = FullBody.Trim();
                         }
-                        FullIntro = FullIntro.Trim();
-                        FullBody = FullBody.Trim();
-                    }
-                    else
-                    {
-                        foreach (var kext in AlertTextList)
+                        else
                         {
-                            if (!string.IsNullOrWhiteSpace(kext.Intro)) FullIntro += kext.Intro;
-                            if (!string.IsNullOrWhiteSpace(kext.Body)) FullBody += kext.Body;
+                            foreach (var kext in AlertTextList)
+                            {
+                                if (!string.IsNullOrWhiteSpace(kext.Intro)) FullIntro += kext.Intro;
+                                if (!string.IsNullOrWhiteSpace(kext.Body)) FullBody += kext.Body;
+                            }
+                            FullIntro = FullIntro.Trim();
+                            FullBody = FullBody.Trim();
                         }
-                        FullIntro = FullIntro.Trim();
-                        FullBody = FullBody.Trim();
+
+                        if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.StationIdentifier))
+                        {
+                            FullIntro = $"This message originates from {QuickSettings.Instance.StationIdentifier} ({QuickSettings.Instance.StationName}).\r\n\r\n{FullIntro}".Trim();
+                        }
+
+                        AlertTextClass _AlertText = new AlertTextClass
+                        {
+                            Intro = FullIntro,
+                            Body = FullBody
+                        };
+
+                        if (!IgnoreDiscards)
+                        {
+                            // ???
+                        }
                     }
 
-                    if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.StationIdentifier))
-                    {
-                        FullIntro = $"This message originates from {QuickSettings.Instance.StationIdentifier} ({QuickSettings.Instance.StationName}).\r\n\r\n{FullIntro}".Trim();
-                    }
+                    //if (AnyAlertRelayed)
+                    //{
+                    AlertsRelayed++;
+                    //}
 
-                    AlertTextClass _AlertText = new AlertTextClass
-                    {
-                        Intro = FullIntro,
-                        Body = FullBody
-                    };
+                    Console.WriteLine($"[Alert Processor] Processed all available entries. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
 
-                    if (!IgnoreDiscards)
+                    string AudioURL = AudioFiles.FirstOrDefault();
+                    string ImageURL = ImageFiles.FirstOrDefault();
+
+                    if (string.IsNullOrWhiteSpace(AudioURL)) AudioURL = string.Empty;
+                    if (string.IsNullOrWhiteSpace(ImageURL)) ImageURL = string.Empty;
+
+                    //MessageBox.Show(MaxSeverity.ToString());
+
+                    AlertInfoList.Add(new AlertInfo
                     {
-                        // ???
-                    }
+                        // do something about alert IDs
+                        AlertSource = Source,
+                        AlertID = relayItem.Name,
+                        AlertSentDate = Sent,
+                        AlertExpiryDate = Expiry,
+                        AlertFriendlyLocations = AllLocations,
+                        AlertEventType = EventTypeFull,
+                        AlertMessageType = MsgType,
+                        AlertSeverity = MaxSeverity.ToString(),
+                        AlertIntroText = FullIntro.Trim(),
+                        AlertBodyText = FullBody.Trim(),
+                        AlertURL = PrimaryURL,
+                        AlertAudioURL = AudioURL,
+                        AlertImageURL = ImageURL
+                    });
+
+                    continue;
                 }
 
-                //if (AnyAlertRelayed)
-                //{
-                AlertsRelayed++;
-                //}
-
-                Console.WriteLine($"[Alert Processor] Processed all available entries. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
-
-                string AudioURL = AudioFiles.FirstOrDefault();
-                string ImageURL = ImageFiles.FirstOrDefault();
-
-                if (string.IsNullOrWhiteSpace(AudioURL)) AudioURL = string.Empty;
-                if (string.IsNullOrWhiteSpace(ImageURL)) ImageURL = string.Empty;
-
-                //MessageBox.Show(MaxSeverity.ToString());
-
-                return new AlertInfo
-                {
-                    AlertID = relayItem.Name,
-                    AlertSentDate = Sent,
-                    AlertExpiryDate = Expiry,
-                    AlertFriendlyLocations = AllLocations,
-                    AlertEventType = EventTypeFull,
-                    AlertMessageType = MsgType,
-                    AlertSeverity = MaxSeverity.ToString(),
-                    AlertIntroText = FullIntro.Trim(),
-                    AlertBodyText = FullBody.Trim(),
-                    AlertURL = PrimaryURL,
-                    AlertAudioURL = AudioURL,
-                    AlertImageURL = ImageURL
-                };
+                return AlertInfoList.ToArray();
             }
         }
 
@@ -674,14 +722,16 @@ namespace SharpAlert.AlertComponents
                 {
                     string TestIdentifier = $"TEST_{DateTime.UtcNow.Ticks}";
 
-                    string CompiledMessage = $"Test Alert | Location(s): Test Location\r\n-# Identifier: {TestIdentifier}"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
+                    string CompiledMessage = $"Test Alert | Location(s): Test Location"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
                     if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + QuickSettings.Instance.DiscordWebhookAppend;
 
-                    DiscordWebhook.SendEmbeddedMessage(CompiledMessage,
+                    DiscordWebhook.SendEmbeddedMessage(string.Empty,
+                        CompiledMessage,
                         "Test Message",
                         "Test. Test. Test.",
                         Resources.TestScript,
                         "https://bunnytub.com/SharpAlert",
+                        TestIdentifier,
                         new List<string>() { "" },
                         new List<string>() { "" });
 
@@ -711,14 +761,16 @@ namespace SharpAlert.AlertComponents
 
                         string TestIdentifier = $"TEST_{DateTime.UtcNow.Ticks}";
 
-                        string CompiledMessage = $"{ctf.EventType} | Location(s): Test Location\r\n-# Identifier: {TestIdentifier}"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
+                        string CompiledMessage = $"{ctf.EventType} | Location(s): Test Location"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
                         if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + QuickSettings.Instance.DiscordWebhookAppend;
 
-                        DiscordWebhook.SendEmbeddedMessage(CompiledMessage,
+                        DiscordWebhook.SendEmbeddedMessage(string.Empty,
+                            CompiledMessage,
                             "Test Message",
                             "Test. Test. Test.",
                             ctf.EventDescription,
                             ctf.EventURL,
+                            TestIdentifier,
                             new List<string>() { "" },
                             new List<string>() { "" });
 
@@ -751,7 +803,7 @@ namespace SharpAlert.AlertComponents
             if (string.IsNullOrWhiteSpace(code)) return ("Cautionary (Unknown Event)", false);
             try
             {
-                var alertEvent = AlertCodes.DefaultIfEmpty(cautionary);
+                var alertEvent = SAME_AlertCodes.DefaultIfEmpty(cautionary);
                 var alertInfo = alertEvent.FirstOrDefault(y => y.ID == code.ToUpperInvariant());
 
                 if (alertInfo != null) return (alertInfo.Name, true);
@@ -771,17 +823,13 @@ namespace SharpAlert.AlertComponents
             Console.WriteLine("Processing InfoX.");
             bool Final = false;
 
-            // MsgType:
-            // Alert
-            // Update
-            // Cancel
-
             try
             {
                 string Severity = SeverityRegex.MatchOrDefault(InfoX, "moderate").ToLowerInvariant();
                 string Urgency = UrgencyRegex.MatchOrDefault(InfoX, "immediate").ToLowerInvariant();
 
                 // Canadians have multiple categories, it's actually useful
+                // it's not really useful
 
                 MatchCollection Categories = CategoryRegex.Matches(InfoX);
                 //string Category = CategoryRegex.MatchOrDefault(InfoX, "other").ToLowerInvariant();
@@ -917,6 +965,7 @@ namespace SharpAlert.AlertComponents
                 }
 
                 // I don't even know how this works anymore
+                // nvm figured it out
 
                 // SAME
                 if (QuickSettings.Instance.AllowedSAMELocations_Geocodes.Count != 0)
@@ -1008,7 +1057,7 @@ namespace SharpAlert.AlertComponents
                         //  <value>4718808</value>
                         //</geocode>
 
-                        MatchCollection matches = GeocodeCommonAlertingProtocolCanadaCodeRegex.Matches(InfoX);
+                        MatchCollection matches = GeocodeCommonAlertingProtocolCanadaLocationCodeRegex.Matches(InfoX);
                         bool GeoMatch = false;
                         foreach (Match match in matches)
                         {
@@ -1299,15 +1348,17 @@ namespace SharpAlert.AlertComponents
                 }
             }
 
-            Console.WriteLine("[Alert Processor] Parsing time zone.");
+            Console.WriteLine("[Alert Processor] Parsing time.");
 
+            string TimeFormat = QuickSettings.Instance.Use24HrTime ? "HH:mm" : "hh:mm tt";
             string TimeZoneName = "Unknown TZ";
+
             if (QuickSettings.Instance.alertTimeZoneUTC) TimeZoneName = "UTC";
             else TimeZoneName = LocalTimeAbbreviation();
 
-            string SentFormatted = $"{sentDate:HH:mm} {TimeZoneName}, {sentDate:MMMM dd}, {sentDate:yyyy}";
-            string BeginFormatted = $"{effectiveDate:HH:mm} {TimeZoneName}, {effectiveDate:MMMM dd}, {effectiveDate:yyyy}";
-            string EndFormatted = $"{expiryDate:HH:mm} {TimeZoneName}, {expiryDate:MMMM dd}, {expiryDate:yyyy}";
+            string SentFormatted = $"{sentDate.ToString(TimeFormat)} {TimeZoneName}, {sentDate:MMMM dd}, {sentDate:yyyy}";
+            string BeginFormatted = $"{effectiveDate.ToString(TimeFormat)} {TimeZoneName}, {effectiveDate:MMMM dd}, {effectiveDate:yyyy}";
+            string EndFormatted = $"{expiryDate.ToString(TimeFormat)} {TimeZoneName}, {expiryDate:MMMM dd}, {expiryDate:yyyy}";
 
             Console.WriteLine("[Alert Processor] Parsing event type.");
 
@@ -1489,42 +1540,30 @@ namespace SharpAlert.AlertComponents
 
             if (string.IsNullOrWhiteSpace(SOREM_BroadcastText))
             {
-                if (string.IsNullOrWhiteSpace(Description))
+                if (string.IsNullOrWhiteSpace(Description) || string.IsNullOrWhiteSpace(Instruction) || QuickSettings.Instance.UseCMAMTextWhereAvailable)
                 {
                     try
                     {
-                        Match cmamLong = CMAMLongRegex.Match(InfoData);
-                        if (cmamLong.Success)
+                        string cmam = CMAMRegex.MatchOrDefault(InfoData);
+                        if (!string.IsNullOrWhiteSpace(cmam))
                         {
-                            Description = cmamLong.Groups[1].Value;
+                            Description = cmam;
                         }
-
-                    }
-                    catch (Exception)
-                    {
-                        Description = string.Empty;
-                    }
-                }
-
-                if (string.IsNullOrWhiteSpace(Instruction))
-                {
-                    try
-                    {
-                        Match cmamShort = CMAMShortRegex.Match(InfoData);
-                        if (cmamShort.Success)
+                        
+                        string cmamLong = CMAMLongRegex.MatchOrDefault(InfoData);
+                        if (!string.IsNullOrWhiteSpace(cmamLong))
                         {
-                            Instruction = cmamShort.Groups[1].Value;
+                            Instruction = cmamLong;
                         }
                     }
                     catch (Exception)
                     {
-                        Instruction = string.Empty;
                     }
                 }
             }
             else
             {
-                if (string.IsNullOrWhiteSpace(Description))
+                if (string.IsNullOrWhiteSpace(Description) || string.IsNullOrWhiteSpace(Instruction) || QuickSettings.Instance.UseCMAMTextWhereAvailable)
                 {
                     try
                     {
@@ -1536,7 +1575,6 @@ namespace SharpAlert.AlertComponents
                     }
                     catch (Exception)
                     {
-                        Description = string.Empty;
                     }
                 }
 
@@ -1570,20 +1608,41 @@ namespace SharpAlert.AlertComponents
 
             if (QuickSettings.Instance.AddIntroText)
             {
-                if (QuickSettings.Instance.AddAlertEffectiveAndEndingTimes) IntroText += $"This alert goes into effect starting {BeginFormatted}, and ending at {EndFormatted}." + "\x20";
-                IntroText += $"Sourced from {Source}." + "\x20";
-                if (QuickSettings.Instance.AddAlertIssuer) IntroText += $"Issued by {SenderName}." + "\x20";
-                IntroText += $"Event type is {EventType}. {MsgPrefix} For the following areas, {SentenceAppendEnd(AreaDesc)}".Replace("\x20\x20", "\x20");
-                IntroText = IntroText.Replace("\r\n", "\n").Replace("\n", "\r\n"); // fix mixed newline problems hopefully
+                if (true)
+                {
+                    if (QuickSettings.Instance.AddAlertEffectiveAndEndingTimes) IntroText += $"This alert starts {BeginFormatted}, and ends at {EndFormatted}." + "\x20";
+                    if (QuickSettings.Instance.AddSourcedFrom) IntroText += $"Sourced from {Source}." + "\x20";
+                    if (QuickSettings.Instance.AddAlertIssuer) IntroText += $"Issued by {SenderName}." + "\x20";
+                    if (QuickSettings.Instance.AddEventName) IntroText += $"Event type is {EventType}." + "\x20";
+                    IntroText += $"{MsgPrefix} For the following areas, {SentenceAppendEnd(AreaDesc)}".Replace("\x20\x20", "\x20");
+                    IntroText = IntroText.Replace("\r\n", "\n").Replace("\n", "\r\n"); // fix mixed newline problems hopefully
+                }
+                else
+                {
+                    // AN EAS PARTICIPANT HAS ISSUED A PRACTICE/DEMO WARNING
+                    // FOR THE FOLLOWING COUNTIES/AREAS: Apathy, AZ; Orange, FL; Volusia, FL.
+                    // At 08:17 AM, September 05, 2025. Effective until 08:30 PM. Message from LocalSender.
+
+                    if (QuickSettings.Instance.AddAlertIssuer) IntroText += $"Issued by {SenderName}." + "\x20";
+                    if (QuickSettings.Instance.AddAlertEffectiveAndEndingTimes) IntroText += $"This alert starts {BeginFormatted}, and ends at {EndFormatted}." + "\x20";
+                    if (QuickSettings.Instance.AddSourcedFrom) IntroText += $"Sourced from {Source}." + "\x20";
+                    if (QuickSettings.Instance.AddEventName) IntroText += $"Event type is {EventType}." + "\x20";
+                    IntroText += $"{MsgPrefix} For the following areas, {SentenceAppendEnd(AreaDesc)}".Replace("\x20\x20", "\x20");
+                    IntroText = IntroText.Replace("\r\n", "\n").Replace("\n", "\r\n"); // fix mixed newline problems hopefully
+                }
             }
-            
+            else
+            {
+                IntroText = "...";
+            }
+
             Console.WriteLine("[Alert Processor] Finished compiling intro text.");
 
             BroadcastText += SentenceAppendEnd(Description) + "\x20";
             if (Description != Instruction) BroadcastText += SentenceAppendEnd(Instruction) + "\x20";
             BroadcastText = BroadcastText.Replace("###", string.Empty);
-            BroadcastText = BroadcastText.Replace(" E A S ", " EAS ");
-            BroadcastText = BroadcastText.Replace(" 9 1 1 ", " 9-1-1 ");
+            //BroadcastText = BroadcastText.Replace(" E A S ", " EAS ");
+            //BroadcastText = BroadcastText.Replace(" 9 1 1 ", " 9-1-1 ");
             BroadcastText = SentencePuncuationCorrection(BroadcastText).Replace(",", ",\x20");
             BroadcastText = BroadcastText.Replace("\r\n", "\n").Replace("\n", "\r\n"); // fix mixed newline problems hopefully
             BroadcastText = BroadcastText.Replace("\r\n\r\n\r\n\r\n", "\r\n\r\n").Replace("\r\n\r\n\r\n", "\r\n\r\n"); // fix spacing
@@ -1910,55 +1969,43 @@ namespace SharpAlert.AlertComponents
             //    return localTimeZone.StandardName.Substring(0, 3);
         }
 
-        public static (string text, Color MainColor, Color SubColor) GetTextFromMessageType(string type)
+        public static (string text, Color MainColor, Color SubColor) GetTextFromMessageSeverityAndType(string severity, string type)
         {
-            switch (type)
+            if (type.ToLowerInvariant() == "cancel")
             {
-                case "bulletin":
-                    return ("SYSTEM BULLETIN", Color.Red, Color.FromArgb(160, 0, 0));
-                case "update":
-                    return ("ALERT UPDATE", Color.FromArgb(255, 112, 0), Color.FromArgb(200, 82, 80));
-                case "cancel":
-                    return ("ALERT CANCELLED", Color.FromArgb(0, 80, 200), Color.FromArgb(0, 50, 100));
-                case "test":
-                    return ("TEST MESSAGE", Color.Gray, Color.LightGray);
-                case "alert":
-                default:
-                    return ("EMERGENCY ALERT", Color.Red, Color.FromArgb(160, 0, 0));
+                return ("ALERT CANCELLED", Color.FromArgb(0, 80, 200), Color.FromArgb(0, 50, 100));
             }
-            //switch (type)
+
+            //switch (type.ToLower())
             //{
-            //    case "alert":
-            //        TitleText.BackColor = Color.Red;
-            //        OutlineContainerPanel.BorderColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "EMERGENCY ALERT";
-            //        break;
+            //    case "bulletin":
+            //        return ("SYSTEM BULLETIN", Color.Red, Color.FromArgb(160, 0, 0));
             //    case "update":
-            //        TitleText.BackColor = Color.Red;
-            //        OutlineContainerPanel.BorderColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "ALERT UPDATE";
-            //        break;
+            //        return ("ALERT UPDATE", Color.FromArgb(255, 112, 0), Color.FromArgb(200, 82, 80));
             //    case "cancel":
-            //        TitleText.BackColor = Color.FromArgb(0, 80, 200);
-            //        OutlineContainerPanel.BorderColor = Color.FromArgb(0, 80, 200);
-            //        SubtitlePanel.BackColor = Color.FromArgb(0, 50, 100);
-            //        TitleText.Text = "ALERT CANCELLED";
-            //        break;
+            //        return ("ALERT CANCELLED", Color.FromArgb(0, 80, 200), Color.FromArgb(0, 50, 100));
             //    case "test":
-            //        TitleText.BackColor = Color.Red;
-            //        OutlineContainerPanel.BorderColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "ALERT TEST";
-            //        break;
+            //        return ("TEST MESSAGE", Color.Gray, Color.LightGray);
+            //    case "alert":
             //    default:
-            //        TitleText.BackColor = Color.Red;
-            //        OutlineContainerPanel.BorderColor = Color.Red;
-            //        SubtitlePanel.BackColor = Color.FromArgb(160, 0, 0);
-            //        TitleText.Text = "EMERGENCY ALERT";
-            //        break;
+            //        return ("EMERGENCY ALERT", Color.Red, Color.FromArgb(160, 0, 0));
             //}
+
+            switch (severity.ToLowerInvariant())
+            {
+                case "extreme":
+                    return ("EXTREME ALERT", Color.Red, Color.FromArgb(160, 0, 0));
+                case "severe":
+                    return ("SEVERE ALERT", Color.Red, Color.FromArgb(160, 0, 0));
+                case "moderate":
+                    return ("MODERATE ALERT", Color.FromArgb(255, 112, 0), Color.FromArgb(200, 82, 80));
+                case "minor":
+                    return ("MINOR ALERT", Color.FromArgb(255, 112, 0), Color.FromArgb(200, 82, 80));
+                case "unknown":
+                default:
+                    return ("UNKNOWN ALERT", Color.FromArgb(255, 112, 0), Color.FromArgb(200, 82, 80));
+            }
+
         }
     }
 }

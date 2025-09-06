@@ -11,26 +11,24 @@ namespace SharpAlert.AlertComponents
 
         public class SAME_EventCode
         {
-            public SAME_EventCode(string id, string name, bool unclearUsage = false)
+            public SAME_EventCode(string id, string name)
             {
                 ID = id;
                 Name = name;
-                UnclearUsage = unclearUsage;
             }
 
             public string ID { private set; get; }
             public string Name { private set; get; }
-            public bool UnclearUsage { private set; get; }
         }
 
-        public static List<SAME_EventCode> AlertCodes = new List<SAME_EventCode>
+        public static List<SAME_EventCode> SAME_AlertCodes = new List<SAME_EventCode>
         {
             // Used in the EBS (Emergency Broadcast System).
-            new SAME_EventCode("EAN", "National Emergency Message", true), // former is "Emergency Action Notification"
-            new SAME_EventCode("EAT", "National Emergency Message Termination", true), // former is "Emergency Action Termination"
+            new SAME_EventCode("EAN", "National Emergency Message"), // former is "Emergency Action Notification"
+            new SAME_EventCode("EAT", "National Emergency Message Termination"), // former is "Emergency Action Termination"
             
             // These are national alert codes.
-            new SAME_EventCode("NIC", "National Information Center", true),
+            new SAME_EventCode("NIC", "National Information Center"),
             new SAME_EventCode("NPT", "National Periodic Test"),
             new SAME_EventCode("NAT", "National Audible Test"),
             new SAME_EventCode("NST", "National Slient Test"),

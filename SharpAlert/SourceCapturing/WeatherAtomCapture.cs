@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
+using System.Windows.Forms;
 using SharpAlert.ProgramWorker;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
+using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.RegexList;
 
 namespace SharpAlert.SourceCapturing
@@ -31,6 +34,8 @@ namespace SharpAlert.SourceCapturing
         private bool FirstRun = true;
         private bool Stop = false;
         private bool StopCalled = false;
+
+        private static readonly WebClient atomclient = new WebClient();
 
         public void ServiceStop()
         {
@@ -74,7 +79,6 @@ namespace SharpAlert.SourceCapturing
                 try
                 {
                     string URLPrefix = useHTTPS ? "https" : "http";
-                    bool AllConnectionsSuccessful = true;
 
                     if (Stop) return;
 
@@ -104,65 +108,30 @@ namespace SharpAlert.SourceCapturing
                                     count++;
                                     Console.WriteLine($"[Atom Feed Capture] {ex.GetBaseException().Message}");
                                     server.LastRunSuccess = false;
+                                    if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. {ex.Message}",
+                                        "SharpAlert source failed",
+                                        ToolTipIcon.Warning);
                                 }
-                            }
-
-                            if (count >= servers.Count)
-                            {
-                                AllConnectionsSuccessful = false;
-                            }
-                            else
-                            {
-                                AllConnectionsSuccessful = true;
-                            }
-
-                            if (AllConnectionsSuccessful)
-                            {
-                                Console.WriteLine($"[Atom Feed Capture] Fetched from all feeds successfully.");
-                            }
-                            else
-                            {
-                                Console.WriteLine("[Atom Feed Capture] Not all feeds were fetched from successfully.");
                             }
                         }
                     }
-
-                    //if (LastConnectionSuccessful)
-                    //{
-                    //    lock (notify)
-                    //    {
-                    //        notify.BalloonTipTitle = "SharpAlert has reconnected";
-                    //        notify.BalloonTipText = "Successfully reconnected to the server after an ongoing connection disruption or problem.";
-                    //        notify.BalloonTipIcon = ToolTipIcon.Info;
-                    //        notify.ShowBalloonTip(5000);
-                    //    }
-                    //    LastConnectionSuccessful = true;
-                    //}
                 }
                 catch (TimeoutException)
                 {
                     Console.WriteLine($"[Atom Feed Capture] Timed out.");
+                    if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. Timed out from Atom.",
+                        "SharpAlert source failed",
+                        ToolTipIcon.Warning);
+
                     Thread.Sleep(15 * 1000);
                 }
-                catch (ThreadAbortException)
+                catch (Exception ex)
                 {
-                    return;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"[Atom Feed Capture] {e.Message}");
-                    if (e.InnerException != null) Console.WriteLine($"[Atom Feed Capture] {e.InnerException.Message}");
-                    //if (LastConnectionSuccessful)
-                    //{
-                    //    lock (notify)
-                    //    {
-                    //        notify.BalloonTipTitle = "SharpAlert is having issues";
-                    //        notify.BalloonTipText = "There was an issue when trying to connect to the server. Check your internet connection!";
-                    //        notify.BalloonTipIcon = ToolTipIcon.Warning;
-                    //        notify.ShowBalloonTip(5000);
-                    //    }
-                    //}
-                    //LastConnectionSuccessful = false;
+                    Console.WriteLine($"[Atom Feed Capture] {ex.Message}");
+                    if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. {ex.Message}",
+                        "SharpAlert source failed",
+                        ToolTipIcon.Warning);
+
                     Thread.Sleep(15 * 1000);
                 }
                 if (FirstRun) FirstRun = false;
@@ -231,48 +200,6 @@ namespace SharpAlert.SourceCapturing
 
                 string EntryStr = entry.Groups[0].Value;
 
-                EntryStr = $"<alert><info>{EntryStr}</info></alert>";
-                EntryStr = EntryStr.Replace("<cap:", "<");
-                EntryStr = EntryStr.Replace("</cap:", "</");
-                EntryStr = EntryStr.Replace("<summary>", "<description>").Replace("</summary>", "</description>");
-                
-                if (QuickSettings.Instance.RemoveNWSDescCode)
-                {
-                    string desc = DescriptionRegex.MatchOrDefault(EntryStr).Trim();
-
-                    if (desc.Length > 6)
-                    {
-                        string subDesc = desc.Substring(0, 6);
-
-                        if (!subDesc.Contains('\x20') && !subDesc.Contains('\n'))
-                        {
-                            bool AllUpper = true;
-
-                            foreach (char character in subDesc)
-                            {
-                                if (!char.IsLetter(character)) break;
-                                if (!char.IsUpper(character))
-                                {
-                                    AllUpper = false;
-                                    break;
-                                }
-                            }
-
-                            if (AllUpper)
-                            {
-                                EntryStr = DescriptionRegex.Replace(EntryStr,
-                                    $"<description>{desc.Substring(6).Trim()}</description>");
-                            }
-                        }
-                    }
-                }
-
-                if (QuickSettings.Instance.RemoveNWSNewLines)
-                {
-                    EntryStr = DescriptionRegex.Replace(EntryStr,
-                        $"<description>{DescriptionRegex.MatchOrDefault(EntryStr).Replace("\r", "").Replace("\n", " ").Trim()}</description>");
-                }
-
                 //Console.WriteLine($"[Atom Feed Capture] {EntriesCount} -> {CreateMD5(entry.Groups[1].Value)} (entry name is unused)");
                 string Effective = AtomEffectiveRegex.MatchOrDefault(EntryStr, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
                 //Console.WriteLine($"[Atom Feed Capture] Atom Effective: {Effective}");
@@ -294,7 +221,73 @@ namespace SharpAlert.SourceCapturing
                     //Console.WriteLine($"[Atom Feed Capture] Expiry check skipped because it has failed. {ex.Message}");
                 }
 
-                AlertList += $"{EntryStr}\r\n";
+                //<link rel="alternate" href="https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0-KEEPALIVE-57752.cap"/>
+
+                string link = LinkRegex.MatchOrDefault(EntryStr);
+
+                try
+                {
+                    if (!string.IsNullOrWhiteSpace(link))
+                    {
+                        Console.WriteLine($"[Atom Feed Capture] Getting additional data from Atom. URL -> {link}");
+                        // This should help with accented characters hopefully
+                        atomclient.Headers.Set("User-Agent", SelfUserAgent);
+                        string value = Encoding.UTF8.GetString(atomclient.DownloadData(link));
+                        AlertList += $"{value}\r\n";
+                    }
+                    else
+                    {
+                        throw new Exception("The link for this alert doesn't appear to exist.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Atom Feed Capture] {ex.Message}");
+                    EntryStr = $"<alert><info>{EntryStr}</info></alert>";
+                    EntryStr = EntryStr.Replace("<cap:", "<");
+                    EntryStr = EntryStr.Replace("</cap:", "</");
+                    EntryStr = EntryStr.Replace("<summary>", "<description>").Replace("</summary>", "</description>");
+
+                    //if (QuickSettings.Instance.RemoveNWSDescCode)
+                    //{
+                    //    string desc = DescriptionRegex.MatchOrDefault(EntryStr).Trim();
+
+                    //    if (desc.Length > 6)
+                    //    {
+                    //        string subDesc = desc.Substring(0, 6);
+
+                    //        if (!subDesc.Contains('\x20') && !subDesc.Contains('\n'))
+                    //        {
+                    //            bool AllUpper = true;
+
+                    //            foreach (char character in subDesc)
+                    //            {
+                    //                if (!char.IsLetter(character)) break;
+                    //                if (!char.IsUpper(character))
+                    //                {
+                    //                    AllUpper = false;
+                    //                    break;
+                    //                }
+                    //            }
+
+                    //            if (AllUpper)
+                    //            {
+                    //                EntryStr = DescriptionRegex.Replace(EntryStr,
+                    //                    $"<description>{desc.Substring(6).Trim()}</description>");
+                    //            }
+                    //        }
+                    //    }
+                    //}
+
+                    //if (QuickSettings.Instance.RemoveNWSNewLines)
+                    //{
+                    //    EntryStr = DescriptionRegex.Replace(EntryStr,
+                    //        $"<description>{DescriptionRegex.MatchOrDefault(EntryStr).Replace("\r", "").Replace("\n", " ").Trim()}</description>");
+                    //}
+
+                    AlertList += $"{EntryStr}\r\n";
+                }
+
 
                 //string ReturnURL = EntryLinkRegex.MatchOrDefault(entry.Groups[1].Value);
 

@@ -14,11 +14,11 @@ namespace SharpAlert.AlertComponents
 {
     public partial class ImmediateAlertForm : Form
     {
-        private string AlertSubtitleStr = string.Empty;
-        private string AlertIntroTextStr = string.Empty;
-        private string AlertTextStr = string.Empty;
-        private string AlertUrlStr = string.Empty;
-        private string AlertType = string.Empty;
+        //private string AlertSubtitleStr = string.Empty;
+        //private string AlertIntroTextStr = string.Empty;
+        //private string AlertTextStr = string.Empty;
+        //private string AlertUrlStr = string.Empty;
+        //private string AlertType = string.Empty;
 
         private enum TaskbarProgressState
         {
@@ -79,20 +79,20 @@ namespace SharpAlert.AlertComponents
             //ReplayMode = replay;
         }
 
-        public void UpdateFields(string id, string alert, string intro, string text, string url, string type, double lat, double lng)
-        {
-            this.Text = $"SharpAlert - Immediate Panel";
-            AlertSubtitleStr = alert;
-            TitleText.Text = AlertSubtitleStr.ToUpperInvariant();
-            AlertIntroTextStr = intro;
-            AlertTextStr = text;
-            AlertText.Text = $"{AlertIntroTextStr}\r\n\r\n{AlertTextStr}";
-            //AlertText.Text = AlertTextStr;
-            AlertUrlStr = url;
-            AlertType = type;
-            AlertText.SelectionStart = 0;
-            //GMapPoint.Position = new PointLatLng(lat, lng);
-        }
+        //public void UpdateFields(string id, string alert, string intro, string text, string url, string type, double lat, double lng)
+        //{
+        //    this.Text = $"SharpAlert - Immediate Panel";
+        //    AlertSubtitleStr = alert;
+        //    TitleText.Text = AlertSubtitleStr.ToUpperInvariant();
+        //    AlertIntroTextStr = intro;
+        //    AlertTextStr = text;
+        //    AlertText.Text = $"{AlertIntroTextStr}\r\n\r\n{AlertTextStr}";
+        //    //AlertText.Text = AlertTextStr;
+        //    AlertUrlStr = url;
+        //    AlertType = type;
+        //    AlertText.SelectionStart = 0;
+        //    //GMapPoint.Position = new PointLatLng(lat, lng);
+        //}
 
         private void UpdateTaskbarProgress(TaskbarProgressState state, ulong completed, ulong total)
         {
@@ -130,16 +130,16 @@ namespace SharpAlert.AlertComponents
 
             StopAllAudioSilently();
 
-            if (AlertType != "cancel")
-            {
-                EarthquakeText = "EARTHQUAKE / TERREMOTO";
-                PlayFromUnmanagedSource(Resources.ui_shakewarning_1);
-            }
-            else
-            {
-                EarthquakeText = "CANCELLED / CANCELADO";
-                PlayFromUnmanagedSource(Resources.ui_cancellation_1);
-            }
+            //if (AlertType != "cancel")
+            //{
+            //    EarthquakeText = "EARTHQUAKE / TERREMOTO";
+            //    //PlayFromUnmanagedSource(Resources.ui_shakewarning_1);
+            //}
+            //else
+            //{
+            //    EarthquakeText = "CANCELLED / CANCELADO";
+            //    PlayFromUnmanagedSource(Resources.ui_cancellation_1);
+            //}
 
             AlertText.Focus();
             AlertText.SelectionLength = 0;
@@ -372,17 +372,17 @@ namespace SharpAlert.AlertComponents
 
         bool CycleTwo = false;
 
-        private string EarthquakeText = string.Empty;
+        //private string EarthquakeText = string.Empty;
 
         private void CycleTwice()
         {
             if (CycleTwo)
             {
-                TitleText.Text = AlertSubtitleStr.ToUpperInvariant();
+                //TitleText.Text = AlertSubtitleStr.ToUpperInvariant();
             }
             else
             {
-                TitleText.Text = EarthquakeText;
+                //TitleText.Text = EarthquakeText;
             }
             CycleTwo = !CycleTwo;
         }

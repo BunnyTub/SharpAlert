@@ -22,12 +22,12 @@ namespace SharpAlert.ConfigurationDialogs
         {
             if (Initialized) return;
             Initialized = true;
-            EventCombo.Items.AddRange(AlertDetails.AlertCodes.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
+            EventCombo.Items.AddRange(AlertDetails.SAME_AlertCodes.OrderBy(x => x.Name).Select(x => x.Name).ToArray());
         }
 
         private void StateCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedEvent = AlertDetails.AlertCodes.FirstOrDefault(x => x.Name == EventCombo.Text);
+            SelectedEvent = AlertDetails.SAME_AlertCodes.FirstOrDefault(x => x.Name == EventCombo.Text);
         }
 
         private void SAMEAddButton_Click(object sender, EventArgs e)

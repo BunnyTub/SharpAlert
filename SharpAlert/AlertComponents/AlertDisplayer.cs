@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows.Forms;
 using SharpAlert.PrinterStuff;
 using SharpAlert.Properties;
+using SharpAlert.WebServer;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using static SharpAlert.AudioManager;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
@@ -114,6 +115,8 @@ namespace SharpAlert.AlertComponents
                 AlertDisplaying = false;
                 return;
             }
+
+            hyper.RecentAlert = alert;
 
             if (QuickSettings.Instance.alertAutoPrintingEnabled)
             {
