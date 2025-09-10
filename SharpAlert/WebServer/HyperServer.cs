@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +15,7 @@ using SharpAlert.ProgramWorker;
 using static SharpAlert.ThreadDrool;
 using System.Text.Json;
 using static SharpAlert.AlertComponents.AlertDisplayer;
+using System.Net.Http;
 
 namespace SharpAlert.WebServer
 {
@@ -192,7 +192,7 @@ namespace SharpAlert.WebServer
 
                 ctx.Response.AddHeader("Access-Control-Allow-Origin", "*");
                 ctx.Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate, no-transform");
-                ctx.Response.AddHeader($"Warning", "299 SharpAlert \"Unauthorized access or use in administrative areas may violate laws and result in disciplinary action, civil liability, or criminal prosecution. Activity may be monitored and reported. By continuing, you consent to these terms. Stop connection immediately if you are not authorized.\"");
+                //ctx.Response.AddHeader($"Warning", "299 SharpAlert \"Unauthorized access or use in administrative areas may violate laws and result in disciplinary action, civil liability, or criminal prosecution. Activity may be monitored and reported. By continuing, you consent to these terms. Stop connection immediately if you are not authorized.\"");
 
                 if (string.IsNullOrEmpty(methodName))
                 {
@@ -600,6 +600,32 @@ namespace SharpAlert.WebServer
             Alerts += $"<SharpAlertMaxAlertCount>{QuickSettings.Instance.storedMaxSize}</SharpAlertMaxAlertCount>";
             Alerts += "</SharpAlertHyperServer>";
             return Alerts;
+        }
+
+        [Mapping("QueueAlert")]
+        public object QueueAlert(HttpListenerContext ctx)
+        {
+            var queryParams = new Dictionary<string, string>();
+
+            string query = ctx.Request.Url.Query.TrimStart('?');
+            foreach (var pair in query.Split('&'))
+            {
+                var kv = pair.Split('=');
+                if (kv.Length == 2)
+                {
+                    string key = Uri.UnescapeDataString(kv[0]);
+                    string value = Uri.UnescapeDataString(kv[1]);
+                    queryParams[key] = value;
+                }
+            }
+
+            //string title = queryParams.ContainsKey("title") ? queryParams["title"] : "";
+            string text = queryParams.ContainsKey("text") ? queryParams["text"] : "No text.";
+
+            dataproc?.ap?.ProcessExternalAlert("External Alert", "This alert has been relayed from an external source.", text);
+            
+            ctx.Response.StatusCode = (int)HttpStatusCode.NoContent;
+            return string.Empty;
         }
 
         //[Mapping("WarningSound")]

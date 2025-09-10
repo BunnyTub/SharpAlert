@@ -1,465 +1,406 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using SharpAlert.ProgramWorker;
-using static SharpAlert.ProgramWorker.HaidaWorker;
-using static SharpAlert.ProgramWorker.MainEntryPoint;
-using static SharpAlert.RegexList;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Globalization;
+//using System.Linq;
+//using System.Net.Http;
+//using System.Text.RegularExpressions;
+//using System.Threading;
+//using System.Threading.Tasks;
+//using SharpAlert.ProgramWorker;
+//using static SharpAlert.ProgramWorker.HaidaWorker;
+//using static SharpAlert.ProgramWorker.MainEntryPoint;
+//using static SharpAlert.RegexList;
 
-// please do not use this, it is unused
+//namespace SharpAlert.SourceCapturing.SystemSpecific.NonCompliant
+//{
+//    public class UKAtomCapture
+//    {
+//        private bool FirstRun = true;
+//        private bool Stop = false;
+//        private bool StopCalled = false;
 
-namespace SharpAlert.SourceCapturing.SystemSpecific.NonCompliant
-{
-    public class UKAtomCapture
-    {
-        public class ServerInfo
-        {
-            public string ServerName { get; set; }
-            public string ServerPath { get; set; }
+//        public void ServiceStop()
+//        {
+//            if (StopCalled)
+//            {
+//                throw new Exception("ServiceStop was already called. If you intended to run the service multiple times, please create a new object.");
+//            }
+//            StopCalled = true;
+//            Stop = true;
 
-            /// <summary>
-            /// Arbitrary boolean. It should be set to true if the last usage of the class was successful.
-            /// </summary>
-            public bool LastRunSuccess { get; set; }
-        }
+//            for (int i = 0; i < 5; i++)
+//            {
+//                if (!Stop) return;
+//                Thread.Sleep(1000);
+//            }
 
-        public List<ServerInfo> servers = new List<ServerInfo>();
-        private bool FirstRun = true;
-        private bool Stop = false;
-        private bool StopCalled = false;
+//            //while (Stop)
+//            //{
+//            //    Thread.Sleep(500);
+//            //}
+//        }
 
-        public void ServiceStop()
-        {
-            if (StopCalled)
-            {
-                throw new Exception("ServiceStop was already called. If you intended to run the service multiple times, please create a new object.");
-            }
-            StopCalled = true;
-            Stop = true;
+//        public static int Calls { get; private set; } = 0;
 
-            for (int i = 0; i < 5; i++)
-            {
-                if (!Stop) return;
-                Thread.Sleep(1000);
-            }
+//        //private static readonly string serverPath = "idapcap.mdr.gov.br";
 
-            //while (Stop)
-            //{
-            //    Thread.Sleep(500);
-            //}
-        }
+//        /// <summary>
+//        /// Starts the Atom Feed Capture service in the current thread as a client.
+//        /// </summary>
+//        /// <param name="useHTTPS">Use the secure version of Hypertext Transfer Protocol to connect to the target server.</param>
+//        public void ServiceRun(bool useHTTPS)
+//        {
+//            // DO NOT USE
+//            return;
 
-        public static int Calls { get; private set; } = 0;
+//            if (Stop) return;
 
-        /// <summary>
-        /// Starts the Atom Feed Capture service in the current thread as a client.
-        /// </summary>
-        /// <param name="useHTTPS">Use the secure version of Hypertext Transfer Protocol to connect to the target server.</param>
-        public void ServiceRun(bool useHTTPS)
-        {
-            if (Stop) return;
+//            while (true)
+//            {
+//                try
+//                {
+//                    string URLPrefix = useHTTPS ? "https" : "http";
 
-            if (!servers.Any())
-            {
-                Console.WriteLine("[Atom Feed Capture] No servers found.");
-                return;
-            }
+//                    if (Stop) return;
 
-            while (true)
-            {
-                try
-                {
-                    string URLPrefix = useHTTPS ? "https" : "http";
-                    bool AllConnectionsSuccessful = true;
+//                    try
+//                    {
+//                        //Console.WriteLine($"[Atom Feed Capture] Getting data from UK Atom. URL -> {server.ServerPath}");
+//                        //Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server.ServerPath}");
+//                        //message.Wait();
+//                        //message.Result.EnsureSuccessStatusCode();
 
-                    if (Stop) return;
+//                        FeedSuccessfulCalls++;
 
-                    lock (servers)
-                    {
-                        if (servers.Any())
-                        {
-                            int count = servers.Count;
-                            foreach (ServerInfo server in servers)
-                            {
-                                try
-                                {
-                                    count--;
-                                    Console.WriteLine($"[Atom Feed Capture] Getting data from {server.ServerName}. URL -> {server.ServerPath}");
-                                    Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server.ServerPath}");
-                                    message.Wait();
-                                    message.Result.EnsureSuccessStatusCode();
+//                        //string Result = message.Result.Content.ReadAsStringAsync().Result;
 
-                                    FeedSuccessfulCalls++;
+//                        EnrollEntries(Result);
+//                    }
+//                    catch (Exception ex)
+//                    {
+//                        Console.WriteLine($"[Atom Feed Capture] {ex.GetBaseException().Message}");
+//                    }
+//                }
+//                catch (TimeoutException)
+//                {
+//                    Console.WriteLine($"[Atom Feed Capture] Timed out.");
+//                    Thread.Sleep(15 * 1000);
+//                }
+//                catch (ThreadAbortException)
+//                {
+//                    return;
+//                }
+//                catch (Exception e)
+//                {
+//                    Console.WriteLine($"[Atom Feed Capture] {e.Message}");
+//                    if (e.InnerException != null) Console.WriteLine($"[Atom Feed Capture] {e.InnerException.Message}");
+//                    //if (LastConnectionSuccessful)
+//                    //{
+//                    //    lock (notify)
+//                    //    {
+//                    //        notify.BalloonTipTitle = "SharpAlert is having issues";
+//                    //        notify.BalloonTipText = "There was an issue when trying to connect to the server. Check your internet connection!";
+//                    //        notify.BalloonTipIcon = ToolTipIcon.Warning;
+//                    //        notify.ShowBalloonTip(5000);
+//                    //    }
+//                    //}
+//                    //LastConnectionSuccessful = false;
+//                    Thread.Sleep(15 * 1000);
+//                }
+//                if (FirstRun) FirstRun = false;
 
-                                    string Result = message.Result.Content.ReadAsStringAsync().Result;
+//                try
+//                {
+//                    int CheckInterval = QuickSettings.Instance.AlertCheckInterval;
+//                    for (int i = 0; !(i >= CheckInterval);)
+//                    {
+//                        if (Stop)
+//                        {
+//                            Stop = false;
+//                            return;
+//                        }
+//                        Thread.Sleep(1000);
+//                        i++;
+//                    }
+//                }
+//                catch (ThreadAbortException)
+//                {
+//                    return;
+//                }
+//                catch (Exception e)
+//                {
+//                    Console.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
+//                }
+//            }
+//        }
 
-                                    EnrollEntries(Result);
-                                }
-                                catch (Exception ex)
-                                {
-                                    count++;
-                                    Console.WriteLine($"[Atom Feed Capture] {ex.GetBaseException().Message}");
-                                    server.LastRunSuccess = false;
-                                }
-                            }
+//        private readonly object EnrollObject = new object();
 
-                            if (count >= servers.Count)
-                            {
-                                AllConnectionsSuccessful = false;
-                            }
-                            else
-                            {
-                                AllConnectionsSuccessful = true;
-                            }
+//        public void EnrollEntries(string data)
+//        {
+//            MatchCollection entries = EntryRegex.Matches(data);
 
-                            if (AllConnectionsSuccessful)
-                            {
-                                Console.WriteLine($"[Atom Feed Capture] Fetched from all feeds successfully.");
-                            }
-                            else
-                            {
-                                Console.WriteLine("[Atom Feed Capture] Not all feeds were fetched from successfully.");
-                            }
-                        }
-                    }
+//            string AlertList = string.Empty;
 
-                    //if (LastConnectionSuccessful)
-                    //{
-                    //    lock (notify)
-                    //    {
-                    //        notify.BalloonTipTitle = "SharpAlert has reconnected";
-                    //        notify.BalloonTipText = "Successfully reconnected to the server after an ongoing connection disruption or problem.";
-                    //        notify.BalloonTipIcon = ToolTipIcon.Info;
-                    //        notify.ShowBalloonTip(5000);
-                    //    }
-                    //    LastConnectionSuccessful = true;
-                    //}
-                }
-                catch (TimeoutException)
-                {
-                    Console.WriteLine($"[Atom Feed Capture] Timed out.");
-                    Thread.Sleep(15 * 1000);
-                }
-                catch (ThreadAbortException)
-                {
-                    return;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"[Atom Feed Capture] {e.Message}");
-                    if (e.InnerException != null) Console.WriteLine($"[Atom Feed Capture] {e.InnerException.Message}");
-                    //if (LastConnectionSuccessful)
-                    //{
-                    //    lock (notify)
-                    //    {
-                    //        notify.BalloonTipTitle = "SharpAlert is having issues";
-                    //        notify.BalloonTipText = "There was an issue when trying to connect to the server. Check your internet connection!";
-                    //        notify.BalloonTipIcon = ToolTipIcon.Warning;
-                    //        notify.ShowBalloonTip(5000);
-                    //    }
-                    //}
-                    //LastConnectionSuccessful = false;
-                    Thread.Sleep(15 * 1000);
-                }
-                if (FirstRun) FirstRun = false;
+//            int EntriesIndex = 0;
+//            int EntriesDiscardCount = 0;
 
-                try
-                {
-                    int CheckInterval = QuickSettings.Instance.AlertCheckInterval;
-                    for (int i = 0; !(i >= CheckInterval);)
-                    {
-                        if (Stop)
-                        {
-                            Stop = false;
-                            return;
-                        }
-                        Thread.Sleep(1000);
-                        i++;
-                    }
-                }
-                catch (ThreadAbortException)
-                {
-                    return;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
-                }
-            }
-        }
+//            Console.WriteLine($"[Atom Feed Capture] Processing {entries.Count} tag(s).");
 
-        private readonly object EnrollObject = new object();
+//            foreach (Match entry in entries)
+//            {
+//                if (Stop) return;
 
-        public void EnrollEntries(string data)
-        {
-            MatchCollection entries = EntryRegex.Matches(data);
+//                EntriesIndex++;
+//                if (EntriesIndex.ToString().Last() == "0".ToCharArray()[0])
+//                {
+//                    Console.WriteLine($"[Atom Feed Capture] {EntriesIndex} tag(s) processed out of {entries.Count}.");
+//                }
+//                else
+//                {
+//                    if (entries.Count == EntriesIndex)
+//                    {
+//                        Console.WriteLine($"[Atom Feed Capture] Processing last tag.");
+//                    }
+//                    else
+//                    {
+//                        if (EntriesIndex == 1)
+//                        {
+//                            Console.WriteLine($"[Atom Feed Capture] Processing first tag.");
+//                        }
+//                    }
+//                }
 
-            string AlertList = string.Empty;
+//                string EntryStr = entry.Groups[0].Value;
 
-            int EntriesIndex = 0;
-            int EntriesDiscardCount = 0;
+//                EntryStr = $"<alert><info>{EntryStr}</info></alert>";
+//                EntryStr = EntryStr.Replace("<cap:", "<");
+//                EntryStr = EntryStr.Replace("</cap:", "</");
+//                EntryStr = EntryStr.Replace("<summary>", "<description>").Replace("</summary>", "</description>");
+//                EntryStr = DescriptionRegex.Replace(EntryStr,
+//                    $"<description>{DescriptionRegex.MatchOrDefault(EntryStr).Replace("\r", "").Replace("\n", " ").Trim()}</description>");
 
-            Console.WriteLine($"[Atom Feed Capture] Processing {entries.Count} tag(s).");
+//                //Console.WriteLine($"[Atom Feed Capture] {EntriesCount} -> {CreateMD5(entry.Groups[1].Value)} (entry name is unused)");
+//                string Effective = AtomEffectiveRegex.MatchOrDefault(EntryStr, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
+//                //Console.WriteLine($"[Atom Feed Capture] Atom Effective: {Effective}");
 
-            foreach (Match entry in entries)
-            {
-                if (Stop) return;
+//                string Expiry = AtomExpiresRegex.MatchOrDefault(EntryStr, DateTime.UtcNow.AddHours(1).ToString("O", CultureInfo.InvariantCulture));
+//                //Console.WriteLine($"[Atom Feed Capture] Atom Expires: {Expiry}");
 
-                EntriesIndex++;
-                if (EntriesIndex.ToString().Last() == "0".ToCharArray()[0])
-                {
-                    Console.WriteLine($"[Atom Feed Capture] {EntriesIndex} tag(s) processed out of {entries.Count}.");
-                }
-                else
-                {
-                    if (entries.Count == EntriesIndex)
-                    {
-                        Console.WriteLine($"[Atom Feed Capture] Processing last tag.");
-                    }
-                    else
-                    {
-                        if (EntriesIndex == 1)
-                        {
-                            Console.WriteLine($"[Atom Feed Capture] Processing first tag.");
-                        }
-                    }
-                }
+//                try
+//                {
+//                    if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
+//                    {
+//                        EntriesDiscardCount++;
+//                        //Console.WriteLine($"[Atom Feed Capture] Entry discarded because it has expired.");
+//                        continue;
+//                    }
+//                }
+//                catch (Exception)
+//                {
+//                    //Console.WriteLine($"[Atom Feed Capture] Expiry check skipped because it has failed. {ex.Message}");
+//                }
 
-                string EntryStr = entry.Groups[0].Value;
+//                AlertList += $"{EntryStr}\r\n";
 
-                EntryStr = $"<alert><info>{EntryStr}</info></alert>";
-                EntryStr = EntryStr.Replace("<cap:", "<");
-                EntryStr = EntryStr.Replace("</cap:", "</");
-                EntryStr = EntryStr.Replace("<summary>", "<description>").Replace("</summary>", "</description>");
-                EntryStr = DescriptionRegex.Replace(EntryStr,
-                    $"<description>{DescriptionRegex.MatchOrDefault(EntryStr).Replace("\r", "").Replace("\n", " ").Trim()}</description>");
+//                //string ReturnURL = EntryLinkRegex.MatchOrDefault(entry.Groups[1].Value);
 
-                //Console.WriteLine($"[Atom Feed Capture] {EntriesCount} -> {CreateMD5(entry.Groups[1].Value)} (entry name is unused)");
-                string Effective = AtomEffectiveRegex.MatchOrDefault(EntryStr, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
-                //Console.WriteLine($"[Atom Feed Capture] Atom Effective: {Effective}");
+//                //if (string.IsNullOrWhiteSpace(ReturnURL))
+//                //{
+//                //    EntriesDiscardCount++;
+//                //    //Console.WriteLine($"[Atom Feed Capture] Entry discarded because a suitable XML link could not be found.");
+//                //    continue;
+//                //}
 
-                string Expiry = AtomExpiresRegex.MatchOrDefault(EntryStr, DateTime.UtcNow.AddHours(1).ToString("O", CultureInfo.InvariantCulture));
-                //Console.WriteLine($"[Atom Feed Capture] Atom Expires: {Expiry}");
+//                //try
+//                //{
+//                //    HttpResponseMessage message = client.GetAsync(ReturnURL).Result;
+//                //    message.EnsureSuccessStatusCode();
 
-                try
-                {
-                    if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
-                    {
-                        EntriesDiscardCount++;
-                        //Console.WriteLine($"[Atom Feed Capture] Entry discarded because it has expired.");
-                        continue;
-                    }
-                }
-                catch (Exception)
-                {
-                    //Console.WriteLine($"[Atom Feed Capture] Expiry check skipped because it has failed. {ex.Message}");
-                }
+//                //    if (Calls >= 100000) Calls = 0;
+//                //    Calls++;
 
-                AlertList += $"{EntryStr}\r\n";
+//                //    string Result = message.Content.ReadAsStringAsync().Result;
+//                //    AlertList += $"{Result}\r\n";
+//                //    //Console.WriteLine($"[Atom Feed Capture] Entry saved for further processing.");
+//                //}
+//                //catch (Exception ex)
+//                //{
+//                //    Console.WriteLine($"[Atom Feed Capture] Entry could not be saved. {ex.Message}");
+//                //}
 
-                //string ReturnURL = EntryLinkRegex.MatchOrDefault(entry.Groups[1].Value);
+//                //Thread.Sleep(10); // we're gonna get rate limited. Awesome!
+//            }
 
-                //if (string.IsNullOrWhiteSpace(ReturnURL))
-                //{
-                //    EntriesDiscardCount++;
-                //    //Console.WriteLine($"[Atom Feed Capture] Entry discarded because a suitable XML link could not be found.");
-                //    continue;
-                //}
+//            Console.WriteLine($"[Atom Feed Capture] {EntriesIndex} tag(s) saved, and {EntriesDiscardCount} tag(s) discarded. Tags remaining: {EntriesIndex - EntriesDiscardCount}");
 
-                //try
-                //{
-                //    HttpResponseMessage message = client.GetAsync(ReturnURL).Result;
-                //    message.EnsureSuccessStatusCode();
+//            EnrollAlerts(AlertList);
+//        }
 
-                //    if (Calls >= 100000) Calls = 0;
-                //    Calls++;
+//        public void EnrollAlerts(string data, bool reset = false)
+//        {
+//            lock (EnrollObject)
+//            {
+//                MatchCollection alertMatches = AlertRegex.Matches(data);
+//                int alertIndex = 0;
+//                int alertDiscardCount = 0;
 
-                //    string Result = message.Content.ReadAsStringAsync().Result;
-                //    AlertList += $"{Result}\r\n";
-                //    //Console.WriteLine($"[Atom Feed Capture] Entry saved for further processing.");
-                //}
-                //catch (Exception ex)
-                //{
-                //    Console.WriteLine($"[Atom Feed Capture] Entry could not be saved. {ex.Message}");
-                //}
+//                if (alertMatches != null || alertMatches.Count != 0)
+//                {
+//                    Console.WriteLine($"[Atom Feed Capture] Processing {alertMatches.Count} alert(s).");
 
-                //Thread.Sleep(10); // we're gonna get rate limited. Awesome!
-            }
+//                    foreach (Match alert in alertMatches)
+//                    {
+//                        try
+//                        {
+//                            alertIndex++;
+//                            if (alert.Value is null) continue;
+//                            if (alertIndex.ToString().Last() == "0".ToCharArray()[0])
+//                            {
+//                                Console.WriteLine($"[Atom Feed Capture] {alertIndex} alert(s) processed out of {alertMatches.Count}.");
+//                            }
+//                            else
+//                            {
+//                                if (alertMatches.Count == alertIndex)
+//                                {
+//                                    Console.WriteLine($"[Atom Feed Capture] Processing last alert.");
+//                                }
+//                                else
+//                                {
+//                                    if (alertIndex == 1)
+//                                    {
+//                                        Console.WriteLine($"[Atom Feed Capture] Processing first alert.");
+//                                    }
+//                                }
+//                            }
 
-            Console.WriteLine($"[Atom Feed Capture] {EntriesIndex} tag(s) saved, and {EntriesDiscardCount} tag(s) discarded. Tags remaining: {EntriesIndex - EntriesDiscardCount}");
+//                            string filename = IdentifierRegex.MatchOrDefault(alert.Value, CreateMD5(alert.Value));
 
-            EnrollAlerts(AlertList);
-        }
+//                            SharpDataItem item = new SharpDataItem(filename, alert.Value);
 
-        public void EnrollAlerts(string data, bool reset = false)
-        {
-            lock (EnrollObject)
-            {
-                MatchCollection alertMatches = AlertRegex.Matches(data);
-                int alertIndex = 0;
-                int alertDiscardCount = 0;
+//                            if (reset)
+//                            {
+//                                TryRemoveDataFromHistory(item);
+//                            }
 
-                if (alertMatches != null || alertMatches.Count != 0)
-                {
-                    Console.WriteLine($"[Atom Feed Capture] Processing {alertMatches.Count} alert(s).");
+//                            if (FirstRun && QuickSettings.Instance.discardFirstAlerts)
+//                            {
+//                                if (TryAddDataToHistory(item))
+//                                {
+//                                    //Console.WriteLine($"[Atom Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
+//                                    alertDiscardCount++;
+//                                }
+//                            }
+//                            else
+//                            {
+//                                if (TryAddDataToQueue(item))
+//                                {
+//                                    //Console.WriteLine($"[Atom Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
+//                                }
+//                                else
+//                                {
+//                                    //Console.WriteLine($"[Atom Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already in queue or history).");
+//                                    alertDiscardCount++;
+//                                }
+//                            }
+//                        }
+//                        catch (Exception ex)
+//                        {
+//                            Console.WriteLine($"[Atom Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
+//                        }
+//                    }
+//                    if (alertIndex != 0)
+//                    {
+//                        Console.WriteLine($"[Atom Feed Capture] {alertIndex} alert(s) checked, and {alertDiscardCount} alert(s) discarded. Alerts remaining: {alertIndex - alertDiscardCount}");
+//                    }
+//                    else Console.WriteLine($"[Atom Feed Capture] No alerts were checked.");
+//                }
+//                else
+//                {
+//                    Console.WriteLine("[Atom Feed Capture] There are no alerts to enroll.");
+//                }
+//            }
+//        }
 
-                    foreach (Match alert in alertMatches)
-                    {
-                        try
-                        {
-                            alertIndex++;
-                            if (alert.Value is null) continue;
-                            if (alertIndex.ToString().Last() == "0".ToCharArray()[0])
-                            {
-                                Console.WriteLine($"[Atom Feed Capture] {alertIndex} alert(s) processed out of {alertMatches.Count}.");
-                            }
-                            else
-                            {
-                                if (alertMatches.Count == alertIndex)
-                                {
-                                    Console.WriteLine($"[Atom Feed Capture] Processing last alert.");
-                                }
-                                else
-                                {
-                                    if (alertIndex == 1)
-                                    {
-                                        Console.WriteLine($"[Atom Feed Capture] Processing first alert.");
-                                    }
-                                }
-                            }
+//        public static bool TryAddDataToQueue(SharpDataItem item)
+//        {
+//            lock (SharpDataQueue)
+//            {
+//                lock (SharpDataHistory)
+//                {
+//                    try
+//                    {
+//                        if (SharpDataQueue.Any(x => x.Name == item.Name) || SharpDataHistory.Any(x => x.Name == item.Name))
+//                        {
+//                            return false;
+//                        }
+//                        else
+//                        {
+//                            SharpDataQueue.Add(item);
+//                            return true;
+//                        }
+//                    }
+//                    catch (Exception e)
+//                    {
+//                        Console.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
+//                        return false;
+//                    }
+//                }
+//            }
+//        }
 
-                            string filename = IdentifierRegex.MatchOrDefault(alert.Value, CreateMD5(alert.Value));
+//        public static bool TryAddDataToHistory(SharpDataItem item)
+//        {
+//            lock (SharpDataQueue)
+//            {
+//                lock (SharpDataHistory)
+//                {
+//                    try
+//                    {
+//                        if (SharpDataQueue.Any(x => x.Name == item.Name) || SharpDataHistory.Any(x => x.Name == item.Name))
+//                        {
+//                            return false;
+//                        }
+//                        else
+//                        {
+//                            SharpDataHistory.Add(item);
+//                            return true;
+//                        }
+//                    }
+//                    catch (Exception e)
+//                    {
+//                        Console.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
+//                        return false;
+//                    }
+//                }
+//            }
+//        }
 
-                            SharpDataItem item = new SharpDataItem(filename, alert.Value);
-
-                            if (reset)
-                            {
-                                TryRemoveDataFromHistory(item);
-                            }
-
-                            if (FirstRun && QuickSettings.Instance.discardFirstAlerts)
-                            {
-                                if (TryAddDataToHistory(item))
-                                {
-                                    //Console.WriteLine($"[Atom Feed Capture] Alert {alertIndex} ({filename}) has been discarded (discard any alert on start).");
-                                    alertDiscardCount++;
-                                }
-                            }
-                            else
-                            {
-                                if (TryAddDataToQueue(item))
-                                {
-                                    //Console.WriteLine($"[Atom Feed Capture] Alert {alertIndex} ({filename}) has been saved for processing.");
-                                }
-                                else
-                                {
-                                    //Console.WriteLine($"[Atom Feed Capture] Alert {alertIndex} ({filename}) has been discarded (already in queue or history).");
-                                    alertDiscardCount++;
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"[Atom Feed Capture] Couldn't check the data for alert {alertIndex}. {ex.Message}");
-                        }
-                    }
-                    if (alertIndex != 0)
-                    {
-                        Console.WriteLine($"[Atom Feed Capture] {alertIndex} alert(s) checked, and {alertDiscardCount} alert(s) discarded. Alerts remaining: {alertIndex - alertDiscardCount}");
-                    }
-                    else Console.WriteLine($"[Atom Feed Capture] No alerts were checked.");
-                }
-                else
-                {
-                    Console.WriteLine("[Atom Feed Capture] There are no alerts to enroll.");
-                }
-            }
-        }
-
-        public static bool TryAddDataToQueue(SharpDataItem item)
-        {
-            lock (SharpDataQueue)
-            {
-                lock (SharpDataHistory)
-                {
-                    try
-                    {
-                        if (SharpDataQueue.Any(x => x.Name == item.Name) || SharpDataHistory.Any(x => x.Name == item.Name))
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            SharpDataQueue.Add(item);
-                            return true;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
-                        return false;
-                    }
-                }
-            }
-        }
-
-        public static bool TryAddDataToHistory(SharpDataItem item)
-        {
-            lock (SharpDataQueue)
-            {
-                lock (SharpDataHistory)
-                {
-                    try
-                    {
-                        if (SharpDataQueue.Any(x => x.Name == item.Name) || SharpDataHistory.Any(x => x.Name == item.Name))
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            SharpDataHistory.Add(item);
-                            return true;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
-                        return false;
-                    }
-                }
-            }
-        }
-
-        public static bool TryRemoveDataFromHistory(SharpDataItem item)
-        {
-            lock (SharpDataQueue)
-            {
-                lock (SharpDataHistory)
-                {
-                    try
-                    {
-                        if (SharpDataHistory.Any(x => x.Name == item.Name))
-                        {
-                            return SharpDataHistory.Remove(item);
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
-                        return false;
-                    }
-                }
-            }
-        }
-    }
-}
+//        public static bool TryRemoveDataFromHistory(SharpDataItem item)
+//        {
+//            lock (SharpDataQueue)
+//            {
+//                lock (SharpDataHistory)
+//                {
+//                    try
+//                    {
+//                        if (SharpDataHistory.Any(x => x.Name == item.Name))
+//                        {
+//                            return SharpDataHistory.Remove(item);
+//                        }
+//                        else
+//                        {
+//                            return false;
+//                        }
+//                    }
+//                    catch (Exception e)
+//                    {
+//                        Console.WriteLine($"[Atom Feed Capture] {e.StackTrace} {e.Message}");
+//                        return false;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 

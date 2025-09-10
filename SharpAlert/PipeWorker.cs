@@ -53,8 +53,8 @@ namespace SharpAlert.ProgramWorker
                 }
                 catch (Exception)
                 {
-
                 }
+                Thread.Sleep(500);
             }
         }
 

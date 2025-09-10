@@ -13,7 +13,6 @@ using System.Windows.Forms;
 using SharpAlert.AlertComponents;
 using SharpAlert.ProgramWorker;
 using System.IO;
-using System.Diagnostics;
 
 namespace SharpAlert.DataProcessing
 {
@@ -256,17 +255,23 @@ namespace SharpAlert.DataProcessing
 
                                                             int color = 16777215;
 
-                                                            switch (info.AlertMessageType.ToLowerInvariant())
+                                                            if (info.AlertMessageType.ToLowerInvariant().Contains("cancel"))
                                                             {
-                                                                case "alert":
-                                                                    color = 16711680;
-                                                                    break;
-                                                                case "update":
-                                                                    color = 16711935;
-                                                                    break;
-                                                                case "cancel":
-                                                                    color = 10079487;
-                                                                    break;
+                                                                color = 32767;
+                                                            }
+                                                            else
+                                                            {
+                                                                switch (info.AlertSeverity.ToLowerInvariant())
+                                                                {
+                                                                    case "extreme":
+                                                                    case "severe":
+                                                                        color = 16711680;
+                                                                        break;
+                                                                    case "moderate":
+                                                                    case "minor":
+                                                                        color = 16744192;
+                                                                        break;
+                                                                }
                                                             }
 
                                                             string LocationList = string.Empty;
@@ -291,9 +296,20 @@ namespace SharpAlert.DataProcessing
                                                             if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + $"{DiscordWebhook.GetDiscordWebhookURLFromSourceName(info.AlertSource).Append}";
                                                             //DiscordWebhook.SendUnformattedMessage(CompiledMessage);
 
+                                                            //DiscordWebhook.SendEmbeddedMessage(info.AlertSource,
+                                                            //    CompiledMessage,
+                                                            //    $"{info.AlertSeverity} Emergency {info.AlertMessageType.First().ToString().ToUpper() + info.AlertMessageType.Substring(1)}",
+                                                            //    info.AlertIntroText,
+                                                            //    info.AlertBodyText, //+ $"\r\n\r\n||${LocationList}$||",
+                                                            //    info.AlertURL,
+                                                            //    relayItem.Name,
+                                                            //    new List<string> { info.AlertAudioURL },
+                                                            //    new List<string> { info.AlertImageURL },
+                                                            //    color);
+                                                            
                                                             DiscordWebhook.SendEmbeddedMessage(info.AlertSource,
                                                                 CompiledMessage,
-                                                                $"{info.AlertSeverity} Emergency {info.AlertMessageType.First().ToString().ToUpper() + info.AlertMessageType.Substring(1)}",
+                                                                ProcessedEvent,
                                                                 info.AlertIntroText,
                                                                 info.AlertBodyText, //+ $"\r\n\r\n||${LocationList}$||",
                                                                 info.AlertURL,

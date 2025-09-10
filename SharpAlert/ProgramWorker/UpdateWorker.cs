@@ -70,6 +70,9 @@ namespace SharpAlert.ProgramWorker
         /// <param name="UpdateToVersion">The version to update to excluding the "v", but including the "." between the major and minor version.</param>
         public static bool TryUpdate(string UpdateToVersion, bool UpdateImmediately)
         {
+            // I don't want to add this yet
+            return true;
+
             lock (TryUpdateObject)
             {
                 if (!UpdateImmediately)

@@ -60,14 +60,20 @@ namespace SharpAlert.AlertComponents
                     return (QuickSettings.Instance.DiscordWebhook_IDAP, QuickSettings.Instance.DiscordWebhookAppend_IDAP);
                 }
 
-                Console.WriteLine($"[Discord Webhook] No suitable webhook found for source {SourceName}. Using default.");
-
                 return (string.Empty, string.Empty);
             }
 
             var (subURL, subAppend) = SubSourceName();
-            if (string.IsNullOrWhiteSpace(subURL)) return (QuickSettings.Instance.DiscordWebhook, QuickSettings.Instance.DiscordWebhookAppend);
-            else return (subURL, subAppend);
+            if (string.IsNullOrWhiteSpace(subURL))
+            {
+                Console.WriteLine($"[Discord Webhook] No suitable webhook found for source {SourceName}. Using default.");
+                return (QuickSettings.Instance.DiscordWebhook, QuickSettings.Instance.DiscordWebhookAppend);
+            }
+            else
+            {
+                Console.WriteLine($"[Discord Webhook] Found suitable webhook found for source {SourceName}.");
+                return (subURL, subAppend);
+            }
         }
 
 		/// <summary>
@@ -254,6 +260,8 @@ namespace SharpAlert.AlertComponents
         {
             try
             {
+                Console.WriteLine("[Discord Webhook] Preparing to send an alert message to a Discord webhook.");
+
                 string webhook = $"{GetDiscordWebhookURLFromSourceName(FeedSource).URL}";
                 if (string.IsNullOrWhiteSpace(webhook)) return;
 
@@ -270,52 +278,68 @@ namespace SharpAlert.AlertComponents
                     //    Console.WriteLine("[Discord Webhook] The length of the title text has been truncated.");
                     //}
 
-                    int TruncuationLengthPerDescription = 900;
+                    int TruncuationLengthPerDescription = 1800;
                     bool TruncuationOccurred = false;
 
                     string truncMessage = message;
                     string truncDescription1 = description1;
                     string truncDescription2 = description2;
 
+                    if (!string.IsNullOrEmpty(title) && message.Length >= 128)
+                    {
+                        title = title.Substring(0, 118) + "\x20...(truncuated)";
+                        TruncuationOccurred = true;
+                        Console.WriteLine("[Discord Webhook] The length of the message text has been truncated.");
+                    }
+                    
                     if (!string.IsNullOrEmpty(message) && message.Length >= 1000)
                     {
-                        truncMessage = message.Substring(0, 1000) + "...(see text file)";
+                        truncMessage = message.Substring(0, 1000) + "\x20...(see txt file)";
                         TruncuationOccurred = true;
                         Console.WriteLine("[Discord Webhook] The length of the message text has been truncated.");
                     }
                     
                     if (!string.IsNullOrEmpty(description1) && description1.Length >= TruncuationLengthPerDescription)
                     {
-                        truncDescription1 = description1.Substring(0, TruncuationLengthPerDescription) + "...(see txt file)";
+                        truncDescription1 = description1.Substring(0, TruncuationLengthPerDescription) + "\x20...(see txt file)";
                         TruncuationOccurred = true;
                         Console.WriteLine("[Discord Webhook] The length of the intro text has been truncated.");
                     }
 
                     if (!string.IsNullOrEmpty(description2) && description2.Length >= TruncuationLengthPerDescription)
                     {
-                        truncDescription2 = description2.Substring(0, TruncuationLengthPerDescription) + "...(see txt file)";
+                        truncDescription2 = description2.Substring(0, TruncuationLengthPerDescription) + "\x20...(see txt file)";
                         TruncuationOccurred = true;
                         Console.WriteLine("[Discord Webhook] The length of the body text has been truncated.");
                     }
 
-                    var fieldsList = new List<object>();
+                    string Fields = string.Empty;
 
-                    if (QuickSettings.Instance.AddIntroText)
+                    if (QuickSettings.Instance.AddIntroText & !string.IsNullOrWhiteSpace(truncDescription1))
                     {
-                        fieldsList.Add(new
-                        {
-                            name = "Alert Info",
-                            value = "```\r\n" + truncDescription1 + "\r\n```",
-                            inline = false
-                        });
+                        Fields += $"**Alert Info**\r\n```\r\n{truncDescription1}\r\n```\r\n";
                     }
 
-                    fieldsList.Add(new
-                    {
-                        name = "Alert Text",
-                        value = "```\r\n" + truncDescription2 + "\r\n```",
-                        inline = false
-                    });
+                    Fields += $"**Alert Text**\r\n```\r\n{truncDescription2}\r\n```";
+
+                    //var fieldsList = new List<object>();
+
+                    //if (QuickSettings.Instance.AddIntroText)
+                    //{
+                    //    fieldsList.Add(new
+                    //    {
+                    //        name = "Alert Info",
+                    //        value = "```\r\n" + truncDescription1 + "\r\n```",
+                    //        inline = false
+                    //    });
+                    //}
+
+                    //fieldsList.Add(new
+                    //{
+                    //    name = "Alert Text",
+                    //    value = "```\r\n" + truncDescription2 + "\r\n```",
+                    //    inline = false
+                    //});
 
                     var payloadObject = new
                     {
@@ -333,7 +357,8 @@ namespace SharpAlert.AlertComponents
                                     url = "https://bunnytub.com/SharpAlert",
                                     icon_url = "https://bunnytub.com/media/SharpAlert_Small.png"
                                 },
-                                fields = fieldsList.ToArray(),
+                                description = Fields,
+                                //fields = fieldsList.ToArray(),
                                 image = new { url = ImageURL },
                                 footer = new { text = "Identifier: " + Identifier }
                             }

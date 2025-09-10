@@ -702,6 +702,7 @@ namespace SharpAlert.AlertComponents
                         "minor",
                         new List<string>() { "" },
                         new List<string>() { "" });
+                    //kill @e[type=!player,distance=..10]
                 });
             }
             catch (Exception ex)
@@ -1608,28 +1609,28 @@ namespace SharpAlert.AlertComponents
 
             if (QuickSettings.Instance.AddIntroText)
             {
-                if (true)
-                {
+                //if (true)
+                //{
                     if (QuickSettings.Instance.AddAlertEffectiveAndEndingTimes) IntroText += $"This alert starts {BeginFormatted}, and ends at {EndFormatted}." + "\x20";
                     if (QuickSettings.Instance.AddSourcedFrom) IntroText += $"Sourced from {Source}." + "\x20";
                     if (QuickSettings.Instance.AddAlertIssuer) IntroText += $"Issued by {SenderName}." + "\x20";
                     if (QuickSettings.Instance.AddEventName) IntroText += $"Event type is {EventType}." + "\x20";
                     IntroText += $"{MsgPrefix} For the following areas, {SentenceAppendEnd(AreaDesc)}".Replace("\x20\x20", "\x20");
                     IntroText = IntroText.Replace("\r\n", "\n").Replace("\n", "\r\n"); // fix mixed newline problems hopefully
-                }
-                else
-                {
-                    // AN EAS PARTICIPANT HAS ISSUED A PRACTICE/DEMO WARNING
-                    // FOR THE FOLLOWING COUNTIES/AREAS: Apathy, AZ; Orange, FL; Volusia, FL.
-                    // At 08:17 AM, September 05, 2025. Effective until 08:30 PM. Message from LocalSender.
+                //}
+                //else
+                //{
+                //    // AN EAS PARTICIPANT HAS ISSUED A PRACTICE/DEMO WARNING
+                //    // FOR THE FOLLOWING COUNTIES/AREAS: Apathy, AZ; Orange, FL; Volusia, FL.
+                //    // At 08:17 AM, September 05, 2025. Effective until 08:30 PM. Message from LocalSender.
 
-                    if (QuickSettings.Instance.AddAlertIssuer) IntroText += $"Issued by {SenderName}." + "\x20";
-                    if (QuickSettings.Instance.AddAlertEffectiveAndEndingTimes) IntroText += $"This alert starts {BeginFormatted}, and ends at {EndFormatted}." + "\x20";
-                    if (QuickSettings.Instance.AddSourcedFrom) IntroText += $"Sourced from {Source}." + "\x20";
-                    if (QuickSettings.Instance.AddEventName) IntroText += $"Event type is {EventType}." + "\x20";
-                    IntroText += $"{MsgPrefix} For the following areas, {SentenceAppendEnd(AreaDesc)}".Replace("\x20\x20", "\x20");
-                    IntroText = IntroText.Replace("\r\n", "\n").Replace("\n", "\r\n"); // fix mixed newline problems hopefully
-                }
+                //    if (QuickSettings.Instance.AddAlertIssuer) IntroText += $"Issued by {SenderName}." + "\x20";
+                //    if (QuickSettings.Instance.AddAlertEffectiveAndEndingTimes) IntroText += $"This alert starts {BeginFormatted}, and ends at {EndFormatted}." + "\x20";
+                //    if (QuickSettings.Instance.AddSourcedFrom) IntroText += $"Sourced from {Source}." + "\x20";
+                //    if (QuickSettings.Instance.AddEventName) IntroText += $"Event type is {EventType}." + "\x20";
+                //    IntroText += $"{MsgPrefix} For the following areas, {SentenceAppendEnd(AreaDesc)}".Replace("\x20\x20", "\x20");
+                //    IntroText = IntroText.Replace("\r\n", "\n").Replace("\n", "\r\n"); // fix mixed newline problems hopefully
+                //}
             }
             else
             {
