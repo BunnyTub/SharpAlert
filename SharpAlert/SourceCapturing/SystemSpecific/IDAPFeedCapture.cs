@@ -13,13 +13,13 @@ using static SharpAlert.RegexList;
 
 namespace SharpAlert.SourceCapturing.SystemSpecific
 {
-    public class IDAPFeedCapture
+    public partial class IDAPFeedCapture
     {
         private bool FirstRun = true;
         private bool Stop = false;
         private bool StopCalled = false;
 
-        private static readonly WebClient idapclient = new WebClient();
+        private static readonly WebClient idapclient = new();
 
         public void ServiceStop()
         {
@@ -123,7 +123,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
             }
         }
 
-        private readonly object EnrollObject = new object();
+        private readonly Lock EnrollObject = new();
 
         public void EnrollEntries(string data)
         {
@@ -134,17 +134,17 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
             string[] DataSplit = data.Split('\n');
             string AlertList = string.Empty;
 
-            Console.WriteLine($"[IDAP Feed Capture] Processing {DataSplit.LongCount()} lines.");
+            Console.WriteLine($"[IDAP Feed Capture] Processing {DataSplit.Length} lines.");
 
             foreach (string line in DataSplit)
             {
                 //<a href="10000020122022-PR.xml">10000020122022-PR.xml</a> 20-Dec-2022 15:47 74861
-                string line_ = Regex.Replace(line, @"\s{2,}", " ");
+                string line_ = SpaceRegex().Replace(line, " ");
                 MatchCollection entries = HrefRegex.Matches(line_);
                 if (entries.Count == 0) continue;
                 
                 // I stole this regex from somewhere lol
-                Match dateMatch = Regex.Match(line_, @"\d{2}-[A-Za-z]{3}-\d{4} \d{2}:\d{2}");
+                Match dateMatch = DateTimeRegex().Match(line_);
                 if (dateMatch.Success)
                 {
                     DateTime parsedDate = DateTime.ParseExact(
@@ -178,11 +178,11 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                             EntriesIndex++;
                             AlertCount++;
 
-                            Console.WriteLine($"[IDAP Feed Capture] {EntriesIndex} links(s) processed out of (maybe) {DataSplit.LongCount()}.");
+                            Console.WriteLine($"[IDAP Feed Capture] {EntriesIndex} links(s) processed out of (maybe) {DataSplit.Length}.");
 
                             string EntryStr = entry.Groups[1].Value;
 
-                            if (EntryStr.StartsWith(".")) continue;
+                            if (EntryStr.StartsWith('.')) continue;
 
                             try
                             {
@@ -259,7 +259,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
 
                 string EntryStr = entry.Groups[1].Value;
 
-                if (EntryStr.StartsWith(".")) continue;
+                if (EntryStr.StartsWith('.')) continue;
 
                 try
                 {
@@ -320,7 +320,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
 
                             string CombinedAlertValue = $"<SharpAlertSource>IDAP</SharpAlertSource>{alert.Value}";
 
-                            SharpDataItem item = new SharpDataItem(filename, CombinedAlertValue);
+                            SharpDataItem item = new(filename, CombinedAlertValue);
 
                             if (FirstRun && QuickSettings.Instance.discardFirstAlerts)
                             {
@@ -440,6 +440,12 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                 }
             }
         }
+
+        [GeneratedRegex(@"\s{2,}")]
+        private static partial Regex SpaceRegex();
+
+        [GeneratedRegex(@"\d{2}-[A-Za-z]{3}-\d{4} \d{2}:\d{2}")]
+        private static partial Regex DateTimeRegex();
     }
 }
 

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace SharpAlert.ConfigurationDialogs
 {
     public partial class DoNotDisturbForm : Form
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int DNDTimeInMinutes { get; private set; } = 0;
 
         public DoNotDisturbForm()

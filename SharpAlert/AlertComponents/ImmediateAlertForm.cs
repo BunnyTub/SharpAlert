@@ -96,7 +96,7 @@ namespace SharpAlert.AlertComponents
 
         private void UpdateTaskbarProgress(TaskbarProgressState state, ulong completed, ulong total)
         {
-            if (GotHandle != null || GotHandle == IntPtr.Zero)
+            if (GotHandle != IntPtr.Zero)
             {
                 taskbarList.SetProgressState(GotHandle, state);
 
@@ -150,7 +150,7 @@ namespace SharpAlert.AlertComponents
             {
                 taskbarList.MarkFullscreenWindow(GotHandle, false);
                 this.FormBorderStyle = FormBorderStyle.Sizable;
-                if (!(QuickSettings.Instance.alertFullscreenDisplay >= Screen.AllScreens.Count()))
+                if (!(QuickSettings.Instance.alertFullscreenDisplay >= Screen.AllScreens.Length))
                 {
                     this.Size = new Size(Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].Bounds.Width - 100,
                         Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].Bounds.Height - 100);
@@ -168,7 +168,7 @@ namespace SharpAlert.AlertComponents
                 taskbarList.MarkFullscreenWindow(GotHandle, true);
                 try
                 {
-                    if (!(QuickSettings.Instance.alertFullscreenDisplay >= Screen.AllScreens.Count()))
+                    if (!(QuickSettings.Instance.alertFullscreenDisplay >= Screen.AllScreens.Length))
                     {
                         this.Location = Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].Bounds.Location;
                     }

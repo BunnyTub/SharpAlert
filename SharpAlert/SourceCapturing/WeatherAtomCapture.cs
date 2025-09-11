@@ -30,12 +30,12 @@ namespace SharpAlert.SourceCapturing
             public bool LastRunSuccess { get; set; }
         }
 
-        public List<ServerInfo> servers = new List<ServerInfo>();
+        public List<ServerInfo> servers = [];
         private bool FirstRun = true;
         private bool Stop = false;
         private bool StopCalled = false;
 
-        private static readonly WebClient atomclient = new WebClient();
+        private static readonly WebClient atomclient = new();
 
         public void ServiceStop()
         {
@@ -68,7 +68,7 @@ namespace SharpAlert.SourceCapturing
         {
             if (Stop) return;
 
-            if (!servers.Any())
+            if (servers.Count == 0)
             {
                 Console.WriteLine("[Atom Feed Capture] No servers found.");
                 return;
@@ -84,7 +84,7 @@ namespace SharpAlert.SourceCapturing
 
                     lock (servers)
                     {
-                        if (servers.Any())
+                        if (servers.Count != 0)
                         {
                             int count = servers.Count;
                             foreach (ServerInfo server in servers)
@@ -161,7 +161,7 @@ namespace SharpAlert.SourceCapturing
             }
         }
 
-        private readonly object EnrollObject = new object();
+        private readonly Lock EnrollObject = new();
 
         public void EnrollEntries(string data, string name)
         {
@@ -364,7 +364,7 @@ namespace SharpAlert.SourceCapturing
 
                             string CombinedAlertValue = $"<SharpAlertSource>{name}</SharpAlertSource>{alert.Value}";
 
-                            SharpDataItem item = new SharpDataItem(filename, CombinedAlertValue);
+                            SharpDataItem item = new(filename, CombinedAlertValue);
 
                             if (FirstRun && QuickSettings.Instance.discardFirstAlerts)
                             {

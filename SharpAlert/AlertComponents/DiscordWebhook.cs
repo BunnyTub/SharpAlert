@@ -12,7 +12,7 @@ namespace SharpAlert.AlertComponents
 {
     public static class DiscordWebhook
     {
-        private static readonly WebClient discordClient = new WebClient();
+        private static readonly WebClient discordClient = new();
         
         /// <summary>
         /// Returns a URL based on the configuration. Good enough.
@@ -120,11 +120,9 @@ namespace SharpAlert.AlertComponents
                             {
                                 Console.WriteLine($"[Discord Webhook] Returned status code: {(int)response.StatusCode} {response.StatusDescription}");
 
-                                using (var stream = response.GetResponseStream())
-                                using (var reader = new StreamReader(stream))
-                                {
-                                    Console.WriteLine($"[Discord Webhook] Returned body: {reader.ReadToEnd()}");
-                                }
+                                using var stream = response.GetResponseStream();
+                                using var reader = new StreamReader(stream);
+                                Console.WriteLine($"[Discord Webhook] Returned body: {reader.ReadToEnd()}");
                             }
 
                             Console.WriteLine(Encoding.UTF8.GetString(data));
@@ -269,8 +267,8 @@ namespace SharpAlert.AlertComponents
                 {
                     string boundary = "----SharpBoundary" + DateTime.Now.Ticks;
 
-                    string AudioURL = (AudioFileURL != null && AudioFileURL.Any()) ? AudioFileURL[0] : null;
-                    string ImageURL = (ImageFileURL != null && ImageFileURL.Any()) ? ImageFileURL[0] : null;
+                    string AudioURL = (AudioFileURL != null && AudioFileURL.Count != 0) ? AudioFileURL[0] : null;
+                    string ImageURL = (ImageFileURL != null && ImageFileURL.Count != 0) ? ImageFileURL[0] : null;
 
                     //if (!string.IsNullOrEmpty(title) && description1.Length >= 128)
                     //{
@@ -287,28 +285,28 @@ namespace SharpAlert.AlertComponents
 
                     if (!string.IsNullOrEmpty(title) && message.Length >= 128)
                     {
-                        title = title.Substring(0, 118) + "\x20...(truncuated)";
+                        title = string.Concat(title.AsSpan(0, 118), "\x20...(truncuated)");
                         TruncuationOccurred = true;
                         Console.WriteLine("[Discord Webhook] The length of the message text has been truncated.");
                     }
                     
                     if (!string.IsNullOrEmpty(message) && message.Length >= 1000)
                     {
-                        truncMessage = message.Substring(0, 1000) + "\x20...(see txt file)";
+                        truncMessage = string.Concat(message.AsSpan(0, 1000), "\x20...(see txt file)");
                         TruncuationOccurred = true;
                         Console.WriteLine("[Discord Webhook] The length of the message text has been truncated.");
                     }
                     
                     if (!string.IsNullOrEmpty(description1) && description1.Length >= TruncuationLengthPerDescription)
                     {
-                        truncDescription1 = description1.Substring(0, TruncuationLengthPerDescription) + "\x20...(see txt file)";
+                        truncDescription1 = string.Concat(description1.AsSpan(0, TruncuationLengthPerDescription), "\x20...(see txt file)");
                         TruncuationOccurred = true;
                         Console.WriteLine("[Discord Webhook] The length of the intro text has been truncated.");
                     }
 
                     if (!string.IsNullOrEmpty(description2) && description2.Length >= TruncuationLengthPerDescription)
                     {
-                        truncDescription2 = description2.Substring(0, TruncuationLengthPerDescription) + "\x20...(see txt file)";
+                        truncDescription2 = string.Concat(description2.AsSpan(0, TruncuationLengthPerDescription), "\x20...(see txt file)");
                         TruncuationOccurred = true;
                         Console.WriteLine("[Discord Webhook] The length of the body text has been truncated.");
                     }
@@ -424,29 +422,27 @@ namespace SharpAlert.AlertComponents
 
                     byte[] closingBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");
 
-                    using (var ms = new MemoryStream())
+                    using var ms = new MemoryStream();
+                    ms.Write(preFileBytes, 0, preFileBytes.Length);
+                    ms.Write(payloadJsonBytes, 0, payloadJsonBytes.Length);
+
+                    if (TextFileHeaderBytes != null && textBytes != null && textBytes.Length > 0)
                     {
-                        ms.Write(preFileBytes, 0, preFileBytes.Length);
-                        ms.Write(payloadJsonBytes, 0, payloadJsonBytes.Length);
-
-                        if (TextFileHeaderBytes != null && textBytes != null && textBytes.Length > 0)
-                        {
-                            ms.Write(TextFileHeaderBytes, 0, TextFileHeaderBytes.Length);
-                            ms.Write(textBytes, 0, textBytes.Length);
-                        }
-
-                        if (AudioFileHeaderBytes != null && audioBytes != null && audioBytes.Length > 0)
-                        {
-                            ms.Write(AudioFileHeaderBytes, 0, AudioFileHeaderBytes.Length);
-                            ms.Write(audioBytes, 0, audioBytes.Length);
-                        }
-
-                        ms.Write(closingBytes, 0, closingBytes.Length);
-
-                        Console.WriteLine("[Discord Webhook] Payload size (bytes): " + ms.Length);
-
-                        UploadData(webhook, ms.ToArray(), "multipart/form-data; boundary=" + boundary);
+                        ms.Write(TextFileHeaderBytes, 0, TextFileHeaderBytes.Length);
+                        ms.Write(textBytes, 0, textBytes.Length);
                     }
+
+                    if (AudioFileHeaderBytes != null && audioBytes != null && audioBytes.Length > 0)
+                    {
+                        ms.Write(AudioFileHeaderBytes, 0, AudioFileHeaderBytes.Length);
+                        ms.Write(audioBytes, 0, audioBytes.Length);
+                    }
+
+                    ms.Write(closingBytes, 0, closingBytes.Length);
+
+                    Console.WriteLine("[Discord Webhook] Payload size (bytes): " + ms.Length);
+
+                    UploadData(webhook, ms.ToArray(), "multipart/form-data; boundary=" + boundary);
                 }
             }
             catch (Exception ex)

@@ -61,7 +61,8 @@ namespace SharpAlert.ProgramWorker
             return RemoteVersion;
         }
 
-        private static readonly object TryUpdateObject = new object();
+        private static readonly Lock TryUpdateObject = new();
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "<Pending>")]
         public static DateTime TimeUntilUpdate = DateTime.MaxValue;
 
         /// <summary>
@@ -117,7 +118,7 @@ namespace SharpAlert.ProgramWorker
 
                     if (!UpdateImmediately)
                     {
-                        PerformUpdateForm puf = new PerformUpdateForm();
+                        PerformUpdateForm puf = new();
                         puf.ShowDialog();
                         result = puf.DialogResult;
                     }
@@ -131,7 +132,7 @@ namespace SharpAlert.ProgramWorker
 
                     if (result == DialogResult.Yes)
                     {
-                        Thread thread = new Thread(() =>
+                        Thread thread = new(() =>
                         {
                             try
                             {
@@ -152,7 +153,7 @@ namespace SharpAlert.ProgramWorker
                         {
                             if (!IsAdministrator)
                             {
-                                Process proc = new Process();
+                                Process proc = new();
                                 proc.StartInfo.FileName = AssemblyFile;
                                 proc.StartInfo.Arguments = "--update --wait-until-parent-closes";
                                 //proc.StartInfo.UseShellExecute = true;
@@ -167,7 +168,7 @@ namespace SharpAlert.ProgramWorker
 
                                 bool CanContinue = true;
 
-                                if (processes.Count() > 2)
+                                if (processes.Length > 2)
                                 {
                                     if (Args.Contains("--monitored"))
                                     {
@@ -194,7 +195,7 @@ namespace SharpAlert.ProgramWorker
                                 Task<byte[]> output = resultOutput.Result.Content.ReadAsByteArrayAsync();
                                 output.Wait();
 
-                                bool IsValidExecutable(byte[] fileBytes)
+                                static bool IsValidExecutable(byte[] fileBytes)
                                 {
                                     // File length check
                                     if (fileBytes.Length < 512)
@@ -274,7 +275,8 @@ namespace SharpAlert.ProgramWorker
                         {
                             try
                             {
-                                thread.Abort();
+                                // figure out a way to kill the thread. Thread.Abort() is obsolete.
+                                //thread.Abort();
                             }
                             catch (Exception)
                             {

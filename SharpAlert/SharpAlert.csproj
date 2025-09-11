@@ -1,683 +1,82 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{630CB317-CF62-4264-97E1-4DA91E23DA80}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>SharpAlert</RootNamespace>
-    <AssemblyName>SharpAlert</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFrameworkProfile />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>SharpAlert.ProgramWorker.MainEntryPoint</StartupObject>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>WarningApp.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Costura, Version=6.0.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
-      <HintPath>..\packages\Costura.Fody.6.0.0\lib\netstandard2.0\Costura.dll</HintPath>
-    </Reference>
-    <Reference Include="HidLibrary, Version=3.2.49.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\hidlibrary.3.3.40\lib\net45\HidLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.4\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Win32.Registry.5.0.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
-    </Reference>
-    <Reference Include="NAudio, Version=2.2.1.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.2.2.1\lib\net472\NAudio.dll</HintPath>
-    </Reference>
-    <Reference Include="NAudio.Asio, Version=2.2.1.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.Asio.2.2.1\lib\netstandard2.0\NAudio.Asio.dll</HintPath>
-    </Reference>
-    <Reference Include="NAudio.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.Core.2.2.1\lib\netstandard2.0\NAudio.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="NAudio.Midi, Version=2.2.1.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.Midi.2.2.1\lib\netstandard2.0\NAudio.Midi.dll</HintPath>
-    </Reference>
-    <Reference Include="NAudio.Wasapi, Version=2.2.1.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.Wasapi.2.2.1\lib\netstandard2.0\NAudio.Wasapi.dll</HintPath>
-    </Reference>
-    <Reference Include="NAudio.WinForms, Version=2.2.1.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.WinForms.2.2.1\lib\net472\NAudio.WinForms.dll</HintPath>
-    </Reference>
-    <Reference Include="NAudio.WinMM, Version=2.2.1.0, Culture=neutral, PublicKeyToken=e279aa5131008a41, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.WinMM.2.2.1\lib\netstandard2.0\NAudio.WinMM.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Pipelines, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Pipelines.9.0.4\lib\net462\System.IO.Pipelines.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Management" />
-    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Security.AccessControl, Version=6.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.AccessControl.6.0.1\lib\net461\System.Security.AccessControl.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Speech" />
-    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Encodings.Web.9.0.4\lib\net462\System.Text.Encodings.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Text.Json, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Json.9.0.4\lib\net462\System.Text.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AlertComponents\AlertDetails.cs" />
-    <Compile Include="AlertComponents\AlertDisplayer.cs" />
-    <Compile Include="AlertComponents\AlertFormDetails.cs" />
-    <Compile Include="AlertComponents\AlertInfoForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AlertComponents\AlertInfoForm.Designer.cs">
-      <DependentUpon>AlertInfoForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AlertComponents\AlertFormImage.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AlertComponents\AlertFormImage.Designer.cs">
-      <DependentUpon>AlertFormImage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AlertComponents\ChooseTestForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AlertComponents\ChooseTestForm.Designer.cs">
-      <DependentUpon>ChooseTestForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AlertComponents\ManualAlertRelayForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AlertComponents\ManualAlertRelayForm.Designer.cs">
-      <DependentUpon>ManualAlertRelayForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AlertComponents\MiniAlertForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AlertComponents\MiniAlertForm.Designer.cs">
-      <DependentUpon>MiniAlertForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AlertComponents\ScrollAlertForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AlertComponents\ScrollAlertForm.Designer.cs">
-      <DependentUpon>ScrollAlertForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AlertComponents\ImmediateAlertForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AlertComponents\ImmediateAlertForm.Designer.cs">
-      <DependentUpon>ImmediateAlertForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AlertComponents\BoardAlertForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AlertComponents\BoardAlertForm.Designer.cs">
-      <DependentUpon>BoardAlertForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\AlertConfigurationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\AlertConfigurationForm.Designer.cs">
-      <DependentUpon>AlertConfigurationForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\AlertSearchForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\AlertSearchForm.Designer.cs">
-      <DependentUpon>AlertSearchForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\ArchiveConfigurationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\ArchiveConfigurationForm.Designer.cs">
-      <DependentUpon>ArchiveConfigurationForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\AlertTableForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\AlertTableForm.Designer.cs">
-      <DependentUpon>AlertTableForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\EventsAdditionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\EventsAdditionForm.Designer.cs">
-      <DependentUpon>EventsAdditionForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\LocationsAdditionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\LocationsAdditionForm.Designer.cs">
-      <DependentUpon>LocationsAdditionForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\MakiForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\MakiForm.Designer.cs">
-      <DependentUpon>MakiForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\ConfigurationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\ConfigurationForm.Designer.cs">
-      <DependentUpon>ConfigurationForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\DiscordConfigurationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\DiscordConfigurationForm.Designer.cs">
-      <DependentUpon>DiscordConfigurationForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\AlertTextConfigurationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\AlertTextConfigurationForm.Designer.cs">
-      <DependentUpon>AlertTextConfigurationForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\DoNotDisturbForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\DoNotDisturbForm.Designer.cs">
-      <DependentUpon>DoNotDisturbForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\ChoosePresetForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\ChoosePresetForm.Designer.cs">
-      <DependentUpon>ChoosePresetForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConsoleExt.cs" />
-    <Compile Include="DataProcessing\HistoryProcessor.cs" />
-    <Compile Include="AlertComponents\InfoForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AlertComponents\InfoForm.Designer.cs">
-      <DependentUpon>InfoForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AudioManager.cs" />
-    <Compile Include="DisplayDialogs\Panels\AlertInfoHolder.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="DisplayDialogs\Panels\AlertInfoHolder.Designer.cs">
-      <DependentUpon>AlertInfoHolder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\ChooseLocationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\ChooseLocationForm.Designer.cs">
-      <DependentUpon>ChooseLocationForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\ChooseOwnershipForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\ChooseOwnershipForm.Designer.cs">
-      <DependentUpon>ChooseOwnershipForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\ChooseAudioForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\ChooseAudioForm.Designer.cs">
-      <DependentUpon>ChooseAudioForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\StyleConfigurationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\StyleConfigurationForm.Designer.cs">
-      <DependentUpon>StyleConfigurationForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\ChooseRegionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\ChooseRegionForm.Designer.cs">
-      <DependentUpon>ChooseRegionForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PrinterStuff\PrinterController.cs" />
-    <Compile Include="ProgramWorker\DoNotDisturbMode.cs" />
-    <Compile Include="ProgramWorker\GlobalHotkeyManager.cs" />
-    <Compile Include="ProgramWorker\HeartbeatWorker.cs" />
-    <Compile Include="ProgramWorker\NotificationWorker.cs" />
-    <Compile Include="PipeWorker.cs" />
-    <Compile Include="ProgramWorker\ServiceThreads.cs" />
-    <Compile Include="ProgramWorker\SetupDoneForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProgramWorker\SetupDoneForm.Designer.cs">
-      <DependentUpon>SetupDoneForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProgramWorker\PerformUpdateForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProgramWorker\PerformUpdateForm.Designer.cs">
-      <DependentUpon>PerformUpdateForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProgramWorker\UpdateForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProgramWorker\UpdateForm.Designer.cs">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProgramWorker\TimedForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProgramWorker\TimedForm.Designer.cs">
-      <DependentUpon>TimedForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProgramWorker\SetupForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ProgramWorker\SetupForm.Designer.cs">
-      <DependentUpon>SetupForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProgramWorker\QuickSettings.cs" />
-    <Compile Include="ProgramWorker\UpdateWorker.cs" />
-    <Compile Include="RelayController.cs" />
-    <Compile Include="ServiceMonitorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ServiceMonitorForm.Designer.cs">
-      <DependentUpon>ServiceMonitorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SourceCapturing\CacheCapture.cs" />
-    <Compile Include="ConfigurationDialogs\CreditsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\CreditsForm.Designer.cs">
-      <DependentUpon>CreditsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AlertComponents\SendForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AlertComponents\SendForm.Designer.cs">
-      <DependentUpon>SendForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProgramWorker\HaidaWorker.cs" />
-    <Compile Include="ConfigurationDialogs\ServerConfigurationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\ServerConfigurationForm.Designer.cs">
-      <DependentUpon>ServerConfigurationForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DisplayDialogs\StartupForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DisplayDialogs\StartupForm.Designer.cs">
-      <DependentUpon>StartupForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DisplayDialogs\StatusForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DisplayDialogs\StatusForm.Designer.cs">
-      <DependentUpon>StatusForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DisplayDialogs\TeleIdleForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DisplayDialogs\TeleIdleForm.Designer.cs">
-      <DependentUpon>TeleIdleForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SourceCapturing\DirectFeedCapture.cs" />
-    <Compile Include="SourceCapturing\SystemSpecific\IDAPFeedCapture.cs" />
-    <Compile Include="SourceCapturing\SystemSpecific\NonCompliant\UKAtomCapture.cs" />
-    <Compile Include="SourceCapturing\WeatherAtomCapture.cs" />
-    <Compile Include="SpeakingManager.cs" />
-    <Compile Include="ThreadDrool.cs" />
-    <Compile Include="VersionInfo.cs" />
-    <Compile Include="VersionInfoTemplate.cs" />
-    <Compile Include="WebServer\HyperServer.cs" />
-    <Compile Include="WinFormsControls\RoundedCorners.cs" />
-    <Compile Include="WinFormsControls\ToolboxStuff.cs" />
-    <Compile Include="ToppleForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ToppleForm.Designer.cs">
-      <DependentUpon>ToppleForm.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="AlertComponents\AlertInfoForm.resx">
-      <DependentUpon>AlertInfoForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AlertComponents\AlertFormImage.resx">
-      <DependentUpon>AlertFormImage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AlertComponents\ChooseTestForm.resx">
-      <DependentUpon>ChooseTestForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AlertComponents\ManualAlertRelayForm.resx">
-      <DependentUpon>ManualAlertRelayForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AlertComponents\MiniAlertForm.resx">
-      <DependentUpon>MiniAlertForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AlertComponents\ScrollAlertForm.resx">
-      <DependentUpon>ScrollAlertForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AlertComponents\ImmediateAlertForm.resx">
-      <DependentUpon>ImmediateAlertForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AlertComponents\BoardAlertForm.resx">
-      <DependentUpon>BoardAlertForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\AlertConfigurationForm.resx">
-      <DependentUpon>AlertConfigurationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AlertComponents\InfoForm.resx">
-      <DependentUpon>InfoForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\AlertSearchForm.resx">
-      <DependentUpon>AlertSearchForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\ArchiveConfigurationForm.resx">
-      <DependentUpon>ArchiveConfigurationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\AlertTableForm.resx">
-      <DependentUpon>AlertTableForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\EventsAdditionForm.resx">
-      <DependentUpon>EventsAdditionForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\LocationsAdditionForm.resx">
-      <DependentUpon>LocationsAdditionForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\ConfigurationForm.resx">
-      <DependentUpon>ConfigurationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\DiscordConfigurationForm.resx">
-      <DependentUpon>DiscordConfigurationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\CreditsForm.resx">
-      <DependentUpon>CreditsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AlertComponents\SendForm.resx">
-      <DependentUpon>SendForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\DoNotDisturbForm.resx">
-      <DependentUpon>DoNotDisturbForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\ServerConfigurationForm.resx">
-      <DependentUpon>ServerConfigurationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\AlertTextConfigurationForm.resx">
-      <DependentUpon>AlertTextConfigurationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\ChoosePresetForm.resx">
-      <DependentUpon>ChoosePresetForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DisplayDialogs\Panels\AlertInfoHolder.resx">
-      <DependentUpon>AlertInfoHolder.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DisplayDialogs\StartupForm.resx">
-      <DependentUpon>StartupForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DisplayDialogs\StatusForm.resx">
-      <DependentUpon>StatusForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DisplayDialogs\TeleIdleForm.resx">
-      <DependentUpon>TeleIdleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\ChooseLocationForm.resx">
-      <DependentUpon>ChooseLocationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\ChooseOwnershipForm.resx">
-      <DependentUpon>ChooseOwnershipForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\ChooseAudioForm.resx">
-      <DependentUpon>ChooseAudioForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\StyleConfigurationForm.resx">
-      <DependentUpon>StyleConfigurationForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigurationDialogs\ChooseRegionForm.resx">
-      <DependentUpon>ChooseRegionForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProgramWorker\SetupDoneForm.resx">
-      <DependentUpon>SetupDoneForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProgramWorker\PerformUpdateForm.resx">
-      <DependentUpon>PerformUpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProgramWorker\UpdateForm.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProgramWorker\TimedForm.resx">
-      <DependentUpon>TimedForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProgramWorker\SetupForm.resx">
-      <DependentUpon>SetupForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ServiceMonitorForm.resx">
-      <DependentUpon>ServiceMonitorForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ToppleForm.resx">
-      <DependentUpon>ToppleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <Compile Include="ConfigurationDialogs\AlertListForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConfigurationDialogs\AlertListForm.Designer.cs">
-      <DependentUpon>AlertListForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AlertComponents\TeleAlertForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AlertComponents\TeleAlertForm.Designer.cs">
-      <DependentUpon>TeleAlertForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AlertComponents\AlertProcessor.cs" />
-    <Compile Include="AlertComponents\DiscordWebhook.cs" />
-    <Compile Include="DataProcessing\DataProcessor.cs" />
-    <Compile Include="SourceCapturing\FeedCapture.cs" />
-    <Compile Include="AlertComponents\AlertForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AlertComponents\AlertForm.Designer.cs">
-      <DependentUpon>AlertForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProgramWorker\MainEntryPoint.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs" />
-    <EmbeddedResource Include="ConfigurationDialogs\AlertListForm.resx">
-      <DependentUpon>AlertListForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AlertComponents\TeleAlertForm.resx">
-      <DependentUpon>TeleAlertForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AlertComponents\AlertForm.resx">
-      <DependentUpon>AlertForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <None Include="app.manifest" />
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="RegexList.cs" />
-    <None Include="UpdateVersionInfo.ps1" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ui_alert.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="WebServer\style.css" />
-    <EmbeddedResource Include="WebServer\index.html" />
-    <None Include="Resources\WarningApp1.png" />
-    <None Include="Resources\AlertIcon.ico" />
-    <None Include="Resources\LightIcon.ico" />
-    <None Include="Resources\WarningApp_Splash.png" />
-    <None Include="Resources\WarningApp Splash.png" />
-    <None Include="Resources\minor_alert.wav" />
-    <None Include="Resources\ui_end_1.wav" />
-    <None Include="Resources\ui_nothing_1.wav" />
-    <None Include="Resources\major_alert.wav" />
-    <EmbeddedResource Include="SpeakingAssets\BetaVersionInUse.wav" />
-    <EmbeddedResource Include="SpeakingAssets\DisabledBasicSpeaking.wav" />
-    <EmbeddedResource Include="SpeakingAssets\DismissedWindow.wav" />
-    <EmbeddedResource Include="SpeakingAssets\EnabledBasicSpeaking.wav" />
-    <EmbeddedResource Include="SpeakingAssets\ForwardThisMessageToDiscord.wav" />
-    <EmbeddedResource Include="SpeakingAssets\FullDaySinceQueuedAlert.wav" />
-    <EmbeddedResource Include="SpeakingAssets\HalfDaySinceQueuedAlert.wav" />
-    <EmbeddedResource Include="SpeakingAssets\ModerateOrLower.wav" />
-    <EmbeddedResource Include="SpeakingAssets\ProgramRunning.wav" />
-    <EmbeddedResource Include="SpeakingAssets\SettingsSaved.wav" />
-    <EmbeddedResource Include="SpeakingAssets\SetupComplete.wav" />
-    <EmbeddedResource Include="SpeakingAssets\SevereOrHigher.wav" />
-    <EmbeddedResource Include="SpeakingAssets\TopOfTheHour.wav" />
-    <EmbeddedResource Include="SpeakingAssets\UpdatesFound.wav" />
-    <None Include="Resources\TrayLightIcon.ico" />
-    <None Include="Resources\TrayAlertIcon.ico" />
-    <None Include="Resources\AlertIcon.png" />
-    <None Include="Resources\Topple1.png" />
-    <None Include="Resources\IMG_1399.png" />
-    <None Include="Resources\TaskBarExample.png" />
-    <None Include="Resources\V-Sign.png" />
-    <EmbeddedResource Include="SpeakingAssets\DisabledDoNotDisturb.wav" />
-    <EmbeddedResource Include="SpeakingAssets\EnabledDoNotDisturb.wav" />
-    <Content Include="WarningApp.ico" />
-    <None Include="Resources\WarningApp.png" />
-    <Content Include="FodyWeavers.xml" />
-    <None Include="Resources\ui_nothing.wav" />
-    <None Include="Resources\CrashIcon.png" />
-    <None Include="Resources\Topple.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.6.0.0\build\Costura.Fody.props'))" />
-    <Error Condition="!Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets'))" />
-    <Error Condition="!Exists('..\packages\Fody.6.9.2\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.9.2\build\Fody.targets'))" />
-    <Error Condition="!Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
-  </Target>
-  <PropertyGroup>
-    <Obfuscate>true</Obfuscate>
-    <!-- Default values. The following lines can be removed, unless they are changed. -->
-    <ConfuserReplaceOutput>true</ConfuserReplaceOutput>
-    <!-- <ConfuserProject>$(MSBuildProjectDirectory)\$(MSBuildProjectName).crproj</ConfuserProject> -->
-    <ConfuserSymbolFileName>symbols.map</ConfuserSymbolFileName>
-  </PropertyGroup>
-  <Import Project="..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.6.0.0\build\Costura.Fody.targets')" />
-  <PropertyGroup>
-    <PostBuildEvent>del /s /q /f *.config
-del /s /q /f *.xml
-del /s /q /f *.dll</PostBuildEvent>
-  </PropertyGroup>
-  <Import Project="..\packages\Fody.6.9.2\build\Fody.targets" Condition="Exists('..\packages\Fody.6.9.2\build\Fody.targets')" />
-  <Import Project="..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
-  <PropertyGroup>
-    <PreBuildEvent>cd $(ProjectDir)
-powershell -ExecutionPolicy Bypass -File "$(ProjectDir)UpdateVersionInfo.ps1"
-ping 127.0.0.1 -n 2</PreBuildEvent>
-  </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net9.0-windows</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<EnableWindowsTargeting>true</EnableWindowsTargeting>
+		<PublishSingleFile>true</PublishSingleFile>
+		<SelfContained>false</SelfContained>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		
+		<ApplicationIcon>WarningApp.ico</ApplicationIcon>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<StartupObject>SharpAlert.ProgramWorker.MainEntryPoint</StartupObject>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+		<AssemblyTitle>SharpAlert</AssemblyTitle>
+		<Description>Receive alerts. Safety is never a non-priority.</Description>
+		<Company>BunnyTub</Company>
+		<Product>SharpAlert</Product>
+		<Copyright>BunnyTub</Copyright>
+		<Trademark></Trademark>
+		<NeutralLanguage>en-US</NeutralLanguage>
+	</PropertyGroup>
+
+	<!-- <ItemGroup>
+	  <Compile Include="Properties\AssemblyInfo.cs.old" />
+	</ItemGroup> -->
+
+	<!-- NuGet dependencies -->
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="NAudio" Version="2.2.1" />
+		<PackageReference Include="HidLibrary" Version="3.3.40" />
+		<PackageReference Include="Costura.Fody" Version="6.0.0" />
+		<PackageReference Include="System.Speech" Version="9.0.9" />
+	</ItemGroup>
+
+	<!-- Embedded resources -->
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\ui_alert.wav" />
+		<EmbeddedResource Include="WebServer\style.css" />
+		<EmbeddedResource Include="WebServer\index.html" />
+	</ItemGroup>
+
+	<!-- Windows Forms resources -->
+	<ItemGroup>
+		<EmbeddedResource Update="Form1.resx">
+			<DependentUpon>Form1.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="MainWindow.resx">
+			<DependentUpon>MainWindow.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<!-- Designer files (WinForms) -->
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<AutoGen>True</AutoGen>
+			<DesignTime>True</DesignTime>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<AutoGen>True</AutoGen>
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<!-- Settings file -->
+	<ItemGroup>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+
 </Project>

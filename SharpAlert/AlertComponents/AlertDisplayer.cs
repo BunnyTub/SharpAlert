@@ -231,7 +231,7 @@ namespace SharpAlert.AlertComponents
                         default:
                         case 0:
                             // AlertForm
-                            if (raf == null || raf.IsDisposed) raf = new AlertForm();
+                            if (raf == null || raf.IsDisposed) raf = new WinFormsAlertForm();
                             raf.UpdateFields(alert.Identifier,
                                 alert.EventTypeFull,
                                 alert._AlertText.Intro,
@@ -330,7 +330,7 @@ namespace SharpAlert.AlertComponents
             return (list != null && list.Count > 0) ? list[0] : string.Empty;
         }
 
-        private static AlertForm raf = null;
+        private static WinFormsAlertForm raf = null;
         private static TeleAlertForm taf = null;
         private static MiniAlertForm maf = null;
         private static ScrollAlertForm saf = null;

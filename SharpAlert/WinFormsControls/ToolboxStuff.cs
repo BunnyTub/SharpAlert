@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace SharpAlert.WinFormsControls
 {
@@ -11,8 +12,11 @@ namespace SharpAlert.WinFormsControls
             private readonly Timer scrollTimer;
             private float textPosition = 0;
 
+            [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
             public float ScrollSpeed { get; set; } = 1.5f;
+            [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
             public bool UseCustomPixelCount { get; set; } = false;
+            [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
             public int Stutter { get; set; } = 50;
 
             public MarqueeLabel()
@@ -38,7 +42,7 @@ namespace SharpAlert.WinFormsControls
 
                 if (this.Text.Length == 0) return;
 
-                float localTextPosition = textPosition;
+                //float localTextPosition = textPosition;
                 //if (UseCustomPixelCount) localTextPosition += PixelCount;
 
                 SizeF textSize = e.Graphics.MeasureString(this.Text, this.Font);
@@ -73,6 +77,7 @@ namespace SharpAlert.WinFormsControls
                 }
             }
 
+            [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
             public new string Text
             {
                 get
@@ -148,6 +153,7 @@ namespace SharpAlert.WinFormsControls
         {
             private Color _BorderColor = Color.Black;
 
+            [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
             public Color BorderColor
             {
                 get
@@ -161,6 +167,7 @@ namespace SharpAlert.WinFormsControls
                 }
             }
 
+            [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
             public int BorderThickness { get; set; } = 2;
 
             public BorderPanel()
@@ -174,17 +181,15 @@ namespace SharpAlert.WinFormsControls
             {
                 base.OnPaint(e);
 
-                using (var pen = new Pen(_BorderColor, BorderThickness))
-                {
-                    pen.Alignment = System.Drawing.Drawing2D.PenAlignment.Outset;
-                    int offset = BorderThickness / 2;
-                    var rect = new Rectangle(
-                        offset,
-                        offset,
-                        this.Width - BorderThickness,
-                        this.Height - BorderThickness);
-                    e.Graphics.DrawRectangle(pen, rect);
-                }
+                using var pen = new Pen(_BorderColor, BorderThickness);
+                pen.Alignment = System.Drawing.Drawing2D.PenAlignment.Outset;
+                int offset = BorderThickness / 2;
+                var rect = new Rectangle(
+                    offset,
+                    offset,
+                    this.Width - BorderThickness,
+                    this.Height - BorderThickness);
+                e.Graphics.DrawRectangle(pen, rect);
             }
         }
     }

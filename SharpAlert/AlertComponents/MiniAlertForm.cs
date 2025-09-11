@@ -134,7 +134,7 @@ namespace SharpAlert.AlertComponents
 
         private void UpdateTaskbarProgress(TaskbarProgressState state, ulong completed, ulong total)
         {
-            if (GotHandle != null || GotHandle == IntPtr.Zero)
+            if (GotHandle != IntPtr.Zero)
             {
                 taskbarList.SetProgressState(GotHandle, state);
 
