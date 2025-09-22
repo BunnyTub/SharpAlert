@@ -6,6 +6,8 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
+using SharpAlert.ProgramWorker;
+using SharpAlert.Properties;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 
 namespace SharpAlert.AlertComponents
@@ -261,7 +263,12 @@ namespace SharpAlert.AlertComponents
                 Console.WriteLine("[Discord Webhook] Preparing to send an alert message to a Discord webhook.");
 
                 string webhook = $"{GetDiscordWebhookURLFromSourceName(FeedSource).URL}";
-                if (string.IsNullOrWhiteSpace(webhook)) return;
+                if (string.IsNullOrWhiteSpace(webhook))
+                {
+                    //webhook = Settings.Default.DiscordWebhook;
+                    Console.WriteLine("[Discord Webhook] No webhook found (somehow).");
+                    return;
+                }
 
                 lock (discordClient)
                 {
@@ -276,44 +283,74 @@ namespace SharpAlert.AlertComponents
                     //    Console.WriteLine("[Discord Webhook] The length of the title text has been truncated.");
                     //}
 
-                    int TruncuationLengthPerDescription = 1800;
-                    bool TruncuationOccurred = false;
+                    int TruncuationLengthPerDescription = 1780;
+                    bool TruncationOccurred = false;
 
                     string truncMessage = message;
                     string truncDescription1 = description1;
                     string truncDescription2 = description2;
 
-                    if (!string.IsNullOrEmpty(title) && message.Length >= 128)
+                    try
                     {
-                        title = string.Concat(title.AsSpan(0, 118), "\x20...(truncuated)");
-                        TruncuationOccurred = true;
-                        Console.WriteLine("[Discord Webhook] The length of the message text has been truncated.");
+                        if (!string.IsNullOrEmpty(title) && title.Length >= 118)
+                        {
+                            title = string.Concat(title.AsSpan(0, 108), "\x20...(truncated)");
+                            TruncationOccurred = true;
+                            Console.WriteLine("[Discord Webhook] The length of the title text has been truncated.");
+                        }
                     }
-                    
-                    if (!string.IsNullOrEmpty(message) && message.Length >= 1000)
+                    catch (Exception ex)
                     {
-                        truncMessage = string.Concat(message.AsSpan(0, 1000), "\x20...(see txt file)");
-                        TruncuationOccurred = true;
-                        Console.WriteLine("[Discord Webhook] The length of the message text has been truncated.");
-                    }
-                    
-                    if (!string.IsNullOrEmpty(description1) && description1.Length >= TruncuationLengthPerDescription)
-                    {
-                        truncDescription1 = string.Concat(description1.AsSpan(0, TruncuationLengthPerDescription), "\x20...(see txt file)");
-                        TruncuationOccurred = true;
-                        Console.WriteLine("[Discord Webhook] The length of the intro text has been truncated.");
+                        Console.WriteLine($"[Discord Webhook] Truncation error. {ex.Message}");
+                        title = "Unknown";
                     }
 
-                    if (!string.IsNullOrEmpty(description2) && description2.Length >= TruncuationLengthPerDescription)
+                    try
                     {
-                        truncDescription2 = string.Concat(description2.AsSpan(0, TruncuationLengthPerDescription), "\x20...(see txt file)");
-                        TruncuationOccurred = true;
-                        Console.WriteLine("[Discord Webhook] The length of the body text has been truncated.");
+                        if (!string.IsNullOrEmpty(message) && message.Length >= 950)
+                        {
+                            truncMessage = string.Concat(message.AsSpan(0, 950), "\x20...(see txt file)");
+                            TruncationOccurred = true;
+                            Console.WriteLine("[Discord Webhook] The length of the message text has been truncated.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[Discord Webhook] Truncation error. {ex.Message}");
+                        message = "Unknown";
+                    }
+
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(description1) && description1.Length >= TruncuationLengthPerDescription)
+                        {
+                            truncDescription1 = string.Concat(description1.AsSpan(0, TruncuationLengthPerDescription), "\x20...(see txt file)");
+                            TruncationOccurred = true;
+                            Console.WriteLine("[Discord Webhook] The length of the intro text has been truncated.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[Discord Webhook] Truncation error. {ex.Message}");
+                    }
+
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(description2) && description2.Length >= TruncuationLengthPerDescription)
+                        {
+                            truncDescription2 = string.Concat(description2.AsSpan(0, TruncuationLengthPerDescription), "\x20...(see txt file)");
+                            TruncationOccurred = true;
+                            Console.WriteLine("[Discord Webhook] The length of the body text has been truncated.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[Discord Webhook] Truncation error. {ex.Message}");
                     }
 
                     string Fields = string.Empty;
 
-                    if (QuickSettings.Instance.AddIntroText & !string.IsNullOrWhiteSpace(truncDescription1))
+                    if (QuickSettings.Instance.AddIntroText && !string.IsNullOrWhiteSpace(truncDescription1))
                     {
                         Fields += $"**Alert Info**\r\n```\r\n{truncDescription1}\r\n```\r\n";
                     }
@@ -376,7 +413,7 @@ namespace SharpAlert.AlertComponents
                     byte[] textBytes = null;
                     byte[] audioBytes = null;
 
-                    if (TruncuationOccurred)
+                    if (TruncationOccurred)
                     {
                         var sbFile = new StringBuilder();
                         sbFile.Append("\r\n--").Append(boundary).Append("\r\n");
@@ -387,7 +424,7 @@ namespace SharpAlert.AlertComponents
                         TextFileHeaderBytes = Encoding.UTF8.GetBytes(sbFile.ToString());
 
                         // Convert the truncated text to bytes
-                        string text = "SharpAlert determined the message is too big to fully display on Discord.\r\n\r\n" +
+                        string text = "SharpAlert determined the message is too big to fully display as a message.\r\n\r\n" +
                             "--- Alert Info ---\r\n\r\n" +
                             $"{description1}\r\n\r\n" +
                             "--- Alert Text ---\r\n\r\n" +
@@ -447,7 +484,7 @@ namespace SharpAlert.AlertComponents
             }
             catch (Exception ex)
             {
-                Console.WriteLine("[Discord Webhook] " + ex.Message);
+                Console.WriteLine("[Discord Webhook] Fault during message processing. " + ex.Message);
             }
         }
     }

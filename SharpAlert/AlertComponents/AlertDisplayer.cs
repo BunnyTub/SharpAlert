@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using SharpAlert.PrinterStuff;
+using SharpAlert.ProgramWorker;
 using SharpAlert.Properties;
 using SharpAlert.WebServer;
 using static SharpAlert.AlertComponents.AlertProcessor;
@@ -23,7 +24,7 @@ namespace SharpAlert.AlertComponents
         //public static string DialogAlertImageURL = string.Empty;
         //public static string DialogAlertType = string.Empty;
         //public static string DialogAlertSeverity = string.Empty;
-        public static List<AlertDisplayerInfo> Alerts = new List<AlertDisplayerInfo>();
+        private static readonly List<AlertDisplayerInfo> Alerts = [];
 
         public class AlertDisplayerInfo
         {
@@ -64,7 +65,7 @@ namespace SharpAlert.AlertComponents
                 {   
                     try
                     {
-                        if (Alerts.Any())
+                        if (Alerts.Count != 0)
                         {
                             lock (Alerts)
                             {
@@ -231,7 +232,7 @@ namespace SharpAlert.AlertComponents
                         default:
                         case 0:
                             // AlertForm
-                            if (raf == null || raf.IsDisposed) raf = new WinFormsAlertForm();
+                            if (raf == null || raf.IsDisposed) raf = new AlertForm();
                             raf.UpdateFields(alert.Identifier,
                                 alert.EventTypeFull,
                                 alert._AlertText.Intro,
@@ -330,7 +331,7 @@ namespace SharpAlert.AlertComponents
             return (list != null && list.Count > 0) ? list[0] : string.Empty;
         }
 
-        private static WinFormsAlertForm raf = null;
+        private static AlertForm raf = null;
         private static TeleAlertForm taf = null;
         private static MiniAlertForm maf = null;
         private static ScrollAlertForm saf = null;

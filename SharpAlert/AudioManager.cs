@@ -13,6 +13,7 @@ using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using static SharpAlert.ProgramWorker.NotificationWorker;
+using SharpAlert.ProgramWorker;
 
 namespace SharpAlert
 {

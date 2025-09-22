@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using SharpAlert.ProgramWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 
 namespace SharpAlert.ConfigurationDialogs

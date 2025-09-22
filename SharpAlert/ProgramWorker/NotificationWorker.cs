@@ -18,7 +18,7 @@ namespace SharpAlert.ProgramWorker
         }
 
         public static NotifyIcon Notify = null;
-        private static ConfigurationForm mf = null;
+        private static WinFormsConfigurationForm mf = null;
         //private static bool NotifyIconCalled = false;
         public static bool IgnoreRightClick = false;
 
@@ -249,7 +249,7 @@ namespace SharpAlert.ProgramWorker
             contextMenu.Items.Add(new ToolStripMenuItem("Open Settings", null, (sender, arg) =>
             {
                 IgnoreRightClick = true;
-                if (mf == null || mf.IsDisposed) mf = new ConfigurationForm();
+                if (mf == null || mf.IsDisposed) mf = new WinFormsConfigurationForm();
                 mf.ShowDialog();
                 IgnoreRightClick = false;
             }));

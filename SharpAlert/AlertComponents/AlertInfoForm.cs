@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using SharpAlert.ProgramWorker;
 using static SharpAlert.AlertComponents.AlertProcessor;
 
 namespace SharpAlert.AlertComponents
@@ -294,7 +295,7 @@ namespace SharpAlert.AlertComponents
             if (!string.IsNullOrWhiteSpace(AlertUrlStr))
             {
                 // let's assume this is a URL for now, we'll fix it later
-                Process.Start(AlertUrlStr);
+                HackyWorkarounds.OpenURL(AlertUrlStr);
             }
             else
             {

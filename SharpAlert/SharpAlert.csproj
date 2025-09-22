@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net9.0-windows</TargetFramework>
-		<UseWindowsForms>true</UseWindowsForms>
+		<TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
+		<UseWindowsForms>True</UseWindowsForms>
 		<EnableWindowsTargeting>true</EnableWindowsTargeting>
 		<PublishSingleFile>true</PublishSingleFile>
 		<SelfContained>false</SelfContained>
@@ -21,6 +21,8 @@
 		<Copyright>BunnyTub</Copyright>
 		<Trademark></Trademark>
 		<NeutralLanguage>en-US</NeutralLanguage>
+		<Title>SharpAlert</Title>
+		<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
 	<!-- <ItemGroup>
@@ -29,10 +31,14 @@
 
 	<!-- NuGet dependencies -->
 	<ItemGroup>
+		<PackageReference Include="Eto.Forms" Version="2.10.1" />
+		<PackageReference Include="Eto.Platform.Gtk" Version="2.10.1" />
+		<PackageReference Include="Eto.Platform.Windows" Version="2.10.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="HidLibrary" Version="3.3.40" />
 		<PackageReference Include="Costura.Fody" Version="6.0.0" />
+		<PackageReference Include="System.Resources.Extensions" Version="9.0.9" />
 		<PackageReference Include="System.Speech" Version="9.0.9" />
 	</ItemGroup>
 

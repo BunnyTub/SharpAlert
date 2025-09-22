@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using SharpAlert.ProgramWorker;
 using SharpAlert.Properties;
 
 namespace SharpAlert.ConfigurationDialogs

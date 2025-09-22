@@ -14,6 +14,7 @@ using SharpAlert.SourceCapturing;
 using System.Text.Json;
 using System.Text;
 using SharpAlert.Properties;
+using System.Threading;
 
 namespace SharpAlert.AlertComponents
 {
@@ -34,7 +35,7 @@ namespace SharpAlert.AlertComponents
             //StartSAFCallLoop();
         }
 
-        public static readonly object AlertLock = new object();
+        public static readonly object AlertLock = new();
 
         public static int AlertsQueued
         {
@@ -101,12 +102,21 @@ namespace SharpAlert.AlertComponents
                 Console.WriteLine($"[Alert Processor] Beginning processing -> {relayItem.Name}");
                 //if (!DoNotAddToCount) AlertsProcessing++;
                 AlertsProcessing++;
-                var info = SubProcessAlertItem(relayItem, ReplayMode, IgnoreDiscards);
+                AlertInfo info = SubProcessAlertItem(relayItem, ReplayMode, IgnoreDiscards);
+
+                if (QuickSettings.Instance.IgnoreKeepAlive)
+                {
+                    if (relayItem.Name.ToLowerInvariant().Contains("keepalive"))
+                    {
+                        info = new AlertInfo { AlertDiscardReason = "The identifier contains \"KEEPALIVE\", so this alert has been discarded." };
+                    }
+                }
+
                 //if (!DoNotAddToCount) AlertsProcessing--;
                 AlertsProcessing--;
                 Console.WriteLine($"[Alert Processor] Finished processing -> {relayItem.Name}");
                 AlertInProcessing = false;
-                return info[0];
+                return info;
             }
             else
             {
@@ -125,7 +135,7 @@ namespace SharpAlert.AlertComponents
             public string AlertID { get; set; } = string.Empty;
             public string AlertSentDate { get; set; } = string.Empty;
             public string AlertExpiryDate { get; set; } = string.Empty;
-            public List<string> AlertFriendlyLocations { get; set; } = new List<string>();
+            public List<string> AlertFriendlyLocations { get; set; } = [];
             public string AlertEventType { get; set; } = string.Empty;
             public string AlertMessageType { get; set; } = string.Empty;
             public string AlertSeverity { get; set; } = string.Empty;
@@ -140,34 +150,17 @@ namespace SharpAlert.AlertComponents
         /// Processes and relays the alert item.
         /// </summary>
         /// <param name="relayItem">The item to be processed.</param>
-        private AlertInfo[] SubProcessAlertItem(SharpDataItem relayItem, bool ReplayMode, bool IgnoreDiscards)
+        private AlertInfo SubProcessAlertItem(SharpDataItem relayItem, bool ReplayMode, bool IgnoreDiscards)
         {
-            // support multi alerts inside the alert processor
-            
             lock (AlertLock)
             {
-                if (relayItem == null) return new AlertInfo[] { new AlertInfo { AlertDiscardReason = "No alert(s) provided." } };
+                if (relayItem == null) return new AlertInfo { AlertDiscardReason = "No alert provided." };
 
-                List<AlertInfo> AlertInfoList = new List<AlertInfo>();
-
-                MatchCollection alertMatches = AlertRegex.Matches(relayItem.Name);
-                List<string> AlertList = new List<string>();
-
-                foreach (Match alertMatch in alertMatches)
-                {
-                    AlertList.Add(alertMatch.Value);
-                }
-
-                Console.WriteLine($"[Alert Processor] Found {alertMatches.Count} alert(s).");
-                if (alertMatches.Count == 0)
-                {
-                    Console.WriteLine($"[Alert Processor] The provided data will be processed as one, because no alert tags were found.");
-                    AlertList.Add(relayItem.Data);
-                }
+                string alert = relayItem.Data;
 
                 if (QuickSettings.Instance.BypassAllFilters) Console.WriteLine($"[Alert Processor] Due to BypassAllFilters being enabled, any alerts will pass/succeed (if valid), regardless of set filters.");
 
-                foreach (string alert in AlertList)
+                //foreach (string alert in AlertList)
                 {
                     //if (alertMatches.Count != 1)
                     //{
@@ -212,8 +205,7 @@ namespace SharpAlert.AlertComponents
                         //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
                         if (!IgnoreDiscards)
                         {
-                            AlertInfoList.Add(new AlertInfo { AlertDiscardReason = "The alert was blocked because of your status, or message type settings." });
-                            continue;
+                            return new AlertInfo { AlertDiscardReason = "The alert was blocked because of your status, or message type settings." };
                         }
                     }
 
@@ -239,22 +231,21 @@ namespace SharpAlert.AlertComponents
                         //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
                         if (!IgnoreDiscards)
                         {
-                            AlertInfoList.Add(new AlertInfo { AlertDiscardReason = "The alert was blocked because of your location, urgency, or category settings." });
-                            continue;
+                            return new AlertInfo { AlertDiscardReason = "The alert was blocked because of your location, urgency, or category settings." };
                         }
                     }
 
                     int infoProc = 0;
 
-                    List<string> AllEvents = new List<string>();
-                    List<string> AllLocations = new List<string>();
+                    List<string> AllEvents = [];
+                    List<string> AllLocations = [];
                     SeverityLevel MaxSeverity = SeverityLevel.Unknown;
 
-                    List<string> AudioFiles = new List<string>();
-                    List<string> DerefAudioFiles = new List<string>();
-                    List<string> ImageFiles = new List<string>();
-                    List<string> DerefImageFiles = new List<string>();
-                    List<AlertTextClass> AlertTextList = new List<AlertTextClass>();
+                    List<string> AudioFiles = [];
+                    List<string> DerefAudioFiles = [];
+                    List<string> ImageFiles = [];
+                    List<string> DerefImageFiles = [];
+                    List<AlertTextClass> AlertTextList = [];
                     string Expiry = string.Empty;
                     string EventTypeFull = string.Empty;
                     string PrimaryURL = string.Empty;
@@ -411,20 +402,20 @@ namespace SharpAlert.AlertComponents
                             }
                         }
 
-                        if (!IgnoreDiscards)
-                        {
-                            if (!PrimaryURL.Contains("sasmex.net"))
-                            {
-                                if (!QuickSettings.Instance.AllowNonEnglishAlerts)
-                                {
-                                    if (!BCP47Language.ToLowerInvariant().StartsWith("en-"))
-                                    {
-                                        Console.WriteLine("[Alert Processor] Info tag discarded because it does not contain English information.");
-                                        continue;
-                                    }
-                                }
-                            }
-                        }
+                        //if (!IgnoreDiscards)
+                        //{
+                        //    if (!PrimaryURL.Contains("sasmex.net"))
+                        //    {
+                        //        if (!QuickSettings.Instance.AllowNonEnglishAlerts)
+                        //        {
+                        //            if (!BCP47Language.ToLowerInvariant().StartsWith("en-"))
+                        //            {
+                        //                Console.WriteLine("[Alert Processor] Info tag discarded because it does not contain English information.");
+                        //                continue;
+                        //            }
+                        //        }
+                        //    }
+                        //}
 
                         if (!IgnoreDiscards)
                         {
@@ -552,7 +543,7 @@ namespace SharpAlert.AlertComponents
                                 }
                             }
 
-                            AlertTextClass text = new AlertTextClass { Intro = Intro, Body = Body };
+                            AlertTextClass text = new() { Intro = Intro, Body = Body };
 
                             bool MatchFound = false;
 
@@ -587,8 +578,7 @@ namespace SharpAlert.AlertComponents
                     if (AlertTextList.Count == 0)
                     {
                         Console.WriteLine("[Alert Processor] There is no alert text to process.");
-                        AlertInfoList.Add(new AlertInfo { AlertDiscardReason = "The alert cannot be processed because no alert text exists." });
-                        continue;
+                        return new AlertInfo { AlertDiscardReason = "The alert cannot be processed because no alert text exists." };
                     }
                     else
                     {
@@ -618,10 +608,10 @@ namespace SharpAlert.AlertComponents
 
                         if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.StationIdentifier))
                         {
-                            FullIntro = $"This message originates from {QuickSettings.Instance.StationIdentifier} ({QuickSettings.Instance.StationName}).\r\n\r\n{FullIntro}".Trim();
+                            FullIntro = $"This message relays from {QuickSettings.Instance.StationIdentifier} ({QuickSettings.Instance.StationName}).\r\n\r\n{FullIntro}".Trim();
                         }
 
-                        AlertTextClass _AlertText = new AlertTextClass
+                        AlertTextClass _AlertText = new()
                         {
                             Intro = FullIntro,
                             Body = FullBody
@@ -648,7 +638,7 @@ namespace SharpAlert.AlertComponents
 
                     //MessageBox.Show(MaxSeverity.ToString());
 
-                    AlertInfoList.Add(new AlertInfo
+                    return new AlertInfo
                     {
                         // do something about alert IDs
                         AlertSource = Source,
@@ -664,14 +654,543 @@ namespace SharpAlert.AlertComponents
                         AlertURL = PrimaryURL,
                         AlertAudioURL = AudioURL,
                         AlertImageURL = ImageURL
-                    });
-
-                    continue;
+                    };
                 }
-
-                return AlertInfoList.ToArray();
             }
         }
+
+        //private AlertInfo[] SubProcessMassAlertItem(SharpDataItem relayItem, bool ReplayMode, bool IgnoreDiscards)
+        //{
+        //    // support multi alerts inside the alert processor
+
+        //    lock (AlertLock)
+        //    {
+        //        if (relayItem == null) return new AlertInfo[] { new AlertInfo { AlertDiscardReason = "No alert(s) provided." } };
+
+        //        List<AlertInfo> AlertInfoList = new List<AlertInfo>();
+
+        //        MatchCollection alertMatches = AlertRegex.Matches(relayItem.Name);
+        //        List<string> AlertList = new List<string>();
+
+        //        foreach (Match alertMatch in alertMatches)
+        //        {
+        //            AlertList.Add(alertMatch.Value);
+        //        }
+
+        //        Console.WriteLine($"[Alert Processor] Found {alertMatches.Count} alert(s).");
+        //        if (alertMatches.Count == 0)
+        //        {
+        //            Console.WriteLine($"[Alert Processor] The provided data will be processed as one, because no alert tags were found.");
+        //            AlertList.Add(relayItem.Data);
+        //        }
+
+        //        if (QuickSettings.Instance.BypassAllFilters) Console.WriteLine($"[Alert Processor] Due to BypassAllFilters being enabled, any alerts will pass/succeed (if valid), regardless of set filters.");
+
+        //        foreach (string alert in AlertList)
+        //        {
+        //            //if (alertMatches.Count != 1)
+        //            //{
+        //            //    Console.WriteLine($"[Alert Processor] Cannot process multiple or zero alerts within the same call -> {relayItem.Name}");
+        //            //    return new AlertInfo[]
+        //            //    {
+        //            //        new AlertInfo
+        //            //        {
+        //            //            AlertDiscardReason = "The Alert Processor does not support processing multiple or zero alerts within a single call."
+        //            //        }
+        //            //    };
+        //            //}
+
+        //            //Console.WriteLine($"[Alert Processor] Processing alert -> {relayItem.Name}"); 
+
+        //            DateTime startProc = DateTime.UtcNow;
+
+        //            //DiscordWebhook.SendUnformattedMessage($"Processing incoming alert item. ({startProc:O} UTC)");
+
+        //            //bool AnyAlertRelayed = false;
+        //            //bool UsedDiscordHook = false;
+
+        //            string Sent = SentRegex.MatchOrDefault(alert, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
+
+        //            Console.WriteLine($"[Alert Processor] Sent: {Sent}");
+
+        //            string Status = StatusRegex.MatchOrDefault(alert, "actual");
+        //            Console.WriteLine($"[Alert Processor] Status: {Status}");
+
+        //            string MsgType = MessageTypeRegex.MatchOrDefault(alert, "alert");
+        //            Console.WriteLine($"[Alert Processor] Message Type: {MsgType}");
+
+        //            Console.WriteLine($"[Alert Processor] Replay (internal flag): {ReplayMode}");
+
+        //            MatchCollection infoMatches = InfoRegex.Matches(relayItem.Data);
+
+        //            bool AnyInfoTagsPass = false;
+
+        //            if (!ProcessAlertX(Status, MsgType))
+        //            {
+        //                Console.WriteLine($"[Alert Processor] Alert discarded due to status/message_type settings.");
+        //                //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
+        //                if (!IgnoreDiscards)
+        //                {
+        //                    AlertInfoList.Add(new AlertInfo { AlertDiscardReason = "The alert was blocked because of your status, or message type settings." });
+        //                    continue;
+        //                }
+        //            }
+
+        //            for (int ii = 0; ii < infoMatches.Count; ii++)
+        //            {
+        //                try
+        //                {
+        //                    if (ProcessInfoX(infoMatches[ii].Groups[1].Value))
+        //                    {
+        //                        AnyInfoTagsPass = true;
+        //                        break;
+        //                    }
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    Console.WriteLine($"[Alert Processor] An info tag couldn't processed. {ex.Message}");
+        //                }
+        //            }
+
+        //            if (!AnyInfoTagsPass)
+        //            {
+        //                Console.WriteLine($"[Alert Processor] Alert discarded due to location/urgency/category settings.");
+        //                //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
+        //                if (!IgnoreDiscards)
+        //                {
+        //                    AlertInfoList.Add(new AlertInfo { AlertDiscardReason = "The alert was blocked because of your location, urgency, or category settings." });
+        //                    continue;
+        //                }
+        //            }
+
+        //            int infoProc = 0;
+
+        //            List<string> AllEvents = new List<string>();
+        //            List<string> AllLocations = new List<string>();
+        //            SeverityLevel MaxSeverity = SeverityLevel.Unknown;
+
+        //            List<string> AudioFiles = new List<string>();
+        //            List<string> DerefAudioFiles = new List<string>();
+        //            List<string> ImageFiles = new List<string>();
+        //            List<string> DerefImageFiles = new List<string>();
+        //            List<AlertTextClass> AlertTextList = new List<AlertTextClass>();
+        //            string Expiry = string.Empty;
+        //            string EventTypeFull = string.Empty;
+        //            string PrimaryURL = string.Empty;
+        //            string Source = string.Empty;
+
+        //            foreach (Match infoMatch in infoMatches)
+        //            {
+        //                infoProc++;
+        //                Console.WriteLine($"[Alert Processor] Processing {infoProc} of {infoMatches.Count}.");
+
+        //                string AlertInfo = $"{infoMatch.Groups[1].Value}";
+
+        //                Source = SourceRegex.MatchOrDefault(alert, "External Source");
+        //                Console.WriteLine($"[Alert Processor] Source (if any): {Source}");
+
+        //                string Effective = EffectiveRegex.MatchOrDefault(alert, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
+        //                Console.WriteLine($"[Alert Processor] Effective: {Effective}");
+
+        //                Expiry = ExpiresRegex.MatchOrDefault(alert, DateTime.UtcNow.AddHours(1).ToString("O", CultureInfo.InvariantCulture));
+        //                Console.WriteLine($"[Alert Processor] Expires: {Expiry}");
+
+        //                //https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
+        //                string BCP47Language = LanguageRegex.MatchOrDefault(AlertInfo, "en-US");
+        //                Console.WriteLine($"[Alert Processor] Language: {BCP47Language}");
+
+        //                string URL = WebRegex.MatchOrDefault(AlertInfo, string.Empty);
+        //                string Web = WebRegex.MatchOrDefault(AlertInfo, string.Empty);
+        //                Console.WriteLine($"[Alert Processor] Associated URL (if any): {URL}");
+        //                Console.WriteLine($"[Alert Processor] Associated Web (if any): {Web}");
+        //                if (string.IsNullOrWhiteSpace(PrimaryURL)) PrimaryURL = URL;
+        //                if (string.IsNullOrWhiteSpace(PrimaryURL)) PrimaryURL = Web;
+
+        //                string EventName = Regex.Replace(EventRegex.MatchOrDefault(AlertInfo, "Cautionary (Unknown Event)"), @"(^\w)|(\s\w)", m => m.Value.ToUpperInvariant());
+        //                Console.WriteLine($"[Alert Processor] Event Name: {EventName}");
+
+        //                string EventType = EventCodeRegex.MatchOrDefault(AlertInfo, "???");
+        //                var (EventTypeTranslated, TranslationSuccessful) = GetAlertNameFromSAME(EventType);
+        //                Console.WriteLine($"[Alert Processor] Event: {EventType}");
+        //                Console.WriteLine($"[Alert Processor] Event (SAME Translation): {EventTypeTranslated}");
+
+        //                if (TranslationSuccessful)
+        //                {
+        //                    if (string.IsNullOrEmpty(EventTypeFull))
+        //                    {
+        //                        EventTypeFull = EventTypeTranslated;
+        //                    }
+        //                    else if (!EventTypeFull.Contains(EventTypeTranslated)) EventTypeFull += $"; {EventTypeTranslated}";
+        //                }
+        //                else
+        //                {
+        //                    if (string.IsNullOrEmpty(EventTypeFull))
+        //                    {
+        //                        EventTypeFull = EventName;
+        //                    }
+        //                    else if (!EventTypeFull.Contains(EventName)) EventTypeFull += $"; {EventName}";
+        //                }
+
+        //                string Urgency = UrgencyRegex.MatchOrDefault(AlertInfo, "Unknown");
+        //                Console.WriteLine($"[Alert Processor] Urgency: {Urgency}");
+
+        //                string Severity = SeverityRegex.MatchOrDefault(AlertInfo, "Unknown");
+        //                Console.WriteLine($"[Alert Processor] Severity: {Severity}");
+
+        //                int ResourceCount = 0;
+        //                MatchCollection MatchedResources = ResourceRegex.Matches(AlertInfo);
+        //                foreach (Match resource in MatchedResources)
+        //                {
+        //                    ResourceCount++;
+        //                    Console.WriteLine($"[Alert Processor] Resource {ResourceCount} Value: {resource.Groups[1].Value}");
+        //                    var desc = ResourceDescRegex.MatchOrDefault(resource.Groups[1].Value);
+        //                    Console.WriteLine($"[Alert Processor] Resource {ResourceCount} Description: {desc}");
+        //                    var mime = MIMETypeRegex.MatchOrDefault(resource.Groups[1].Value);
+        //                    Console.WriteLine($"[Alert Processor] Resource {ResourceCount} MIME Type: {mime}");
+        //                    var size = SizeRegex.MatchOrDefault(resource.Groups[1].Value);
+        //                    Console.WriteLine($"[Alert Processor] Resource {ResourceCount} Size (if any): {size}");
+        //                    var uri = URIRegex.MatchOrDefault(resource.Groups[1].Value);
+        //                    Console.WriteLine($"[Alert Processor] Resource {ResourceCount} URI (if any): {uri}");
+        //                    var derefUri = DerefURIRegex.MatchOrDefault(resource.Groups[1].Value);
+        //                    Console.WriteLine($"[Alert Processor] Resource {ResourceCount} Dereference URI (if any): {derefUri}");
+        //                    var digest = DigestSecureHashAlgorithmOneRegex.MatchOrDefault(resource.Groups[1].Value);
+        //                    Console.WriteLine($"[Alert Processor] Resource {ResourceCount} SHA-1 (if any | unused): {digest}");
+
+        //                    void AddAudioToList()
+        //                    {
+        //                        if (!string.IsNullOrWhiteSpace(uri))
+        //                        {
+        //                            //if (string.IsNullOrWhiteSpace(derefUri))
+        //                            {
+        //                                AudioFiles.Add(uri);
+        //                                Console.WriteLine($"[Alert Processor] Resource {ResourceCount} was added to the audio list.");
+        //                            }
+        //                            //else
+        //                            {
+        //                                // work on this
+        //                            }
+        //                        }
+        //                        else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} has no URI.");
+        //                    }
+
+        //                    void AddImageToList()
+        //                    {
+        //                        if (!string.IsNullOrWhiteSpace(uri))
+        //                        {
+        //                            ImageFiles.Add(uri);
+        //                            Console.WriteLine($"[Alert Processor] Resource {ResourceCount} was added to the image list.");
+        //                        }
+        //                        else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} has no URI.");
+        //                    }
+
+        //                    if (!string.IsNullOrWhiteSpace(uri))
+        //                    {
+        //                        switch (mime)
+        //                        {
+        //                            case "audio/ogg":
+        //                                AddAudioToList();
+        //                                break;
+        //                            case "audio/opus":
+        //                                AddAudioToList();
+        //                                break;
+        //                            case "audio/vorbis":
+        //                                AddAudioToList();
+        //                                break;
+        //                            case "audio/aac":
+        //                                AddAudioToList();
+        //                                break;
+        //                            case "audio/mpeg":
+        //                                AddAudioToList();
+        //                                break;
+        //                            case "audio/x-ipaws-audio-mp3":
+        //                                AddAudioToList();
+        //                                break;
+        //                            case "audio/x-ipaws-audio-wav":
+        //                                AddAudioToList();
+        //                                break;
+        //                            case "application/x-url":
+        //                                AddAudioToList();
+        //                                break;
+        //                            case "image/bmp":
+        //                                AddImageToList();
+        //                                break;
+        //                            case "image/gif":
+        //                                AddImageToList();
+        //                                break;
+        //                            case "image/jpeg":
+        //                                AddImageToList();
+        //                                break;
+        //                            case "image/png":
+        //                                AddImageToList();
+        //                                break;
+        //                            default:
+        //                                AddAudioToList();
+        //                                break;
+        //                        }
+        //                    }
+        //                }
+
+        //                if (!IgnoreDiscards)
+        //                {
+        //                    if (!PrimaryURL.Contains("sasmex.net"))
+        //                    {
+        //                        if (!QuickSettings.Instance.AllowNonEnglishAlerts)
+        //                        {
+        //                            if (!BCP47Language.ToLowerInvariant().StartsWith("en-"))
+        //                            {
+        //                                Console.WriteLine("[Alert Processor] Info tag discarded because it does not contain English information.");
+        //                                continue;
+        //                            }
+        //                        }
+        //                    }
+        //                }
+
+        //                if (!IgnoreDiscards)
+        //                {
+        //                    if (!ReplayMode)
+        //                    {
+        //                        try
+        //                        {
+        //                            if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
+        //                            {
+        //                                Console.WriteLine($"[Alert Processor] Info tag discarded because it has expired.");
+        //                                continue;
+        //                            }
+        //                        }
+        //                        catch (Exception ex)
+        //                        {
+        //                            Console.WriteLine($"[Alert Processor] Expiry check skipped because it has failed. {ex.Message}");
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        Console.WriteLine($"[Alert Processor] Expiry check skipped because the alert is being replayed.");
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    Console.WriteLine($"[Alert Processor] Expiry check skipped because discards are being ignored.");
+        //                }
+
+        //                bool EventBlacklisted = false;
+
+        //                if (ProcessParameterX(AlertInfo) ||
+        //                    BroadcastImmediatelyRegex.MatchOrDefault(AlertInfo, "no").ToLowerInvariant() == "yes" ||
+        //                    IgnoreDiscards ||
+        //                    QuickSettings.Instance.BypassAllFilters)
+        //                {
+        //                    if (!QuickSettings.Instance.BypassAllFilters)
+        //                    {
+        //                        if (!IgnoreDiscards)
+        //                        {
+        //                            string RemoveDiacritics(string input)
+        //                            {
+        //                                var normalized = input.Normalize(NormalizationForm.FormD);
+        //                                var builder = new StringBuilder();
+
+        //                                foreach (var c in normalized)
+        //                                {
+        //                                    var category = CharUnicodeInfo.GetUnicodeCategory(c);
+        //                                    if (category != UnicodeCategory.NonSpacingMark)
+        //                                    {
+        //                                        builder.Append(c);
+        //                                    }
+        //                                }
+
+        //                                return builder.ToString().Normalize(NormalizationForm.FormC);
+        //                            }
+
+        //                            lock (QuickSettings.Instance.EnforceEventBlacklist)
+        //                            {
+        //                                foreach (string Event in QuickSettings.Instance.EnforceEventBlacklist)
+        //                                {
+        //                                    if (RemoveDiacritics(EventName.ToLowerInvariant()).Contains(RemoveDiacritics(Event.ToLowerInvariant())))
+        //                                    {
+        //                                        EventBlacklisted = true;
+        //                                        break;
+        //                                    }
+        //                                }
+        //                            }
+
+        //                            //lock (QuickSettings.Instance.EnforceSAMEEventBlacklist)
+        //                            //{
+        //                            //    foreach (string SAMEEvent in QuickSettings.Instance.EnforceSAMEEventBlacklist)
+        //                            //    {
+        //                            //        if (EventType.ToLowerInvariant().Contains(SAMEEvent.ToLowerInvariant()))
+        //                            //        {
+        //                            //            EventBlacklisted = true;
+        //                            //            break;
+        //                            //        }
+        //                            //    }
+        //                            //}
+
+        //                            if (QuickSettings.Instance.EventWhitelistMode)
+        //                            {
+        //                                if (!EventBlacklisted)
+        //                                {
+        //                                    Console.WriteLine($"[Alert Processor] Info tag discarded because the event is not on the whitelist.");
+        //                                    continue;
+        //                                }
+        //                            }
+        //                            else
+        //                            {
+        //                                if (EventBlacklisted)
+        //                                {
+        //                                    Console.WriteLine($"[Alert Processor] Info tag discarded because the event is on the blacklist.");
+        //                                    continue;
+        //                                }
+        //                            }
+
+        //                        }
+        //                        else
+        //                        {
+        //                            Console.WriteLine($"[Alert Processor] Blacklist/whitelist check skipped because discards are being ignored.");
+        //                        }
+        //                    }
+
+
+        //                    // removal of replay boolean
+        //                    var (Intro, Body) = CompiledBody(AlertInfo, MsgType, Sent, Source);
+
+        //                    Console.WriteLine($"[Alert Processor] Intro: {Intro}");
+        //                    Console.WriteLine($"[Alert Processor] Body: {Body}");
+
+        //                    List<string> LocationsText = CompiledLocations(AlertInfo);
+
+        //                    if (!AllEvents.Contains(EventName)) AllEvents.Add(EventName);
+        //                    foreach (string location in LocationsText)
+        //                    {
+        //                        if (!AllLocations.Contains(location)) AllLocations.Add(location);
+        //                    }
+
+        //                    if (Enum.TryParse<SeverityLevel>(Severity, out var newSeverity))
+        //                    {
+        //                        if (newSeverity > MaxSeverity)
+        //                        {
+        //                            MaxSeverity = newSeverity;
+        //                        }
+        //                    }
+
+        //                    AlertTextClass text = new AlertTextClass { Intro = Intro, Body = Body };
+
+        //                    bool MatchFound = false;
+
+        //                    foreach (var kext in AlertTextList)
+        //                    {
+        //                        if (kext.Intro == Intro & kext.Body == Body)
+        //                        {
+        //                            Console.WriteLine($"[Alert Processor] The contents of the current info tag match a previously processed tag.");
+        //                            MatchFound = true;
+        //                            continue;
+        //                        }
+        //                    }
+
+        //                    if (!MatchFound)
+        //                    {
+        //                        AlertTextList.Add(text);
+        //                        Console.WriteLine($"[Alert Processor] The contents of the current info tag have been added.");
+        //                        continue;
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    Console.WriteLine($"[Alert Processor] Alert discarded due to mobile alert settings, or other things.");
+        //                }
+        //            }
+
+        //            Console.WriteLine("[Alert Processor] There is no further data to process.");
+
+        //            string FullIntro = string.Empty;
+        //            string FullBody = string.Empty;
+
+        //            if (AlertTextList.Count == 0)
+        //            {
+        //                Console.WriteLine("[Alert Processor] There is no alert text to process.");
+        //                AlertInfoList.Add(new AlertInfo { AlertDiscardReason = "The alert cannot be processed because no alert text exists." });
+        //                continue;
+        //            }
+        //            else
+        //            {
+        //                int IncrementedList = 0;
+
+        //                if (AlertTextList.Count > 1)
+        //                {
+        //                    foreach (var kext in AlertTextList)
+        //                    {
+        //                        IncrementedList++;
+        //                        if (!string.IsNullOrWhiteSpace(kext.Intro)) FullIntro += $"\r\n\r\n{IncrementedList}.\x20" + kext.Intro;
+        //                        if (!string.IsNullOrWhiteSpace(kext.Body)) FullBody += $"\r\n\r\n{IncrementedList}.\x20" + kext.Body;
+        //                    }
+        //                    FullIntro = FullIntro.Trim();
+        //                    FullBody = FullBody.Trim();
+        //                }
+        //                else
+        //                {
+        //                    foreach (var kext in AlertTextList)
+        //                    {
+        //                        if (!string.IsNullOrWhiteSpace(kext.Intro)) FullIntro += kext.Intro;
+        //                        if (!string.IsNullOrWhiteSpace(kext.Body)) FullBody += kext.Body;
+        //                    }
+        //                    FullIntro = FullIntro.Trim();
+        //                    FullBody = FullBody.Trim();
+        //                }
+
+        //                if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.StationIdentifier))
+        //                {
+        //                    FullIntro = $"This message originates from {QuickSettings.Instance.StationIdentifier} ({QuickSettings.Instance.StationName}).\r\n\r\n{FullIntro}".Trim();
+        //                }
+
+        //                AlertTextClass _AlertText = new AlertTextClass
+        //                {
+        //                    Intro = FullIntro,
+        //                    Body = FullBody
+        //                };
+
+        //                if (!IgnoreDiscards)
+        //                {
+        //                    // ???
+        //                }
+        //            }
+
+        //            //if (AnyAlertRelayed)
+        //            //{
+        //            AlertsRelayed++;
+        //            //}
+
+        //            Console.WriteLine($"[Alert Processor] Processed all available entries. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
+
+        //            string AudioURL = AudioFiles.FirstOrDefault();
+        //            string ImageURL = ImageFiles.FirstOrDefault();
+
+        //            if (string.IsNullOrWhiteSpace(AudioURL)) AudioURL = string.Empty;
+        //            if (string.IsNullOrWhiteSpace(ImageURL)) ImageURL = string.Empty;
+
+        //            //MessageBox.Show(MaxSeverity.ToString());
+
+        //            AlertInfoList.Add(new AlertInfo
+        //            {
+        //                // do something about alert IDs
+        //                AlertSource = Source,
+        //                AlertID = relayItem.Name,
+        //                AlertSentDate = Sent,
+        //                AlertExpiryDate = Expiry,
+        //                AlertFriendlyLocations = AllLocations,
+        //                AlertEventType = EventTypeFull,
+        //                AlertMessageType = MsgType,
+        //                AlertSeverity = MaxSeverity.ToString(),
+        //                AlertIntroText = FullIntro.Trim(),
+        //                AlertBodyText = FullBody.Trim(),
+        //                AlertURL = PrimaryURL,
+        //                AlertAudioURL = AudioURL,
+        //                AlertImageURL = ImageURL
+        //            });
+
+        //            continue;
+        //        }
+
+        //        return AlertInfoList.ToArray();
+        //    }
+        //}
 
         //    AlertIDStr = id;
         //    this.Text = $"SharpAlert - {AlertIDStr}";
@@ -687,7 +1206,7 @@ namespace SharpAlert.AlertComponents
         //    AlertText.SelectionLength = 0;
         //    AlertText.SelectionStart = 0;
 
-        public void ProcessExternalAlert(string AlertEvent, string AlertIntro, string AlertBody)
+        public static void ProcessExternalAlert(string AlertEvent, string AlertIntro, string AlertBody)
         {
             try
             {
@@ -700,8 +1219,8 @@ namespace SharpAlert.AlertComponents
                         string.Empty,
                         "alert",
                         "minor",
-                        new List<string>() { "" },
-                        new List<string>() { "" });
+                        [""],
+                        [""]);
                     //kill @e[type=!player,distance=..10]
                 });
             }
@@ -733,8 +1252,8 @@ namespace SharpAlert.AlertComponents
                         Resources.TestScript,
                         "https://bunnytub.com/SharpAlert",
                         TestIdentifier,
-                        new List<string>() { "" },
-                        new List<string>() { "" });
+                        [""],
+                        [""]);
 
                     RelayWindow(TestIdentifier,
                         "Standard Test",
@@ -743,12 +1262,12 @@ namespace SharpAlert.AlertComponents
                         "https://bunnytub.com/SharpAlert",
                         "alert",
                         "severe",
-                        new List<string>() { "" },
-                        new List<string>() { "" });
+                        [""],
+                        [""]);
                 }
                 else
                 {
-                    ChooseTestForm ctf = new ChooseTestForm(false);
+                    ChooseTestForm ctf = new(false);
                     var result = ctf.ShowDialog();
 
                     if (result == DialogResult.Yes) ThreadDrool.StartAndForget(() =>
@@ -772,8 +1291,8 @@ namespace SharpAlert.AlertComponents
                             ctf.EventDescription,
                             ctf.EventURL,
                             TestIdentifier,
-                            new List<string>() { "" },
-                            new List<string>() { "" });
+                            [""],
+                            [""]);
 
                         RelayWindow(TestIdentifier,
                             ctf.EventType,
@@ -782,8 +1301,8 @@ namespace SharpAlert.AlertComponents
                             ctf.EventURL,
                             "alert",
                             Severity,
-                            new List<string>() { "" },
-                            new List<string>() { "" });
+                            [""],
+                            [""]);
                     });
 
                     ctf.Dispose();
@@ -841,94 +1360,44 @@ namespace SharpAlert.AlertComponents
 
                 // got rid of this var123 nonsense, I hated that
 
-                switch (Severity)
+                SeverityValue = Severity switch
                 {
-                    case "extreme":
-                        SeverityValue = QuickSettings.Instance.severityExtreme;
-                        break;
-                    case "severe":
-                        SeverityValue = QuickSettings.Instance.severitySevere;
-                        break;
-                    case "moderate":
-                        SeverityValue = QuickSettings.Instance.severityModerate;
-                        break;
-                    case "minor":
-                        SeverityValue = QuickSettings.Instance.severityMinor;
-                        break;
-                    case "unknown":
-                        SeverityValue = QuickSettings.Instance.severityUnknown;
-                        break;
-                    default:
-                        SeverityValue = QuickSettings.Instance.severityUnknown;
-                        break;
-                }
+                    "extreme" => QuickSettings.Instance.severityExtreme,
+                    "severe" => QuickSettings.Instance.severitySevere,
+                    "moderate" => QuickSettings.Instance.severityModerate,
+                    "minor" => QuickSettings.Instance.severityMinor,
+                    "unknown" => QuickSettings.Instance.severityUnknown,
+                    _ => QuickSettings.Instance.severityUnknown,
+                };
 
-                switch (Urgency)
+                UrgencyValue = Urgency switch
                 {
-                    case "immediate":
-                        UrgencyValue = QuickSettings.Instance.urgencyImmediate;
-                        break;
-                    case "expected":
-                        UrgencyValue = QuickSettings.Instance.urgencyExpected;
-                        break;
-                    case "future":
-                        UrgencyValue = QuickSettings.Instance.urgencyFuture;
-                        break;
-                    case "past":
-                        UrgencyValue = QuickSettings.Instance.urgencyPast;
-                        break;
-                    case "unknown":
-                        UrgencyValue = QuickSettings.Instance.urgencyUnknown;
-                        break;
-                    default:
-                        UrgencyValue = QuickSettings.Instance.urgencyUnknown;
-                        break;
-                }
+                    "immediate" => QuickSettings.Instance.urgencyImmediate,
+                    "expected" => QuickSettings.Instance.urgencyExpected,
+                    "future" => QuickSettings.Instance.urgencyFuture,
+                    "past" => QuickSettings.Instance.urgencyPast,
+                    "unknown" => QuickSettings.Instance.urgencyUnknown,
+                    _ => QuickSettings.Instance.urgencyUnknown,
+                };
 
                 foreach (Match Category in Categories)
                 {
-                    switch (Category.Groups[1].Value)
+                    CategoryValue = Category.Groups[1].Value switch
                     {
-                        case "geo":
-                            CategoryValue = QuickSettings.Instance.categoryGeophysical;
-                            break;
-                        case "met":
-                            CategoryValue = QuickSettings.Instance.categoryMeterological;
-                            break;
-                        case "safety":
-                            CategoryValue = QuickSettings.Instance.categoryGeneralSafety;
-                            break;
-                        case "security":
-                            CategoryValue = QuickSettings.Instance.categorySecurity;
-                            break;
-                        case "rescue":
-                            CategoryValue = QuickSettings.Instance.categoryRescue;
-                            break;
-                        case "fire":
-                            CategoryValue = QuickSettings.Instance.categoryFire;
-                            break;
-                        case "health":
-                            CategoryValue = QuickSettings.Instance.categoryMedical;
-                            break;
-                        case "env":
-                            CategoryValue = QuickSettings.Instance.categoryEnvironmental;
-                            break;
-                        case "transport":
-                            CategoryValue = QuickSettings.Instance.categoryTransportation;
-                            break;
-                        case "infra":
-                            CategoryValue = QuickSettings.Instance.categoryUtilities;
-                            break;
-                        case "cbrne":
-                            CategoryValue = QuickSettings.Instance.categoryToxicThreat;
-                            break;
-                        case "other":
-                            CategoryValue = QuickSettings.Instance.categoryOtherUnknown;
-                            break;
-                        default:
-                            CategoryValue = QuickSettings.Instance.categoryOtherUnknown;
-                            break;
-                    }
+                        "geo" => QuickSettings.Instance.categoryGeophysical,
+                        "met" => QuickSettings.Instance.categoryMeterological,
+                        "safety" => QuickSettings.Instance.categoryGeneralSafety,
+                        "security" => QuickSettings.Instance.categorySecurity,
+                        "rescue" => QuickSettings.Instance.categoryRescue,
+                        "fire" => QuickSettings.Instance.categoryFire,
+                        "health" => QuickSettings.Instance.categoryMedical,
+                        "env" => QuickSettings.Instance.categoryEnvironmental,
+                        "transport" => QuickSettings.Instance.categoryTransportation,
+                        "infra" => QuickSettings.Instance.categoryUtilities,
+                        "cbrne" => QuickSettings.Instance.categoryToxicThreat,
+                        "other" => QuickSettings.Instance.categoryOtherUnknown,
+                        _ => QuickSettings.Instance.categoryOtherUnknown,
+                    };
 
                     if (CategoryValue) break;
                 }
@@ -971,13 +1440,13 @@ namespace SharpAlert.AlertComponents
                 // SAME
                 if (QuickSettings.Instance.AllowedSAMELocations_Geocodes.Count != 0)
                 {
-                    StringCollection locations = new StringCollection();
+                    StringCollection locations = [];
                     lock (QuickSettings.Instance.AllowedSAMELocations_Geocodes)
                     {
                         foreach (string location in QuickSettings.Instance.AllowedSAMELocations_Geocodes)
                         {
                             string loc = location;
-                            if (loc.Length == 6) loc = loc.Substring(1);
+                            if (loc.Length == 6) loc = loc[1..];
                             if (loc.Length != 5)
                             {
                                 Console.WriteLine($"[Alert Processor] \"{loc}\" (from local) may not be a valid SAME code.");
@@ -1014,13 +1483,13 @@ namespace SharpAlert.AlertComponents
                         {
                             string geocode = match.Groups[1].Value;
 
-                            if (geocode.Length == 6) geocode = geocode.Substring(1);
+                            if (geocode.Length == 6) geocode = geocode[1..];
                             if (geocode.Length != 5)
                             {
                                 Console.WriteLine($"[Alert Processor] \"{geocode}\" (from alert) may not be a valid SAME code.");
                             }
 
-                            if (locations.Contains(geocode) || locations.Contains(geocode.Substring(0, 2) + "***"))
+                            if (locations.Contains(geocode) || locations.Contains(string.Concat(geocode.AsSpan(0, 2), "***")))
                             {
                                 GeoMatch = true;
                                 Console.WriteLine($"[Alert Processor] \"{geocode}\" (from alert) matched one of the local SAME locations.");
@@ -1144,7 +1613,7 @@ namespace SharpAlert.AlertComponents
             else return false;
         }
 
-        public bool ProcessParameterX(string ParameterX)
+        public static bool ProcessParameterX(string ParameterX)
         {
             Console.WriteLine("[Alert Processor] Processing ParemeterX.");
 
@@ -1165,7 +1634,7 @@ namespace SharpAlert.AlertComponents
             else return true;
         }
         
-        public bool ProcessAlertX(string Status, string MsgType)
+        public static bool ProcessAlertX(string Status, string MsgType)
         {
             Console.WriteLine("[Alert Processor] Processing AlertX.");
 
@@ -1198,23 +1667,13 @@ namespace SharpAlert.AlertComponents
 
             try
             {
-                bool MessageTypeValue; // MsgType
-
-                switch (MsgType.ToLowerInvariant())
+                var MessageTypeValue = MsgType.ToLowerInvariant() switch
                 {
-                    case "alert":
-                        MessageTypeValue = QuickSettings.Instance.messageTypeAlert;
-                        break;
-                    case "update":
-                        MessageTypeValue = QuickSettings.Instance.messageTypeUpdate;
-                        break;
-                    case "cancel":
-                        MessageTypeValue = QuickSettings.Instance.messageTypeCancel;
-                        break;
-                    default:
-                        MessageTypeValue = QuickSettings.Instance.messageTypeAlert;
-                        break;
-                }
+                    "alert" => QuickSettings.Instance.messageTypeAlert,
+                    "update" => QuickSettings.Instance.messageTypeUpdate,
+                    "cancel" => QuickSettings.Instance.messageTypeCancel,
+                    _ => QuickSettings.Instance.messageTypeAlert,
+                };
 
                 if (MessageTypeValue)
                 {
@@ -1242,7 +1701,7 @@ namespace SharpAlert.AlertComponents
         /// <param name="MsgType">The overall message type.</param>
         /// <param name="Sent">The date and time the message was sent.</param>
         /// <returns>Returns a compiled message body.</returns>
-        public (string Intro, string Body) CompiledBody(string InfoData, string MsgType, string Sent, string Source)
+        public static (string Intro, string Body) CompiledBody(string InfoData, string MsgType, string Sent, string Source)
         {
             Console.WriteLine("[Alert Processor] Compiling body text.");
             string BroadcastText = string.Empty;
@@ -1254,23 +1713,13 @@ namespace SharpAlert.AlertComponents
 
             Console.WriteLine("[Alert Processor] Parsing message type.");
 
-            string MsgPrefix;
-
-            switch (MsgType.ToLowerInvariant())
+            string MsgPrefix = MsgType.ToLowerInvariant() switch
             {
-                case "alert":
-                    MsgPrefix = string.Empty;
-                    break;
-                case "update":
-                    MsgPrefix = "This alert has been updated.";
-                    break;
-                case "cancel":
-                    MsgPrefix = "This alert has been cancelled.";
-                    break;
-                default:
-                    MsgPrefix = string.Empty;
-                    break;
-            }
+                "alert" => string.Empty,
+                "update" => "This alert has been updated.",
+                "cancel" => "This alert has been cancelled.",
+                _ => string.Empty,
+            };
 
             Console.WriteLine("[Alert Processor] Parsing sent date.");
 
@@ -1403,7 +1852,7 @@ namespace SharpAlert.AlertComponents
 
                     foreach (Match code in GeocodeSAMEAreas)
                     {
-                        AppendedCodeAreas += $"{GetFriendlyNameFromSAMELocation(code.Groups[1].Value.Substring(1))};\x20";
+                        AppendedCodeAreas += $"{GetFriendlyNameFromSAMELocation(code.Groups[1].Value[1..])};\x20";
                     }
 
                     //foreach (Match code in GeocodeUGCAreas)
@@ -1418,7 +1867,7 @@ namespace SharpAlert.AlertComponents
                             AreaDesc = SentenceAppendEnd(SentencePuncuationCorrection(AppendedCodeAreas.Trim()));
                             if (AreaDesc.EndsWith(";."))
                             {
-                                AreaDesc = SentenceAppendEnd(AreaDesc.Substring(0, AreaDesc.Length - 2));
+                                AreaDesc = SentenceAppendEnd(AreaDesc[..^2]);
                             }
                         }
                         else
@@ -1479,10 +1928,10 @@ namespace SharpAlert.AlertComponents
                     // only split when needed, such as when there might be multiple senders?
                     // why can't those agencies just use separate sender tags? why must we do this?
                     
-                    if (SenderName.Contains(","))
+                    if (SenderName.Contains(','))
                     {
                         string[] senders = SenderName.Split(',');
-                        List<string> uniqueSenders = new List<string>();
+                        List<string> uniqueSenders = [];
 
                         foreach (string sender in senders)
                         {
@@ -1611,12 +2060,12 @@ namespace SharpAlert.AlertComponents
             {
                 //if (true)
                 //{
-                    if (QuickSettings.Instance.AddAlertEffectiveAndEndingTimes) IntroText += $"This alert starts {BeginFormatted}, and ends at {EndFormatted}." + "\x20";
-                    if (QuickSettings.Instance.AddSourcedFrom) IntroText += $"Sourced from {Source}." + "\x20";
+                    if (QuickSettings.Instance.AddEventName) IntroText += $"{EventType}." + "\x20";
+                    IntroText += $"{MsgPrefix} For the following, {SentenceAppendEnd(AreaDesc)}".Replace("\x20\x20", "\x20").Trim() + "\x20";
+                    if (QuickSettings.Instance.AddAlertEffectiveAndEndingTimes) IntroText += $"This alert begins {BeginFormatted}, and ends at {EndFormatted}." + "\x20";
                     if (QuickSettings.Instance.AddAlertIssuer) IntroText += $"Issued by {SenderName}." + "\x20";
-                    if (QuickSettings.Instance.AddEventName) IntroText += $"Event type is {EventType}." + "\x20";
-                    IntroText += $"{MsgPrefix} For the following areas, {SentenceAppendEnd(AreaDesc)}".Replace("\x20\x20", "\x20");
-                    IntroText = IntroText.Replace("\r\n", "\n").Replace("\n", "\r\n"); // fix mixed newline problems hopefully
+                    if (QuickSettings.Instance.AddSourcedFrom) IntroText += $"Sourced from {Source}." + "\x20";
+                    IntroText = IntroText.Replace("\r\n", "\n").Replace("\n", "\r\n");
                 //}
                 //else
                 //{
@@ -1650,7 +2099,7 @@ namespace SharpAlert.AlertComponents
             BroadcastText = SentenceAppendEnd(BroadcastText);
             BroadcastText = TimeCorrection(BroadcastText);
             BroadcastText = BroadcastText.TrimStart('.').TrimStart(',');
-            BroadcastText = string.Join(" ", BroadcastText.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)).Trim();
+            BroadcastText = string.Join(" ", BroadcastText.Split([" "], StringSplitOptions.RemoveEmptyEntries)).Trim();
 
             // It should not be this painful to fix text formatting.
 
@@ -1658,7 +2107,7 @@ namespace SharpAlert.AlertComponents
             return (IntroText, BroadcastText);
         }
         
-        public List<string> CompiledLocations(string InfoData)
+        public static List<string> CompiledLocations(string InfoData)
         {
             try
             {
@@ -1683,7 +2132,7 @@ namespace SharpAlert.AlertComponents
 
                     foreach (Match code in GeocodeSAMEAreas)
                     {
-                        AppendedCodeAreas += $"{GetFriendlyNameFromSAMELocation(code.Groups[1].Value.Substring(1))};\x20";
+                        AppendedCodeAreas += $"{GetFriendlyNameFromSAMELocation(code.Groups[1].Value[1..])};\x20";
                     }
 
                     //foreach (Match code in GeocodeUGCAreas)
@@ -1724,13 +2173,13 @@ namespace SharpAlert.AlertComponents
                     //AreaDesc = string.Join(", ", areaDescMatches) + ".";
 
                     // "For: FIPS" / "For: AffectedArea" problem
-                    return AreaDesc.Split(';').ToList();
+                    return [.. AreaDesc.Split(';')];
                 }
-                return new List<string> { "Unparsable Location(s)" };
+                return ["Unparsable Location(s)"];
             }
             catch (Exception)
             {
-                return new List<string> { "Unknown Location(s)" };
+                return ["Unknown Location(s)"];
             }
         }
 
@@ -1766,23 +2215,21 @@ namespace SharpAlert.AlertComponents
                 //if (string.IsNullOrWhiteSpace(CacheCapture.SAME_US_JSON)) MainEntryPoint.cache.ServiceRun(false);
                 if (!string.IsNullOrWhiteSpace(CacheCapture.SAME_US_JSON))
                 {
-                    using (JsonDocument doc = JsonDocument.Parse(CacheCapture.SAME_US_JSON))
-                    {
-                        JsonElement root = doc.RootElement;
-                        JsonElement same = root.GetProperty("SAME");
+                    using JsonDocument doc = JsonDocument.Parse(CacheCapture.SAME_US_JSON);
+                    JsonElement root = doc.RootElement;
+                    JsonElement same = root.GetProperty("SAME");
 
-                        if (same.TryGetProperty(code, out JsonElement hereSAME))
+                    if (same.TryGetProperty(code, out JsonElement hereSAME))
+                    {
+                        return hereSAME.GetString();
+                    }
+                    else
+                    {
+                        if (code.Length == 6)
                         {
-                            return hereSAME.GetString();
-                        }
-                        else
-                        {
-                            if (code.Length == 6)
+                            if (same.TryGetProperty(code.AsSpan(1), out JsonElement subSAME))
                             {
-                                if (same.TryGetProperty(code.Substring(1), out JsonElement subSAME))
-                                {
-                                    return subSAME.GetString();
-                                }
+                                return subSAME.GetString();
                             }
                         }
                     }
@@ -1831,7 +2278,7 @@ namespace SharpAlert.AlertComponents
                 {
                     if (code.Length == 6)
                     {
-                        code = code.Substring(1);
+                        code = code[1..];
                     }
                     else
                     {
@@ -1849,7 +2296,7 @@ namespace SharpAlert.AlertComponents
                 //unused
 
                 // SS
-                int StateCode = int.Parse(code.Substring(0, 2));
+                int StateCode = int.Parse(code[..2]);
                 SAME_StateCode SavedState = null;
 
                 foreach (var state in States)
@@ -1870,7 +2317,7 @@ namespace SharpAlert.AlertComponents
                 // we found a state, wow!
 
                 // CCC
-                int CountyCode = int.Parse(code.Substring(2));
+                int CountyCode = int.Parse(code[2..]);
                 int SavedCountyCode = -1;
                 SAME_CountyCode SavedCounty = null;
 
@@ -1906,7 +2353,7 @@ namespace SharpAlert.AlertComponents
             }
         }
 
-        string SentenceAppendEnd(string value)
+        static string SentenceAppendEnd(string value)
         {
             value = value.Trim();
 
@@ -1915,35 +2362,31 @@ namespace SharpAlert.AlertComponents
                 return string.Empty;
             }
 
-            if (value.EndsWith(".") || value.EndsWith("!") || value.EndsWith(","))
-            {
-                return value.Substring(0, value.Length - 1) + ".";
-            }
-            else return value += ".";
+            return value.EndsWith('.') || value.EndsWith('!') || value.EndsWith(',') ? string.Concat(value.AsSpan(0, value.Length - 1), ".") : (value += ".");
         }
 
-        string SentencePuncuationCorrection(string value)
+        static string SentencePuncuationCorrection(string value)
         {
             value = value.Trim();
             while (value.EndsWith("\x20.") || value.EndsWith("\x20!") || value.EndsWith("\x20,"))
             {
-                value = value.Substring(0, value.Length - 1);
+                value = value[..^1];
             }
             value = value.Replace("...", ",").Replace("..", ".");
-            return SentenceAppendEnd(value.Substring(0, value.Length - 1));
+            return SentenceAppendEnd(value[..^1]);
         }
         
-        string SentencePuncuationRemoval(string value)
+        static string SentencePuncuationRemoval(string value)
         {
             value = value.Trim();
-            while (value.EndsWith(".") || value.EndsWith("!") || value.EndsWith(","))
+            while (value.EndsWith('.') || value.EndsWith('!') || value.EndsWith(','))
             {
-                value = value.Substring(0, value.Length - 1);
+                value = value[..^1];
             }
             return value;
         }
 
-        string TimeCorrection(string value)
+        static string TimeCorrection(string value)
         {
             //Regex TimeCorrectionRegex = new Regex(@"\b(\d{1,4})\s*(AM|PM)\b", RegexOptions.IgnoreCase);
 
@@ -1957,9 +2400,9 @@ namespace SharpAlert.AlertComponents
             });
         }
 
-        string LocalTimeAbbreviation()
+        private static string LocalTimeAbbreviation()
         {
-            return string.Concat(TimeZoneInfo.Local.StandardName.Split(' ').Select(word => word.Substring(0, 1)));
+            return string.Concat(TimeZoneInfo.Local.StandardName.Split(' ').Select(word => word[..1]));
 
             //var localTimeZone = TimeZoneInfo.Local;
             //var isDaylight = localTimeZone.IsDaylightSavingTime(DateTime.Now);

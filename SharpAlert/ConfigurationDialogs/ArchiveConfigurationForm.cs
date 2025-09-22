@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using SharpAlert.DataProcessing;
+using SharpAlert.ProgramWorker;
 
 namespace SharpAlert.ConfigurationDialogs
 {

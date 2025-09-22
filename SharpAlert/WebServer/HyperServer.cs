@@ -16,6 +16,7 @@ using static SharpAlert.ThreadDrool;
 using System.Text.Json;
 using static SharpAlert.AlertComponents.AlertDisplayer;
 using System.Net.Http;
+using SharpAlert.AlertComponents;
 
 namespace SharpAlert.WebServer
 {
@@ -622,7 +623,7 @@ namespace SharpAlert.WebServer
             //string title = queryParams.ContainsKey("title") ? queryParams["title"] : "";
             string text = queryParams.ContainsKey("text") ? queryParams["text"] : "No text.";
 
-            dataproc?.ap?.ProcessExternalAlert("External Alert", "This alert has been relayed from an external source.", text);
+            AlertProcessor.ProcessExternalAlert("External Alert", "This alert has been relayed from an external source.", text);
             
             ctx.Response.StatusCode = (int)HttpStatusCode.NoContent;
             return string.Empty;

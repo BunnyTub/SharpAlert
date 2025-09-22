@@ -4,8 +4,10 @@ using static SharpAlert.ProgramWorker.MainEntryPoint;
 using System.Threading;
 using System.Collections.Generic;
 using System;
+using SharpAlert.ProgramWorker;
+using SharpAlert.AlertComponents;
 
-namespace SharpAlert.ProgramWorker
+namespace SharpAlert
 {
     public static class PipeWorker
     {
@@ -44,7 +46,7 @@ namespace SharpAlert.ProgramWorker
                             string line = reader.ReadLine();
                             if (line == null) break;
                             Console.WriteLine($"[Pipe Worker] Incoming alert text -> {line}");
-                            dataproc?.ap?.ProcessExternalAlert("External Alert", "This alert has been relayed from an external source.", line);
+                            AlertProcessor.ProcessExternalAlert("External Alert", "This alert has been relayed from an external source.", line);
                         }
                     }
 

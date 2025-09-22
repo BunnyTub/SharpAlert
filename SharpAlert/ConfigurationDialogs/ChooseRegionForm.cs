@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using SharpAlert.ProgramWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 
 namespace SharpAlert.ConfigurationDialogs

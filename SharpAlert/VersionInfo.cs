@@ -5,16 +5,9 @@ namespace SharpAlert
 {
     public static class VersionInfo
     {
-        // This file contains the version information. It should not be modified at runtime.
-        // You can change the release, minor, and cutting edge variables.
-        // ---
-        // Use VersionInfoTemplate.cs!
-        public const int BuildNumber = 1891;
-        public const string BuiltOnDate = "2025-09-10";
-        public const string BuiltOnTime = "00:08";
-        public const string BuiltTimeZone = "Eastern Standard Time";
-        public static int MajorVersion { get; } = 12;
-        public static int MinorVersion { get; } = 1;
+        // last build was 1891 before the upgrade to .NET 9
+        public static int MajorVersion { get; } = 13;
+        public static int MinorVersion { get; } = 0;
         public static bool IsBetaVersion { get; } = false;
         public static string ShortFriendlyVersion
         {
@@ -23,12 +16,12 @@ namespace SharpAlert
                 if (!IsBetaVersion)
                 {
                     //return $"SharpAlert | Release v{MajorVersion}.{MinorVersion} (Build {BuildNumber}) | Built on {BuiltOnDate} {BuiltOnTime} ({BuiltTimeZone})";
-                    return $"SharpAlert v{MajorVersion}.{MinorVersion} (Build {BuildNumber})";
+                    return $"SharpAlert v{MajorVersion}.{MinorVersion}";
                 }
                 else
                 {
                     //return $"SharpAlert | Beta v{MajorVersion}.{MinorVersion}-b (Build {BuildNumber}) | Built on {BuiltOnDate} {BuiltOnTime} ({BuiltTimeZone})";
-                    return $"SharpAlert v{MajorVersion}.{MinorVersion}-b (Build {BuildNumber})";
+                    return $"SharpAlert v{MajorVersion}.{MinorVersion}-b";
                 }
             }
         }
@@ -39,18 +32,18 @@ namespace SharpAlert
                 if (!IsBetaVersion)
                 {
                     //return $"SharpAlert | Release v{MajorVersion}.{MinorVersion} (Build {BuildNumber}) | Built on {BuiltOnDate} {BuiltOnTime} ({BuiltTimeZone})";
-                    return $"SharpAlert | Release v{MajorVersion}.{MinorVersion} (Build {BuildNumber}) | Safety is never a non-priority";
+                    return $"SharpAlert | Release v{MajorVersion}.{MinorVersion} | Safety is never a non-priority";
                 }
                 else
                 {
                     //return $"SharpAlert | Beta v{MajorVersion}.{MinorVersion}-b (Build {BuildNumber}) | Built on {BuiltOnDate} {BuiltOnTime} ({BuiltTimeZone})";
-                    return $"SharpAlert | Beta v{MajorVersion}.{MinorVersion}-b (Build {BuildNumber}) | Safety is never a non-priority";
+                    return $"SharpAlert | Beta v{MajorVersion}.{MinorVersion}-b | Safety is never a non-priority";
                 }
             }
         }
 
         public static readonly DateTime BetaTimeEnd = DateTime.ParseExact(
-            "9/27/2025",
+            "9/30/2025",
             "M/d/yyyy",
             CultureInfo.InvariantCulture,
             DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal

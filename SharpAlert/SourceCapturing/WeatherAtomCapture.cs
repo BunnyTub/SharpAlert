@@ -161,7 +161,7 @@ namespace SharpAlert.SourceCapturing
             }
         }
 
-        private readonly Lock EnrollObject = new();
+        private readonly object EnrollObject = new();
 
         public void EnrollEntries(string data, string name)
         {

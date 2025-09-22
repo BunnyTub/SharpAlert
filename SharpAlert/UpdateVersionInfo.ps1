@@ -1,4 +1,6 @@
-﻿$versionInfoTemplatePath = ".\VersionInfoTemplate.cs"
+﻿exit
+
+$versionInfoTemplatePath = ".\VersionInfoTemplate.cs"
 $versionInfoPath = ".\VersionInfo.cs"
 
 $currentDate = Get-Date -Format "yyyy-MM-dd"

@@ -1,6 +1,6 @@
 ﻿namespace SharpAlert.AlertComponents
 {
-    partial class WinFormsAlertForm
+    partial class AlertForm
     {
         /// <summary>
         /// Required designer variable.

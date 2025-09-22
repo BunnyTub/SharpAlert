@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using Newtonsoft.Json;
-using SharpAlert.ProgramWorker;
 
-namespace SharpAlert
+namespace SharpAlert.ProgramWorker
 {
     public class CustomGeocodeValues
     {
@@ -44,8 +42,7 @@ namespace SharpAlert
         {
             get
             {
-                if (_instance == null)
-                    _instance = Load();
+                _instance ??= Load();
                 return _instance;
             }
         }
@@ -82,18 +79,19 @@ namespace SharpAlert
         public bool urgencyPast { get; set; } = false;
         public bool urgencyUnknown { get; set; } = false;
         // Locations
-        public StringCollection AllowedSAMELocations_Geocodes { get; set; } = new StringCollection();
-        public StringCollection AllowedCAPCPLocations_Geocodes { get; set; } = new StringCollection();
+        public StringCollection AllowedSAMELocations_Geocodes { get; set; } = [];
+        public StringCollection AllowedCAPCPLocations_Geocodes { get; set; } = [];
         
-        public List<CustomGeocodeValues> AllowedCustomLocations_GeocodesList { get; set; } = new List<CustomGeocodeValues>();
+        public List<CustomGeocodeValues> AllowedCustomLocations_GeocodesList { get; set; } = [];
         // Blacklist
-        public StringCollection EnforceEventBlacklist { get; set; } = new StringCollection();
+        public StringCollection EnforceEventBlacklist { get; set; } = [];
         public bool EventWhitelistMode { get; set; } = false;
-        public StringCollection EnforceSAMEEventBlacklist { get; set; } = new StringCollection();
+        public StringCollection EnforceSAMEEventBlacklist { get; set; } = [];
         // Alert Stuff
         public int AlertCheckInterval { get; set; } = 15;
         public bool weaOnly { get; set; } = false;
         public bool UseCMAMTextWhereAvailable { get; set; } = true;
+        public bool IgnoreKeepAlive { get; set; } = true;
         // Changed discard to align with region changes
         public bool discardFirstAlerts { get; set; } = true;
         public bool BypassAllFilters { get; set; } = false;
@@ -200,7 +198,7 @@ namespace SharpAlert
         public bool categoryTransportation { get; set; } = true;
         public bool categoryOtherUnknown { get; set; } = true;
         // Language
-        public bool AllowNonEnglishAlerts { get; set; } = true;
+        //public bool AllowNonEnglishAlerts { get; set; } = true;
         // Alert Text
         public bool AddIntroText { get; set; } = true;
         public bool AddAlertEffectiveAndEndingTimes { get; set; } = true;

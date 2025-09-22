@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using SharpAlert.ProgramWorker;
 using SharpAlert.Properties;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 
 namespace SharpAlert.ConfigurationDialogs
 {
-    public partial class ConfigurationForm : Form
+    public partial class WinFormsConfigurationForm : Form
     {
-        public ConfigurationForm()
+        public WinFormsConfigurationForm()
         {
             InitializeComponent();
             //WindowSounds.AddClickAndHover(this);
@@ -133,7 +134,7 @@ namespace SharpAlert.ConfigurationDialogs
                 }
                 catch (Exception ex)
                 {
-                    Exception exception = new Exception($"Migration from old settings to new settings failed.\r\n{ex.Message}\r\n{ex.StackTrace}");
+                    Exception exception = new($"Migration from old settings to new settings failed.\r\n{ex.Message}\r\n{ex.StackTrace}");
                     UnsafeFault(exception, true);
                     //MessageBox.Show($"Migration has failed. {ex.Message}",
                     //    "SharpAlert",

@@ -1,6 +1,6 @@
-﻿using Microsoft.Win32;
+﻿//using Microsoft.Win32;
 using SharpAlert.Properties;
-using System;   
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -24,19 +24,20 @@ using SharpAlert.DisplayDialogs;
 using SharpAlert.AlertComponents;
 using SharpAlert.SourceCapturing.SystemSpecific;
 using static SharpAlert.ProgramWorker.GlobalHotkeyManager;
+using Microsoft.Win32;
+using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 
 namespace SharpAlert.ProgramWorker
 {
     public static class HaidaWorker
     {
-        public static readonly HttpClient client = new HttpClient
+        public static readonly HttpClient client = new()
         {
             Timeout = TimeSpan.FromMinutes(1)
         };
 
         public static readonly string SelfUserAgent = $"Mozilla/5.0 (compatible; SharpAlert/" +
-            $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}/" +
-            $"{VersionInfo.BuildNumber}; bunnytub@bunnytub.com)";
+            $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}; bunnytub@bunnytub.com)";
 
         public static bool ServiceRunnerScheduled { get; private set; } = false;
 
@@ -68,74 +69,74 @@ namespace SharpAlert.ProgramWorker
                 icon = SystemIcons.Application;
             }
 
-            double Scaling = GetWindowsScreenScalingFactor();
+            //double Scaling = GetWindowsScreenScalingFactor();
 
             // this code is so ass, but I don't want to deal with scaling right now
 
-            if (Scaling > 100)
-            {
-                try
-                {
-                    string SubKey = @"Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers";
+            //if (Scaling > 100)
+            //{
+            //    try
+            //    {
+            //        string SubKey = @"Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers";
 
-                    RegistryKey key = Registry.CurrentUser.CreateSubKey(SubKey) ?? throw new Exception("Cannot create compatibility key.");
-                    object value = key.GetValue(AssemblyFile);
-                    bool valid = false;
+            //        RegistryKey key = Registry.CurrentUser.CreateSubKey(SubKey) ?? throw new Exception("Cannot create compatibility key.");
+            //        object value = key.GetValue(AssemblyFile);
+            //        bool valid = false;
 
-                    //string DPIScalingUnderCompatibilityOptions = "~ GDIDPISCALING DPIUNAWARE";
-                    string DPIScalingUnderCompatibilityOptions = "~ DPIUNAWARE";
+            //        //string DPIScalingUnderCompatibilityOptions = "~ GDIDPISCALING DPIUNAWARE";
+            //        string DPIScalingUnderCompatibilityOptions = "~ DPIUNAWARE";
 
-                    if (value != null)
-                    {
-                        string valueString = (string)value;
-                        if (valueString == DPIScalingUnderCompatibilityOptions)
-                        {
-                            valid = true;
-                        }
-                        else
-                        {
-                            if (Scaling > 100)
-                            {
-                                Console.WriteLine($"[Haida] The system DPI is larger than 100%.");
-                                MessageBox.Show($"Your display scaling of {Math.Floor(Scaling)}% may cause panels to display incorrectly. SharpAlert will attempt to correct this behavior, and then automatically restart.",
-                                    "SharpAlert - DPI Scaling Warning",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Warning);
-                            }
-                            else
-                            {
-                                Console.WriteLine($"[Haida] The compatibility settings have been modified, which may cause problems.");
-                                MessageBox.Show($"There are currently unsupported compatibility settings enabled for this program. SharpAlert will attempt to correct your settings, and then automatically restart.",
-                                    "SharpAlert - Compatibility Settings Warning",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Warning);
-                            }
-                        }
-                    }
+            //        if (value != null)
+            //        {
+            //            string valueString = (string)value;
+            //            if (valueString == DPIScalingUnderCompatibilityOptions)
+            //            {
+            //                valid = true;
+            //            }
+            //            else
+            //            {
+            //                if (Scaling > 100)
+            //                {
+            //                    Console.WriteLine($"[Haida] The system DPI is larger than 100%.");
+            //                    MessageBox.Show($"Your display scaling of {Math.Floor(Scaling)}% may cause panels to display incorrectly. SharpAlert will attempt to correct this behavior, and then automatically restart.",
+            //                        "SharpAlert - DPI Scaling Warning",
+            //                        MessageBoxButtons.OK,
+            //                        MessageBoxIcon.Warning);
+            //                }
+            //                else
+            //                {
+            //                    Console.WriteLine($"[Haida] The compatibility settings have been modified, which may cause problems.");
+            //                    MessageBox.Show($"There are currently unsupported compatibility settings enabled for this program. SharpAlert will attempt to correct your settings, and then automatically restart.",
+            //                        "SharpAlert - Compatibility Settings Warning",
+            //                        MessageBoxButtons.OK,
+            //                        MessageBoxIcon.Warning);
+            //                }
+            //            }
+            //        }
 
-                    if (!valid)
-                    {
-                        key.SetValue(AssemblyFile, DPIScalingUnderCompatibilityOptions, RegistryValueKind.String);
-                        key.Close();
-                        key.Dispose();
+            //        if (!valid)
+            //        {
+            //            key.SetValue(AssemblyFile, DPIScalingUnderCompatibilityOptions, RegistryValueKind.String);
+            //            key.Close();
+            //            key.Dispose();
 
-                        Console.WriteLine($"[Haida] Adjusted the program compatibility settings.");
-                        Environment.Exit(100);
-                        return;
-                    }
-                    else
-                    {
-                        //Console.WriteLine($"[Haida] The scaling issues have previously been already corrected.");
-                    }
+            //            Console.WriteLine($"[Haida] Adjusted the program compatibility settings.");
+            //            Environment.Exit(100);
+            //            return;
+            //        }
+            //        else
+            //        {
+            //            //Console.WriteLine($"[Haida] The scaling issues have previously been already corrected.");
+            //        }
 
-                    key.Close();
-                    key.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[Haida] Cannot adjust program DPI settings. {ex.Message}");
-                }
-            }
+            //        key.Close();
+            //        key.Dispose();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine($"[Haida] Cannot adjust program DPI settings. {ex.Message}");
+            //    }
+            //}
 
             string RemoteVersion = UpdateWorker.TryGetRemoteVersion();
 
@@ -145,7 +146,7 @@ namespace SharpAlert.ProgramWorker
                 {
                     // oh my god I can integrate if statements into things like this
                     // that's kinda cool
-                    TimedForm tf = new TimedForm(DateTime.UtcNow >= VersionInfo.BetaTimeEnd);
+                    TimedForm tf = new(DateTime.UtcNow >= VersionInfo.BetaTimeEnd);
                     tf.ShowDialog();
                     tf.Dispose();
                 }
@@ -192,37 +193,37 @@ namespace SharpAlert.ProgramWorker
             {
                 Console.WriteLine("[Haida] Starting program setup experience.");
 
-                SetupForm sf = new SetupForm();
+                SetupForm sf = new();
                 sf.ShowDialog();
                 sf.Dispose();
 
                 if (!QuickSettings.Instance.SetupExperienceComplete)
                 {
-                    ChooseRegionForm crf = new ChooseRegionForm(true);
+                    ChooseRegionForm crf = new(true);
                     crf.ShowDialog();
                     crf.Dispose();
 
-                    ChooseLocationForm clf = new ChooseLocationForm(true);
+                    ChooseLocationForm clf = new(true);
                     clf.ShowDialog();
                     clf.Dispose();
 
-                    ChoosePresetForm cpf = new ChoosePresetForm();
+                    ChoosePresetForm cpf = new();
                     cpf.ShowDialog();
                     cpf.Dispose();
 
-                    StyleConfigurationForm csf = new StyleConfigurationForm(true);
+                    StyleConfigurationForm csf = new(true);
                     csf.ShowDialog();
                     csf.Dispose();
 
-                    ChooseAudioForm caf = new ChooseAudioForm(true);
+                    ChooseAudioForm caf = new(true);
                     caf.ShowDialog();
                     caf.Dispose();
 
-                    ChooseOwnershipForm cof = new ChooseOwnershipForm(true);
+                    ChooseOwnershipForm cof = new(true);
                     cof.ShowDialog();
                     cof.Dispose();
 
-                    SetupDoneForm sdf = new SetupDoneForm();
+                    SetupDoneForm sdf = new();
                     sdf.ShowDialog();
                     sdf.Dispose();
 
@@ -233,6 +234,10 @@ namespace SharpAlert.ProgramWorker
 
                 SetupExperienceOccurred = true;
             }
+
+            //Thread.Sleep(10000);
+
+            Console.WriteLine("1");
 
             notificationThread = StartCatchAllThread("Notifications", () =>
             {
@@ -310,6 +315,8 @@ namespace SharpAlert.ProgramWorker
 
             while (NotifyIconIsNull()) Thread.Sleep(100);
 
+            Console.WriteLine("2");
+
             // migrate users upwards from the minimum limit
             if (QuickSettings.Instance.storedMaxSize < 100) QuickSettings.Instance.storedMaxSize = 500;
 
@@ -330,7 +337,7 @@ namespace SharpAlert.ProgramWorker
                             string server = raw.Trim();
 
                             LineNumber++;
-                            if (server.StartsWith("#"))
+                            if (server.StartsWith('#'))
                             {
                                 Console.WriteLine($"[Haida] Comment skipped on line {LineNumber}.");
                                 continue;
@@ -384,6 +391,8 @@ namespace SharpAlert.ProgramWorker
                 QuickSettings.Instance.RegionMexico ||
                 QuickSettings.Instance.RegionBrazil) AnyFeedAvailable = true;
 
+            Console.WriteLine("3");
+
             if (!AnyFeedAvailable && !SetupExperienceOccurred)
             {
                 //lock (notify)
@@ -401,7 +410,7 @@ namespace SharpAlert.ProgramWorker
             StartAndForget(() =>
             {
                 if (VersionInfo.IsBetaVersion) SpeakingManager.BetaVersionInUse();
-                StartupForm sf = new StartupForm(Resources.WarningApp_Splash);
+                StartupForm sf = new(Resources.WarningApp_Splash);
                 sf.ShowDialog();
                 sf.Dispose();
                 if (!QuickSettings.Instance.DisclaimerShown)
@@ -420,10 +429,14 @@ namespace SharpAlert.ProgramWorker
                 }
             });
 
+            Console.WriteLine("4");
+
             cacheThread = StartCatchAllThread("Cache Capture", () => cache.ServiceRun(true), true);
             dataProcThread = StartCatchAllThread("Data Processor", () => dataproc.ServiceRun(), true);
             historyProcThread = StartCatchAllThread("History Processor", () => historyproc.ServiceRun(), true);
             serverThread = StartCatchAllThread("Hyper Server", () => hyper.ServiceRun(), true);
+
+            Console.WriteLine("5");
 
             RefreshAudioDevices();
 
@@ -526,11 +539,11 @@ namespace SharpAlert.ProgramWorker
                 {
                     if (QuickSettings.Instance.NoSystemSleep)
                     {
-                        SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED);
+                        _ = SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED);
                     }
                     else
                     {
-                        SetThreadExecutionState(ES_CONTINUOUS);
+                        _ = SetThreadExecutionState(ES_CONTINUOUS);
                     }
                     Thread.Sleep(1000);
                 }
@@ -586,7 +599,7 @@ namespace SharpAlert.ProgramWorker
         }
 
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
-        public static extern int GetDeviceCaps(IntPtr hDC, int nIndex);
+        private static extern int GetDeviceCaps(IntPtr hDC, int nIndex);
 
         public enum DeviceCap
         {
@@ -627,7 +640,7 @@ namespace SharpAlert.ProgramWorker
         const uint ES_SYSTEM_REQUIRED = 0x00000001;
         const uint ES_DISPLAY_REQUIRED = 0x00000002;
 
-        private static readonly object ThreadErrorLockObject = new object();
+        private static readonly object ThreadErrorLockObject = new();
 
         //[DllImport("user32.dll")]
         //private static extern IntPtr WindowFromPoint(Point Point);
@@ -693,7 +706,7 @@ namespace SharpAlert.ProgramWorker
                         //try { dataProcThread?.Abort(); } catch (Exception) { }
                         //try { historyProcThread?.Abort(); } catch (Exception) { }
                         //try { notificationThread?.Abort(); } catch (Exception) { }
-                        ToppleForm tf = new ToppleForm(ExceptionCompiled, false);
+                        ToppleForm tf = new(ExceptionCompiled, false);
                         tf.ShowDialog();
                         //new Thread(() => SafeExit(0)).Start();
                         //Thread.Sleep(5000);
@@ -719,11 +732,9 @@ namespace SharpAlert.ProgramWorker
             
             try
             {
-                using (EventLog log = new EventLog("Application"))
-                {
-                    log.Source = "Application";
-                    log.WriteEntry(ExceptionCompiled, EventLogEntryType.Error);
-                }
+                using EventLog log = new("Application");
+                log.Source = "Application";
+                log.WriteEntry(ExceptionCompiled, EventLogEntryType.Error);
             }
             catch (Exception)
             {
@@ -764,7 +775,7 @@ namespace SharpAlert.ProgramWorker
         //public static extern IntPtr GetStdHandle(int nStdHandle);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr CreateFile(
+        private static extern IntPtr CreateFile(
             string lpFileName,
             uint dwDesiredAccess,
             uint dwShareMode,
@@ -890,7 +901,7 @@ namespace SharpAlert.ProgramWorker
                 //    Console.WriteLine("[Haida] Failed to set console mode.");
                 //}
 
-                object LockObject = new object();
+                object LockObject = new();
 
                 //Console.CancelKeyPress += (a, b) => SafeExit(0);
                 _handler += new ConsoleCtrlDelegate(_ => {
@@ -954,7 +965,7 @@ namespace SharpAlert.ProgramWorker
         /// </summary>
         public static void AddFileToQueue()
         {
-            Thread staThread = new Thread(() =>
+            Thread staThread = new(() =>
             {
                 try
                 {
@@ -962,7 +973,7 @@ namespace SharpAlert.ProgramWorker
 
                     string selectedSafePath = string.Empty;
 
-                    OpenFileDialog fbd = new OpenFileDialog
+                    OpenFileDialog fbd = new()
                     {
                         Filter = "Common Alerting Protocol files (*.xml, *.cap)|*.xml;*.cap",
                         FilterIndex = 0,
@@ -1013,7 +1024,7 @@ namespace SharpAlert.ProgramWorker
             staThread.Start();
         }
 
-        private static readonly object EnrollObject = new object();
+        private static readonly object EnrollObject = new();
 
         private static void EnrollAlerts(string data, bool reset = false)
         {
@@ -1048,7 +1059,7 @@ namespace SharpAlert.ProgramWorker
                             //    string alertReplayValue = alert.Value + "<SharpAlertReplay>false</SharpAlertReplay>";
                             //}
 
-                            SharpDataItem item = new SharpDataItem(filename, alert.Value);
+                            SharpDataItem item = new(filename, alert.Value);
 
                             if (reset)
                             {

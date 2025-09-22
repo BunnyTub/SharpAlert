@@ -13,15 +13,16 @@ using System.Windows.Forms;
 using SharpAlert.AlertComponents;
 using SharpAlert.ProgramWorker;
 using System.IO;
+using SharpAlert.AlertComponents.Dashboard;
 
 namespace SharpAlert.DataProcessing
 {
-    public class DataProcessor
+    public partial class DataProcessor
     {
         private bool Stop = false;
         private bool StopCalled = false;
 
-        public AlertProcessor ap = new AlertProcessor();
+        public AlertProcessor ap = new();
 
         public void ServiceStop()
         {
@@ -34,17 +35,19 @@ namespace SharpAlert.DataProcessing
             while (Stop) Thread.Sleep(100);
         }
 
-        private static readonly object DiscordConfirmLockObject = new object();
+        private static readonly object DiscordConfirmLockObject = new();
         public static readonly string ArchivePath = QuickSettings.ConfigDirPath + "\\Archive";
 
         public void ServiceRun()
         {
-            while (true)
+            while (AllowThreadRestarts)
             {
                 try
                 {
                     if (QuickSettings.Instance.ArchivingSaveAllAlerts)
                     {
+                        Thread.Sleep(100);
+
                         try
                         {
                             Directory.CreateDirectory(ArchivePath);
@@ -79,7 +82,7 @@ namespace SharpAlert.DataProcessing
 
                         lock (SharpDataHistory)
                         {
-                            if (SharpDataHistory.Any())
+                            if (SharpDataHistory.Count != 0)
                             {
                                 foreach (SharpDataItem item in SharpDataHistory)
                                 {
@@ -90,7 +93,7 @@ namespace SharpAlert.DataProcessing
                                         string AlertPath = $"{ArchivePath}\\{ItemName}.xml";
                                         if (File.Exists(AlertPath)) continue;
                                         File.WriteAllText(AlertPath, item.Data);
-                                        
+
                                         Console.WriteLine($"[Data Processor] Wrote alert to file on disk -> {Path.GetFileName(AlertPath)}");
                                         if (!QuickSettings.Instance.ArchivingAggressiveProcessing) Thread.Sleep(100);
                                     }
@@ -104,6 +107,7 @@ namespace SharpAlert.DataProcessing
 
                         if (!QuickSettings.Instance.ArchivingAggressiveProcessing) Thread.Sleep(1000);
                     }
+                    else Thread.Sleep(500);
 
                     // Trim history for memory saving
                     if (SharpDataHistory.Count > QuickSettings.Instance.storedMaxSize)
@@ -113,7 +117,7 @@ namespace SharpAlert.DataProcessing
                         Console.WriteLine($"[Data Processor] Trimmed data history.");
                     }
 
-                    List<SharpDataItem> LocalDataQueue = new List<SharpDataItem>();
+                    List<SharpDataItem> LocalDataQueue = [];
 
                     //SharpDataItem relayItem = null;
 
@@ -127,7 +131,7 @@ namespace SharpAlert.DataProcessing
 
                     lock (SharpDataQueue)
                     {
-                        if (SharpDataQueue.Any())
+                        if (SharpDataQueue.Count != 0)
                         {
                             try
                             {
@@ -171,6 +175,7 @@ namespace SharpAlert.DataProcessing
                                         relayItem.Data = relayItem.Data.Replace("<SharpAlertReplay>true</SharpAlertReplay>", "<SharpAlertReplay>false</SharpAlertReplay>");
                                     }
 
+
                                     lock (SharpDataHistory) SharpDataHistory.Add(relayItem);
                                     SharpDataQueue.Remove(relayItem);
 
@@ -201,6 +206,8 @@ namespace SharpAlert.DataProcessing
                                             {
                                                 try
                                                 {
+                                                    DashboardManager.AddNewAlertToDashboard(info);
+
                                                     if (ReplayMode)
                                                     {
                                                         Notify.ShowNotification("This alert has been sent again via replay mode.",
@@ -221,7 +228,7 @@ namespace SharpAlert.DataProcessing
                                                         {
                                                             lock (DiscordConfirmLockObject)
                                                             {
-                                                                ManualAlertRelayForm mar = new ManualAlertRelayForm();
+                                                                ManualAlertRelayForm mar = new();
                                                                 mar.UpdateFields(relayItem.Name, info.AlertEventType, info.AlertIntroText, info.AlertBodyText, info.AlertURL, string.Empty, string.Empty, info.AlertMessageType);
                                                                 mar.ShowDialog();
                                                                 result = mar.DialogResult;
@@ -287,10 +294,10 @@ namespace SharpAlert.DataProcessing
                                                             //}
                                                             //EventsList = EventsList.Substring(0, EventsList.Length - 2);
 
-                                                            string ProcessedEvent = $"{Regex.Replace(info.AlertEventType, @"(^\w)|(\s\w)", m => m.Value.ToUpperInvariant())}";
+                                                            string ProcessedEvent = $"{UpperFirstRegex().Replace(info.AlertEventType, m => m.Value.ToUpperInvariant())}";
 
                                                             LocationList = LocationList.Trim().Substring(0, LocationList.Length - 2).Trim();
-                                                            if (LocationList.EndsWith(";")) LocationList = LocationList.Substring(0, LocationList.Length - 1);
+                                                            if (LocationList.EndsWith(';')) LocationList = LocationList.Substring(0, LocationList.Length - 1);
 
                                                             string CompiledMessage = $"{ProcessedEvent} | Location(s): {LocationList}"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
                                                             if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + $"{DiscordWebhook.GetDiscordWebhookURLFromSourceName(info.AlertSource).Append}";
@@ -314,8 +321,8 @@ namespace SharpAlert.DataProcessing
                                                                 info.AlertBodyText, //+ $"\r\n\r\n||${LocationList}$||",
                                                                 info.AlertURL,
                                                                 relayItem.Name,
-                                                                new List<string> { info.AlertAudioURL },
-                                                                new List<string> { info.AlertImageURL },
+                                                                [info.AlertAudioURL],
+                                                                [info.AlertImageURL],
                                                                 color);
 
                                                             Notify.ShowNotification($"The alert was sent {sentDate:g}. The alert expires {expiresDate:g}.",
@@ -362,7 +369,7 @@ namespace SharpAlert.DataProcessing
                                                                 {
                                                                     Intro = info.AlertIntroText,
                                                                     Body = info.AlertBodyText
-                                                                }, info.AlertURL, info.AlertMessageType, info.AlertSeverity, new List<string> { info.AlertAudioURL }, new List<string> { info.AlertImageURL });
+                                                                }, info.AlertURL, info.AlertMessageType, info.AlertSeverity, [info.AlertAudioURL], [info.AlertImageURL]);
                                                         });
                                                     }
 
@@ -412,6 +419,9 @@ namespace SharpAlert.DataProcessing
                 }
             }
         }
+
+        [GeneratedRegex(@"(^\w)|(\s\w)")]
+        private static partial Regex UpperFirstRegex();
     }
 }
 

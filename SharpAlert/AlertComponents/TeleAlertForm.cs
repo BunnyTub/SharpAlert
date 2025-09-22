@@ -314,7 +314,7 @@ namespace SharpAlert.AlertComponents
             if (!string.IsNullOrWhiteSpace(AlertUrlStr))
             {
                 // let's assume this is a URL for now, we'll fix it later
-                Process.Start(AlertUrlStr);
+                HackyWorkarounds.OpenURL(AlertUrlStr);
                 this.Close();
                 // he said happily a few months ago
             }

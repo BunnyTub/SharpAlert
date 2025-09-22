@@ -5,6 +5,7 @@ using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using System.Drawing;
+using SharpAlert.ProgramWorker;
 
 namespace SharpAlert.ConfigurationDialogs
 {
@@ -82,7 +83,9 @@ namespace SharpAlert.ConfigurationDialogs
             discardFirstAlertsBox.CheckedChanged += (a, b) => QuickSettings.Instance.discardFirstAlerts = ((CheckBox)a).Checked;
             PreferCMAMTextWhereAvailableBox.Checked = QuickSettings.Instance.UseCMAMTextWhereAvailable;
             PreferCMAMTextWhereAvailableBox.CheckedChanged += (a, b) => QuickSettings.Instance.UseCMAMTextWhereAvailable = ((CheckBox)a).Checked;
-            
+            IgnoreKeepAliveBox.Checked = QuickSettings.Instance.IgnoreKeepAlive;
+            IgnoreKeepAliveBox.CheckedChanged += (a, b) => QuickSettings.Instance.IgnoreKeepAlive = ((CheckBox)a).Checked;
+
             categoryGeoBox.Checked = QuickSettings.Instance.categoryGeophysical;
             categoryGeoBox.CheckedChanged += (a, b) => QuickSettings.Instance.categoryGeophysical = ((CheckBox)a).Checked;
             categorySecurityBox.Checked = QuickSettings.Instance.categorySecurity;
@@ -178,20 +181,25 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void LanguageButton_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show($"Choose YES to allow any language. Choose NO to only allow the English language. AllowNonEnglishLanguages is currently set to {QuickSettings.Instance.AllowNonEnglishAlerts}.",
+            MessageBox.Show("Languages are planned to be manageable in the future. Alerts currently will not be discarded for any reason based on language.",
                 Text,
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
 
-            switch (result)
-            {
-                case DialogResult.Yes:
-                    QuickSettings.Instance.AllowNonEnglishAlerts = true;
-                    break;
-                case DialogResult.No:
-                    QuickSettings.Instance.AllowNonEnglishAlerts = false;
-                    break;
-            }
+            //DialogResult result = MessageBox.Show($"Choose YES to allow any language. Choose NO to only allow the English language. AllowNonEnglishLanguages is currently set to {QuickSettings.Instance.AllowNonEnglishAlerts}.",
+            //    Text,
+            //    MessageBoxButtons.YesNo,
+            //    MessageBoxIcon.Question);
+
+            //switch (result)
+            //{
+            //    case DialogResult.Yes:
+            //        QuickSettings.Instance.AllowNonEnglishAlerts = true;
+            //        break;
+            //    case DialogResult.No:
+            //        QuickSettings.Instance.AllowNonEnglishAlerts = false;
+            //        break;
+            //}
         }
 
         private ChooseOwnershipForm cof = null;
@@ -318,6 +326,38 @@ namespace SharpAlert.ConfigurationDialogs
         {
             if (acf == null || acf.IsDisposed) acf = new ArchiveConfigurationForm();
             acf.ShowDialog();
+        }
+
+        private double hue = 0;
+
+        private void RainbowColoring_Tick(object sender, EventArgs e)
+        {
+            hue += 2;
+            if (hue >= 360) hue = 0;
+
+            RainbowText.ForeColor = ColorFromHSV(hue, 1.0, 1.0);
+        }
+
+        private static Color ColorFromHSV(double hue, double saturation, double value)
+        {
+            int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
+            double f = hue / 60 - Math.Floor(hue / 60);
+
+            value = value * 255;
+            int v = (int)value;
+            int p = (int)(value * (1 - saturation));
+            int q = (int)(value * (1 - f * saturation));
+            int t = (int)(value * (1 - (1 - f) * saturation));
+
+            switch (hi)
+            {
+                case 0: return Color.FromArgb(255, v, t, p);
+                case 1: return Color.FromArgb(255, q, v, p);
+                case 2: return Color.FromArgb(255, p, v, t);
+                case 3: return Color.FromArgb(255, p, q, v);
+                case 4: return Color.FromArgb(255, t, p, v);
+                default: return Color.FromArgb(255, v, p, q);
+            }
         }
     }
 }

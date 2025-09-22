@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
+using SharpAlert.ProgramWorker;
 using static SharpAlert.AudioManager;
 using static SharpAlert.ProgramWorker.NotificationWorker;
 

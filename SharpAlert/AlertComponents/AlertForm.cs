@@ -6,10 +6,12 @@ using static SharpAlert.AudioManager;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using static SharpAlert.AlertComponents.AlertDisplayer;
+using System.Runtime.InteropServices;
+using SharpAlert.ProgramWorker;
 
 namespace SharpAlert.AlertComponents
 {
-    public partial class WinFormsAlertForm : Form
+    public partial class AlertForm : Form
     {
         private string AlertIDStr = string.Empty;
         private string AlertSubtitleStr = string.Empty;
@@ -21,7 +23,7 @@ namespace SharpAlert.AlertComponents
         private string AlertType = string.Empty;
         private string AlertSeverity = string.Empty;
 
-        public WinFormsAlertForm()
+        public AlertForm()
         {
             InitializeComponent();
         }
@@ -69,7 +71,7 @@ namespace SharpAlert.AlertComponents
                 AlertLinkText.Text = AlertUrlStr;
             }
 
-            var message = GetTextFromMessageSeverityAndType(severity, type);
+            var message = GetTextFromMessageSeverityAndType(AlertSeverity, AlertType);
             TitleText.Text = message.text;
             ColorTitleAndBordersOne = message.MainColor;
             ColorSubtitleOnlyOne = message.SubColor;
@@ -220,6 +222,8 @@ namespace SharpAlert.AlertComponents
                 ShowImage();
             }
 
+            SpeakerButton.Enabled = true;
+
             Console.WriteLine("[Alert GUI] Window shown.");
         }
 
@@ -291,24 +295,6 @@ namespace SharpAlert.AlertComponents
             }
         }
 
-        private void LinkButton_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(AlertUrlStr))
-            {
-                // let's assume this is a URL for now, we'll fix it later
-                Process.Start(AlertUrlStr);
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show("This alert has no accompanying website.",
-                    "SharpAlert",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-                this.Close();
-            }
-        }
-
         private void AlertForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             FadeOutExitReady = false;
@@ -366,11 +352,16 @@ namespace SharpAlert.AlertComponents
             }
         }
 
+        [DllImport("user32.dll")]
+        private static extern bool ReleaseCapture();
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
         private void TitleText_MouseDown(object sender, MouseEventArgs e)
         {
-            Console.WriteLine("window movement is unavailable");
-            //ReleaseCapture();
-            //SendMessage(this.Handle, 0x112, 0xf012, 0);
+            ReleaseCapture();
+            SendMessage(this.Handle, 0x112, 0xf012, 0);
         }
 
         private void OutlineContainerPanel_Paint(object sender, PaintEventArgs e)
@@ -491,7 +482,7 @@ namespace SharpAlert.AlertComponents
             if (!string.IsNullOrWhiteSpace(AlertUrlStr))
             {
                 // let's assume this is a URL for now, we'll fix it later
-                Process.Start(AlertUrlStr);
+                HackyWorkarounds.OpenURL(AlertUrlStr);
                 this.Close();
             }
             else
