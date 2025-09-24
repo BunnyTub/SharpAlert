@@ -5,6 +5,8 @@ using System.Windows.Forms;
 
 namespace SharpAlert.AlertComponents
 {
+    // Linux support when??
+
     /// <summary>
     /// Gotta love .NET migration.
     /// </summary>
