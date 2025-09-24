@@ -1621,12 +1621,15 @@ namespace SharpAlert.AlertComponents
 
             if (QuickSettings.Instance.weaOnly)
             {
-                if (WEAHandlingRegex.MatchOrDefault(ParameterX).ToLowerInvariant() == "imminent threat")
+                string weaHandling = WEAHandlingRegex.MatchOrDefault(ParameterX);
+
+                if (weaHandling.Equals("public safety", StringComparison.InvariantCultureIgnoreCase) ||
+                    weaHandling.Equals("imminent threat", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return true;
                 }
 
-                if (WirelessImmediateRegex.MatchOrDefault(ParameterX).ToLowerInvariant() == "yes")
+                if (WirelessImmediateRegex.MatchOrDefault(ParameterX).Equals("yes", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return true;
                 }
