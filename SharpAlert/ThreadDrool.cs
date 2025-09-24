@@ -67,7 +67,10 @@ namespace SharpAlert
                 Thread.Sleep(1000);
             }
             if (!NoStartMessage) Console.WriteLine($"[Thread Drool] Starting fire and forget. (action = {action.Method.Name})");
-            Task.Run(() =>
+
+            //vs task run?
+
+            ThreadPool.QueueUserWorkItem((state) =>
             {
                 ThreadCount++;
                 try

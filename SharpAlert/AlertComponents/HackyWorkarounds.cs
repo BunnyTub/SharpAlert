@@ -53,5 +53,51 @@ namespace SharpAlert.AlertComponents
                 }
             }
         }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct FLASHWINFO
+        {
+            public uint cbSize;
+            public IntPtr hwnd;
+            public uint dwFlags;
+            public uint uCount;
+            public uint dwTimeout;
+        }
+
+        //private const uint FLASHW_STOP = 0;
+        private const uint FLASHW_CAPTION = 1;
+        private const uint FLASHW_TRAY = 2;
+        private const uint FLASHW_ALL = FLASHW_CAPTION | FLASHW_TRAY;
+        //private const uint FLASHW_TIMER = 4;
+        //private const uint FLASHW_TIMERNOFG = 12;
+
+        [DllImport("user32.dll")]
+        private static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
+
+        public static void FlashWindow(Form form, uint count = 5)
+        {
+            var fInfo = new FLASHWINFO
+            {
+                cbSize = (uint)Marshal.SizeOf(typeof(FLASHWINFO)),
+                hwnd = form.Handle,
+                dwFlags = FLASHW_ALL,
+                uCount = count,
+                dwTimeout = 0
+            };
+            FlashWindowEx(ref fInfo);
+        }
+
+        //public static void Stop(Form form)
+        //{
+        //    var fInfo = new FLASHWINFO
+        //    {
+        //        cbSize = (uint)Marshal.SizeOf(typeof(FLASHWINFO)),
+        //        hwnd = form.Handle,
+        //        dwFlags = FLASHW_STOP,
+        //        uCount = 0,
+        //        dwTimeout = 0
+        //    };
+        //    FlashWindowEx(ref fInfo);
+        //}
     }
 }

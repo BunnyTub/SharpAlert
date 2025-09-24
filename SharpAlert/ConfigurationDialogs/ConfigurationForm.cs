@@ -7,9 +7,9 @@ using static SharpAlert.ProgramWorker.HaidaWorker;
 
 namespace SharpAlert.ConfigurationDialogs
 {
-    public partial class WinFormsConfigurationForm : Form
+    public partial class ConfigurationForm : Form
     {
-        public WinFormsConfigurationForm()
+        public ConfigurationForm()
         {
             InitializeComponent();
             //WindowSounds.AddClickAndHover(this);

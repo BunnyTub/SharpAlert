@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static SharpAlert.AlertComponents.AlertProcessor;
 
 namespace SharpAlert.AlertComponents.Dashboard
@@ -15,8 +11,15 @@ namespace SharpAlert.AlertComponents.Dashboard
 
         public static void AddNewAlertToDashboard(AlertInfo info)
         {
+            try
+            {
+                NewProcessedAlert?.Invoke(info, EventArgs.Empty);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Dashboard Manager] {ex.Message}");
+            }
             //AlertList.Add(info);
-            NewProcessedAlert?.Invoke(info, EventArgs.Empty);
         }
     }
 }

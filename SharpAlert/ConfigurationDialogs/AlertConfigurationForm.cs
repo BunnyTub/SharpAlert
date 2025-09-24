@@ -6,6 +6,7 @@ using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using System.Drawing;
 using SharpAlert.ProgramWorker;
+using SharpAlert.AlertComponents;
 
 namespace SharpAlert.ConfigurationDialogs
 {
@@ -349,15 +350,20 @@ namespace SharpAlert.ConfigurationDialogs
             int q = (int)(value * (1 - f * saturation));
             int t = (int)(value * (1 - (1 - f) * saturation));
 
-            switch (hi)
+            return hi switch
             {
-                case 0: return Color.FromArgb(255, v, t, p);
-                case 1: return Color.FromArgb(255, q, v, p);
-                case 2: return Color.FromArgb(255, p, v, t);
-                case 3: return Color.FromArgb(255, p, q, v);
-                case 4: return Color.FromArgb(255, t, p, v);
-                default: return Color.FromArgb(255, v, p, q);
-            }
+                0 => Color.FromArgb(255, v, t, p),
+                1 => Color.FromArgb(255, q, v, p),
+                2 => Color.FromArgb(255, p, v, t),
+                3 => Color.FromArgb(255, p, q, v),
+                4 => Color.FromArgb(255, t, p, v),
+                _ => Color.FromArgb(255, v, p, q),
+            };
+        }
+
+        private void RainbowText_Click(object sender, EventArgs e)
+        {
+            HackyWorkarounds.OpenURL("https://bunnytub.com/SharpAlert");
         }
     }
 }

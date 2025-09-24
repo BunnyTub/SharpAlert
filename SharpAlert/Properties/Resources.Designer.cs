@@ -61,6 +61,15 @@ namespace SharpAlert.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream alert_addition {
+            get {
+                return ResourceManager.GetStream("alert_addition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap AlertIcon {
@@ -95,6 +104,16 @@ namespace SharpAlert.Properties {
         internal static System.IO.UnmanagedMemoryStream minor_alert {
             get {
                 return ResourceManager.GetStream("minor_alert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NativeLight {
+            get {
+                object obj = ResourceManager.GetObject("NativeLight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -191,6 +210,16 @@ namespace SharpAlert.Properties {
         internal static System.Drawing.Bitmap WarningApp_Splash {
             get {
                 object obj = ResourceManager.GetObject("WarningApp_Splash", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WarningLight {
+            get {
+                object obj = ResourceManager.GetObject("WarningLight", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

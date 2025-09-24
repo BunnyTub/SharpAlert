@@ -1,6 +1,6 @@
 ﻿namespace SharpAlert.ConfigurationDialogs
 {
-    partial class WinFormsConfigurationForm
+    partial class ConfigurationForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WinFormsConfigurationForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigurationForm));
             this.DoneButton = new System.Windows.Forms.Button();
             this.CAPSettingsButton = new System.Windows.Forms.Button();
             this.StyleSettingsButton = new System.Windows.Forms.Button();

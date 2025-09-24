@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using SharpAlert.AlertComponents;
+using SharpAlert.AlertComponents.Dashboard;
 using SharpAlert.ConfigurationDialogs;
 using SharpAlert.Properties;
 using static SharpAlert.ProgramWorker.HaidaWorker;
@@ -18,7 +20,7 @@ namespace SharpAlert.ProgramWorker
         }
 
         public static NotifyIcon Notify = null;
-        private static WinFormsConfigurationForm mf = null;
+        private static ConfigurationForm mf = null;
         //private static bool NotifyIconCalled = false;
         public static bool IgnoreRightClick = false;
 
@@ -204,19 +206,7 @@ namespace SharpAlert.ProgramWorker
             contextMenu.Items.Add(new ToolStripLabel($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
                 Resources.AlertIcon, true, (obj, args) =>
                 {
-                    try
-                    {
-                        Process.Start(home);
-                    }
-                    catch (Exception)
-                    {
-                        MessageBox.Show("Enter the following URL in your browser:\r\n" +
-                            $"{home}\r\n\r\n" +
-                            "The link couldn't be opened.",
-                            "SharpAlert",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Exclamation);
-                    }
+                    HackyWorkarounds.OpenURL(home);
                 })
             {
                 ToolTipText = "Very mindful, very demure."
@@ -227,29 +217,23 @@ namespace SharpAlert.ProgramWorker
                 contextMenu.Items.Add(new ToolStripLabel($"Click here to update!",
                     null, true, (obj, args) =>
                     {
-                        try
-                        {
-                            Process.Start(update);
-                        }
-                        catch (Exception)
-                        {
-                            MessageBox.Show("Enter the following URL in your browser:\r\n" +
-                                $"{home}\r\n\r\n" +
-                                "The link couldn't be opened.",
-                                "SharpAlert",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Exclamation);
-                        }
+                        HackyWorkarounds.OpenURL(update);
                     })
                 {
                     ToolTipText = "There's an update available for you to download."
                 });
             }
 
+            contextMenu.Items.Add(new ToolStripMenuItem("Open Dashboard", null, (sender, arg) =>
+            {
+                MessageBox.Show("The dashboard lists recently relayed alerts. If you close and re-open the dashboard, the list will start from scratch!");
+                ThreadDrool.StartAndForget(() => new DashboardForm().ShowDialog());
+            }));
+            
             contextMenu.Items.Add(new ToolStripMenuItem("Open Settings", null, (sender, arg) =>
             {
                 IgnoreRightClick = true;
-                if (mf == null || mf.IsDisposed) mf = new WinFormsConfigurationForm();
+                if (mf == null || mf.IsDisposed) mf = new ConfigurationForm();
                 mf.ShowDialog();
                 IgnoreRightClick = false;
             }));
@@ -300,7 +284,7 @@ namespace SharpAlert.ProgramWorker
                 }
                 else
                 {
-                    DoNotDisturbForm dndf = new DoNotDisturbForm();
+                    DoNotDisturbForm dndf = new();
 
                     DialogResult result = dndf.ShowDialog();
 

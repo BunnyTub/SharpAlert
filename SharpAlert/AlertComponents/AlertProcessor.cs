@@ -197,41 +197,44 @@ namespace SharpAlert.AlertComponents
 
                     MatchCollection infoMatches = InfoRegex.Matches(relayItem.Data);
 
-                    bool AnyInfoTagsPass = false;
-
-                    if (!ProcessAlertX(Status, MsgType))
+                    if (!QuickSettings.Instance.BypassAllFilters)
                     {
-                        Console.WriteLine($"[Alert Processor] Alert discarded due to status/message_type settings.");
-                        //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
-                        if (!IgnoreDiscards)
-                        {
-                            return new AlertInfo { AlertDiscardReason = "The alert was blocked because of your status, or message type settings." };
-                        }
-                    }
+                        bool AnyInfoTagsPass = false;
 
-                    for (int ii = 0; ii < infoMatches.Count; ii++)
-                    {
-                        try
+                        if (!ProcessAlertX(Status, MsgType))
                         {
-                            if (ProcessInfoX(infoMatches[ii].Groups[1].Value))
+                            Console.WriteLine($"[Alert Processor] Alert discarded due to status/message_type settings.");
+                            //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
+                            if (!IgnoreDiscards)
                             {
-                                AnyInfoTagsPass = true;
-                                break;
+                                return new AlertInfo { AlertDiscardReason = "The alert was blocked because of your status, or message type settings." };
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"[Alert Processor] An info tag couldn't processed. {ex.Message}");
-                        }
-                    }
 
-                    if (!AnyInfoTagsPass)
-                    {
-                        Console.WriteLine($"[Alert Processor] Alert discarded due to location/urgency/category settings.");
-                        //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
-                        if (!IgnoreDiscards)
+                        for (int ii = 0; ii < infoMatches.Count; ii++)
                         {
-                            return new AlertInfo { AlertDiscardReason = "The alert was blocked because of your location, urgency, or category settings." };
+                            try
+                            {
+                                if (ProcessInfoX(infoMatches[ii].Groups[1].Value))
+                                {
+                                    AnyInfoTagsPass = true;
+                                    break;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"[Alert Processor] An info tag couldn't processed. {ex.Message}");
+                            }
+                        }
+
+                        if (!AnyInfoTagsPass)
+                        {
+                            Console.WriteLine($"[Alert Processor] Alert discarded due to location/urgency/category settings.");
+                            //DiscordWebhook.SendUnformattedMessage($"The incoming alert was discarded. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
+                            if (!IgnoreDiscards)
+                            {
+                                return new AlertInfo { AlertDiscardReason = "The alert was blocked because of your location, urgency, or category settings." };
+                            }
                         }
                     }
 
@@ -519,7 +522,6 @@ namespace SharpAlert.AlertComponents
                                     Console.WriteLine($"[Alert Processor] Blacklist/whitelist check skipped because discards are being ignored.");
                                 }
                             }
-
 
                             // removal of replay boolean
                             var (Intro, Body) = CompiledBody(AlertInfo, MsgType, Sent, Source);
@@ -2438,18 +2440,17 @@ namespace SharpAlert.AlertComponents
             switch (severity.ToLowerInvariant())
             {
                 case "extreme":
-                    return ("EXTREME ALERT", Color.Red, Color.FromArgb(160, 0, 0));
+                    return ("EXTREME ALERT", Color.MediumOrchid, Color.Purple);
                 case "severe":
                     return ("SEVERE ALERT", Color.Red, Color.FromArgb(160, 0, 0));
                 case "moderate":
                     return ("MODERATE ALERT", Color.FromArgb(255, 112, 0), Color.FromArgb(200, 82, 80));
                 case "minor":
-                    return ("MINOR ALERT", Color.FromArgb(255, 112, 0), Color.FromArgb(200, 82, 80));
+                    return ("MINOR ALERT", Color.Green, Color.FromArgb(0, 80, 80));
                 case "unknown":
                 default:
                     return ("UNKNOWN ALERT", Color.FromArgb(255, 112, 0), Color.FromArgb(200, 82, 80));
             }
-
         }
     }
 }

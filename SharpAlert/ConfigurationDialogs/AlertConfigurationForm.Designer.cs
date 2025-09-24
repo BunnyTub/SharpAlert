@@ -139,14 +139,16 @@
             // 
             // RainbowText
             // 
-            RainbowText.Font = new System.Drawing.Font("Arial", 32.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            RainbowText.Cursor = System.Windows.Forms.Cursors.Hand;
+            RainbowText.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             RainbowText.ForeColor = System.Drawing.Color.Red;
             RainbowText.Location = new System.Drawing.Point(160, 198);
             RainbowText.Name = "RainbowText";
             RainbowText.Size = new System.Drawing.Size(176, 98);
             RainbowText.TabIndex = 24;
-            RainbowText.Text = "rawr";
+            RainbowText.Text = "There's nothing here yet.\r\nFeel free to ask us about adding new features or changes into the program!";
             RainbowText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            RainbowText.Click += RainbowText_Click;
             // 
             // label7
             // 

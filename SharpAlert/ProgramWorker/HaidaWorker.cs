@@ -237,8 +237,6 @@ namespace SharpAlert.ProgramWorker
 
             //Thread.Sleep(10000);
 
-            Console.WriteLine("1");
-
             notificationThread = StartCatchAllThread("Notifications", () =>
             {
                 SystemEvents.PowerModeChanged += (a, b) =>
@@ -315,8 +313,6 @@ namespace SharpAlert.ProgramWorker
 
             while (NotifyIconIsNull()) Thread.Sleep(100);
 
-            Console.WriteLine("2");
-
             // migrate users upwards from the minimum limit
             if (QuickSettings.Instance.storedMaxSize < 100) QuickSettings.Instance.storedMaxSize = 500;
 
@@ -391,8 +387,6 @@ namespace SharpAlert.ProgramWorker
                 QuickSettings.Instance.RegionMexico ||
                 QuickSettings.Instance.RegionBrazil) AnyFeedAvailable = true;
 
-            Console.WriteLine("3");
-
             if (!AnyFeedAvailable && !SetupExperienceOccurred)
             {
                 //lock (notify)
@@ -429,14 +423,10 @@ namespace SharpAlert.ProgramWorker
                 }
             });
 
-            Console.WriteLine("4");
-
             cacheThread = StartCatchAllThread("Cache Capture", () => cache.ServiceRun(true), true);
             dataProcThread = StartCatchAllThread("Data Processor", () => dataproc.ServiceRun(), true);
             historyProcThread = StartCatchAllThread("History Processor", () => historyproc.ServiceRun(), true);
             serverThread = StartCatchAllThread("Hyper Server", () => hyper.ServiceRun(), true);
-
-            Console.WriteLine("5");
 
             RefreshAudioDevices();
 

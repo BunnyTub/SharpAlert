@@ -28,19 +28,226 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DashboardForm));
+            TitlePanel = new System.Windows.Forms.Panel();
+            PrimaryGeneralInfoText = new System.Windows.Forms.Label();
+            GeneralInfoText = new System.Windows.Forms.Label();
+            panel1 = new System.Windows.Forms.Panel();
+            BrandText = new System.Windows.Forms.Label();
+            LogoBox = new System.Windows.Forms.PictureBox();
+            panel2 = new System.Windows.Forms.Panel();
+            DashboardPanel = new System.Windows.Forms.Panel();
+            UpdateGeneralInfoTextTimer = new System.Windows.Forms.Timer(components);
+            UpdateExpiryTimer = new System.Windows.Forms.Timer(components);
+            ActiveAlertsText = new System.Windows.Forms.Label();
+            SpacerLinePanel1 = new System.Windows.Forms.Panel();
+            panel3 = new System.Windows.Forms.Panel();
+            AutoScrollBox = new System.Windows.Forms.CheckBox();
+            CycleBetweenInfoAndClockTimer = new System.Windows.Forms.Timer(components);
+            DetectAlertActivity = new System.Windows.Forms.Timer(components);
+            TitlePanel.SuspendLayout();
+            panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
+            panel3.SuspendLayout();
             SuspendLayout();
+            // 
+            // TitlePanel
+            // 
+            TitlePanel.BackColor = System.Drawing.Color.DarkRed;
+            TitlePanel.Controls.Add(PrimaryGeneralInfoText);
+            TitlePanel.Controls.Add(GeneralInfoText);
+            TitlePanel.Controls.Add(panel1);
+            TitlePanel.Controls.Add(LogoBox);
+            TitlePanel.Dock = System.Windows.Forms.DockStyle.Top;
+            TitlePanel.Location = new System.Drawing.Point(0, 0);
+            TitlePanel.Name = "TitlePanel";
+            TitlePanel.Size = new System.Drawing.Size(800, 49);
+            TitlePanel.TabIndex = 0;
+            // 
+            // PrimaryGeneralInfoText
+            // 
+            PrimaryGeneralInfoText.Dock = System.Windows.Forms.DockStyle.Fill;
+            PrimaryGeneralInfoText.Font = new System.Drawing.Font("Segoe UI", 9F);
+            PrimaryGeneralInfoText.Location = new System.Drawing.Point(358, 32);
+            PrimaryGeneralInfoText.Margin = new System.Windows.Forms.Padding(2);
+            PrimaryGeneralInfoText.Name = "PrimaryGeneralInfoText";
+            PrimaryGeneralInfoText.Size = new System.Drawing.Size(442, 17);
+            PrimaryGeneralInfoText.TabIndex = 5;
+            PrimaryGeneralInfoText.Text = "...";
+            PrimaryGeneralInfoText.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // GeneralInfoText
+            // 
+            GeneralInfoText.Dock = System.Windows.Forms.DockStyle.Top;
+            GeneralInfoText.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold);
+            GeneralInfoText.Location = new System.Drawing.Point(358, 0);
+            GeneralInfoText.Margin = new System.Windows.Forms.Padding(2);
+            GeneralInfoText.Name = "GeneralInfoText";
+            GeneralInfoText.Size = new System.Drawing.Size(442, 32);
+            GeneralInfoText.TabIndex = 3;
+            GeneralInfoText.Text = "...";
+            GeneralInfoText.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = System.Drawing.Color.DarkRed;
+            panel1.Controls.Add(BrandText);
+            panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            panel1.Location = new System.Drawing.Point(64, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new System.Drawing.Size(294, 49);
+            panel1.TabIndex = 4;
+            // 
+            // BrandText
+            // 
+            BrandText.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            BrandText.Location = new System.Drawing.Point(5, 2);
+            BrandText.Margin = new System.Windows.Forms.Padding(2);
+            BrandText.Name = "BrandText";
+            BrandText.Size = new System.Drawing.Size(285, 42);
+            BrandText.TabIndex = 1;
+            BrandText.Text = "SharpAlert";
+            BrandText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // LogoBox
+            // 
+            LogoBox.Dock = System.Windows.Forms.DockStyle.Left;
+            LogoBox.Image = Properties.Resources.AlertIcon;
+            LogoBox.Location = new System.Drawing.Point(0, 0);
+            LogoBox.Name = "LogoBox";
+            LogoBox.Size = new System.Drawing.Size(64, 49);
+            LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            LogoBox.TabIndex = 0;
+            LogoBox.TabStop = false;
+            // 
+            // panel2
+            // 
+            panel2.BackColor = System.Drawing.Color.LightCoral;
+            panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            panel2.Location = new System.Drawing.Point(0, 49);
+            panel2.Name = "panel2";
+            panel2.Size = new System.Drawing.Size(800, 8);
+            panel2.TabIndex = 1;
+            // 
+            // DashboardPanel
+            // 
+            DashboardPanel.BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
+            DashboardPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            DashboardPanel.Location = new System.Drawing.Point(0, 107);
+            DashboardPanel.Name = "DashboardPanel";
+            DashboardPanel.Size = new System.Drawing.Size(800, 343);
+            DashboardPanel.TabIndex = 2;
+            // 
+            // UpdateGeneralInfoTextTimer
+            // 
+            UpdateGeneralInfoTextTimer.Enabled = true;
+            UpdateGeneralInfoTextTimer.Interval = 1000;
+            UpdateGeneralInfoTextTimer.Tick += UpdateGeneralInfoTextTimer_Tick;
+            // 
+            // UpdateExpiryTimer
+            // 
+            UpdateExpiryTimer.Enabled = true;
+            UpdateExpiryTimer.Interval = 15000;
+            UpdateExpiryTimer.Tick += UpdateExpiryTimer_Tick;
+            // 
+            // ActiveAlertsText
+            // 
+            ActiveAlertsText.Dock = System.Windows.Forms.DockStyle.Top;
+            ActiveAlertsText.Font = new System.Drawing.Font("Segoe UI", 24F);
+            ActiveAlertsText.ForeColor = System.Drawing.Color.Gray;
+            ActiveAlertsText.Location = new System.Drawing.Point(0, 0);
+            ActiveAlertsText.Margin = new System.Windows.Forms.Padding(2);
+            ActiveAlertsText.Name = "ActiveAlertsText";
+            ActiveAlertsText.Size = new System.Drawing.Size(800, 40);
+            ActiveAlertsText.TabIndex = 3;
+            ActiveAlertsText.Text = " crickets... ~w~";
+            ActiveAlertsText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // SpacerLinePanel1
+            // 
+            SpacerLinePanel1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            SpacerLinePanel1.BackColor = System.Drawing.Color.White;
+            SpacerLinePanel1.Location = new System.Drawing.Point(12, 45);
+            SpacerLinePanel1.Name = "SpacerLinePanel1";
+            SpacerLinePanel1.Size = new System.Drawing.Size(776, 2);
+            SpacerLinePanel1.TabIndex = 4;
+            // 
+            // panel3
+            // 
+            panel3.BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
+            panel3.Controls.Add(AutoScrollBox);
+            panel3.Controls.Add(SpacerLinePanel1);
+            panel3.Controls.Add(ActiveAlertsText);
+            panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            panel3.Location = new System.Drawing.Point(0, 57);
+            panel3.Name = "panel3";
+            panel3.Size = new System.Drawing.Size(800, 50);
+            panel3.TabIndex = 5;
+            // 
+            // AutoScrollBox
+            // 
+            AutoScrollBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            AutoScrollBox.AutoSize = true;
+            AutoScrollBox.Location = new System.Drawing.Point(666, 20);
+            AutoScrollBox.Name = "AutoScrollBox";
+            AutoScrollBox.Size = new System.Drawing.Size(122, 19);
+            AutoScrollBox.TabIndex = 0;
+            AutoScrollBox.Text = "Enable Auto Scroll";
+            AutoScrollBox.UseVisualStyleBackColor = true;
+            // 
+            // CycleBetweenInfoAndClockTimer
+            // 
+            CycleBetweenInfoAndClockTimer.Interval = 5000;
+            CycleBetweenInfoAndClockTimer.Tick += CycleBetweenInfoAndClockTimer_Tick;
+            // 
+            // DetectAlertActivity
+            // 
+            DetectAlertActivity.Enabled = true;
+            DetectAlertActivity.Interval = 500;
+            DetectAlertActivity.Tick += DetectAlertActivity_Tick;
             // 
             // DashboardForm
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            BackColor = System.Drawing.Color.White;
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(800, 450);
+            Controls.Add(DashboardPanel);
+            Controls.Add(panel3);
+            Controls.Add(panel2);
+            Controls.Add(TitlePanel);
+            ForeColor = System.Drawing.Color.White;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MinimumSize = new System.Drawing.Size(816, 489);
             Name = "DashboardForm";
-            Text = "DashboardForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "SharpAlert Dashboard";
+            Load += DashboardForm_Load;
+            TitlePanel.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)LogoBox).EndInit();
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
+
+        private System.Windows.Forms.Panel TitlePanel;
+        private System.Windows.Forms.PictureBox LogoBox;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel DashboardPanel;
+        private System.Windows.Forms.Timer UpdateGeneralInfoTextTimer;
+        private System.Windows.Forms.Timer UpdateExpiryTimer;
+        private System.Windows.Forms.Label ActiveAlertsText;
+        private System.Windows.Forms.Panel SpacerLinePanel1;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.CheckBox AutoScrollBox;
+        private System.Windows.Forms.Timer CycleBetweenInfoAndClockTimer;
+        private System.Windows.Forms.Label PrimaryGeneralInfoText;
+        private System.Windows.Forms.Label GeneralInfoText;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label BrandText;
+        private System.Windows.Forms.Timer DetectAlertActivity;
     }
 }
