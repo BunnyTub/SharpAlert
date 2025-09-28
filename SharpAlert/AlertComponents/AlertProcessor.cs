@@ -14,7 +14,6 @@ using SharpAlert.SourceCapturing;
 using System.Text.Json;
 using System.Text;
 using SharpAlert.Properties;
-using System.Threading;
 
 namespace SharpAlert.AlertComponents
 {
@@ -134,6 +133,7 @@ namespace SharpAlert.AlertComponents
             public string AlertSource { get; set; } = string.Empty;
             public string AlertID { get; set; } = string.Empty;
             public string AlertSentDate { get; set; } = string.Empty;
+            public string AlertBeginDate { get; set; } = string.Empty;
             public string AlertExpiryDate { get; set; } = string.Empty;
             public List<string> AlertFriendlyLocations { get; set; } = [];
             public string AlertEventType { get; set; } = string.Empty;
@@ -249,6 +249,7 @@ namespace SharpAlert.AlertComponents
                     List<string> ImageFiles = [];
                     List<string> DerefImageFiles = [];
                     List<AlertTextClass> AlertTextList = [];
+                    string Effective = string.Empty;
                     string Expiry = string.Empty;
                     string EventTypeFull = string.Empty;
                     string PrimaryURL = string.Empty;
@@ -264,7 +265,7 @@ namespace SharpAlert.AlertComponents
                         Source = SourceRegex.MatchOrDefault(alert, "External Source");
                         Console.WriteLine($"[Alert Processor] Source (if any): {Source}");
 
-                        string Effective = EffectiveRegex.MatchOrDefault(alert, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
+                        Effective = EffectiveRegex.MatchOrDefault(alert, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
                         Console.WriteLine($"[Alert Processor] Effective: {Effective}");
 
                         Expiry = ExpiresRegex.MatchOrDefault(alert, DateTime.UtcNow.AddHours(1).ToString("O", CultureInfo.InvariantCulture));
@@ -646,6 +647,7 @@ namespace SharpAlert.AlertComponents
                         AlertSource = Source,
                         AlertID = relayItem.Name,
                         AlertSentDate = Sent,
+                        AlertBeginDate = Effective,
                         AlertExpiryDate = Expiry,
                         AlertFriendlyLocations = AllLocations,
                         AlertEventType = EventTypeFull,

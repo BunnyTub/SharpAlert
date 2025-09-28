@@ -95,7 +95,7 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void OpenArchiveButton_Click(object sender, EventArgs e)
         {
-            Process.Start(DataProcessor.ArchivePath);
+            Process.Start("explorer.exe", DataProcessor.ArchivePath);
         }
     }
 }

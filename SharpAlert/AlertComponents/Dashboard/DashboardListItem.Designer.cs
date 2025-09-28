@@ -57,7 +57,7 @@
             AlertExpiresInTitleText.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             AlertExpiresInTitleText.BackColor = System.Drawing.Color.Transparent;
             AlertExpiresInTitleText.Font = new System.Drawing.Font("Segoe UI", 12F);
-            AlertExpiresInTitleText.Location = new System.Drawing.Point(531, 3);
+            AlertExpiresInTitleText.Location = new System.Drawing.Point(592, 3);
             AlertExpiresInTitleText.Margin = new System.Windows.Forms.Padding(8, 8, 8, 0);
             AlertExpiresInTitleText.Name = "AlertExpiresInTitleText";
             AlertExpiresInTitleText.Size = new System.Drawing.Size(102, 24);
@@ -71,7 +71,7 @@
             AlertExpiryText.BackColor = System.Drawing.Color.Transparent;
             AlertExpiryText.Cursor = System.Windows.Forms.Cursors.Hand;
             AlertExpiryText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            AlertExpiryText.Location = new System.Drawing.Point(530, 20);
+            AlertExpiryText.Location = new System.Drawing.Point(591, 20);
             AlertExpiryText.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             AlertExpiryText.Name = "AlertExpiryText";
             AlertExpiryText.Size = new System.Drawing.Size(102, 23);
@@ -89,7 +89,7 @@
             AlertDescriptionText.Location = new System.Drawing.Point(4, 39);
             AlertDescriptionText.Margin = new System.Windows.Forms.Padding(0);
             AlertDescriptionText.Name = "AlertDescriptionText";
-            AlertDescriptionText.Size = new System.Drawing.Size(628, 68);
+            AlertDescriptionText.Size = new System.Drawing.Size(689, 68);
             AlertDescriptionText.TabIndex = 4;
             AlertDescriptionText.Text = "Issued by Unknown Authority, sourced from External Source. For the following areas, No Known Good Areas...";
             AlertDescriptionText.Click += AlertDescriptionText_Click;
@@ -102,7 +102,7 @@
             AlertIssuedTimeAndDateText.Location = new System.Drawing.Point(399, 97);
             AlertIssuedTimeAndDateText.Margin = new System.Windows.Forms.Padding(8, 4, 8, 8);
             AlertIssuedTimeAndDateText.Name = "AlertIssuedTimeAndDateText";
-            AlertIssuedTimeAndDateText.Size = new System.Drawing.Size(233, 15);
+            AlertIssuedTimeAndDateText.Size = new System.Drawing.Size(294, 15);
             AlertIssuedTimeAndDateText.TabIndex = 5;
             AlertIssuedTimeAndDateText.Text = "Issued at 11:00 AM PDT 09/22/2025";
             AlertIssuedTimeAndDateText.TextAlign = System.Drawing.ContentAlignment.BottomRight;
@@ -120,7 +120,7 @@
             ContainerPanel.Location = new System.Drawing.Point(6, 6);
             ContainerPanel.Margin = new System.Windows.Forms.Padding(6);
             ContainerPanel.Name = "ContainerPanel";
-            ContainerPanel.Size = new System.Drawing.Size(638, 118);
+            ContainerPanel.Size = new System.Drawing.Size(699, 118);
             ContainerPanel.TabIndex = 6;
             // 
             // ChangeBackgroundColorTimer
@@ -149,7 +149,7 @@
             Font = new System.Drawing.Font("Arial", 9F);
             ForeColor = System.Drawing.Color.White;
             Name = "DashboardListItem";
-            Size = new System.Drawing.Size(650, 130);
+            Size = new System.Drawing.Size(711, 130);
             Load += DashboardListItem_Load;
             ContainerPanel.ResumeLayout(false);
             ContainerPanel.PerformLayout();

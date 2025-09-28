@@ -46,6 +46,7 @@
             AutoScrollBox = new System.Windows.Forms.CheckBox();
             CycleBetweenInfoAndClockTimer = new System.Windows.Forms.Timer(components);
             DetectAlertActivity = new System.Windows.Forms.Timer(components);
+            ToolTipInformation = new System.Windows.Forms.ToolTip(components);
             TitlePanel.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
@@ -120,6 +121,8 @@
             LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             LogoBox.TabIndex = 0;
             LogoBox.TabStop = false;
+            ToolTipInformation.SetToolTip(LogoBox, "Double-click here to open a version of this dashboard for expired alerts only.\r\nThe expired alerts dashboard will display");
+            LogoBox.DoubleClick += LogoBox_DoubleClick;
             // 
             // panel2
             // 
@@ -148,7 +151,7 @@
             // UpdateExpiryTimer
             // 
             UpdateExpiryTimer.Enabled = true;
-            UpdateExpiryTimer.Interval = 15000;
+            UpdateExpiryTimer.Interval = 5000;
             UpdateExpiryTimer.Tick += UpdateExpiryTimer_Tick;
             // 
             // ActiveAlertsText
@@ -163,6 +166,7 @@
             ActiveAlertsText.TabIndex = 3;
             ActiveAlertsText.Text = " crickets... ~w~";
             ActiveAlertsText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            ActiveAlertsText.Click += ActiveAlertsText_Click;
             // 
             // SpacerLinePanel1
             // 
@@ -204,8 +208,19 @@
             // DetectAlertActivity
             // 
             DetectAlertActivity.Enabled = true;
-            DetectAlertActivity.Interval = 500;
+            DetectAlertActivity.Interval = 300;
             DetectAlertActivity.Tick += DetectAlertActivity_Tick;
+            // 
+            // ToolTipInformation
+            // 
+            ToolTipInformation.AutomaticDelay = 250;
+            ToolTipInformation.AutoPopDelay = 15000;
+            ToolTipInformation.BackColor = System.Drawing.Color.White;
+            ToolTipInformation.ForeColor = System.Drawing.Color.Black;
+            ToolTipInformation.InitialDelay = 250;
+            ToolTipInformation.IsBalloon = true;
+            ToolTipInformation.ReshowDelay = 50;
+            ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
             // DashboardForm
             // 
@@ -216,12 +231,14 @@
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(TitlePanel);
+            DoubleBuffered = true;
             ForeColor = System.Drawing.Color.White;
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MinimumSize = new System.Drawing.Size(816, 489);
             Name = "DashboardForm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "SharpAlert Dashboard";
+            FormClosed += DashboardForm_FormClosed;
             Load += DashboardForm_Load;
             TitlePanel.ResumeLayout(false);
             panel1.ResumeLayout(false);
@@ -249,5 +266,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label BrandText;
         private System.Windows.Forms.Timer DetectAlertActivity;
+        private System.Windows.Forms.ToolTip ToolTipInformation;
     }
 }

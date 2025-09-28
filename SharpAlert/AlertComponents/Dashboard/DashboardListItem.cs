@@ -8,6 +8,7 @@ namespace SharpAlert.AlertComponents.Dashboard
     public partial class DashboardListItem : UserControl
     {
         public readonly AlertInfo alertInfo;
+        public readonly DateTimeOffset startOfExistenceDateTime = DateTimeOffset.UtcNow;
 
         public DashboardListItem(AlertInfo info)
         {

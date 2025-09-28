@@ -102,6 +102,8 @@ namespace SharpAlert.ProgramWorker
         /// </summary>
         public static void SafeExit(bool restart = false)
         {
+            DiscordWebhook.SendFormattedMessage($"SharpAlert is stopping.");
+
             Notify.ShowNotification($"Haida is working to get everything shutdown. This may take a few moments.",
                 "SharpAlert is stopping",
                 ToolTipIcon.Info);
@@ -468,6 +470,7 @@ namespace SharpAlert.ProgramWorker
                 {
                     case 0:
                         restartable = false;
+                        //DiscordWebhook.SendFormattedMessage($"SharpAlert has stopped.");
                         Environment.Exit(0);
                         return;
                     case -1073741510:

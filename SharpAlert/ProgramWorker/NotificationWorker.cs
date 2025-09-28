@@ -226,8 +226,8 @@ namespace SharpAlert.ProgramWorker
 
             contextMenu.Items.Add(new ToolStripMenuItem("Open Dashboard", null, (sender, arg) =>
             {
-                MessageBox.Show("The dashboard lists recently relayed alerts. If you close and re-open the dashboard, the list will start from scratch!");
-                ThreadDrool.StartAndForget(() => new DashboardForm().ShowDialog());
+                //MessageBox.Show("The dashboard lists recently relayed alerts. If you close and re-open the dashboard, the list will start from scratch!");
+                ThreadDrool.StartAndForget(() => new DashboardForm(false).ShowDialog());
             }));
             
             contextMenu.Items.Add(new ToolStripMenuItem("Open Settings", null, (sender, arg) =>
