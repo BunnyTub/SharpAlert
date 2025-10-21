@@ -384,8 +384,8 @@ namespace SharpAlert.ProgramWorker
                 QuickSettings.Instance.RegionUnitedStates ||
                 QuickSettings.Instance.RegionUnitedStatesNWS ||
                 QuickSettings.Instance.RegionCanada ||
-                QuickSettings.Instance.RegionMexico ||
-                QuickSettings.Instance.RegionBrazil) AnyFeedAvailable = true;
+                QuickSettings.Instance.RegionMexico) AnyFeedAvailable = true;
+            // QuickSettings.Instance.RegionBrazil removed for now due to API issues
 
             if (!AnyFeedAvailable && !SetupExperienceOccurred)
             {
@@ -475,7 +475,13 @@ namespace SharpAlert.ProgramWorker
 
             if (QuickSettings.Instance.RegionBrazil)
             {
-                idapfeedThread = StartCatchAllThread("IDAP Feed Capture", () => idapfeed.ServiceRun(true), false);
+                Console.WriteLine("[Haida] Capturing from Brazil (IDAP) is unavailable.");
+                StartAndForget(() =>
+                {
+                    new IDAPNoticeForm().ShowDialog();
+                });
+                //idapfeedThread = StartCatchAllThread("IDAP Feed Capture", () => idapfeed.ServiceRun(true), false);
+                // removed Brazil IDAP from being able to be used for now
             }
 
             // just assign statusWindow to the boolean... dumb fuck
@@ -572,7 +578,7 @@ namespace SharpAlert.ProgramWorker
 
                 while (AllowThreadRestarts)
                 {
-                    if (QuickSettings.Instance.PerformUpdatesAutomatically)
+                    if (QuickSettings.Instance.AllowPerformingUpdates)
                     {
                         string SubRemoteVersion = UpdateWorker.TryGetRemoteVersion();
                         if (SubRemoteVersion != $"{VersionInfo.MajorVersion}.{VersionInfo.MajorVersion}")

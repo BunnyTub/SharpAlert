@@ -51,8 +51,8 @@ namespace SharpAlert.ProgramWorker
         // Version
         public string LastVersionOpened { get; set; } = "v0.0";
         // Updating
+        public bool AskedForAutomaticUpdates { get; set; } = false;
         public bool AllowPerformingUpdates { get; set; } = false;
-        public bool PerformUpdatesAutomatically { get; set; } = false;
         // System
         public bool NoSystemSleep { get; set; } = false;
         // Migration

@@ -323,6 +323,26 @@ namespace SharpAlert.ProgramWorker
             Notify.ContextMenuStrip = contextMenu;
             Notify.BalloonTipClicked += Notify_BalloonTipClicked;
 
+            if (!QuickSettings.Instance.AskedForAutomaticUpdates)
+            {
+                DialogResult result = MessageBox.Show("Do you want to enable automatic updates in SharpAlert? This keeps it up to date by checking for updates on an hourly schedule, then automatically installing them.",
+                    "SharpAlert - Automatic Updates",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    QuickSettings.Instance.AllowPerformingUpdates = true;
+                }
+                else
+                {
+                    QuickSettings.Instance.AllowPerformingUpdates = false;
+                }
+
+                QuickSettings.Instance.AskedForAutomaticUpdates = true;
+            }
+
+
             QuickSettings.Instance.LastVersionOpened = $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}";
         }
 

@@ -28,197 +28,199 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChooseRegionForm));
-            this.DoneButton = new System.Windows.Forms.Button();
-            this.LogoBox = new System.Windows.Forms.PictureBox();
-            this.TitleText = new System.Windows.Forms.Label();
-            this.RegionUnitedStatesBox = new System.Windows.Forms.CheckBox();
-            this.RegionCanadaBox = new System.Windows.Forms.CheckBox();
-            this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
-            this.RegionMexicoBox = new System.Windows.Forms.CheckBox();
-            this.LinkButton = new System.Windows.Forms.Button();
-            this.RegionUnitedStatesNWSBox = new System.Windows.Forms.CheckBox();
-            this.RegionBrazilBox = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
-            this.SuspendLayout();
+            DoneButton = new System.Windows.Forms.Button();
+            LogoBox = new System.Windows.Forms.PictureBox();
+            TitleText = new System.Windows.Forms.Label();
+            RegionUnitedStatesBox = new System.Windows.Forms.CheckBox();
+            RegionCanadaBox = new System.Windows.Forms.CheckBox();
+            ToolTipInformation = new System.Windows.Forms.ToolTip(components);
+            RegionMexicoBox = new System.Windows.Forms.CheckBox();
+            LinkButton = new System.Windows.Forms.Button();
+            RegionUnitedStatesNWSBox = new System.Windows.Forms.CheckBox();
+            RegionBrazilBox = new System.Windows.Forms.CheckBox();
+            ChangeLaterText = new System.Windows.Forms.LinkLabel();
+            ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
+            SuspendLayout();
             // 
             // DoneButton
             // 
-            this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.DoneButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DoneButton.Location = new System.Drawing.Point(451, 185);
-            this.DoneButton.Margin = new System.Windows.Forms.Padding(0);
-            this.DoneButton.Name = "DoneButton";
-            this.DoneButton.Size = new System.Drawing.Size(72, 23);
-            this.DoneButton.TabIndex = 0;
-            this.DoneButton.Text = "Done";
-            this.DoneButton.UseVisualStyleBackColor = false;
-            this.DoneButton.Click += new System.EventHandler(this.DoneButton_Click);
+            DoneButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            DoneButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            DoneButton.Location = new System.Drawing.Point(451, 229);
+            DoneButton.Margin = new System.Windows.Forms.Padding(0);
+            DoneButton.Name = "DoneButton";
+            DoneButton.Size = new System.Drawing.Size(72, 23);
+            DoneButton.TabIndex = 0;
+            DoneButton.Text = "Done";
+            DoneButton.UseVisualStyleBackColor = false;
+            DoneButton.Click += DoneButton_Click;
             // 
             // LogoBox
             // 
-            this.LogoBox.Image = global::SharpAlert.Properties.Resources.WarningApp;
-            this.LogoBox.Location = new System.Drawing.Point(9, 9);
-            this.LogoBox.Margin = new System.Windows.Forms.Padding(0);
-            this.LogoBox.Name = "LogoBox";
-            this.LogoBox.Size = new System.Drawing.Size(96, 96);
-            this.LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.LogoBox.TabIndex = 1;
-            this.LogoBox.TabStop = false;
+            LogoBox.Image = Properties.Resources.WarningApp;
+            LogoBox.Location = new System.Drawing.Point(9, 9);
+            LogoBox.Margin = new System.Windows.Forms.Padding(0);
+            LogoBox.Name = "LogoBox";
+            LogoBox.Size = new System.Drawing.Size(96, 96);
+            LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            LogoBox.TabIndex = 1;
+            LogoBox.TabStop = false;
             // 
             // TitleText
             // 
-            this.TitleText.Font = new System.Drawing.Font("Arial", 16F);
-            this.TitleText.Location = new System.Drawing.Point(105, 9);
-            this.TitleText.Margin = new System.Windows.Forms.Padding(0);
-            this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(400, 30);
-            this.TitleText.TabIndex = 3;
-            this.TitleText.Text = "Choose your region settings.";
+            TitleText.Font = new System.Drawing.Font("Arial", 16F);
+            TitleText.Location = new System.Drawing.Point(105, 9);
+            TitleText.Margin = new System.Windows.Forms.Padding(0);
+            TitleText.Name = "TitleText";
+            TitleText.Size = new System.Drawing.Size(400, 30);
+            TitleText.TabIndex = 3;
+            TitleText.Text = "Choose your region settings.";
             // 
             // RegionUnitedStatesBox
             // 
-            this.RegionUnitedStatesBox.AutoSize = true;
-            this.RegionUnitedStatesBox.Font = new System.Drawing.Font("Arial", 12F);
-            this.RegionUnitedStatesBox.Location = new System.Drawing.Point(111, 42);
-            this.RegionUnitedStatesBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
-            this.RegionUnitedStatesBox.Name = "RegionUnitedStatesBox";
-            this.RegionUnitedStatesBox.Size = new System.Drawing.Size(184, 22);
-            this.RegionUnitedStatesBox.TabIndex = 11;
-            this.RegionUnitedStatesBox.Text = "United States (IPAWS)";
-            this.ToolTipInformation.SetToolTip(this.RegionUnitedStatesBox, "You can receive alerts from the United States via IPAWS (EAS & WEA).");
-            this.RegionUnitedStatesBox.UseVisualStyleBackColor = true;
+            RegionUnitedStatesBox.AutoSize = true;
+            RegionUnitedStatesBox.Font = new System.Drawing.Font("Arial", 12F);
+            RegionUnitedStatesBox.Location = new System.Drawing.Point(111, 42);
+            RegionUnitedStatesBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
+            RegionUnitedStatesBox.Name = "RegionUnitedStatesBox";
+            RegionUnitedStatesBox.Size = new System.Drawing.Size(184, 22);
+            RegionUnitedStatesBox.TabIndex = 11;
+            RegionUnitedStatesBox.Text = "United States (IPAWS)";
+            ToolTipInformation.SetToolTip(RegionUnitedStatesBox, "You can receive alerts from the United States via IPAWS (EAS & WEA).");
+            RegionUnitedStatesBox.UseVisualStyleBackColor = true;
             // 
             // RegionCanadaBox
             // 
-            this.RegionCanadaBox.AutoSize = true;
-            this.RegionCanadaBox.Font = new System.Drawing.Font("Arial", 12F);
-            this.RegionCanadaBox.Location = new System.Drawing.Point(111, 98);
-            this.RegionCanadaBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
-            this.RegionCanadaBox.Name = "RegionCanadaBox";
-            this.RegionCanadaBox.Size = new System.Drawing.Size(153, 22);
-            this.RegionCanadaBox.TabIndex = 13;
-            this.RegionCanadaBox.Text = "Canada (NAADS)";
-            this.ToolTipInformation.SetToolTip(this.RegionCanadaBox, "You can receive alerts from Canada via NAADS (National Alert Aggregation and Diss" +
-        "emination System).");
-            this.RegionCanadaBox.UseVisualStyleBackColor = true;
+            RegionCanadaBox.AutoSize = true;
+            RegionCanadaBox.Font = new System.Drawing.Font("Arial", 12F);
+            RegionCanadaBox.Location = new System.Drawing.Point(111, 98);
+            RegionCanadaBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
+            RegionCanadaBox.Name = "RegionCanadaBox";
+            RegionCanadaBox.Size = new System.Drawing.Size(153, 22);
+            RegionCanadaBox.TabIndex = 13;
+            RegionCanadaBox.Text = "Canada (NAADS)";
+            ToolTipInformation.SetToolTip(RegionCanadaBox, "You can receive alerts from Canada via NAADS (National Alert Aggregation and Dissemination System).");
+            RegionCanadaBox.UseVisualStyleBackColor = true;
             // 
             // ToolTipInformation
             // 
-            this.ToolTipInformation.AutomaticDelay = 250;
-            this.ToolTipInformation.AutoPopDelay = 15000;
-            this.ToolTipInformation.BackColor = System.Drawing.Color.White;
-            this.ToolTipInformation.ForeColor = System.Drawing.Color.Black;
-            this.ToolTipInformation.InitialDelay = 250;
-            this.ToolTipInformation.IsBalloon = true;
-            this.ToolTipInformation.ReshowDelay = 50;
-            this.ToolTipInformation.ToolTipTitle = "What does this do?";
+            ToolTipInformation.AutomaticDelay = 250;
+            ToolTipInformation.AutoPopDelay = 15000;
+            ToolTipInformation.BackColor = System.Drawing.Color.White;
+            ToolTipInformation.ForeColor = System.Drawing.Color.Black;
+            ToolTipInformation.InitialDelay = 250;
+            ToolTipInformation.IsBalloon = true;
+            ToolTipInformation.ReshowDelay = 50;
+            ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
             // RegionMexicoBox
             // 
-            this.RegionMexicoBox.AutoSize = true;
-            this.RegionMexicoBox.Font = new System.Drawing.Font("Arial", 12F);
-            this.RegionMexicoBox.Location = new System.Drawing.Point(111, 126);
-            this.RegionMexicoBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
-            this.RegionMexicoBox.Name = "RegionMexicoBox";
-            this.RegionMexicoBox.Size = new System.Drawing.Size(159, 22);
-            this.RegionMexicoBox.TabIndex = 14;
-            this.RegionMexicoBox.Text = "Mexico (SASMEX)";
-            this.ToolTipInformation.SetToolTip(this.RegionMexicoBox, "You can receive alerts from Mexico via SASMEX (Sistema de Alerta Sísmica Mexicano" +
-        ").");
-            this.RegionMexicoBox.UseVisualStyleBackColor = true;
+            RegionMexicoBox.AutoSize = true;
+            RegionMexicoBox.Font = new System.Drawing.Font("Arial", 12F);
+            RegionMexicoBox.Location = new System.Drawing.Point(111, 126);
+            RegionMexicoBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
+            RegionMexicoBox.Name = "RegionMexicoBox";
+            RegionMexicoBox.Size = new System.Drawing.Size(159, 22);
+            RegionMexicoBox.TabIndex = 14;
+            RegionMexicoBox.Text = "Mexico (SASMEX)";
+            ToolTipInformation.SetToolTip(RegionMexicoBox, "You can receive alerts from Mexico via SASMEX (Sistema de Alerta Sísmica Mexicano).");
+            RegionMexicoBox.UseVisualStyleBackColor = true;
             // 
             // LinkButton
             // 
-            this.LinkButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.LinkButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.LinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.LinkButton.Location = new System.Drawing.Point(451, 159);
-            this.LinkButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
-            this.LinkButton.Name = "LinkButton";
-            this.LinkButton.Size = new System.Drawing.Size(72, 23);
-            this.LinkButton.TabIndex = 16;
-            this.LinkButton.Text = "Custom";
-            this.ToolTipInformation.SetToolTip(this.LinkButton, "Click this button if you have custom servers (XML feed only).");
-            this.LinkButton.UseVisualStyleBackColor = false;
-            this.LinkButton.Click += new System.EventHandler(this.LinkButton_Click);
+            LinkButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            LinkButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            LinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            LinkButton.Location = new System.Drawing.Point(451, 203);
+            LinkButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
+            LinkButton.Name = "LinkButton";
+            LinkButton.Size = new System.Drawing.Size(72, 23);
+            LinkButton.TabIndex = 16;
+            LinkButton.Text = "Custom";
+            ToolTipInformation.SetToolTip(LinkButton, "Click this button if you have custom servers (XML feed only).");
+            LinkButton.UseVisualStyleBackColor = false;
+            LinkButton.Click += LinkButton_Click;
             // 
             // RegionUnitedStatesNWSBox
             // 
-            this.RegionUnitedStatesNWSBox.AutoSize = true;
-            this.RegionUnitedStatesNWSBox.Font = new System.Drawing.Font("Arial", 12F);
-            this.RegionUnitedStatesNWSBox.Location = new System.Drawing.Point(111, 70);
-            this.RegionUnitedStatesNWSBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
-            this.RegionUnitedStatesNWSBox.Name = "RegionUnitedStatesNWSBox";
-            this.RegionUnitedStatesNWSBox.Size = new System.Drawing.Size(172, 22);
-            this.RegionUnitedStatesNWSBox.TabIndex = 12;
-            this.RegionUnitedStatesNWSBox.Text = "United States (NWS)";
-            this.ToolTipInformation.SetToolTip(this.RegionUnitedStatesNWSBox, "You can receive alerts from the United States via NWS (National Weather Service)." +
-        "");
-            this.RegionUnitedStatesNWSBox.UseVisualStyleBackColor = true;
+            RegionUnitedStatesNWSBox.AutoSize = true;
+            RegionUnitedStatesNWSBox.Font = new System.Drawing.Font("Arial", 12F);
+            RegionUnitedStatesNWSBox.Location = new System.Drawing.Point(111, 70);
+            RegionUnitedStatesNWSBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
+            RegionUnitedStatesNWSBox.Name = "RegionUnitedStatesNWSBox";
+            RegionUnitedStatesNWSBox.Size = new System.Drawing.Size(172, 22);
+            RegionUnitedStatesNWSBox.TabIndex = 12;
+            RegionUnitedStatesNWSBox.Text = "United States (NWS)";
+            ToolTipInformation.SetToolTip(RegionUnitedStatesNWSBox, "You can receive alerts from the United States via NWS (National Weather Service).");
+            RegionUnitedStatesNWSBox.UseVisualStyleBackColor = true;
             // 
             // RegionBrazilBox
             // 
-            this.RegionBrazilBox.AutoSize = true;
-            this.RegionBrazilBox.Font = new System.Drawing.Font("Arial", 12F);
-            this.RegionBrazilBox.Location = new System.Drawing.Point(111, 154);
-            this.RegionBrazilBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
-            this.RegionBrazilBox.Name = "RegionBrazilBox";
-            this.RegionBrazilBox.Size = new System.Drawing.Size(221, 22);
-            this.RegionBrazilBox.TabIndex = 15;
-            this.RegionBrazilBox.Text = "Brazil (IDAP) [Hover for info]";
-            this.ToolTipInformation.SetToolTip(this.RegionBrazilBox, "You can receive alerts from Brazil via IDAP (Divulgação de Alertas Públicos).\r\nID" +
-        "AP retrival is currently experimental. Please give us feedback on it!");
-            this.RegionBrazilBox.UseVisualStyleBackColor = true;
+            RegionBrazilBox.AutoSize = true;
+            RegionBrazilBox.Font = new System.Drawing.Font("Arial", 12F);
+            RegionBrazilBox.Location = new System.Drawing.Point(111, 154);
+            RegionBrazilBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
+            RegionBrazilBox.Name = "RegionBrazilBox";
+            RegionBrazilBox.Size = new System.Drawing.Size(117, 22);
+            RegionBrazilBox.TabIndex = 15;
+            RegionBrazilBox.Text = "Brazil (IDAP)";
+            ToolTipInformation.SetToolTip(RegionBrazilBox, "You can receive alerts from Brazil via IDAP (Divulgação de Alertas Públicos).");
+            RegionBrazilBox.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // ChangeLaterText
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.Font = new System.Drawing.Font("Arial", 9F);
-            this.label1.Location = new System.Drawing.Point(9, 182);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(332, 26);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "To change these options later, go to Settings.";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            ChangeLaterText.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            ChangeLaterText.Font = new System.Drawing.Font("Arial", 9F);
+            ChangeLaterText.ForeColor = System.Drawing.Color.Yellow;
+            ChangeLaterText.LinkArea = new System.Windows.Forms.LinkArea(0, 96);
+            ChangeLaterText.LinkColor = System.Drawing.Color.Yellow;
+            ChangeLaterText.Location = new System.Drawing.Point(9, 179);
+            ChangeLaterText.Margin = new System.Windows.Forms.Padding(0);
+            ChangeLaterText.Name = "ChangeLaterText";
+            ChangeLaterText.Size = new System.Drawing.Size(442, 73);
+            ChangeLaterText.TabIndex = 13;
+            ChangeLaterText.TabStop = true;
+            ChangeLaterText.Text = "Some networks may have trouble accessing Brazil (IDAP).\r\nClick here to perform a connection test.\r\n\r\nTo change these options later, go to Settings.";
+            ChangeLaterText.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            ChangeLaterText.UseCompatibleTextRendering = true;
+            ChangeLaterText.LinkClicked += ChangeLaterText_LinkClicked;
             // 
             // ChooseRegionForm
             // 
-            this.AcceptButton = this.DoneButton;
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(532, 217);
-            this.Controls.Add(this.RegionBrazilBox);
-            this.Controls.Add(this.RegionUnitedStatesNWSBox);
-            this.Controls.Add(this.LinkButton);
-            this.Controls.Add(this.RegionMexicoBox);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.RegionCanadaBox);
-            this.Controls.Add(this.RegionUnitedStatesBox);
-            this.Controls.Add(this.TitleText);
-            this.Controls.Add(this.LogoBox);
-            this.Controls.Add(this.DoneButton);
-            this.Font = new System.Drawing.Font("Arial", 9F);
-            this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.HelpButton = true;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "ChooseRegionForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SharpAlert - Region Selection";
-            this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.ChooseRegionForm_HelpButtonClicked);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChooseRegionForm_FormClosing);
-            this.Load += new System.EventHandler(this.ChooseRegionForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AcceptButton = DoneButton;
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
+            ClientSize = new System.Drawing.Size(532, 261);
+            Controls.Add(RegionBrazilBox);
+            Controls.Add(RegionUnitedStatesNWSBox);
+            Controls.Add(LinkButton);
+            Controls.Add(RegionMexicoBox);
+            Controls.Add(ChangeLaterText);
+            Controls.Add(RegionCanadaBox);
+            Controls.Add(RegionUnitedStatesBox);
+            Controls.Add(TitleText);
+            Controls.Add(LogoBox);
+            Controls.Add(DoneButton);
+            Font = new System.Drawing.Font("Arial", 9F);
+            ForeColor = System.Drawing.Color.White;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            HelpButton = true;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "ChooseRegionForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "SharpAlert - Region Selection";
+            HelpButtonClicked += ChooseRegionForm_HelpButtonClicked;
+            FormClosing += ChooseRegionForm_FormClosing;
+            Load += ChooseRegionForm_Load;
+            ((System.ComponentModel.ISupportInitialize)LogoBox).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
@@ -230,7 +232,7 @@
         private System.Windows.Forms.CheckBox RegionUnitedStatesBox;
         private System.Windows.Forms.CheckBox RegionCanadaBox;
         private System.Windows.Forms.ToolTip ToolTipInformation;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.LinkLabel ChangeLaterText;
         private System.Windows.Forms.CheckBox RegionMexicoBox;
         private System.Windows.Forms.Button LinkButton;
         private System.Windows.Forms.CheckBox RegionUnitedStatesNWSBox;

@@ -86,7 +86,7 @@ namespace SharpAlert.AlertComponents
             new SAME_EventCode("NMN", "Network Message Notification"),
             new SAME_EventCode("TOE", "911 Telephone Outage Emergency"),
             new SAME_EventCode("NUW", "Nuclear Power Plant Warning"),
-            new SAME_EventCode("MEP", "Missing & Endangered Persons"),
+            new SAME_EventCode("MEP", "Missing And Endangered Persons"),
             new SAME_EventCode("DMO", "Practice/Demo Warning"),
             new SAME_EventCode("POS", "Power Outage Statement"),
             new SAME_EventCode("RHW", "Radiological Hazard Warning"),

@@ -19,21 +19,14 @@ using SharpAlert.AlertComponents;
 using SharpAlert.SourceCapturing.SystemSpecific;
 using static SharpAlert.ProgramWorker.NotificationWorker;
 using System.Security.Principal;
-using SharpAlert.AlertComponents.Dashboard;
 
 namespace SharpAlert.ProgramWorker
 {
-    public class SharpDataItem
+    public class SharpDataItem(string name, string data)
     {
         // public string FriendlyName { get; set; }
-        public string Name { get; set; }
-        public string Data { get; set; }
-
-        public SharpDataItem(string name, string data)
-        {
-            Name = name;
-            Data = data;
-        }
+        public string Name { get; set; } = name;
+        public string Data { get; set; } = data;
     }
 
     internal static class MainEntryPoint
@@ -104,9 +97,19 @@ namespace SharpAlert.ProgramWorker
         {
             DiscordWebhook.SendFormattedMessage($"SharpAlert is stopping.");
 
-            Notify.ShowNotification($"Haida is working to get everything shutdown. This may take a few moments.",
-                "SharpAlert is stopping",
+            Notify.ShowNotification("Haida will now close the program.",
+                "SharpAlert is stopping.",
                 ToolTipIcon.Info);
+
+            if (restart) Environment.Exit(100);
+            else Environment.Exit(0);
+
+            // we should never be going beyond this point, but just in case lol
+            return;
+
+            Notify.ShowNotification($"Haida is working to get everything shutdown. This may take a few moments.",
+                    "SharpAlert is stopping",
+                    ToolTipIcon.Info);
 
             Console.WriteLine("Preparing for termination.");
             AllowThreadRestarts = false;

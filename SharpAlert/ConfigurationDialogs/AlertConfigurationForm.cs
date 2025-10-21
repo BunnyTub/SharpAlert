@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Threading;
 using System.Windows.Forms;
-using static SharpAlert.ProgramWorker.MainEntryPoint;
-using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using System.Drawing;
 using SharpAlert.ProgramWorker;

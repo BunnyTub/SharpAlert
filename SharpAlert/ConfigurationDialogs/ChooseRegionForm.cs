@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using SharpAlert.ProgramWorker;
+using SharpAlert.SourceCapturing.SystemSpecific;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 
 namespace SharpAlert.ConfigurationDialogs
@@ -81,7 +82,7 @@ namespace SharpAlert.ConfigurationDialogs
             {
                 if (MessageBox.Show("There are no regions selected.\r\n" +
                     "Do you want to continue without alert polling?",
-                    "SharpAlert",
+                    Text,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) != DialogResult.Yes)
                 {
@@ -92,7 +93,7 @@ namespace SharpAlert.ConfigurationDialogs
             if (!ShowNextInsteadOfDone)
             {
                 MessageBox.Show("Restart the program to apply region changes.",
-                    "SharpAlert",
+                    Text,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
             }
@@ -101,7 +102,7 @@ namespace SharpAlert.ConfigurationDialogs
         private void ChooseRegionForm_HelpButtonClicked(object sender, System.ComponentModel.CancelEventArgs e)
         {
             MessageBox.Show("Hover over the region boxes for their respective info.",
-                "SharpAlert",
+                Text,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
             e.Cancel = true;
@@ -113,7 +114,7 @@ namespace SharpAlert.ConfigurationDialogs
                 "Your URLs must provide alerts in CAP (XML) format.\r\n" +
                 "Separate URLs by placing them in separate lines.\r\n" +
                 "Create comments by starting a new line with \"#\".",
-                "SharpAlert",
+                Text,
                 MessageBoxButtons.OKCancel,
                 MessageBoxIcon.Information);
 
@@ -121,20 +122,25 @@ namespace SharpAlert.ConfigurationDialogs
             {
                 try
                 {
-                    if (!File.Exists($"{AssemblyDirectory}\\{CustomURLsFileName}"))
+                    if (!File.Exists($"{QuickSettings.ConfigDirPath}\\{CustomURLsFileName}"))
                     {
-                        File.WriteAllText($"{AssemblyDirectory}\\{CustomURLsFileName}", "# Insert your URLs at any line in this file.\r\n" +
+                        File.WriteAllText($"{QuickSettings.ConfigDirPath}\\{CustomURLsFileName}", "# Insert your URLs at any line in this file.\r\n" +
                             "# Changes only apply within SharpAlert after you restart the program.\r\n\r\n" +
                             "#https://example.com/feed.xml");
                     }
 
-                    Process.Start($"{AssemblyDirectory}\\{CustomURLsFileName}");
+                    Process.Start(new ProcessStartInfo { FileName = $"{QuickSettings.ConfigDirPath}\\{CustomURLsFileName}", UseShellExecute = true });
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message, Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void ChangeLaterText_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            new IDAPNoticeForm().ShowDialog();
         }
     }
 }

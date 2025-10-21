@@ -19,7 +19,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
         private bool Stop = false;
         private bool StopCalled = false;
 
-        private static readonly WebClient idapclient = new();
+        public static readonly WebClient idapclient = new();
 
         public void ServiceStop()
         {
@@ -38,7 +38,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
         }
 
 
-        private static readonly string serverPath = "idapcap.mdr.gov.br";
+        public static readonly string serverPath = "idapcap.mdr.gov.br";
 
         /// <summary>
         /// Starts the IDAP Feed Capture service in the current thread as a client.
