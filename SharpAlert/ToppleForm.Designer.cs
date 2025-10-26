@@ -48,7 +48,7 @@
             // TitleText
             // 
             this.TitleText.Dock = System.Windows.Forms.DockStyle.Top;
-            this.TitleText.Font = new System.Drawing.Font("Arial", 26F);
+            this.TitleText.Font = new System.Drawing.Font("Segoe UI", 26F);
             this.TitleText.Location = new System.Drawing.Point(0, 0);
             this.TitleText.Margin = new System.Windows.Forms.Padding(0);
             this.TitleText.Name = "TitleText";
@@ -77,7 +77,7 @@
             // ProblemTitleText
             // 
             this.ProblemTitleText.AutoSize = true;
-            this.ProblemTitleText.Font = new System.Drawing.Font("Arial", 9F);
+            this.ProblemTitleText.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ProblemTitleText.Location = new System.Drawing.Point(9, 53);
             this.ProblemTitleText.Margin = new System.Windows.Forms.Padding(0);
             this.ProblemTitleText.Name = "ProblemTitleText";
@@ -91,7 +91,7 @@
             this.CloseButton.BackColor = System.Drawing.Color.OrangeRed;
             this.CloseButton.FlatAppearance.BorderSize = 2;
             this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.CloseButton.Font = new System.Drawing.Font("Arial", 16F);
+            this.CloseButton.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.CloseButton.ForeColor = System.Drawing.Color.White;
             this.CloseButton.Location = new System.Drawing.Point(138, 331);
             this.CloseButton.Name = "CloseButton";
@@ -107,7 +107,7 @@
             this.ReportButton.BackColor = System.Drawing.Color.OrangeRed;
             this.ReportButton.FlatAppearance.BorderSize = 2;
             this.ReportButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.ReportButton.Font = new System.Drawing.Font("Arial", 16F);
+            this.ReportButton.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.ReportButton.ForeColor = System.Drawing.Color.White;
             this.ReportButton.Location = new System.Drawing.Point(7, 331);
             this.ReportButton.Name = "ReportButton";
@@ -126,7 +126,7 @@
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Font = new System.Drawing.Font("Arial", 18F);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 18F);
             this.label1.Location = new System.Drawing.Point(346, 331);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(278, 35);
@@ -163,7 +163,7 @@
             this.TerminateButton.BackColor = System.Drawing.Color.OrangeRed;
             this.TerminateButton.FlatAppearance.BorderSize = 2;
             this.TerminateButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.TerminateButton.Font = new System.Drawing.Font("Arial", 16F);
+            this.TerminateButton.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.TerminateButton.ForeColor = System.Drawing.Color.White;
             this.TerminateButton.Location = new System.Drawing.Point(269, 331);
             this.TerminateButton.Name = "TerminateButton";
@@ -179,7 +179,7 @@
             this.ResetButton.BackColor = System.Drawing.Color.Green;
             this.ResetButton.FlatAppearance.BorderSize = 2;
             this.ResetButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.ResetButton.Font = new System.Drawing.Font("Arial", 12F);
+            this.ResetButton.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.ResetButton.ForeColor = System.Drawing.Color.White;
             this.ResetButton.Location = new System.Drawing.Point(400, 331);
             this.ResetButton.Name = "ResetButton";
@@ -205,7 +205,7 @@
             this.Controls.Add(this.TitleText);
             this.Controls.Add(this.pictureBox2);
             this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

@@ -53,7 +53,7 @@
             // 
             // label1
             // 
-            this.label1.Font = new System.Drawing.Font("Arial", 10F);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.label1.Location = new System.Drawing.Point(9, 9);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
@@ -64,7 +64,7 @@
             // 
             // CAPQueueCountText
             // 
-            this.CAPQueueCountText.Font = new System.Drawing.Font("Arial", 28F);
+            this.CAPQueueCountText.Font = new System.Drawing.Font("Segoe UI", 28F);
             this.CAPQueueCountText.Location = new System.Drawing.Point(9, 29);
             this.CAPQueueCountText.Margin = new System.Windows.Forms.Padding(0);
             this.CAPQueueCountText.Name = "CAPQueueCountText";
@@ -76,7 +76,7 @@
             // 
             // CAPHistoryCountText
             // 
-            this.CAPHistoryCountText.Font = new System.Drawing.Font("Arial", 28F);
+            this.CAPHistoryCountText.Font = new System.Drawing.Font("Segoe UI", 28F);
             this.CAPHistoryCountText.Location = new System.Drawing.Point(143, 29);
             this.CAPHistoryCountText.Margin = new System.Windows.Forms.Padding(0);
             this.CAPHistoryCountText.Name = "CAPHistoryCountText";
@@ -88,7 +88,7 @@
             // 
             // label4
             // 
-            this.label4.Font = new System.Drawing.Font("Arial", 10F);
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.label4.Location = new System.Drawing.Point(143, 9);
             this.label4.Margin = new System.Windows.Forms.Padding(0);
             this.label4.Name = "label4";
@@ -99,7 +99,7 @@
             // 
             // AlertQueueCountText
             // 
-            this.AlertQueueCountText.Font = new System.Drawing.Font("Arial", 28F);
+            this.AlertQueueCountText.Font = new System.Drawing.Font("Segoe UI", 28F);
             this.AlertQueueCountText.Location = new System.Drawing.Point(277, 29);
             this.AlertQueueCountText.Margin = new System.Windows.Forms.Padding(0);
             this.AlertQueueCountText.Name = "AlertQueueCountText";
@@ -111,7 +111,7 @@
             // 
             // label6
             // 
-            this.label6.Font = new System.Drawing.Font("Arial", 10F);
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.label6.Location = new System.Drawing.Point(277, 9);
             this.label6.Margin = new System.Windows.Forms.Padding(0);
             this.label6.Name = "label6";
@@ -122,7 +122,7 @@
             // 
             // AlertsRelayedText
             // 
-            this.AlertsRelayedText.Font = new System.Drawing.Font("Arial", 28F);
+            this.AlertsRelayedText.Font = new System.Drawing.Font("Segoe UI", 28F);
             this.AlertsRelayedText.Location = new System.Drawing.Point(9, 101);
             this.AlertsRelayedText.Margin = new System.Windows.Forms.Padding(0);
             this.AlertsRelayedText.Name = "AlertsRelayedText";
@@ -134,7 +134,7 @@
             // 
             // label8
             // 
-            this.label8.Font = new System.Drawing.Font("Arial", 10F);
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.label8.Location = new System.Drawing.Point(9, 81);
             this.label8.Margin = new System.Windows.Forms.Padding(0);
             this.label8.Name = "label8";
@@ -145,7 +145,7 @@
             // 
             // ServerRequestsText
             // 
-            this.ServerRequestsText.Font = new System.Drawing.Font("Arial", 28F);
+            this.ServerRequestsText.Font = new System.Drawing.Font("Segoe UI", 28F);
             this.ServerRequestsText.Location = new System.Drawing.Point(143, 101);
             this.ServerRequestsText.Margin = new System.Windows.Forms.Padding(0);
             this.ServerRequestsText.Name = "ServerRequestsText";
@@ -159,7 +159,7 @@
             // 
             // label10
             // 
-            this.label10.Font = new System.Drawing.Font("Arial", 10F);
+            this.label10.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.label10.Location = new System.Drawing.Point(143, 81);
             this.label10.Margin = new System.Windows.Forms.Padding(0);
             this.label10.Name = "label10";
@@ -171,7 +171,7 @@
             // UptimeMeterText
             // 
             this.UptimeMeterText.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.UptimeMeterText.Font = new System.Drawing.Font("Arial", 10F);
+            this.UptimeMeterText.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.UptimeMeterText.Location = new System.Drawing.Point(0, 166);
             this.UptimeMeterText.Margin = new System.Windows.Forms.Padding(0);
             this.UptimeMeterText.Name = "UptimeMeterText";
@@ -207,7 +207,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.CAPQueueCountText);
             this.Controls.Add(this.label1);
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

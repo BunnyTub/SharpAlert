@@ -91,7 +91,7 @@ namespace SharpAlert.AlertComponents.Dashboard
                                     dli.AlertExpiresInTitleText.Text = "Gone in:";
                                     dli.AlertExpiryText.Text = string.Format("{0:D2}m {1:D2}s",
                                         grace.Minutes, grace.Seconds);
-                                    dli.ContainerPanel.BackColor = Color.Gray;
+                                    dli.ContainerPanel.BackColor = Color.FromArgb(50, 50, 50);
 
                                     if (ExpiredAlertsOnly)
                                     {
@@ -143,6 +143,8 @@ namespace SharpAlert.AlertComponents.Dashboard
         {
             if (AlertListQueue.Count != 0)
             {
+                DashboardPanel.SuspendLayout();
+
                 //List<AlertInfo> AlertList = [.. AlertListQueue];
 
                 //DashboardPanel.SuspendLayout();
@@ -178,11 +180,11 @@ namespace SharpAlert.AlertComponents.Dashboard
                     }
                 }
 
-                dli.AlertDescriptionText.Text = $"Sourced from {info.AlertSource}. For the following areas, {LocationsTrimmed.TrimEnd(';').Replace("\x20\x20", "\x20")}.";
+                dli.AlertDescriptionText.Text = $"Issued by {info.AlertSender}. For the following areas, {LocationsTrimmed.TrimEnd(';').Replace("\x20\x20", "\x20")}.";
 
                 if (DateTimeOffset.TryParse(info.AlertSentDate, out var dto1))
                 {
-                    dli.AlertIssuedTimeAndDateText.Text = dto1.LocalDateTime.ToString("MMMM d, yyyy h:mm tt");
+                    dli.AlertIssuedTimeAndDateText.Text = $"Issued on {dto1.LocalDateTime:MMMM d, yyyy h:mm tt}";
                 }
                 else
                 {
@@ -247,13 +249,17 @@ namespace SharpAlert.AlertComponents.Dashboard
 
                 AlertListQueue.Remove(info);
 
-                if (AutoScrollBox.Checked)
-                {
-                    TitlePanel.VerticalScroll.Value = 0;
-                    //DashboardPanel.PerformLayout(); // Refresh(); works here too I think
-                }
+                //if (AutoScrollBox.Checked)
+                //{
+                //    TitlePanel.VerticalScroll.Value = 0;
+                //    //DashboardPanel.PerformLayout(); // Refresh(); works here too I think
+                //}
 
                 //DashboardPanel.ResumeLayout();
+                dli.Select();
+                dli.AlertExpiryText.Select();
+
+                DashboardPanel.ResumeLayout();
 
                 HackyWorkarounds.FlashWindow(this);
             }

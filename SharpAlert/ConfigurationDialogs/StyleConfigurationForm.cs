@@ -127,6 +127,9 @@ namespace SharpAlert.ConfigurationDialogs
                 this.BringToFront();
             };
 
+            OpenDashboardAutomaticallyBox.Checked = QuickSettings.Instance.OpenDashboardAutomatically;
+            OpenDashboardAutomaticallyBox.CheckedChanged += (a, b) => QuickSettings.Instance.OpenDashboardAutomatically = ((CheckBox)a).Checked;
+            
             alertTimeZoneUTCBox.Checked = QuickSettings.Instance.alertTimeZoneUTC;
             alertTimeZoneUTCBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertTimeZoneUTC = ((CheckBox)a).Checked;
 

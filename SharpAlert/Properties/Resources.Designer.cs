@@ -120,16 +120,6 @@ namespace SharpAlert.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap NativeLight {
-            get {
-                object obj = ResourceManager.GetObject("NativeLight", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap TaskBarExample {
             get {
                 object obj = ResourceManager.GetObject("TaskBarExample", resourceCulture);
@@ -220,16 +210,6 @@ namespace SharpAlert.Properties {
         internal static System.Drawing.Bitmap WarningApp_Splash {
             get {
                 object obj = ResourceManager.GetObject("WarningApp_Splash", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap WarningLight {
-            get {
-                object obj = ResourceManager.GetObject("WarningLight", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

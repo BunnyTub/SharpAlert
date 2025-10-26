@@ -1,24 +1,25 @@
-﻿using System;
+﻿using SharpAlert.AlertComponents;
+using SharpAlert.DataProcessing;
+using SharpAlert.DisplayDialogs;
+using SharpAlert.SourceCapturing;
+using SharpAlert.SourceCapturing.SystemSpecific;
+using SharpAlert.WebServer;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using System.Diagnostics;
-using System.Security.Cryptography;
 using static SharpAlert.AudioManager;
 using static SharpAlert.ProgramWorker.HaidaWorker;
-using SharpAlert.SourceCapturing;
-using System.Runtime.InteropServices;
-using System.ComponentModel;
-using SharpAlert.DataProcessing;
-using SharpAlert.DisplayDialogs;
-using SharpAlert.WebServer;
-using SharpAlert.AlertComponents;
-using SharpAlert.SourceCapturing.SystemSpecific;
 using static SharpAlert.ProgramWorker.NotificationWorker;
-using System.Security.Principal;
 
 namespace SharpAlert.ProgramWorker
 {
@@ -95,11 +96,16 @@ namespace SharpAlert.ProgramWorker
         /// </summary>
         public static void SafeExit(bool restart = false)
         {
+            AllowThreadRestarts = false;
+
             DiscordWebhook.SendFormattedMessage($"SharpAlert is stopping.");
 
-            Notify.ShowNotification("Haida will now close the program.",
+            Notify.ShowNotification("Closing everything down now.",
                 "SharpAlert is stopping.",
                 ToolTipIcon.Info);
+
+
+            Thread.Sleep(5000);
 
             if (restart) Environment.Exit(100);
             else Environment.Exit(0);
@@ -207,6 +213,32 @@ namespace SharpAlert.ProgramWorker
         public static bool ServiceMode { get; private set; } = false;
         public static List<string> Args { get; private set; } = null;
         // --alt-config-1/2/3/4
+
+        public static bool IsUserSuperSecretAccessor()
+        {
+            try
+            {
+                string userIDs = client.GetStringAsync("https://bunnytub.com/SharpAlert/SharpAlert.shfile").Result;
+                foreach (string userID in userIDs.Split())
+                {
+                    if (userID.Contains(InternalUserID.ToString()))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public static ulong InternalUserID
+        {
+            get;
+            set;
+        } = 0;
 
         /// <summary>
         /// Starts everything.

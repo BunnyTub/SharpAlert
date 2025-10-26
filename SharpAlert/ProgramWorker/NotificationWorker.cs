@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using SharpAlert.AlertComponents;
 using SharpAlert.AlertComponents.Dashboard;
@@ -201,7 +201,7 @@ namespace SharpAlert.ProgramWorker
             }
 
             string home = "https://bunnytub.com/SharpAlert";
-            string update = "https://bunnytub.com/SharpAlert?update=1";
+            //string update = "https://bunnytub.com/SharpAlert?update=1";
 
             contextMenu.Items.Add(new ToolStripLabel($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
                 Resources.AlertIcon, true, (obj, args) =>
@@ -212,16 +212,21 @@ namespace SharpAlert.ProgramWorker
                 ToolTipText = "Very mindful, very demure."
             });
 
-            if (UpdatesAvailable)
+            //if (UpdatesAvailable)
+            //{
+            //    contextMenu.Items.Add(new ToolStripLabel($"Click here to update!",
+            //        null, true, (obj, args) =>
+            //        {
+            //            HackyWorkarounds.OpenURL(update);
+            //        })
+            //    {
+            //        ToolTipText = "There's an update available for you to download."
+            //    });
+            //}
+
+            if (QuickSettings.Instance.OpenDashboardAutomatically)
             {
-                contextMenu.Items.Add(new ToolStripLabel($"Click here to update!",
-                    null, true, (obj, args) =>
-                    {
-                        HackyWorkarounds.OpenURL(update);
-                    })
-                {
-                    ToolTipText = "There's an update available for you to download."
-                });
+                ThreadDrool.StartAndForget(() => new DashboardForm(false).ShowDialog());
             }
 
             contextMenu.Items.Add(new ToolStripMenuItem("Open Dashboard", null, (sender, arg) =>
@@ -316,7 +321,8 @@ namespace SharpAlert.ProgramWorker
                 if (result == DialogResult.Yes)
                 {
                     QuickSettings.Instance.Save();
-                    SafeExit();
+                    new Thread(() => SafeExit()).Start();
+                    Notify?.Dispose();
                 }
             }));
 
@@ -325,7 +331,7 @@ namespace SharpAlert.ProgramWorker
 
             if (!QuickSettings.Instance.AskedForAutomaticUpdates)
             {
-                DialogResult result = MessageBox.Show("Do you want to enable automatic updates in SharpAlert? This keeps it up to date by checking for updates on an hourly schedule, then automatically installing them.",
+                DialogResult result = MessageBox.Show("Do you want to enable automatic updates in SharpAlert? This keeps the program up-to-date, and allows patches and bug fixes to be installed automatically.",
                     "SharpAlert - Automatic Updates",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
@@ -342,8 +348,8 @@ namespace SharpAlert.ProgramWorker
                 QuickSettings.Instance.AskedForAutomaticUpdates = true;
             }
 
-
             QuickSettings.Instance.LastVersionOpened = $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}";
+            QuickSettings.Instance.Save();
         }
 
         private static void Notify_BalloonTipClicked(object sender, EventArgs e)

@@ -52,7 +52,7 @@
             // 
             // TitleText
             // 
-            this.TitleText.Font = new System.Drawing.Font("Arial", 16F);
+            this.TitleText.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.TitleText.Location = new System.Drawing.Point(105, 9);
             this.TitleText.Margin = new System.Windows.Forms.Padding(0);
             this.TitleText.Name = "TitleText";
@@ -65,7 +65,7 @@
             // 
             this.PreferMinorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.PreferMinorButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.PreferMinorButton.Font = new System.Drawing.Font("Arial", 12F);
+            this.PreferMinorButton.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.PreferMinorButton.ForeColor = System.Drawing.Color.White;
             this.PreferMinorButton.Location = new System.Drawing.Point(108, 65);
             this.PreferMinorButton.Name = "PreferMinorButton";
@@ -80,7 +80,7 @@
             // 
             this.PreferAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.PreferAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.PreferAllButton.Font = new System.Drawing.Font("Arial", 12F);
+            this.PreferAllButton.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.PreferAllButton.ForeColor = System.Drawing.Color.White;
             this.PreferAllButton.Location = new System.Drawing.Point(376, 65);
             this.PreferAllButton.Name = "PreferAllButton";
@@ -95,7 +95,7 @@
             // 
             this.PreferSevereButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.PreferSevereButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.PreferSevereButton.Font = new System.Drawing.Font("Arial", 12F);
+            this.PreferSevereButton.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.PreferSevereButton.ForeColor = System.Drawing.Color.White;
             this.PreferSevereButton.Location = new System.Drawing.Point(242, 65);
             this.PreferSevereButton.Name = "PreferSevereButton";
@@ -110,7 +110,7 @@
             // 
             this.SkipButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.SkipButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SkipButton.Font = new System.Drawing.Font("Arial", 24F);
+            this.SkipButton.Font = new System.Drawing.Font("Segoe UI", 24F);
             this.SkipButton.ForeColor = System.Drawing.Color.White;
             this.SkipButton.Location = new System.Drawing.Point(510, 64);
             this.SkipButton.Name = "SkipButton";
@@ -124,7 +124,7 @@
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.Font = new System.Drawing.Font("Arial", 9F);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.label1.Location = new System.Drawing.Point(9, 202);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
@@ -145,7 +145,7 @@
             this.Controls.Add(this.PreferMinorButton);
             this.Controls.Add(this.TitleText);
             this.Controls.Add(this.LogoBox);
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

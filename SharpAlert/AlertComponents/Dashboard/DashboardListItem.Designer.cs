@@ -34,7 +34,7 @@
             AlertExpiryText = new System.Windows.Forms.Label();
             AlertDescriptionText = new System.Windows.Forms.Label();
             AlertIssuedTimeAndDateText = new System.Windows.Forms.Label();
-            ContainerPanel = new System.Windows.Forms.Panel();
+            ContainerPanel = new RoundedPanel();
             ChangeBackgroundColorTimer = new System.Windows.Forms.Timer(components);
             ToolTipInformation = new System.Windows.Forms.ToolTip(components);
             ContainerPanel.SuspendLayout();
@@ -57,7 +57,7 @@
             AlertExpiresInTitleText.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             AlertExpiresInTitleText.BackColor = System.Drawing.Color.Transparent;
             AlertExpiresInTitleText.Font = new System.Drawing.Font("Segoe UI", 12F);
-            AlertExpiresInTitleText.Location = new System.Drawing.Point(592, 3);
+            AlertExpiresInTitleText.Location = new System.Drawing.Point(594, 3);
             AlertExpiresInTitleText.Margin = new System.Windows.Forms.Padding(8, 8, 8, 0);
             AlertExpiresInTitleText.Name = "AlertExpiresInTitleText";
             AlertExpiresInTitleText.Size = new System.Drawing.Size(102, 24);
@@ -71,7 +71,7 @@
             AlertExpiryText.BackColor = System.Drawing.Color.Transparent;
             AlertExpiryText.Cursor = System.Windows.Forms.Cursors.Hand;
             AlertExpiryText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            AlertExpiryText.Location = new System.Drawing.Point(591, 20);
+            AlertExpiryText.Location = new System.Drawing.Point(593, 20);
             AlertExpiryText.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             AlertExpiryText.Name = "AlertExpiryText";
             AlertExpiryText.Size = new System.Drawing.Size(102, 23);
@@ -85,11 +85,11 @@
             AlertDescriptionText.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             AlertDescriptionText.BackColor = System.Drawing.Color.Transparent;
             AlertDescriptionText.Cursor = System.Windows.Forms.Cursors.Hand;
-            AlertDescriptionText.Font = new System.Drawing.Font("Segoe UI", 15.75F);
-            AlertDescriptionText.Location = new System.Drawing.Point(4, 39);
+            AlertDescriptionText.Font = new System.Drawing.Font("Segoe UI", 18F);
+            AlertDescriptionText.Location = new System.Drawing.Point(4, 35);
             AlertDescriptionText.Margin = new System.Windows.Forms.Padding(0);
             AlertDescriptionText.Name = "AlertDescriptionText";
-            AlertDescriptionText.Size = new System.Drawing.Size(689, 68);
+            AlertDescriptionText.Size = new System.Drawing.Size(691, 70);
             AlertDescriptionText.TabIndex = 4;
             AlertDescriptionText.Text = "Issued by Unknown Authority, sourced from External Source. For the following areas, No Known Good Areas...";
             AlertDescriptionText.Click += AlertDescriptionText_Click;
@@ -98,11 +98,11 @@
             // 
             AlertIssuedTimeAndDateText.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             AlertIssuedTimeAndDateText.BackColor = System.Drawing.Color.Transparent;
-            AlertIssuedTimeAndDateText.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
-            AlertIssuedTimeAndDateText.Location = new System.Drawing.Point(399, 97);
+            AlertIssuedTimeAndDateText.Font = new System.Drawing.Font("Segoe UI", 9F);
+            AlertIssuedTimeAndDateText.Location = new System.Drawing.Point(399, 99);
             AlertIssuedTimeAndDateText.Margin = new System.Windows.Forms.Padding(8, 4, 8, 8);
             AlertIssuedTimeAndDateText.Name = "AlertIssuedTimeAndDateText";
-            AlertIssuedTimeAndDateText.Size = new System.Drawing.Size(294, 15);
+            AlertIssuedTimeAndDateText.Size = new System.Drawing.Size(296, 15);
             AlertIssuedTimeAndDateText.TabIndex = 5;
             AlertIssuedTimeAndDateText.Text = "Issued at 11:00 AM PDT 09/22/2025";
             AlertIssuedTimeAndDateText.TextAlign = System.Drawing.ContentAlignment.BottomRight;
@@ -111,11 +111,10 @@
             // 
             ContainerPanel.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             ContainerPanel.BackColor = System.Drawing.Color.Green;
-            ContainerPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            ContainerPanel.Controls.Add(AlertTitleText);
             ContainerPanel.Controls.Add(AlertIssuedTimeAndDateText);
             ContainerPanel.Controls.Add(AlertExpiresInTitleText);
             ContainerPanel.Controls.Add(AlertExpiryText);
-            ContainerPanel.Controls.Add(AlertTitleText);
             ContainerPanel.Controls.Add(AlertDescriptionText);
             ContainerPanel.Location = new System.Drawing.Point(6, 6);
             ContainerPanel.Margin = new System.Windows.Forms.Padding(6);
@@ -125,7 +124,6 @@
             // 
             // ChangeBackgroundColorTimer
             // 
-            ChangeBackgroundColorTimer.Enabled = true;
             ChangeBackgroundColorTimer.Interval = 1000;
             ChangeBackgroundColorTimer.Tick += ChangeBackgroundColorTimer_Tick;
             // 
@@ -146,7 +144,7 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             Controls.Add(ContainerPanel);
-            Font = new System.Drawing.Font("Arial", 9F);
+            Font = new System.Drawing.Font("Segoe UI", 9F);
             ForeColor = System.Drawing.Color.White;
             Name = "DashboardListItem";
             Size = new System.Drawing.Size(711, 130);
@@ -163,7 +161,7 @@
         public System.Windows.Forms.Label AlertExpiryText;
         public System.Windows.Forms.Label AlertDescriptionText;
         public System.Windows.Forms.Label AlertIssuedTimeAndDateText;
-        public System.Windows.Forms.Panel ContainerPanel;
+        public RoundedPanel ContainerPanel;
         private System.Windows.Forms.Timer ChangeBackgroundColorTimer;
         public System.Windows.Forms.ToolTip ToolTipInformation;
     }

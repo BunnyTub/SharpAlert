@@ -28,167 +28,165 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManualAlertRelayForm));
-            this.AllowButton = new System.Windows.Forms.Button();
-            this.DenyButton = new System.Windows.Forms.Button();
-            this.SubtitleText = new System.Windows.Forms.Label();
-            this.AutoRelayTimer = new System.Windows.Forms.Timer(this.components);
-            this.AutomaticRelayProgressBar = new System.Windows.Forms.ProgressBar();
-            this.AlertText = new System.Windows.Forms.TextBox();
-            this.OutlinePanel = new System.Windows.Forms.Panel();
-            this.EnsureTopWindow = new System.Windows.Forms.Timer(this.components);
-            this.PauseButton = new System.Windows.Forms.Button();
-            this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
-            this.OutlinePanel.SuspendLayout();
-            this.SuspendLayout();
+            AllowButton = new System.Windows.Forms.Button();
+            DenyButton = new System.Windows.Forms.Button();
+            SubtitleText = new System.Windows.Forms.Label();
+            AutoRelayTimer = new System.Windows.Forms.Timer(components);
+            AutomaticRelayProgressBar = new System.Windows.Forms.ProgressBar();
+            AlertText = new System.Windows.Forms.TextBox();
+            OutlinePanel = new System.Windows.Forms.Panel();
+            EnsureTopWindow = new System.Windows.Forms.Timer(components);
+            PauseButton = new System.Windows.Forms.Button();
+            ToolTipInformation = new System.Windows.Forms.ToolTip(components);
+            OutlinePanel.SuspendLayout();
+            SuspendLayout();
             // 
             // AllowButton
             // 
-            this.AllowButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.AllowButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(180)))), ((int)(((byte)(0)))));
-            this.AllowButton.DialogResult = System.Windows.Forms.DialogResult.Yes;
-            this.AllowButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.AllowButton.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold);
-            this.AllowButton.Location = new System.Drawing.Point(698, 12);
-            this.AllowButton.Name = "AllowButton";
-            this.AllowButton.Size = new System.Drawing.Size(82, 50);
-            this.AllowButton.TabIndex = 0;
-            this.AllowButton.Text = "FORWARD";
-            this.AllowButton.UseVisualStyleBackColor = false;
-            this.AllowButton.Click += new System.EventHandler(this.AllowButton_Click);
+            AllowButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            AllowButton.BackColor = System.Drawing.Color.FromArgb(0, 180, 0);
+            AllowButton.DialogResult = System.Windows.Forms.DialogResult.Yes;
+            AllowButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            AllowButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            AllowButton.Location = new System.Drawing.Point(698, 12);
+            AllowButton.Name = "AllowButton";
+            AllowButton.Size = new System.Drawing.Size(82, 50);
+            AllowButton.TabIndex = 0;
+            AllowButton.Text = "FORWARD";
+            AllowButton.UseVisualStyleBackColor = false;
+            AllowButton.Click += AllowButton_Click;
             // 
             // DenyButton
             // 
-            this.DenyButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.DenyButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.DenyButton.DialogResult = System.Windows.Forms.DialogResult.No;
-            this.DenyButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DenyButton.Font = new System.Drawing.Font("Arial", 14F, System.Drawing.FontStyle.Bold);
-            this.DenyButton.Location = new System.Drawing.Point(698, 68);
-            this.DenyButton.Name = "DenyButton";
-            this.DenyButton.Size = new System.Drawing.Size(82, 161);
-            this.DenyButton.TabIndex = 1;
-            this.DenyButton.Text = "STOP";
-            this.DenyButton.UseVisualStyleBackColor = false;
-            this.DenyButton.Click += new System.EventHandler(this.DenyButton_Click);
+            DenyButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            DenyButton.BackColor = System.Drawing.Color.FromArgb(180, 0, 0);
+            DenyButton.DialogResult = System.Windows.Forms.DialogResult.No;
+            DenyButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            DenyButton.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            DenyButton.Location = new System.Drawing.Point(698, 68);
+            DenyButton.Name = "DenyButton";
+            DenyButton.Size = new System.Drawing.Size(82, 161);
+            DenyButton.TabIndex = 1;
+            DenyButton.Text = "STOP";
+            DenyButton.UseVisualStyleBackColor = false;
+            DenyButton.Click += DenyButton_Click;
             // 
             // SubtitleText
             // 
-            this.SubtitleText.AutoSize = true;
-            this.SubtitleText.Font = new System.Drawing.Font("Arial", 18F);
-            this.SubtitleText.Location = new System.Drawing.Point(9, 9);
-            this.SubtitleText.Margin = new System.Windows.Forms.Padding(0);
-            this.SubtitleText.Name = "SubtitleText";
-            this.SubtitleText.Size = new System.Drawing.Size(252, 27);
-            this.SubtitleText.TabIndex = 2;
-            this.SubtitleText.Text = "Short Alert Description";
+            SubtitleText.AutoSize = true;
+            SubtitleText.Font = new System.Drawing.Font("Segoe UI", 18F);
+            SubtitleText.Location = new System.Drawing.Point(9, 9);
+            SubtitleText.Margin = new System.Windows.Forms.Padding(0);
+            SubtitleText.Name = "SubtitleText";
+            SubtitleText.Size = new System.Drawing.Size(256, 32);
+            SubtitleText.TabIndex = 2;
+            SubtitleText.Text = "Short Alert Description";
             // 
             // AutoRelayTimer
             // 
-            this.AutoRelayTimer.Interval = 1000;
-            this.AutoRelayTimer.Tick += new System.EventHandler(this.AutoRelayTimer_Tick);
+            AutoRelayTimer.Interval = 1000;
+            AutoRelayTimer.Tick += AutoRelayTimer_Tick;
             // 
             // AutomaticRelayProgressBar
             // 
-            this.AutomaticRelayProgressBar.Location = new System.Drawing.Point(12, 235);
-            this.AutomaticRelayProgressBar.Maximum = 1000;
-            this.AutomaticRelayProgressBar.Name = "AutomaticRelayProgressBar";
-            this.AutomaticRelayProgressBar.Size = new System.Drawing.Size(680, 23);
-            this.AutomaticRelayProgressBar.Step = 1;
-            this.AutomaticRelayProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.AutomaticRelayProgressBar.TabIndex = 3;
+            AutomaticRelayProgressBar.Location = new System.Drawing.Point(12, 235);
+            AutomaticRelayProgressBar.Maximum = 1000;
+            AutomaticRelayProgressBar.Name = "AutomaticRelayProgressBar";
+            AutomaticRelayProgressBar.Size = new System.Drawing.Size(680, 23);
+            AutomaticRelayProgressBar.Step = 1;
+            AutomaticRelayProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            AutomaticRelayProgressBar.TabIndex = 3;
             // 
             // AlertText
             // 
-            this.AlertText.BackColor = System.Drawing.Color.Black;
-            this.AlertText.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.AlertText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AlertText.Font = new System.Drawing.Font("Arial", 18F);
-            this.AlertText.ForeColor = System.Drawing.Color.White;
-            this.AlertText.Location = new System.Drawing.Point(0, 0);
-            this.AlertText.Multiline = true;
-            this.AlertText.Name = "AlertText";
-            this.AlertText.ReadOnly = true;
-            this.AlertText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.AlertText.Size = new System.Drawing.Size(678, 186);
-            this.AlertText.TabIndex = 9;
+            AlertText.BackColor = System.Drawing.Color.Black;
+            AlertText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            AlertText.Dock = System.Windows.Forms.DockStyle.Fill;
+            AlertText.Font = new System.Drawing.Font("Segoe UI", 18F);
+            AlertText.ForeColor = System.Drawing.Color.White;
+            AlertText.Location = new System.Drawing.Point(0, 0);
+            AlertText.Multiline = true;
+            AlertText.Name = "AlertText";
+            AlertText.ReadOnly = true;
+            AlertText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            AlertText.Size = new System.Drawing.Size(678, 186);
+            AlertText.TabIndex = 9;
             // 
             // OutlinePanel
             // 
-            this.OutlinePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.OutlinePanel.Controls.Add(this.AlertText);
-            this.OutlinePanel.Location = new System.Drawing.Point(12, 41);
-            this.OutlinePanel.Name = "OutlinePanel";
-            this.OutlinePanel.Size = new System.Drawing.Size(680, 188);
-            this.OutlinePanel.TabIndex = 10;
+            OutlinePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            OutlinePanel.Controls.Add(AlertText);
+            OutlinePanel.Location = new System.Drawing.Point(12, 41);
+            OutlinePanel.Name = "OutlinePanel";
+            OutlinePanel.Size = new System.Drawing.Size(680, 188);
+            OutlinePanel.TabIndex = 10;
             // 
             // EnsureTopWindow
             // 
-            this.EnsureTopWindow.Enabled = true;
-            this.EnsureTopWindow.Interval = 1000;
-            this.EnsureTopWindow.Tick += new System.EventHandler(this.EnsureTopWindow_Tick);
+            EnsureTopWindow.Enabled = true;
+            EnsureTopWindow.Interval = 1000;
+            EnsureTopWindow.Tick += EnsureTopWindow_Tick;
             // 
             // PauseButton
             // 
-            this.PauseButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.PauseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(180)))), ((int)(((byte)(0)))));
-            this.PauseButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.PauseButton.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Bold);
-            this.PauseButton.ForeColor = System.Drawing.Color.Black;
-            this.PauseButton.Location = new System.Drawing.Point(698, 235);
-            this.PauseButton.Name = "PauseButton";
-            this.PauseButton.Size = new System.Drawing.Size(82, 23);
-            this.PauseButton.TabIndex = 11;
-            this.PauseButton.Text = "EXTEND";
-            this.ToolTipInformation.SetToolTip(this.PauseButton, "Resets and extends the timer to one minute.");
-            this.PauseButton.UseVisualStyleBackColor = false;
-            this.PauseButton.Click += new System.EventHandler(this.PauseButton_Click);
+            PauseButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            PauseButton.BackColor = System.Drawing.Color.FromArgb(255, 180, 0);
+            PauseButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            PauseButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            PauseButton.ForeColor = System.Drawing.Color.Black;
+            PauseButton.Location = new System.Drawing.Point(698, 235);
+            PauseButton.Name = "PauseButton";
+            PauseButton.Size = new System.Drawing.Size(82, 23);
+            PauseButton.TabIndex = 11;
+            PauseButton.Text = "EXTEND";
+            ToolTipInformation.SetToolTip(PauseButton, "Resets and extends the timer to one minute.");
+            PauseButton.UseVisualStyleBackColor = false;
+            PauseButton.Click += PauseButton_Click;
             // 
             // ToolTipInformation
             // 
-            this.ToolTipInformation.AutomaticDelay = 250;
-            this.ToolTipInformation.AutoPopDelay = 15000;
-            this.ToolTipInformation.BackColor = System.Drawing.Color.White;
-            this.ToolTipInformation.ForeColor = System.Drawing.Color.Black;
-            this.ToolTipInformation.InitialDelay = 250;
-            this.ToolTipInformation.IsBalloon = true;
-            this.ToolTipInformation.ReshowDelay = 50;
-            this.ToolTipInformation.ToolTipTitle = "What does this do?";
+            ToolTipInformation.AutomaticDelay = 250;
+            ToolTipInformation.AutoPopDelay = 15000;
+            ToolTipInformation.BackColor = System.Drawing.Color.White;
+            ToolTipInformation.ForeColor = System.Drawing.Color.Black;
+            ToolTipInformation.InitialDelay = 250;
+            ToolTipInformation.IsBalloon = true;
+            ToolTipInformation.ReshowDelay = 50;
+            ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
             // ManualAlertRelayForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(792, 270);
-            this.ControlBox = false;
-            this.Controls.Add(this.PauseButton);
-            this.Controls.Add(this.AutomaticRelayProgressBar);
-            this.Controls.Add(this.OutlinePanel);
-            this.Controls.Add(this.SubtitleText);
-            this.Controls.Add(this.AllowButton);
-            this.Controls.Add(this.DenyButton);
-            this.Font = new System.Drawing.Font("Arial", 9F);
-            this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "ManualAlertRelayForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SharpAlert - Forward Consent";
-            this.TopMost = true;
-            this.Load += new System.EventHandler(this.ManualAlertRelay_Load);
-            this.Shown += new System.EventHandler(this.ManualAlertRelay_Shown);
-            this.VisibleChanged += new System.EventHandler(this.ManualAlertRelay_VisibleChanged);
-            this.OutlinePanel.ResumeLayout(false);
-            this.OutlinePanel.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
+            ClientSize = new System.Drawing.Size(792, 270);
+            ControlBox = false;
+            Controls.Add(PauseButton);
+            Controls.Add(AutomaticRelayProgressBar);
+            Controls.Add(OutlinePanel);
+            Controls.Add(SubtitleText);
+            Controls.Add(AllowButton);
+            Controls.Add(DenyButton);
+            Font = new System.Drawing.Font("Segoe UI", 9F);
+            ForeColor = System.Drawing.Color.White;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "ManualAlertRelayForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "SharpAlert - Forward Consent";
+            TopMost = true;
+            Load += ManualAlertRelay_Load;
+            Shown += ManualAlertRelay_Shown;
+            VisibleChanged += ManualAlertRelay_VisibleChanged;
+            OutlinePanel.ResumeLayout(false);
+            OutlinePanel.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

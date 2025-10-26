@@ -94,25 +94,25 @@ namespace SharpAlert.ConfigurationDialogs
                 Environment.Exit(100);
             };
             
-            EnableBasicSpeakingBox.Checked = QuickSettings.Instance.EnableBasicSpeaking;
-            EnableBasicSpeakingBox.CheckedChanged += (a, b) =>
-            {
-                if (((CheckBox)a).Checked)
-                {
-                    MessageBox.Show("Please take note!\r\n" +
-                        "Basic Speaking will always use the default sound device regardless of your audio settings.",
-                        "SharpAlert",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-                    SpeakingManager.EnabledBasicSpeaking();
-                }
-                else
-                {
-                    SpeakingManager.DisabledBasicSpeaking();
-                }
+            //EnableBasicSpeakingBox.Checked = QuickSettings.Instance.EnableBasicSpeaking;
+            //EnableBasicSpeakingBox.CheckedChanged += (a, b) =>
+            //{
+            //    if (((CheckBox)a).Checked)
+            //    {
+            //        MessageBox.Show("Please take note!\r\n" +
+            //            "Basic Speaking will always use the default sound device regardless of your audio settings.",
+            //            "SharpAlert",
+            //            MessageBoxButtons.OK,
+            //            MessageBoxIcon.Information);
+            //        SpeakingManager.EnabledBasicSpeaking();
+            //    }
+            //    else
+            //    {
+            //        SpeakingManager.DisabledBasicSpeaking();
+            //    }
 
-                QuickSettings.Instance.EnableBasicSpeaking = ((CheckBox)a).Checked;
-            };
+            //    QuickSettings.Instance.EnableBasicSpeaking = ((CheckBox)a).Checked;
+            //};
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)

@@ -59,7 +59,7 @@
             // 
             // IdleText
             // 
-            this.IdleText.Font = new System.Drawing.Font("Arial", 56F);
+            this.IdleText.Font = new System.Drawing.Font("Segoe UI", 56F);
             this.IdleText.ForeColor = System.Drawing.Color.White;
             this.IdleText.Location = new System.Drawing.Point(0, 0);
             this.IdleText.Margin = new System.Windows.Forms.Padding(0);
@@ -84,7 +84,7 @@
             // InfoText
             // 
             this.InfoText.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.InfoText.Font = new System.Drawing.Font("Arial", 16F, System.Drawing.FontStyle.Bold);
+            this.InfoText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.InfoText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
             this.InfoText.Location = new System.Drawing.Point(0, 694);
             this.InfoText.Name = "InfoText";
@@ -102,7 +102,7 @@
             this.ControlBox = false;
             this.Controls.Add(this.IdleContainer);
             this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

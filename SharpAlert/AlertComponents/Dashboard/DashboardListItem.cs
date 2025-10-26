@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using static SharpAlert.AlertComponents.AlertProcessor;
 
@@ -10,32 +11,53 @@ namespace SharpAlert.AlertComponents.Dashboard
         public readonly AlertInfo alertInfo;
         public readonly DateTimeOffset startOfExistenceDateTime = DateTimeOffset.UtcNow;
 
+        //private int BorderSize = 0;
+        //private int BorderRadius = 8;
+        //private Color BorderColor = Color.White;
+
         public DashboardListItem(AlertInfo info)
         {
             InitializeComponent();
+            DoubleBuffered = true;
             if (info != null) alertInfo = info;
             else alertInfo = new AlertInfo { AlertDiscardReason = "The alert information is null." };
         }
 
-        //public Color OutlineColor { get; set; } = Color.Pink;
-        //public int OutlineThickness { get; set; } = 2;
+        //private GraphicsPath GetFigurePath(RectangleF rect, float radius)
+        //{
+        //    GraphicsPath path = new();
+
+        //    float CurveSize = radius * 2F;
+
+        //    path.StartFigure();
+        //    path.AddArc(rect.X, rect.Y, CurveSize, CurveSize, 180, 90);
+        //    path.AddArc(rect.Right - CurveSize, rect.Y, CurveSize, CurveSize, 270, 90);
+        //    path.AddArc(rect.Right - CurveSize, rect.Bottom - CurveSize, CurveSize, CurveSize, 0, 90);
+        //    path.AddArc(rect.X, rect.Bottom - CurveSize, CurveSize, CurveSize, 90, 90);
+        //    path.CloseFigure();
+
+        //    return path;
+        //}
 
         //protected override void OnPaint(PaintEventArgs e)
         //{
         //    base.OnPaint(e);
+        //    e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
-        //    using Pen pen = new(OutlineColor, OutlineThickness);
+        //    Rectangle rectSurface = ClientRectangle;
+        //    Rectangle rectBorder = Rectangle.Inflate(rectSurface, -BorderSize, -BorderSize);
 
-        //    int halfThickness = OutlineThickness / 2;
-        //    e.Graphics.DrawRectangle(
-        //        pen,
-        //        new Rectangle(
-        //            halfThickness,
-        //            halfThickness,
-        //            this.ClientSize.Width - OutlineThickness,
-        //            this.ClientSize.Height - OutlineThickness
-        //        )
-        //    );
+        //    using (GraphicsPath pathSurface = GetFigurePath(rectSurface, BorderRadius))
+        //    using (GraphicsPath pathBorder = GetFigurePath(rectBorder, BorderRadius - BorderSize))
+        //    using (Pen penSurface = new Pen(Parent?.BackColor ?? Color.Black, BorderSize))
+        //    using (Pen penBorder = new Pen(BorderColor, BorderSize))
+        //    {
+        //        Region = new Region(pathSurface);
+        //        e.Graphics.DrawPath(penSurface, pathSurface);
+
+        //        if (BorderSize > 0)
+        //            e.Graphics.DrawPath(penBorder, pathBorder);
+        //    }
         //}
 
         private void DashboardListItem_Load(object sender, EventArgs e)
@@ -67,7 +89,7 @@ namespace SharpAlert.AlertComponents.Dashboard
                 MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 alertInfo.AlertExpiryDate = DateTime.UtcNow.AddDays(-1).ToString("s");
-                ContainerPanel.BackColor = Color.Gray;
+                ContainerPanel.BackColor = Color.FromArgb(50, 50, 50);
                 AlertExpiryText.Text = "EXPIRED";
             }
         }

@@ -15,7 +15,6 @@ using SharpAlert.ProgramWorker;
 using static SharpAlert.ThreadDrool;
 using System.Text.Json;
 using static SharpAlert.AlertComponents.AlertDisplayer;
-using System.Net.Http;
 using SharpAlert.AlertComponents;
 
 namespace SharpAlert.WebServer

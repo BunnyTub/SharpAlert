@@ -280,13 +280,13 @@ namespace SharpAlert.ConfigurationDialogs
             {
                 BypassFilteringFlasher_Tick(null, null);
                 BypassFilteringFlasher.Start();
-                MessageBox.Show("The Alert Processor will now ignore alert filtering. This setting will be reverted the next time you open SharpAlert.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("The Alert Processor will now ignore alert and location filtering. This setting will be reverted the next time you open SharpAlert.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
                 BypassFilteringFlasher.Stop();
                 BypassAlertFilteringButton.BackColor = Color.FromArgb(60, 60, 60);
-                MessageBox.Show("The Alert Processor will no longer ignore alert filtering.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("The Alert Processor will no longer ignore alert and location filtering.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -361,6 +361,126 @@ namespace SharpAlert.ConfigurationDialogs
         private void RainbowText_Click(object sender, EventArgs e)
         {
             HackyWorkarounds.OpenURL("https://bunnytub.com/SharpAlert");
+        }
+
+        private void SuperSecretEnabler_Tick(object sender, EventArgs e)
+        {
+            //if (Visible)
+            //{
+            //    if (MainEntryPoint.IsUserSuperSecretAccessor())
+            //    {
+            //        SuperSecretSettingsGroup.Visible = true;
+            //    }
+            //    else
+            //    {
+            //        SuperSecretSettingsGroup.Visible = false;
+            //    }
+            //}
+        }
+
+        private void ForceUpdateButton_Click(object sender, EventArgs e)
+        {
+            UpdateWorker.TryUpdate(UpdateWorker.TryGetRemoteVersion(), true);
+        }
+
+        private void FloodQueueButton_Click(object sender, EventArgs e)
+        {
+            lock (MainEntryPoint.SharpDataQueue)
+            {
+                lock (MainEntryPoint.SharpDataHistory)
+                {
+                    MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                    //MainEntryPoint.SharpDataQueue.AddRange(MainEntryPoint.SharpDataHistory);
+                    //MainEntryPoint.SharpDataHistory.AddRange(MainEntryPoint.SharpDataQueue);
+                }
+            }
+
         }
     }
 }

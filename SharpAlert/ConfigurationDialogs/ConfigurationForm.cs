@@ -24,7 +24,7 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void DoneButton_Click(object sender, EventArgs e)
         {
-            SpeakingManager.SettingsSaved();
+            QuickSettings.Instance.Save();
             this.Close();
         }
 
@@ -166,6 +166,61 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void ConfigurationForm_Load(object sender, EventArgs e)
         {
+            EnableUpdatesBox.Checked = QuickSettings.Instance.AllowPerformingUpdates;
+            EnableDiscordRichPresenceBox.Checked = QuickSettings.Instance.AllowDiscordRichPresence;
+            AllowNotifications = true;
+        }
+
+        private bool AllowNotifications = false;
+
+        private void EnableUpdatesBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!AllowNotifications) return;
+
+            if (EnableUpdatesBox.Checked)
+            {
+                MessageBox.Show("SharpAlert will try to update on the fly, as long as you have administrative permissions on this device.",
+                    Text,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("SharpAlert will no longer automatically update.",
+                    Text,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+
+            QuickSettings.Instance.AskedForAutomaticUpdates = true;
+            QuickSettings.Instance.AllowPerformingUpdates = EnableUpdatesBox.Checked;
+        }
+
+        private void EnableDiscordRichPresenceBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!AllowNotifications) return;
+
+            if (EnableDiscordRichPresenceBox.Checked)
+            {
+                MessageBox.Show("SharpAlert will display an alert relay count on your profile, visible to any others who can see it. Restart the program to apply this change.",
+                    Text,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("SharpAlert will no longer display an alert relay count on your profile. Restart the program to apply this change.",
+                    Text,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+
+            QuickSettings.Instance.AllowDiscordRichPresence = EnableDiscordRichPresenceBox.Checked;
+        }
+
+        private void ConfigurationForm_HelpButtonClicked(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
         }
     }
 }

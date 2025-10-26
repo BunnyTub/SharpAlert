@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
 using SharpAlert.ProgramWorker;
-using SharpAlert.Properties;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 
 namespace SharpAlert.AlertComponents
@@ -352,10 +350,13 @@ namespace SharpAlert.AlertComponents
 
                     if (QuickSettings.Instance.AddIntroText && !string.IsNullOrWhiteSpace(truncDescription1))
                     {
-                        Fields += $"**Alert Info**\r\n```\r\n{truncDescription1}\r\n```\r\n";
+                        Fields += $"**Alert Info**\r\n" +
+                            $"\r\n{truncDescription1}\r\n" +
+                            $"\r\n";
                     }
 
-                    Fields += $"**Alert Text**\r\n```\r\n{truncDescription2}\r\n```";
+                    Fields += $"**Alert Text**\r\n" +
+                        $"\r\n{truncDescription2}\r\n";
 
                     //var fieldsList = new List<object>();
 

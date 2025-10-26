@@ -71,7 +71,7 @@
             // 
             // TitleText
             // 
-            TitleText.Font = new System.Drawing.Font("Arial", 16F);
+            TitleText.Font = new System.Drawing.Font("Segoe UI", 16F);
             TitleText.Location = new System.Drawing.Point(105, 9);
             TitleText.Margin = new System.Windows.Forms.Padding(0);
             TitleText.Name = "TitleText";
@@ -82,7 +82,7 @@
             // RegionUnitedStatesBox
             // 
             RegionUnitedStatesBox.AutoSize = true;
-            RegionUnitedStatesBox.Font = new System.Drawing.Font("Arial", 12F);
+            RegionUnitedStatesBox.Font = new System.Drawing.Font("Segoe UI", 12F);
             RegionUnitedStatesBox.Location = new System.Drawing.Point(111, 42);
             RegionUnitedStatesBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             RegionUnitedStatesBox.Name = "RegionUnitedStatesBox";
@@ -95,7 +95,7 @@
             // RegionCanadaBox
             // 
             RegionCanadaBox.AutoSize = true;
-            RegionCanadaBox.Font = new System.Drawing.Font("Arial", 12F);
+            RegionCanadaBox.Font = new System.Drawing.Font("Segoe UI", 12F);
             RegionCanadaBox.Location = new System.Drawing.Point(111, 98);
             RegionCanadaBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             RegionCanadaBox.Name = "RegionCanadaBox";
@@ -119,7 +119,7 @@
             // RegionMexicoBox
             // 
             RegionMexicoBox.AutoSize = true;
-            RegionMexicoBox.Font = new System.Drawing.Font("Arial", 12F);
+            RegionMexicoBox.Font = new System.Drawing.Font("Segoe UI", 12F);
             RegionMexicoBox.Location = new System.Drawing.Point(111, 126);
             RegionMexicoBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             RegionMexicoBox.Name = "RegionMexicoBox";
@@ -147,7 +147,7 @@
             // RegionUnitedStatesNWSBox
             // 
             RegionUnitedStatesNWSBox.AutoSize = true;
-            RegionUnitedStatesNWSBox.Font = new System.Drawing.Font("Arial", 12F);
+            RegionUnitedStatesNWSBox.Font = new System.Drawing.Font("Segoe UI", 12F);
             RegionUnitedStatesNWSBox.Location = new System.Drawing.Point(111, 70);
             RegionUnitedStatesNWSBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             RegionUnitedStatesNWSBox.Name = "RegionUnitedStatesNWSBox";
@@ -160,7 +160,7 @@
             // RegionBrazilBox
             // 
             RegionBrazilBox.AutoSize = true;
-            RegionBrazilBox.Font = new System.Drawing.Font("Arial", 12F);
+            RegionBrazilBox.Font = new System.Drawing.Font("Segoe UI", 12F);
             RegionBrazilBox.Location = new System.Drawing.Point(111, 154);
             RegionBrazilBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             RegionBrazilBox.Name = "RegionBrazilBox";
@@ -173,7 +173,7 @@
             // ChangeLaterText
             // 
             ChangeLaterText.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            ChangeLaterText.Font = new System.Drawing.Font("Arial", 9F);
+            ChangeLaterText.Font = new System.Drawing.Font("Segoe UI", 9F);
             ChangeLaterText.ForeColor = System.Drawing.Color.Yellow;
             ChangeLaterText.LinkArea = new System.Windows.Forms.LinkArea(0, 96);
             ChangeLaterText.LinkColor = System.Drawing.Color.Yellow;
@@ -204,7 +204,7 @@
             Controls.Add(TitleText);
             Controls.Add(LogoBox);
             Controls.Add(DoneButton);
-            Font = new System.Drawing.Font("Arial", 9F);
+            Font = new System.Drawing.Font("Segoe UI", 9F);
             ForeColor = System.Drawing.Color.White;
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             HelpButton = true;

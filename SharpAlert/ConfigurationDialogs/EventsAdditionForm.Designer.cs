@@ -98,7 +98,7 @@
             this.SAMEAddButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.SAMEAddButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.SAMEAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SAMEAddButton.Font = new System.Drawing.Font("Arial", 9F);
+            this.SAMEAddButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.SAMEAddButton.Location = new System.Drawing.Point(330, 93);
             this.SAMEAddButton.Name = "SAMEAddButton";
             this.SAMEAddButton.Size = new System.Drawing.Size(65, 23);
@@ -123,7 +123,7 @@
             // BusyLockText
             // 
             this.BusyLockText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BusyLockText.Font = new System.Drawing.Font("Arial", 12F);
+            this.BusyLockText.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.BusyLockText.Location = new System.Drawing.Point(0, 0);
             this.BusyLockText.Name = "BusyLockText";
             this.BusyLockText.Size = new System.Drawing.Size(425, 146);
@@ -138,7 +138,7 @@
             this.ClientSize = new System.Drawing.Size(425, 146);
             this.Controls.Add(this.ConfigurationPanel);
             this.Controls.Add(this.BusyLockText);
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

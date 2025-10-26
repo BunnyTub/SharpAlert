@@ -125,7 +125,7 @@
             // BusyLockText
             // 
             this.BusyLockText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BusyLockText.Font = new System.Drawing.Font("Arial", 12F);
+            this.BusyLockText.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.BusyLockText.Location = new System.Drawing.Point(0, 0);
             this.BusyLockText.Name = "BusyLockText";
             this.BusyLockText.Size = new System.Drawing.Size(694, 201);
@@ -141,7 +141,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.AlertHistoryOutput.BackColor = System.Drawing.Color.Black;
             this.AlertHistoryOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AlertHistoryOutput.Font = new System.Drawing.Font("Arial", 12F);
+            this.AlertHistoryOutput.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.AlertHistoryOutput.ForeColor = System.Drawing.Color.White;
             this.AlertHistoryOutput.Location = new System.Drawing.Point(6, 35);
             this.AlertHistoryOutput.Multiline = true;
@@ -159,7 +159,7 @@
             this.PlayTestButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PlayTestButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.PlayTestButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.PlayTestButton.Font = new System.Drawing.Font("Arial", 9F);
+            this.PlayTestButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.PlayTestButton.ForeColor = System.Drawing.Color.White;
             this.PlayTestButton.Location = new System.Drawing.Point(592, 20);
             this.PlayTestButton.Name = "PlayTestButton";
@@ -176,7 +176,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ImportFileButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.ImportFileButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.ImportFileButton.Font = new System.Drawing.Font("Arial", 9F);
+            this.ImportFileButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ImportFileButton.ForeColor = System.Drawing.Color.White;
             this.ImportFileButton.Location = new System.Drawing.Point(514, 78);
             this.ImportFileButton.Name = "ImportFileButton";
@@ -206,7 +206,7 @@
             this.RevealButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.RevealButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.RevealButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.RevealButton.Font = new System.Drawing.Font("Arial", 9F);
+            this.RevealButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.RevealButton.Location = new System.Drawing.Point(382, 148);
             this.RevealButton.Name = "RevealButton";
             this.RevealButton.Size = new System.Drawing.Size(60, 23);
@@ -222,7 +222,7 @@
             this.RevealRecentButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.RevealRecentButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.RevealRecentButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.RevealRecentButton.Font = new System.Drawing.Font("Arial", 9F);
+            this.RevealRecentButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.RevealRecentButton.Location = new System.Drawing.Point(448, 148);
             this.RevealRecentButton.Name = "RevealRecentButton";
             this.RevealRecentButton.Size = new System.Drawing.Size(60, 23);
@@ -302,7 +302,7 @@
             this.ClientSize = new System.Drawing.Size(694, 201);
             this.Controls.Add(this.ConfigurationPanel);
             this.Controls.Add(this.BusyLockText);
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);

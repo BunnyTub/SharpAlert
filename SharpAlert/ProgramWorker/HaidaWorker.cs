@@ -1,5 +1,13 @@
-﻿//using Microsoft.Win32;
+﻿using DiscordRPC;
+using Microsoft.Win32;
+using SharpAlert.AlertComponents;
+using SharpAlert.ConfigurationDialogs;
+using SharpAlert.DataProcessing;
+using SharpAlert.DisplayDialogs;
 using SharpAlert.Properties;
+using SharpAlert.SourceCapturing;
+using SharpAlert.SourceCapturing.SystemSpecific;
+using SharpAlert.WebServer;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -10,21 +18,12 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using static SharpAlert.AudioManager;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.ProgramWorker.ServiceThreads;
 using static SharpAlert.RegexList;
-using static SharpAlert.AudioManager;
 using static SharpAlert.ThreadDrool;
-using SharpAlert.ConfigurationDialogs;
-using SharpAlert.SourceCapturing;
-using SharpAlert.DataProcessing;
-using SharpAlert.WebServer;
-using SharpAlert.DisplayDialogs;
-using SharpAlert.AlertComponents;
-using SharpAlert.SourceCapturing.SystemSpecific;
-using static SharpAlert.ProgramWorker.GlobalHotkeyManager;
-using Microsoft.Win32;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 
 namespace SharpAlert.ProgramWorker
@@ -384,8 +383,8 @@ namespace SharpAlert.ProgramWorker
                 QuickSettings.Instance.RegionUnitedStates ||
                 QuickSettings.Instance.RegionUnitedStatesNWS ||
                 QuickSettings.Instance.RegionCanada ||
-                QuickSettings.Instance.RegionMexico) AnyFeedAvailable = true;
-            // QuickSettings.Instance.RegionBrazil removed for now due to API issues
+                QuickSettings.Instance.RegionMexico ||
+                QuickSettings.Instance.RegionBrazil) AnyFeedAvailable = true;
 
             if (!AnyFeedAvailable && !SetupExperienceOccurred)
             {
@@ -475,12 +474,12 @@ namespace SharpAlert.ProgramWorker
 
             if (QuickSettings.Instance.RegionBrazil)
             {
-                Console.WriteLine("[Haida] Capturing from Brazil (IDAP) is unavailable.");
+                //Console.WriteLine("[Haida] Capturing from Brazil (IDAP) is unavailable.");
                 StartAndForget(() =>
                 {
                     new IDAPNoticeForm().ShowDialog();
                 });
-                //idapfeedThread = StartCatchAllThread("IDAP Feed Capture", () => idapfeed.ServiceRun(true), false);
+                idapfeedThread = StartCatchAllThread("IDAP Feed Capture", () => idapfeed.ServiceRun(true), false);
                 // removed Brazil IDAP from being able to be used for now
             }
 
@@ -502,7 +501,8 @@ namespace SharpAlert.ProgramWorker
 
                     if (powerStatus.BatteryLifePercent == -1)
                     {
-                        // if no battery, we should probably exit
+                        // if no battery, we should probably exit, lol, not like the battery is gonna reappear or something...
+                        // ...? hopefully not.
                         return;
                     }
 
@@ -545,33 +545,97 @@ namespace SharpAlert.ProgramWorker
                 }
             }, true);
 
-            StartCatchAllThread("Hour Counter", () =>
-            {
-                // The top of the hour sound plays when Basic Speaking is enabled.
-                // Checks are made every 5 seconds, then the loop should stop for a little bit before checking again if it is top of the hour.
+            //StartCatchAllThread("Hour Counter", () =>
+            //{
+            //    // The top of the hour sound plays when Basic Speaking is enabled.
+            //    // Checks are made every 5 seconds, then the loop should stop for a little bit before checking again if it is top of the hour.
 
-                DateTime dt = DateTime.Now;
+            //    DateTime dt = DateTime.Now;
+
+            //    while (AllowThreadRestarts)
+            //    {
+            //        if (QuickSettings.Instance.alertTimeZoneUTC) dt = DateTime.UtcNow;
+            //        else dt = DateTime.Now;
+
+            //        if (dt.Minute == 0)
+            //        {
+            //            SpeakingManager.TopOfTheHour();
+            //            Thread.Sleep(1000 * 300);
+            //        }
+
+            //        Thread.Sleep(5000);
+            //    }
+            //}, true);
+
+            //StartCatchAllThread("Hotkey Detector", () =>
+            //{
+            //    Application.Run(new MessageWindow());
+            //}, true);
+
+            StartCatchAllThread("Discord Rich Presence", () =>
+            {
+                if (!QuickSettings.Instance.AllowDiscordRichPresence)
+                {
+                    Console.WriteLine($"[Discord Rich Presence] Discord Rich Presence is disabled.");
+                    throw new NonRestartableException();
+                }
+
+                Console.WriteLine($"[Discord Rich Presence] Setting up Discord RPC.");
+
+                var client = new DiscordRpcClient("1184397437985620028")
+                {
+                    Logger = new DiscordRPC.Logging.ConsoleLogger(DiscordRPC.Logging.LogLevel.Warning, false)
+                };
+
+                client.OnReady += (sender, e) =>
+                {
+                    Console.WriteLine($"[Discord Rich Presence] Ready: {e.User.ID}");
+                    InternalUserID = e.User.ID;
+                };
+                
+                client.OnConnectionEstablished += (sender, e) =>
+                {
+                    Console.WriteLine($"[Discord Rich Presence] Connection established: {e.TimeCreated}");
+                };
+
+                client.OnConnectionFailed += (sender, e) =>
+                {
+                    Console.WriteLine($"[Discord Rich Presence] Connection failed: {e.FailedPipe}");
+                };
+
+                client.Initialize();
+
+                client.SetPresence(new RichPresence()
+                {
+                    Details = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
+                    DetailsUrl = "https://bunnytub.com/SharpAlert",
+                    State = $"Relayed {AlertProcessor.AlertsRelayed} alert(s).",
+                    Type = ActivityType.Watching,
+                    Assets = new Assets()
+                    {
+                        LargeImageKey = "sharpalert_squaredicon",
+                        LargeImageText = "SharpAlert"
+                    },
+                    StatusDisplay = StatusDisplayType.Details,
+                    //Buttons =
+                    //[
+                    //    new DiscordRPC.Button { Label = "Get SharpAlert", Url = "https://bunnytub.com/SharpAlert" }
+                    //]
+                });
 
                 while (AllowThreadRestarts)
                 {
-                    if (QuickSettings.Instance.alertTimeZoneUTC) dt = DateTime.UtcNow;
-                    else dt = DateTime.Now;
-
-                    if (dt.Minute == 0)
-                    {
-                        SpeakingManager.TopOfTheHour();
-                        Thread.Sleep(1000 * 300);
-                    }
-
                     Thread.Sleep(5000);
+                    client.UpdateState($"Relayed {AlertProcessor.AlertsRelayed} alert(s).");
+                    Console.WriteLine("[Discord Rich Presence] Updated state.");
+                    //client.UpdateClearTime();
+                    ///client.SetButton(new DiscordRPC.Button { Label = "Download SharpAlert", Url = "https://bunnytub.com/SharpAlert" });
                 }
+
+                //client.ShutdownOnly = true;
+                client.Deinitialize();
             }, true);
-            
-            StartCatchAllThread("Hotkey Detector", () =>
-            {
-                Application.Run(new MessageWindow());
-            }, true);
-            
+
             StartCatchAllThread("Update Worker", () =>
             {
                 Thread.Sleep(1000 * 10);
@@ -587,44 +651,44 @@ namespace SharpAlert.ProgramWorker
                         }
                     }
 
-                    Thread.Sleep(1000 * 30);
+                    Thread.Sleep(1000 * 45);
                 }
             }, true);
 
             StartCatchAllThread("Pipe Worker", () => PipeWorker.ServerServiceRun(), false, false);
         }
 
-        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
-        private static extern int GetDeviceCaps(IntPtr hDC, int nIndex);
+        //[DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+        //private static extern int GetDeviceCaps(IntPtr hDC, int nIndex);
 
-        public enum DeviceCap
-        {
-            VERTRES = 10,
-            DESKTOPVERTRES = 117
-        }
+        //public enum DeviceCap
+        //{
+        //    VERTRES = 10,
+        //    DESKTOPVERTRES = 117
+        //}
 
         // Taken from this: https://stackoverflow.com/a/63229584
 
-        public static double GetWindowsScreenScalingFactor()
-        {
-            try
-            {
-                Graphics GraphicsObject = Graphics.FromHwnd(IntPtr.Zero);
-                IntPtr DeviceContextHandle = GraphicsObject.GetHdc();
-                double LogicalScreenHeight = GetDeviceCaps(DeviceContextHandle, (int)DeviceCap.VERTRES);
-                double PhysicalScreenHeight = GetDeviceCaps(DeviceContextHandle, (int)DeviceCap.DESKTOPVERTRES);
-                double ScreenScalingFactor = Math.Round(PhysicalScreenHeight / LogicalScreenHeight, 2);
-                ScreenScalingFactor *= 100.0;
-                GraphicsObject.ReleaseHdc(DeviceContextHandle);
-                GraphicsObject.Dispose();
-                return ScreenScalingFactor;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[Haida] Unable to retrieve the DPI settings. {ex.Message}");
-                return 100;
-            }
-        }
+        //public static double GetWindowsScreenScalingFactor()
+        //{
+        //    try
+        //    {
+        //        Graphics GraphicsObject = Graphics.FromHwnd(IntPtr.Zero);
+        //        IntPtr DeviceContextHandle = GraphicsObject.GetHdc();
+        //        double LogicalScreenHeight = GetDeviceCaps(DeviceContextHandle, (int)DeviceCap.VERTRES);
+        //        double PhysicalScreenHeight = GetDeviceCaps(DeviceContextHandle, (int)DeviceCap.DESKTOPVERTRES);
+        //        double ScreenScalingFactor = Math.Round(PhysicalScreenHeight / LogicalScreenHeight, 2);
+        //        ScreenScalingFactor *= 100.0;
+        //        GraphicsObject.ReleaseHdc(DeviceContextHandle);
+        //        GraphicsObject.Dispose();
+        //        return ScreenScalingFactor;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"[Haida] Unable to retrieve the DPI settings. {ex.Message}");
+        //        return 100;
+        //    }
+        //}
 
         public static int LowPower = 20;
         public static int CriticalPower = 20;

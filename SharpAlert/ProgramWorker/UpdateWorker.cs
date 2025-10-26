@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -53,6 +52,7 @@ namespace SharpAlert.ProgramWorker
                 HttpResponseMessage latest = UpdateClient.GetAsync($"{IdentityURL}/SharpAlert.txt").Result;
 
                 Console.WriteLine($"[Update Worker] The server responded with status code {latest.StatusCode}.");
+                latest.EnsureSuccessStatusCode();
 
                 RemoteVersion = latest.Content.ReadAsStringAsync().Result.Trim();
                 if (string.IsNullOrWhiteSpace(RemoteVersion) || RemoteVersion.Length == 0 || RemoteVersion.Length >= 10) RemoteVersion = "0.0";

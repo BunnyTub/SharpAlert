@@ -51,7 +51,7 @@
             // 
             this.WeeklyTestButton.BackColor = System.Drawing.Color.Green;
             this.WeeklyTestButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.WeeklyTestButton.Font = new System.Drawing.Font("Arial", 16F);
+            this.WeeklyTestButton.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.WeeklyTestButton.Location = new System.Drawing.Point(12, 82);
             this.WeeklyTestButton.Name = "WeeklyTestButton";
             this.WeeklyTestButton.Size = new System.Drawing.Size(128, 128);
@@ -64,7 +64,7 @@
             // 
             this.MonthlyTestButton.BackColor = System.Drawing.Color.Green;
             this.MonthlyTestButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.MonthlyTestButton.Font = new System.Drawing.Font("Arial", 16F);
+            this.MonthlyTestButton.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.MonthlyTestButton.Location = new System.Drawing.Point(146, 82);
             this.MonthlyTestButton.Name = "MonthlyTestButton";
             this.MonthlyTestButton.Size = new System.Drawing.Size(128, 128);
@@ -77,7 +77,7 @@
             // 
             this.PracticeDemoButton.BackColor = System.Drawing.Color.Green;
             this.PracticeDemoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.PracticeDemoButton.Font = new System.Drawing.Font("Arial", 16F);
+            this.PracticeDemoButton.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.PracticeDemoButton.Location = new System.Drawing.Point(280, 82);
             this.PracticeDemoButton.Name = "PracticeDemoButton";
             this.PracticeDemoButton.Size = new System.Drawing.Size(128, 128);
@@ -90,7 +90,7 @@
             // 
             this.FireDrillButton.BackColor = System.Drawing.Color.Green;
             this.FireDrillButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.FireDrillButton.Font = new System.Drawing.Font("Arial", 16F);
+            this.FireDrillButton.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.FireDrillButton.Location = new System.Drawing.Point(414, 82);
             this.FireDrillButton.Name = "FireDrillButton";
             this.FireDrillButton.Size = new System.Drawing.Size(128, 128);
@@ -103,7 +103,7 @@
             // 
             this.LockdownDrillButton.BackColor = System.Drawing.Color.Green;
             this.LockdownDrillButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.LockdownDrillButton.Font = new System.Drawing.Font("Arial", 16F);
+            this.LockdownDrillButton.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.LockdownDrillButton.Location = new System.Drawing.Point(548, 82);
             this.LockdownDrillButton.Name = "LockdownDrillButton";
             this.LockdownDrillButton.Size = new System.Drawing.Size(128, 128);
@@ -116,7 +116,7 @@
             // 
             this.button5.BackColor = System.Drawing.Color.DarkOrange;
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button5.Font = new System.Drawing.Font("Arial", 16F);
+            this.button5.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.button5.Location = new System.Drawing.Point(548, 216);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(128, 128);
@@ -129,7 +129,7 @@
             // 
             this.button6.BackColor = System.Drawing.Color.DarkOrange;
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button6.Font = new System.Drawing.Font("Arial", 16F);
+            this.button6.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.button6.Location = new System.Drawing.Point(414, 216);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(128, 128);
@@ -142,7 +142,7 @@
             // 
             this.button7.BackColor = System.Drawing.Color.DarkOrange;
             this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button7.Font = new System.Drawing.Font("Arial", 16F);
+            this.button7.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.button7.Location = new System.Drawing.Point(280, 216);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(128, 128);
@@ -155,7 +155,7 @@
             // 
             this.button8.BackColor = System.Drawing.Color.DarkOrange;
             this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button8.Font = new System.Drawing.Font("Arial", 16F);
+            this.button8.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.button8.Location = new System.Drawing.Point(146, 216);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(128, 128);
@@ -168,7 +168,7 @@
             // 
             this.button9.BackColor = System.Drawing.Color.DarkOrange;
             this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button9.Font = new System.Drawing.Font("Arial", 16F);
+            this.button9.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.button9.ForeColor = System.Drawing.Color.White;
             this.button9.Location = new System.Drawing.Point(12, 216);
             this.button9.Name = "button9";
@@ -182,7 +182,7 @@
             // 
             this.button10.BackColor = System.Drawing.Color.Crimson;
             this.button10.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button10.Font = new System.Drawing.Font("Arial", 16F);
+            this.button10.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.button10.Location = new System.Drawing.Point(548, 350);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(128, 128);
@@ -195,7 +195,7 @@
             // 
             this.button11.BackColor = System.Drawing.Color.Crimson;
             this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button11.Font = new System.Drawing.Font("Arial", 16F);
+            this.button11.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.button11.Location = new System.Drawing.Point(414, 350);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(128, 128);
@@ -208,7 +208,7 @@
             // 
             this.button12.BackColor = System.Drawing.Color.Crimson;
             this.button12.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button12.Font = new System.Drawing.Font("Arial", 16F);
+            this.button12.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.button12.Location = new System.Drawing.Point(280, 350);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(128, 128);
@@ -221,7 +221,7 @@
             // 
             this.button13.BackColor = System.Drawing.Color.Crimson;
             this.button13.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button13.Font = new System.Drawing.Font("Arial", 16F);
+            this.button13.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.button13.Location = new System.Drawing.Point(146, 350);
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(128, 128);
@@ -234,7 +234,7 @@
             // 
             this.button14.BackColor = System.Drawing.Color.Crimson;
             this.button14.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button14.Font = new System.Drawing.Font("Arial", 16F);
+            this.button14.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.button14.Location = new System.Drawing.Point(12, 350);
             this.button14.Name = "button14";
             this.button14.Size = new System.Drawing.Size(128, 128);
@@ -247,7 +247,7 @@
             // 
             this.CancelLocalMessagesButton.BackColor = System.Drawing.Color.Crimson;
             this.CancelLocalMessagesButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.CancelLocalMessagesButton.Font = new System.Drawing.Font("Arial", 28F);
+            this.CancelLocalMessagesButton.Font = new System.Drawing.Font("Segoe UI", 28F);
             this.CancelLocalMessagesButton.Location = new System.Drawing.Point(12, 12);
             this.CancelLocalMessagesButton.Name = "CancelLocalMessagesButton";
             this.CancelLocalMessagesButton.Size = new System.Drawing.Size(664, 64);
@@ -277,7 +277,7 @@
             this.Controls.Add(this.PracticeDemoButton);
             this.Controls.Add(this.MonthlyTestButton);
             this.Controls.Add(this.WeeklyTestButton);
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SendForm";

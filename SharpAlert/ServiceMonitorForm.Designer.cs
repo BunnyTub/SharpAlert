@@ -97,7 +97,7 @@
             // 
             this.FeedCaptureStatusText.BackColor = System.Drawing.Color.Transparent;
             this.FeedCaptureStatusText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FeedCaptureStatusText.Font = new System.Drawing.Font("Arial", 30F);
+            this.FeedCaptureStatusText.Font = new System.Drawing.Font("Segoe UI", 30F);
             this.FeedCaptureStatusText.Location = new System.Drawing.Point(0, 31);
             this.FeedCaptureStatusText.Margin = new System.Windows.Forms.Padding(0);
             this.FeedCaptureStatusText.Name = "FeedCaptureStatusText";
@@ -110,7 +110,7 @@
             // 
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label3.Font = new System.Drawing.Font("Arial", 12F);
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.label3.Location = new System.Drawing.Point(0, 0);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
@@ -134,7 +134,7 @@
             // 
             this.AtomFeedCaptureStatusText.BackColor = System.Drawing.Color.Transparent;
             this.AtomFeedCaptureStatusText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AtomFeedCaptureStatusText.Font = new System.Drawing.Font("Arial", 30F);
+            this.AtomFeedCaptureStatusText.Font = new System.Drawing.Font("Segoe UI", 30F);
             this.AtomFeedCaptureStatusText.Location = new System.Drawing.Point(0, 31);
             this.AtomFeedCaptureStatusText.Margin = new System.Windows.Forms.Padding(0);
             this.AtomFeedCaptureStatusText.Name = "AtomFeedCaptureStatusText";
@@ -147,7 +147,7 @@
             // 
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label4.Font = new System.Drawing.Font("Arial", 12F);
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.label4.Location = new System.Drawing.Point(0, 0);
             this.label4.Margin = new System.Windows.Forms.Padding(0);
             this.label4.Name = "label4";
@@ -171,7 +171,7 @@
             // 
             this.DirectFeedCaptureStatusText.BackColor = System.Drawing.Color.Transparent;
             this.DirectFeedCaptureStatusText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DirectFeedCaptureStatusText.Font = new System.Drawing.Font("Arial", 30F);
+            this.DirectFeedCaptureStatusText.Font = new System.Drawing.Font("Segoe UI", 30F);
             this.DirectFeedCaptureStatusText.Location = new System.Drawing.Point(0, 31);
             this.DirectFeedCaptureStatusText.Margin = new System.Windows.Forms.Padding(0);
             this.DirectFeedCaptureStatusText.Name = "DirectFeedCaptureStatusText";
@@ -184,7 +184,7 @@
             // 
             this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label6.Font = new System.Drawing.Font("Arial", 12F);
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.label6.Location = new System.Drawing.Point(0, 0);
             this.label6.Margin = new System.Windows.Forms.Padding(0);
             this.label6.Name = "label6";
@@ -208,7 +208,7 @@
             // 
             this.CacheCaptureStatusText.BackColor = System.Drawing.Color.Transparent;
             this.CacheCaptureStatusText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CacheCaptureStatusText.Font = new System.Drawing.Font("Arial", 30F);
+            this.CacheCaptureStatusText.Font = new System.Drawing.Font("Segoe UI", 30F);
             this.CacheCaptureStatusText.Location = new System.Drawing.Point(0, 31);
             this.CacheCaptureStatusText.Margin = new System.Windows.Forms.Padding(0);
             this.CacheCaptureStatusText.Name = "CacheCaptureStatusText";
@@ -221,7 +221,7 @@
             // 
             this.label8.BackColor = System.Drawing.Color.Transparent;
             this.label8.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label8.Font = new System.Drawing.Font("Arial", 12F);
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.label8.Location = new System.Drawing.Point(0, 0);
             this.label8.Margin = new System.Windows.Forms.Padding(0);
             this.label8.Name = "label8";
@@ -245,7 +245,7 @@
             // 
             this.DataProcessorStatusText.BackColor = System.Drawing.Color.Transparent;
             this.DataProcessorStatusText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataProcessorStatusText.Font = new System.Drawing.Font("Arial", 30F);
+            this.DataProcessorStatusText.Font = new System.Drawing.Font("Segoe UI", 30F);
             this.DataProcessorStatusText.Location = new System.Drawing.Point(0, 31);
             this.DataProcessorStatusText.Margin = new System.Windows.Forms.Padding(0);
             this.DataProcessorStatusText.Name = "DataProcessorStatusText";
@@ -258,7 +258,7 @@
             // 
             this.label10.BackColor = System.Drawing.Color.Transparent;
             this.label10.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label10.Font = new System.Drawing.Font("Arial", 12F);
+            this.label10.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.label10.Location = new System.Drawing.Point(0, 0);
             this.label10.Margin = new System.Windows.Forms.Padding(0);
             this.label10.Name = "label10";
@@ -282,7 +282,7 @@
             // 
             this.HistoryProcessorStatusText.BackColor = System.Drawing.Color.Transparent;
             this.HistoryProcessorStatusText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.HistoryProcessorStatusText.Font = new System.Drawing.Font("Arial", 30F);
+            this.HistoryProcessorStatusText.Font = new System.Drawing.Font("Segoe UI", 30F);
             this.HistoryProcessorStatusText.Location = new System.Drawing.Point(0, 31);
             this.HistoryProcessorStatusText.Margin = new System.Windows.Forms.Padding(0);
             this.HistoryProcessorStatusText.Name = "HistoryProcessorStatusText";
@@ -295,7 +295,7 @@
             // 
             this.label12.BackColor = System.Drawing.Color.Transparent;
             this.label12.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label12.Font = new System.Drawing.Font("Arial", 12F);
+            this.label12.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.label12.Location = new System.Drawing.Point(0, 0);
             this.label12.Margin = new System.Windows.Forms.Padding(0);
             this.label12.Name = "label12";
@@ -331,7 +331,7 @@
             // 
             this.AlertProcessorStatusText.BackColor = System.Drawing.Color.Transparent;
             this.AlertProcessorStatusText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AlertProcessorStatusText.Font = new System.Drawing.Font("Arial", 30F);
+            this.AlertProcessorStatusText.Font = new System.Drawing.Font("Segoe UI", 30F);
             this.AlertProcessorStatusText.Location = new System.Drawing.Point(0, 31);
             this.AlertProcessorStatusText.Margin = new System.Windows.Forms.Padding(0);
             this.AlertProcessorStatusText.Name = "AlertProcessorStatusText";
@@ -344,7 +344,7 @@
             // 
             this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label5.Font = new System.Drawing.Font("Arial", 12F);
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.label5.Location = new System.Drawing.Point(0, 0);
             this.label5.Margin = new System.Windows.Forms.Padding(0);
             this.label5.Name = "label5";
@@ -368,7 +368,7 @@
             // 
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Font = new System.Drawing.Font("Arial", 30F);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 30F);
             this.label2.Location = new System.Drawing.Point(0, 31);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
@@ -381,7 +381,7 @@
             // 
             this.label7.BackColor = System.Drawing.Color.Transparent;
             this.label7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label7.Font = new System.Drawing.Font("Arial", 12F);
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.label7.Location = new System.Drawing.Point(0, 0);
             this.label7.Margin = new System.Windows.Forms.Padding(0);
             this.label7.Name = "label7";
@@ -405,7 +405,7 @@
             // 
             this.IDAPCaptureStatusText.BackColor = System.Drawing.Color.Transparent;
             this.IDAPCaptureStatusText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.IDAPCaptureStatusText.Font = new System.Drawing.Font("Arial", 30F);
+            this.IDAPCaptureStatusText.Font = new System.Drawing.Font("Segoe UI", 30F);
             this.IDAPCaptureStatusText.Location = new System.Drawing.Point(0, 31);
             this.IDAPCaptureStatusText.Margin = new System.Windows.Forms.Padding(0);
             this.IDAPCaptureStatusText.Name = "IDAPCaptureStatusText";
@@ -418,7 +418,7 @@
             // 
             this.label11.BackColor = System.Drawing.Color.Transparent;
             this.label11.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label11.Font = new System.Drawing.Font("Arial", 12F);
+            this.label11.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.label11.Location = new System.Drawing.Point(0, 0);
             this.label11.Margin = new System.Windows.Forms.Padding(0);
             this.label11.Name = "label11";
@@ -453,7 +453,7 @@
             this.Controls.Add(this.AtomFeedCapturePanel);
             this.Controls.Add(this.FeedCapturePanel);
             this.Controls.Add(this.label1);
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);

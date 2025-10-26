@@ -74,7 +74,7 @@
             this.DeleteArchiveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DeleteArchiveButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.DeleteArchiveButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DeleteArchiveButton.Font = new System.Drawing.Font("Arial", 9F);
+            this.DeleteArchiveButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.DeleteArchiveButton.ForeColor = System.Drawing.Color.White;
             this.DeleteArchiveButton.Location = new System.Drawing.Point(343, 20);
             this.DeleteArchiveButton.Name = "DeleteArchiveButton";
@@ -125,7 +125,7 @@
             this.OpenArchiveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.OpenArchiveButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.OpenArchiveButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.OpenArchiveButton.Font = new System.Drawing.Font("Arial", 9F);
+            this.OpenArchiveButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.OpenArchiveButton.ForeColor = System.Drawing.Color.White;
             this.OpenArchiveButton.Location = new System.Drawing.Point(343, 49);
             this.OpenArchiveButton.Name = "OpenArchiveButton";
@@ -141,7 +141,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
             this.ClientSize = new System.Drawing.Size(484, 121);
             this.Controls.Add(this.PastAlertsGroup);
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);

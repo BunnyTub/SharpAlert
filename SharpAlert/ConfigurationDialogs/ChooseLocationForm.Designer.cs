@@ -91,7 +91,7 @@
             // 
             // TitleText
             // 
-            this.TitleText.Font = new System.Drawing.Font("Arial", 16F);
+            this.TitleText.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.TitleText.Location = new System.Drawing.Point(105, 9);
             this.TitleText.Margin = new System.Windows.Forms.Padding(0);
             this.TitleText.Name = "TitleText";
@@ -193,7 +193,7 @@
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.Font = new System.Drawing.Font("Arial", 9F);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.label1.Location = new System.Drawing.Point(9, 291);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
@@ -227,7 +227,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ListAreaCAPCPOutput.BackColor = System.Drawing.Color.Black;
             this.ListAreaCAPCPOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ListAreaCAPCPOutput.Font = new System.Drawing.Font("Arial", 12F);
+            this.ListAreaCAPCPOutput.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.ListAreaCAPCPOutput.ForeColor = System.Drawing.Color.White;
             this.ListAreaCAPCPOutput.Location = new System.Drawing.Point(6, 76);
             this.ListAreaCAPCPOutput.Multiline = true;
@@ -287,7 +287,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ListAreaSAMEOutput.BackColor = System.Drawing.Color.Black;
             this.ListAreaSAMEOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ListAreaSAMEOutput.Font = new System.Drawing.Font("Arial", 12F);
+            this.ListAreaSAMEOutput.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.ListAreaSAMEOutput.ForeColor = System.Drawing.Color.White;
             this.ListAreaSAMEOutput.Location = new System.Drawing.Point(6, 76);
             this.ListAreaSAMEOutput.Multiline = true;
@@ -302,7 +302,7 @@
             // 
             this.SAMESelectButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.SAMESelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SAMESelectButton.Font = new System.Drawing.Font("Arial", 8F);
+            this.SAMESelectButton.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.SAMESelectButton.Location = new System.Drawing.Point(102, 47);
             this.SAMESelectButton.Name = "SAMESelectButton";
             this.SAMESelectButton.Size = new System.Drawing.Size(48, 23);
@@ -315,7 +315,7 @@
             // 
             this.SAMEClearButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.SAMEClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SAMEClearButton.Font = new System.Drawing.Font("Arial", 8F);
+            this.SAMEClearButton.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.SAMEClearButton.Location = new System.Drawing.Point(6, 47);
             this.SAMEClearButton.Name = "SAMEClearButton";
             this.SAMEClearButton.Size = new System.Drawing.Size(42, 23);
@@ -328,7 +328,7 @@
             // 
             this.SAMEAddButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.SAMEAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SAMEAddButton.Font = new System.Drawing.Font("Arial", 8F);
+            this.SAMEAddButton.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.SAMEAddButton.Location = new System.Drawing.Point(54, 47);
             this.SAMEAddButton.Name = "SAMEAddButton";
             this.SAMEAddButton.Size = new System.Drawing.Size(42, 23);
@@ -384,7 +384,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ListAreaCustomOutput.BackColor = System.Drawing.Color.Black;
             this.ListAreaCustomOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ListAreaCustomOutput.Font = new System.Drawing.Font("Arial", 12F);
+            this.ListAreaCustomOutput.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.ListAreaCustomOutput.ForeColor = System.Drawing.Color.White;
             this.ListAreaCustomOutput.Location = new System.Drawing.Point(6, 103);
             this.ListAreaCustomOutput.Multiline = true;
@@ -447,7 +447,7 @@
             this.Controls.Add(this.TitleText);
             this.Controls.Add(this.LogoBox);
             this.Controls.Add(this.DoneButton);
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.HelpButton = true;

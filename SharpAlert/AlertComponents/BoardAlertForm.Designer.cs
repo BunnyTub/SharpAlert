@@ -63,7 +63,7 @@
             this.AlertPanel.BackColor = System.Drawing.Color.Black;
             this.AlertPanel.Controls.Add(this.AlertText);
             this.AlertPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AlertPanel.Font = new System.Drawing.Font("Segoe UI", 18F);
+            this.AlertPanel.Font = new System.Drawing.Font("Arial", 18F);
             this.AlertPanel.Location = new System.Drawing.Point(0, 0);
             this.AlertPanel.Margin = new System.Windows.Forms.Padding(0);
             this.AlertPanel.Name = "AlertPanel";

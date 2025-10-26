@@ -12,6 +12,9 @@ namespace SharpAlert
 
         private static void Init()
         {
+            Console.WriteLine("[Speaking Manager] Basic Speaking has been deprecated.");
+            BasicSpeakingInit = true;
+
             if (BasicSpeakingInit) return;
             BasicSpeakingInit = true;
 
@@ -36,10 +39,12 @@ namespace SharpAlert
             }
         }
 
-        private static readonly SoundPlayer Speaker = new SoundPlayer();
+        private static readonly SoundPlayer Speaker = new();
 
+#pragma warning disable CS0162 // Unreachable code detected
         private static void PlaySoundFileFromLocalFolder(string SafeFileName, bool DisableSettingsCheck = false)
         {
+            return;
             ThreadDrool.StartAndForget(() =>
             {
                 PlaySoundFileFromLocalFolderNoThreading(SafeFileName, DisableSettingsCheck);
@@ -48,6 +53,7 @@ namespace SharpAlert
         
         private static void PlaySoundFileFromLocalFolderNoThreading(string SafeFileName, bool DisableSettingsCheck = false)
         {
+            return;
             Init();
             Console.WriteLine($"[Speaking Manager] Function called.");
             if (!DisableSettingsCheck) if (!QuickSettings.Instance.EnableBasicSpeaking) return;
@@ -100,6 +106,7 @@ namespace SharpAlert
                 }
             }
         }
+#pragma warning restore CS0162 // Unreachable code detected
 
         // Statement
         public static void EnabledBasicSpeaking()

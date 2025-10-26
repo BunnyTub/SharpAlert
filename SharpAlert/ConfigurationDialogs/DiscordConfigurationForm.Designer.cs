@@ -102,7 +102,7 @@
             // BusyLockText
             // 
             this.BusyLockText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BusyLockText.Font = new System.Drawing.Font("Arial", 12F);
+            this.BusyLockText.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.BusyLockText.Location = new System.Drawing.Point(0, 0);
             this.BusyLockText.Name = "BusyLockText";
             this.BusyLockText.Size = new System.Drawing.Size(784, 411);
@@ -747,7 +747,7 @@
             this.ClientSize = new System.Drawing.Size(784, 411);
             this.Controls.Add(this.ConfigurationPanel);
             this.Controls.Add(this.BusyLockText);
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

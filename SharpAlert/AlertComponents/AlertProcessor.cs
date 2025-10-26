@@ -107,7 +107,7 @@ namespace SharpAlert.AlertComponents
                 {
                     if (relayItem.Name.ToLowerInvariant().Contains("keepalive"))
                     {
-                        info = new AlertInfo { AlertDiscardReason = "The identifier contains \"KEEPALIVE\", so this alert has been discarded." };
+                        info = new AlertInfo { AlertDiscardReason = "The identifier contains \"KEEPALIVE\", so the alert has been discarded." };
                     }
                 }
 
@@ -131,6 +131,7 @@ namespace SharpAlert.AlertComponents
         {
             public string AlertDiscardReason { get; set; } = string.Empty;
             public string AlertSource { get; set; } = string.Empty;
+            public string AlertSender { get; set; } = string.Empty;
             public string AlertID { get; set; } = string.Empty;
             public string AlertSentDate { get; set; } = string.Empty;
             public string AlertBeginDate { get; set; } = string.Empty;
@@ -254,6 +255,62 @@ namespace SharpAlert.AlertComponents
                     string EventTypeFull = string.Empty;
                     string PrimaryURL = string.Empty;
                     string Source = string.Empty;
+                    string SenderName = string.Empty;
+
+                    try
+                    {
+                        //MatchCollection SenderNames = SenderNameRegex.Matches(InfoData);
+                        //string UnfilteredSenderNames = string.Empty;
+
+                        //foreach (Match match in SenderNames)
+                        //{
+                        //    UnfilteredSenderNames += $"{match.Groups[1].Value}\x20";
+                        //}
+
+                        SenderName = SenderNameRegex.MatchOrDefault(alert).Replace(",", ",\x20");
+
+                        if (string.IsNullOrWhiteSpace(SenderName))
+                        {
+                            SenderName = AuthorNameRegex.MatchOrDefault(alert).Replace(",", ",\x20");
+                        }
+
+                        if (string.IsNullOrWhiteSpace(SenderName))
+                        {
+                            SenderName = "Governing Entity (Unknown Sender)";
+                        }
+                        else
+                        {
+                            // only split when needed, such as when there might be multiple senders?
+                            // why can't those agencies just use separate sender tags? why must we do this?
+
+                            if (SenderName.Contains(','))
+                            {
+                                string[] senders = SenderName.Split(',');
+                                List<string> uniqueSenders = [];
+
+                                foreach (string sender in senders)
+                                {
+                                    string trimmed = sender.Trim();
+                                    bool alreadyExists = uniqueSenders.Exists(s =>
+                                        s.Equals(trimmed, StringComparison.InvariantCultureIgnoreCase));
+
+                                    if (!alreadyExists)
+                                    {
+                                        uniqueSenders.Add(trimmed);
+                                    }
+                                }
+
+                                SenderName = string.Join("; ", uniqueSenders);
+                            }
+
+                            // finally fixed that stupid name duplication bug. Thank you Stack Overflow.
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        SenderName = "Governing Entity (Unknown Sender)";
+                    }
+
 
                     foreach (Match infoMatch in infoMatches)
                     {
@@ -645,6 +702,7 @@ namespace SharpAlert.AlertComponents
                     {
                         // do something about alert IDs
                         AlertSource = Source,
+                        AlertSender = SenderName,
                         AlertID = relayItem.Name,
                         AlertSentDate = Sent,
                         AlertBeginDate = Effective,

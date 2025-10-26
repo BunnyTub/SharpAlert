@@ -36,13 +36,13 @@
             panel1 = new System.Windows.Forms.Panel();
             BrandText = new System.Windows.Forms.Label();
             LogoBox = new System.Windows.Forms.PictureBox();
-            panel2 = new System.Windows.Forms.Panel();
+            SpacerPanel = new System.Windows.Forms.Panel();
             DashboardPanel = new System.Windows.Forms.Panel();
             UpdateGeneralInfoTextTimer = new System.Windows.Forms.Timer(components);
             UpdateExpiryTimer = new System.Windows.Forms.Timer(components);
             ActiveAlertsText = new System.Windows.Forms.Label();
             SpacerLinePanel1 = new System.Windows.Forms.Panel();
-            panel3 = new System.Windows.Forms.Panel();
+            SubtitlePanel = new System.Windows.Forms.Panel();
             AutoScrollBox = new System.Windows.Forms.CheckBox();
             CycleBetweenInfoAndClockTimer = new System.Windows.Forms.Timer(components);
             DetectAlertActivity = new System.Windows.Forms.Timer(components);
@@ -50,7 +50,7 @@
             TitlePanel.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
-            panel3.SuspendLayout();
+            SubtitlePanel.SuspendLayout();
             SuspendLayout();
             // 
             // TitlePanel
@@ -124,22 +124,22 @@
             ToolTipInformation.SetToolTip(LogoBox, "Double-click here to open a version of this dashboard for expired alerts only.\r\nThe expired alerts dashboard will display");
             LogoBox.DoubleClick += LogoBox_DoubleClick;
             // 
-            // panel2
+            // SpacerPanel
             // 
-            panel2.BackColor = System.Drawing.Color.LightCoral;
-            panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            panel2.Location = new System.Drawing.Point(0, 49);
-            panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(800, 8);
-            panel2.TabIndex = 1;
+            SpacerPanel.BackColor = System.Drawing.Color.LightCoral;
+            SpacerPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            SpacerPanel.Location = new System.Drawing.Point(0, 49);
+            SpacerPanel.Name = "SpacerPanel";
+            SpacerPanel.Size = new System.Drawing.Size(800, 4);
+            SpacerPanel.TabIndex = 1;
             // 
             // DashboardPanel
             // 
             DashboardPanel.BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             DashboardPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            DashboardPanel.Location = new System.Drawing.Point(0, 107);
+            DashboardPanel.Location = new System.Drawing.Point(0, 103);
             DashboardPanel.Name = "DashboardPanel";
-            DashboardPanel.Size = new System.Drawing.Size(800, 343);
+            DashboardPanel.Size = new System.Drawing.Size(800, 347);
             DashboardPanel.TabIndex = 2;
             // 
             // UpdateGeneralInfoTextTimer
@@ -177,28 +177,29 @@
             SpacerLinePanel1.Size = new System.Drawing.Size(776, 2);
             SpacerLinePanel1.TabIndex = 4;
             // 
-            // panel3
+            // SubtitlePanel
             // 
-            panel3.BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
-            panel3.Controls.Add(AutoScrollBox);
-            panel3.Controls.Add(SpacerLinePanel1);
-            panel3.Controls.Add(ActiveAlertsText);
-            panel3.Dock = System.Windows.Forms.DockStyle.Top;
-            panel3.Location = new System.Drawing.Point(0, 57);
-            panel3.Name = "panel3";
-            panel3.Size = new System.Drawing.Size(800, 50);
-            panel3.TabIndex = 5;
+            SubtitlePanel.BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
+            SubtitlePanel.Controls.Add(AutoScrollBox);
+            SubtitlePanel.Controls.Add(SpacerLinePanel1);
+            SubtitlePanel.Controls.Add(ActiveAlertsText);
+            SubtitlePanel.Dock = System.Windows.Forms.DockStyle.Top;
+            SubtitlePanel.Location = new System.Drawing.Point(0, 53);
+            SubtitlePanel.Name = "SubtitlePanel";
+            SubtitlePanel.Size = new System.Drawing.Size(800, 50);
+            SubtitlePanel.TabIndex = 5;
             // 
             // AutoScrollBox
             // 
             AutoScrollBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             AutoScrollBox.AutoSize = true;
-            AutoScrollBox.Location = new System.Drawing.Point(666, 20);
+            AutoScrollBox.Location = new System.Drawing.Point(678, 0);
             AutoScrollBox.Name = "AutoScrollBox";
             AutoScrollBox.Size = new System.Drawing.Size(122, 19);
             AutoScrollBox.TabIndex = 0;
             AutoScrollBox.Text = "Enable Auto Scroll";
             AutoScrollBox.UseVisualStyleBackColor = true;
+            AutoScrollBox.Visible = false;
             // 
             // CycleBetweenInfoAndClockTimer
             // 
@@ -228,8 +229,8 @@
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(800, 450);
             Controls.Add(DashboardPanel);
-            Controls.Add(panel3);
-            Controls.Add(panel2);
+            Controls.Add(SubtitlePanel);
+            Controls.Add(SpacerPanel);
             Controls.Add(TitlePanel);
             DoubleBuffered = true;
             ForeColor = System.Drawing.Color.White;
@@ -243,8 +244,8 @@
             TitlePanel.ResumeLayout(false);
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)LogoBox).EndInit();
-            panel3.ResumeLayout(false);
-            panel3.PerformLayout();
+            SubtitlePanel.ResumeLayout(false);
+            SubtitlePanel.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -252,13 +253,13 @@
 
         private System.Windows.Forms.Panel TitlePanel;
         private System.Windows.Forms.PictureBox LogoBox;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel SpacerPanel;
         private System.Windows.Forms.Panel DashboardPanel;
         private System.Windows.Forms.Timer UpdateGeneralInfoTextTimer;
         private System.Windows.Forms.Timer UpdateExpiryTimer;
         private System.Windows.Forms.Label ActiveAlertsText;
         private System.Windows.Forms.Panel SpacerLinePanel1;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel SubtitlePanel;
         private System.Windows.Forms.CheckBox AutoScrollBox;
         private System.Windows.Forms.Timer CycleBetweenInfoAndClockTimer;
         private System.Windows.Forms.Label PrimaryGeneralInfoText;

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using Newtonsoft.Json;
 
 namespace SharpAlert.ProgramWorker
 {
@@ -53,6 +53,10 @@ namespace SharpAlert.ProgramWorker
         // Updating
         public bool AskedForAutomaticUpdates { get; set; } = false;
         public bool AllowPerformingUpdates { get; set; } = false;
+        // Discord Rich Presence
+        public bool AllowDiscordRichPresence { get; set; } = false;
+        // Dashboard
+        public bool OpenDashboardAutomatically { get; set; } = false;
         // System
         public bool NoSystemSleep { get; set; } = false;
         // Migration
@@ -108,7 +112,8 @@ namespace SharpAlert.ProgramWorker
         //public bool showExpiryMessages { get; set; } = false;
         public bool alertNoGUI { get; set; } = false;
         // "alertNoRelay" disables USB relays. It doesn't prevent relaying.
-        public bool alertNoRelay { get; set; } = true;
+        // This has been set to false as of v14 to prevent unintended hardware issues. Oops! I did it again!
+        public bool alertNoRelay { get; set; } = false;
         public bool DisableDialogs { get; set; } = false;
         public bool DisableAlertProcessing { get; set; } = false;
         public bool PauseDataProcessing { get; set; } = false;

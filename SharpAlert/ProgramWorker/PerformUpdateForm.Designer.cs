@@ -28,106 +28,106 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PerformUpdateForm));
-            this.TitleText = new System.Windows.Forms.Label();
-            this.DescriptionText = new System.Windows.Forms.Label();
-            this.CheckTimeUntilAutoInstall = new System.Windows.Forms.Timer(this.components);
-            this.InstallButton = new System.Windows.Forms.Button();
-            this.HideThisMessageButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.SuspendLayout();
+            TitleText = new System.Windows.Forms.Label();
+            DescriptionText = new System.Windows.Forms.Label();
+            CheckTimeUntilAutoInstall = new System.Windows.Forms.Timer(components);
+            InstallButton = new System.Windows.Forms.Button();
+            HideThisMessageButton = new System.Windows.Forms.Button();
+            label1 = new System.Windows.Forms.Label();
+            SuspendLayout();
             // 
             // TitleText
             // 
-            this.TitleText.Font = new System.Drawing.Font("Arial", 16F);
-            this.TitleText.Location = new System.Drawing.Point(9, 9);
-            this.TitleText.Margin = new System.Windows.Forms.Padding(0);
-            this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(400, 30);
-            this.TitleText.TabIndex = 23;
-            this.TitleText.Text = "SharpAlert found updates";
+            TitleText.Font = new System.Drawing.Font("Segoe UI", 16F);
+            TitleText.Location = new System.Drawing.Point(9, 9);
+            TitleText.Margin = new System.Windows.Forms.Padding(0);
+            TitleText.Name = "TitleText";
+            TitleText.Size = new System.Drawing.Size(400, 30);
+            TitleText.TabIndex = 23;
+            TitleText.Text = "There's an update available!";
             // 
             // DescriptionText
             // 
-            this.DescriptionText.Font = new System.Drawing.Font("Arial", 12F);
-            this.DescriptionText.Location = new System.Drawing.Point(12, 39);
-            this.DescriptionText.Margin = new System.Windows.Forms.Padding(0);
-            this.DescriptionText.Name = "DescriptionText";
-            this.DescriptionText.Size = new System.Drawing.Size(400, 48);
-            this.DescriptionText.TabIndex = 27;
-            this.DescriptionText.Text = "SharpAlert will install updates automatically in:\r\n...";
+            DescriptionText.Font = new System.Drawing.Font("Segoe UI", 12F);
+            DescriptionText.Location = new System.Drawing.Point(12, 39);
+            DescriptionText.Margin = new System.Windows.Forms.Padding(0);
+            DescriptionText.Name = "DescriptionText";
+            DescriptionText.Size = new System.Drawing.Size(400, 48);
+            DescriptionText.TabIndex = 27;
+            DescriptionText.Text = "SharpAlert will install updates automatically in:\r\n...";
             // 
             // CheckTimeUntilAutoInstall
             // 
-            this.CheckTimeUntilAutoInstall.Enabled = true;
-            this.CheckTimeUntilAutoInstall.Interval = 300;
-            this.CheckTimeUntilAutoInstall.Tick += new System.EventHandler(this.CheckTimeUntilAutoInstall_Tick);
+            CheckTimeUntilAutoInstall.Enabled = true;
+            CheckTimeUntilAutoInstall.Interval = 300;
+            CheckTimeUntilAutoInstall.Tick += CheckTimeUntilAutoInstall_Tick;
             // 
             // InstallButton
             // 
-            this.InstallButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.InstallButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.InstallButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.InstallButton.Location = new System.Drawing.Point(343, 140);
-            this.InstallButton.Margin = new System.Windows.Forms.Padding(0);
-            this.InstallButton.Name = "InstallButton";
-            this.InstallButton.Size = new System.Drawing.Size(72, 23);
-            this.InstallButton.TabIndex = 28;
-            this.InstallButton.Text = "Install";
-            this.InstallButton.UseVisualStyleBackColor = false;
-            this.InstallButton.Click += new System.EventHandler(this.InstallButton_Click);
+            InstallButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            InstallButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            InstallButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            InstallButton.Location = new System.Drawing.Point(343, 140);
+            InstallButton.Margin = new System.Windows.Forms.Padding(0);
+            InstallButton.Name = "InstallButton";
+            InstallButton.Size = new System.Drawing.Size(72, 23);
+            InstallButton.TabIndex = 28;
+            InstallButton.Text = "Install";
+            InstallButton.UseVisualStyleBackColor = false;
+            InstallButton.Click += InstallButton_Click;
             // 
             // HideThisMessageButton
             // 
-            this.HideThisMessageButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.HideThisMessageButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.HideThisMessageButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.HideThisMessageButton.Location = new System.Drawing.Point(9, 140);
-            this.HideThisMessageButton.Margin = new System.Windows.Forms.Padding(0);
-            this.HideThisMessageButton.Name = "HideThisMessageButton";
-            this.HideThisMessageButton.Size = new System.Drawing.Size(173, 23);
-            this.HideThisMessageButton.TabIndex = 29;
-            this.HideThisMessageButton.Text = "Hide this message";
-            this.HideThisMessageButton.UseVisualStyleBackColor = false;
-            this.HideThisMessageButton.Click += new System.EventHandler(this.RemindMeLaterButton_Click);
+            HideThisMessageButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            HideThisMessageButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            HideThisMessageButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            HideThisMessageButton.Location = new System.Drawing.Point(9, 140);
+            HideThisMessageButton.Margin = new System.Windows.Forms.Padding(0);
+            HideThisMessageButton.Name = "HideThisMessageButton";
+            HideThisMessageButton.Size = new System.Drawing.Size(173, 23);
+            HideThisMessageButton.TabIndex = 29;
+            HideThisMessageButton.Text = "Hide this message";
+            HideThisMessageButton.UseVisualStyleBackColor = false;
+            HideThisMessageButton.Click += RemindMeLaterButton_Click;
             // 
             // label1
             // 
-            this.label1.Font = new System.Drawing.Font("Arial", 9F);
-            this.label1.Location = new System.Drawing.Point(9, 87);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(406, 50);
-            this.label1.TabIndex = 30;
-            this.label1.Text = "You\'ll be prompted for\r\nadministrative privileges.";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            label1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            label1.Location = new System.Drawing.Point(9, 87);
+            label1.Margin = new System.Windows.Forms.Padding(0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(406, 50);
+            label1.TabIndex = 30;
+            label1.Text = "You'll be prompted for\r\nadministrative privileges.";
+            label1.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
             // PerformUpdateForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(424, 172);
-            this.ControlBox = false;
-            this.Controls.Add(this.HideThisMessageButton);
-            this.Controls.Add(this.InstallButton);
-            this.Controls.Add(this.DescriptionText);
-            this.Controls.Add(this.TitleText);
-            this.Controls.Add(this.label1);
-            this.Font = new System.Drawing.Font("Arial", 9F);
-            this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "PerformUpdateForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SharpAlert - Updates Found";
-            this.TopMost = true;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.UpdateForm_FormClosing);
-            this.Load += new System.EventHandler(this.UpdateForm_Load);
-            this.Shown += new System.EventHandler(this.SetupForm_Shown);
-            this.ResumeLayout(false);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
+            ClientSize = new System.Drawing.Size(424, 172);
+            ControlBox = false;
+            Controls.Add(HideThisMessageButton);
+            Controls.Add(InstallButton);
+            Controls.Add(DescriptionText);
+            Controls.Add(TitleText);
+            Controls.Add(label1);
+            Font = new System.Drawing.Font("Segoe UI", 9F);
+            ForeColor = System.Drawing.Color.White;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "PerformUpdateForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "SharpAlert - Updates Found";
+            TopMost = true;
+            FormClosing += UpdateForm_FormClosing;
+            Load += UpdateForm_Load;
+            Shown += SetupForm_Shown;
+            ResumeLayout(false);
 
         }
 

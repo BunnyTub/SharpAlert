@@ -65,7 +65,7 @@
             // 
             // TitleText
             // 
-            this.TitleText.Font = new System.Drawing.Font("Arial", 16F);
+            this.TitleText.Font = new System.Drawing.Font("Segoe UI", 16F);
             this.TitleText.Location = new System.Drawing.Point(105, 9);
             this.TitleText.Margin = new System.Windows.Forms.Padding(0);
             this.TitleText.Name = "TitleText";
@@ -86,7 +86,7 @@
             // 
             // label3
             // 
-            this.label3.Font = new System.Drawing.Font("Arial", 12F);
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.label3.Location = new System.Drawing.Point(108, 39);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
@@ -105,7 +105,7 @@
             this.Controls.Add(this.TitleText);
             this.Controls.Add(this.LogoBox);
             this.Controls.Add(this.DoneButton);
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

@@ -76,12 +76,12 @@
             LocationsButton = new System.Windows.Forms.Button();
             LanguageButton = new System.Windows.Forms.Button();
             StationButton = new System.Windows.Forms.Button();
-            groupBox6 = new System.Windows.Forms.GroupBox();
+            MiscGroup = new System.Windows.Forms.GroupBox();
             BypassAlertFilteringButton = new System.Windows.Forms.Button();
             label5 = new System.Windows.Forms.Label();
             alertNoRelayBox = new System.Windows.Forms.CheckBox();
             storedMaxSizeInput = new System.Windows.Forms.NumericUpDown();
-            groupBox3 = new System.Windows.Forms.GroupBox();
+            CategoryGroup = new System.Windows.Forms.GroupBox();
             CategoryInfoButton = new System.Windows.Forms.Button();
             categoryOtherBox = new System.Windows.Forms.CheckBox();
             categoryCBRNEBox = new System.Windows.Forms.CheckBox();
@@ -99,8 +99,13 @@
             ToolTipInformation = new System.Windows.Forms.ToolTip(components);
             BypassFilteringFlasher = new System.Windows.Forms.Timer(components);
             ArchiveSettingsButton = new System.Windows.Forms.Button();
-            groupBox7 = new System.Windows.Forms.GroupBox();
+            GeneralGroup = new System.Windows.Forms.GroupBox();
             RainbowColoring = new System.Windows.Forms.Timer(components);
+            SuperSecretSettingsGroup = new System.Windows.Forms.GroupBox();
+            FloodQueueButton = new System.Windows.Forms.Button();
+            SoftUpdateButton = new System.Windows.Forms.Button();
+            ForceUpdateButton = new System.Windows.Forms.Button();
+            SuperSecretEnabler = new System.Windows.Forms.Timer(components);
             AlertFunctionalityGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)AlertDeadIntervalInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)AlertCheckIntervalInput).BeginInit();
@@ -111,10 +116,11 @@
             groupBox1.SuspendLayout();
             LocationsAndEventsGroup.SuspendLayout();
             groupBox9.SuspendLayout();
-            groupBox6.SuspendLayout();
+            MiscGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)storedMaxSizeInput).BeginInit();
-            groupBox3.SuspendLayout();
-            groupBox7.SuspendLayout();
+            CategoryGroup.SuspendLayout();
+            GeneralGroup.SuspendLayout();
+            SuperSecretSettingsGroup.SuspendLayout();
             SuspendLayout();
             // 
             // AlertFunctionalityGroup
@@ -132,7 +138,7 @@
             AlertFunctionalityGroup.ForeColor = System.Drawing.Color.White;
             AlertFunctionalityGroup.Location = new System.Drawing.Point(12, 12);
             AlertFunctionalityGroup.Name = "AlertFunctionalityGroup";
-            AlertFunctionalityGroup.Size = new System.Drawing.Size(342, 353);
+            AlertFunctionalityGroup.Size = new System.Drawing.Size(342, 302);
             AlertFunctionalityGroup.TabIndex = 4;
             AlertFunctionalityGroup.TabStop = false;
             AlertFunctionalityGroup.Text = "Alert Filters";
@@ -140,19 +146,19 @@
             // RainbowText
             // 
             RainbowText.Cursor = System.Windows.Forms.Cursors.Hand;
-            RainbowText.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            RainbowText.Font = new System.Drawing.Font("Segoe UI", 9F);
             RainbowText.ForeColor = System.Drawing.Color.Red;
-            RainbowText.Location = new System.Drawing.Point(160, 198);
+            RainbowText.Location = new System.Drawing.Point(160, 251);
             RainbowText.Name = "RainbowText";
-            RainbowText.Size = new System.Drawing.Size(176, 98);
+            RainbowText.Size = new System.Drawing.Size(176, 45);
             RainbowText.TabIndex = 24;
-            RainbowText.Text = "There's nothing here yet.\r\nFeel free to ask us about adding new features or changes into the program!";
+            RainbowText.Text = "Tell us about your requests on features by clicking here to go to our website!";
             RainbowText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             RainbowText.Click += RainbowText_Click;
             // 
             // label7
             // 
-            label7.Location = new System.Drawing.Point(160, 299);
+            label7.Location = new System.Drawing.Point(165, 198);
             label7.Name = "label7";
             label7.Size = new System.Drawing.Size(84, 21);
             label7.TabIndex = 23;
@@ -162,7 +168,7 @@
             // 
             // label4
             // 
-            label4.Location = new System.Drawing.Point(160, 326);
+            label4.Location = new System.Drawing.Point(165, 225);
             label4.Name = "label4";
             label4.Size = new System.Drawing.Size(84, 21);
             label4.TabIndex = 10;
@@ -175,11 +181,11 @@
             AlertDeadIntervalInput.BackColor = System.Drawing.Color.Black;
             AlertDeadIntervalInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             AlertDeadIntervalInput.ForeColor = System.Drawing.Color.White;
-            AlertDeadIntervalInput.Location = new System.Drawing.Point(250, 326);
+            AlertDeadIntervalInput.Location = new System.Drawing.Point(255, 225);
             AlertDeadIntervalInput.Maximum = new decimal(new int[] { 15, 0, 0, 0 });
             AlertDeadIntervalInput.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             AlertDeadIntervalInput.Name = "AlertDeadIntervalInput";
-            AlertDeadIntervalInput.Size = new System.Drawing.Size(86, 21);
+            AlertDeadIntervalInput.Size = new System.Drawing.Size(81, 23);
             AlertDeadIntervalInput.TabIndex = 21;
             ToolTipInformation.SetToolTip(AlertDeadIntervalInput, "The amount of seconds to pause until the next alert can be shown.\r\nThis setting is ignored for earthquake alerts from SASMEX.");
             AlertDeadIntervalInput.Value = new decimal(new int[] { 1, 0, 0, 0 });
@@ -190,11 +196,11 @@
             AlertCheckIntervalInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             AlertCheckIntervalInput.ForeColor = System.Drawing.Color.White;
             AlertCheckIntervalInput.Increment = new decimal(new int[] { 5, 0, 0, 0 });
-            AlertCheckIntervalInput.Location = new System.Drawing.Point(250, 299);
+            AlertCheckIntervalInput.Location = new System.Drawing.Point(255, 198);
             AlertCheckIntervalInput.Maximum = new decimal(new int[] { 300, 0, 0, 0 });
             AlertCheckIntervalInput.Minimum = new decimal(new int[] { 5, 0, 0, 0 });
             AlertCheckIntervalInput.Name = "AlertCheckIntervalInput";
-            AlertCheckIntervalInput.Size = new System.Drawing.Size(86, 21);
+            AlertCheckIntervalInput.Size = new System.Drawing.Size(81, 23);
             AlertCheckIntervalInput.TabIndex = 20;
             ToolTipInformation.SetToolTip(AlertCheckIntervalInput, "The amount of seconds until the next server check.\r\n\r\nThis option only affects servers that can be polled from.\r\nTCP servers send data at their own specified intervals, and cannot be changed.");
             AlertCheckIntervalInput.Value = new decimal(new int[] { 30, 0, 0, 0 });
@@ -207,7 +213,7 @@
             groupBox11.ForeColor = System.Drawing.Color.White;
             groupBox11.Location = new System.Drawing.Point(6, 198);
             groupBox11.Name = "groupBox11";
-            groupBox11.Size = new System.Drawing.Size(148, 149);
+            groupBox11.Size = new System.Drawing.Size(148, 98);
             groupBox11.TabIndex = 6;
             groupBox11.TabStop = false;
             groupBox11.Text = "Message Extras";
@@ -217,7 +223,7 @@
             IgnoreKeepAliveBox.AutoSize = true;
             IgnoreKeepAliveBox.Location = new System.Drawing.Point(6, 70);
             IgnoreKeepAliveBox.Name = "IgnoreKeepAliveBox";
-            IgnoreKeepAliveBox.Size = new System.Drawing.Size(119, 19);
+            IgnoreKeepAliveBox.Size = new System.Drawing.Size(115, 19);
             IgnoreKeepAliveBox.TabIndex = 12;
             IgnoreKeepAliveBox.Text = "Ignore keep alive";
             ToolTipInformation.SetToolTip(IgnoreKeepAliveBox, "Ignores any CAP alerts with \"keepalive\" (one-word, case-insensitive) in the identifier.");
@@ -239,7 +245,7 @@
             weaOnlyBox.AutoSize = true;
             weaOnlyBox.Location = new System.Drawing.Point(6, 20);
             weaOnlyBox.Name = "weaOnlyBox";
-            weaOnlyBox.Size = new System.Drawing.Size(121, 19);
+            weaOnlyBox.Size = new System.Drawing.Size(120, 19);
             weaOnlyBox.TabIndex = 9;
             weaOnlyBox.Text = "Mobile alerts only";
             ToolTipInformation.SetToolTip(weaOnlyBox, "Filter out all alerts except mobile alerts.\r\nThis may cause issues with alerts from other sources than IPAWS and NAADS.");
@@ -265,7 +271,7 @@
             urgencyUnknownBox.AutoSize = true;
             urgencyUnknownBox.Location = new System.Drawing.Point(6, 70);
             urgencyUnknownBox.Name = "urgencyUnknownBox";
-            urgencyUnknownBox.Size = new System.Drawing.Size(78, 19);
+            urgencyUnknownBox.Size = new System.Drawing.Size(77, 19);
             urgencyUnknownBox.TabIndex = 19;
             urgencyUnknownBox.Text = "Unknown";
             ToolTipInformation.SetToolTip(urgencyUnknownBox, "Allow messages with the following urgency.");
@@ -276,7 +282,7 @@
             urgencyPastBox.AutoSize = true;
             urgencyPastBox.Location = new System.Drawing.Point(97, 45);
             urgencyPastBox.Name = "urgencyPastBox";
-            urgencyPastBox.Size = new System.Drawing.Size(51, 19);
+            urgencyPastBox.Size = new System.Drawing.Size(48, 19);
             urgencyPastBox.TabIndex = 18;
             urgencyPastBox.Text = "Past";
             ToolTipInformation.SetToolTip(urgencyPastBox, "Allow messages with the following urgency.");
@@ -287,7 +293,7 @@
             urgencyFutureBox.AutoSize = true;
             urgencyFutureBox.Location = new System.Drawing.Point(6, 45);
             urgencyFutureBox.Name = "urgencyFutureBox";
-            urgencyFutureBox.Size = new System.Drawing.Size(61, 19);
+            urgencyFutureBox.Size = new System.Drawing.Size(60, 19);
             urgencyFutureBox.TabIndex = 17;
             urgencyFutureBox.Text = "Future";
             ToolTipInformation.SetToolTip(urgencyFutureBox, "Allow messages with the following urgency.");
@@ -298,7 +304,7 @@
             urgencyExpectedBox.AutoSize = true;
             urgencyExpectedBox.Location = new System.Drawing.Point(97, 20);
             urgencyExpectedBox.Name = "urgencyExpectedBox";
-            urgencyExpectedBox.Size = new System.Drawing.Size(76, 19);
+            urgencyExpectedBox.Size = new System.Drawing.Size(74, 19);
             urgencyExpectedBox.TabIndex = 16;
             urgencyExpectedBox.Text = "Expected";
             ToolTipInformation.SetToolTip(urgencyExpectedBox, "Allow messages with the following urgency.");
@@ -309,7 +315,7 @@
             urgencyImmediateBox.AutoSize = true;
             urgencyImmediateBox.Location = new System.Drawing.Point(6, 20);
             urgencyImmediateBox.Name = "urgencyImmediateBox";
-            urgencyImmediateBox.Size = new System.Drawing.Size(85, 19);
+            urgencyImmediateBox.Size = new System.Drawing.Size(83, 19);
             urgencyImmediateBox.TabIndex = 15;
             urgencyImmediateBox.Text = "Immediate";
             ToolTipInformation.SetToolTip(urgencyImmediateBox, "Allow messages with the following urgency.");
@@ -335,7 +341,7 @@
             severityUnknownBox.AutoSize = true;
             severityUnknownBox.Location = new System.Drawing.Point(6, 70);
             severityUnknownBox.Name = "severityUnknownBox";
-            severityUnknownBox.Size = new System.Drawing.Size(78, 19);
+            severityUnknownBox.Size = new System.Drawing.Size(77, 19);
             severityUnknownBox.TabIndex = 8;
             severityUnknownBox.Text = "Unknown";
             ToolTipInformation.SetToolTip(severityUnknownBox, "Allow messages with this severity.");
@@ -346,7 +352,7 @@
             severityMinorBox.AutoSize = true;
             severityMinorBox.Location = new System.Drawing.Point(86, 45);
             severityMinorBox.Name = "severityMinorBox";
-            severityMinorBox.Size = new System.Drawing.Size(56, 19);
+            severityMinorBox.Size = new System.Drawing.Size(58, 19);
             severityMinorBox.TabIndex = 7;
             severityMinorBox.Text = "Minor";
             ToolTipInformation.SetToolTip(severityMinorBox, "Allow messages with this severity.");
@@ -368,7 +374,7 @@
             severitySevereBox.AutoSize = true;
             severitySevereBox.Location = new System.Drawing.Point(78, 20);
             severitySevereBox.Name = "severitySevereBox";
-            severitySevereBox.Size = new System.Drawing.Size(64, 19);
+            severitySevereBox.Size = new System.Drawing.Size(60, 19);
             severitySevereBox.TabIndex = 5;
             severitySevereBox.Text = "Severe";
             ToolTipInformation.SetToolTip(severitySevereBox, "Allow messages with this severity.");
@@ -379,7 +385,7 @@
             severityExtremeBox.AutoSize = true;
             severityExtremeBox.Location = new System.Drawing.Point(6, 20);
             severityExtremeBox.Name = "severityExtremeBox";
-            severityExtremeBox.Size = new System.Drawing.Size(71, 19);
+            severityExtremeBox.Size = new System.Drawing.Size(69, 19);
             severityExtremeBox.TabIndex = 4;
             severityExtremeBox.Text = "Extreme";
             ToolTipInformation.SetToolTip(severityExtremeBox, "Allow messages with this severity.");
@@ -404,7 +410,7 @@
             messageTypeTestBox.AutoSize = true;
             messageTypeTestBox.Location = new System.Drawing.Point(79, 45);
             messageTypeTestBox.Name = "messageTypeTestBox";
-            messageTypeTestBox.Size = new System.Drawing.Size(49, 19);
+            messageTypeTestBox.Size = new System.Drawing.Size(46, 19);
             messageTypeTestBox.TabIndex = 14;
             messageTypeTestBox.Text = "Test";
             ToolTipInformation.SetToolTip(messageTypeTestBox, "Allow messages of the following type.\r\nTake note! This differs from the message status variant of the same name, and is primarily used in CAP-CP (NAADS) messages.");
@@ -415,7 +421,7 @@
             messageTypeCancelBox.AutoSize = true;
             messageTypeCancelBox.Location = new System.Drawing.Point(79, 20);
             messageTypeCancelBox.Name = "messageTypeCancelBox";
-            messageTypeCancelBox.Size = new System.Drawing.Size(65, 19);
+            messageTypeCancelBox.Size = new System.Drawing.Size(62, 19);
             messageTypeCancelBox.TabIndex = 13;
             messageTypeCancelBox.Text = "Cancel";
             ToolTipInformation.SetToolTip(messageTypeCancelBox, "Allow messages of the following type.");
@@ -426,7 +432,7 @@
             messageTypeUpdateBox.AutoSize = true;
             messageTypeUpdateBox.Location = new System.Drawing.Point(6, 45);
             messageTypeUpdateBox.Name = "messageTypeUpdateBox";
-            messageTypeUpdateBox.Size = new System.Drawing.Size(66, 19);
+            messageTypeUpdateBox.Size = new System.Drawing.Size(64, 19);
             messageTypeUpdateBox.TabIndex = 12;
             messageTypeUpdateBox.Text = "Update";
             ToolTipInformation.SetToolTip(messageTypeUpdateBox, "Allow messages of the following type.");
@@ -437,7 +443,7 @@
             messageTypeAlertBox.AutoSize = true;
             messageTypeAlertBox.Location = new System.Drawing.Point(6, 20);
             messageTypeAlertBox.Name = "messageTypeAlertBox";
-            messageTypeAlertBox.Size = new System.Drawing.Size(50, 19);
+            messageTypeAlertBox.Size = new System.Drawing.Size(51, 19);
             messageTypeAlertBox.TabIndex = 11;
             messageTypeAlertBox.Text = "Alert";
             ToolTipInformation.SetToolTip(messageTypeAlertBox, "Allow messages of the following type.");
@@ -461,7 +467,7 @@
             statusExerciseBox.AutoSize = true;
             statusExerciseBox.Location = new System.Drawing.Point(69, 20);
             statusExerciseBox.Name = "statusExerciseBox";
-            statusExerciseBox.Size = new System.Drawing.Size(73, 19);
+            statusExerciseBox.Size = new System.Drawing.Size(68, 19);
             statusExerciseBox.TabIndex = 2;
             statusExerciseBox.Text = "Exercise";
             ToolTipInformation.SetToolTip(statusExerciseBox, "Allow messages with this status.");
@@ -472,7 +478,7 @@
             statusActualBox.AutoSize = true;
             statusActualBox.Location = new System.Drawing.Point(6, 20);
             statusActualBox.Name = "statusActualBox";
-            statusActualBox.Size = new System.Drawing.Size(59, 19);
+            statusActualBox.Size = new System.Drawing.Size(60, 19);
             statusActualBox.TabIndex = 0;
             statusActualBox.Text = "Actual";
             ToolTipInformation.SetToolTip(statusActualBox, "Allow messages with this status.");
@@ -483,7 +489,7 @@
             statusTestBox.AutoSize = true;
             statusTestBox.Location = new System.Drawing.Point(6, 45);
             statusTestBox.Name = "statusTestBox";
-            statusTestBox.Size = new System.Drawing.Size(49, 19);
+            statusTestBox.Size = new System.Drawing.Size(46, 19);
             statusTestBox.TabIndex = 3;
             statusTestBox.Text = "Test";
             ToolTipInformation.SetToolTip(statusTestBox, "Allow messages with this status.");
@@ -492,9 +498,9 @@
             // discardFirstAlertsBox
             // 
             discardFirstAlertsBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            discardFirstAlertsBox.Location = new System.Drawing.Point(3, 17);
+            discardFirstAlertsBox.Location = new System.Drawing.Point(3, 19);
             discardFirstAlertsBox.Name = "discardFirstAlertsBox";
-            discardFirstAlertsBox.Size = new System.Drawing.Size(151, 23);
+            discardFirstAlertsBox.Size = new System.Drawing.Size(151, 21);
             discardFirstAlertsBox.TabIndex = 10;
             discardFirstAlertsBox.Text = "Ignore first alerts";
             ToolTipInformation.SetToolTip(discardFirstAlertsBox, "Throw all alerts into the history instead of the queue on startup.");
@@ -534,9 +540,9 @@
             // 
             EventWhitelistModeBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             EventWhitelistModeBox.AutoSize = true;
-            EventWhitelistModeBox.Location = new System.Drawing.Point(169, 16);
+            EventWhitelistModeBox.Location = new System.Drawing.Point(171, 16);
             EventWhitelistModeBox.Name = "EventWhitelistModeBox";
-            EventWhitelistModeBox.Size = new System.Drawing.Size(108, 19);
+            EventWhitelistModeBox.Size = new System.Drawing.Size(106, 19);
             EventWhitelistModeBox.TabIndex = 54;
             EventWhitelistModeBox.Text = "Whitelist mode";
             ToolTipInformation.SetToolTip(EventWhitelistModeBox, "Treat this as a whitelist instead of a blacklist.");
@@ -560,7 +566,7 @@
             // 
             EventSelectButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             EventSelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            EventSelectButton.Font = new System.Drawing.Font("Arial", 8F);
+            EventSelectButton.Font = new System.Drawing.Font("Segoe UI", 8F);
             EventSelectButton.Location = new System.Drawing.Point(102, 64);
             EventSelectButton.Name = "EventSelectButton";
             EventSelectButton.Size = new System.Drawing.Size(48, 23);
@@ -573,7 +579,7 @@
             // 
             EventAddButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             EventAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            EventAddButton.Font = new System.Drawing.Font("Arial", 8F);
+            EventAddButton.Font = new System.Drawing.Font("Segoe UI", 8F);
             EventAddButton.Location = new System.Drawing.Point(54, 64);
             EventAddButton.Name = "EventAddButton";
             EventAddButton.Size = new System.Drawing.Size(42, 23);
@@ -587,7 +593,7 @@
             label3.AutoSize = true;
             label3.Location = new System.Drawing.Point(6, 17);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(144, 15);
+            label3.Size = new System.Drawing.Size(138, 15);
             label3.TabIndex = 6;
             label3.Text = "You can add events here.";
             // 
@@ -596,7 +602,7 @@
             EventBlacklistOutput.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             EventBlacklistOutput.BackColor = System.Drawing.Color.Black;
             EventBlacklistOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            EventBlacklistOutput.Font = new System.Drawing.Font("Arial", 12F);
+            EventBlacklistOutput.Font = new System.Drawing.Font("Segoe UI", 12F);
             EventBlacklistOutput.ForeColor = System.Drawing.Color.White;
             EventBlacklistOutput.Location = new System.Drawing.Point(169, 37);
             EventBlacklistOutput.Multiline = true;
@@ -614,14 +620,14 @@
             EventBlacklistInput.ForeColor = System.Drawing.Color.White;
             EventBlacklistInput.Location = new System.Drawing.Point(6, 37);
             EventBlacklistInput.Name = "EventBlacklistInput";
-            EventBlacklistInput.Size = new System.Drawing.Size(144, 21);
+            EventBlacklistInput.Size = new System.Drawing.Size(144, 23);
             EventBlacklistInput.TabIndex = 31;
             // 
             // EventClearButton
             // 
             EventClearButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             EventClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            EventClearButton.Font = new System.Drawing.Font("Arial", 8F);
+            EventClearButton.Font = new System.Drawing.Font("Segoe UI", 8F);
             EventClearButton.Location = new System.Drawing.Point(6, 64);
             EventClearButton.Name = "EventClearButton";
             EventClearButton.Size = new System.Drawing.Size(42, 23);
@@ -635,7 +641,7 @@
             LocationsClearButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             LocationsClearButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             LocationsClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            LocationsClearButton.Font = new System.Drawing.Font("Arial", 12F);
+            LocationsClearButton.Font = new System.Drawing.Font("Segoe UI", 12F);
             LocationsClearButton.Location = new System.Drawing.Point(360, 104);
             LocationsClearButton.Name = "LocationsClearButton";
             LocationsClearButton.Size = new System.Drawing.Size(331, 32);
@@ -649,7 +655,7 @@
             LocationsButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             LocationsButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             LocationsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            LocationsButton.Font = new System.Drawing.Font("Arial", 18F);
+            LocationsButton.Font = new System.Drawing.Font("Segoe UI", 18F);
             LocationsButton.Location = new System.Drawing.Point(360, 58);
             LocationsButton.Name = "LocationsButton";
             LocationsButton.Size = new System.Drawing.Size(331, 40);
@@ -662,7 +668,7 @@
             // 
             LanguageButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             LanguageButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            LanguageButton.Font = new System.Drawing.Font("Arial", 8.8F);
+            LanguageButton.Font = new System.Drawing.Font("Segoe UI", 8.8F);
             LanguageButton.Location = new System.Drawing.Point(534, 368);
             LanguageButton.Margin = new System.Windows.Forms.Padding(0);
             LanguageButton.Name = "LanguageButton";
@@ -684,26 +690,26 @@
             StationButton.UseVisualStyleBackColor = false;
             StationButton.Click += StationButton_Click;
             // 
-            // groupBox6
+            // MiscGroup
             // 
-            groupBox6.Controls.Add(BypassAlertFilteringButton);
-            groupBox6.Controls.Add(label5);
-            groupBox6.Controls.Add(alertNoRelayBox);
-            groupBox6.Controls.Add(storedMaxSizeInput);
-            groupBox6.ForeColor = System.Drawing.Color.White;
-            groupBox6.Location = new System.Drawing.Point(360, 268);
-            groupBox6.Name = "groupBox6";
-            groupBox6.Size = new System.Drawing.Size(331, 97);
-            groupBox6.TabIndex = 17;
-            groupBox6.TabStop = false;
-            groupBox6.Text = "Miscellaneous";
+            MiscGroup.Controls.Add(BypassAlertFilteringButton);
+            MiscGroup.Controls.Add(label5);
+            MiscGroup.Controls.Add(alertNoRelayBox);
+            MiscGroup.Controls.Add(storedMaxSizeInput);
+            MiscGroup.ForeColor = System.Drawing.Color.White;
+            MiscGroup.Location = new System.Drawing.Point(360, 268);
+            MiscGroup.Name = "MiscGroup";
+            MiscGroup.Size = new System.Drawing.Size(331, 97);
+            MiscGroup.TabIndex = 17;
+            MiscGroup.TabStop = false;
+            MiscGroup.Text = "Miscellaneous";
             // 
             // BypassAlertFilteringButton
             // 
             BypassAlertFilteringButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             BypassAlertFilteringButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             BypassAlertFilteringButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            BypassAlertFilteringButton.Font = new System.Drawing.Font("Arial", 18F);
+            BypassAlertFilteringButton.Font = new System.Drawing.Font("Segoe UI", 18F);
             BypassAlertFilteringButton.Location = new System.Drawing.Point(6, 45);
             BypassAlertFilteringButton.Name = "BypassAlertFilteringButton";
             BypassAlertFilteringButton.Size = new System.Drawing.Size(319, 46);
@@ -717,7 +723,7 @@
             label5.AutoSize = true;
             label5.Location = new System.Drawing.Point(6, 21);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(68, 15);
+            label5.Size = new System.Drawing.Size(62, 15);
             label5.TabIndex = 9;
             label5.Text = "Cache size";
             // 
@@ -725,9 +731,9 @@
             // 
             alertNoRelayBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             alertNoRelayBox.AutoSize = true;
-            alertNoRelayBox.Location = new System.Drawing.Point(199, 19);
+            alertNoRelayBox.Location = new System.Drawing.Point(209, 19);
             alertNoRelayBox.Name = "alertNoRelayBox";
-            alertNoRelayBox.Size = new System.Drawing.Size(126, 19);
+            alertNoRelayBox.Size = new System.Drawing.Size(116, 19);
             alertNoRelayBox.TabIndex = 16;
             alertNoRelayBox.Text = "Disable USB relay";
             ToolTipInformation.SetToolTip(alertNoRelayBox, "Stops USB relays from being triggered when alerts are being relayed.");
@@ -743,34 +749,34 @@
             storedMaxSizeInput.Maximum = new decimal(new int[] { 5000, 0, 0, 0 });
             storedMaxSizeInput.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             storedMaxSizeInput.Name = "storedMaxSizeInput";
-            storedMaxSizeInput.Size = new System.Drawing.Size(63, 21);
+            storedMaxSizeInput.Size = new System.Drawing.Size(63, 23);
             storedMaxSizeInput.TabIndex = 35;
             ToolTipInformation.SetToolTip(storedMaxSizeInput, "Controls how many alerts can be cached for later usage.\r\nOlder alerts are trimmed first from history lists.");
             storedMaxSizeInput.Value = new decimal(new int[] { 1000, 0, 0, 0 });
             // 
-            // groupBox3
+            // CategoryGroup
             // 
-            groupBox3.Controls.Add(CategoryInfoButton);
-            groupBox3.Controls.Add(categoryOtherBox);
-            groupBox3.Controls.Add(categoryCBRNEBox);
-            groupBox3.Controls.Add(categoryInfraBox);
-            groupBox3.Controls.Add(categoryTransportBox);
-            groupBox3.Controls.Add(categoryEnvBox);
-            groupBox3.Controls.Add(categoryHealthBox);
-            groupBox3.Controls.Add(categoryFireBox);
-            groupBox3.Controls.Add(categoryRescueBox);
-            groupBox3.Controls.Add(categorySecurityBox);
-            groupBox3.Controls.Add(categorySafetyBox);
-            groupBox3.Controls.Add(categoryMetBox);
-            groupBox3.Controls.Add(categoryGeoBox);
-            groupBox3.ForeColor = System.Drawing.Color.White;
-            groupBox3.Location = new System.Drawing.Point(12, 371);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new System.Drawing.Size(516, 95);
-            groupBox3.TabIndex = 17;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "Category Filters";
-            ToolTipInformation.SetToolTip(groupBox3, "Do not change these unless you know what you are doing.\r\n\r\nAlerts can have categories embedded within them, to their specific event.\r\nSome alerts may have multiple categories for their event.");
+            CategoryGroup.Controls.Add(CategoryInfoButton);
+            CategoryGroup.Controls.Add(categoryOtherBox);
+            CategoryGroup.Controls.Add(categoryCBRNEBox);
+            CategoryGroup.Controls.Add(categoryInfraBox);
+            CategoryGroup.Controls.Add(categoryTransportBox);
+            CategoryGroup.Controls.Add(categoryEnvBox);
+            CategoryGroup.Controls.Add(categoryHealthBox);
+            CategoryGroup.Controls.Add(categoryFireBox);
+            CategoryGroup.Controls.Add(categoryRescueBox);
+            CategoryGroup.Controls.Add(categorySecurityBox);
+            CategoryGroup.Controls.Add(categorySafetyBox);
+            CategoryGroup.Controls.Add(categoryMetBox);
+            CategoryGroup.Controls.Add(categoryGeoBox);
+            CategoryGroup.ForeColor = System.Drawing.Color.White;
+            CategoryGroup.Location = new System.Drawing.Point(12, 371);
+            CategoryGroup.Name = "CategoryGroup";
+            CategoryGroup.Size = new System.Drawing.Size(516, 95);
+            CategoryGroup.TabIndex = 17;
+            CategoryGroup.TabStop = false;
+            CategoryGroup.Text = "Category Filters";
+            ToolTipInformation.SetToolTip(CategoryGroup, "Do not change these unless you know what you are doing.\r\n\r\nAlerts can have categories embedded within them, to their specific event.\r\nSome alerts may have multiple categories for their event.");
             // 
             // CategoryInfoButton
             // 
@@ -791,7 +797,7 @@
             categoryOtherBox.AutoSize = true;
             categoryOtherBox.Location = new System.Drawing.Point(374, 70);
             categoryOtherBox.Name = "categoryOtherBox";
-            categoryOtherBox.Size = new System.Drawing.Size(111, 19);
+            categoryOtherBox.Size = new System.Drawing.Size(112, 19);
             categoryOtherBox.TabIndex = 48;
             categoryOtherBox.Text = "Other/Unknown";
             ToolTipInformation.SetToolTip(categoryOtherBox, "Allow messages of the following category.");
@@ -802,7 +808,7 @@
             categoryCBRNEBox.AutoSize = true;
             categoryCBRNEBox.Location = new System.Drawing.Point(374, 45);
             categoryCBRNEBox.Name = "categoryCBRNEBox";
-            categoryCBRNEBox.Size = new System.Drawing.Size(91, 19);
+            categoryCBRNEBox.Size = new System.Drawing.Size(89, 19);
             categoryCBRNEBox.TabIndex = 47;
             categoryCBRNEBox.Text = "Toxic Threat";
             ToolTipInformation.SetToolTip(categoryCBRNEBox, "Allow messages of the following category.");
@@ -813,7 +819,7 @@
             categoryInfraBox.AutoSize = true;
             categoryInfraBox.Location = new System.Drawing.Point(374, 20);
             categoryInfraBox.Name = "categoryInfraBox";
-            categoryInfraBox.Size = new System.Drawing.Size(67, 19);
+            categoryInfraBox.Size = new System.Drawing.Size(65, 19);
             categoryInfraBox.TabIndex = 46;
             categoryInfraBox.Text = "Utilities";
             ToolTipInformation.SetToolTip(categoryInfraBox, "Allow messages of the following category.");
@@ -824,7 +830,7 @@
             categoryTransportBox.AutoSize = true;
             categoryTransportBox.Location = new System.Drawing.Point(239, 70);
             categoryTransportBox.Name = "categoryTransportBox";
-            categoryTransportBox.Size = new System.Drawing.Size(106, 19);
+            categoryTransportBox.Size = new System.Drawing.Size(102, 19);
             categoryTransportBox.TabIndex = 45;
             categoryTransportBox.Text = "Transportation";
             ToolTipInformation.SetToolTip(categoryTransportBox, "Allow messages of the following category.");
@@ -835,7 +841,7 @@
             categoryEnvBox.AutoSize = true;
             categoryEnvBox.Location = new System.Drawing.Point(239, 45);
             categoryEnvBox.Name = "categoryEnvBox";
-            categoryEnvBox.Size = new System.Drawing.Size(105, 19);
+            categoryEnvBox.Size = new System.Drawing.Size(103, 19);
             categoryEnvBox.TabIndex = 44;
             categoryEnvBox.Text = "Environmental";
             ToolTipInformation.SetToolTip(categoryEnvBox, "Allow messages of the following category.");
@@ -857,7 +863,7 @@
             categoryFireBox.AutoSize = true;
             categoryFireBox.Location = new System.Drawing.Point(138, 70);
             categoryFireBox.Name = "categoryFireBox";
-            categoryFireBox.Size = new System.Drawing.Size(47, 19);
+            categoryFireBox.Size = new System.Drawing.Size(45, 19);
             categoryFireBox.TabIndex = 42;
             categoryFireBox.Text = "Fire";
             ToolTipInformation.SetToolTip(categoryFireBox, "Allow messages of the following category.");
@@ -868,7 +874,7 @@
             categoryRescueBox.AutoSize = true;
             categoryRescueBox.Location = new System.Drawing.Point(138, 45);
             categoryRescueBox.Name = "categoryRescueBox";
-            categoryRescueBox.Size = new System.Drawing.Size(69, 19);
+            categoryRescueBox.Size = new System.Drawing.Size(63, 19);
             categoryRescueBox.TabIndex = 41;
             categoryRescueBox.Text = "Rescue";
             ToolTipInformation.SetToolTip(categoryRescueBox, "Allow messages of the following category.");
@@ -879,7 +885,7 @@
             categorySecurityBox.AutoSize = true;
             categorySecurityBox.Location = new System.Drawing.Point(138, 20);
             categorySecurityBox.Name = "categorySecurityBox";
-            categorySecurityBox.Size = new System.Drawing.Size(69, 19);
+            categorySecurityBox.Size = new System.Drawing.Size(68, 19);
             categorySecurityBox.TabIndex = 40;
             categorySecurityBox.Text = "Security";
             ToolTipInformation.SetToolTip(categorySecurityBox, "Allow messages of the following category.");
@@ -890,7 +896,7 @@
             categorySafetyBox.AutoSize = true;
             categorySafetyBox.Location = new System.Drawing.Point(6, 70);
             categorySafetyBox.Name = "categorySafetyBox";
-            categorySafetyBox.Size = new System.Drawing.Size(106, 19);
+            categorySafetyBox.Size = new System.Drawing.Size(101, 19);
             categorySafetyBox.TabIndex = 39;
             categorySafetyBox.Text = "General Safety";
             ToolTipInformation.SetToolTip(categorySafetyBox, "Allow messages of the following category.");
@@ -912,7 +918,7 @@
             categoryGeoBox.AutoSize = true;
             categoryGeoBox.Location = new System.Drawing.Point(6, 20);
             categoryGeoBox.Name = "categoryGeoBox";
-            categoryGeoBox.Size = new System.Drawing.Size(94, 19);
+            categoryGeoBox.Size = new System.Drawing.Size(90, 19);
             categoryGeoBox.TabIndex = 37;
             categoryGeoBox.Text = "Geophysical";
             ToolTipInformation.SetToolTip(categoryGeoBox, "Allow messages of the following category.");
@@ -923,7 +929,7 @@
             AlertListButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             AlertListButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             AlertListButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            AlertListButton.Font = new System.Drawing.Font("Arial", 18F);
+            AlertListButton.Font = new System.Drawing.Font("Segoe UI", 18F);
             AlertListButton.Location = new System.Drawing.Point(360, 12);
             AlertListButton.Name = "AlertListButton";
             AlertListButton.Size = new System.Drawing.Size(250, 40);
@@ -953,7 +959,7 @@
             ArchiveSettingsButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             ArchiveSettingsButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             ArchiveSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            ArchiveSettingsButton.Font = new System.Drawing.Font("Arial", 9F);
+            ArchiveSettingsButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             ArchiveSettingsButton.Location = new System.Drawing.Point(616, 12);
             ArchiveSettingsButton.Name = "ArchiveSettingsButton";
             ArchiveSettingsButton.Size = new System.Drawing.Size(75, 40);
@@ -962,40 +968,109 @@
             ArchiveSettingsButton.UseVisualStyleBackColor = false;
             ArchiveSettingsButton.Click += ArchiveSettingsButton_Click;
             // 
-            // groupBox7
+            // GeneralGroup
             // 
-            groupBox7.Controls.Add(discardFirstAlertsBox);
-            groupBox7.ForeColor = System.Drawing.Color.White;
-            groupBox7.Location = new System.Drawing.Point(534, 423);
-            groupBox7.Name = "groupBox7";
-            groupBox7.Size = new System.Drawing.Size(157, 43);
-            groupBox7.TabIndex = 53;
-            groupBox7.TabStop = false;
-            groupBox7.Text = "General Filters";
+            GeneralGroup.Controls.Add(discardFirstAlertsBox);
+            GeneralGroup.ForeColor = System.Drawing.Color.White;
+            GeneralGroup.Location = new System.Drawing.Point(534, 423);
+            GeneralGroup.Name = "GeneralGroup";
+            GeneralGroup.Size = new System.Drawing.Size(157, 43);
+            GeneralGroup.TabIndex = 53;
+            GeneralGroup.TabStop = false;
+            GeneralGroup.Text = "General Filters";
             // 
             // RainbowColoring
             // 
             RainbowColoring.Enabled = true;
-            RainbowColoring.Interval = 50;
+            RainbowColoring.Interval = 60;
             RainbowColoring.Tick += RainbowColoring_Tick;
+            // 
+            // SuperSecretSettingsGroup
+            // 
+            SuperSecretSettingsGroup.Controls.Add(FloodQueueButton);
+            SuperSecretSettingsGroup.Controls.Add(SoftUpdateButton);
+            SuperSecretSettingsGroup.Controls.Add(ForceUpdateButton);
+            SuperSecretSettingsGroup.ForeColor = System.Drawing.Color.Gray;
+            SuperSecretSettingsGroup.Location = new System.Drawing.Point(12, 321);
+            SuperSecretSettingsGroup.Name = "SuperSecretSettingsGroup";
+            SuperSecretSettingsGroup.Size = new System.Drawing.Size(342, 44);
+            SuperSecretSettingsGroup.TabIndex = 54;
+            SuperSecretSettingsGroup.TabStop = false;
+            SuperSecretSettingsGroup.Text = "Super Secret Configuration... (Only the worthy have access.)";
+            SuperSecretSettingsGroup.Visible = false;
+            // 
+            // FloodQueueButton
+            // 
+            FloodQueueButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            FloodQueueButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            FloodQueueButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            FloodQueueButton.Font = new System.Drawing.Font("Segoe UI", 8.8F);
+            FloodQueueButton.ForeColor = System.Drawing.Color.White;
+            FloodQueueButton.Location = new System.Drawing.Point(195, 19);
+            FloodQueueButton.Margin = new System.Windows.Forms.Padding(0);
+            FloodQueueButton.Name = "FloodQueueButton";
+            FloodQueueButton.Size = new System.Drawing.Size(144, 22);
+            FloodQueueButton.TabIndex = 55;
+            FloodQueueButton.Text = "Posion Queue & History";
+            FloodQueueButton.UseMnemonic = false;
+            FloodQueueButton.UseVisualStyleBackColor = false;
+            FloodQueueButton.Click += FloodQueueButton_Click;
+            // 
+            // SoftUpdateButton
+            // 
+            SoftUpdateButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            SoftUpdateButton.Dock = System.Windows.Forms.DockStyle.Left;
+            SoftUpdateButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            SoftUpdateButton.Font = new System.Drawing.Font("Segoe UI", 8.8F);
+            SoftUpdateButton.ForeColor = System.Drawing.Color.White;
+            SoftUpdateButton.Location = new System.Drawing.Point(99, 19);
+            SoftUpdateButton.Margin = new System.Windows.Forms.Padding(0);
+            SoftUpdateButton.Name = "SoftUpdateButton";
+            SoftUpdateButton.Size = new System.Drawing.Size(96, 22);
+            SoftUpdateButton.TabIndex = 54;
+            SoftUpdateButton.Text = "Soft Update";
+            SoftUpdateButton.UseVisualStyleBackColor = false;
+            // 
+            // ForceUpdateButton
+            // 
+            ForceUpdateButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            ForceUpdateButton.Dock = System.Windows.Forms.DockStyle.Left;
+            ForceUpdateButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            ForceUpdateButton.Font = new System.Drawing.Font("Segoe UI", 8.8F);
+            ForceUpdateButton.ForeColor = System.Drawing.Color.White;
+            ForceUpdateButton.Location = new System.Drawing.Point(3, 19);
+            ForceUpdateButton.Margin = new System.Windows.Forms.Padding(0);
+            ForceUpdateButton.Name = "ForceUpdateButton";
+            ForceUpdateButton.Size = new System.Drawing.Size(96, 22);
+            ForceUpdateButton.TabIndex = 53;
+            ForceUpdateButton.Text = "Force Update";
+            ForceUpdateButton.UseVisualStyleBackColor = false;
+            ForceUpdateButton.Click += ForceUpdateButton_Click;
+            // 
+            // SuperSecretEnabler
+            // 
+            SuperSecretEnabler.Enabled = true;
+            SuperSecretEnabler.Interval = 5000;
+            SuperSecretEnabler.Tick += SuperSecretEnabler_Tick;
             // 
             // AlertConfigurationForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(703, 477);
-            Controls.Add(groupBox7);
+            Controls.Add(SuperSecretSettingsGroup);
+            Controls.Add(GeneralGroup);
             Controls.Add(LanguageButton);
             Controls.Add(ArchiveSettingsButton);
             Controls.Add(StationButton);
             Controls.Add(AlertFunctionalityGroup);
-            Controls.Add(groupBox6);
+            Controls.Add(MiscGroup);
             Controls.Add(LocationsButton);
-            Controls.Add(groupBox3);
+            Controls.Add(CategoryGroup);
             Controls.Add(AlertListButton);
             Controls.Add(LocationsClearButton);
             Controls.Add(LocationsAndEventsGroup);
-            Font = new System.Drawing.Font("Arial", 9F);
+            Font = new System.Drawing.Font("Segoe UI", 9F);
             ForeColor = System.Drawing.Color.White;
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             HelpButton = true;
@@ -1024,12 +1099,13 @@
             LocationsAndEventsGroup.ResumeLayout(false);
             groupBox9.ResumeLayout(false);
             groupBox9.PerformLayout();
-            groupBox6.ResumeLayout(false);
-            groupBox6.PerformLayout();
+            MiscGroup.ResumeLayout(false);
+            MiscGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)storedMaxSizeInput).EndInit();
-            groupBox3.ResumeLayout(false);
-            groupBox3.PerformLayout();
-            groupBox7.ResumeLayout(false);
+            CategoryGroup.ResumeLayout(false);
+            CategoryGroup.PerformLayout();
+            GeneralGroup.ResumeLayout(false);
+            SuperSecretSettingsGroup.ResumeLayout(false);
             ResumeLayout(false);
 
         }
@@ -1068,7 +1144,7 @@
         private System.Windows.Forms.TextBox EventBlacklistInput;
         private System.Windows.Forms.ToolTip ToolTipInformation;
         private System.Windows.Forms.CheckBox statusExerciseBox;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox CategoryGroup;
         private System.Windows.Forms.CheckBox categoryGeoBox;
         private System.Windows.Forms.CheckBox categorySafetyBox;
         private System.Windows.Forms.CheckBox categoryMetBox;
@@ -1081,7 +1157,7 @@
         private System.Windows.Forms.CheckBox categoryInfraBox;
         private System.Windows.Forms.CheckBox categoryCBRNEBox;
         private System.Windows.Forms.CheckBox categoryOtherBox;
-        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.GroupBox MiscGroup;
         private System.Windows.Forms.NumericUpDown storedMaxSizeInput;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
@@ -1103,9 +1179,14 @@
         private System.Windows.Forms.CheckBox EventWhitelistModeBox;
         private System.Windows.Forms.Button ArchiveSettingsButton;
         private System.Windows.Forms.CheckBox PreferCMAMTextWhereAvailableBox;
-        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.GroupBox GeneralGroup;
         private System.Windows.Forms.CheckBox IgnoreKeepAliveBox;
         private System.Windows.Forms.Label RainbowText;
         private System.Windows.Forms.Timer RainbowColoring;
+        private System.Windows.Forms.GroupBox SuperSecretSettingsGroup;
+        private System.Windows.Forms.Timer SuperSecretEnabler;
+        private System.Windows.Forms.Button ForceUpdateButton;
+        private System.Windows.Forms.Button FloodQueueButton;
+        private System.Windows.Forms.Button SoftUpdateButton;
     }
 }

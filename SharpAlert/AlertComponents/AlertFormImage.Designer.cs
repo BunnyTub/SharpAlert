@@ -61,7 +61,7 @@
             this.ClientSize = new System.Drawing.Size(484, 332);
             this.ControlBox = false;
             this.Controls.Add(this.AttachedImageBox);
-            this.Font = new System.Drawing.Font("Arial", 9F);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
