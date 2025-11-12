@@ -95,6 +95,8 @@ namespace SharpAlert.AlertComponents
         {
             if (string.IsNullOrWhiteSpace(webhook)) return;
 
+            if (QuickSettings.Instance.DiscordWebhookFeaturesLocked) return;
+
             Console.WriteLine($"[Discord Webhook] Processing request -> {webhook}");
 
             ThreadDrool.StartAndForget(() =>

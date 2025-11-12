@@ -49,6 +49,7 @@
             alertAutoPrintingEnabledBox = new System.Windows.Forms.CheckBox();
             ScrollSpeedBar = new System.Windows.Forms.TrackBar();
             HideNetworkErrorsBox = new System.Windows.Forms.CheckBox();
+            OpenDashboardAutomaticallyBox = new System.Windows.Forms.CheckBox();
             label1 = new System.Windows.Forms.Label();
             label9 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -64,7 +65,6 @@
             PrintingGroup = new System.Windows.Forms.GroupBox();
             NotificationsGroup = new System.Windows.Forms.GroupBox();
             DisplayWhereInfoButton = new System.Windows.Forms.Button();
-            OpenDashboardAutomaticallyBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)alertTimeoutInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)alertFullscreenDisplayInput).BeginInit();
@@ -151,6 +151,7 @@
             // 
             alertTimeoutInput.Location = new System.Drawing.Point(168, 113);
             alertTimeoutInput.Maximum = new decimal(new int[] { 60, 0, 0, 0 });
+            alertTimeoutInput.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             alertTimeoutInput.Name = "alertTimeoutInput";
             alertTimeoutInput.Size = new System.Drawing.Size(37, 23);
             alertTimeoutInput.TabIndex = 3;
@@ -291,6 +292,17 @@
             HideNetworkErrorsBox.Text = "Hide network errors";
             ToolTipInformation.SetToolTip(HideNetworkErrorsBox, "Hides network error notifications from appearing.\r\nThey'll still appear in the console.");
             HideNetworkErrorsBox.UseVisualStyleBackColor = true;
+            // 
+            // OpenDashboardAutomaticallyBox
+            // 
+            OpenDashboardAutomaticallyBox.AutoSize = true;
+            OpenDashboardAutomaticallyBox.Location = new System.Drawing.Point(6, 70);
+            OpenDashboardAutomaticallyBox.Name = "OpenDashboardAutomaticallyBox";
+            OpenDashboardAutomaticallyBox.Size = new System.Drawing.Size(126, 19);
+            OpenDashboardAutomaticallyBox.TabIndex = 7;
+            OpenDashboardAutomaticallyBox.Text = "Dashboard on start";
+            ToolTipInformation.SetToolTip(OpenDashboardAutomaticallyBox, "Shows the status window.");
+            OpenDashboardAutomaticallyBox.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -462,17 +474,6 @@
             DisplayWhereInfoButton.Text = "?";
             DisplayWhereInfoButton.UseVisualStyleBackColor = false;
             DisplayWhereInfoButton.Click += DisplayWhereInfoButton_Click;
-            // 
-            // OpenDashboardAutomaticallyBox
-            // 
-            OpenDashboardAutomaticallyBox.AutoSize = true;
-            OpenDashboardAutomaticallyBox.Location = new System.Drawing.Point(6, 70);
-            OpenDashboardAutomaticallyBox.Name = "OpenDashboardAutomaticallyBox";
-            OpenDashboardAutomaticallyBox.Size = new System.Drawing.Size(126, 19);
-            OpenDashboardAutomaticallyBox.TabIndex = 7;
-            OpenDashboardAutomaticallyBox.Text = "Dashboard on start";
-            ToolTipInformation.SetToolTip(OpenDashboardAutomaticallyBox, "Shows the status window.");
-            OpenDashboardAutomaticallyBox.UseVisualStyleBackColor = true;
             // 
             // StyleConfigurationForm
             // 

@@ -28,201 +28,197 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ToppleForm));
-            this.TitleText = new System.Windows.Forms.Label();
-            this.ProblemDetailsText = new System.Windows.Forms.TextBox();
-            this.ProblemTitleText = new System.Windows.Forms.Label();
-            this.CloseButton = new System.Windows.Forms.Button();
-            this.ReportButton = new System.Windows.Forms.Button();
-            this.AutoTerminate = new System.Windows.Forms.Timer(this.components);
-            this.label1 = new System.Windows.Forms.Label();
-            this.LogoBox = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.TerminateButton = new System.Windows.Forms.Button();
-            this.ResetButton = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.SuspendLayout();
+            TitleText = new System.Windows.Forms.Label();
+            ProblemDetailsText = new System.Windows.Forms.TextBox();
+            ProblemTitleText = new System.Windows.Forms.Label();
+            CloseButton = new System.Windows.Forms.Button();
+            ReportButton = new System.Windows.Forms.Button();
+            AutoTerminate = new System.Windows.Forms.Timer(components);
+            label1 = new System.Windows.Forms.Label();
+            LogoBox = new System.Windows.Forms.PictureBox();
+            pictureBox2 = new System.Windows.Forms.PictureBox();
+            TerminateButton = new System.Windows.Forms.Button();
+            ResetButton = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            SuspendLayout();
             // 
             // TitleText
             // 
-            this.TitleText.Dock = System.Windows.Forms.DockStyle.Top;
-            this.TitleText.Font = new System.Drawing.Font("Segoe UI", 26F);
-            this.TitleText.Location = new System.Drawing.Point(0, 0);
-            this.TitleText.Margin = new System.Windows.Forms.Padding(0);
-            this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(636, 49);
-            this.TitleText.TabIndex = 1;
-            this.TitleText.Text = "SharpAlert has crashed...";
-            this.TitleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            TitleText.Dock = System.Windows.Forms.DockStyle.Top;
+            TitleText.Font = new System.Drawing.Font("Segoe UI", 26F);
+            TitleText.Location = new System.Drawing.Point(0, 0);
+            TitleText.Margin = new System.Windows.Forms.Padding(0);
+            TitleText.Name = "TitleText";
+            TitleText.Size = new System.Drawing.Size(636, 49);
+            TitleText.TabIndex = 1;
+            TitleText.Text = "SharpAlert has crashed...";
+            TitleText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ProblemDetailsText
             // 
-            this.ProblemDetailsText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ProblemDetailsText.BackColor = System.Drawing.Color.Black;
-            this.ProblemDetailsText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ProblemDetailsText.ForeColor = System.Drawing.Color.White;
-            this.ProblemDetailsText.Location = new System.Drawing.Point(12, 71);
-            this.ProblemDetailsText.Multiline = true;
-            this.ProblemDetailsText.Name = "ProblemDetailsText";
-            this.ProblemDetailsText.ReadOnly = true;
-            this.ProblemDetailsText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ProblemDetailsText.Size = new System.Drawing.Size(376, 254);
-            this.ProblemDetailsText.TabIndex = 3;
-            this.ProblemDetailsText.Text = "We\'re gathering information about the problem.";
+            ProblemDetailsText.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            ProblemDetailsText.BackColor = System.Drawing.Color.Black;
+            ProblemDetailsText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            ProblemDetailsText.ForeColor = System.Drawing.Color.White;
+            ProblemDetailsText.Location = new System.Drawing.Point(12, 71);
+            ProblemDetailsText.Multiline = true;
+            ProblemDetailsText.Name = "ProblemDetailsText";
+            ProblemDetailsText.ReadOnly = true;
+            ProblemDetailsText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            ProblemDetailsText.Size = new System.Drawing.Size(549, 254);
+            ProblemDetailsText.TabIndex = 3;
+            ProblemDetailsText.Text = "We're gathering information about the problem.";
             // 
             // ProblemTitleText
             // 
-            this.ProblemTitleText.AutoSize = true;
-            this.ProblemTitleText.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.ProblemTitleText.Location = new System.Drawing.Point(9, 53);
-            this.ProblemTitleText.Margin = new System.Windows.Forms.Padding(0);
-            this.ProblemTitleText.Name = "ProblemTitleText";
-            this.ProblemTitleText.Size = new System.Drawing.Size(96, 15);
-            this.ProblemTitleText.TabIndex = 4;
-            this.ProblemTitleText.Text = "Problem Details";
+            ProblemTitleText.AutoSize = true;
+            ProblemTitleText.Font = new System.Drawing.Font("Segoe UI", 9F);
+            ProblemTitleText.Location = new System.Drawing.Point(9, 53);
+            ProblemTitleText.Margin = new System.Windows.Forms.Padding(0);
+            ProblemTitleText.Name = "ProblemTitleText";
+            ProblemTitleText.Size = new System.Drawing.Size(90, 15);
+            ProblemTitleText.TabIndex = 4;
+            ProblemTitleText.Text = "Problem Details";
             // 
             // CloseButton
             // 
-            this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.CloseButton.BackColor = System.Drawing.Color.OrangeRed;
-            this.CloseButton.FlatAppearance.BorderSize = 2;
-            this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.CloseButton.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.CloseButton.ForeColor = System.Drawing.Color.White;
-            this.CloseButton.Location = new System.Drawing.Point(138, 331);
-            this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(125, 35);
-            this.CloseButton.TabIndex = 7;
-            this.CloseButton.Text = "Restart";
-            this.CloseButton.UseVisualStyleBackColor = false;
-            this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
+            CloseButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            CloseButton.BackColor = System.Drawing.Color.OrangeRed;
+            CloseButton.FlatAppearance.BorderSize = 2;
+            CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            CloseButton.Font = new System.Drawing.Font("Segoe UI", 16F);
+            CloseButton.ForeColor = System.Drawing.Color.White;
+            CloseButton.Location = new System.Drawing.Point(138, 331);
+            CloseButton.Name = "CloseButton";
+            CloseButton.Size = new System.Drawing.Size(125, 35);
+            CloseButton.TabIndex = 7;
+            CloseButton.Text = "Restart";
+            CloseButton.UseVisualStyleBackColor = false;
+            CloseButton.Click += CloseButton_Click;
             // 
             // ReportButton
             // 
-            this.ReportButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.ReportButton.BackColor = System.Drawing.Color.OrangeRed;
-            this.ReportButton.FlatAppearance.BorderSize = 2;
-            this.ReportButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.ReportButton.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.ReportButton.ForeColor = System.Drawing.Color.White;
-            this.ReportButton.Location = new System.Drawing.Point(7, 331);
-            this.ReportButton.Name = "ReportButton";
-            this.ReportButton.Size = new System.Drawing.Size(125, 35);
-            this.ReportButton.TabIndex = 8;
-            this.ReportButton.Text = "Report";
-            this.ReportButton.UseVisualStyleBackColor = false;
-            this.ReportButton.Click += new System.EventHandler(this.ReportButton_Click);
+            ReportButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            ReportButton.BackColor = System.Drawing.Color.OrangeRed;
+            ReportButton.FlatAppearance.BorderSize = 2;
+            ReportButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            ReportButton.Font = new System.Drawing.Font("Segoe UI", 16F);
+            ReportButton.ForeColor = System.Drawing.Color.White;
+            ReportButton.Location = new System.Drawing.Point(7, 331);
+            ReportButton.Name = "ReportButton";
+            ReportButton.Size = new System.Drawing.Size(125, 35);
+            ReportButton.TabIndex = 8;
+            ReportButton.Text = "Report";
+            ReportButton.UseVisualStyleBackColor = false;
+            ReportButton.Click += ReportButton_Click;
             // 
             // AutoTerminate
             // 
-            this.AutoTerminate.Enabled = true;
-            this.AutoTerminate.Interval = 1000;
-            this.AutoTerminate.Tick += new System.EventHandler(this.AutoTerminate_Tick);
+            AutoTerminate.Enabled = true;
+            AutoTerminate.Interval = 1000;
+            AutoTerminate.Tick += AutoTerminate_Tick;
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 18F);
-            this.label1.Location = new System.Drawing.Point(346, 331);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(278, 35);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "0s";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            label1.Font = new System.Drawing.Font("Segoe UI", 18F);
+            label1.Location = new System.Drawing.Point(346, 331);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(278, 35);
+            label1.TabIndex = 9;
+            label1.Text = "0s";
+            label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // LogoBox
             // 
-            this.LogoBox.Image = global::SharpAlert.Properties.Resources.CrashIcon;
-            this.LogoBox.Location = new System.Drawing.Point(587, 0);
-            this.LogoBox.Name = "LogoBox";
-            this.LogoBox.Size = new System.Drawing.Size(49, 49);
-            this.LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.LogoBox.TabIndex = 0;
-            this.LogoBox.TabStop = false;
+            LogoBox.Image = Properties.Resources.AlertIcon;
+            LogoBox.Location = new System.Drawing.Point(587, 0);
+            LogoBox.Name = "LogoBox";
+            LogoBox.Size = new System.Drawing.Size(49, 49);
+            LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            LogoBox.TabIndex = 0;
+            LogoBox.TabStop = false;
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox2.Image = global::SharpAlert.Properties.Resources.Topple;
-            this.pictureBox2.Location = new System.Drawing.Point(232, 54);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(404, 290);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 11;
-            this.pictureBox2.TabStop = false;
+            pictureBox2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            pictureBox2.Location = new System.Drawing.Point(232, 54);
+            pictureBox2.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new System.Drawing.Size(404, 290);
+            pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            pictureBox2.TabIndex = 11;
+            pictureBox2.TabStop = false;
             // 
             // TerminateButton
             // 
-            this.TerminateButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TerminateButton.BackColor = System.Drawing.Color.OrangeRed;
-            this.TerminateButton.FlatAppearance.BorderSize = 2;
-            this.TerminateButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.TerminateButton.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.TerminateButton.ForeColor = System.Drawing.Color.White;
-            this.TerminateButton.Location = new System.Drawing.Point(269, 331);
-            this.TerminateButton.Name = "TerminateButton";
-            this.TerminateButton.Size = new System.Drawing.Size(125, 35);
-            this.TerminateButton.TabIndex = 12;
-            this.TerminateButton.Text = "Close";
-            this.TerminateButton.UseVisualStyleBackColor = false;
-            this.TerminateButton.Click += new System.EventHandler(this.TerminateButton_Click);
+            TerminateButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            TerminateButton.BackColor = System.Drawing.Color.OrangeRed;
+            TerminateButton.FlatAppearance.BorderSize = 2;
+            TerminateButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            TerminateButton.Font = new System.Drawing.Font("Segoe UI", 16F);
+            TerminateButton.ForeColor = System.Drawing.Color.White;
+            TerminateButton.Location = new System.Drawing.Point(269, 331);
+            TerminateButton.Name = "TerminateButton";
+            TerminateButton.Size = new System.Drawing.Size(125, 35);
+            TerminateButton.TabIndex = 12;
+            TerminateButton.Text = "Close";
+            TerminateButton.UseVisualStyleBackColor = false;
+            TerminateButton.Click += TerminateButton_Click;
             // 
             // ResetButton
             // 
-            this.ResetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.ResetButton.BackColor = System.Drawing.Color.Green;
-            this.ResetButton.FlatAppearance.BorderSize = 2;
-            this.ResetButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.ResetButton.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.ResetButton.ForeColor = System.Drawing.Color.White;
-            this.ResetButton.Location = new System.Drawing.Point(400, 331);
-            this.ResetButton.Name = "ResetButton";
-            this.ResetButton.Size = new System.Drawing.Size(161, 35);
-            this.ResetButton.TabIndex = 13;
-            this.ResetButton.Text = "Reset Settings";
-            this.ResetButton.UseVisualStyleBackColor = false;
-            this.ResetButton.Click += new System.EventHandler(this.ResetButton_Click);
+            ResetButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            ResetButton.BackColor = System.Drawing.Color.Green;
+            ResetButton.FlatAppearance.BorderSize = 2;
+            ResetButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            ResetButton.Font = new System.Drawing.Font("Segoe UI", 12F);
+            ResetButton.ForeColor = System.Drawing.Color.White;
+            ResetButton.Location = new System.Drawing.Point(400, 331);
+            ResetButton.Name = "ResetButton";
+            ResetButton.Size = new System.Drawing.Size(161, 35);
+            ResetButton.TabIndex = 13;
+            ResetButton.Text = "Reset Settings";
+            ResetButton.UseVisualStyleBackColor = false;
+            ResetButton.Click += ResetButton_Click;
             // 
             // ToppleForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(636, 378);
-            this.Controls.Add(this.ResetButton);
-            this.Controls.Add(this.TerminateButton);
-            this.Controls.Add(this.ReportButton);
-            this.Controls.Add(this.CloseButton);
-            this.Controls.Add(this.ProblemDetailsText);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.ProblemTitleText);
-            this.Controls.Add(this.LogoBox);
-            this.Controls.Add(this.TitleText);
-            this.Controls.Add(this.pictureBox2);
-            this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "ToppleForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SharpAlert";
-            this.TopMost = true;
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ToppleForm_FormClosed);
-            this.Load += new System.EventHandler(this.ToppleForm_Load);
-            this.Shown += new System.EventHandler(this.ToppleForm_Shown);
-            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
+            ClientSize = new System.Drawing.Size(636, 378);
+            Controls.Add(ResetButton);
+            Controls.Add(TerminateButton);
+            Controls.Add(ReportButton);
+            Controls.Add(CloseButton);
+            Controls.Add(ProblemDetailsText);
+            Controls.Add(label1);
+            Controls.Add(ProblemTitleText);
+            Controls.Add(LogoBox);
+            Controls.Add(TitleText);
+            Controls.Add(pictureBox2);
+            DoubleBuffered = true;
+            Font = new System.Drawing.Font("Segoe UI", 9F);
+            ForeColor = System.Drawing.Color.White;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "ToppleForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "SharpAlert";
+            TopMost = true;
+            FormClosed += ToppleForm_FormClosed;
+            Load += ToppleForm_Load;
+            Shown += ToppleForm_Shown;
+            ((System.ComponentModel.ISupportInitialize)LogoBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

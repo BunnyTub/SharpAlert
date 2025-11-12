@@ -341,7 +341,7 @@ namespace SharpAlert.ConfigurationDialogs
             int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
             double f = hue / 60 - Math.Floor(hue / 60);
 
-            value = value * 255;
+            value *= 255;
             int v = (int)value;
             int p = (int)(value * (1 - saturation));
             int q = (int)(value * (1 - f * saturation));
@@ -376,11 +376,6 @@ namespace SharpAlert.ConfigurationDialogs
             //        SuperSecretSettingsGroup.Visible = false;
             //    }
             //}
-        }
-
-        private void ForceUpdateButton_Click(object sender, EventArgs e)
-        {
-            UpdateWorker.TryUpdate(UpdateWorker.TryGetRemoteVersion(), true);
         }
 
         private void FloodQueueButton_Click(object sender, EventArgs e)

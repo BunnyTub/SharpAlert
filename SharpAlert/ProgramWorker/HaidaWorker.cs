@@ -52,10 +52,10 @@ namespace SharpAlert.ProgramWorker
                 $"https://bunnytub.com/SharpAlert");
             if (ServiceMode) Console.WriteLine($"Running under Service Mode.");
 
-            // force instance reload here
             QuickSettings.Instance.DisableAlertProcessing = false;
             QuickSettings.Instance.PauseDataProcessing = false;
             QuickSettings.Instance.BypassAllFilters = false;
+            InternalUserID = QuickSettings.Instance.UserDiscordRichPresence;
 
             client.DefaultRequestHeaders.UserAgent.ParseAdd(SelfUserAgent);
 
@@ -574,66 +574,84 @@ namespace SharpAlert.ProgramWorker
 
             StartCatchAllThread("Discord Rich Presence", () =>
             {
-                if (!QuickSettings.Instance.AllowDiscordRichPresence)
-                {
-                    Console.WriteLine($"[Discord Rich Presence] Discord Rich Presence is disabled.");
-                    throw new NonRestartableException();
-                }
-
-                Console.WriteLine($"[Discord Rich Presence] Setting up Discord RPC.");
-
-                var client = new DiscordRpcClient("1184397437985620028")
-                {
-                    Logger = new DiscordRPC.Logging.ConsoleLogger(DiscordRPC.Logging.LogLevel.Warning, false)
-                };
-
-                client.OnReady += (sender, e) =>
-                {
-                    Console.WriteLine($"[Discord Rich Presence] Ready: {e.User.ID}");
-                    InternalUserID = e.User.ID;
-                };
-                
-                client.OnConnectionEstablished += (sender, e) =>
-                {
-                    Console.WriteLine($"[Discord Rich Presence] Connection established: {e.TimeCreated}");
-                };
-
-                client.OnConnectionFailed += (sender, e) =>
-                {
-                    Console.WriteLine($"[Discord Rich Presence] Connection failed: {e.FailedPipe}");
-                };
-
-                client.Initialize();
-
-                client.SetPresence(new RichPresence()
-                {
-                    Details = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
-                    DetailsUrl = "https://bunnytub.com/SharpAlert",
-                    State = $"Relayed {AlertProcessor.AlertsRelayed} alert(s).",
-                    Type = ActivityType.Watching,
-                    Assets = new Assets()
-                    {
-                        LargeImageKey = "sharpalert_squaredicon",
-                        LargeImageText = "SharpAlert"
-                    },
-                    StatusDisplay = StatusDisplayType.Details,
-                    //Buttons =
-                    //[
-                    //    new DiscordRPC.Button { Label = "Get SharpAlert", Url = "https://bunnytub.com/SharpAlert" }
-                    //]
-                });
-
                 while (AllowThreadRestarts)
                 {
-                    Thread.Sleep(5000);
-                    client.UpdateState($"Relayed {AlertProcessor.AlertsRelayed} alert(s).");
-                    Console.WriteLine("[Discord Rich Presence] Updated state.");
-                    //client.UpdateClearTime();
-                    ///client.SetButton(new DiscordRPC.Button { Label = "Download SharpAlert", Url = "https://bunnytub.com/SharpAlert" });
-                }
+                    Console.WriteLine($"[Discord Rich Presence] Setting up Discord RPC.");
 
-                //client.ShutdownOnly = true;
-                client.Deinitialize();
+                    var client = new DiscordRpcClient("1184397437985620028")
+                    {
+                        Logger = new DiscordRPC.Logging.ConsoleLogger(DiscordRPC.Logging.LogLevel.Error, false)
+                    };
+
+                    client.OnReady += (sender, e) =>
+                    {
+                        Console.WriteLine($"[Discord Rich Presence] Ready.");
+                        InternalUserID = e.User.ID;
+                        QuickSettings.Instance.UserDiscordRichPresence = InternalUserID;
+                    };
+
+                    //client.OnConnectionEstablished += (sender, e) =>
+                    //{
+                    //    Console.WriteLine($"[Discord Rich Presence] Connection established: {e.TimeCreated}");
+                    //};
+
+                    client.OnConnectionFailed += (sender, e) =>
+                    {
+                        Console.WriteLine($"[Discord Rich Presence] Connection failed (is Discord running?): {e.FailedPipe}");
+                    };
+
+                    client.Initialize();
+
+                    if (QuickSettings.Instance.AllowDiscordRichPresence)
+                    {
+                        //Console.WriteLine($"[Discord Rich Presence] Discord Rich Presence is disabled.");
+
+                        client.SetPresence(new RichPresence()
+                        {
+                            Details = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
+                            DetailsUrl = "https://bunnytub.com/SharpAlert",
+                            State = $"Relayed {AlertProcessor.AlertsRelayed} alert(s).",
+                            Type = ActivityType.Watching,
+                            Assets = new Assets()
+                            {
+                                LargeImageKey = "sharpalert_squaredicon",
+                                LargeImageText = "SharpAlert"
+                            },
+                            StatusDisplay = StatusDisplayType.Details,
+                            //Buttons =
+                            //[
+                            //    new DiscordRPC.Button { Label = "Get SharpAlert", Url = "https://bunnytub.com/SharpAlert" }
+                            //]
+                        });
+
+                        while (AllowThreadRestarts)
+                        {
+                            Thread.Sleep(10000);
+                            client.UpdateState($"Relayed {AlertProcessor.AlertsRelayed} alert(s).");
+                            Console.WriteLine("[Discord Rich Presence] Updated state.");
+                            //client.UpdateClearTime();
+                            //client.SetButton(new DiscordRPC.Button { Label = "Download SharpAlert", Url = "https://bunnytub.com/SharpAlert" });
+                        }
+                    }
+                    else
+                    {
+                        while (AllowThreadRestarts)
+                        {
+                            client.ClearPresence();
+                            Thread.Sleep(30000);
+                            //client.UpdateClearTime();
+                            //client.SetButton(new DiscordRPC.Button { Label = "Download SharpAlert", Url = "https://bunnytub.com/SharpAlert" });
+                        }
+                    }
+
+
+
+                    //client.ShutdownOnly = true;
+                    client.ClearPresence();
+                    client.Deinitialize();
+                    client.Dispose();
+                    Thread.Sleep(10000);
+                }
             }, true);
 
             StartCatchAllThread("Update Worker", () =>
@@ -656,6 +674,8 @@ namespace SharpAlert.ProgramWorker
             }, true);
 
             StartCatchAllThread("Pipe Worker", () => PipeWorker.ServerServiceRun(), false, false);
+
+            QuickSettings.Instance.Save();
         }
 
         //[DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]

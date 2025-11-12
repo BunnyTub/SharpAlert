@@ -77,7 +77,7 @@
             // 
             // LogoBox
             // 
-            this.LogoBox.Image = global::SharpAlert.Properties.Resources.CrashIcon;
+            this.LogoBox.Image = global::SharpAlert.Properties.Resources.AlertIcon;
             this.LogoBox.Location = new System.Drawing.Point(9, 9);
             this.LogoBox.Margin = new System.Windows.Forms.Padding(0);
             this.LogoBox.Name = "LogoBox";

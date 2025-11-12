@@ -12,7 +12,6 @@ namespace SharpAlert.ConfigurationDialogs
         public ConfigurationForm()
         {
             InitializeComponent();
-            //WindowSounds.AddClickAndHover(this);
         }
 
         private void ManagementForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -169,6 +168,12 @@ namespace SharpAlert.ConfigurationDialogs
             EnableUpdatesBox.Checked = QuickSettings.Instance.AllowPerformingUpdates;
             EnableDiscordRichPresenceBox.Checked = QuickSettings.Instance.AllowDiscordRichPresence;
             AllowNotifications = true;
+            ProhibitUsers_Tick(this, EventArgs.Empty);
+            if (IsUserLocked)
+            {
+                MessageBox.Show("Your access to some features (such as webhooks) that require connectivity have been restricted due to inappropriate behavior. This restriction is likely related to an infringement that was given to an associated account on this device.",
+                    Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private bool AllowNotifications = false;
@@ -215,12 +220,49 @@ namespace SharpAlert.ConfigurationDialogs
                     MessageBoxIcon.Information);
             }
 
+            QuickSettings.Instance.AskedForDiscordRichPresence = true;
             QuickSettings.Instance.AllowDiscordRichPresence = EnableDiscordRichPresenceBox.Checked;
         }
 
-        private void ConfigurationForm_HelpButtonClicked(object sender, System.ComponentModel.CancelEventArgs e)
-        {
+        private SecretConfigurationForm secret = null;
 
+        private void SecretSettingsButton_Click(object sender, EventArgs e)
+        {
+            if (MainEntryPoint.IsUserSuperSecretAccessor())
+            {
+                if (secret == null || secret.IsDisposed) secret = new SecretConfigurationForm();
+                secret.Show();
+                secret.Activate();
+            }
+            else Console.Beep(300, 200);
+        }
+
+        private SaveSlotsConfigurationForm slots = null;
+
+        private void SaveSlotsButton_Click(object sender, EventArgs e)
+        {
+            if (slots == null || slots.IsDisposed) slots = new SaveSlotsConfigurationForm();
+            slots.Show();
+            slots.Activate();
+        }
+
+        private bool IsUserLocked = false;
+
+        private void ProhibitUsers_Tick(object sender, EventArgs e)
+        {
+            if (MainEntryPoint.IsUserLocked())
+            {
+                IsUserLocked = true;
+                DiscordSettingsButton.Enabled = false;
+                try { if (dcf != null && !dcf.IsDisposed) dcf.Close(); } catch (Exception) { }
+                QuickSettings.Instance.DiscordWebhookFeaturesLocked = true;
+            }
+            else
+            {
+                IsUserLocked = false;
+                DiscordSettingsButton.Enabled = true;
+                QuickSettings.Instance.DiscordWebhookFeaturesLocked = false;
+            }
         }
     }
 }

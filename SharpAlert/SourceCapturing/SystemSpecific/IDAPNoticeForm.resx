@@ -120,7 +120,7 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Some networks are being blocked from accessing Brazil (IDAP), and you may be affected.
 
-The image behind this seen is an example seen by many when trying to receive and process Brazil's IDAP CAP stream. It has been this way for a long time, and there is no news or indication on why this is could be happening on some networks.
+Some systems are not being able to connect to Brazil's IDAP CAP stream, leaving them unable to process alerts from the server. It has been this way for a long time, and there is no news or indication on why this is could be happening on some networks.
 
 Your connection will now be tested automatically, and the current status of your connection to Brazil (IDAP) can be seen in the text below.</value>
   </data>

@@ -33,7 +33,6 @@
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             linkLabel1 = new System.Windows.Forms.LinkLabel();
-            label3 = new System.Windows.Forms.Label();
             linkLabel2 = new System.Windows.Forms.LinkLabel();
             linkLabel3 = new System.Windows.Forms.LinkLabel();
             SuspendLayout();
@@ -44,9 +43,9 @@
             label5.Location = new System.Drawing.Point(9, 9);
             label5.Margin = new System.Windows.Forms.Padding(0);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(231, 15);
+            label5.Size = new System.Drawing.Size(399, 15);
             label5.TabIndex = 7;
-            label5.Text = "SharpAlert is a project made by BunnyTub.";
+            label5.Text = "SharpAlert is a project created by BunnyTub, written and built in C# (.NET).";
             label5.DoubleClick += label5_DoubleClick;
             // 
             // label1
@@ -56,28 +55,29 @@
             label1.Location = new System.Drawing.Point(9, 39);
             label1.Margin = new System.Windows.Forms.Padding(0);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(96, 15);
+            label1.Size = new System.Drawing.Size(189, 15);
             label1.TabIndex = 8;
-            label1.Text = "NuGet packages:";
-            label1.Visible = false;
+            label1.Text = "Libraries used (Tool generated list):";
             label1.Click += label1_Click;
+            label1.DoubleClick += label1_DoubleClick;
             // 
             // label2
             // 
+            label2.Font = new System.Drawing.Font("Segoe UI", 8F);
             label2.ForeColor = System.Drawing.Color.Lime;
             label2.Location = new System.Drawing.Point(9, 54);
             label2.Margin = new System.Windows.Forms.Padding(0);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(530, 45);
+            label2.Size = new System.Drawing.Size(564, 120);
             label2.TabIndex = 9;
-            label2.Text = "Costura.Fody | Fody | NAudio";
-            label2.Visible = false;
+            label2.Text = resources.GetString("label2.Text");
             // 
             // linkLabel1
             // 
+            linkLabel1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             linkLabel1.AutoSize = true;
             linkLabel1.LinkColor = System.Drawing.Color.Pink;
-            linkLabel1.Location = new System.Drawing.Point(9, 114);
+            linkLabel1.Location = new System.Drawing.Point(9, 189);
             linkLabel1.Margin = new System.Windows.Forms.Padding(0);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new System.Drawing.Size(208, 15);
@@ -86,21 +86,12 @@
             linkLabel1.Text = "Credit to SecludedHusky for EAS2Text.";
             linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(9, 24);
-            label3.Margin = new System.Windows.Forms.Padding(0);
-            label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(217, 15);
-            label3.TabIndex = 12;
-            label3.Text = "Find alerting sources in Region Settings.";
-            // 
             // linkLabel2
             // 
+            linkLabel2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             linkLabel2.AutoSize = true;
             linkLabel2.LinkColor = System.Drawing.Color.Pink;
-            linkLabel2.Location = new System.Drawing.Point(9, 129);
+            linkLabel2.Location = new System.Drawing.Point(9, 204);
             linkLabel2.Margin = new System.Windows.Forms.Padding(0);
             linkLabel2.Name = "linkLabel2";
             linkLabel2.Size = new System.Drawing.Size(260, 15);
@@ -111,25 +102,25 @@
             // 
             // linkLabel3
             // 
+            linkLabel3.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             linkLabel3.AutoSize = true;
             linkLabel3.LinkColor = System.Drawing.Color.Pink;
-            linkLabel3.Location = new System.Drawing.Point(9, 99);
+            linkLabel3.Location = new System.Drawing.Point(9, 174);
             linkLabel3.Margin = new System.Windows.Forms.Padding(0);
             linkLabel3.Name = "linkLabel3";
-            linkLabel3.Size = new System.Drawing.Size(189, 15);
+            linkLabel3.Size = new System.Drawing.Size(338, 15);
             linkLabel3.TabIndex = 100;
             linkLabel3.TabStop = true;
-            linkLabel3.Text = "Credit to BunnyTub for SharpAlert.";
+            linkLabel3.Text = "This application and its contents are the property of BunnyTub.";
             linkLabel3.LinkClicked += linkLabel3_LinkClicked;
             // 
             // CreditsForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
-            ClientSize = new System.Drawing.Size(294, 153);
+            ClientSize = new System.Drawing.Size(582, 228);
             Controls.Add(linkLabel3);
             Controls.Add(linkLabel2);
-            Controls.Add(label3);
             Controls.Add(linkLabel1);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -143,7 +134,7 @@
             MinimizeBox = false;
             Name = "CreditsForm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "SharpAlert - Credits";
+            Text = "About SharpAlert";
             HelpButtonClicked += CreditsForm_HelpButtonClicked;
             Load += CreditsForm_Load;
             ResumeLayout(false);
@@ -157,7 +148,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.LinkLabel linkLabel3;
     }

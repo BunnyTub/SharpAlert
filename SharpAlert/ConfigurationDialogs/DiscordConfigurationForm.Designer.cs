@@ -28,757 +28,737 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiscordConfigurationForm));
-            this.BusyLockText = new System.Windows.Forms.Label();
-            this.ConfigurationPanel = new System.Windows.Forms.Panel();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.IDAPURLInput = new System.Windows.Forms.TextBox();
-            this.IDAPAppendInput = new System.Windows.Forms.TextBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.SASMEXURLInput = new System.Windows.Forms.TextBox();
-            this.SASMEXAppendInput = new System.Windows.Forms.TextBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.NAADSBackupURLInput = new System.Windows.Forms.TextBox();
-            this.NAADSBackupAppendInput = new System.Windows.Forms.TextBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.NAADSPrimaryURLInput = new System.Windows.Forms.TextBox();
-            this.NAADSPrimaryAppendInput = new System.Windows.Forms.TextBox();
-            this.DropChangesButton = new System.Windows.Forms.Button();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.NWSAtomURLInput = new System.Windows.Forms.TextBox();
-            this.NWSAtomAppendInput = new System.Windows.Forms.TextBox();
-            this.SaveDiscordSettingsButton = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.WEAURLInput = new System.Windows.Forms.TextBox();
-            this.WEAAppendInput = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.EASURLInput = new System.Windows.Forms.TextBox();
-            this.EASAppendInput = new System.Windows.Forms.TextBox();
-            this.DefaultDiscordGroup = new System.Windows.Forms.GroupBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.DefaultURLInput = new System.Windows.Forms.TextBox();
-            this.DefaultAppendInput = new System.Windows.Forms.TextBox();
-            this.BatteryGroup = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.BatteryReportingCriticalLevelInput = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
-            this.BatteryReportingCautionLevelInput = new System.Windows.Forms.NumericUpDown();
-            this.label3 = new System.Windows.Forms.Label();
-            this.DisableHeartbeatBox = new System.Windows.Forms.CheckBox();
-            this.TitleText = new System.Windows.Forms.Label();
-            this.DiscordWebhookRelayLocallyBox = new System.Windows.Forms.CheckBox();
-            this.DiscordWebhookConfirmAlertsBox = new System.Windows.Forms.CheckBox();
-            this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
-            this.ConfigurationPanel.SuspendLayout();
-            this.groupBox7.SuspendLayout();
-            this.groupBox6.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.DefaultDiscordGroup.SuspendLayout();
-            this.BatteryGroup.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BatteryReportingCriticalLevelInput)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BatteryReportingCautionLevelInput)).BeginInit();
-            this.SuspendLayout();
+            BusyLockText = new System.Windows.Forms.Label();
+            ConfigurationPanel = new System.Windows.Forms.Panel();
+            groupBox7 = new System.Windows.Forms.GroupBox();
+            label18 = new System.Windows.Forms.Label();
+            label19 = new System.Windows.Forms.Label();
+            IDAPURLInput = new System.Windows.Forms.TextBox();
+            IDAPAppendInput = new System.Windows.Forms.TextBox();
+            groupBox6 = new System.Windows.Forms.GroupBox();
+            label16 = new System.Windows.Forms.Label();
+            label17 = new System.Windows.Forms.Label();
+            SASMEXURLInput = new System.Windows.Forms.TextBox();
+            SASMEXAppendInput = new System.Windows.Forms.TextBox();
+            groupBox5 = new System.Windows.Forms.GroupBox();
+            label14 = new System.Windows.Forms.Label();
+            label15 = new System.Windows.Forms.Label();
+            NAADSBackupURLInput = new System.Windows.Forms.TextBox();
+            NAADSBackupAppendInput = new System.Windows.Forms.TextBox();
+            groupBox4 = new System.Windows.Forms.GroupBox();
+            label12 = new System.Windows.Forms.Label();
+            label13 = new System.Windows.Forms.Label();
+            NAADSPrimaryURLInput = new System.Windows.Forms.TextBox();
+            NAADSPrimaryAppendInput = new System.Windows.Forms.TextBox();
+            DropChangesButton = new System.Windows.Forms.Button();
+            groupBox3 = new System.Windows.Forms.GroupBox();
+            label10 = new System.Windows.Forms.Label();
+            label11 = new System.Windows.Forms.Label();
+            NWSAtomURLInput = new System.Windows.Forms.TextBox();
+            NWSAtomAppendInput = new System.Windows.Forms.TextBox();
+            SaveDiscordSettingsButton = new System.Windows.Forms.Button();
+            groupBox2 = new System.Windows.Forms.GroupBox();
+            label8 = new System.Windows.Forms.Label();
+            label9 = new System.Windows.Forms.Label();
+            WEAURLInput = new System.Windows.Forms.TextBox();
+            WEAAppendInput = new System.Windows.Forms.TextBox();
+            groupBox1 = new System.Windows.Forms.GroupBox();
+            label4 = new System.Windows.Forms.Label();
+            label5 = new System.Windows.Forms.Label();
+            EASURLInput = new System.Windows.Forms.TextBox();
+            EASAppendInput = new System.Windows.Forms.TextBox();
+            DefaultDiscordGroup = new System.Windows.Forms.GroupBox();
+            label7 = new System.Windows.Forms.Label();
+            label6 = new System.Windows.Forms.Label();
+            DefaultURLInput = new System.Windows.Forms.TextBox();
+            DefaultAppendInput = new System.Windows.Forms.TextBox();
+            BatteryGroup = new System.Windows.Forms.GroupBox();
+            label2 = new System.Windows.Forms.Label();
+            BatteryReportingCriticalLevelInput = new System.Windows.Forms.NumericUpDown();
+            label1 = new System.Windows.Forms.Label();
+            BatteryReportingCautionLevelInput = new System.Windows.Forms.NumericUpDown();
+            label3 = new System.Windows.Forms.Label();
+            DisableHeartbeatBox = new System.Windows.Forms.CheckBox();
+            TitleText = new System.Windows.Forms.Label();
+            DiscordWebhookRelayLocallyBox = new System.Windows.Forms.CheckBox();
+            DiscordWebhookConfirmAlertsBox = new System.Windows.Forms.CheckBox();
+            ToolTipInformation = new System.Windows.Forms.ToolTip(components);
+            ConfigurationPanel.SuspendLayout();
+            groupBox7.SuspendLayout();
+            groupBox6.SuspendLayout();
+            groupBox5.SuspendLayout();
+            groupBox4.SuspendLayout();
+            groupBox3.SuspendLayout();
+            groupBox2.SuspendLayout();
+            groupBox1.SuspendLayout();
+            DefaultDiscordGroup.SuspendLayout();
+            BatteryGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)BatteryReportingCriticalLevelInput).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)BatteryReportingCautionLevelInput).BeginInit();
+            SuspendLayout();
             // 
             // BusyLockText
             // 
-            this.BusyLockText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BusyLockText.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.BusyLockText.Location = new System.Drawing.Point(0, 0);
-            this.BusyLockText.Name = "BusyLockText";
-            this.BusyLockText.Size = new System.Drawing.Size(784, 411);
-            this.BusyLockText.TabIndex = 9;
-            this.BusyLockText.Text = "Please wait or dismiss all alerts to configure settings.";
-            this.BusyLockText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            BusyLockText.Dock = System.Windows.Forms.DockStyle.Fill;
+            BusyLockText.Font = new System.Drawing.Font("Segoe UI", 12F);
+            BusyLockText.Location = new System.Drawing.Point(0, 0);
+            BusyLockText.Name = "BusyLockText";
+            BusyLockText.Size = new System.Drawing.Size(784, 411);
+            BusyLockText.TabIndex = 9;
+            BusyLockText.Text = "Please wait or dismiss all alerts to configure settings.";
+            BusyLockText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ConfigurationPanel
             // 
-            this.ConfigurationPanel.Controls.Add(this.groupBox7);
-            this.ConfigurationPanel.Controls.Add(this.groupBox6);
-            this.ConfigurationPanel.Controls.Add(this.groupBox5);
-            this.ConfigurationPanel.Controls.Add(this.groupBox4);
-            this.ConfigurationPanel.Controls.Add(this.DropChangesButton);
-            this.ConfigurationPanel.Controls.Add(this.groupBox3);
-            this.ConfigurationPanel.Controls.Add(this.SaveDiscordSettingsButton);
-            this.ConfigurationPanel.Controls.Add(this.groupBox2);
-            this.ConfigurationPanel.Controls.Add(this.groupBox1);
-            this.ConfigurationPanel.Controls.Add(this.DefaultDiscordGroup);
-            this.ConfigurationPanel.Controls.Add(this.BatteryGroup);
-            this.ConfigurationPanel.Controls.Add(this.DisableHeartbeatBox);
-            this.ConfigurationPanel.Controls.Add(this.TitleText);
-            this.ConfigurationPanel.Controls.Add(this.DiscordWebhookRelayLocallyBox);
-            this.ConfigurationPanel.Controls.Add(this.DiscordWebhookConfirmAlertsBox);
-            this.ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
-            this.ConfigurationPanel.Name = "ConfigurationPanel";
-            this.ConfigurationPanel.Size = new System.Drawing.Size(784, 411);
-            this.ConfigurationPanel.TabIndex = 9;
+            ConfigurationPanel.Controls.Add(groupBox7);
+            ConfigurationPanel.Controls.Add(groupBox6);
+            ConfigurationPanel.Controls.Add(groupBox5);
+            ConfigurationPanel.Controls.Add(groupBox4);
+            ConfigurationPanel.Controls.Add(DropChangesButton);
+            ConfigurationPanel.Controls.Add(groupBox3);
+            ConfigurationPanel.Controls.Add(SaveDiscordSettingsButton);
+            ConfigurationPanel.Controls.Add(groupBox2);
+            ConfigurationPanel.Controls.Add(groupBox1);
+            ConfigurationPanel.Controls.Add(DefaultDiscordGroup);
+            ConfigurationPanel.Controls.Add(BatteryGroup);
+            ConfigurationPanel.Controls.Add(DisableHeartbeatBox);
+            ConfigurationPanel.Controls.Add(TitleText);
+            ConfigurationPanel.Controls.Add(DiscordWebhookRelayLocallyBox);
+            ConfigurationPanel.Controls.Add(DiscordWebhookConfirmAlertsBox);
+            ConfigurationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            ConfigurationPanel.Location = new System.Drawing.Point(0, 0);
+            ConfigurationPanel.Name = "ConfigurationPanel";
+            ConfigurationPanel.Size = new System.Drawing.Size(784, 411);
+            ConfigurationPanel.TabIndex = 9;
             // 
             // groupBox7
             // 
-            this.groupBox7.Controls.Add(this.label18);
-            this.groupBox7.Controls.Add(this.label19);
-            this.groupBox7.Controls.Add(this.IDAPURLInput);
-            this.groupBox7.Controls.Add(this.IDAPAppendInput);
-            this.groupBox7.ForeColor = System.Drawing.Color.White;
-            this.groupBox7.Location = new System.Drawing.Point(336, 333);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(318, 65);
-            this.groupBox7.TabIndex = 36;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "IDAP";
+            groupBox7.Controls.Add(label18);
+            groupBox7.Controls.Add(label19);
+            groupBox7.Controls.Add(IDAPURLInput);
+            groupBox7.Controls.Add(IDAPAppendInput);
+            groupBox7.ForeColor = System.Drawing.Color.White;
+            groupBox7.Location = new System.Drawing.Point(336, 333);
+            groupBox7.Name = "groupBox7";
+            groupBox7.Size = new System.Drawing.Size(318, 65);
+            groupBox7.TabIndex = 36;
+            groupBox7.TabStop = false;
+            groupBox7.Text = "IDAP";
             // 
             // label18
             // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(158, 18);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(115, 15);
-            this.label18.TabIndex = 25;
-            this.label18.Text = "Additional Message";
+            label18.AutoSize = true;
+            label18.Location = new System.Drawing.Point(158, 18);
+            label18.Name = "label18";
+            label18.Size = new System.Drawing.Size(111, 15);
+            label18.TabIndex = 25;
+            label18.Text = "Additional Message";
             // 
             // label19
             // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(6, 18);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(133, 15);
-            this.label19.TabIndex = 24;
-            this.label19.Text = "Discord Webhook URL";
+            label19.AutoSize = true;
+            label19.Location = new System.Drawing.Point(6, 18);
+            label19.Name = "label19";
+            label19.Size = new System.Drawing.Size(125, 15);
+            label19.TabIndex = 24;
+            label19.Text = "Discord Webhook URL";
             // 
             // IDAPURLInput
             // 
-            this.IDAPURLInput.BackColor = System.Drawing.Color.Black;
-            this.IDAPURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.IDAPURLInput.ForeColor = System.Drawing.Color.White;
-            this.IDAPURLInput.Location = new System.Drawing.Point(9, 36);
-            this.IDAPURLInput.Name = "IDAPURLInput";
-            this.IDAPURLInput.Size = new System.Drawing.Size(146, 21);
-            this.IDAPURLInput.TabIndex = 19;
-            this.ToolTipInformation.SetToolTip(this.IDAPURLInput, "The Discord webhook URL to send data to.");
+            IDAPURLInput.BackColor = System.Drawing.Color.Black;
+            IDAPURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            IDAPURLInput.ForeColor = System.Drawing.Color.White;
+            IDAPURLInput.Location = new System.Drawing.Point(9, 36);
+            IDAPURLInput.Name = "IDAPURLInput";
+            IDAPURLInput.Size = new System.Drawing.Size(146, 23);
+            IDAPURLInput.TabIndex = 19;
+            ToolTipInformation.SetToolTip(IDAPURLInput, "The Discord webhook URL to send data to.");
             // 
             // IDAPAppendInput
             // 
-            this.IDAPAppendInput.BackColor = System.Drawing.Color.Black;
-            this.IDAPAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.IDAPAppendInput.ForeColor = System.Drawing.Color.White;
-            this.IDAPAppendInput.Location = new System.Drawing.Point(161, 36);
-            this.IDAPAppendInput.Name = "IDAPAppendInput";
-            this.IDAPAppendInput.Size = new System.Drawing.Size(146, 21);
-            this.IDAPAppendInput.TabIndex = 20;
-            this.ToolTipInformation.SetToolTip(this.IDAPAppendInput, "An additional message to be added to the end of each alert message.");
+            IDAPAppendInput.BackColor = System.Drawing.Color.Black;
+            IDAPAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            IDAPAppendInput.ForeColor = System.Drawing.Color.White;
+            IDAPAppendInput.Location = new System.Drawing.Point(161, 36);
+            IDAPAppendInput.Name = "IDAPAppendInput";
+            IDAPAppendInput.Size = new System.Drawing.Size(146, 23);
+            IDAPAppendInput.TabIndex = 20;
+            ToolTipInformation.SetToolTip(IDAPAppendInput, "An additional message to be added to the end of each alert message.");
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.label16);
-            this.groupBox6.Controls.Add(this.label17);
-            this.groupBox6.Controls.Add(this.SASMEXURLInput);
-            this.groupBox6.Controls.Add(this.SASMEXAppendInput);
-            this.groupBox6.ForeColor = System.Drawing.Color.White;
-            this.groupBox6.Location = new System.Drawing.Point(336, 262);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(318, 65);
-            this.groupBox6.TabIndex = 35;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "SASMEX";
+            groupBox6.Controls.Add(label16);
+            groupBox6.Controls.Add(label17);
+            groupBox6.Controls.Add(SASMEXURLInput);
+            groupBox6.Controls.Add(SASMEXAppendInput);
+            groupBox6.ForeColor = System.Drawing.Color.White;
+            groupBox6.Location = new System.Drawing.Point(336, 262);
+            groupBox6.Name = "groupBox6";
+            groupBox6.Size = new System.Drawing.Size(318, 65);
+            groupBox6.TabIndex = 35;
+            groupBox6.TabStop = false;
+            groupBox6.Text = "SASMEX";
             // 
             // label16
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(158, 18);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(115, 15);
-            this.label16.TabIndex = 25;
-            this.label16.Text = "Additional Message";
+            label16.AutoSize = true;
+            label16.Location = new System.Drawing.Point(158, 18);
+            label16.Name = "label16";
+            label16.Size = new System.Drawing.Size(111, 15);
+            label16.TabIndex = 25;
+            label16.Text = "Additional Message";
             // 
             // label17
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 18);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(133, 15);
-            this.label17.TabIndex = 24;
-            this.label17.Text = "Discord Webhook URL";
+            label17.AutoSize = true;
+            label17.Location = new System.Drawing.Point(6, 18);
+            label17.Name = "label17";
+            label17.Size = new System.Drawing.Size(125, 15);
+            label17.TabIndex = 24;
+            label17.Text = "Discord Webhook URL";
             // 
             // SASMEXURLInput
             // 
-            this.SASMEXURLInput.BackColor = System.Drawing.Color.Black;
-            this.SASMEXURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SASMEXURLInput.ForeColor = System.Drawing.Color.White;
-            this.SASMEXURLInput.Location = new System.Drawing.Point(9, 36);
-            this.SASMEXURLInput.Name = "SASMEXURLInput";
-            this.SASMEXURLInput.Size = new System.Drawing.Size(146, 21);
-            this.SASMEXURLInput.TabIndex = 19;
-            this.ToolTipInformation.SetToolTip(this.SASMEXURLInput, "The Discord webhook URL to send data to.");
+            SASMEXURLInput.BackColor = System.Drawing.Color.Black;
+            SASMEXURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            SASMEXURLInput.ForeColor = System.Drawing.Color.White;
+            SASMEXURLInput.Location = new System.Drawing.Point(9, 36);
+            SASMEXURLInput.Name = "SASMEXURLInput";
+            SASMEXURLInput.Size = new System.Drawing.Size(146, 23);
+            SASMEXURLInput.TabIndex = 19;
+            ToolTipInformation.SetToolTip(SASMEXURLInput, "The Discord webhook URL to send data to.");
             // 
             // SASMEXAppendInput
             // 
-            this.SASMEXAppendInput.BackColor = System.Drawing.Color.Black;
-            this.SASMEXAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SASMEXAppendInput.ForeColor = System.Drawing.Color.White;
-            this.SASMEXAppendInput.Location = new System.Drawing.Point(161, 36);
-            this.SASMEXAppendInput.Name = "SASMEXAppendInput";
-            this.SASMEXAppendInput.Size = new System.Drawing.Size(146, 21);
-            this.SASMEXAppendInput.TabIndex = 20;
-            this.ToolTipInformation.SetToolTip(this.SASMEXAppendInput, "An additional message to be added to the end of each alert message.");
+            SASMEXAppendInput.BackColor = System.Drawing.Color.Black;
+            SASMEXAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            SASMEXAppendInput.ForeColor = System.Drawing.Color.White;
+            SASMEXAppendInput.Location = new System.Drawing.Point(161, 36);
+            SASMEXAppendInput.Name = "SASMEXAppendInput";
+            SASMEXAppendInput.Size = new System.Drawing.Size(146, 23);
+            SASMEXAppendInput.TabIndex = 20;
+            ToolTipInformation.SetToolTip(SASMEXAppendInput, "An additional message to be added to the end of each alert message.");
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.label14);
-            this.groupBox5.Controls.Add(this.label15);
-            this.groupBox5.Controls.Add(this.NAADSBackupURLInput);
-            this.groupBox5.Controls.Add(this.NAADSBackupAppendInput);
-            this.groupBox5.ForeColor = System.Drawing.Color.White;
-            this.groupBox5.Location = new System.Drawing.Point(336, 191);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(318, 65);
-            this.groupBox5.TabIndex = 34;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Canada (NAADS Backup)";
+            groupBox5.Controls.Add(label14);
+            groupBox5.Controls.Add(label15);
+            groupBox5.Controls.Add(NAADSBackupURLInput);
+            groupBox5.Controls.Add(NAADSBackupAppendInput);
+            groupBox5.ForeColor = System.Drawing.Color.White;
+            groupBox5.Location = new System.Drawing.Point(336, 191);
+            groupBox5.Name = "groupBox5";
+            groupBox5.Size = new System.Drawing.Size(318, 65);
+            groupBox5.TabIndex = 34;
+            groupBox5.TabStop = false;
+            groupBox5.Text = "Canada (NAADS Backup)";
             // 
             // label14
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(158, 18);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(115, 15);
-            this.label14.TabIndex = 25;
-            this.label14.Text = "Additional Message";
+            label14.AutoSize = true;
+            label14.Location = new System.Drawing.Point(158, 18);
+            label14.Name = "label14";
+            label14.Size = new System.Drawing.Size(111, 15);
+            label14.TabIndex = 25;
+            label14.Text = "Additional Message";
             // 
             // label15
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 18);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(133, 15);
-            this.label15.TabIndex = 24;
-            this.label15.Text = "Discord Webhook URL";
+            label15.AutoSize = true;
+            label15.Location = new System.Drawing.Point(6, 18);
+            label15.Name = "label15";
+            label15.Size = new System.Drawing.Size(125, 15);
+            label15.TabIndex = 24;
+            label15.Text = "Discord Webhook URL";
             // 
             // NAADSBackupURLInput
             // 
-            this.NAADSBackupURLInput.BackColor = System.Drawing.Color.Black;
-            this.NAADSBackupURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.NAADSBackupURLInput.ForeColor = System.Drawing.Color.White;
-            this.NAADSBackupURLInput.Location = new System.Drawing.Point(9, 36);
-            this.NAADSBackupURLInput.Name = "NAADSBackupURLInput";
-            this.NAADSBackupURLInput.Size = new System.Drawing.Size(146, 21);
-            this.NAADSBackupURLInput.TabIndex = 19;
-            this.ToolTipInformation.SetToolTip(this.NAADSBackupURLInput, "The Discord webhook URL to send data to.");
+            NAADSBackupURLInput.BackColor = System.Drawing.Color.Black;
+            NAADSBackupURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            NAADSBackupURLInput.ForeColor = System.Drawing.Color.White;
+            NAADSBackupURLInput.Location = new System.Drawing.Point(9, 36);
+            NAADSBackupURLInput.Name = "NAADSBackupURLInput";
+            NAADSBackupURLInput.Size = new System.Drawing.Size(146, 23);
+            NAADSBackupURLInput.TabIndex = 19;
+            ToolTipInformation.SetToolTip(NAADSBackupURLInput, "The Discord webhook URL to send data to.");
             // 
             // NAADSBackupAppendInput
             // 
-            this.NAADSBackupAppendInput.BackColor = System.Drawing.Color.Black;
-            this.NAADSBackupAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.NAADSBackupAppendInput.ForeColor = System.Drawing.Color.White;
-            this.NAADSBackupAppendInput.Location = new System.Drawing.Point(161, 36);
-            this.NAADSBackupAppendInput.Name = "NAADSBackupAppendInput";
-            this.NAADSBackupAppendInput.Size = new System.Drawing.Size(146, 21);
-            this.NAADSBackupAppendInput.TabIndex = 20;
-            this.ToolTipInformation.SetToolTip(this.NAADSBackupAppendInput, "An additional message to be added to the end of each alert message.");
+            NAADSBackupAppendInput.BackColor = System.Drawing.Color.Black;
+            NAADSBackupAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            NAADSBackupAppendInput.ForeColor = System.Drawing.Color.White;
+            NAADSBackupAppendInput.Location = new System.Drawing.Point(161, 36);
+            NAADSBackupAppendInput.Name = "NAADSBackupAppendInput";
+            NAADSBackupAppendInput.Size = new System.Drawing.Size(146, 23);
+            NAADSBackupAppendInput.TabIndex = 20;
+            ToolTipInformation.SetToolTip(NAADSBackupAppendInput, "An additional message to be added to the end of each alert message.");
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.label12);
-            this.groupBox4.Controls.Add(this.label13);
-            this.groupBox4.Controls.Add(this.NAADSPrimaryURLInput);
-            this.groupBox4.Controls.Add(this.NAADSPrimaryAppendInput);
-            this.groupBox4.ForeColor = System.Drawing.Color.White;
-            this.groupBox4.Location = new System.Drawing.Point(336, 120);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(318, 65);
-            this.groupBox4.TabIndex = 33;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Canada (NAADS Primary)";
+            groupBox4.Controls.Add(label12);
+            groupBox4.Controls.Add(label13);
+            groupBox4.Controls.Add(NAADSPrimaryURLInput);
+            groupBox4.Controls.Add(NAADSPrimaryAppendInput);
+            groupBox4.ForeColor = System.Drawing.Color.White;
+            groupBox4.Location = new System.Drawing.Point(336, 120);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new System.Drawing.Size(318, 65);
+            groupBox4.TabIndex = 33;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "Canada (NAADS Primary)";
             // 
             // label12
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(158, 18);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(115, 15);
-            this.label12.TabIndex = 25;
-            this.label12.Text = "Additional Message";
+            label12.AutoSize = true;
+            label12.Location = new System.Drawing.Point(158, 18);
+            label12.Name = "label12";
+            label12.Size = new System.Drawing.Size(111, 15);
+            label12.TabIndex = 25;
+            label12.Text = "Additional Message";
             // 
             // label13
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 18);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(133, 15);
-            this.label13.TabIndex = 24;
-            this.label13.Text = "Discord Webhook URL";
+            label13.AutoSize = true;
+            label13.Location = new System.Drawing.Point(6, 18);
+            label13.Name = "label13";
+            label13.Size = new System.Drawing.Size(125, 15);
+            label13.TabIndex = 24;
+            label13.Text = "Discord Webhook URL";
             // 
             // NAADSPrimaryURLInput
             // 
-            this.NAADSPrimaryURLInput.BackColor = System.Drawing.Color.Black;
-            this.NAADSPrimaryURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.NAADSPrimaryURLInput.ForeColor = System.Drawing.Color.White;
-            this.NAADSPrimaryURLInput.Location = new System.Drawing.Point(9, 36);
-            this.NAADSPrimaryURLInput.Name = "NAADSPrimaryURLInput";
-            this.NAADSPrimaryURLInput.Size = new System.Drawing.Size(146, 21);
-            this.NAADSPrimaryURLInput.TabIndex = 19;
-            this.ToolTipInformation.SetToolTip(this.NAADSPrimaryURLInput, "The Discord webhook URL to send data to.");
+            NAADSPrimaryURLInput.BackColor = System.Drawing.Color.Black;
+            NAADSPrimaryURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            NAADSPrimaryURLInput.ForeColor = System.Drawing.Color.White;
+            NAADSPrimaryURLInput.Location = new System.Drawing.Point(9, 36);
+            NAADSPrimaryURLInput.Name = "NAADSPrimaryURLInput";
+            NAADSPrimaryURLInput.Size = new System.Drawing.Size(146, 23);
+            NAADSPrimaryURLInput.TabIndex = 19;
+            ToolTipInformation.SetToolTip(NAADSPrimaryURLInput, "The Discord webhook URL to send data to.");
             // 
             // NAADSPrimaryAppendInput
             // 
-            this.NAADSPrimaryAppendInput.BackColor = System.Drawing.Color.Black;
-            this.NAADSPrimaryAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.NAADSPrimaryAppendInput.ForeColor = System.Drawing.Color.White;
-            this.NAADSPrimaryAppendInput.Location = new System.Drawing.Point(161, 36);
-            this.NAADSPrimaryAppendInput.Name = "NAADSPrimaryAppendInput";
-            this.NAADSPrimaryAppendInput.Size = new System.Drawing.Size(146, 21);
-            this.NAADSPrimaryAppendInput.TabIndex = 20;
-            this.ToolTipInformation.SetToolTip(this.NAADSPrimaryAppendInput, "An additional message to be added to the end of each alert message.");
+            NAADSPrimaryAppendInput.BackColor = System.Drawing.Color.Black;
+            NAADSPrimaryAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            NAADSPrimaryAppendInput.ForeColor = System.Drawing.Color.White;
+            NAADSPrimaryAppendInput.Location = new System.Drawing.Point(161, 36);
+            NAADSPrimaryAppendInput.Name = "NAADSPrimaryAppendInput";
+            NAADSPrimaryAppendInput.Size = new System.Drawing.Size(146, 23);
+            NAADSPrimaryAppendInput.TabIndex = 20;
+            ToolTipInformation.SetToolTip(NAADSPrimaryAppendInput, "An additional message to be added to the end of each alert message.");
             // 
             // DropChangesButton
             // 
-            this.DropChangesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.DropChangesButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.DropChangesButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DropChangesButton.Location = new System.Drawing.Point(665, 343);
-            this.DropChangesButton.Name = "DropChangesButton";
-            this.DropChangesButton.Size = new System.Drawing.Size(107, 25);
-            this.DropChangesButton.TabIndex = 32;
-            this.DropChangesButton.Text = "Drop Changes";
-            this.ToolTipInformation.SetToolTip(this.DropChangesButton, "Drops changes that have been made to webhooks and additional messages.");
-            this.DropChangesButton.UseVisualStyleBackColor = false;
-            this.DropChangesButton.Click += new System.EventHandler(this.DropChangesButton_Click);
+            DropChangesButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            DropChangesButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            DropChangesButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            DropChangesButton.Location = new System.Drawing.Point(665, 343);
+            DropChangesButton.Name = "DropChangesButton";
+            DropChangesButton.Size = new System.Drawing.Size(107, 25);
+            DropChangesButton.TabIndex = 32;
+            DropChangesButton.Text = "Drop Changes";
+            ToolTipInformation.SetToolTip(DropChangesButton, "Drops changes that have been made to webhooks and additional messages.");
+            DropChangesButton.UseVisualStyleBackColor = false;
+            DropChangesButton.Click += DropChangesButton_Click;
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Controls.Add(this.label11);
-            this.groupBox3.Controls.Add(this.NWSAtomURLInput);
-            this.groupBox3.Controls.Add(this.NWSAtomAppendInput);
-            this.groupBox3.ForeColor = System.Drawing.Color.White;
-            this.groupBox3.Location = new System.Drawing.Point(12, 333);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(318, 65);
-            this.groupBox3.TabIndex = 31;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "NWS Atom";
+            groupBox3.Controls.Add(label10);
+            groupBox3.Controls.Add(label11);
+            groupBox3.Controls.Add(NWSAtomURLInput);
+            groupBox3.Controls.Add(NWSAtomAppendInput);
+            groupBox3.ForeColor = System.Drawing.Color.White;
+            groupBox3.Location = new System.Drawing.Point(12, 333);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new System.Drawing.Size(318, 65);
+            groupBox3.TabIndex = 31;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "NWS Atom";
             // 
             // label10
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(158, 18);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(115, 15);
-            this.label10.TabIndex = 25;
-            this.label10.Text = "Additional Message";
+            label10.AutoSize = true;
+            label10.Location = new System.Drawing.Point(158, 18);
+            label10.Name = "label10";
+            label10.Size = new System.Drawing.Size(111, 15);
+            label10.TabIndex = 25;
+            label10.Text = "Additional Message";
             // 
             // label11
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 18);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(133, 15);
-            this.label11.TabIndex = 24;
-            this.label11.Text = "Discord Webhook URL";
+            label11.AutoSize = true;
+            label11.Location = new System.Drawing.Point(6, 18);
+            label11.Name = "label11";
+            label11.Size = new System.Drawing.Size(125, 15);
+            label11.TabIndex = 24;
+            label11.Text = "Discord Webhook URL";
             // 
             // NWSAtomURLInput
             // 
-            this.NWSAtomURLInput.BackColor = System.Drawing.Color.Black;
-            this.NWSAtomURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.NWSAtomURLInput.ForeColor = System.Drawing.Color.White;
-            this.NWSAtomURLInput.Location = new System.Drawing.Point(9, 36);
-            this.NWSAtomURLInput.Name = "NWSAtomURLInput";
-            this.NWSAtomURLInput.Size = new System.Drawing.Size(146, 21);
-            this.NWSAtomURLInput.TabIndex = 19;
-            this.ToolTipInformation.SetToolTip(this.NWSAtomURLInput, "The Discord webhook URL to send data to.");
+            NWSAtomURLInput.BackColor = System.Drawing.Color.Black;
+            NWSAtomURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            NWSAtomURLInput.ForeColor = System.Drawing.Color.White;
+            NWSAtomURLInput.Location = new System.Drawing.Point(9, 36);
+            NWSAtomURLInput.Name = "NWSAtomURLInput";
+            NWSAtomURLInput.Size = new System.Drawing.Size(146, 23);
+            NWSAtomURLInput.TabIndex = 19;
+            ToolTipInformation.SetToolTip(NWSAtomURLInput, "The Discord webhook URL to send data to.");
             // 
             // NWSAtomAppendInput
             // 
-            this.NWSAtomAppendInput.BackColor = System.Drawing.Color.Black;
-            this.NWSAtomAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.NWSAtomAppendInput.ForeColor = System.Drawing.Color.White;
-            this.NWSAtomAppendInput.Location = new System.Drawing.Point(161, 36);
-            this.NWSAtomAppendInput.Name = "NWSAtomAppendInput";
-            this.NWSAtomAppendInput.Size = new System.Drawing.Size(146, 21);
-            this.NWSAtomAppendInput.TabIndex = 20;
-            this.ToolTipInformation.SetToolTip(this.NWSAtomAppendInput, "An additional message to be added to the end of each alert message.");
+            NWSAtomAppendInput.BackColor = System.Drawing.Color.Black;
+            NWSAtomAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            NWSAtomAppendInput.ForeColor = System.Drawing.Color.White;
+            NWSAtomAppendInput.Location = new System.Drawing.Point(161, 36);
+            NWSAtomAppendInput.Name = "NWSAtomAppendInput";
+            NWSAtomAppendInput.Size = new System.Drawing.Size(146, 23);
+            NWSAtomAppendInput.TabIndex = 20;
+            ToolTipInformation.SetToolTip(NWSAtomAppendInput, "An additional message to be added to the end of each alert message.");
             // 
             // SaveDiscordSettingsButton
             // 
-            this.SaveDiscordSettingsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.SaveDiscordSettingsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.SaveDiscordSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SaveDiscordSettingsButton.Location = new System.Drawing.Point(665, 374);
-            this.SaveDiscordSettingsButton.Name = "SaveDiscordSettingsButton";
-            this.SaveDiscordSettingsButton.Size = new System.Drawing.Size(107, 25);
-            this.SaveDiscordSettingsButton.TabIndex = 22;
-            this.SaveDiscordSettingsButton.Text = "Apply Changes";
-            this.ToolTipInformation.SetToolTip(this.SaveDiscordSettingsButton, "Applies webhook information immediately.");
-            this.SaveDiscordSettingsButton.UseVisualStyleBackColor = false;
-            this.SaveDiscordSettingsButton.Click += new System.EventHandler(this.SaveDiscordSettingsButton_Click);
+            SaveDiscordSettingsButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            SaveDiscordSettingsButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            SaveDiscordSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            SaveDiscordSettingsButton.Location = new System.Drawing.Point(665, 374);
+            SaveDiscordSettingsButton.Name = "SaveDiscordSettingsButton";
+            SaveDiscordSettingsButton.Size = new System.Drawing.Size(107, 25);
+            SaveDiscordSettingsButton.TabIndex = 22;
+            SaveDiscordSettingsButton.Text = "Apply Changes";
+            ToolTipInformation.SetToolTip(SaveDiscordSettingsButton, "Applies webhook information immediately.");
+            SaveDiscordSettingsButton.UseVisualStyleBackColor = false;
+            SaveDiscordSettingsButton.Click += SaveDiscordSettingsButton_Click;
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.label9);
-            this.groupBox2.Controls.Add(this.WEAURLInput);
-            this.groupBox2.Controls.Add(this.WEAAppendInput);
-            this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(12, 262);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(318, 65);
-            this.groupBox2.TabIndex = 30;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "FEMA IPAWS (WEA)";
+            groupBox2.Controls.Add(label8);
+            groupBox2.Controls.Add(label9);
+            groupBox2.Controls.Add(WEAURLInput);
+            groupBox2.Controls.Add(WEAAppendInput);
+            groupBox2.ForeColor = System.Drawing.Color.White;
+            groupBox2.Location = new System.Drawing.Point(12, 262);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new System.Drawing.Size(318, 65);
+            groupBox2.TabIndex = 30;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "FEMA IPAWS (WEA)";
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(158, 18);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(115, 15);
-            this.label8.TabIndex = 25;
-            this.label8.Text = "Additional Message";
+            label8.AutoSize = true;
+            label8.Location = new System.Drawing.Point(158, 18);
+            label8.Name = "label8";
+            label8.Size = new System.Drawing.Size(111, 15);
+            label8.TabIndex = 25;
+            label8.Text = "Additional Message";
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 18);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(133, 15);
-            this.label9.TabIndex = 24;
-            this.label9.Text = "Discord Webhook URL";
+            label9.AutoSize = true;
+            label9.Location = new System.Drawing.Point(6, 18);
+            label9.Name = "label9";
+            label9.Size = new System.Drawing.Size(125, 15);
+            label9.TabIndex = 24;
+            label9.Text = "Discord Webhook URL";
             // 
             // WEAURLInput
             // 
-            this.WEAURLInput.BackColor = System.Drawing.Color.Black;
-            this.WEAURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.WEAURLInput.ForeColor = System.Drawing.Color.White;
-            this.WEAURLInput.Location = new System.Drawing.Point(9, 36);
-            this.WEAURLInput.Name = "WEAURLInput";
-            this.WEAURLInput.Size = new System.Drawing.Size(146, 21);
-            this.WEAURLInput.TabIndex = 19;
-            this.ToolTipInformation.SetToolTip(this.WEAURLInput, "The Discord webhook URL to send data to.");
+            WEAURLInput.BackColor = System.Drawing.Color.Black;
+            WEAURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            WEAURLInput.ForeColor = System.Drawing.Color.White;
+            WEAURLInput.Location = new System.Drawing.Point(9, 36);
+            WEAURLInput.Name = "WEAURLInput";
+            WEAURLInput.Size = new System.Drawing.Size(146, 23);
+            WEAURLInput.TabIndex = 19;
+            ToolTipInformation.SetToolTip(WEAURLInput, "The Discord webhook URL to send data to.");
             // 
             // WEAAppendInput
             // 
-            this.WEAAppendInput.BackColor = System.Drawing.Color.Black;
-            this.WEAAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.WEAAppendInput.ForeColor = System.Drawing.Color.White;
-            this.WEAAppendInput.Location = new System.Drawing.Point(161, 36);
-            this.WEAAppendInput.Name = "WEAAppendInput";
-            this.WEAAppendInput.Size = new System.Drawing.Size(146, 21);
-            this.WEAAppendInput.TabIndex = 20;
-            this.ToolTipInformation.SetToolTip(this.WEAAppendInput, "An additional message to be added to the end of each alert message.");
+            WEAAppendInput.BackColor = System.Drawing.Color.Black;
+            WEAAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            WEAAppendInput.ForeColor = System.Drawing.Color.White;
+            WEAAppendInput.Location = new System.Drawing.Point(161, 36);
+            WEAAppendInput.Name = "WEAAppendInput";
+            WEAAppendInput.Size = new System.Drawing.Size(146, 23);
+            WEAAppendInput.TabIndex = 20;
+            ToolTipInformation.SetToolTip(WEAAppendInput, "An additional message to be added to the end of each alert message.");
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.EASURLInput);
-            this.groupBox1.Controls.Add(this.EASAppendInput);
-            this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(12, 191);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(318, 65);
-            this.groupBox1.TabIndex = 29;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "FEMA IPAWS (EAS)";
+            groupBox1.Controls.Add(label4);
+            groupBox1.Controls.Add(label5);
+            groupBox1.Controls.Add(EASURLInput);
+            groupBox1.Controls.Add(EASAppendInput);
+            groupBox1.ForeColor = System.Drawing.Color.White;
+            groupBox1.Location = new System.Drawing.Point(12, 191);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new System.Drawing.Size(318, 65);
+            groupBox1.TabIndex = 29;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "FEMA IPAWS (EAS)";
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(158, 18);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(115, 15);
-            this.label4.TabIndex = 25;
-            this.label4.Text = "Additional Message";
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(158, 18);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(111, 15);
+            label4.TabIndex = 25;
+            label4.Text = "Additional Message";
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 18);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(133, 15);
-            this.label5.TabIndex = 24;
-            this.label5.Text = "Discord Webhook URL";
+            label5.AutoSize = true;
+            label5.Location = new System.Drawing.Point(6, 18);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(125, 15);
+            label5.TabIndex = 24;
+            label5.Text = "Discord Webhook URL";
             // 
             // EASURLInput
             // 
-            this.EASURLInput.BackColor = System.Drawing.Color.Black;
-            this.EASURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.EASURLInput.ForeColor = System.Drawing.Color.White;
-            this.EASURLInput.Location = new System.Drawing.Point(9, 36);
-            this.EASURLInput.Name = "EASURLInput";
-            this.EASURLInput.Size = new System.Drawing.Size(146, 21);
-            this.EASURLInput.TabIndex = 19;
-            this.ToolTipInformation.SetToolTip(this.EASURLInput, "The Discord webhook URL to send data to.");
+            EASURLInput.BackColor = System.Drawing.Color.Black;
+            EASURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            EASURLInput.ForeColor = System.Drawing.Color.White;
+            EASURLInput.Location = new System.Drawing.Point(9, 36);
+            EASURLInput.Name = "EASURLInput";
+            EASURLInput.Size = new System.Drawing.Size(146, 23);
+            EASURLInput.TabIndex = 19;
+            ToolTipInformation.SetToolTip(EASURLInput, "The Discord webhook URL to send data to.");
             // 
             // EASAppendInput
             // 
-            this.EASAppendInput.BackColor = System.Drawing.Color.Black;
-            this.EASAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.EASAppendInput.ForeColor = System.Drawing.Color.White;
-            this.EASAppendInput.Location = new System.Drawing.Point(161, 36);
-            this.EASAppendInput.Name = "EASAppendInput";
-            this.EASAppendInput.Size = new System.Drawing.Size(146, 21);
-            this.EASAppendInput.TabIndex = 20;
-            this.ToolTipInformation.SetToolTip(this.EASAppendInput, "An additional message to be added to the end of each alert message.");
+            EASAppendInput.BackColor = System.Drawing.Color.Black;
+            EASAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            EASAppendInput.ForeColor = System.Drawing.Color.White;
+            EASAppendInput.Location = new System.Drawing.Point(161, 36);
+            EASAppendInput.Name = "EASAppendInput";
+            EASAppendInput.Size = new System.Drawing.Size(146, 23);
+            EASAppendInput.TabIndex = 20;
+            ToolTipInformation.SetToolTip(EASAppendInput, "An additional message to be added to the end of each alert message.");
             // 
             // DefaultDiscordGroup
             // 
-            this.DefaultDiscordGroup.Controls.Add(this.label7);
-            this.DefaultDiscordGroup.Controls.Add(this.label6);
-            this.DefaultDiscordGroup.Controls.Add(this.DefaultURLInput);
-            this.DefaultDiscordGroup.Controls.Add(this.DefaultAppendInput);
-            this.DefaultDiscordGroup.ForeColor = System.Drawing.Color.White;
-            this.DefaultDiscordGroup.Location = new System.Drawing.Point(12, 120);
-            this.DefaultDiscordGroup.Name = "DefaultDiscordGroup";
-            this.DefaultDiscordGroup.Size = new System.Drawing.Size(318, 65);
-            this.DefaultDiscordGroup.TabIndex = 28;
-            this.DefaultDiscordGroup.TabStop = false;
-            this.DefaultDiscordGroup.Text = "Default (any other source)";
+            DefaultDiscordGroup.Controls.Add(label7);
+            DefaultDiscordGroup.Controls.Add(label6);
+            DefaultDiscordGroup.Controls.Add(DefaultURLInput);
+            DefaultDiscordGroup.Controls.Add(DefaultAppendInput);
+            DefaultDiscordGroup.ForeColor = System.Drawing.Color.White;
+            DefaultDiscordGroup.Location = new System.Drawing.Point(12, 120);
+            DefaultDiscordGroup.Name = "DefaultDiscordGroup";
+            DefaultDiscordGroup.Size = new System.Drawing.Size(318, 65);
+            DefaultDiscordGroup.TabIndex = 28;
+            DefaultDiscordGroup.TabStop = false;
+            DefaultDiscordGroup.Text = "Default (any other source)";
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(158, 18);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(115, 15);
-            this.label7.TabIndex = 25;
-            this.label7.Text = "Additional Message";
+            label7.AutoSize = true;
+            label7.Location = new System.Drawing.Point(158, 18);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(111, 15);
+            label7.TabIndex = 25;
+            label7.Text = "Additional Message";
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 18);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(133, 15);
-            this.label6.TabIndex = 24;
-            this.label6.Text = "Discord Webhook URL";
+            label6.AutoSize = true;
+            label6.Location = new System.Drawing.Point(6, 18);
+            label6.Name = "label6";
+            label6.Size = new System.Drawing.Size(125, 15);
+            label6.TabIndex = 24;
+            label6.Text = "Discord Webhook URL";
             // 
             // DefaultURLInput
             // 
-            this.DefaultURLInput.BackColor = System.Drawing.Color.Black;
-            this.DefaultURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DefaultURLInput.ForeColor = System.Drawing.Color.White;
-            this.DefaultURLInput.Location = new System.Drawing.Point(9, 36);
-            this.DefaultURLInput.Name = "DefaultURLInput";
-            this.DefaultURLInput.Size = new System.Drawing.Size(146, 21);
-            this.DefaultURLInput.TabIndex = 19;
-            this.ToolTipInformation.SetToolTip(this.DefaultURLInput, "The Discord webhook URL to send data to.");
+            DefaultURLInput.BackColor = System.Drawing.Color.Black;
+            DefaultURLInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            DefaultURLInput.ForeColor = System.Drawing.Color.White;
+            DefaultURLInput.Location = new System.Drawing.Point(9, 36);
+            DefaultURLInput.Name = "DefaultURLInput";
+            DefaultURLInput.Size = new System.Drawing.Size(146, 23);
+            DefaultURLInput.TabIndex = 19;
+            ToolTipInformation.SetToolTip(DefaultURLInput, "The Discord webhook URL to send data to.");
             // 
             // DefaultAppendInput
             // 
-            this.DefaultAppendInput.BackColor = System.Drawing.Color.Black;
-            this.DefaultAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DefaultAppendInput.ForeColor = System.Drawing.Color.White;
-            this.DefaultAppendInput.Location = new System.Drawing.Point(161, 36);
-            this.DefaultAppendInput.Name = "DefaultAppendInput";
-            this.DefaultAppendInput.Size = new System.Drawing.Size(146, 21);
-            this.DefaultAppendInput.TabIndex = 20;
-            this.ToolTipInformation.SetToolTip(this.DefaultAppendInput, "An additional message to be added to the end of each alert message.");
+            DefaultAppendInput.BackColor = System.Drawing.Color.Black;
+            DefaultAppendInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            DefaultAppendInput.ForeColor = System.Drawing.Color.White;
+            DefaultAppendInput.Location = new System.Drawing.Point(161, 36);
+            DefaultAppendInput.Name = "DefaultAppendInput";
+            DefaultAppendInput.Size = new System.Drawing.Size(146, 23);
+            DefaultAppendInput.TabIndex = 20;
+            ToolTipInformation.SetToolTip(DefaultAppendInput, "An additional message to be added to the end of each alert message.");
             // 
             // BatteryGroup
             // 
-            this.BatteryGroup.Controls.Add(this.label2);
-            this.BatteryGroup.Controls.Add(this.BatteryReportingCriticalLevelInput);
-            this.BatteryGroup.Controls.Add(this.label1);
-            this.BatteryGroup.Controls.Add(this.BatteryReportingCautionLevelInput);
-            this.BatteryGroup.Controls.Add(this.label3);
-            this.BatteryGroup.ForeColor = System.Drawing.Color.White;
-            this.BatteryGroup.Location = new System.Drawing.Point(12, 27);
-            this.BatteryGroup.Name = "BatteryGroup";
-            this.BatteryGroup.Size = new System.Drawing.Size(318, 87);
-            this.BatteryGroup.TabIndex = 20;
-            this.BatteryGroup.TabStop = false;
-            this.BatteryGroup.Text = "Battery Reporting";
+            BatteryGroup.Controls.Add(label2);
+            BatteryGroup.Controls.Add(BatteryReportingCriticalLevelInput);
+            BatteryGroup.Controls.Add(label1);
+            BatteryGroup.Controls.Add(BatteryReportingCautionLevelInput);
+            BatteryGroup.Controls.Add(label3);
+            BatteryGroup.ForeColor = System.Drawing.Color.White;
+            BatteryGroup.Location = new System.Drawing.Point(12, 27);
+            BatteryGroup.Name = "BatteryGroup";
+            BatteryGroup.Size = new System.Drawing.Size(318, 87);
+            BatteryGroup.TabIndex = 20;
+            BatteryGroup.TabStop = false;
+            BatteryGroup.Text = "Battery Reporting (system must have a battery installed)";
             // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Location = new System.Drawing.Point(168, 60);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 21);
-            this.label2.TabIndex = 27;
-            this.label2.Text = "Critical";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.ToolTipInformation.SetToolTip(this.label2, ".");
+            label2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            label2.Location = new System.Drawing.Point(168, 60);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(84, 21);
+            label2.TabIndex = 27;
+            label2.Text = "Critical";
+            label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            ToolTipInformation.SetToolTip(label2, ".");
             // 
             // BatteryReportingCriticalLevelInput
             // 
-            this.BatteryReportingCriticalLevelInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BatteryReportingCriticalLevelInput.BackColor = System.Drawing.Color.Black;
-            this.BatteryReportingCriticalLevelInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.BatteryReportingCriticalLevelInput.ForeColor = System.Drawing.Color.White;
-            this.BatteryReportingCriticalLevelInput.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.BatteryReportingCriticalLevelInput.Location = new System.Drawing.Point(258, 60);
-            this.BatteryReportingCriticalLevelInput.Name = "BatteryReportingCriticalLevelInput";
-            this.BatteryReportingCriticalLevelInput.Size = new System.Drawing.Size(54, 21);
-            this.BatteryReportingCriticalLevelInput.TabIndex = 26;
-            this.ToolTipInformation.SetToolTip(this.BatteryReportingCriticalLevelInput, "The level at which reporting starts for critical.");
-            this.BatteryReportingCriticalLevelInput.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
+            BatteryReportingCriticalLevelInput.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            BatteryReportingCriticalLevelInput.BackColor = System.Drawing.Color.Black;
+            BatteryReportingCriticalLevelInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            BatteryReportingCriticalLevelInput.ForeColor = System.Drawing.Color.White;
+            BatteryReportingCriticalLevelInput.Increment = new decimal(new int[] { 5, 0, 0, 0 });
+            BatteryReportingCriticalLevelInput.Location = new System.Drawing.Point(258, 60);
+            BatteryReportingCriticalLevelInput.Name = "BatteryReportingCriticalLevelInput";
+            BatteryReportingCriticalLevelInput.Size = new System.Drawing.Size(54, 23);
+            BatteryReportingCriticalLevelInput.TabIndex = 26;
+            ToolTipInformation.SetToolTip(BatteryReportingCriticalLevelInput, "The level at which reporting starts for critical.");
+            BatteryReportingCriticalLevelInput.Value = new decimal(new int[] { 10, 0, 0, 0 });
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Location = new System.Drawing.Point(168, 33);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(84, 21);
-            this.label1.TabIndex = 25;
-            this.label1.Text = "Caution";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.ToolTipInformation.SetToolTip(this.label1, ".");
+            label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            label1.Location = new System.Drawing.Point(168, 33);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(84, 21);
+            label1.TabIndex = 25;
+            label1.Text = "Caution";
+            label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            ToolTipInformation.SetToolTip(label1, ".");
             // 
             // BatteryReportingCautionLevelInput
             // 
-            this.BatteryReportingCautionLevelInput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BatteryReportingCautionLevelInput.BackColor = System.Drawing.Color.Black;
-            this.BatteryReportingCautionLevelInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.BatteryReportingCautionLevelInput.ForeColor = System.Drawing.Color.White;
-            this.BatteryReportingCautionLevelInput.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.BatteryReportingCautionLevelInput.Location = new System.Drawing.Point(258, 33);
-            this.BatteryReportingCautionLevelInput.Name = "BatteryReportingCautionLevelInput";
-            this.BatteryReportingCautionLevelInput.Size = new System.Drawing.Size(54, 21);
-            this.BatteryReportingCautionLevelInput.TabIndex = 24;
-            this.ToolTipInformation.SetToolTip(this.BatteryReportingCautionLevelInput, "The level at which reporting starts for caution.");
-            this.BatteryReportingCautionLevelInput.Value = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
+            BatteryReportingCautionLevelInput.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            BatteryReportingCautionLevelInput.BackColor = System.Drawing.Color.Black;
+            BatteryReportingCautionLevelInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            BatteryReportingCautionLevelInput.ForeColor = System.Drawing.Color.White;
+            BatteryReportingCautionLevelInput.Increment = new decimal(new int[] { 5, 0, 0, 0 });
+            BatteryReportingCautionLevelInput.Location = new System.Drawing.Point(258, 33);
+            BatteryReportingCautionLevelInput.Name = "BatteryReportingCautionLevelInput";
+            BatteryReportingCautionLevelInput.Size = new System.Drawing.Size(54, 23);
+            BatteryReportingCautionLevelInput.TabIndex = 24;
+            ToolTipInformation.SetToolTip(BatteryReportingCautionLevelInput, "The level at which reporting starts for caution.");
+            BatteryReportingCautionLevelInput.Value = new decimal(new int[] { 20, 0, 0, 0 });
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(6, 17);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(156, 63);
-            this.label3.TabIndex = 14;
-            this.label3.Text = "Battery measurements are reported to the default Discord webhook when a\r\npercenta" +
-    "ge is reached.";
+            label3.Location = new System.Drawing.Point(6, 17);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(156, 63);
+            label3.TabIndex = 14;
+            label3.Text = "Battery measurements are reported to the default Discord webhook when a\r\npercentage is reached.";
             // 
             // DisableHeartbeatBox
             // 
-            this.DisableHeartbeatBox.AutoSize = true;
-            this.DisableHeartbeatBox.Location = new System.Drawing.Point(336, 95);
-            this.DisableHeartbeatBox.Name = "DisableHeartbeatBox";
-            this.DisableHeartbeatBox.Size = new System.Drawing.Size(124, 19);
-            this.DisableHeartbeatBox.TabIndex = 19;
-            this.DisableHeartbeatBox.Text = "Disable heartbeat";
-            this.ToolTipInformation.SetToolTip(this.DisableHeartbeatBox, "Disables the \"I\'m\"\r\nThis is not related ");
-            this.DisableHeartbeatBox.UseVisualStyleBackColor = true;
+            DisableHeartbeatBox.AutoSize = true;
+            DisableHeartbeatBox.Location = new System.Drawing.Point(336, 95);
+            DisableHeartbeatBox.Name = "DisableHeartbeatBox";
+            DisableHeartbeatBox.Size = new System.Drawing.Size(117, 19);
+            DisableHeartbeatBox.TabIndex = 19;
+            DisableHeartbeatBox.Text = "Disable heartbeat";
+            ToolTipInformation.SetToolTip(DisableHeartbeatBox, "Disables the \"I'm\"\r\nThis is not related ");
+            DisableHeartbeatBox.UseVisualStyleBackColor = true;
             // 
             // TitleText
             // 
-            this.TitleText.AutoSize = true;
-            this.TitleText.Location = new System.Drawing.Point(9, 9);
-            this.TitleText.Margin = new System.Windows.Forms.Padding(0);
-            this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(536, 15);
-            this.TitleText.TabIndex = 21;
-            this.TitleText.Text = "Choose a Discord webhoook source to configure, and click Modify Webhook to apply " +
-    "all changes.";
+            TitleText.AutoSize = true;
+            TitleText.Location = new System.Drawing.Point(9, 9);
+            TitleText.Margin = new System.Windows.Forms.Padding(0);
+            TitleText.Name = "TitleText";
+            TitleText.Size = new System.Drawing.Size(516, 15);
+            TitleText.TabIndex = 21;
+            TitleText.Text = "Choose a Discord webhook source to configure, and click Modify Webhook to apply all changes.";
             // 
             // DiscordWebhookRelayLocallyBox
             // 
-            this.DiscordWebhookRelayLocallyBox.AutoSize = true;
-            this.DiscordWebhookRelayLocallyBox.Location = new System.Drawing.Point(336, 70);
-            this.DiscordWebhookRelayLocallyBox.Name = "DiscordWebhookRelayLocallyBox";
-            this.DiscordWebhookRelayLocallyBox.Size = new System.Drawing.Size(94, 19);
-            this.DiscordWebhookRelayLocallyBox.TabIndex = 17;
-            this.DiscordWebhookRelayLocallyBox.Text = "Relay locally";
-            this.ToolTipInformation.SetToolTip(this.DiscordWebhookRelayLocallyBox, "Relay alerts locally in addition to sending a message.");
-            this.DiscordWebhookRelayLocallyBox.UseVisualStyleBackColor = true;
+            DiscordWebhookRelayLocallyBox.AutoSize = true;
+            DiscordWebhookRelayLocallyBox.Location = new System.Drawing.Point(336, 70);
+            DiscordWebhookRelayLocallyBox.Name = "DiscordWebhookRelayLocallyBox";
+            DiscordWebhookRelayLocallyBox.Size = new System.Drawing.Size(91, 19);
+            DiscordWebhookRelayLocallyBox.TabIndex = 17;
+            DiscordWebhookRelayLocallyBox.Text = "Relay locally";
+            ToolTipInformation.SetToolTip(DiscordWebhookRelayLocallyBox, "Relay alerts locally in addition to sending a message.");
+            DiscordWebhookRelayLocallyBox.UseVisualStyleBackColor = true;
             // 
             // DiscordWebhookConfirmAlertsBox
             // 
-            this.DiscordWebhookConfirmAlertsBox.AutoSize = true;
-            this.DiscordWebhookConfirmAlertsBox.Location = new System.Drawing.Point(336, 45);
-            this.DiscordWebhookConfirmAlertsBox.Name = "DiscordWebhookConfirmAlertsBox";
-            this.DiscordWebhookConfirmAlertsBox.Size = new System.Drawing.Size(104, 19);
-            this.DiscordWebhookConfirmAlertsBox.TabIndex = 15;
-            this.DiscordWebhookConfirmAlertsBox.Text = "Confirm alerts";
-            this.ToolTipInformation.SetToolTip(this.DiscordWebhookConfirmAlertsBox, "Shows a window with alert information for a short period of time.\r\nYou can either" +
-        " forward the alert by waiting or clicking \"FORWARD\", or discard it by clicking \"" +
-        "STOP\".");
-            this.DiscordWebhookConfirmAlertsBox.UseVisualStyleBackColor = true;
+            DiscordWebhookConfirmAlertsBox.AutoSize = true;
+            DiscordWebhookConfirmAlertsBox.Location = new System.Drawing.Point(336, 45);
+            DiscordWebhookConfirmAlertsBox.Name = "DiscordWebhookConfirmAlertsBox";
+            DiscordWebhookConfirmAlertsBox.Size = new System.Drawing.Size(101, 19);
+            DiscordWebhookConfirmAlertsBox.TabIndex = 15;
+            DiscordWebhookConfirmAlertsBox.Text = "Confirm alerts";
+            ToolTipInformation.SetToolTip(DiscordWebhookConfirmAlertsBox, "Shows a window with alert information for a short period of time.\r\nYou can either forward the alert by waiting or clicking \"FORWARD\", or discard it by clicking \"STOP\".");
+            DiscordWebhookConfirmAlertsBox.UseVisualStyleBackColor = true;
             // 
             // ToolTipInformation
             // 
-            this.ToolTipInformation.AutomaticDelay = 250;
-            this.ToolTipInformation.AutoPopDelay = 15000;
-            this.ToolTipInformation.BackColor = System.Drawing.Color.White;
-            this.ToolTipInformation.ForeColor = System.Drawing.Color.Black;
-            this.ToolTipInformation.InitialDelay = 250;
-            this.ToolTipInformation.IsBalloon = true;
-            this.ToolTipInformation.ReshowDelay = 50;
-            this.ToolTipInformation.ToolTipTitle = "What does this do?";
+            ToolTipInformation.AutomaticDelay = 250;
+            ToolTipInformation.AutoPopDelay = 15000;
+            ToolTipInformation.BackColor = System.Drawing.Color.White;
+            ToolTipInformation.ForeColor = System.Drawing.Color.Black;
+            ToolTipInformation.InitialDelay = 250;
+            ToolTipInformation.IsBalloon = true;
+            ToolTipInformation.ReshowDelay = 50;
+            ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
             // DiscordConfigurationForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(784, 411);
-            this.Controls.Add(this.ConfigurationPanel);
-            this.Controls.Add(this.BusyLockText);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.ForeColor = System.Drawing.Color.White;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "DiscordConfigurationForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SharpAlert - Discord Settings";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ServerConfigurationForm_FormClosing);
-            this.Load += new System.EventHandler(this.ServerConfigurationForm_Load);
-            this.ConfigurationPanel.ResumeLayout(false);
-            this.ConfigurationPanel.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.DefaultDiscordGroup.ResumeLayout(false);
-            this.DefaultDiscordGroup.PerformLayout();
-            this.BatteryGroup.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.BatteryReportingCriticalLevelInput)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BatteryReportingCautionLevelInput)).EndInit();
-            this.ResumeLayout(false);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
+            ClientSize = new System.Drawing.Size(784, 411);
+            Controls.Add(ConfigurationPanel);
+            Controls.Add(BusyLockText);
+            Font = new System.Drawing.Font("Segoe UI", 9F);
+            ForeColor = System.Drawing.Color.White;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "DiscordConfigurationForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "SharpAlert - Discord Webhook Settings";
+            FormClosing += ServerConfigurationForm_FormClosing;
+            Load += ServerConfigurationForm_Load;
+            ConfigurationPanel.ResumeLayout(false);
+            ConfigurationPanel.PerformLayout();
+            groupBox7.ResumeLayout(false);
+            groupBox7.PerformLayout();
+            groupBox6.ResumeLayout(false);
+            groupBox6.PerformLayout();
+            groupBox5.ResumeLayout(false);
+            groupBox5.PerformLayout();
+            groupBox4.ResumeLayout(false);
+            groupBox4.PerformLayout();
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            DefaultDiscordGroup.ResumeLayout(false);
+            DefaultDiscordGroup.PerformLayout();
+            BatteryGroup.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)BatteryReportingCriticalLevelInput).EndInit();
+            ((System.ComponentModel.ISupportInitialize)BatteryReportingCautionLevelInput).EndInit();
+            ResumeLayout(false);
 
         }
 

@@ -91,6 +91,7 @@
             // SaveServerSettingsButton
             // 
             SaveServerSettingsButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            SaveServerSettingsButton.Enabled = false;
             SaveServerSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             SaveServerSettingsButton.ForeColor = System.Drawing.Color.White;
             SaveServerSettingsButton.Location = new System.Drawing.Point(415, 98);
@@ -101,6 +102,7 @@
             ToolTipInformation.SetToolTip(SaveServerSettingsButton, "Applies server settings immediately.");
             SaveServerSettingsButton.UseMnemonic = false;
             SaveServerSettingsButton.UseVisualStyleBackColor = false;
+            SaveServerSettingsButton.Visible = false;
             SaveServerSettingsButton.Click += SaveServerSettingsButton_Click;
             // 
             // label2

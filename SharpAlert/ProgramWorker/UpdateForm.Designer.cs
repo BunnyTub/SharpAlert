@@ -28,70 +28,68 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpdateForm));
-            this.TitleText = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.TextUpdater = new System.Windows.Forms.Timer(this.components);
-            this.SuspendLayout();
+            TitleText = new System.Windows.Forms.Label();
+            DescriptionText = new System.Windows.Forms.Label();
+            TextUpdater = new System.Windows.Forms.Timer(components);
+            SuspendLayout();
             // 
             // TitleText
             // 
-            this.TitleText.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.TitleText.Location = new System.Drawing.Point(9, 9);
-            this.TitleText.Margin = new System.Windows.Forms.Padding(0);
-            this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(400, 30);
-            this.TitleText.TabIndex = 23;
-            this.TitleText.Text = "SharpAlert is updating";
-            this.TitleText.UseWaitCursor = true;
+            TitleText.Font = new System.Drawing.Font("Segoe UI", 16F);
+            TitleText.Location = new System.Drawing.Point(9, 9);
+            TitleText.Margin = new System.Windows.Forms.Padding(0);
+            TitleText.Name = "TitleText";
+            TitleText.Size = new System.Drawing.Size(400, 30);
+            TitleText.TabIndex = 23;
+            TitleText.Text = "SharpAlert is updating";
+            TitleText.UseWaitCursor = true;
             // 
-            // label3
+            // DescriptionText
             // 
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label3.Location = new System.Drawing.Point(12, 39);
-            this.label3.Margin = new System.Windows.Forms.Padding(0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(400, 24);
-            this.label3.TabIndex = 27;
-            this.label3.Text = "This should only take around 1 minute to complete.";
-            this.label3.UseWaitCursor = true;
+            DescriptionText.Font = new System.Drawing.Font("Segoe UI", 12F);
+            DescriptionText.Location = new System.Drawing.Point(12, 39);
+            DescriptionText.Margin = new System.Windows.Forms.Padding(0);
+            DescriptionText.Name = "DescriptionText";
+            DescriptionText.Size = new System.Drawing.Size(400, 24);
+            DescriptionText.TabIndex = 27;
+            DescriptionText.Text = "Please wait...";
+            DescriptionText.UseWaitCursor = true;
             // 
             // TextUpdater
             // 
-            this.TextUpdater.Enabled = true;
-            this.TextUpdater.Interval = 1000;
-            this.TextUpdater.Tick += new System.EventHandler(this.TextUpdater_Tick);
+            TextUpdater.Enabled = true;
+            TextUpdater.Interval = 1000;
+            TextUpdater.Tick += TextUpdater_Tick;
             // 
             // UpdateForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(424, 71);
-            this.ControlBox = false;
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.TitleText);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "UpdateForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SharpAlert - Updating (please wait...)";
-            this.TopMost = true;
-            this.UseWaitCursor = true;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.UpdateForm_FormClosing);
-            this.Load += new System.EventHandler(this.UpdateForm_Load);
-            this.Shown += new System.EventHandler(this.SetupForm_Shown);
-            this.ResumeLayout(false);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
+            ClientSize = new System.Drawing.Size(424, 71);
+            Controls.Add(DescriptionText);
+            Controls.Add(TitleText);
+            Font = new System.Drawing.Font("Segoe UI", 9F);
+            ForeColor = System.Drawing.Color.White;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            Name = "UpdateForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "SharpAlert - Updating (please wait...)";
+            TopMost = true;
+            UseWaitCursor = true;
+            FormClosing += UpdateForm_FormClosing;
+            Load += UpdateForm_Load;
+            Shown += SetupForm_Shown;
+            ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.Label TitleText;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label DescriptionText;
         private System.Windows.Forms.Timer TextUpdater;
     }
 }

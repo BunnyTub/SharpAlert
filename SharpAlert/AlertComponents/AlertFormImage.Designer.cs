@@ -38,7 +38,7 @@
             // AttachedImageBox
             // 
             this.AttachedImageBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AttachedImageBox.ErrorImage = global::SharpAlert.Properties.Resources.CrashIcon;
+            this.AttachedImageBox.ErrorImage = global::SharpAlert.Properties.Resources.AlertIcon;
             this.AttachedImageBox.ImageLocation = "https://bunnytub.com/SharpAlert/fallback.png";
             this.AttachedImageBox.InitialImage = global::SharpAlert.Properties.Resources.AlertIcon;
             this.AttachedImageBox.Location = new System.Drawing.Point(0, 0);

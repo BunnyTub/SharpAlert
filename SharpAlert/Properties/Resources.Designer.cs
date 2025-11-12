@@ -61,40 +61,11 @@ namespace SharpAlert.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream alert_addition {
-            get {
-                return ResourceManager.GetStream("alert_addition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap AlertIcon {
             get {
                 object obj = ResourceManager.GetObject("AlertIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap CrashIcon {
-            get {
-                object obj = ResourceManager.GetObject("CrashIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap IDAP_Denied {
-            get {
-                object obj = ResourceManager.GetObject("IDAP_Denied", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,16 +104,6 @@ namespace SharpAlert.Properties {
         internal static string TestScript {
             get {
                 return ResourceManager.GetString("TestScript", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Topple {
-            get {
-                object obj = ResourceManager.GetObject("Topple", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

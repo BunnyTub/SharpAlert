@@ -79,13 +79,13 @@ namespace SharpAlert.AlertComponents
                 if (AlertsProcessedBeforeGC >= 100)
                 {
                     AlertsProcessedBeforeGC = 0;
-                    ThreadDrool.StartAndForget(() =>
-                    {
-                        //Console.WriteLine("[Alert Processor] Collecting garbage globally.");
-                        //GC.Collect();
-                        //GC.WaitForPendingFinalizers();
-                        //GC.WaitForFullGCComplete();
-                    });
+                    //ThreadDrool.StartAndForget(() =>
+                    //{
+                    //    //Console.WriteLine("[Alert Processor] Collecting garbage globally.");
+                    //    //GC.Collect();
+                    //    //GC.WaitForPendingFinalizers();
+                    //    //GC.WaitForFullGCComplete();
+                    //});
                 }
             }
         }

@@ -6,9 +6,13 @@ namespace SharpAlert.ProgramWorker
 {
     public partial class PerformUpdateForm : Form
     {
-        public PerformUpdateForm()
+        //private readonly string Version = string.Empty;
+
+        public PerformUpdateForm(string UpdateToVersion)
         {
             InitializeComponent();
+            //Version = UpdateToVersion;
+            TitleText.Text = $"There's an update to v{UpdateToVersion}";
         }
 
         private void SetupForm_Shown(object sender, EventArgs e)

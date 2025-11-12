@@ -140,7 +140,7 @@ namespace SharpAlert.ProgramWorker
 
             contextMenu.Items.Add(new ToolStripSeparator());
 
-            bool UpdatesAvailable = false;
+            //bool UpdatesAvailable = false;
 
             SpeakingManager.ProgramRunning();
 
@@ -166,7 +166,7 @@ namespace SharpAlert.ProgramWorker
                                 ToolTipIcon.Info);
 
                             //UpdateWorker.TryUpdate($"{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}");
-                            UpdatesAvailable = true;
+                            //UpdatesAvailable = true;
                         }
                         else
                         {
@@ -322,7 +322,6 @@ namespace SharpAlert.ProgramWorker
                 {
                     QuickSettings.Instance.Save();
                     new Thread(() => SafeExit()).Start();
-                    Notify?.Dispose();
                 }
             }));
 
@@ -346,6 +345,25 @@ namespace SharpAlert.ProgramWorker
                 }
 
                 QuickSettings.Instance.AskedForAutomaticUpdates = true;
+            }
+            
+            if (!QuickSettings.Instance.AskedForDiscordRichPresence)
+            {
+                DialogResult result = MessageBox.Show("Do you want to enable Discord Rich Presence? People on Discord will be able to view basic info about your SharpAlert session directly on your profile.\r\n\r\n(Restart the program to fully enable this!)",
+                    "SharpAlert - Discord Rich Presence",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    QuickSettings.Instance.AllowDiscordRichPresence = true;
+                }
+                else
+                {
+                    QuickSettings.Instance.AllowDiscordRichPresence = false;
+                }
+
+                QuickSettings.Instance.AskedForDiscordRichPresence = true;
             }
 
             QuickSettings.Instance.LastVersionOpened = $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}";

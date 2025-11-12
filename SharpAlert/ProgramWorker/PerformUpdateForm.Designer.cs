@@ -46,7 +46,7 @@
             TitleText.Name = "TitleText";
             TitleText.Size = new System.Drawing.Size(400, 30);
             TitleText.TabIndex = 23;
-            TitleText.Text = "There's an update available!";
+            TitleText.Text = "There's an update to v0.0";
             // 
             // DescriptionText
             // 
@@ -82,6 +82,7 @@
             // 
             HideThisMessageButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             HideThisMessageButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            HideThisMessageButton.Enabled = false;
             HideThisMessageButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             HideThisMessageButton.Location = new System.Drawing.Point(9, 140);
             HideThisMessageButton.Margin = new System.Windows.Forms.Padding(0);
@@ -90,6 +91,7 @@
             HideThisMessageButton.TabIndex = 29;
             HideThisMessageButton.Text = "Hide this message";
             HideThisMessageButton.UseVisualStyleBackColor = false;
+            HideThisMessageButton.Visible = false;
             HideThisMessageButton.Click += RemindMeLaterButton_Click;
             // 
             // label1
@@ -98,10 +100,10 @@
             label1.Location = new System.Drawing.Point(9, 87);
             label1.Margin = new System.Windows.Forms.Padding(0);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(406, 50);
+            label1.Size = new System.Drawing.Size(330, 76);
             label1.TabIndex = 30;
-            label1.Text = "You'll be prompted for\r\nadministrative privileges.";
-            label1.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            label1.Text = "You'll be prompted for elevation if the\r\nprocess does not have permissions to properly update.";
+            label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // PerformUpdateForm
             // 
@@ -109,11 +111,11 @@
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(424, 172);
             ControlBox = false;
+            Controls.Add(label1);
             Controls.Add(HideThisMessageButton);
             Controls.Add(InstallButton);
             Controls.Add(DescriptionText);
             Controls.Add(TitleText);
-            Controls.Add(label1);
             Font = new System.Drawing.Font("Segoe UI", 9F);
             ForeColor = System.Drawing.Color.White;
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

@@ -23,15 +23,34 @@ namespace SharpAlert.ProgramWorker
     {
         public static bool ReadOnlyMode { get; set; } = false;
 
-        // NEVER CHANGE ANY OF THESE STRINGS BELOW!
+        // NEVER CHANGE ANY OF THESE VALUES BELOW!
 
         // configuration.json
-        public static string ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        public static string ConfigPath { get; private set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SharpAlert", "configuration.json");
         
-        public static readonly string ConfigDirPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        public static string ConfigDirPath { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "SharpAlert");
 
+        public static int CurrentSaveSlot { get; private set; } = 0;
+
+        //private static int ConfigurationSetNumber_ = 0;
+        //public static int ConfigurationSetNumber
+        //{
+        //    get
+        //    {
+        //        return ConfigurationSetNumber_;
+        //    }
+        //    set
+        //    {
+        //        if (_instance == null) throw new NullReferenceException("No instance loaded.");
+        //        Instance.LastConfigurationSet = 0;
+        //        Instance.Save();
+        //        Instance.Reload();
+
+        //        ConfigurationSetNumber_ = value;
+        //    }
+        //}
         // DO YOU WANT TO FUCK UP THE USER INSTALLATION PATH?
 
         //public event EventHandler SettingsSaving;
@@ -43,18 +62,21 @@ namespace SharpAlert.ProgramWorker
             get
             {
                 _instance ??= Load();
+                if (_instance == null) throw new NullReferenceException("Loading failed.");
                 return _instance;
             }
         }
 
 #pragma warning disable IDE1006 // Naming Styles
-        // Version
+        // Info
         public string LastVersionOpened { get; set; } = "v0.0";
         // Updating
         public bool AskedForAutomaticUpdates { get; set; } = false;
         public bool AllowPerformingUpdates { get; set; } = false;
         // Discord Rich Presence
+        public bool AskedForDiscordRichPresence { get; set; } = false;
         public bool AllowDiscordRichPresence { get; set; } = false;
+        public ulong UserDiscordRichPresence { get; set; } = 0;
         // Dashboard
         public bool OpenDashboardAutomatically { get; set; } = false;
         // System
@@ -178,6 +200,7 @@ namespace SharpAlert.ProgramWorker
         public string DiscordWebhookAppend_IDAP { get; set; } = string.Empty;
         #endregion
         // Discord Settings
+        public bool DiscordWebhookFeaturesLocked { get; set; } = false;
         public bool DiscordWebhookConfirmAlerts { get; set; } = true;
         public bool DiscordWebhookRelayLocally { get; set; } = false;
         public bool DiscordWebhookDisableHeartbeat { get; set; } = false;
@@ -229,16 +252,19 @@ namespace SharpAlert.ProgramWorker
                 return;
             }
 
-            Console.WriteLine($"[Configuration Handler] The current configuration is being saved.");
-            var dir = Path.GetDirectoryName(ConfigPath);
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
+            lock (this)
+            {
+                Console.WriteLine($"[Configuration Handler] The current configuration is being saved.");
+                var dir = Path.GetDirectoryName(ConfigPath);
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
 
-            var json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(ConfigPath, json);
+                var json = JsonConvert.SerializeObject(this, Formatting.Indented);
+                File.WriteAllText(ConfigPath, json);
+            }
         }
 
-        private static QuickSettings Load()
+        private static QuickSettings Load() // config loads here aaaaaa
         {
             try
             {
@@ -266,10 +292,89 @@ namespace SharpAlert.ProgramWorker
                         "SharpAlert", "configuration-alt4.json");
                 }
 
+                if (CurrentSaveSlot == 0)
+                {
+                    if (MainEntryPoint.Args.Contains("--set1"))
+                    {
+                        ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                            "SharpAlert", "configuration-set1.json");
+                        MainEntryPoint.Args.Remove("--set1");
+                        CurrentSaveSlot = 1;
+                    }
+
+                    if (MainEntryPoint.Args.Contains("--set2"))
+                    {
+                        ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                            "SharpAlert", "configuration-set2.json");
+                        MainEntryPoint.Args.Remove("--set2");
+                        CurrentSaveSlot = 2;
+                    }
+
+                    if (MainEntryPoint.Args.Contains("--set3"))
+                    {
+                        ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                            "SharpAlert", "configuration-set3.json");
+                        MainEntryPoint.Args.Remove("--set3");
+                        CurrentSaveSlot = 3;
+                    }
+
+                    if (MainEntryPoint.Args.Contains("--set4"))
+                    {
+                        ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                            "SharpAlert", "configuration-set4.json");
+                        MainEntryPoint.Args.Remove("--set4");
+                        CurrentSaveSlot = 4;
+                    }
+
+                    if (MainEntryPoint.Args.Contains("--set5"))
+                    {
+                        ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                            "SharpAlert", "configuration-set5.json");
+                        MainEntryPoint.Args.Remove("--set5");
+                        CurrentSaveSlot = 5;
+                    }
+                }
+
                 if (File.Exists(ConfigPath))
                 {
                     var json = File.ReadAllText(ConfigPath);
-                    return JsonConvert.DeserializeObject<QuickSettings>(json) ?? new QuickSettings();
+                    var settings = JsonConvert.DeserializeObject<QuickSettings>(json) ?? new QuickSettings();
+                    //if (settings.LastConfigurationSet == 0)
+                    {
+                        Console.WriteLine($"[Configuration Handler] Using found configuration set.");
+                        return settings;
+                    }
+                    //else
+                    //{
+                    //    ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    //        "SharpAlert", $"configuration-set{settings.LastConfigurationSet}.json");
+
+                    //    ConfigurationSetNumber = settings.LastConfigurationSet;
+
+                    //    Console.WriteLine($"[Configuration Handler] Using configuration set {settings.LastConfigurationSet}.");
+
+                    //    //var dir = Path.GetDirectoryName(ConfigPath);
+                    //    //if (!Directory.Exists(dir))
+                    //    //    Directory.CreateDirectory(dir);
+
+                    //    //var json = JsonConvert.SerializeObject(this, Formatting.Indented);
+                    //    //File.WriteAllText(ConfigPath, json);
+
+                    //    if (File.Exists(ConfigPath))
+                    //    {
+                    //        var jsonx = File.ReadAllText(ConfigPath);
+                    //        var settingsx = JsonConvert.DeserializeObject<QuickSettings>(json) ?? new QuickSettings();
+                    //        return settingsx;
+                    //    }
+                    //    else
+                    //    {
+
+                    //    }
+                    //}
+                }
+                else
+                {
+                    Console.WriteLine($"[Configuration Handler] No configuration file. Default values will be returned.");
                 }
             }
             catch (Exception ex)
@@ -285,7 +390,7 @@ namespace SharpAlert.ProgramWorker
                 switch (result)
                 {
                     case DialogResult.Abort:
-                        Process.Start($"{ConfigDirPath}");
+                        Process.Start(new ProcessStartInfo { FileName = ConfigDirPath, UseShellExecute = true });
                         break;
                     case DialogResult.Retry:
                         File.Delete(ConfigPath);
@@ -311,14 +416,19 @@ namespace SharpAlert.ProgramWorker
                 return;
             }
 
-            var dir = Path.GetDirectoryName(ConfigPath);
-            if (!Directory.Exists(dir))
-                Directory.CreateDirectory(dir);
+            lock (this)
+            {
+                var dir = Path.GetDirectoryName(ConfigPath);
+                if (!Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
 
-            var json = JsonConvert.SerializeObject(new QuickSettings(), Formatting.Indented);
-            File.WriteAllText(ConfigPath, json);
+                var json = JsonConvert.SerializeObject(new QuickSettings(), Formatting.Indented);
+                File.WriteAllText(ConfigPath, json);
 
-            Reload();
+                Console.WriteLine($"[Configuration Handler] The current configuration has been reset.");
+
+                Reload();
+            }
         }
 
         public void Reload()

@@ -101,10 +101,6 @@
             ArchiveSettingsButton = new System.Windows.Forms.Button();
             GeneralGroup = new System.Windows.Forms.GroupBox();
             RainbowColoring = new System.Windows.Forms.Timer(components);
-            SuperSecretSettingsGroup = new System.Windows.Forms.GroupBox();
-            FloodQueueButton = new System.Windows.Forms.Button();
-            SoftUpdateButton = new System.Windows.Forms.Button();
-            ForceUpdateButton = new System.Windows.Forms.Button();
             SuperSecretEnabler = new System.Windows.Forms.Timer(components);
             AlertFunctionalityGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)AlertDeadIntervalInput).BeginInit();
@@ -120,12 +116,10 @@
             ((System.ComponentModel.ISupportInitialize)storedMaxSizeInput).BeginInit();
             CategoryGroup.SuspendLayout();
             GeneralGroup.SuspendLayout();
-            SuperSecretSettingsGroup.SuspendLayout();
             SuspendLayout();
             // 
             // AlertFunctionalityGroup
             // 
-            AlertFunctionalityGroup.Controls.Add(RainbowText);
             AlertFunctionalityGroup.Controls.Add(label7);
             AlertFunctionalityGroup.Controls.Add(label4);
             AlertFunctionalityGroup.Controls.Add(AlertDeadIntervalInput);
@@ -148,11 +142,11 @@
             RainbowText.Cursor = System.Windows.Forms.Cursors.Hand;
             RainbowText.Font = new System.Drawing.Font("Segoe UI", 9F);
             RainbowText.ForeColor = System.Drawing.Color.Red;
-            RainbowText.Location = new System.Drawing.Point(160, 251);
+            RainbowText.Location = new System.Drawing.Point(12, 317);
             RainbowText.Name = "RainbowText";
-            RainbowText.Size = new System.Drawing.Size(176, 45);
+            RainbowText.Size = new System.Drawing.Size(342, 51);
             RainbowText.TabIndex = 24;
-            RainbowText.Text = "Tell us about your requests on features by clicking here to go to our website!";
+            RainbowText.Text = "Tell us about your requests on features or to report problems and bugs by clicking here to go to our website.";
             RainbowText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             RainbowText.Click += RainbowText_Click;
             // 
@@ -985,68 +979,6 @@
             RainbowColoring.Interval = 60;
             RainbowColoring.Tick += RainbowColoring_Tick;
             // 
-            // SuperSecretSettingsGroup
-            // 
-            SuperSecretSettingsGroup.Controls.Add(FloodQueueButton);
-            SuperSecretSettingsGroup.Controls.Add(SoftUpdateButton);
-            SuperSecretSettingsGroup.Controls.Add(ForceUpdateButton);
-            SuperSecretSettingsGroup.ForeColor = System.Drawing.Color.Gray;
-            SuperSecretSettingsGroup.Location = new System.Drawing.Point(12, 321);
-            SuperSecretSettingsGroup.Name = "SuperSecretSettingsGroup";
-            SuperSecretSettingsGroup.Size = new System.Drawing.Size(342, 44);
-            SuperSecretSettingsGroup.TabIndex = 54;
-            SuperSecretSettingsGroup.TabStop = false;
-            SuperSecretSettingsGroup.Text = "Super Secret Configuration... (Only the worthy have access.)";
-            SuperSecretSettingsGroup.Visible = false;
-            // 
-            // FloodQueueButton
-            // 
-            FloodQueueButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
-            FloodQueueButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            FloodQueueButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            FloodQueueButton.Font = new System.Drawing.Font("Segoe UI", 8.8F);
-            FloodQueueButton.ForeColor = System.Drawing.Color.White;
-            FloodQueueButton.Location = new System.Drawing.Point(195, 19);
-            FloodQueueButton.Margin = new System.Windows.Forms.Padding(0);
-            FloodQueueButton.Name = "FloodQueueButton";
-            FloodQueueButton.Size = new System.Drawing.Size(144, 22);
-            FloodQueueButton.TabIndex = 55;
-            FloodQueueButton.Text = "Posion Queue & History";
-            FloodQueueButton.UseMnemonic = false;
-            FloodQueueButton.UseVisualStyleBackColor = false;
-            FloodQueueButton.Click += FloodQueueButton_Click;
-            // 
-            // SoftUpdateButton
-            // 
-            SoftUpdateButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
-            SoftUpdateButton.Dock = System.Windows.Forms.DockStyle.Left;
-            SoftUpdateButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            SoftUpdateButton.Font = new System.Drawing.Font("Segoe UI", 8.8F);
-            SoftUpdateButton.ForeColor = System.Drawing.Color.White;
-            SoftUpdateButton.Location = new System.Drawing.Point(99, 19);
-            SoftUpdateButton.Margin = new System.Windows.Forms.Padding(0);
-            SoftUpdateButton.Name = "SoftUpdateButton";
-            SoftUpdateButton.Size = new System.Drawing.Size(96, 22);
-            SoftUpdateButton.TabIndex = 54;
-            SoftUpdateButton.Text = "Soft Update";
-            SoftUpdateButton.UseVisualStyleBackColor = false;
-            // 
-            // ForceUpdateButton
-            // 
-            ForceUpdateButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
-            ForceUpdateButton.Dock = System.Windows.Forms.DockStyle.Left;
-            ForceUpdateButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            ForceUpdateButton.Font = new System.Drawing.Font("Segoe UI", 8.8F);
-            ForceUpdateButton.ForeColor = System.Drawing.Color.White;
-            ForceUpdateButton.Location = new System.Drawing.Point(3, 19);
-            ForceUpdateButton.Margin = new System.Windows.Forms.Padding(0);
-            ForceUpdateButton.Name = "ForceUpdateButton";
-            ForceUpdateButton.Size = new System.Drawing.Size(96, 22);
-            ForceUpdateButton.TabIndex = 53;
-            ForceUpdateButton.Text = "Force Update";
-            ForceUpdateButton.UseVisualStyleBackColor = false;
-            ForceUpdateButton.Click += ForceUpdateButton_Click;
-            // 
             // SuperSecretEnabler
             // 
             SuperSecretEnabler.Enabled = true;
@@ -1058,7 +990,7 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(703, 477);
-            Controls.Add(SuperSecretSettingsGroup);
+            Controls.Add(RainbowText);
             Controls.Add(GeneralGroup);
             Controls.Add(LanguageButton);
             Controls.Add(ArchiveSettingsButton);
@@ -1080,7 +1012,7 @@
             MinimizeBox = false;
             Name = "AlertConfigurationForm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "SharpAlert - CAP Settings";
+            Text = "SharpAlert - Alert Settings";
             HelpButtonClicked += AlertConfigurationForm_HelpButtonClicked;
             Load += AlertConfigurationForm_Load;
             AlertFunctionalityGroup.ResumeLayout(false);
@@ -1105,7 +1037,6 @@
             CategoryGroup.ResumeLayout(false);
             CategoryGroup.PerformLayout();
             GeneralGroup.ResumeLayout(false);
-            SuperSecretSettingsGroup.ResumeLayout(false);
             ResumeLayout(false);
 
         }
@@ -1183,10 +1114,6 @@
         private System.Windows.Forms.CheckBox IgnoreKeepAliveBox;
         private System.Windows.Forms.Label RainbowText;
         private System.Windows.Forms.Timer RainbowColoring;
-        private System.Windows.Forms.GroupBox SuperSecretSettingsGroup;
         private System.Windows.Forms.Timer SuperSecretEnabler;
-        private System.Windows.Forms.Button ForceUpdateButton;
-        private System.Windows.Forms.Button FloodQueueButton;
-        private System.Windows.Forms.Button SoftUpdateButton;
     }
 }

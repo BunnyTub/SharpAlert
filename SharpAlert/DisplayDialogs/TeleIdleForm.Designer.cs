@@ -28,99 +28,101 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TeleIdleForm));
-            this.WindowClosingChecker = new System.Windows.Forms.Timer(this.components);
-            this.ClockSet = new System.Windows.Forms.Timer(this.components);
-            this.MovePreventBurnIn = new System.Windows.Forms.Timer(this.components);
-            this.IdleText = new System.Windows.Forms.Label();
-            this.IdleContainer = new System.Windows.Forms.Panel();
-            this.InfoText = new SharpAlert.WinFormsControls.ToolboxStuff.MarqueeLabel();
-            this.IdleContainer.SuspendLayout();
-            this.SuspendLayout();
+            WindowClosingChecker = new System.Windows.Forms.Timer(components);
+            ClockSet = new System.Windows.Forms.Timer(components);
+            MovePreventBurnIn = new System.Windows.Forms.Timer(components);
+            IdleText = new System.Windows.Forms.Label();
+            IdleContainer = new System.Windows.Forms.Panel();
+            InfoText = new SharpAlert.WinFormsControls.ToolboxStuff.MarqueeLabel();
+            IdleContainer.SuspendLayout();
+            SuspendLayout();
             // 
             // WindowClosingChecker
             // 
-            this.WindowClosingChecker.Enabled = true;
-            this.WindowClosingChecker.Interval = 50;
-            this.WindowClosingChecker.Tick += new System.EventHandler(this.WindowClosingChecker_Tick);
+            WindowClosingChecker.Enabled = true;
+            WindowClosingChecker.Interval = 50;
+            WindowClosingChecker.Tick += WindowClosingChecker_Tick;
             // 
             // ClockSet
             // 
-            this.ClockSet.Enabled = true;
-            this.ClockSet.Interval = 1000;
-            this.ClockSet.Tick += new System.EventHandler(this.ClockSet_Tick);
+            ClockSet.Enabled = true;
+            ClockSet.Interval = 1000;
+            ClockSet.Tick += ClockSet_Tick;
             // 
             // MovePreventBurnIn
             // 
-            this.MovePreventBurnIn.Enabled = true;
-            this.MovePreventBurnIn.Interval = 15000;
-            this.MovePreventBurnIn.Tick += new System.EventHandler(this.MovePreventBurnIn_Tick);
+            MovePreventBurnIn.Enabled = true;
+            MovePreventBurnIn.Interval = 15000;
+            MovePreventBurnIn.Tick += MovePreventBurnIn_Tick;
             // 
             // IdleText
             // 
-            this.IdleText.Font = new System.Drawing.Font("Segoe UI", 56F);
-            this.IdleText.ForeColor = System.Drawing.Color.White;
-            this.IdleText.Location = new System.Drawing.Point(0, 0);
-            this.IdleText.Margin = new System.Windows.Forms.Padding(0);
-            this.IdleText.Name = "IdleText";
-            this.IdleText.Size = new System.Drawing.Size(520, 170);
-            this.IdleText.TabIndex = 0;
-            this.IdleText.Text = "Please wait...\r\n...one moment";
-            this.IdleText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.IdleText.DoubleClick += new System.EventHandler(this.IdleText_DoubleClick);
+            IdleText.Font = new System.Drawing.Font("Segoe UI", 48F);
+            IdleText.ForeColor = System.Drawing.Color.White;
+            IdleText.Location = new System.Drawing.Point(0, 0);
+            IdleText.Margin = new System.Windows.Forms.Padding(0);
+            IdleText.Name = "IdleText";
+            IdleText.Size = new System.Drawing.Size(520, 170);
+            IdleText.TabIndex = 0;
+            IdleText.Text = "Please wait...\r\n...one moment";
+            IdleText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            IdleText.DoubleClick += IdleText_DoubleClick;
             // 
             // IdleContainer
             // 
-            this.IdleContainer.Controls.Add(this.InfoText);
-            this.IdleContainer.Controls.Add(this.IdleText);
-            this.IdleContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.IdleContainer.Location = new System.Drawing.Point(0, 0);
-            this.IdleContainer.Name = "IdleContainer";
-            this.IdleContainer.Size = new System.Drawing.Size(1280, 720);
-            this.IdleContainer.TabIndex = 1;
-            this.IdleContainer.DoubleClick += new System.EventHandler(this.IdleContainer_DoubleClick);
+            IdleContainer.Controls.Add(InfoText);
+            IdleContainer.Controls.Add(IdleText);
+            IdleContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            IdleContainer.Location = new System.Drawing.Point(0, 0);
+            IdleContainer.Name = "IdleContainer";
+            IdleContainer.Size = new System.Drawing.Size(1280, 720);
+            IdleContainer.TabIndex = 1;
+            IdleContainer.DoubleClick += IdleContainer_DoubleClick;
             // 
             // InfoText
             // 
-            this.InfoText.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.InfoText.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.InfoText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
-            this.InfoText.Location = new System.Drawing.Point(0, 694);
-            this.InfoText.Name = "InfoText";
-            this.InfoText.ScrollSpeed = 2F;
-            this.InfoText.Size = new System.Drawing.Size(1280, 26);
-            this.InfoText.TabIndex = 1;
-            this.InfoText.Text = "SharpAlert";
-            this.InfoText.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            InfoText.Dock = System.Windows.Forms.DockStyle.Bottom;
+            InfoText.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            InfoText.ForeColor = System.Drawing.Color.FromArgb(127, 127, 127);
+            InfoText.Location = new System.Drawing.Point(0, 694);
+            InfoText.Name = "InfoText";
+            InfoText.ScrollSpeed = 2F;
+            InfoText.Size = new System.Drawing.Size(1280, 26);
+            InfoText.Stutter = 50;
+            InfoText.TabIndex = 1;
+            InfoText.Text = "SharpAlert";
+            InfoText.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            InfoText.UseCustomPixelCount = false;
             // 
             // TeleIdleForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(1280, 720);
-            this.ControlBox = false;
-            this.Controls.Add(this.IdleContainer);
-            this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "TeleIdleForm";
-            this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "SharpAlert - Idle Window";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TeleIdleForm_FormClosing);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TeleIdleForm_FormClosed);
-            this.Load += new System.EventHandler(this.TeleIdleForm_Load);
-            this.Shown += new System.EventHandler(this.TeleIdleForm_Shown);
-            this.Resize += new System.EventHandler(this.TeleIdleForm_Resize);
-            this.IdleContainer.ResumeLayout(false);
-            this.ResumeLayout(false);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            BackColor = System.Drawing.Color.Black;
+            ClientSize = new System.Drawing.Size(1280, 720);
+            ControlBox = false;
+            Controls.Add(IdleContainer);
+            DoubleBuffered = true;
+            Font = new System.Drawing.Font("Segoe UI", 9F);
+            ForeColor = System.Drawing.Color.White;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "TeleIdleForm";
+            ShowIcon = false;
+            StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            Text = "SharpAlert - Idle Window";
+            WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            FormClosing += TeleIdleForm_FormClosing;
+            FormClosed += TeleIdleForm_FormClosed;
+            Load += TeleIdleForm_Load;
+            Shown += TeleIdleForm_Shown;
+            Resize += TeleIdleForm_Resize;
+            IdleContainer.ResumeLayout(false);
+            ResumeLayout(false);
 
         }
 

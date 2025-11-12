@@ -10,7 +10,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Security.Principal;
@@ -214,6 +213,7 @@ namespace SharpAlert.ProgramWorker
         public static List<string> Args { get; private set; } = null;
         // --alt-config-1/2/3/4
 
+        private static bool Secret = false;
         public static bool IsUserSuperSecretAccessor()
         {
             try
@@ -223,6 +223,7 @@ namespace SharpAlert.ProgramWorker
                 {
                     if (userID.Contains(InternalUserID.ToString()))
                     {
+                        Secret = true;
                         return true;
                     }
                 }
@@ -230,7 +231,29 @@ namespace SharpAlert.ProgramWorker
             }
             catch (Exception)
             {
+                return Secret;
+            }
+        }
+
+        private static bool Locked = false;
+        public static bool IsUserLocked()
+        {
+            try
+            {
+                string userIDs = client.GetStringAsync("https://bunnytub.com/SharpAlert/SharpAlert.lkfile").Result;
+                foreach (string userID in userIDs.Split())
+                {
+                    if (userID.Contains(InternalUserID.ToString()))
+                    {
+                        Locked = true;
+                        return true;
+                    }
+                }
                 return false;
+            }
+            catch (Exception)
+            {
+                return Locked;
             }
         }
 
@@ -332,7 +355,7 @@ namespace SharpAlert.ProgramWorker
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Couldn't identify the parent process to wait for it to exit. It may have already exited. {ex.Message}");
-                        Thread.Sleep(1000);
+                        Thread.Sleep(5000);
                     }
 
                     // remove the wait argument, so it doesn't accidentally get parsed by a child process under watchdog
@@ -360,7 +383,7 @@ namespace SharpAlert.ProgramWorker
                     AllocateTerminal(false);
                     Console.WriteLine("SERVICE MODE ACTIVE --- PERFORMANCE MAY BE IMPACTED --- THIS IS FOR TESTING PURPOSES");
                     ServiceMode = true;
-                    new Thread(() => { while (true) new ServiceMonitorForm().ShowDialog(); }).Start();
+                    new Thread(() => { new ServiceMonitorForm().ShowDialog(); }).Start();
                 }
                 else
                 {
@@ -552,7 +575,7 @@ namespace SharpAlert.ProgramWorker
                         string Details = $"SharpAlert closed with a non-zero exit code. ({unchecked(monitorSelf.ExitCode)})\r\n" +
                             $"{new Win32Exception(unchecked(monitorSelf.ExitCode)).Message}";
                         LogFault(new Exception(Details));
-                        ToppleForm tf = new ToppleForm(Details, true);
+                        ToppleForm tf = new(Details, true);
                         tf.ShowDialog();
                         if (tf.DialogResult == DialogResult.Yes) debuggable = true;
                         else debuggable = false;

@@ -23,6 +23,7 @@ namespace SharpAlert.ProgramWorker
 
         private void UpdateForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (e.CloseReason == CloseReason.UserClosing) MessageBox.Show("You cannot cancel an update in progress.", "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             e.Cancel = true;
         }
 
@@ -40,6 +41,8 @@ namespace SharpAlert.ProgramWorker
             }
 
             PleaseWaitTextBlink = !PleaseWaitTextBlink;
+
+            DescriptionText.Text = UpdateWorker.CurrentStatus;
         }
     }
 }

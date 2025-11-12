@@ -5,6 +5,7 @@
 		<TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
 		<UseWindowsForms>True</UseWindowsForms>
 		<EnableWindowsTargeting>true</EnableWindowsTargeting>
+		<PublishAot>false</PublishAot>
 		<PublishSingleFile>true</PublishSingleFile>
 		<SelfContained>false</SelfContained>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
@@ -38,6 +39,7 @@
 
 	<!-- NuGet dependencies -->
 	<ItemGroup>
+		<PackageReference Include="ConfuserEx" Version="0.6.0" />
 		<PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
@@ -69,6 +71,9 @@
 
 	<!-- Designer files (WinForms) -->
 	<ItemGroup>
+		<Compile Update="ConfigurationDialogs\SaveSlotsConfigurationForm.cs">
+		  <SubType>Form</SubType>
+		</Compile>
 		<Compile Update="Properties\Resources.Designer.cs">
 			<AutoGen>True</AutoGen>
 			<DesignTime>True</DesignTime>

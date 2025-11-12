@@ -14,6 +14,7 @@ namespace SharpAlert.ProgramWorker
     public static class UpdateWorker
     {
         private static string IdentityURL = "https://bunnytub.com/SharpAlert";
+        public static string CurrentStatus { get; set; } = "Please wait...";
 
         private static HttpClient UpdateClient_ = null;
         private static HttpClient UpdateClient
@@ -67,7 +68,7 @@ namespace SharpAlert.ProgramWorker
         }
 
         private static readonly object TryUpdateObject = new();
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "<Pending>")]
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "<Pending>")]
         public static DateTime TimeUntilUpdate = DateTime.MaxValue;
 
         /// <summary>
@@ -86,21 +87,21 @@ namespace SharpAlert.ProgramWorker
                 {
                     if (VersionInfo.IsBetaVersion)
                     {
-                        Console.WriteLine("[Update Worker] Updates will not occur in a beta version.");
+                        Console.WriteLine("[Update Worker] Automatic updates will not occur in a beta version.");
                         return false;
                     }
                     else
                     {
                         if (Debugger.IsAttached)
                         {
-                            Console.WriteLine("[Update Worker] Updates will not occur while debugging.");
+                            Console.WriteLine("[Update Worker] Automatic updates will not occur while debugging.");
                             return false;
                         }
                         else
                         {
                             if (!QuickSettings.Instance.AllowPerformingUpdates)
                             {
-                                Console.WriteLine("[Update Worker] Updates are disabled.");
+                                Console.WriteLine("[Update Worker] Automatic updates are disabled.");
                                 return false;
                             }
                         }
@@ -116,15 +117,13 @@ namespace SharpAlert.ProgramWorker
                 }
                 else
                 {
-                    SpeakingManager.UpdatesFound();
-
                     DialogResult result = DialogResult.None;
 
-                    TimeUntilUpdate = DateTime.UtcNow.AddMinutes(5);
+                    TimeUntilUpdate = DateTime.UtcNow.AddMinutes(3);
 
                     if (!UpdateImmediately)
                     {
-                        PerformUpdateForm puf = new();
+                        PerformUpdateForm puf = new(UpdateToVersion);
                         puf.ShowDialog();
                         result = puf.DialogResult;
                     }
@@ -153,9 +152,11 @@ namespace SharpAlert.ProgramWorker
 
                         thread.Start();
 
-                        HaidaWorker.AllocateTerminal(false);
+                        //HaidaWorker.AllocateTerminal(false);
 
                         Console.WriteLine($"[Update Worker] DO NOT CLOSE THE PROGRAM DURING THE UPDATE. ({UpdateToVersion}, {UpdateImmediately})");
+
+                        CurrentStatus = "Preparing to update.";
 
                         Thread.Sleep(1000);
 
@@ -164,20 +165,20 @@ namespace SharpAlert.ProgramWorker
                             // check arguments just in case we get into a loop
                             // I'll do that later
                             
-                            if (!IsAdministrator)
-                            {
-                                Process proc = new();
-                                proc.StartInfo.FileName = AssemblyFile;
-                                proc.StartInfo.Arguments = "--update --wait-until-parent-closes";
-                                proc.StartInfo.UseShellExecute = true;
-                                proc.StartInfo.Verb = "runas";
-                                proc.Start();
+                            //if (!IsAdministrator)
+                            //{
+                            //    Process proc = new();
+                            //    proc.StartInfo.FileName = AssemblyFile;
+                            //    proc.StartInfo.Arguments = "--update --wait-until-parent-closes";
+                            //    proc.StartInfo.UseShellExecute = true;
+                            //    proc.StartInfo.Verb = "runas";
+                            //    proc.Start();
 
-                                Thread.Sleep(1000);
+                            //    Thread.Sleep(1000);
 
-                                Environment.Exit(0);
-                            }
-                            else
+                            //    Environment.Exit(0);
+                            //}
+                            //else
                             {
                                 Process[] processes = Process.GetProcessesByName($"{Path.GetFileNameWithoutExtension(AssemblyFile)}");
 
@@ -197,10 +198,13 @@ namespace SharpAlert.ProgramWorker
 
                                 if (!CanContinue)
                                 {
+                                    CurrentStatus = "Too many instances. Close all, then try again.";
                                     throw new Exception("There are multiple SharpAlert instances running. Close them before trying to update again.");
                                 }
 
                                 DiscordWebhook.SendFormattedMessage("Currently downloading the latest version of SharpAlert.");
+
+                                CurrentStatus = $"SharpAlert v{UpdateToVersion} is downloading.";
 
                                 Task<HttpResponseMessage> resultOutput = UpdateClient.GetAsync($"{IdentityURL}/Releases/v{UpdateToVersion}/SharpAlert.exe");
                                 Console.WriteLine($"[Update Worker] SharpAlert v{UpdateToVersion} executable is downloading.");
@@ -252,10 +256,13 @@ namespace SharpAlert.ProgramWorker
 
                                 if (!IsValidExecutable(output.Result))
                                 {
+                                    CurrentStatus = $"Validity check failed. Check network connection.";
                                     throw new Exception("The downloaded executable did not pass checks for validity.");
                                 }
 
                                 DiscordWebhook.SendFormattedMessage("Currently installing the latest version of SharpAlert.");
+
+                                CurrentStatus = $"SharpAlert v{UpdateToVersion} is installing.";
 
                                 if (File.Exists(AssemblyFile + "_")) File.Delete(AssemblyFile + "_");
                                 Console.WriteLine($"[Update Worker] Attempted to delete unused old executable.");
@@ -266,6 +273,7 @@ namespace SharpAlert.ProgramWorker
 
                                 DiscordWebhook.SendFormattedMessage("Restarting in a few moments to complete the update.");
 
+                                CurrentStatus = $"SharpAlert will restart in a few moments.";
                                 //new Thread(() => {
                                 //    MessageBox.Show($"Update completed, restarting automatically in 5 seconds.", "SharpAlert - Update Worker",
                                 //        MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -280,11 +288,36 @@ namespace SharpAlert.ProgramWorker
                         }
                         catch (Exception ex)
                         {
-                            DiscordWebhook.SendFormattedMessage("Updating SharpAlert failed!");
-                            MessageBox.Show($"Update failed!\r\n\r\n" +
-                                $"{ex.GetBaseException().Message}", "SharpAlert - Update Worker",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Error);
+                            DiscordWebhook.SendFormattedMessage("Updating SharpAlert failed.");
+                            CurrentStatus = $"The update has failed. More info in the error message.";
+                            if (MessageBox.Show($"Update failed.\r\n\r\n" +
+                                    $"{ex.GetBaseException().Message}", "SharpAlert - Update Worker",
+                                    MessageBoxButtons.RetryCancel,
+                                    MessageBoxIcon.Error) == DialogResult.Retry)
+                            {
+                                try
+                                {
+                                    Process proc = new();
+                                    proc.StartInfo.FileName = AssemblyFile;
+                                    proc.StartInfo.Arguments = "--update --wait-until-parent-closes";
+                                    proc.StartInfo.UseShellExecute = true;
+                                    proc.StartInfo.Verb = "runas";
+                                    proc.Start();
+
+                                    Thread.Sleep(1000);
+
+                                    Environment.Exit(0);
+                                }
+                                catch (Exception exx)
+                                {
+                                    DiscordWebhook.SendFormattedMessage("Updating SharpAlert failed again. (Am I running with administrative rights?)");
+                                    MessageBox.Show($"Elevation failed.\r\n\r\n" +
+                                        $"{exx.GetBaseException().Message}\r\n\r\n" +
+                                        $"(Am I running with administrative rights?)", "SharpAlert - Update Worker",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Error);
+                                }
+                            }
                             Environment.Exit(100);
                             return false;
                         }
