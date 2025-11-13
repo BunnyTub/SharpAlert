@@ -52,6 +52,7 @@
             TitleText.Location = new System.Drawing.Point(0, 0);
             TitleText.Margin = new System.Windows.Forms.Padding(0);
             TitleText.Name = "TitleText";
+            TitleText.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
             TitleText.Size = new System.Drawing.Size(636, 49);
             TitleText.TabIndex = 1;
             TitleText.Text = "SharpAlert has crashed...";
@@ -79,7 +80,8 @@
             ProblemTitleText.Location = new System.Drawing.Point(9, 53);
             ProblemTitleText.Margin = new System.Windows.Forms.Padding(0);
             ProblemTitleText.Name = "ProblemTitleText";
-            ProblemTitleText.Size = new System.Drawing.Size(90, 15);
+            ProblemTitleText.Padding = new System.Windows.Forms.Padding(1, 0, 0, 0);
+            ProblemTitleText.Size = new System.Drawing.Size(91, 15);
             ProblemTitleText.TabIndex = 4;
             ProblemTitleText.Text = "Problem Details";
             // 

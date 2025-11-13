@@ -76,6 +76,7 @@
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "UpdateForm";
+            ShowIcon = false;
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "SharpAlert - Updating (please wait...)";
             TopMost = true;
