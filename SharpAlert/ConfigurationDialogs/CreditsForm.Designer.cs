@@ -35,6 +35,7 @@
             linkLabel1 = new System.Windows.Forms.LinkLabel();
             linkLabel2 = new System.Windows.Forms.LinkLabel();
             linkLabel3 = new System.Windows.Forms.LinkLabel();
+            linkLabel4 = new System.Windows.Forms.LinkLabel();
             SuspendLayout();
             // 
             // label5
@@ -77,7 +78,7 @@
             linkLabel1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             linkLabel1.AutoSize = true;
             linkLabel1.LinkColor = System.Drawing.Color.Pink;
-            linkLabel1.Location = new System.Drawing.Point(9, 189);
+            linkLabel1.Location = new System.Drawing.Point(9, 212);
             linkLabel1.Margin = new System.Windows.Forms.Padding(0);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new System.Drawing.Size(208, 15);
@@ -91,7 +92,7 @@
             linkLabel2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             linkLabel2.AutoSize = true;
             linkLabel2.LinkColor = System.Drawing.Color.Pink;
-            linkLabel2.Location = new System.Drawing.Point(9, 204);
+            linkLabel2.Location = new System.Drawing.Point(9, 227);
             linkLabel2.Margin = new System.Windows.Forms.Padding(0);
             linkLabel2.Name = "linkLabel2";
             linkLabel2.Size = new System.Drawing.Size(260, 15);
@@ -109,16 +110,31 @@
             linkLabel3.Margin = new System.Windows.Forms.Padding(0);
             linkLabel3.Name = "linkLabel3";
             linkLabel3.Size = new System.Drawing.Size(338, 15);
-            linkLabel3.TabIndex = 100;
+            linkLabel3.TabIndex = 0;
             linkLabel3.TabStop = true;
             linkLabel3.Text = "This application and its contents are the property of BunnyTub.";
             linkLabel3.LinkClicked += linkLabel3_LinkClicked;
+            // 
+            // linkLabel4
+            // 
+            linkLabel4.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            linkLabel4.AutoSize = true;
+            linkLabel4.LinkColor = System.Drawing.Color.Pink;
+            linkLabel4.Location = new System.Drawing.Point(9, 197);
+            linkLabel4.Margin = new System.Windows.Forms.Padding(0);
+            linkLabel4.Name = "linkLabel4";
+            linkLabel4.Size = new System.Drawing.Size(520, 15);
+            linkLabel4.TabIndex = 103;
+            linkLabel4.TabStop = true;
+            linkLabel4.Text = "Credit to SkewerKing for webhook icons. (as of Nov 16, 2025. Icons are stored on a remote server.)";
+            linkLabel4.LinkClicked += linkLabel4_LinkClicked;
             // 
             // CreditsForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
-            ClientSize = new System.Drawing.Size(582, 228);
+            ClientSize = new System.Drawing.Size(582, 251);
+            Controls.Add(linkLabel4);
             Controls.Add(linkLabel3);
             Controls.Add(linkLabel2);
             Controls.Add(linkLabel1);
@@ -150,5 +166,6 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.LinkLabel linkLabel3;
+        private System.Windows.Forms.LinkLabel linkLabel4;
     }
 }

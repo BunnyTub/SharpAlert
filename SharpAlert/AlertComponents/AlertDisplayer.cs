@@ -133,7 +133,7 @@ namespace SharpAlert.AlertComponents
                 Notify.Icon = Resources.TrayAlertIcon;
 
                 Console.WriteLine("[Alert Displayer] Beginning playback of start tone.");
-                PlayStartToneFile(alert.Severity, true);
+                PlayStartToneFile(alert.Severity, alert.MsgType, true);
                 Console.WriteLine("[Alert Displayer] Beginning TTS playback of the intro text.");
                 PlayFromTTSEngine(alert._AlertText.Intro, true);
                 Console.WriteLine("[Alert Displayer] Beginning TTS playback of the body text.");

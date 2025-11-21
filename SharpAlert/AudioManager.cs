@@ -431,27 +431,35 @@ namespace SharpAlert
 
         public static bool ToneDone = true;
 
-        public static void PlayStartToneFile(string severity, bool wait = false)
+        public static void PlayStartToneFile(string severity, string type, bool wait = false)
         {
             StopAllAudioSilently();
             ToneDone = false;
 
+            //bool UseCancel = false;
             bool UseSevere = false;
 
             Stream stream;
 
-            switch (severity.ToLowerInvariant())
+            if (type.ToLowerInvariant() != "cancel")
             {
-                case "extreme":
-                case "severe":
-                    UseSevere = true;
-                    stream = Resources.major_alert;
-                    break;
-                default:
-                    stream = Resources.minor_alert;
-                    break;
+                switch (severity.ToLowerInvariant())
+                {
+                    case "extreme":
+                    case "severe":
+                        UseSevere = true;
+                        stream = Resources.major_alert;
+                        break;
+                    default:
+                        stream = Resources.minor_alert;
+                        break;
+                }
             }
-
+            else
+            {
+                //UseCancel = true;
+                stream = Resources.cancelled_alert;
+            }
 
             //if (!QuickSettings.Instance.alertPlayStartTone)
             //{

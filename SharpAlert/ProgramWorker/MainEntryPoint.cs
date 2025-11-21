@@ -440,9 +440,9 @@ namespace SharpAlert.ProgramWorker
                                     SafeExit();
                                 }
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
-                                LogFault(new Exception("Couldn't identify the parent process. This may limit the ability for SharpAlert to recover from a problem.", ex));
+                                //LogFault(new Exception("Couldn't identify the parent process. This may limit the ability for SharpAlert to recover from a problem.", ex));
                             }
                         }
                         else
@@ -457,7 +457,7 @@ namespace SharpAlert.ProgramWorker
                             $"{ex.Message}\r\n" +
                             $"Please report this.\r\n" +
                             $"If this is your first time running SharpAlert,\r\n" +
-                            $"check that you have .NET Framework 4.8+ installed.\r\n" +
+                            $"make sure your operating system is officialy supported.\r\n" +
                             $"Make sure no compatibility options are enabled.",
                             "SharpAlert",
                             MessageBoxButtons.OK,

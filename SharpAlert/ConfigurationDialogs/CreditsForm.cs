@@ -51,6 +51,11 @@ namespace SharpAlert.ConfigurationDialogs
         {
             MessageBox.Show("OwO", "OwO");
         }
+
+        private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+        }
 #pragma warning restore IDE1006 // Naming Styles
     }
 }

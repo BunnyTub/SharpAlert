@@ -572,6 +572,8 @@ namespace SharpAlert.ProgramWorker
             //    Application.Run(new MessageWindow());
             //}, true);
 
+            int RichErrorCount = 0;
+
             StartCatchAllThread("Discord Rich Presence", () =>
             {
                 while (AllowThreadRestarts)
@@ -598,6 +600,7 @@ namespace SharpAlert.ProgramWorker
                     client.OnConnectionFailed += (sender, e) =>
                     {
                         Console.WriteLine($"[Discord Rich Presence] Connection failed (is Discord running?): {e.FailedPipe}");
+                        RichErrorCount++;
                     };
 
                     client.Initialize();
@@ -644,12 +647,11 @@ namespace SharpAlert.ProgramWorker
                         }
                     }
 
-
-
                     //client.ShutdownOnly = true;
                     client.ClearPresence();
                     client.Deinitialize();
                     client.Dispose();
+                    if (RichErrorCount >= 10) throw new NonRestartableException();
                     Thread.Sleep(10000);
                 }
             }, true);
@@ -805,7 +807,7 @@ namespace SharpAlert.ProgramWorker
 
         public static string LogFault(Exception ex)
         {
-            string ExceptionCompiled = $"SharpAlert encountered an exception. {DateTime.UtcNow:s}\r\n" +
+            string ExceptionCompiled = $"SharpAlert encountered a problem. {DateTime.UtcNow:s}\r\n" +
                 $"{ex.Message}\r\n" +
                 $"{ex.TargetSite}\r\n" +
                 $"{ex.StackTrace}";
@@ -824,7 +826,7 @@ namespace SharpAlert.ProgramWorker
             {
                 if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                 {
-                    DiscordWebhook.SendUnformattedMessage(ExceptionCompiled + "\r\n\r\nPlease report this issue to my owner!\r\nIf you are the owner, contact <@603429346736341013> (https://bunnytub.com/SharpAlert | bunnytub@bunnytub.com) for help.");
+                    DiscordWebhook.SendUnformattedMessage(ExceptionCompiled + "\r\n\r\nNeed help? Reach out! <@603429346736341013> (https://bunnytub.com/SharpAlert | bunnytub@bunnytub.com)");
                 }
             }
             catch (Exception)

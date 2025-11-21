@@ -29,134 +29,133 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChoosePresetForm));
-            this.LogoBox = new System.Windows.Forms.PictureBox();
-            this.TitleText = new System.Windows.Forms.Label();
-            this.PreferMinorButton = new System.Windows.Forms.Button();
-            this.PreferAllButton = new System.Windows.Forms.Button();
-            this.PreferSevereButton = new System.Windows.Forms.Button();
-            this.SkipButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
-            this.SuspendLayout();
+            LogoBox = new System.Windows.Forms.PictureBox();
+            TitleText = new System.Windows.Forms.Label();
+            PreferMinorButton = new System.Windows.Forms.Button();
+            PreferAllButton = new System.Windows.Forms.Button();
+            PreferSevereButton = new System.Windows.Forms.Button();
+            SkipButton = new System.Windows.Forms.Button();
+            label1 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
+            SuspendLayout();
             // 
             // LogoBox
             // 
-            this.LogoBox.Image = global::SharpAlert.Properties.Resources.WarningApp;
-            this.LogoBox.Location = new System.Drawing.Point(9, 9);
-            this.LogoBox.Margin = new System.Windows.Forms.Padding(0);
-            this.LogoBox.Name = "LogoBox";
-            this.LogoBox.Size = new System.Drawing.Size(96, 96);
-            this.LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.LogoBox.TabIndex = 2;
-            this.LogoBox.TabStop = false;
+            LogoBox.Image = Properties.Resources.WarningApp;
+            LogoBox.Location = new System.Drawing.Point(9, 9);
+            LogoBox.Margin = new System.Windows.Forms.Padding(0);
+            LogoBox.Name = "LogoBox";
+            LogoBox.Size = new System.Drawing.Size(96, 96);
+            LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            LogoBox.TabIndex = 2;
+            LogoBox.TabStop = false;
             // 
             // TitleText
             // 
-            this.TitleText.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.TitleText.Location = new System.Drawing.Point(105, 9);
-            this.TitleText.Margin = new System.Windows.Forms.Padding(0);
-            this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(533, 53);
-            this.TitleText.TabIndex = 3;
-            this.TitleText.Text = "Choose an alert receiving preset to start with. You can change individual options" +
-    " in your CAP settings.";
+            TitleText.Font = new System.Drawing.Font("Segoe UI", 14F);
+            TitleText.Location = new System.Drawing.Point(105, 9);
+            TitleText.Margin = new System.Windows.Forms.Padding(0);
+            TitleText.Name = "TitleText";
+            TitleText.Size = new System.Drawing.Size(533, 53);
+            TitleText.TabIndex = 3;
+            TitleText.Text = "Choose an alert receiving preset to start with. You can change individual options in your CAP settings.";
             // 
             // PreferMinorButton
             // 
-            this.PreferMinorButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.PreferMinorButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.PreferMinorButton.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.PreferMinorButton.ForeColor = System.Drawing.Color.White;
-            this.PreferMinorButton.Location = new System.Drawing.Point(108, 65);
-            this.PreferMinorButton.Name = "PreferMinorButton";
-            this.PreferMinorButton.Size = new System.Drawing.Size(128, 128);
-            this.PreferMinorButton.TabIndex = 4;
-            this.PreferMinorButton.Text = "I prefer...\r\n\r\nMinor and higher alerts.";
-            this.PreferMinorButton.UseMnemonic = false;
-            this.PreferMinorButton.UseVisualStyleBackColor = false;
-            this.PreferMinorButton.Click += new System.EventHandler(this.PreferMinorButton_Click);
+            PreferMinorButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            PreferMinorButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            PreferMinorButton.Font = new System.Drawing.Font("Segoe UI", 12F);
+            PreferMinorButton.ForeColor = System.Drawing.Color.White;
+            PreferMinorButton.Location = new System.Drawing.Point(108, 65);
+            PreferMinorButton.Name = "PreferMinorButton";
+            PreferMinorButton.Size = new System.Drawing.Size(128, 128);
+            PreferMinorButton.TabIndex = 4;
+            PreferMinorButton.Text = "I prefer...\r\n\r\nMinor and higher alerts.";
+            PreferMinorButton.UseMnemonic = false;
+            PreferMinorButton.UseVisualStyleBackColor = false;
+            PreferMinorButton.Click += PreferMinorButton_Click;
             // 
             // PreferAllButton
             // 
-            this.PreferAllButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.PreferAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.PreferAllButton.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.PreferAllButton.ForeColor = System.Drawing.Color.White;
-            this.PreferAllButton.Location = new System.Drawing.Point(376, 65);
-            this.PreferAllButton.Name = "PreferAllButton";
-            this.PreferAllButton.Size = new System.Drawing.Size(128, 128);
-            this.PreferAllButton.TabIndex = 6;
-            this.PreferAllButton.Text = "I prefer...\r\n\r\nAny alerts, including tests.";
-            this.PreferAllButton.UseMnemonic = false;
-            this.PreferAllButton.UseVisualStyleBackColor = false;
-            this.PreferAllButton.Click += new System.EventHandler(this.PreferAllButton_Click);
+            PreferAllButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            PreferAllButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            PreferAllButton.Font = new System.Drawing.Font("Segoe UI", 12F);
+            PreferAllButton.ForeColor = System.Drawing.Color.White;
+            PreferAllButton.Location = new System.Drawing.Point(376, 65);
+            PreferAllButton.Name = "PreferAllButton";
+            PreferAllButton.Size = new System.Drawing.Size(128, 128);
+            PreferAllButton.TabIndex = 6;
+            PreferAllButton.Text = "I prefer...\r\n\r\nAny alerts, including tests.";
+            PreferAllButton.UseMnemonic = false;
+            PreferAllButton.UseVisualStyleBackColor = false;
+            PreferAllButton.Click += PreferAllButton_Click;
             // 
             // PreferSevereButton
             // 
-            this.PreferSevereButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.PreferSevereButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.PreferSevereButton.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.PreferSevereButton.ForeColor = System.Drawing.Color.White;
-            this.PreferSevereButton.Location = new System.Drawing.Point(242, 65);
-            this.PreferSevereButton.Name = "PreferSevereButton";
-            this.PreferSevereButton.Size = new System.Drawing.Size(128, 128);
-            this.PreferSevereButton.TabIndex = 5;
-            this.PreferSevereButton.Text = "I prefer...\r\n\r\nSevere and higher alerts.";
-            this.PreferSevereButton.UseMnemonic = false;
-            this.PreferSevereButton.UseVisualStyleBackColor = false;
-            this.PreferSevereButton.Click += new System.EventHandler(this.PreferSevereButton_Click);
+            PreferSevereButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            PreferSevereButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            PreferSevereButton.Font = new System.Drawing.Font("Segoe UI", 12F);
+            PreferSevereButton.ForeColor = System.Drawing.Color.White;
+            PreferSevereButton.Location = new System.Drawing.Point(242, 65);
+            PreferSevereButton.Name = "PreferSevereButton";
+            PreferSevereButton.Size = new System.Drawing.Size(128, 128);
+            PreferSevereButton.TabIndex = 5;
+            PreferSevereButton.Text = "I prefer...\r\n\r\nSevere and higher alerts.";
+            PreferSevereButton.UseMnemonic = false;
+            PreferSevereButton.UseVisualStyleBackColor = false;
+            PreferSevereButton.Click += PreferSevereButton_Click;
             // 
             // SkipButton
             // 
-            this.SkipButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.SkipButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SkipButton.Font = new System.Drawing.Font("Segoe UI", 24F);
-            this.SkipButton.ForeColor = System.Drawing.Color.White;
-            this.SkipButton.Location = new System.Drawing.Point(510, 64);
-            this.SkipButton.Name = "SkipButton";
-            this.SkipButton.Size = new System.Drawing.Size(128, 128);
-            this.SkipButton.TabIndex = 7;
-            this.SkipButton.Text = "Skip";
-            this.SkipButton.UseMnemonic = false;
-            this.SkipButton.UseVisualStyleBackColor = false;
-            this.SkipButton.Click += new System.EventHandler(this.SkipButton_Click);
+            SkipButton.BackColor = System.Drawing.Color.FromArgb(180, 60, 60);
+            SkipButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            SkipButton.Font = new System.Drawing.Font("Segoe UI", 24F);
+            SkipButton.ForeColor = System.Drawing.Color.White;
+            SkipButton.Location = new System.Drawing.Point(510, 64);
+            SkipButton.Name = "SkipButton";
+            SkipButton.Size = new System.Drawing.Size(128, 128);
+            SkipButton.TabIndex = 7;
+            SkipButton.Text = "Skip";
+            SkipButton.UseMnemonic = false;
+            SkipButton.UseVisualStyleBackColor = false;
+            SkipButton.Click += SkipButton_Click;
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label1.Location = new System.Drawing.Point(9, 202);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(629, 21);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "To change these options later, go to Settings (under CAP Settings).";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            label1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            label1.Location = new System.Drawing.Point(9, 202);
+            label1.Margin = new System.Windows.Forms.Padding(0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(629, 21);
+            label1.TabIndex = 14;
+            label1.Text = "To change these options later, go to Settings (under CAP Settings).";
+            label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // ChoosePresetForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(650, 232);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.SkipButton);
-            this.Controls.Add(this.PreferSevereButton);
-            this.Controls.Add(this.PreferAllButton);
-            this.Controls.Add(this.PreferMinorButton);
-            this.Controls.Add(this.TitleText);
-            this.Controls.Add(this.LogoBox);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "ChoosePresetForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SharpAlert - Alert Presets";
-            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
-            this.ResumeLayout(false);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
+            ClientSize = new System.Drawing.Size(650, 232);
+            Controls.Add(label1);
+            Controls.Add(SkipButton);
+            Controls.Add(PreferSevereButton);
+            Controls.Add(PreferAllButton);
+            Controls.Add(PreferMinorButton);
+            Controls.Add(TitleText);
+            Controls.Add(LogoBox);
+            Font = new System.Drawing.Font("Segoe UI", 9F);
+            ForeColor = System.Drawing.Color.White;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "ChoosePresetForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "SharpAlert - Alert Presets";
+            ((System.ComponentModel.ISupportInitialize)LogoBox).EndInit();
+            ResumeLayout(false);
 
         }
 

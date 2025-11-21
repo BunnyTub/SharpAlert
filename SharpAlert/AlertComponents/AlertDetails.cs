@@ -9,114 +9,126 @@ namespace SharpAlert.AlertComponents
     {
         public static readonly SAME_EventCode cautionary = new SAME_EventCode("111", "Cautionary (Unknown Event)");
 
+        public enum SAME_EventLevel
+        {
+            None = 0,
+            Other = 5,
+            Test = 10,
+            Advisory = 20,
+            Watch = 30,
+            Warning = 40
+        }
+
         public class SAME_EventCode
         {
-            public SAME_EventCode(string id, string name)
+            public SAME_EventCode(string id, string name, SAME_EventLevel level = SAME_EventLevel.None)
             {
                 ID = id;
                 Name = name;
+                EventLevel = level;
             }
 
             public string ID { private set; get; }
             public string Name { private set; get; }
+            public SAME_EventLevel EventLevel { private set; get; }
         }
 
-        public static List<SAME_EventCode> SAME_AlertCodes = new List<SAME_EventCode>
+        public static readonly List<SAME_EventCode> SAME_AlertCodes = new List<SAME_EventCode>
         {
             // Used in the EBS (Emergency Broadcast System).
             new SAME_EventCode("EAN", "National Emergency Message"), // former is "Emergency Action Notification"
-            new SAME_EventCode("EAT", "National Emergency Message Termination"), // former is "Emergency Action Termination"
+            new SAME_EventCode("EAT", "Emergency Action Termination"),
             
             // These are national alert codes.
-            new SAME_EventCode("NIC", "National Information Center"),
-            new SAME_EventCode("NPT", "National Periodic Test"),
-            new SAME_EventCode("NAT", "National Audible Test"),
-            new SAME_EventCode("NST", "National Slient Test"),
+            new SAME_EventCode("NIC", "National Information Center", SAME_EventLevel.Advisory),
+            new SAME_EventCode("NPT", "National Periodic Test", SAME_EventLevel.Test),
+            new SAME_EventCode("NAT", "National Audible Test", SAME_EventLevel.Test),
+            new SAME_EventCode("NST", "National Slient Test", SAME_EventLevel.Test),
 
             // These are required tests.
-            new SAME_EventCode("RMT", "Required Monthly Test"),
-            new SAME_EventCode("RWT", "Required Weekly Test"),
+            new SAME_EventCode("RMT", "Required Monthly Test", SAME_EventLevel.Test),
+            new SAME_EventCode("RWT", "Required Weekly Test", SAME_EventLevel.Test),
 
             // These are administratives codes.
-            new SAME_EventCode("ADR", "Administrative Message"),
+            new SAME_EventCode("ADR", "Administrative Message", SAME_EventLevel.Test),
 
             // These are other codes.
-            new SAME_EventCode("AVW", "Avalanche Warning"),
-            new SAME_EventCode("AVA", "Avalanche Watch"),
-            new SAME_EventCode("BLU", "Blue Alert"),
-            new SAME_EventCode("BHW", "Biological Hazard Warning"),
-            new SAME_EventCode("BZW", "Blizzard Warning"),
-            new SAME_EventCode("BWW", "Boil Water Warning"),
-            new SAME_EventCode("CAE", "Child Abduction Emergency"),
-            new SAME_EventCode("CDW", "Civil Danger Warning"),
-            new SAME_EventCode("CEM", "Civil Emergency Message"),
-            new SAME_EventCode("CFW", "Coastal Flood Warning"),
-            new SAME_EventCode("CFA", "Coastal Flood Watch"),
-            new SAME_EventCode("CHW", "Chemical Hazard Warning"),
-            new SAME_EventCode("DEW", "Contagious Disease Warning"),
-            new SAME_EventCode("CWW", "Contaminated Water Warning"),
-            new SAME_EventCode("DBA", "Dam Watch"),
-            new SAME_EventCode("DBW", "Dam Break Warning"),
-            new SAME_EventCode("DSW", "Dust Storm Warning"),
-            new SAME_EventCode("EQW", "Earthquake Warning"),
-            new SAME_EventCode("EVA", "Evacuation Watch"),
-            new SAME_EventCode("EVI", "Evacuation Immediate"),
-            new SAME_EventCode("EWW", "Extreme Wind Warning"),
-            new SAME_EventCode("FCW", "Food Contamination Warning"),
-            new SAME_EventCode("FRW", "Fire Warning"),
-            new SAME_EventCode("FFW", "Flash Flood Warning"),
-            new SAME_EventCode("FFA", "Flash Flood Watch"),
-            new SAME_EventCode("FFS", "Flash Flood Statement"),
-            new SAME_EventCode("FLW", "Flood Warning"),
-            new SAME_EventCode("FLA", "Flood Watch"),
-            new SAME_EventCode("FLS", "Flood Statement"),
-            new SAME_EventCode("FSW", "Flash Freeze Warning"),
-            new SAME_EventCode("FZW", "Freeze Warning"),
-            new SAME_EventCode("HMW", "Hazardous Materials Warning"),
-            new SAME_EventCode("HWW", "High Wind Warning"),
-            new SAME_EventCode("HWA", "High Wind Watch"),
-            new SAME_EventCode("HUW", "Hurricane Warning"),
-            new SAME_EventCode("HUA", "Hurricane Watch"),
-            new SAME_EventCode("HLS", "Hurricane Statement"),
-            new SAME_EventCode("IBW", "Iceberg Warning"),
-            new SAME_EventCode("IFW", "Industrial Fire Warning"),
-            new SAME_EventCode("LEW", "Law Enforcement Warning"),
-            new SAME_EventCode("LSW", "Landslide Warning"),
-            new SAME_EventCode("LAE", "Local Area Emergency"),
-            new SAME_EventCode("NMN", "Network Message Notification"),
-            new SAME_EventCode("TOE", "911 Telephone Outage Emergency"),
-            new SAME_EventCode("NUW", "Nuclear Power Plant Warning"),
-            new SAME_EventCode("MEP", "Missing And Endangered Persons"),
-            new SAME_EventCode("DMO", "Practice/Demo Warning"),
-            new SAME_EventCode("POS", "Power Outage Statement"),
-            new SAME_EventCode("RHW", "Radiological Hazard Warning"),
-            new SAME_EventCode("SVR", "Severe Thunderstorm Warning"),
-            new SAME_EventCode("SVA", "Severe Thunderstorm Watch"),
-            new SAME_EventCode("SVS", "Severe Weather Statement"),
-            new SAME_EventCode("SPW", "Shelter in Place Warning"),
-            new SAME_EventCode("SMW", "Special Marine Warning"),
-            new SAME_EventCode("SPS", "Special Weather Statement"),
-            new SAME_EventCode("SQW", "Snow Squall Warning"),
-            new SAME_EventCode("SSW", "Storm Surge Warning"),
-            new SAME_EventCode("SSA", "Storm Surge Watch"),
-            new SAME_EventCode("TOR", "Tornado Warning"),
-            new SAME_EventCode("TOA", "Tornado Watch"),
-            new SAME_EventCode("TRW", "Tropical Storm Warning"),
-            new SAME_EventCode("TRA", "Tropical Storm Watch"),
-            new SAME_EventCode("TSW", "Tsunami Warning"),
-            new SAME_EventCode("TSA", "Tsunami Watch"),
-            new SAME_EventCode("VOW", "Volcano Warning"),
-            new SAME_EventCode("WSW", "Winter Storm Warning"),
-            new SAME_EventCode("WSA", "Winter Storm Watch"),
-            new SAME_EventCode("WFW", "Wild Fire Warning"),
-            new SAME_EventCode("WFA", "Wild Fire Watch"),
+            new SAME_EventCode("AVW", "Avalanche Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("AVA", "Avalanche Watch", SAME_EventLevel.Watch),
+            new SAME_EventCode("BLU", "Blue Alert", SAME_EventLevel.Other),
+            new SAME_EventCode("BHW", "Biological Hazard Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("BZW", "Blizzard Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("BWW", "Boil Water Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("CAE", "Child Abduction Emergency", SAME_EventLevel.Other),
+            new SAME_EventCode("CDW", "Civil Danger Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("CEM", "Civil Emergency Message", SAME_EventLevel.Warning),
+            new SAME_EventCode("CFW", "Coastal Flood Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("CFA", "Coastal Flood Watch", SAME_EventLevel.Watch),
+            new SAME_EventCode("CHW", "Chemical Hazard Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("DEW", "Contagious Disease Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("CWW", "Contaminated Water Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("DBA", "Dam Watch", SAME_EventLevel.Watch),
+            new SAME_EventCode("DBW", "Dam Break Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("DSW", "Dust Storm Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("EQW", "Earthquake Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("EVA", "Evacuation Watch", SAME_EventLevel.Watch),
+            new SAME_EventCode("EVI", "Evacuation Immediate", SAME_EventLevel.Warning),
+            new SAME_EventCode("EWW", "Extreme Wind Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("FCW", "Food Contamination Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("FRW", "Fire Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("FFW", "Flash Flood Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("FFA", "Flash Flood Watch", SAME_EventLevel.Watch),
+            new SAME_EventCode("FFS", "Flash Flood Statement", SAME_EventLevel.Advisory),
+            new SAME_EventCode("FLW", "Flood Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("FLA", "Flood Watch", SAME_EventLevel.Watch),
+            new SAME_EventCode("FLS", "Flood Statement", SAME_EventLevel.Advisory),
+            new SAME_EventCode("FSW", "Flash Freeze Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("FZW", "Freeze Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("HMW", "Hazardous Materials Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("HWW", "High Wind Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("HWA", "High Wind Watch", SAME_EventLevel.Watch),
+            new SAME_EventCode("HUW", "Hurricane Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("HUA", "Hurricane Watch", SAME_EventLevel.Watch),
+            new SAME_EventCode("HLS", "Hurricane Statement", SAME_EventLevel.Advisory),
+            new SAME_EventCode("IBW", "Iceberg Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("IFW", "Industrial Fire Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("LEW", "Law Enforcement Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("LSW", "Landslide Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("LAE", "Local Area Emergency", SAME_EventLevel.Warning),
+            new SAME_EventCode("NMN", "Network Message Notification", SAME_EventLevel.Test),
+            new SAME_EventCode("TOE", "911 Telephone Outage Emergency", SAME_EventLevel.Warning),
+            new SAME_EventCode("NUW", "Nuclear Power Plant Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("MEP", "Missing And Endangered Persons", SAME_EventLevel.Other),
+            new SAME_EventCode("DMO", "Practice/Demo Warning", SAME_EventLevel.Other),
+            new SAME_EventCode("POS", "Power Outage Statement", SAME_EventLevel.Advisory),
+            new SAME_EventCode("RHW", "Radiological Hazard Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("SVR", "Severe Thunderstorm Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("SVA", "Severe Thunderstorm Watch", SAME_EventLevel.Watch),
+            new SAME_EventCode("SVS", "Severe Weather Statement", SAME_EventLevel.Advisory),
+            new SAME_EventCode("SPW", "Shelter In-Place Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("SMW", "Special Marine Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("SPS", "Special Weather Statement", SAME_EventLevel.Advisory),
+            new SAME_EventCode("SQW", "Snow Squall Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("SSW", "Storm Surge Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("SSA", "Storm Surge Watch", SAME_EventLevel.Watch),
+            new SAME_EventCode("TOR", "Tornado Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("TOA", "Tornado Watch", SAME_EventLevel.Watch),
+            new SAME_EventCode("TRW", "Tropical Storm Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("TRA", "Tropical Storm Watch", SAME_EventLevel.Watch),
+            new SAME_EventCode("TSW", "Tsunami Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("TSA", "Tsunami Watch", SAME_EventLevel.Watch),
+            new SAME_EventCode("VOW", "Volcano Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("WSW", "Winter Storm Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("WSA", "Winter Storm Watch", SAME_EventLevel.Watch),
+            new SAME_EventCode("WFW", "Wild Fire Warning", SAME_EventLevel.Warning),
+            new SAME_EventCode("WFA", "Wild Fire Watch", SAME_EventLevel.Watch),
 
             // Used internally, and aren't transmitted normally. Sometimes used by NOAA stations to indicate transmitter outages.
 
-            new SAME_EventCode("TXP", "Transmitter Primary On"),
-            new SAME_EventCode("TXB", "Transmitter Backup On"),
-            new SAME_EventCode("TXO", "Transmitter Carrier On"),
-            new SAME_EventCode("TXF", "Transmitter Carrier Off"),
+            new SAME_EventCode("TXP", "Transmitter Primary On", SAME_EventLevel.Test),
+            new SAME_EventCode("TXB", "Transmitter Backup On", SAME_EventLevel.Test),
+            new SAME_EventCode("TXO", "Transmitter Carrier On", SAME_EventLevel.Test),
+            new SAME_EventCode("TXF", "Transmitter Carrier Off", SAME_EventLevel.Test)
         };
 
         public class SAME_CountyCode
@@ -142,7 +154,7 @@ namespace SharpAlert.AlertComponents
             public string Value => Name;
         }
 
-        public static List<SAME_CountyCode> Counties = new List<SAME_CountyCode>
+        public static readonly List<SAME_CountyCode> Counties = new List<SAME_CountyCode>
         {
             //National - 00
             new SAME_CountyCode(000, "United States", new SAME_StateCode(00, "All of United States (Nationwide only)")),
@@ -3570,7 +3582,7 @@ namespace SharpAlert.AlertComponents
             //public string Value => Name;
         }
 
-        public static List<SAME_StateCode> States = new List<SAME_StateCode>
+        public static readonly List<SAME_StateCode> States = new List<SAME_StateCode>
         {
             //new SAME_StateCode(00, "National (USA/CANADA)"),
             new SAME_StateCode(1, "Alabama"),

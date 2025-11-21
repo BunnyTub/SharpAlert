@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SHInstaller")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("SharpAlert Installer")]
+[assembly: AssemblyDescription("This is the SharpAlert installer.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SHInstaller")]
-[assembly: AssemblyCopyright("Copyright ©  2025")]
+[assembly: AssemblyProduct("SharpAlert Installer")]
+[assembly: AssemblyCopyright("BunnyTub")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

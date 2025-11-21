@@ -379,6 +379,37 @@ namespace SharpAlert.AlertComponents
                     //    inline = false
                     //});
 
+                    var EventDecode = AlertDetails.SAME_AlertCodes.Find(t => t.Name == title);
+
+                    string ThumbnailURL = $"https://bunnytub.com/SharpAlert-Assets/Misc/UNK.png";
+
+                    if (EventDecode != null)
+                    {
+                        switch (EventDecode.EventLevel)
+                        {
+                            case AlertDetails.SAME_EventLevel.None:
+                            default:
+                                //ThumbnailURL = $"https://bunnytub.com/SharpAlert-Assets/Misc/UNK.png";
+                                break;
+                            case AlertDetails.SAME_EventLevel.Other:
+                                ThumbnailURL = $"https://bunnytub.com/SharpAlert-Assets/Other/{EventDecode.ID.ToUpperInvariant()}.png";
+                                break;
+                            case AlertDetails.SAME_EventLevel.Test:
+                                ThumbnailURL = $"https://bunnytub.com/SharpAlert-Assets/Tests/{EventDecode.ID.ToUpperInvariant()}.png";
+                                break;
+                            case AlertDetails.SAME_EventLevel.Advisory:
+                                ThumbnailURL = $"https://bunnytub.com/SharpAlert-Assets/Advisories/{EventDecode.ID.ToUpperInvariant()}.png";
+                                break;
+                            case AlertDetails.SAME_EventLevel.Watch:
+                                ThumbnailURL = $"https://bunnytub.com/SharpAlert-Assets/Watches/{EventDecode.ID.ToUpperInvariant()}.png";
+                                break;
+                            case AlertDetails.SAME_EventLevel.Warning:
+                                ThumbnailURL = $"https://bunnytub.com/SharpAlert-Assets/Warnings/{EventDecode.ID.ToUpperInvariant()}.png";
+                                break;
+
+                        }
+                    }
+
                     var payloadObject = new
                     {
                         content = truncMessage,
@@ -398,7 +429,9 @@ namespace SharpAlert.AlertComponents
                                 description = Fields,
                                 //fields = fieldsList.ToArray(),
                                 image = new { url = ImageURL },
-                                footer = new { text = "Identifier: " + Identifier }
+                                thumbnail = new { url = ThumbnailURL },
+                                footer = new { text = "Identifier: " + Identifier },
+                                timestamp = $"{DateTimeOffset.UtcNow:s}"
                             }
                         }
                     };

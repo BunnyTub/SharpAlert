@@ -154,4 +154,7 @@
   <data name="ui_end_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ui_end_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="cancelled_alert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cancelled_alert.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

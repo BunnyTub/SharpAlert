@@ -195,7 +195,7 @@ namespace SharpAlert.AlertComponents
             //    PlayFromUnmanagedSource(Resources.ui_cancellation_1);
             //}
 
-            PlayStartToneFile(AlertSeverity);
+            PlayStartToneFile(AlertSeverity, AlertType);
 
             AutoTTS.Start();
             AlertText.Focus();
