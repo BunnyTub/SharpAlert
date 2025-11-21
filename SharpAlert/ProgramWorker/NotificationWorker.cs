@@ -244,6 +244,12 @@ namespace SharpAlert.ProgramWorker
                 ThreadDrool.StartAndForget(() => new DashboardForm(false).ShowDialog());
             }));
             
+            contextMenu.Items.Add(new ToolStripMenuItem("Open Alert Sharing", null, (sender, arg) =>
+            {
+                //MessageBox.Show("The dashboard lists recently relayed alerts. If you close and re-open the dashboard, the list will start from scratch!");
+                ThreadDrool.StartAndForget(() => new ShareAlertsForm().ShowDialog());
+            }));
+            
             contextMenu.Items.Add(new ToolStripMenuItem("Open Settings", null, (sender, arg) =>
             {
                 IgnoreRightClick = true;

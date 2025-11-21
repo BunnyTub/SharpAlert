@@ -25,6 +25,7 @@
 		<Title>SharpAlert</Title>
 		<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<BaseOutputPath>\\192.168.196.194\sex2thesexening\- SHERPALART</BaseOutputPath>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -45,6 +46,7 @@
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="HidLibrary" Version="3.3.40" />
 		<PackageReference Include="Costura.Fody" Version="6.0.0" />
+		<PackageReference Include="Open.Nat" Version="2.1.0" />
 		<PackageReference Include="System.Resources.Extensions" Version="9.0.9" />
 		<PackageReference Include="System.Speech" Version="9.0.9" />
 	</ItemGroup>

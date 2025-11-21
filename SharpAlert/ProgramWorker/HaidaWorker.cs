@@ -24,6 +24,7 @@ using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.ProgramWorker.ServiceThreads;
 using static SharpAlert.RegexList;
 using static SharpAlert.ThreadDrool;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 
 namespace SharpAlert.ProgramWorker
@@ -179,6 +180,9 @@ namespace SharpAlert.ProgramWorker
 
             Console.WriteLine("[Haida] Initializing History Processor.");
             historyproc = new HistoryProcessor();
+            
+            Console.WriteLine("[Haida] Initializing Discord Webhook Processor.");
+            StartCatchAllThread("Discord Webhook Processor", DiscordWebhook.ServiceRun, true);
 
             Console.WriteLine("[Haida] Initializing Hyper Server.");
             hyper = new HyperServer();
@@ -603,7 +607,37 @@ namespace SharpAlert.ProgramWorker
                         RichErrorCount++;
                     };
 
+                    //client.OnJoinRequested += (sender, e) =>
+                    //{
+                    //    Console.WriteLine($"[Discord Rich Presence] Request to join from: {e.User.ID}");
+
+                    //    MessageBox.Show($"{e.User.DisplayName} ({e.User.ID})");
+
+                    //    client.Respond(e, true);
+                    //};
+
+                    //client.OnJoin += (sender, e) =>
+                    //{
+                    //    Console.WriteLine($"[Discord Rich Presence] Request to join to: {e.Secret}");
+
+                    //    MessageBox.Show($"{e.Secret}");
+                    //};
+
+                    client.RegisterUriScheme();
+
+                    //client.Subscribe(EventType.Join | EventType.JoinRequest);
+
                     client.Initialize();
+
+                    //client.RegisterUriScheme(executable: AssemblyFile);
+
+                    //Party party = new()
+                    //{
+                    //    ID = $"{Guid.NewGuid()}",
+                    //    Max = 8,
+                    //    Privacy = Party.PrivacySetting.Public,
+                    //    Size = 1
+                    //};
 
                     if (QuickSettings.Instance.AllowDiscordRichPresence)
                     {
@@ -612,26 +646,34 @@ namespace SharpAlert.ProgramWorker
                         client.SetPresence(new RichPresence()
                         {
                             Details = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
-                            DetailsUrl = "https://bunnytub.com/SharpAlert",
+                            //DetailsUrl = "https://bunnytub.com/SharpAlert",
                             State = $"Relayed {AlertProcessor.AlertsRelayed} alert(s).",
-                            Type = ActivityType.Watching,
+                            Type = ActivityType.Playing,
                             Assets = new Assets()
                             {
                                 LargeImageKey = "sharpalert_squaredicon",
                                 LargeImageText = "SharpAlert"
                             },
                             StatusDisplay = StatusDisplayType.Details,
+                            //Party = party,
+                            //Secrets = new Secrets
+                            //{
+                            //    // max128
+                            //    JoinSecret = $"MTI4NzM0OjFpMmhuZToxMjMxMjM="
+                            //},
                             //Buttons =
                             //[
                             //    new DiscordRPC.Button { Label = "Get SharpAlert", Url = "https://bunnytub.com/SharpAlert" }
                             //]
                         });
 
+                        client.SetSubscription(EventType.JoinRequest);
                         while (AllowThreadRestarts)
                         {
                             Thread.Sleep(10000);
                             client.UpdateState($"Relayed {AlertProcessor.AlertsRelayed} alert(s).");
-                            Console.WriteLine("[Discord Rich Presence] Updated state.");
+                            //party.Size++;
+                            //Console.WriteLine("[Discord Rich Presence] Updated state.");
                             //client.UpdateClearTime();
                             //client.SetButton(new DiscordRPC.Button { Label = "Download SharpAlert", Url = "https://bunnytub.com/SharpAlert" });
                         }

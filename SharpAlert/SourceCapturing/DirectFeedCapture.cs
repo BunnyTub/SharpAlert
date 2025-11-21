@@ -173,7 +173,7 @@ namespace SharpAlert.SourceCapturing
                         tcp.Connect(host, port);
                         NetworkStream stream = tcp.GetStream();
                         stream.ReadTimeout = 300 * 1000;
-                        stream.WriteTimeout = 10 * 1000;
+                        stream.WriteTimeout = 30 * 1000;
                         Console.WriteLine($"[TCP Feed Capture] Connected to {name}.");
                         string dataReceived = string.Empty;
                         
@@ -191,7 +191,7 @@ namespace SharpAlert.SourceCapturing
                                 //{
                                 //    return;
                                 //}
-                                Thread.Sleep(1000);
+                                Thread.Sleep(5000);
                                 stream.WriteByte(0);
                             }
                             data.Clear();

@@ -55,12 +55,12 @@ namespace SharpAlert
 
         private static double GetUsageOfRAMAsMB()
         {
-            if (currentproc == null) currentproc = Process.GetCurrentProcess();
+            currentproc ??= Process.GetCurrentProcess();
             currentproc.Refresh();
             return currentproc.PrivateMemorySize64 / 1024.0 / 1024.0;
         }
 
-        private static readonly object WriteLock = new object();
+        private static readonly object WriteLock = new();
 
         //public static void WriteLine(object input)
         //{

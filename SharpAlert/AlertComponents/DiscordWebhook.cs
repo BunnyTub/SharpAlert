@@ -1,19 +1,119 @@
-﻿using System;
+﻿using SharpAlert.ProgramWorker;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
-using SharpAlert.ProgramWorker;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.ProgramWorker.HaidaWorker;
+using System.Threading;
+using System.Diagnostics;
 
 namespace SharpAlert.AlertComponents
 {
     public static class DiscordWebhook
     {
+        public class DiscordWebhookData
+        {
+            public DiscordWebhookData(string webhook, byte[] data, string contentType)
+            {
+                Webhook = webhook;
+                Data = data;
+                ContentType = contentType;
+            }
+
+            public string Webhook;
+            public byte[] Data;
+            public string ContentType;
+        }
+
         private static readonly WebClient discordClient = new();
-        
+        private static List<DiscordWebhookData> DiscordWebhookDataQueue = [];
+
+        public static void ServiceRun()
+        {
+            while (AllowThreadRestarts)
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+                if (DiscordWebhookDataQueue.Count != 0)
+                {
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
+                    lock (discordClient)
+                    {
+                        string webhook;
+                        byte[] data;
+                        string contentType;
+
+                        lock (DiscordWebhookDataQueue)
+                        {
+                            var varData = DiscordWebhookDataQueue[0];
+                            DiscordWebhookDataQueue.RemoveAt(0);
+                            webhook = varData.Webhook;
+                            data = varData.Data;
+                            contentType = varData.ContentType;
+                        }
+
+                        Console.WriteLine($"[Discord Webhook] Processing request -> {webhook}");
+                        try
+                        {
+                            discordClient.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
+                            discordClient.Headers.Set(HttpRequestHeader.ContentType, contentType);
+
+                            Thread.Sleep(1000 + 100);
+                            byte[] bytes = discordClient.UploadData(webhook, data);
+                            Console.WriteLine("[Discord Webhook] Sent message to webhook.");
+                            Console.WriteLine($"[Discord Webhook] Returned body: {Encoding.UTF8.GetString(bytes)}");
+                        }
+                        catch (Exception ex)
+                        {
+                            if (ex is WebException webex)
+                            {
+                                Console.WriteLine($"[Discord Webhook] {webex.Status}");
+
+                                if (webex.Response is HttpWebResponse response)
+                                {
+                                    Console.WriteLine($"[Discord Webhook] Returned status code: {(int)response.StatusCode} {response.StatusDescription}");
+
+                                    using var stream = response.GetResponseStream();
+                                    using var reader = new StreamReader(stream);
+                                    Console.WriteLine($"[Discord Webhook] Returned body: {reader.ReadToEnd()}");
+                                }
+
+                                Console.WriteLine(Encoding.UTF8.GetString(data));
+                            }
+
+                            Console.WriteLine($"[Discord Webhook] {ex.Message}");
+                            try
+                            {
+                                Thread.Sleep(3000 + 100);
+                                discordClient.UploadData(webhook, data);
+                                Console.WriteLine("[Discord Webhook] Sent message to webhook.");
+                            }
+                            catch (Exception exx)
+                            {
+                                Console.WriteLine($"[Discord Webhook] {exx.Message}");
+                                try
+                                {
+                                    Console.WriteLine($"[Discord Webhook] Rate limited or bad connection. Pausing for 15 seconds to cool down.");
+                                    Thread.Sleep((15 * 1000) + 100);
+                                    discordClient.UploadData(webhook, data);
+                                    Console.WriteLine("[Discord Webhook] Sent message webhook.");
+                                }
+                                catch (Exception exxx)
+                                {
+                                    Console.WriteLine($"[Discord Webhook] Request failed after multiple retries. {exxx.Message}");
+                                }
+                            }
+                        }
+
+                        Thread.Sleep(10);
+                    }
+                }
+                Thread.Sleep(10);
+            }
+        }
+
         /// <summary>
         /// Returns a URL based on the configuration. Good enough.
         /// </summary>
@@ -93,69 +193,16 @@ namespace SharpAlert.AlertComponents
         /// <param name="data">The data to send to the webhook.</param>
         private static void UploadData(string webhook, byte[] data, string contentType)
         {
-            if (string.IsNullOrWhiteSpace(webhook)) return;
+            if (string.IsNullOrWhiteSpace(webhook))
+            {
+                Console.WriteLine($"[Discord Webhook] Missing webhook -x {webhook}");
+                return;
+            }
 
             if (QuickSettings.Instance.DiscordWebhookFeaturesLocked) return;
 
-            Console.WriteLine($"[Discord Webhook] Processing request -> {webhook}");
-
-            ThreadDrool.StartAndForget(() =>
-            {
-                lock (discordClient)
-                {
-                    try
-                    {
-                        discordClient.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);
-                        discordClient.Headers.Set(HttpRequestHeader.ContentType, contentType);
-
-                        Thread.Sleep(1000 + 100);
-                        discordClient.UploadData(webhook, data);
-                        Console.WriteLine("[Discord Webhook] Sent message to webhook.");
-                    }
-                    catch (Exception ex)
-                    {
-                        if (ex is WebException webex)
-                        {
-                            Console.WriteLine($"[Discord Webhook] {webex.Status}");
-
-                            if (webex.Response is HttpWebResponse response)
-                            {
-                                Console.WriteLine($"[Discord Webhook] Returned status code: {(int)response.StatusCode} {response.StatusDescription}");
-
-                                using var stream = response.GetResponseStream();
-                                using var reader = new StreamReader(stream);
-                                Console.WriteLine($"[Discord Webhook] Returned body: {reader.ReadToEnd()}");
-                            }
-
-                            Console.WriteLine(Encoding.UTF8.GetString(data));
-                        }
-
-                        Console.WriteLine($"[Discord Webhook] {ex.Message}");
-                        try
-                        {
-                            Thread.Sleep(3000 + 100);
-                            discordClient.UploadData(webhook, data);
-							Console.WriteLine("[Discord Webhook] Sent message to webhook.");
-                        }
-                        catch (Exception exx)
-                        {
-                            Console.WriteLine($"[Discord Webhook] {exx.Message}");
-                            try
-                            {
-                                Console.WriteLine($"[Discord Webhook] Rate limited or bad connection. Pausing for 15 seconds to cool down.");
-                                Thread.Sleep((15 * 1000) + 100);
-                                discordClient.UploadData(webhook, data);
-								Console.WriteLine("[Discord Webhook] Sent message webhook.");
-                            }
-                            catch (Exception exxx)
-                            {
-                                Console.WriteLine($"[Discord Webhook] Request failed after multiple retries. {exxx.Message}");
-                            }
-                        }
-                    }
-                    return;
-                }
-            });
+            DiscordWebhookDataQueue.Add(new DiscordWebhookData(webhook, data, contentType));
+            Console.WriteLine($"[Discord Webhook] Queued request -> {webhook}");
         }
 
         public static void SendUnformattedMessage(string message)
@@ -410,6 +457,25 @@ namespace SharpAlert.AlertComponents
                         }
                     }
 
+                    try
+                    {
+                        var task = client.GetAsync(ThumbnailURL);
+                        task.Wait(15000);
+                        if (!task.IsFaulted && task.Result != null)
+                        {
+                            task.Result.EnsureSuccessStatusCode();
+                        }
+                        else
+                        {
+                            throw new Exception("Unknown fault, or result is still null.");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("[Discord Webhook] Failed to fetch asset (fallback will be used): " + ex.Message);
+                        ThumbnailURL = $"https://bunnytub.com/SharpAlert-Assets/Misc/UNK.png";
+                    }
+
                     var payloadObject = new
                     {
                         content = truncMessage,
@@ -484,6 +550,10 @@ namespace SharpAlert.AlertComponents
                             if (!task.IsFaulted && task.Result != null)
                             {
                                 audioBytes = task.Result;
+                            }
+                            else
+                            {
+                                throw new Exception("Unknown fault, or result is still null.");
                             }
                         }
                         catch (Exception ex)
