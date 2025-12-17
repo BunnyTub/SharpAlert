@@ -8,7 +8,6 @@ using System.Text.Json;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 using System.Threading;
-using System.Diagnostics;
 
 namespace SharpAlert.AlertComponents
 {

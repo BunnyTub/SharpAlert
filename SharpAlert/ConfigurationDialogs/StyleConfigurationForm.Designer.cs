@@ -50,6 +50,7 @@
             ScrollSpeedBar = new System.Windows.Forms.TrackBar();
             HideNetworkErrorsBox = new System.Windows.Forms.CheckBox();
             OpenDashboardAutomaticallyBox = new System.Windows.Forms.CheckBox();
+            alertFadeTimeBar = new System.Windows.Forms.TrackBar();
             label1 = new System.Windows.Forms.Label();
             label9 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -65,10 +66,12 @@
             PrintingGroup = new System.Windows.Forms.GroupBox();
             NotificationsGroup = new System.Windows.Forms.GroupBox();
             DisplayWhereInfoButton = new System.Windows.Forms.Button();
+            label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)alertTimeoutInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)alertFullscreenDisplayInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ScrollSpeedBar).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)alertFadeTimeBar).BeginInit();
             DisplayPanelsGroup.SuspendLayout();
             TimeDisplayGroup.SuspendLayout();
             SystemControlsGroup.SuspendLayout();
@@ -82,7 +85,7 @@
             DoneButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             DoneButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            DoneButton.Location = new System.Drawing.Point(578, 275);
+            DoneButton.Location = new System.Drawing.Point(578, 329);
             DoneButton.Margin = new System.Windows.Forms.Padding(0);
             DoneButton.Name = "DoneButton";
             DoneButton.Size = new System.Drawing.Size(72, 23);
@@ -304,11 +307,23 @@
             ToolTipInformation.SetToolTip(OpenDashboardAutomaticallyBox, "Shows the status window.");
             OpenDashboardAutomaticallyBox.UseVisualStyleBackColor = true;
             // 
+            // alertFadeTimeBar
+            // 
+            alertFadeTimeBar.LargeChange = 1;
+            alertFadeTimeBar.Location = new System.Drawing.Point(107, 296);
+            alertFadeTimeBar.Maximum = 20;
+            alertFadeTimeBar.Minimum = 1;
+            alertFadeTimeBar.Name = "alertFadeTimeBar";
+            alertFadeTimeBar.Size = new System.Drawing.Size(127, 45);
+            alertFadeTimeBar.TabIndex = 63;
+            ToolTipInformation.SetToolTip(alertFadeTimeBar, "Controls the fade speed on alert panels with the ability to fade.\r\nMoving this slider lower increases the speed. Higher is slower.\r\nThis does nothing if compatibility mode is turned on.");
+            alertFadeTimeBar.Value = 3;
+            // 
             // label1
             // 
             label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            label1.Location = new System.Drawing.Point(9, 272);
+            label1.Location = new System.Drawing.Point(9, 326);
             label1.Margin = new System.Windows.Forms.Padding(0);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(332, 26);
@@ -360,7 +375,7 @@
             AlertTextButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             AlertTextButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             AlertTextButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            AlertTextButton.Location = new System.Drawing.Point(578, 249);
+            AlertTextButton.Location = new System.Drawing.Point(578, 303);
             AlertTextButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             AlertTextButton.Name = "AlertTextButton";
             AlertTextButton.Size = new System.Drawing.Size(72, 23);
@@ -475,12 +490,22 @@
             DisplayWhereInfoButton.UseVisualStyleBackColor = false;
             DisplayWhereInfoButton.Click += DisplayWhereInfoButton_Click;
             // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(107, 278);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(119, 15);
+            label4.TabIndex = 62;
+            label4.Text = "Fade transition speed";
+            // 
             // StyleConfigurationForm
             // 
             AcceptButton = DoneButton;
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
-            ClientSize = new System.Drawing.Size(659, 307);
+            ClientSize = new System.Drawing.Size(659, 361);
+            Controls.Add(label4);
             Controls.Add(DisplayWhereInfoButton);
             Controls.Add(NotificationsGroup);
             Controls.Add(PrintingGroup);
@@ -504,6 +529,7 @@
             Controls.Add(DoneButton);
             Controls.Add(DisplayPanelsGroup);
             Controls.Add(TextDisplayGroup);
+            Controls.Add(alertFadeTimeBar);
             Font = new System.Drawing.Font("Segoe UI", 9F);
             ForeColor = System.Drawing.Color.White;
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -522,6 +548,7 @@
             ((System.ComponentModel.ISupportInitialize)alertTimeoutInput).EndInit();
             ((System.ComponentModel.ISupportInitialize)alertFullscreenDisplayInput).EndInit();
             ((System.ComponentModel.ISupportInitialize)ScrollSpeedBar).EndInit();
+            ((System.ComponentModel.ISupportInitialize)alertFadeTimeBar).EndInit();
             DisplayPanelsGroup.ResumeLayout(false);
             DisplayPanelsGroup.PerformLayout();
             TimeDisplayGroup.ResumeLayout(false);
@@ -576,5 +603,7 @@
         private System.Windows.Forms.GroupBox NotificationsGroup;
         private System.Windows.Forms.Button DisplayWhereInfoButton;
         private System.Windows.Forms.CheckBox OpenDashboardAutomaticallyBox;
+        private System.Windows.Forms.TrackBar alertFadeTimeBar;
+        private System.Windows.Forms.Label label4;
     }
 }

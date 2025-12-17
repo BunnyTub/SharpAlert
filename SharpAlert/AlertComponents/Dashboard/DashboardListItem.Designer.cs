@@ -149,6 +149,7 @@
             Name = "DashboardListItem";
             Size = new System.Drawing.Size(711, 130);
             Load += DashboardListItem_Load;
+            Resize += DashboardListItem_Resize;
             ContainerPanel.ResumeLayout(false);
             ContainerPanel.PerformLayout();
             ResumeLayout(false);

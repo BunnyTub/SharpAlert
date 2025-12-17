@@ -206,6 +206,8 @@ namespace SharpAlert.DataProcessing
                                             {
                                                 try
                                                 {
+                                                    Console.WriteLine($"[Data Processor] To be relayed -> {relayItem.Name}");
+
                                                     DashboardManager.AddNewAlertToDashboard(info);
 
                                                     if (ReplayMode)

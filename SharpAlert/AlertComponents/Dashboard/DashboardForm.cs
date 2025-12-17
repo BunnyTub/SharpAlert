@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpAlert.ProgramWorker;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -139,6 +140,8 @@ namespace SharpAlert.AlertComponents.Dashboard
             }
         }
 
+        private bool DisplayTrimNotification = true;
+
         private void DetectAlertActivity_Tick(object send, EventArgs e)
         {
             if (AlertListQueue.Count != 0)
@@ -239,6 +242,23 @@ namespace SharpAlert.AlertComponents.Dashboard
 
                 dli.ToolTipInformation.SetToolTip(dli.AlertDescriptionText, info.AlertIntroText + "\r\n\r\nClick here for more information.");
 
+                bool AlertsTrimmed = false;
+
+                while (DashboardPanel.Controls.Count >= 500)
+                {
+                    DashboardPanel.Controls.RemoveAt(0);
+                    AlertsTrimmed = true;
+                }
+
+                if (AlertsTrimmed)
+                {
+                    if (DisplayTrimNotification)
+                    {
+                        NotificationWorker.Notify.ShowNotification("To save resources, the alert list is limited to 500 alerts at a time. Older alerts are discarded in order.", "SharpAlert Dashboard trimmed", ToolTipIcon.Info);
+                        DisplayTrimNotification = false;
+                    }
+                }
+
                 DashboardPanel.Controls.Add(dli);
                 dli.Dock = DockStyle.Top;
 
@@ -261,7 +281,7 @@ namespace SharpAlert.AlertComponents.Dashboard
 
                 DashboardPanel.ResumeLayout();
 
-                HackyWorkarounds.FlashWindow(this);
+                HackyWorkarounds.FlashWindow(this, 1);
             }
 
             if (DashboardPanel.Controls.Count == 0)

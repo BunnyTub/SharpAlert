@@ -125,6 +125,7 @@ namespace SharpAlert.ProgramWorker
         public int alertDisplayType { get; set; } = 0;
         public int WindowLocation { get; set; } = 0;
         public int alertTimeout { get; set; } = 5;
+        public int alertFadeTime { get; set; } = 3;
         public bool alertFullscreenIdle { get; set; } = false;
         public int alertFullscreenDisplay { get; set; } = 0;
         public int AlertDeadInterval { get; set; } = 1;
@@ -431,7 +432,7 @@ namespace SharpAlert.ProgramWorker
             }
         }
 
-        public void Reload()
+        public static void Reload()
         {
             _instance = Load();
         }

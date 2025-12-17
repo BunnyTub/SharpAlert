@@ -16,9 +16,9 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void ManagementForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true;
+            //e.Cancel = true;
             QuickSettings.Instance.Save();
-            this.Hide();
+            //this.Hide();
         }
 
         private void DoneButton_Click(object sender, EventArgs e)

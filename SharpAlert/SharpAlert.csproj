@@ -25,7 +25,7 @@
 		<Title>SharpAlert</Title>
 		<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-		<BaseOutputPath>\\192.168.196.194\sex2thesexening\- SHERPALART</BaseOutputPath>
+		<BaseOutputPath>C:\Users\rivera\source\repos\SharpAlert\SharpAlert\bin\Release</BaseOutputPath>
 	</PropertyGroup>
 
 	<ItemGroup>

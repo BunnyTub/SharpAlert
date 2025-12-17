@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using static SharpAlert.AlertComponents.AlertProcessor;
 
@@ -111,6 +110,11 @@ namespace SharpAlert.AlertComponents.Dashboard
                 BackColor = FinalColor;
                 ChangeBackgroundColorTimer.Stop();
             }
+        }
+
+        private void DashboardListItem_Resize(object sender, EventArgs e)
+        {
+            Refresh();
         }
     }
 }

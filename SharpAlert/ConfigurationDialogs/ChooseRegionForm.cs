@@ -140,7 +140,9 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void ChangeLaterText_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            new IDAPNoticeForm().ShowDialog();
+            IDAPNoticeForm inf = new();
+            inf.ShowDialog();
+            inf.Dispose();
         }
     }
 }

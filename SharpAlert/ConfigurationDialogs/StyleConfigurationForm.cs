@@ -48,27 +48,27 @@ namespace SharpAlert.ConfigurationDialogs
             Initialized = true;
 
             AlertFullscreenCombo.DataSource = new ComboItem[] {
-                new ComboItem
+                new()
                 {
                     // 0
                     FriendlyName = "Windowed",
                 },
-                new ComboItem
+                new()
                 {
                     // 1
                     FriendlyName = "Minified",
                 },
-                new ComboItem
+                new()
                 {
                     // 2
                     FriendlyName = "Full screen"
                 },
-                new ComboItem
+                new()
                 {
                     // 3
                     FriendlyName = "Full scroll"
                 },
-                new ComboItem
+                new()
                 {
                     // 4
                     FriendlyName = "Full board"
@@ -141,7 +141,7 @@ namespace SharpAlert.ConfigurationDialogs
 
                 //bool MonitorNonExistant = false
 
-                if ((int)((NumericUpDown)a).Value > Screen.AllScreens.Count())
+                if ((int)((NumericUpDown)a).Value > Screen.AllScreens.Length)
                 {
                     if (MessageBox.Show("The monitor you've chosen doesn't exist right now, and the idle and alert panels will be shown on the default monitor until it does exist. Do you want to use it anyway?",
                         "SharpAlert",
@@ -218,6 +218,9 @@ namespace SharpAlert.ConfigurationDialogs
 
             ScrollSpeedBar.Value = QuickSettings.Instance.ScrollSpeed;
             ScrollSpeedBar.ValueChanged += (a, b) => QuickSettings.Instance.ScrollSpeed = ((TrackBar)a).Value;
+            
+            alertFadeTimeBar.Value = QuickSettings.Instance.alertFadeTime;
+            alertFadeTimeBar.ValueChanged += (a, b) => QuickSettings.Instance.alertFadeTime = ((TrackBar)a).Value;
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)

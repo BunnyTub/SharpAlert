@@ -41,12 +41,14 @@ namespace SharpAlert.ProgramWorker
 
         public static bool ServiceRunnerScheduled { get; private set; } = false;
 
-        /// <summary>
-        /// Starts the Haida Worker as a client.
-        /// </summary>
-        [MTAThread]
         public static void ServiceRun()
         {
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            {
+                Exception ex = (Exception)e.ExceptionObject;
+                UnsafeFaultSameThread(ex, true);
+            };
+
             if (QuickSettings.Instance.alertNoGUI) AllocateTerminal(false);
 
             Console.WriteLine($"{VersionInfo.LongFriendlyVersion}\r\n" +
@@ -67,6 +69,11 @@ namespace SharpAlert.ProgramWorker
             catch (Exception)
             {
                 icon = SystemIcons.Application;
+            }
+
+            if (!Path.GetFileNameWithoutExtension(AssemblyFile).Equals("SharpAlert", StringComparison.InvariantCultureIgnoreCase))
+            {
+                MessageBox.Show("It seems like SharpAlert has a non-original filename. This is fine for standalone, but you must rename it back to \"SharpAlert.exe\" (case-insensitive) if you've installed it! Otherwise, things such as running at startup, and shortcuts, may break.", "SharpAlert - Rename Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             //double Scaling = GetWindowsScreenScalingFactor();
@@ -814,37 +821,40 @@ namespace SharpAlert.ProgramWorker
 
         public static void UnsafeFault(Exception exception, bool terminate)
         {
-            new Thread(() =>
+            new Thread(() => UnsafeFaultSameThread(exception, terminate)).Start();
+        }
+        
+        public static void UnsafeFaultSameThread(Exception exception, bool terminate)
+        {
+            lock (ThreadErrorLockObject)
             {
-                lock (ThreadErrorLockObject)
-                {
-                    string ExceptionCompiled = LogFault(exception);
+                string ExceptionCompiled = LogFault(exception);
 
-                    if (terminate)
-                    {
-                        AllowThreadRestarts = false;
-                        //try { feedThread?.Abort(); } catch (Exception) { }
-                        //try { atomfeedThread?.Abort(); } catch (Exception) { }
-                        //try { directfeedThread?.Abort(); } catch (Exception) { }
-                        //try { cacheThread?.Abort(); } catch (Exception) { }
-                        //try { dataProcThread?.Abort(); } catch (Exception) { }
-                        //try { historyProcThread?.Abort(); } catch (Exception) { }
-                        //try { notificationThread?.Abort(); } catch (Exception) { }
-                        ToppleForm tf = new(ExceptionCompiled, false);
-                        tf.ShowDialog();
-                        //new Thread(() => SafeExit(0)).Start();
-                        //Thread.Sleep(5000);
-                        Environment.Exit(exception.HResult);
-                        return;
-                    }
-                    else
-                    {
-                        Notify.ShowNotification($"The problem has been logged. Check the event log for more information!",
-                            "SharpAlert is having issues",
-                            ToolTipIcon.Error);
-                    }
+                if (terminate)
+                {
+                    AllowThreadRestarts = false;
+                    //try { feedThread?.Abort(); } catch (Exception) { }
+                    //try { atomfeedThread?.Abort(); } catch (Exception) { }
+                    //try { directfeedThread?.Abort(); } catch (Exception) { }
+                    //try { cacheThread?.Abort(); } catch (Exception) { }
+                    //try { dataProcThread?.Abort(); } catch (Exception) { }
+                    //try { historyProcThread?.Abort(); } catch (Exception) { }
+                    //try { notificationThread?.Abort(); } catch (Exception) { }
+                    ToppleForm tf = new(ExceptionCompiled, false);
+                    tf.ShowDialog();
+                    tf.Dispose();
+                    //new Thread(() => SafeExit(0)).Start();
+                    //Thread.Sleep(5000);
+                    Environment.Exit(exception.HResult);
+                    return;
                 }
-            }).Start();
+                else
+                {
+                    Notify?.ShowNotification($"The problem has been logged. Check the event log for more information!",
+                        "SharpAlert is having issues",
+                        ToolTipIcon.Error);
+                }
+            }
         }
 
         public static string LogFault(Exception ex)
@@ -991,11 +1001,13 @@ namespace SharpAlert.ProgramWorker
                 //}
 
                 SetStdHandle(STD_OUTPUT_HANDLE, consoleHandle);
+#pragma warning disable CA2000
                 var writer = new StreamWriter(Console.OpenStandardOutput())
                 {
                     AutoFlush = true,
                     //NewLine = " DEMO VERSION (SHARPALERT v9.0 --- TO REMOVE THIS MESSAGE, VISIT STORE.SHARPALERT.COM)"
                 };
+#pragma warning restore CA2000
                 Console.SetOut(writer);
 
                 //const int STD_INPUT_HANDLE = -10;
@@ -1075,10 +1087,12 @@ namespace SharpAlert.ProgramWorker
                     PostMessage(consoleWindowHandle, WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
                 }
 
+#pragma warning disable CA2000
                 var defaultOutput = new StreamWriter(Console.OpenStandardOutput())
                 {
                     AutoFlush = true
                 };
+#pragma warning restore CA2000
                 Console.SetOut(defaultOutput);
             }
         }

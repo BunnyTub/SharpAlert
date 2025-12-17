@@ -5,6 +5,8 @@ namespace SHInstaller
 {
     internal static class Program
     {
+        // MAKE SURE TO "PUBLISH" SHARPALERT BEFORE BUILDING
+
         [STAThread]
         static void Main()
         {

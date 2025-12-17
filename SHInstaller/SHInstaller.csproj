@@ -103,7 +103,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>cd ..
+    <PreBuildEvent>echo BunnyTub...
+cd ..
 cd ..
 cd Resources
 copy ..\..\SharpAlert\bin\Release\publish\SharpAlert.exe SharpAlert.exe

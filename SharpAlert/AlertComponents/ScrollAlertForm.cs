@@ -150,6 +150,9 @@ namespace SharpAlert.AlertComponents
 
         private void AlertForm_Shown(object sender, EventArgs e)
         {
+            FadeInAnimation.Interval = QuickSettings.Instance.alertFadeTime;
+            FadeOutAnimation.Interval = QuickSettings.Instance.alertFadeTime;
+
             AutoExit.Interval = QuickSettings.Instance.alertTimeout * 60000;
             AutoExit.Start();
 

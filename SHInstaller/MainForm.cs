@@ -92,6 +92,8 @@ namespace SHInstaller
                 Environment.Exit(0);
             }
 
+            Directory.CreateDirectory(Path.GetDirectoryName(AppExePath));
+
             File.WriteAllBytes(AppExePath, Properties.Resources.SharpAlert);
 
             //if (!Directory.Exists(linkPath))
@@ -133,6 +135,11 @@ namespace SHInstaller
 
         private void UninstallButton_Click(object sender, EventArgs e)
         {
+            foreach (Process process in Process.GetProcessesByName("SharpAlert"))
+            {
+                process.Kill();
+            }
+
             string Operations = string.Empty;
 
             try
@@ -155,14 +162,18 @@ namespace SHInstaller
 
             try
             {
-                Directory.Delete("C:\\Program Files (x86)\\SharpAlert", true);
+                Directory.Delete(Path.GetDirectoryName(AppExePath), true);
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                Operations += $"\r\nTo the contrary, it doesn't seem like SharpAlert was ever installed (properly) in the first place... {ex.Message}";
             }
             catch (Exception ex)
             {
                 Operations += $"\r\nCouldn't remove the SharpAlert folder. {ex.Message}";
             }
 
-            MessageBox.Show($"Tried uninstalling the old version.{Operations}", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show($"Uninstalled.{Operations}", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

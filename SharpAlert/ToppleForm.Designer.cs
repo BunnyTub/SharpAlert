@@ -91,9 +91,9 @@
             CloseButton.BackColor = System.Drawing.Color.OrangeRed;
             CloseButton.FlatAppearance.BorderSize = 2;
             CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            CloseButton.Font = new System.Drawing.Font("Segoe UI", 16F);
+            CloseButton.Font = new System.Drawing.Font("Segoe UI", 14F);
             CloseButton.ForeColor = System.Drawing.Color.White;
-            CloseButton.Location = new System.Drawing.Point(138, 331);
+            CloseButton.Location = new System.Drawing.Point(143, 331);
             CloseButton.Name = "CloseButton";
             CloseButton.Size = new System.Drawing.Size(125, 35);
             CloseButton.TabIndex = 7;
@@ -107,9 +107,9 @@
             ReportButton.BackColor = System.Drawing.Color.OrangeRed;
             ReportButton.FlatAppearance.BorderSize = 2;
             ReportButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            ReportButton.Font = new System.Drawing.Font("Segoe UI", 16F);
+            ReportButton.Font = new System.Drawing.Font("Segoe UI", 14F);
             ReportButton.ForeColor = System.Drawing.Color.White;
-            ReportButton.Location = new System.Drawing.Point(7, 331);
+            ReportButton.Location = new System.Drawing.Point(12, 331);
             ReportButton.Name = "ReportButton";
             ReportButton.Size = new System.Drawing.Size(125, 35);
             ReportButton.TabIndex = 8;
@@ -161,9 +161,9 @@
             TerminateButton.BackColor = System.Drawing.Color.OrangeRed;
             TerminateButton.FlatAppearance.BorderSize = 2;
             TerminateButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            TerminateButton.Font = new System.Drawing.Font("Segoe UI", 16F);
+            TerminateButton.Font = new System.Drawing.Font("Segoe UI", 14F);
             TerminateButton.ForeColor = System.Drawing.Color.White;
-            TerminateButton.Location = new System.Drawing.Point(269, 331);
+            TerminateButton.Location = new System.Drawing.Point(274, 331);
             TerminateButton.Name = "TerminateButton";
             TerminateButton.Size = new System.Drawing.Size(125, 35);
             TerminateButton.TabIndex = 12;
@@ -179,9 +179,9 @@
             ResetButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             ResetButton.Font = new System.Drawing.Font("Segoe UI", 12F);
             ResetButton.ForeColor = System.Drawing.Color.White;
-            ResetButton.Location = new System.Drawing.Point(400, 331);
+            ResetButton.Location = new System.Drawing.Point(405, 331);
             ResetButton.Name = "ResetButton";
-            ResetButton.Size = new System.Drawing.Size(161, 35);
+            ResetButton.Size = new System.Drawing.Size(156, 35);
             ResetButton.TabIndex = 13;
             ResetButton.Text = "Reset Settings";
             ResetButton.UseVisualStyleBackColor = false;

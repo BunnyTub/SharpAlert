@@ -49,23 +49,25 @@ namespace SharpAlert.WinFormsControls
 
                 RectangleF textRect;
 
+                SolidBrush sb = new(this.ForeColor);
+
                 switch (base.TextAlign)
                 {
                     case ContentAlignment.TopLeft:
                         textRect = new RectangleF((this.DesignMode || ScrollSpeed == 0) ? 0 : textPosition, 0, textSize.Width, this.Height);
-                        e.Graphics.DrawString(this.Text, this.Font, new SolidBrush(this.ForeColor), textRect);
+                        e.Graphics.DrawString(this.Text, this.Font, sb, textRect);
                         break;
                     case ContentAlignment.MiddleLeft:
                         textRect = new RectangleF((this.DesignMode || ScrollSpeed == 0) ? 0 : textPosition, (this.Height - textSize.Height) / 2, textSize.Width, this.Height);
-                        e.Graphics.DrawString(this.Text, this.Font, new SolidBrush(this.ForeColor), textRect);
+                        e.Graphics.DrawString(this.Text, this.Font, sb, textRect);
                         break;
                     case ContentAlignment.BottomLeft:
                         textRect = new RectangleF((this.DesignMode || ScrollSpeed == 0) ? 0 : textPosition, this.Height - textSize.Height, textSize.Width, this.Height);
-                        e.Graphics.DrawString(this.Text, this.Font, new SolidBrush(this.ForeColor), textRect);
+                        e.Graphics.DrawString(this.Text, this.Font, sb, textRect);
                         break;
                     default:
                         textRect = new RectangleF((this.DesignMode || ScrollSpeed == 0) ? 0 : textPosition, 0, textSize.Width, this.Height);
-                        e.Graphics.DrawString(this.Text, this.Font, new SolidBrush(this.ForeColor), textRect);
+                        e.Graphics.DrawString(this.Text, this.Font, sb, textRect);
                         break;
                 }
 
@@ -75,6 +77,8 @@ namespace SharpAlert.WinFormsControls
                     // Raise event here when the scroll finishes
                     textPosition = this.Width;
                 }
+
+                sb.Dispose();
             }
 
             [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]

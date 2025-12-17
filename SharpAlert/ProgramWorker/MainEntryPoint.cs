@@ -271,7 +271,7 @@ namespace SharpAlert.ProgramWorker
         {
             //watchdog self-child process
             Args = [.. Environment.GetCommandLineArgs()];
-            QuickSettings.Instance.Reload();
+            QuickSettings.Reload();
             Application.EnableVisualStyles();
             //System.Windows.Forms.Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
             Application.SetCompatibleTextRenderingDefault(false);
@@ -376,6 +376,10 @@ namespace SharpAlert.ProgramWorker
                     catch (Exception)
                     {
                     }
+
+                    Args.RemoveAll(delegate (string str) {
+                        return str == "--internal-remove-old";
+                    });
                 }
 
                 if (Args.Contains("--service-mode"))
@@ -509,6 +513,7 @@ namespace SharpAlert.ProgramWorker
                     self.Arguments = "--wait-until-parent-closes";
                 }
 
+#pragma warning disable CA2000
                 Process monitorSelf = new()
                 {
                     StartInfo = self
@@ -521,7 +526,8 @@ namespace SharpAlert.ProgramWorker
                     Environment.Exit(0);
                     return;
                 }
-                
+#pragma warning restore CA2000
+
                 monitorSelf.WaitForExit();
             
                 switch (unchecked(monitorSelf.ExitCode))
@@ -537,7 +543,7 @@ namespace SharpAlert.ProgramWorker
                         return;
                     case 100:
                         restartable = true;
-                        QuickSettings.Instance.Reload();
+                        QuickSettings.Reload();
                         if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                         {
                             DiscordWebhook.SendFormattedMessage($"SharpAlert is restarting.");
@@ -545,7 +551,7 @@ namespace SharpAlert.ProgramWorker
                         break;
                     default:
                         restartable = true;
-                        QuickSettings.Instance.Reload();
+                        QuickSettings.Reload();
                         if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                         {
                             switch (unchecked(monitorSelf.ExitCode))
@@ -579,6 +585,7 @@ namespace SharpAlert.ProgramWorker
                         tf.ShowDialog();
                         if (tf.DialogResult == DialogResult.Yes) debuggable = true;
                         else debuggable = false;
+                        tf.Dispose();
                         break;
                 }
 
@@ -699,7 +706,6 @@ namespace SharpAlert.ProgramWorker
             }
         }
 
-
         private static object StatusWindowVisible_ = false;
         public static bool StatusWindowVisible
         {
@@ -725,7 +731,7 @@ namespace SharpAlert.ProgramWorker
                     }
                     else
                     {
-                        if (idle != null && !idle.IsDisposed)
+                        if (status != null && !status.IsDisposed)
                         {
                             status.Invoke(new MethodInvoker(() => status.Dispose()));
                         }

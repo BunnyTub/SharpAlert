@@ -126,6 +126,7 @@ namespace SharpAlert.ProgramWorker
                         PerformUpdateForm puf = new(UpdateToVersion);
                         puf.ShowDialog();
                         result = puf.DialogResult;
+                        puf.Dispose();
                     }
                     else
                     {
@@ -305,6 +306,8 @@ namespace SharpAlert.ProgramWorker
                                     proc.Start();
 
                                     Thread.Sleep(1000);
+
+                                    proc.Dispose();
 
                                     Environment.Exit(0);
                                 }

@@ -21,6 +21,7 @@ namespace SharpAlert.ProgramWorker
 
         public static NotifyIcon Notify = null;
         private static ConfigurationForm mf = null;
+        //private static ShareAlertsForm saf = null;
         //private static bool NotifyIconCalled = false;
         public static bool IgnoreRightClick = false;
 
@@ -47,11 +48,11 @@ namespace SharpAlert.ProgramWorker
 
             contextMenu.Opening += (a, b) =>
             {
-                mf?.Hide();
+                //mf?.Hide();
 
                 if (Control.ModifierKeys == Keys.Shift)
                 {
-                    string ForceQuitMsg = "Click YES to immediately shutdown SharpAlert.\r\n" +
+                    string ForceQuitMsg = "Click YES to immediately terminate SharpAlert.\r\n" +
                         "You should only use this feature as a last resort.";
 
                     //if (ChangedPropertiesList.Count != 0)
@@ -87,8 +88,11 @@ namespace SharpAlert.ProgramWorker
 
                     try
                     {
-                        fc[0].BringToFront();
-                        fc[0].Activate();
+                        foreach (Form form in fc)
+                        {
+                            form.BringToFront();
+                            form.Activate();
+                        }
                     }
                     catch (Exception) { }
                     //MessageBox.Show("Please close all windows before opening the menu.",
@@ -120,7 +124,7 @@ namespace SharpAlert.ProgramWorker
             contextMenu.Items.Add(new ToolStripMenuItem("Clear Cache", null, (sender, arg) =>
             {
                 IgnoreRightClick = true;
-                if (MessageBox.Show("Forcefully clear (and reset) the cache?\r\n" +
+                if (MessageBox.Show("Clear (and reset) the cache?\r\n" +
                     "This may take a few seconds.",
                     "SharpAlert",
                     MessageBoxButtons.YesNo,
@@ -131,23 +135,45 @@ namespace SharpAlert.ProgramWorker
                 IgnoreRightClick = false;
             }));
             
-            contextMenu.Items.Add(new ToolStripMenuItem("Clear Garbage", null, (sender, arg) =>
+            contextMenu.Items.Add(new ToolStripMenuItem("Clear History", null, (sender, arg) =>
             {
                 IgnoreRightClick = true;
-                if (MessageBox.Show("Forcefully clear garbage (by calling the Garbage Collector)?",
+                if (MessageBox.Show("Clear the alert history?\r\n" +
+                    "(Any previous alerts may be relayed again!)",
                     "SharpAlert",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    GC.Collect();
+                    lock (SharpDataHistory)
+                    {
+                        lock (SharpDataRelayedNamesHistory)
+                        {
+                            SharpDataHistory.Clear();
+                            SharpDataRelayedNamesHistory.Clear();
+                        }
+                    }
                 }
                 IgnoreRightClick = false;
             }));
+            
+            //contextMenu.Items.Add(new ToolStripMenuItem("Clear Garbage", null, (sender, arg) =>
+            //{
+            //    IgnoreRightClick = true;
+            //    if (MessageBox.Show("Forcefully clear garbage (by calling the Garbage Collector)?",
+            //        "SharpAlert",
+            //        MessageBoxButtons.YesNo,
+            //        MessageBoxIcon.Question) == DialogResult.Yes)
+            //    {
+            //        GC.Collect();
+            //    }
+            //    IgnoreRightClick = false;
+            //}));
 
             //IgnoreRightClick = true;
             //IgnoreRightClick = false;
 
-            contextMenu.Items.Add(new ToolStripSeparator());
+            //contextMenu.Items.Add(new ToolStripButton("Update SharpAlert", null, (sender, arg) => { }));
+            //contextMenu.Items.Add(new ToolStripSeparator());
 
             //bool UpdatesAvailable = false;
 
@@ -182,7 +208,7 @@ namespace SharpAlert.ProgramWorker
                             if (int.Parse(RemoteVersionSplit[0]) < VersionInfo.MajorVersion ||
                                 int.Parse(RemoteVersionSplit[1]) < VersionInfo.MinorVersion)
                             {
-                                Notify.ShowNotification($"Downgrade available! v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion} -> v{RemoteVersionSplit[0]}.{RemoteVersionSplit[1]}",
+                                Notify.ShowNotification($"Your version is newer than the latest version. Check the website for more info.",
                                     "SharpAlert found updates",
                                     ToolTipIcon.Info);
                             }
@@ -244,11 +270,13 @@ namespace SharpAlert.ProgramWorker
                 ThreadDrool.StartAndForget(() => new DashboardForm(false).ShowDialog());
             }));
             
-            contextMenu.Items.Add(new ToolStripMenuItem("Open Alert Sharing", null, (sender, arg) =>
-            {
-                //MessageBox.Show("The dashboard lists recently relayed alerts. If you close and re-open the dashboard, the list will start from scratch!");
-                ThreadDrool.StartAndForget(() => new ShareAlertsForm().ShowDialog());
-            }));
+            //contextMenu.Items.Add(new ToolStripMenuItem("Open Alert Sharing", null, (sender, arg) =>
+            //{
+            //    IgnoreRightClick = true;
+            //    if (saf == null || saf.IsDisposed) saf = new ShareAlertsForm();
+            //    saf.ShowDialog();
+            //    IgnoreRightClick = false;
+            //}));
             
             contextMenu.Items.Add(new ToolStripMenuItem("Open Settings", null, (sender, arg) =>
             {
