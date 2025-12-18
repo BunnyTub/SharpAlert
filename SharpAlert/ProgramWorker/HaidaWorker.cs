@@ -24,7 +24,6 @@ using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.ProgramWorker.ServiceThreads;
 using static SharpAlert.RegexList;
 using static SharpAlert.ThreadDrool;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 
 namespace SharpAlert.ProgramWorker
@@ -630,7 +629,7 @@ namespace SharpAlert.ProgramWorker
                     //    MessageBox.Show($"{e.Secret}");
                     //};
 
-                    client.RegisterUriScheme();
+                    //client.RegisterUriScheme();
 
                     //client.Subscribe(EventType.Join | EventType.JoinRequest);
 
@@ -658,7 +657,7 @@ namespace SharpAlert.ProgramWorker
                             Type = ActivityType.Playing,
                             Assets = new Assets()
                             {
-                                LargeImageKey = "sharpalert_squaredicon",
+                                LargeImageKey = "sharpalert_squaredicon_gray",
                                 LargeImageText = "SharpAlert"
                             },
                             StatusDisplay = StatusDisplayType.Details,
@@ -674,11 +673,27 @@ namespace SharpAlert.ProgramWorker
                             //]
                         });
 
-                        client.SetSubscription(EventType.JoinRequest);
+                        //client.SetSubscription(EventType.JoinRequest);
+
                         while (AllowThreadRestarts)
                         {
-                            Thread.Sleep(10000);
-                            client.UpdateState($"Relayed {AlertProcessor.AlertsRelayed} alert(s).");
+                            Thread.Sleep(5000);
+
+                            var (info, date) = DataProcessor.LastAlertToBeRelayed;
+
+                            if (date > DateTimeOffset.UtcNow.AddMinutes(-15)) // the timing needs more consideration
+                            {
+                                client.UpdateLargeAsset("sharpalert_squaredicon");
+                                client.UpdateDetails($"{info.AlertEventType}"); // max 128
+                                client.UpdateState($"Sent by {info.AlertSender}. {info.AlertURL}".Trim()); // max 128
+                            }
+                            else
+                            {
+                                client.UpdateLargeAsset("sharpalert_squaredicon_gray");
+                                client.UpdateDetails($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}");
+                                client.UpdateState($"Relayed {AlertProcessor.AlertsRelayed} alert(s).");
+                            }
+
                             //party.Size++;
                             //Console.WriteLine("[Discord Rich Presence] Updated state.");
                             //client.UpdateClearTime();

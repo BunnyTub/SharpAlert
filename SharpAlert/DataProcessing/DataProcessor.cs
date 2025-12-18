@@ -38,6 +38,8 @@ namespace SharpAlert.DataProcessing
         private static readonly object DiscordConfirmLockObject = new();
         public static readonly string ArchivePath = QuickSettings.ConfigDirPath + "\\Archive";
 
+        public static (AlertInfo info, DateTimeOffset date) LastAlertToBeRelayed = (new AlertInfo(), DateTimeOffset.MinValue);
+
         public void ServiceRun()
         {
             while (AllowThreadRestarts)
@@ -207,6 +209,8 @@ namespace SharpAlert.DataProcessing
                                                 try
                                                 {
                                                     Console.WriteLine($"[Data Processor] To be relayed -> {relayItem.Name}");
+
+                                                    LastAlertToBeRelayed = (info, DateTimeOffset.UtcNow);
 
                                                     DashboardManager.AddNewAlertToDashboard(info);
 
