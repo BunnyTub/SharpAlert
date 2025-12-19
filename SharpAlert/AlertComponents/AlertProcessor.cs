@@ -14,6 +14,7 @@ using SharpAlert.SourceCapturing;
 using System.Text.Json;
 using System.Text;
 using SharpAlert.Properties;
+using System.Diagnostics;
 
 namespace SharpAlert.AlertComponents
 {
@@ -144,6 +145,7 @@ namespace SharpAlert.AlertComponents
             public string AlertBodyText { get; set; } = string.Empty;
             public string AlertURL { get; set; } = string.Empty;
             public string AlertAudioURL { get; set; } = string.Empty;
+            public string AlertAudioDeref { get; set; } = string.Empty;
             public string AlertImageURL { get; set; } = string.Empty;
         }
 
@@ -387,23 +389,29 @@ namespace SharpAlert.AlertComponents
                             var derefUri = DerefURIRegex.MatchOrDefault(resource.Groups[1].Value);
                             Console.WriteLine($"[Alert Processor] Resource {ResourceCount} Dereference URI (if any): {derefUri}");
                             var digest = DigestSecureHashAlgorithmOneRegex.MatchOrDefault(resource.Groups[1].Value);
-                            Console.WriteLine($"[Alert Processor] Resource {ResourceCount} SHA-1 (if any | unused): {digest}");
+                            Console.WriteLine($"[Alert Processor] Resource {ResourceCount} SHA-1 (if any): {digest}");
 
                             void AddAudioToList()
                             {
-                                if (!string.IsNullOrWhiteSpace(uri))
+                                if (!string.IsNullOrWhiteSpace(derefUri))
                                 {
-                                    //if (string.IsNullOrWhiteSpace(derefUri))
+                                    DerefAudioFiles.Add(derefUri);
+                                    Console.WriteLine($"[Alert Processor] Resource {ResourceCount} was added to the audio list (deref).");
+                                }
+                                else
+                                {
+                                    if (!string.IsNullOrWhiteSpace(uri))
                                     {
-                                        AudioFiles.Add(uri);
-                                        Console.WriteLine($"[Alert Processor] Resource {ResourceCount} was added to the audio list.");
-                                    }
-                                    //else
-                                    {
-                                        // work on this
+                                        //if (string.IsNullOrWhiteSpace(derefUri))
+                                        {
+                                            AudioFiles.Add(uri);
+                                            Console.WriteLine($"[Alert Processor] Resource {ResourceCount} was added to the audio list.");
+                                        }
+                                        {
+                                            Console.WriteLine($"[Alert Processor] Resource {ResourceCount} has no URI or deref value.");
+                                        }
                                     }
                                 }
-                                else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} has no URI.");
                             }
 
                             void AddImageToList()
@@ -416,7 +424,7 @@ namespace SharpAlert.AlertComponents
                                 else Console.WriteLine($"[Alert Processor] Resource {ResourceCount} has no URI.");
                             }
 
-                            if (!string.IsNullOrWhiteSpace(uri))
+                            if (!string.IsNullOrWhiteSpace(uri) || !string.IsNullOrWhiteSpace(derefUri))
                             {
                                 switch (mime)
                                 {
@@ -691,9 +699,11 @@ namespace SharpAlert.AlertComponents
                     Console.WriteLine($"[Alert Processor] Processed all available entries. (completed in {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms)");
 
                     string AudioURL = AudioFiles.FirstOrDefault();
+                    string AudioDeref = DerefAudioFiles.FirstOrDefault();
                     string ImageURL = ImageFiles.FirstOrDefault();
 
                     if (string.IsNullOrWhiteSpace(AudioURL)) AudioURL = string.Empty;
+                    if (string.IsNullOrWhiteSpace(AudioDeref)) AudioDeref = string.Empty;
                     if (string.IsNullOrWhiteSpace(ImageURL)) ImageURL = string.Empty;
 
                     //MessageBox.Show(MaxSeverity.ToString());
@@ -715,6 +725,7 @@ namespace SharpAlert.AlertComponents
                         AlertBodyText = FullBody.Trim(),
                         AlertURL = PrimaryURL,
                         AlertAudioURL = AudioURL,
+                        AlertAudioDeref = AudioDeref,
                         AlertImageURL = ImageURL
                     };
                 }
@@ -1315,6 +1326,7 @@ namespace SharpAlert.AlertComponents
                         "https://bunnytub.com/SharpAlert",
                         TestIdentifier,
                         [""],
+                        [""],
                         [""]);
 
                     RelayWindow(TestIdentifier,
@@ -1353,6 +1365,7 @@ namespace SharpAlert.AlertComponents
                             ctf.EventDescription,
                             ctf.EventURL,
                             TestIdentifier,
+                            [""],
                             [""],
                             [""]);
 

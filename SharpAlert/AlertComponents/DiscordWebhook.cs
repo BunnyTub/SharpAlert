@@ -8,6 +8,7 @@ using System.Text.Json;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace SharpAlert.AlertComponents
 {
@@ -301,6 +302,7 @@ namespace SharpAlert.AlertComponents
             string URL,
             string Identifier,
             List<string> AudioFileURL,
+            List<string> AudioFileDeref,
             List<string> ImageFileURL,
             int color = 16711680)
         {
@@ -321,6 +323,7 @@ namespace SharpAlert.AlertComponents
                     string boundary = "----SharpBoundary" + DateTime.Now.Ticks;
 
                     string AudioURL = (AudioFileURL != null && AudioFileURL.Count != 0) ? AudioFileURL[0] : null;
+                    string AudioDeref = (AudioFileDeref != null && AudioFileDeref.Count != 0) ? AudioFileDeref[0] : null;
                     string ImageURL = (ImageFileURL != null && ImageFileURL.Count != 0) ? ImageFileURL[0] : null;
 
                     //if (!string.IsNullOrEmpty(title) && description1.Length >= 128)
@@ -533,32 +536,54 @@ namespace SharpAlert.AlertComponents
                         textBytes = Encoding.UTF8.GetBytes(text);
                     }
 
-                    if (!string.IsNullOrWhiteSpace(AudioURL))
+                    if (!string.IsNullOrWhiteSpace(AudioDeref))
                     {
                         var sbFile = new StringBuilder();
                         sbFile.Append("\r\n--").Append(boundary).Append("\r\n");
-                        sbFile.Append("Content-Disposition: form-data; name=\"file\"; filename=\"Audio_Attachment.wav\"").Append("\r\n");
+                        sbFile.Append("Content-Disposition: form-data; name=\"file\"; filename=\"Audio_Attachment.wav\"").Append("\r\n"); // just give up
                         sbFile.Append("Content-Type: audio/wav").Append("\r\n");
                         sbFile.Append("\r\n");
                         AudioFileHeaderBytes = Encoding.UTF8.GetBytes(sbFile.ToString());
 
                         try
                         {
-                            var task = client.GetByteArrayAsync(AudioURL);
-                            task.Wait(15000);
-                            if (!task.IsFaulted && task.Result != null)
-                            {
-                                audioBytes = task.Result;
-                            }
-                            else
-                            {
-                                throw new Exception("Unknown fault, or result is still null.");
-                            }
+                            audioBytes = Convert.FromBase64String(AudioDeref);
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine("[Discord Webhook] Failed to fetch audio: " + ex.Message);
+                            Console.WriteLine("[Discord Webhook] Failed to decode audio: " + ex.Message);
                             audioBytes = null;
+                        }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrWhiteSpace(AudioURL))
+                        {
+                            var sbFile = new StringBuilder();
+                            sbFile.Append("\r\n--").Append(boundary).Append("\r\n");
+                            sbFile.Append("Content-Disposition: form-data; name=\"file\"; filename=\"Audio_Attachment.wav\"").Append("\r\n");
+                            sbFile.Append("Content-Type: audio/wav").Append("\r\n");
+                            sbFile.Append("\r\n");
+                            AudioFileHeaderBytes = Encoding.UTF8.GetBytes(sbFile.ToString());
+
+                            try
+                            {
+                                var task = client.GetByteArrayAsync(AudioURL);
+                                task.Wait(15000);
+                                if (!task.IsFaulted && task.Result != null)
+                                {
+                                    audioBytes = task.Result;
+                                }
+                                else
+                                {
+                                    throw new Exception("Unknown fault, or result is still null.");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("[Discord Webhook] Failed to fetch audio: " + ex.Message);
+                                audioBytes = null;
+                            }
                         }
                     }
 

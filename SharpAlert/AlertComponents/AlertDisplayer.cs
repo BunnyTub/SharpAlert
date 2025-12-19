@@ -34,13 +34,14 @@ namespace SharpAlert.AlertComponents
             public string PrimaryURL = string.Empty;
             public string MsgType = string.Empty;
             public string Severity = string.Empty;
-            public List<string> AudioFiles = new List<string>();
-            public List<string> ImageFiles = new List<string>();
+            public List<string> AudioFiles = [];
+            public List<string> AudioDeref = [];
+            public List<string> ImageFiles = [];
         }
 
-        public static void RelayWindow(string Identifier, string EventTypeFull, AlertTextClass _AlertText, string PrimaryURL, string MsgType, string Severity, List<string> AudioFiles, List<string> ImageFiles)
+        public static void RelayWindow(string Identifier, string EventTypeFull, AlertTextClass _AlertText, string PrimaryURL, string MsgType, string Severity, List<string> AudioFiles, List<string> AudioDeref, List<string> ImageFiles)
         {
-            AlertDisplayerInfo alert = new AlertDisplayerInfo
+            AlertDisplayerInfo alert = new()
             {
                 Identifier = Identifier,
                 EventTypeFull = EventTypeFull,
@@ -49,6 +50,7 @@ namespace SharpAlert.AlertComponents
                 MsgType = MsgType,
                 Severity = Severity,
                 AudioFiles = AudioFiles,
+                AudioDeref = AudioDeref,
                 ImageFiles = ImageFiles
             };
 
@@ -140,7 +142,6 @@ namespace SharpAlert.AlertComponents
                 PlayFromTTSEngine(alert._AlertText.Body, true);
                 Console.WriteLine("[Alert Displayer] Beginning playback of end tone.");
                 PlayEndToneFile(true);
-                //PlayFromManagedSource(GenerateHeaderStream("NNNN"));
 
                 Notify.Icon = Resources.TrayLightIcon;
 
@@ -226,6 +227,8 @@ namespace SharpAlert.AlertComponents
                             SpeakingManager.ModerateOrLower();
                             break;
                     }
+
+                    // don't forget to implement audio deref...
 
                     switch (QuickSettings.Instance.alertDisplayType)
                     {

@@ -319,7 +319,7 @@ namespace SharpAlert.DataProcessing
                                                             //    new List<string> { info.AlertAudioURL },
                                                             //    new List<string> { info.AlertImageURL },
                                                             //    color);
-                                                            
+
                                                             DiscordWebhook.SendEmbeddedMessage(info.AlertSource,
                                                                 CompiledMessage,
                                                                 ProcessedEvent,
@@ -328,6 +328,7 @@ namespace SharpAlert.DataProcessing
                                                                 info.AlertURL,
                                                                 relayItem.Name,
                                                                 [info.AlertAudioURL],
+                                                                [info.AlertAudioDeref],
                                                                 [info.AlertImageURL],
                                                                 color);
 
@@ -375,7 +376,7 @@ namespace SharpAlert.DataProcessing
                                                                 {
                                                                     Intro = info.AlertIntroText,
                                                                     Body = info.AlertBodyText
-                                                                }, info.AlertURL, info.AlertMessageType, info.AlertSeverity, [info.AlertAudioURL], [info.AlertImageURL]);
+                                                                }, info.AlertURL, info.AlertMessageType, info.AlertSeverity, [info.AlertAudioURL], [info.AlertAudioDeref], [info.AlertImageURL]);
                                                         });
                                                     }
 
