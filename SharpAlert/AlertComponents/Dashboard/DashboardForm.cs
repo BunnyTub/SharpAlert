@@ -305,8 +305,6 @@ namespace SharpAlert.AlertComponents.Dashboard
         {
             MessageBox.Show("This feature is not yet available.", Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             return;
-
-            new DashboardForm(true).Show();
         }
 
         private void ActiveAlertsText_Click(object sender, EventArgs e)

@@ -112,100 +112,100 @@ namespace SharpAlert.ProgramWorker
             // we should never be going beyond this point, but just in case lol
             return;
 
-            Notify.ShowNotification($"Haida is working to get everything shutdown. This may take a few moments.",
-                    "SharpAlert is stopping",
-                    ToolTipIcon.Info);
+            //Notify.ShowNotification($"Haida is working to get everything shutdown. This may take a few moments.",
+            //        "SharpAlert is stopping",
+            //        ToolTipIcon.Info);
 
-            Console.WriteLine("Preparing for termination.");
-            AllowThreadRestarts = false;
-            Thread.Sleep(500);
+            //Console.WriteLine("Preparing for termination.");
+            //AllowThreadRestarts = false;
+            //Thread.Sleep(500);
 
-            bool Finished = false;
-            new Thread(() =>
-            {
-                try
-                {
-                    while (!ServiceRunnerScheduled)
-                    {
-                        LogFault(new Exception("The program cannot exit safely, because the service runner hasn't indicated a successful startup."));
-                        Thread.Sleep(2500);
-                        Finished = true;
-                        return;
-                    }
+            //bool Finished = false;
+            //new Thread(() =>
+            //{
+            //    try
+            //    {
+            //        while (!ServiceRunnerScheduled)
+            //        {
+            //            LogFault(new Exception("The program cannot exit safely, because the service runner hasn't indicated a successful startup."));
+            //            Thread.Sleep(2500);
+            //            Finished = true;
+            //            return;
+            //        }
 
-                    //if (ServiceRunnerScheduled)
-                    {
-                        Console.WriteLine("Hyper Server is shutting down.");
-                        hyper?.ServiceStop();
-                        QuickSettings.Instance.DisableAlertProcessing = true;
-                        QuickSettings.Instance.PauseDataProcessing = true;
-                        //Console.WriteLine("Feed Capture is shutting down.");
-                        //feed?.ServiceStop();
-                        //Console.WriteLine("Direct Feed Capture is shutting down.");
-                        //directfeed?.ServiceStop();
-                        Console.WriteLine("Cache Capture is shutting down.");
-                        cache?.ServiceStop();
-                        Console.WriteLine("Data Processor is shutting down.");
-                        dataproc?.ServiceStop();
-                        Console.WriteLine("Idle Window is shutting down.");
-                        if (idle != null) IdleWindowVisible = false;
-                        Console.WriteLine("Status Window is shutting down.");
-                        if (status != null) StatusWindowVisible = false;
-                        Console.WriteLine("Stopping all sounds.");
-                        try
-                        {
-                            StopAllAudioSilently();
-                        }
-                        catch (Exception)
-                        {
-                            Console.WriteLine("Cannot stop some sounds.");
-                        }
-                        if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
-                        {
-                            DiscordWebhook.SendFormattedMessage("SharpAlert has stopped.");
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                }
-                Finished = true;
-            }).Start();
+            //        //if (ServiceRunnerScheduled)
+            //        {
+            //            Console.WriteLine("Hyper Server is shutting down.");
+            //            hyper?.ServiceStop();
+            //            QuickSettings.Instance.DisableAlertProcessing = true;
+            //            QuickSettings.Instance.PauseDataProcessing = true;
+            //            //Console.WriteLine("Feed Capture is shutting down.");
+            //            //feed?.ServiceStop();
+            //            //Console.WriteLine("Direct Feed Capture is shutting down.");
+            //            //directfeed?.ServiceStop();
+            //            Console.WriteLine("Cache Capture is shutting down.");
+            //            cache?.ServiceStop();
+            //            Console.WriteLine("Data Processor is shutting down.");
+            //            dataproc?.ServiceStop();
+            //            Console.WriteLine("Idle Window is shutting down.");
+            //            if (idle != null) IdleWindowVisible = false;
+            //            Console.WriteLine("Status Window is shutting down.");
+            //            if (status != null) StatusWindowVisible = false;
+            //            Console.WriteLine("Stopping all sounds.");
+            //            try
+            //            {
+            //                StopAllAudioSilently();
+            //            }
+            //            catch (Exception)
+            //            {
+            //                Console.WriteLine("Cannot stop some sounds.");
+            //            }
+            //            if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
+            //            {
+            //                DiscordWebhook.SendFormattedMessage("SharpAlert has stopped.");
+            //            }
+            //        }
+            //    }
+            //    catch (Exception)
+            //    {
+            //    }
+            //    Finished = true;
+            //}).Start();
 
-            static void Restart()
-            {
-                // Only restarts if the watchdog is running, maybe we need to do something to avoid this, or not.
-                Environment.Exit(100);
-            }
+            //static void Restart()
+            //{
+            //    // Only restarts if the watchdog is running, maybe we need to do something to avoid this, or not.
+            //    Environment.Exit(100);
+            //}
 
-            // The shutdown messages are just for fun lol
+            //// The shutdown messages are just for fun lol
 
-            for (int i = 0; !(i >= 15);)
-            {
-                if (Finished)
-                {
-                    Console.WriteLine("Shutdown was successful. Say thanks to Haida for his hard work... -w-");
-                    Notify.ShowNotification($"Shutdown was successful. Say thanks to Haida for his hard work... -w-",
-                        "SharpAlert has stopped",
-                        ToolTipIcon.Info);
+            //for (int i = 0; !(i >= 15);)
+            //{
+            //    if (Finished)
+            //    {
+            //        Console.WriteLine("Shutdown was successful. Say thanks to Haida for his hard work... -w-");
+            //        Notify.ShowNotification($"Shutdown was successful. Say thanks to Haida for his hard work... -w-",
+            //            "SharpAlert has stopped",
+            //            ToolTipIcon.Info);
 
-                    if (restart) Restart();
-                    else Environment.Exit(0);
-                    return;
-                }
-                Thread.Sleep(1000);
-                i++;
-            }
+            //        if (restart) Restart();
+            //        else Environment.Exit(0);
+            //        return;
+            //    }
+            //    Thread.Sleep(1000);
+            //    i++;
+            //}
 
-            Console.WriteLine("Shutdown timed out. Say thanks to Haida for his hard work... -w-");
-            Notify.ShowNotification($"Shutdown timed out. Say thanks to Haida for his hard work... -w-",
-                "SharpAlert has stopped",
-                ToolTipIcon.Info);
+            //Console.WriteLine("Shutdown timed out. Say thanks to Haida for his hard work... -w-");
+            //Notify.ShowNotification($"Shutdown timed out. Say thanks to Haida for his hard work... -w-",
+            //    "SharpAlert has stopped",
+            //    ToolTipIcon.Info);
             
-            if (restart) Restart();
-            else Environment.Exit(0);
+            //if (restart) Restart();
+            //else Environment.Exit(0);
 
-            return;
+            //return;
         }
 
         public static bool IsAdministrator => new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);

@@ -1293,6 +1293,7 @@ namespace SharpAlert.AlertComponents
                         "alert",
                         "minor",
                         [""],
+                        [""],
                         [""]);
                     //kill @e[type=!player,distance=..10]
                 });
@@ -1337,6 +1338,7 @@ namespace SharpAlert.AlertComponents
                         "alert",
                         "severe",
                         [""],
+                        [""],
                         [""]);
                 }
                 else
@@ -1376,6 +1378,7 @@ namespace SharpAlert.AlertComponents
                             ctf.EventURL,
                             "alert",
                             Severity,
+                            [""],
                             [""],
                             [""]);
                     });
