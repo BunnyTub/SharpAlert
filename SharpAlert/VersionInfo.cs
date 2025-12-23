@@ -8,7 +8,7 @@ namespace SharpAlert
         // last build was 1891 before the upgrade to .NET 9
         public static int MajorVersion { get; } = 15;
         public static int MinorVersion { get; } = 1;
-        public static bool IsBetaVersion { get; } = true;
+        public static bool IsBetaVersion { get; } = false;
         public static string ShortFriendlyVersion
         {
             get

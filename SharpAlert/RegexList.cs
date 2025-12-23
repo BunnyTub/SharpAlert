@@ -132,6 +132,10 @@ namespace SharpAlert
             @"<link rel=""alternate"" href=""\s*(.*?)\s*""/>",
             RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
+        public static readonly Regex IdRegex = new Regex(
+            @"<id>\s*(.*?)\s*</id>",
+            RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
         public static readonly Regex EventRegex = new Regex(
 			@"<event>\s*(.*?)\s*</event>",
 			RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Singleline);

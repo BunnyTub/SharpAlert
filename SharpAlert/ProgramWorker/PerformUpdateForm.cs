@@ -57,6 +57,12 @@ namespace SharpAlert.ProgramWorker
             DialogResult = DialogResult.No;
             this.Close();
         }
+
+        private void StopButton_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Abort;
+            this.Close();
+        }
     }
 }
 

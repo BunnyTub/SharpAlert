@@ -36,6 +36,7 @@
             InstallButton = new System.Windows.Forms.Button();
             HideThisMessageButton = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
+            StopButton = new System.Windows.Forms.Button();
             SuspendLayout();
             // 
             // TitleText
@@ -105,12 +106,27 @@
             label1.Text = "You'll be prompted for elevation if the\r\nprocess does not have permissions to properly update.";
             label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
+            // StopButton
+            // 
+            StopButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            StopButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            StopButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            StopButton.Location = new System.Drawing.Point(343, 115);
+            StopButton.Margin = new System.Windows.Forms.Padding(0);
+            StopButton.Name = "StopButton";
+            StopButton.Size = new System.Drawing.Size(72, 23);
+            StopButton.TabIndex = 31;
+            StopButton.Text = "Stop";
+            StopButton.UseVisualStyleBackColor = false;
+            StopButton.Click += StopButton_Click;
+            // 
             // PerformUpdateForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(424, 172);
             ControlBox = false;
+            Controls.Add(StopButton);
             Controls.Add(label1);
             Controls.Add(HideThisMessageButton);
             Controls.Add(InstallButton);
@@ -140,5 +156,6 @@
         private System.Windows.Forms.Button InstallButton;
         private System.Windows.Forms.Button HideThisMessageButton;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button StopButton;
     }
 }

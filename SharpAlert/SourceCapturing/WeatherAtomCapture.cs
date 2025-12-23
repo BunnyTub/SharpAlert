@@ -229,6 +229,9 @@ namespace SharpAlert.SourceCapturing
                 {
                     if (!string.IsNullOrWhiteSpace(link))
                     {
+                        //IdRegex.MatchOrDefault(EntryStr); // RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG 
+                        // we'll optimize the pulling someday
+                        
                         Console.WriteLine($"[Atom Feed Capture] Getting additional data from Atom. URL -> {link}");
                         // This should help with accented characters hopefully
                         atomclient.Headers.Set("User-Agent", SelfUserAgent);

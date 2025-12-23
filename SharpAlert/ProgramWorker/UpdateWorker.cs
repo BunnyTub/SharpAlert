@@ -337,6 +337,14 @@ namespace SharpAlert.ProgramWorker
                     }
                     else
                     {
+                        if (result == DialogResult.Abort)
+                        {
+                            QuickSettings.Instance.AllowPerformingUpdates = false;
+                            MessageBox.Show("The update system has been disabled.\r\nEnable Automatic Updates again if you want to keep yourself up to date by updating automatically.", "SharpAlert - Update Worker",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return false;
+                        }
+
                         while (AllowThreadRestarts)
                         {
                             TimeSpan Remaining = TimeUntilUpdate - DateTime.UtcNow;
