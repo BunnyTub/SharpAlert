@@ -252,7 +252,7 @@ namespace SharpAlert.DataProcessing
                                                             catch (Exception ex)
                                                             {
                                                                 Console.WriteLine(ex.Message);
-                                                                sentDate = DateTime.Now;
+                                                                sentDate = DateTime.UtcNow;
                                                             }
 
                                                             DateTime expiresDate;
@@ -263,7 +263,7 @@ namespace SharpAlert.DataProcessing
                                                             catch (Exception ex)
                                                             {
                                                                 Console.WriteLine(ex.Message);
-                                                                expiresDate = DateTime.Now.AddHours(1);
+                                                                expiresDate = DateTime.UtcNow.AddHours(1);
                                                             }
 
                                                             int color = 16777215;

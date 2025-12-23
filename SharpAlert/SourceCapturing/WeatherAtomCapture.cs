@@ -201,18 +201,18 @@ namespace SharpAlert.SourceCapturing
                 string EntryStr = entry.Groups[0].Value;
 
                 //Console.WriteLine($"[Atom Feed Capture] {EntriesCount} -> {CreateMD5(entry.Groups[1].Value)} (entry name is unused)");
-                string Effective = AtomEffectiveRegex.MatchOrDefault(EntryStr, DateTime.UtcNow.ToString("O", CultureInfo.InvariantCulture));
+                string Effective = AtomEffectiveRegex.MatchOrDefault(EntryStr, DateTimeOffset.UtcNow.ToString("O", CultureInfo.InvariantCulture));
                 //Console.WriteLine($"[Atom Feed Capture] Atom Effective: {Effective}");
 
-                string Expiry = AtomExpiresRegex.MatchOrDefault(EntryStr, DateTime.UtcNow.AddHours(1).ToString("O", CultureInfo.InvariantCulture));
+                string Expiry = AtomExpiresRegex.MatchOrDefault(EntryStr, DateTimeOffset.UtcNow.AddHours(1).ToString("O", CultureInfo.InvariantCulture));
                 //Console.WriteLine($"[Atom Feed Capture] Atom Expires: {Expiry}");
 
                 try
                 {
-                    if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
+                    if (DateTimeOffset.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal) <= DateTimeOffset.UtcNow)
                     {
                         EntriesDiscardCount++;
-                        //Console.WriteLine($"[Atom Feed Capture] Entry discarded because it has expired.");
+                        Console.WriteLine($"[Atom Feed Capture] Entry discarded because it has expired.");
                         continue;
                     }
                 }

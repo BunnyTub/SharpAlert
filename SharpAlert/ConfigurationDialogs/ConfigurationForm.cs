@@ -168,12 +168,12 @@ namespace SharpAlert.ConfigurationDialogs
             EnableUpdatesBox.Checked = QuickSettings.Instance.AllowPerformingUpdates;
             EnableDiscordRichPresenceBox.Checked = QuickSettings.Instance.AllowDiscordRichPresence;
             AllowNotifications = true;
-            ProhibitUsers_Tick(this, EventArgs.Empty);
-            if (IsUserLocked)
-            {
-                MessageBox.Show("Your access to some features (such as webhooks) that require connectivity have been restricted due to inappropriate behavior. This restriction is likely related to an infringement that was given to an associated account on this device.",
-                    Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            //ProhibitUsers_Tick(this, EventArgs.Empty);
+            //if (IsUserLocked)
+            //{
+            //    MessageBox.Show("Your access to some features (such as webhooks) that require connectivity have been restricted due to inappropriate behavior. This restriction is likely related to an infringement that was given to an associated account on this device.",
+            //        Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
         }
 
         private bool AllowNotifications = false;
@@ -228,13 +228,17 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void SecretSettingsButton_Click(object sender, EventArgs e)
         {
-            if (MainEntryPoint.IsUserSuperSecretAccessor())
+            //if (MainEntryPoint.IsUserSuperSecretAccessor())
+            //{
+            //    if (secret == null || secret.IsDisposed) secret = new SecretConfigurationForm();
+            //    secret.Show();
+            //    secret.Activate();
+            //}
+            //else
             {
-                if (secret == null || secret.IsDisposed) secret = new SecretConfigurationForm();
-                secret.Show();
-                secret.Activate();
+                //Console.Beep(300, 200);
+                MessageBox.Show("There are no experiments available.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            else Console.Beep(300, 200);
         }
 
         private SaveSlotsConfigurationForm slots = null;
@@ -246,23 +250,23 @@ namespace SharpAlert.ConfigurationDialogs
             slots.Activate();
         }
 
-        private bool IsUserLocked = false;
+        //private bool IsUserLocked = false;
 
         private void ProhibitUsers_Tick(object sender, EventArgs e)
         {
-            if (MainEntryPoint.IsUserLocked())
-            {
-                IsUserLocked = true;
-                DiscordSettingsButton.Enabled = false;
-                try { if (dcf != null && !dcf.IsDisposed) dcf.Close(); } catch (Exception) { }
-                QuickSettings.Instance.DiscordWebhookFeaturesLocked = true;
-            }
-            else
-            {
-                IsUserLocked = false;
-                DiscordSettingsButton.Enabled = true;
-                QuickSettings.Instance.DiscordWebhookFeaturesLocked = false;
-            }
+            //if (MainEntryPoint.IsUserLocked())
+            //{
+            //    IsUserLocked = true;
+            //    DiscordSettingsButton.Enabled = false;
+            //    try { if (dcf != null && !dcf.IsDisposed) dcf.Close(); } catch (Exception) { }
+            //    QuickSettings.Instance.DiscordWebhookFeaturesLocked = true;
+            //}
+            //else
+            //{
+            //    IsUserLocked = false;
+            //    DiscordSettingsButton.Enabled = true;
+            //    QuickSettings.Instance.DiscordWebhookFeaturesLocked = false;
+            //}
         }
     }
 }

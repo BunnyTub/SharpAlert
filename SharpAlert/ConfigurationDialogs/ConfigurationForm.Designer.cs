@@ -258,8 +258,8 @@
             SecretSettingsButton.Name = "SecretSettingsButton";
             SecretSettingsButton.Size = new System.Drawing.Size(128, 23);
             SecretSettingsButton.TabIndex = 11;
-            SecretSettingsButton.Text = "Secret Settings";
-            ToolTipInformation.SetToolTip(SecretSettingsButton, resources.GetString("SecretSettingsButton.ToolTip"));
+            SecretSettingsButton.Text = "Experiments";
+            ToolTipInformation.SetToolTip(SecretSettingsButton, "Contains experiments for SharpAlert.");
             SecretSettingsButton.UseMnemonic = false;
             SecretSettingsButton.UseVisualStyleBackColor = false;
             SecretSettingsButton.Click += SecretSettingsButton_Click;
@@ -275,7 +275,7 @@
             SaveSlotsButton.Size = new System.Drawing.Size(128, 64);
             SaveSlotsButton.TabIndex = 7;
             SaveSlotsButton.Text = "Save Slots";
-            ToolTipInformation.SetToolTip(SaveSlotsButton, "Discord webhook settings can be configured here.");
+            ToolTipInformation.SetToolTip(SaveSlotsButton, "Save slots for your settings can be configured here");
             SaveSlotsButton.UseMnemonic = false;
             SaveSlotsButton.UseVisualStyleBackColor = false;
             SaveSlotsButton.Click += SaveSlotsButton_Click;

@@ -320,7 +320,7 @@ namespace SharpAlert.AlertComponents
 
                 lock (discordClient)
                 {
-                    string boundary = "----SharpBoundary" + DateTime.Now.Ticks;
+                    string boundary = "----SharpBoundary" + DateTime.UtcNow.Ticks;
 
                     string AudioURL = (AudioFileURL != null && AudioFileURL.Count != 0) ? AudioFileURL[0] : null;
                     string AudioDeref = (AudioFileDeref != null && AudioFileDeref.Count != 0) ? AudioFileDeref[0] : null;

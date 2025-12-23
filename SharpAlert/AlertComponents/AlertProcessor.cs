@@ -492,7 +492,7 @@ namespace SharpAlert.AlertComponents
                             {
                                 try
                                 {
-                                    if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
+                                    if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal) <= DateTime.UtcNow)
                                     {
                                         Console.WriteLine($"[Alert Processor] Info tag discarded because it has expired.");
                                         continue;

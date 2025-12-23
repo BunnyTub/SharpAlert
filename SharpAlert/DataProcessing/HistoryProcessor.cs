@@ -236,7 +236,7 @@ namespace SharpAlert.DataProcessing
                         string EventType = EventRegex.MatchOrDefault(AlertInfo, "Cautionary (Unknown Event)");
                         Console.WriteLine($"[History Processor] Event Type: {EventType}");
 
-                        if (DateTime.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal) <= DateTime.Now)
+                        if (DateTimeOffset.Parse(Expiry, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal) <= DateTimeOffset.UtcNow)
                         {
                             return (true,
                                 EventType,

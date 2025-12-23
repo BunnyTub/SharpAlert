@@ -44,7 +44,7 @@ namespace SharpAlert
                 "SharpAlert",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
-            Process.Start("https://github.com/BunnyTub/SharpAlert-issues/issues/new");
+            AlertComponents.HackyWorkarounds.OpenURL("https://github.com/BunnyTub/SharpAlert-issues/issues/new");
         }
 
         private int AutoCloseTime = 90;

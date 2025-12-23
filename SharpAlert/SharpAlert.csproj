@@ -28,8 +28,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="bin\**" />
 	  <Compile Remove="SpeakingAssets\**" />
+	  <EmbeddedResource Remove="bin\**" />
 	  <EmbeddedResource Remove="SpeakingAssets\**" />
+	  <None Remove="bin\**" />
 	  <None Remove="SpeakingAssets\**" />
 	</ItemGroup>
 

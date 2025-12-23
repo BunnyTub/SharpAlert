@@ -213,49 +213,49 @@ namespace SharpAlert.ProgramWorker
         public static List<string> Args { get; private set; } = null;
         // --alt-config-1/2/3/4
 
-        private static bool Secret = false;
-        public static bool IsUserSuperSecretAccessor()
-        {
-            try
-            {
-                string userIDs = client.GetStringAsync("https://bunnytub.com/SharpAlert/SharpAlert.shfile").Result;
-                foreach (string userID in userIDs.Split())
-                {
-                    if (userID.Contains(InternalUserID.ToString()))
-                    {
-                        Secret = true;
-                        return true;
-                    }
-                }
-                return false;
-            }
-            catch (Exception)
-            {
-                return Secret;
-            }
-        }
+        //private static bool Secret = false;
+        //public static bool IsUserSuperSecretAccessor()
+        //{
+        //    try
+        //    {
+        //        string userIDs = client.GetStringAsync("https://bunnytub.com/SharpAlert/SharpAlert.shfile").Result;
+        //        foreach (string userID in userIDs.Split())
+        //        {
+        //            if (userID.Contains(InternalUserID.ToString()))
+        //            {
+        //                Secret = true;
+        //                return true;
+        //            }
+        //        }
+        //        return false;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return Secret;
+        //    }
+        //}
 
-        private static bool Locked = false;
-        public static bool IsUserLocked()
-        {
-            try
-            {
-                string userIDs = client.GetStringAsync("https://bunnytub.com/SharpAlert/SharpAlert.lkfile").Result;
-                foreach (string userID in userIDs.Split())
-                {
-                    if (userID.Contains(InternalUserID.ToString()))
-                    {
-                        Locked = true;
-                        return true;
-                    }
-                }
-                return false;
-            }
-            catch (Exception)
-            {
-                return Locked;
-            }
-        }
+        //private static bool Locked = false;
+        //public static bool IsUserLocked()
+        //{
+        //    try
+        //    {
+        //        string userIDs = client.GetStringAsync("https://bunnytub.com/SharpAlert/SharpAlert.lkfile").Result;
+        //        foreach (string userID in userIDs.Split())
+        //        {
+        //            if (userID.Contains(InternalUserID.ToString()))
+        //            {
+        //                Locked = true;
+        //                return true;
+        //            }
+        //        }
+        //        return false;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return Locked;
+        //    }
+        //}
 
         public static ulong InternalUserID
         {
@@ -271,6 +271,23 @@ namespace SharpAlert.ProgramWorker
         {
             //watchdog self-child process
             Args = [.. Environment.GetCommandLineArgs()];
+
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
+                Exception ex = e.ExceptionObject as Exception;
+                if (MessageBox.Show($"{ex.Message}\r\n{ex.StackTrace}" +
+                    $"\r\n\r\n" +
+                    $"Click OK to close the app.\r\n" +
+                    $"Click CANCEL to copy this message too.", "SharpAlert - Toppled Over (Crash)", MessageBoxButtons.OKCancel, MessageBoxIcon.Error) == DialogResult.Cancel)
+                {
+                    Clipboard.SetText($"{ex.Message}\r\n{ex.StackTrace}");
+                }
+            };
+
+            //AppDomain.CurrentDomain.ProcessExit += (s, e) =>
+            //{
+            //};
+
             QuickSettings.Reload();
             Application.EnableVisualStyles();
             //System.Windows.Forms.Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;

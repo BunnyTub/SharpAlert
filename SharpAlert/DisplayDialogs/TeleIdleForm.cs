@@ -92,7 +92,7 @@ namespace SharpAlert.DisplayDialogs
             //notify.ContextMenuStrip.Show(Cursor.Position);
         }
 
-        private readonly Random RandomMovement = new Random(DateTime.Now.Millisecond);
+        private readonly Random RandomMovement = new(DateTimeOffset.UtcNow.Millisecond);
         private int ColorCounter = 0;
 
         private void MovePreventBurnIn_Tick(object sender, EventArgs e)
