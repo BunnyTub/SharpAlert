@@ -58,7 +58,7 @@
             TitleText.Name = "TitleText";
             TitleText.Size = new System.Drawing.Size(533, 53);
             TitleText.TabIndex = 3;
-            TitleText.Text = "Choose an alert receiving preset to start with. You can change individual options in your CAP settings.";
+            TitleText.Text = "Choose an alert receiving preset to start with. You can change individual options in your alert settings (Advanced Mode). ";
             // 
             // PreferMinorButton
             // 
@@ -129,7 +129,7 @@
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(629, 21);
             label1.TabIndex = 14;
-            label1.Text = "To change these options later, go to Settings (under CAP Settings).";
+            label1.Text = "To change these options later, go to Settings (under Alert Settings).";
             label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // ChoosePresetForm

@@ -49,15 +49,15 @@ namespace SharpAlert
 
         private async void UpdateStatusPage_Tick(object sender, EventArgs e)
         {
-            UpdateStatus(feedThread.ThreadState, FeedCaptureStatusText, FeedCapturePanel); // HTTP
-            UpdateStatus(atomfeedThread.ThreadState, AtomFeedCaptureStatusText, AtomFeedCapturePanel); // ATOM
-            UpdateStatus(idapfeedThread.ThreadState, IDAPCaptureStatusText, IDAPCapturePanel); // IDAP
+            UpdateStatus(FeedThread.ThreadState, FeedCaptureStatusText, FeedCapturePanel); // HTTP
+            UpdateStatus(AtomfeedThread.ThreadState, AtomFeedCaptureStatusText, AtomFeedCapturePanel); // ATOM
+            UpdateStatus(IdapfeedThread.ThreadState, IDAPCaptureStatusText, IDAPCapturePanel); // IDAP
 
             // moved DirectFeedCapture to separate timer
 
-            UpdateStatus(cacheThread.ThreadState, CacheCaptureStatusText, CacheCapturePanel); // CACHE
-            UpdateStatus(dataProcThread.ThreadState, DataProcessorStatusText, DataProcessorPanel); // DATA
-            UpdateStatus(historyProcThread.ThreadState, HistoryProcessorStatusText, HistoryProcessorPanel); // HISTORY
+            UpdateStatus(CacheThread.ThreadState, CacheCaptureStatusText, CacheCapturePanel); // CACHE
+            UpdateStatus(DataProcThread.ThreadState, DataProcessorStatusText, DataProcessorPanel); // DATA
+            UpdateStatus(HistoryProcThread.ThreadState, HistoryProcessorStatusText, HistoryProcessorPanel); // HISTORY
 
             bool AlertProc = false;
 
@@ -95,7 +95,7 @@ namespace SharpAlert
 
         private async void UpdateDirectFeedCapture_Tick(object sender, EventArgs e)
         {
-            switch (directfeedThread.ThreadState)
+            switch (DirectfeedThread.ThreadState)
             {
                 case ThreadState.Running:
                     DirectFeedCaptureStatusText.Text = "Running";
@@ -119,7 +119,7 @@ namespace SharpAlert
                     return;
             }
 
-            if (directfeedThread.ThreadState != ThreadState.Stopped)
+            if (DirectfeedThread.ThreadState != ThreadState.Stopped)
             {
                 bool Running = false;
 

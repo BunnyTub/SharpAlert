@@ -8,7 +8,7 @@ namespace SharpAlert.ProgramWorker
     public static class DoNotDisturbMode
     {
         //public static int DNDModeRemainingTimeInMinutes { get; private set; } = 0;
-        private static readonly Timer DNDSubtractionTimer = new Timer
+        private static readonly Timer DNDSubtractionTimer = new()
         {
             AutoReset = true,
             Enabled = false

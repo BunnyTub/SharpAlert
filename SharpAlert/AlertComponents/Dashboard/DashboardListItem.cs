@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using static SharpAlert.AlertComponents.AlertProcessor;
+using static SharpAlertPluginBase.AlertContents;
 
 namespace SharpAlert.AlertComponents.Dashboard
 {

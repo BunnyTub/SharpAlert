@@ -1,19 +1,21 @@
-﻿using System;
+﻿using SharpAlert.AlertComponents;
+using SharpAlert.AlertComponents.Dashboard;
+using SharpAlert.ProgramWorker;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Windows.Forms;
+using TinyJson;
 using static SharpAlert.AlertComponents.AlertDisplayer;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.RegexList;
-using System.Linq;
-using System.Threading;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using SharpAlert.AlertComponents;
-using SharpAlert.ProgramWorker;
-using System.IO;
-using SharpAlert.AlertComponents.Dashboard;
+using static SharpAlertPluginBase.AlertContents;
 
 namespace SharpAlert.DataProcessing
 {
@@ -38,7 +40,7 @@ namespace SharpAlert.DataProcessing
         private static readonly object DiscordConfirmLockObject = new();
         public static readonly string ArchivePath = QuickSettings.ConfigDirPath + "\\Archive";
 
-        public static (AlertInfo info, DateTimeOffset date) LastAlertToBeRelayed = (new AlertInfo(), DateTimeOffset.MinValue);
+        internal static (AlertInfo info, DateTimeOffset date) LastAlertToBeRelayed = (new AlertInfo(), DateTimeOffset.MinValue);
 
         public void ServiceRun()
         {
@@ -64,12 +66,22 @@ namespace SharpAlert.DataProcessing
 
                                     if (DateTime.UtcNow - dt > TimeSpan.FromHours(48))
                                     {
-                                        File.Delete(file);
-                                        Console.WriteLine($"[Data Processor] Deleted old file from archive -> {Path.GetFileName(file)}");
-                                        if (!QuickSettings.Instance.ArchivingAggressiveProcessing) Thread.Sleep(100);
+                                        if (Path.HasExtension(file))
+                                        {
+                                            string extension = Path.GetExtension(file);
+
+                                            if (extension != null)
+                                            {
+                                                if (extension == ".xml")
+                                                {
+                                                    File.Delete(file);
+                                                    Console.WriteLine($"[Data Processor] Deleted old file from archive -> {Path.GetFileName(file)}");
+                                                    if (!QuickSettings.Instance.ArchivingAggressiveProcessing) Thread.Sleep(50);
+                                                }
+                                            }
+                                        }
                                     }
                                     else continue;
-
                                 }
                                 catch (Exception ex)
                                 {
@@ -170,13 +182,12 @@ namespace SharpAlert.DataProcessing
                                     string Replay = ReplayedAlertRegex.MatchOrDefault(relayItem.Data, "false");
                                     bool ReplayMode = false;
 
-                                    if (Replay.ToLowerInvariant() == "true")
+                                    if (Replay.Equals("true", StringComparison.InvariantCultureIgnoreCase))
                                     {
                                         Console.WriteLine("[Data Processor] Detected an alert in replay mode.");
                                         ReplayMode = true;
                                         relayItem.Data = relayItem.Data.Replace("<SharpAlertReplay>true</SharpAlertReplay>", "<SharpAlertReplay>false</SharpAlertReplay>");
                                     }
-
 
                                     lock (SharpDataHistory) SharpDataHistory.Add(relayItem);
                                     SharpDataQueue.Remove(relayItem);
@@ -210,9 +221,22 @@ namespace SharpAlert.DataProcessing
                                                 {
                                                     Console.WriteLine($"[Data Processor] To be relayed -> {relayItem.Name}");
 
+                                                    bool CalledWebhookFunction = false;
+                                                    bool DialogCanAppear = true;
+
+                                                    foreach (var plug in PluginManager.Plugins)
+                                                    {
+                                                        if (!plug.AlertTBR(info.ToJson()))
+                                                        {
+                                                            throw new Exception($"The plugin \"{plug.FriendlyName}\" declined the relay request for \"{relayItem.Name}\".");
+                                                        }
+                                                    }
+
                                                     LastAlertToBeRelayed = (info, DateTimeOffset.UtcNow);
 
                                                     DashboardManager.AddNewAlertToDashboard(info);
+
+                                                    CallManager.MakeAlertCall(info);
 
                                                     if (ReplayMode)
                                                     {
@@ -220,9 +244,6 @@ namespace SharpAlert.DataProcessing
                                                             info.AlertEventType,
                                                             ToolTipIcon.Info);
                                                     }
-
-                                                    bool CalledWebhookFunction = false;
-                                                    bool DialogCanAppear = true;
 
                                                     if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
                                                     {
@@ -382,10 +403,6 @@ namespace SharpAlert.DataProcessing
 
                                                     //AnyAlertRelayed = true;
                                                     SharpDataRelayedNamesHistory.Add(relayItem.Name);
-                                                }
-                                                catch (NotSupportedException ex)
-                                                {
-                                                    Console.WriteLine($"[Data Processor] Couldn't relay. {ex.Message}");
                                                 }
                                                 catch (Exception ex)
                                                 {

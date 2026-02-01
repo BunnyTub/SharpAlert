@@ -33,7 +33,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
             try
             {
                 Console.WriteLine($"[IDAP Notice Window] Getting data from IDAP. URL -> {IDAPFeedCapture.serverPath}");
-                HttpResponseMessage message = HaidaWorker.client.GetAsync($"https://{IDAPFeedCapture.serverPath}").Result;
+                HttpResponseMessage message = HaidaWorker.Client.GetAsync($"https://{IDAPFeedCapture.serverPath}").Result;
                 message.EnsureSuccessStatusCode();
                 label2.Text = "You should be able to receive alerts without issue.";
                 label2.BackColor = Color.Green;

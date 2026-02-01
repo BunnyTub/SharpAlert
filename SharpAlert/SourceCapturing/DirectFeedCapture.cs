@@ -252,7 +252,7 @@ namespace SharpAlert.SourceCapturing
                     if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. Timed out from {name}.",
                         "SharpAlert source timed out",
                         ToolTipIcon.Warning);
-
+                    NetFailureCount++;
                     Thread.Sleep(30 * 1000);
                 }
                 catch (Exception ex)
@@ -261,6 +261,7 @@ namespace SharpAlert.SourceCapturing
                     if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. {ex.Message}",
                         "SharpAlert source failed",
                         ToolTipIcon.Warning);
+                    NetFailureCount++;
                 }
                 Thread.Sleep(15 * 1000);
             }
@@ -414,7 +415,7 @@ namespace SharpAlert.SourceCapturing
                                         try
                                         {
                                             Console.WriteLine($"[TCP Feed Capture] {Found} -> {subfilename} ({url1})");
-                                            Task<string> xml = client.GetStringAsync(url1);
+                                            Task<string> xml = Client.GetStringAsync(url1);
                                             xml.Wait();
                                             result = xml.Result;
                                             xml.Dispose();
@@ -425,7 +426,7 @@ namespace SharpAlert.SourceCapturing
                                             {
                                                 Console.WriteLine($"[TCP Feed Capture] Stage 1 failed. {e1.Message}");
                                                 Console.WriteLine($"[TCP Feed Capture] {Found} -> {subfilename} ({url2}) (retrying)");
-                                                Task<string> xml = client.GetStringAsync(url2);
+                                                Task<string> xml = Client.GetStringAsync(url2);
                                                 xml.Wait();
                                                 result = xml.Result;
                                                 xml.Dispose();

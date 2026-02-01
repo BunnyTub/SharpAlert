@@ -461,7 +461,7 @@ namespace SharpAlert.AlertComponents
 
                     try
                     {
-                        var task = client.GetAsync(ThumbnailURL);
+                        var task = Client.GetAsync(ThumbnailURL);
                         task.Wait(15000);
                         if (!task.IsFaulted && task.Result != null)
                         {
@@ -568,7 +568,7 @@ namespace SharpAlert.AlertComponents
 
                             try
                             {
-                                var task = client.GetByteArrayAsync(AudioURL);
+                                var task = Client.GetByteArrayAsync(AudioURL);
                                 task.Wait(15000);
                                 if (!task.IsFaulted && task.Result != null)
                                 {

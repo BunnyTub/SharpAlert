@@ -12,50 +12,28 @@ using SharpAlert.AlertComponents;
 
 namespace SharpAlert.DataProcessing
 {
-    internal class HistoryProcessor
+    internal static class HistoryProcessor
     {
-        private bool Stop = false;
-        private bool StopCalled = false;
-
-        public void ServiceStop()
+        public static void ServiceRun()
         {
-            if (StopCalled)
-            {
-                throw new Exception("ServiceStop was already called. If you intended to run the service multiple times, please create a new object.");
-            }
-            StopCalled = true;
-            Stop = true;
-            while (Stop) Thread.Sleep(100);
-        }
-
-        public void ServiceRun()
-        {
-            while (true)
+            while (AllowThreadRestarts)
             {
                 try
                 {
                     for (int i = 0; i < 60; i++)
                     {
-                        if (Stop)
+                        if (!AllowThreadRestarts)
                         {
-                            Stop = false;
                             return;
                         }
                         Thread.Sleep(1 * 1000);
                     }
-
 
                     if (SharpDataRelayedNamesHistory.Count > QuickSettings.Instance.storedMaxSize)
                     {
                         // use first instead of last, otherwise, recent alerts will be forgotten
                         lock (SharpDataRelayedNamesHistory) SharpDataRelayedNamesHistory.Remove(SharpDataRelayedNamesHistory.First());
                         Console.WriteLine($"[History Processor] Trimmed data history.");
-                    }
-
-                    if (Stop)
-                    {
-                        Stop = false;
-                        return;
                     }
 
                     //if (QuickSettings.Instance.alertNoGUI) continue;
@@ -69,8 +47,8 @@ namespace SharpAlert.DataProcessing
                             Console.WriteLine("[History Processor] Checking timestamps.");
                             string CompiledString = string.Empty;
                             bool Expired = false;
-                            List<string> Names = new List<string>();
-                            List<string> ExpiredNames = new List<string>();
+                            List<string> Names = [];
+                            List<string> ExpiredNames = [];
 
                             lock (SharpDataRelayedNamesHistory)
                             {
@@ -198,7 +176,7 @@ namespace SharpAlert.DataProcessing
         /// </summary>
         /// <param name="relayItem"></param>
         /// <returns>True if the alert provided is expired. Also provides the alert type.</returns>
-        public (bool, string, string, string, string, string) ProcessHistoricItem(SharpDataItem relayItem)
+        public static (bool, string, string, string, string, string) ProcessHistoricItem(SharpDataItem relayItem)
         {
             lock (AlertLock)
             {
@@ -261,7 +239,7 @@ namespace SharpAlert.DataProcessing
                     }
                 }
 
-                return (true,
+                return (false,
                     "Cautionary (Unknown Event)",
                     "Unknown Date Time",
                     "Unknown Date Time",

@@ -41,11 +41,10 @@
             SaveSettingsButton = new System.Windows.Forms.Button();
             ProgramCreditsButton = new System.Windows.Forms.Button();
             EnableUpdatesBox = new System.Windows.Forms.CheckBox();
-            EnableDiscordRichPresenceBox = new System.Windows.Forms.CheckBox();
             ToolTipInformation = new System.Windows.Forms.ToolTip(components);
             SecretSettingsButton = new System.Windows.Forms.Button();
             SaveSlotsButton = new System.Windows.Forms.Button();
-            ProhibitUsers = new System.Windows.Forms.Timer(components);
+            SimpleModeButton = new System.Windows.Forms.Button();
             SuspendLayout();
             // 
             // DoneButton
@@ -55,10 +54,10 @@
             DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             DoneButton.Font = new System.Drawing.Font("Segoe UI", 16F);
             DoneButton.ForeColor = System.Drawing.Color.White;
-            DoneButton.Location = new System.Drawing.Point(12, 276);
+            DoneButton.Location = new System.Drawing.Point(12, 280);
             DoneButton.Name = "DoneButton";
             DoneButton.Size = new System.Drawing.Size(396, 40);
-            DoneButton.TabIndex = 13;
+            DoneButton.TabIndex = 12;
             DoneButton.Text = "Close";
             DoneButton.UseMnemonic = false;
             DoneButton.UseVisualStyleBackColor = false;
@@ -68,7 +67,7 @@
             // 
             CAPSettingsButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             CAPSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            CAPSettingsButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            CAPSettingsButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             CAPSettingsButton.ForeColor = System.Drawing.Color.White;
             CAPSettingsButton.Location = new System.Drawing.Point(12, 12);
             CAPSettingsButton.Name = "CAPSettingsButton";
@@ -90,7 +89,7 @@
             StyleSettingsButton.Name = "StyleSettingsButton";
             StyleSettingsButton.Size = new System.Drawing.Size(128, 64);
             StyleSettingsButton.TabIndex = 2;
-            StyleSettingsButton.Text = "Alert\r\nStyling";
+            StyleSettingsButton.Text = "Styles &\r\nMore";
             ToolTipInformation.SetToolTip(StyleSettingsButton, "Alert styling for GUI, text, and more can be configured here.");
             StyleSettingsButton.UseMnemonic = false;
             StyleSettingsButton.UseVisualStyleBackColor = false;
@@ -102,11 +101,11 @@
             SoundSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             SoundSettingsButton.Font = new System.Drawing.Font("Segoe UI", 14F);
             SoundSettingsButton.ForeColor = System.Drawing.Color.White;
-            SoundSettingsButton.Location = new System.Drawing.Point(12, 152);
+            SoundSettingsButton.Location = new System.Drawing.Point(280, 152);
             SoundSettingsButton.Name = "SoundSettingsButton";
             SoundSettingsButton.Size = new System.Drawing.Size(128, 64);
-            SoundSettingsButton.TabIndex = 5;
-            SoundSettingsButton.Text = "Sound\r\nSettings";
+            SoundSettingsButton.TabIndex = 7;
+            SoundSettingsButton.Text = "Sounds &\r\nEffects";
             ToolTipInformation.SetToolTip(SoundSettingsButton, "Sound device and sound customization settings can be configured here.");
             SoundSettingsButton.UseMnemonic = false;
             SoundSettingsButton.UseVisualStyleBackColor = false;
@@ -118,11 +117,11 @@
             DiscordSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             DiscordSettingsButton.Font = new System.Drawing.Font("Segoe UI", 14F);
             DiscordSettingsButton.ForeColor = System.Drawing.Color.White;
-            DiscordSettingsButton.Location = new System.Drawing.Point(146, 152);
+            DiscordSettingsButton.Location = new System.Drawing.Point(280, 82);
             DiscordSettingsButton.Name = "DiscordSettingsButton";
             DiscordSettingsButton.Size = new System.Drawing.Size(128, 64);
-            DiscordSettingsButton.TabIndex = 6;
-            DiscordSettingsButton.Text = "Webhook\r\nSettings";
+            DiscordSettingsButton.TabIndex = 4;
+            DiscordSettingsButton.Text = "Discord &\r\nWebhooks";
             ToolTipInformation.SetToolTip(DiscordSettingsButton, "Discord webhook settings can be configured here.");
             DiscordSettingsButton.UseMnemonic = false;
             DiscordSettingsButton.UseVisualStyleBackColor = false;
@@ -134,10 +133,10 @@
             ServerSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             ServerSettingsButton.Font = new System.Drawing.Font("Segoe UI", 14F);
             ServerSettingsButton.ForeColor = System.Drawing.Color.White;
-            ServerSettingsButton.Location = new System.Drawing.Point(280, 82);
+            ServerSettingsButton.Location = new System.Drawing.Point(12, 152);
             ServerSettingsButton.Name = "ServerSettingsButton";
             ServerSettingsButton.Size = new System.Drawing.Size(128, 64);
-            ServerSettingsButton.TabIndex = 4;
+            ServerSettingsButton.TabIndex = 5;
             ServerSettingsButton.Text = "Server Settings";
             ToolTipInformation.SetToolTip(ServerSettingsButton, "Server settings can be configured here.");
             ServerSettingsButton.UseMnemonic = false;
@@ -148,7 +147,7 @@
             // 
             RegionSettingsButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             RegionSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            RegionSettingsButton.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            RegionSettingsButton.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
             RegionSettingsButton.ForeColor = System.Drawing.Color.White;
             RegionSettingsButton.Location = new System.Drawing.Point(12, 82);
             RegionSettingsButton.Name = "RegionSettingsButton";
@@ -167,14 +166,15 @@
             MigrateSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             MigrateSettingsButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             MigrateSettingsButton.ForeColor = System.Drawing.Color.White;
-            MigrateSettingsButton.Location = new System.Drawing.Point(12, 247);
+            MigrateSettingsButton.Location = new System.Drawing.Point(12, 251);
             MigrateSettingsButton.Name = "MigrateSettingsButton";
             MigrateSettingsButton.Size = new System.Drawing.Size(128, 23);
-            MigrateSettingsButton.TabIndex = 10;
+            MigrateSettingsButton.TabIndex = 9;
             MigrateSettingsButton.Text = "Migrate Settings";
             ToolTipInformation.SetToolTip(MigrateSettingsButton, "If you have updated from v8.x or an older version of SharpAlert,\r\nplease click this button to restore your older settings, and migrate\r\nto the new JSON format that v9.x and newer use.");
             MigrateSettingsButton.UseMnemonic = false;
             MigrateSettingsButton.UseVisualStyleBackColor = false;
+            MigrateSettingsButton.Visible = false;
             MigrateSettingsButton.Click += MigrateSettingsButton_Click;
             // 
             // SaveSettingsButton
@@ -184,7 +184,7 @@
             SaveSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             SaveSettingsButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             SaveSettingsButton.ForeColor = System.Drawing.Color.White;
-            SaveSettingsButton.Location = new System.Drawing.Point(12, 247);
+            SaveSettingsButton.Location = new System.Drawing.Point(12, 251);
             SaveSettingsButton.Name = "SaveSettingsButton";
             SaveSettingsButton.Size = new System.Drawing.Size(128, 23);
             SaveSettingsButton.TabIndex = 7;
@@ -201,10 +201,10 @@
             ProgramCreditsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             ProgramCreditsButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             ProgramCreditsButton.ForeColor = System.Drawing.Color.White;
-            ProgramCreditsButton.Location = new System.Drawing.Point(280, 247);
+            ProgramCreditsButton.Location = new System.Drawing.Point(280, 251);
             ProgramCreditsButton.Name = "ProgramCreditsButton";
             ProgramCreditsButton.Size = new System.Drawing.Size(128, 23);
-            ProgramCreditsButton.TabIndex = 12;
+            ProgramCreditsButton.TabIndex = 11;
             ProgramCreditsButton.Text = "About SharpAlert";
             ToolTipInformation.SetToolTip(ProgramCreditsButton, "Shows some information about the program. This is not user specific.");
             ProgramCreditsButton.UseMnemonic = false;
@@ -215,7 +215,7 @@
             // 
             EnableUpdatesBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             EnableUpdatesBox.AutoSize = true;
-            EnableUpdatesBox.Location = new System.Drawing.Point(12, 222);
+            EnableUpdatesBox.Location = new System.Drawing.Point(12, 226);
             EnableUpdatesBox.Name = "EnableUpdatesBox";
             EnableUpdatesBox.Size = new System.Drawing.Size(166, 19);
             EnableUpdatesBox.TabIndex = 8;
@@ -223,19 +223,6 @@
             ToolTipInformation.SetToolTip(EnableUpdatesBox, resources.GetString("EnableUpdatesBox.ToolTip"));
             EnableUpdatesBox.UseVisualStyleBackColor = true;
             EnableUpdatesBox.CheckedChanged += EnableUpdatesBox_CheckedChanged;
-            // 
-            // EnableDiscordRichPresenceBox
-            // 
-            EnableDiscordRichPresenceBox.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            EnableDiscordRichPresenceBox.AutoSize = true;
-            EnableDiscordRichPresenceBox.Location = new System.Drawing.Point(228, 222);
-            EnableDiscordRichPresenceBox.Name = "EnableDiscordRichPresenceBox";
-            EnableDiscordRichPresenceBox.Size = new System.Drawing.Size(180, 19);
-            EnableDiscordRichPresenceBox.TabIndex = 9;
-            EnableDiscordRichPresenceBox.Text = "Enable Discord Rich Presence";
-            ToolTipInformation.SetToolTip(EnableDiscordRichPresenceBox, "Enables Discord rich presence. If you are a supporter, SharpAlert will use this feature to automatically unlock exclusive features.");
-            EnableDiscordRichPresenceBox.UseVisualStyleBackColor = true;
-            EnableDiscordRichPresenceBox.CheckedChanged += EnableDiscordRichPresenceBox_CheckedChanged;
             // 
             // ToolTipInformation
             // 
@@ -250,11 +237,12 @@
             // 
             // SecretSettingsButton
             // 
+            SecretSettingsButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             SecretSettingsButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             SecretSettingsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             SecretSettingsButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             SecretSettingsButton.ForeColor = System.Drawing.Color.White;
-            SecretSettingsButton.Location = new System.Drawing.Point(146, 247);
+            SecretSettingsButton.Location = new System.Drawing.Point(146, 251);
             SecretSettingsButton.Name = "SecretSettingsButton";
             SecretSettingsButton.Size = new System.Drawing.Size(128, 23);
             SecretSettingsButton.TabIndex = 11;
@@ -262,6 +250,7 @@
             ToolTipInformation.SetToolTip(SecretSettingsButton, "Contains experiments for SharpAlert.");
             SecretSettingsButton.UseMnemonic = false;
             SecretSettingsButton.UseVisualStyleBackColor = false;
+            SecretSettingsButton.Visible = false;
             SecretSettingsButton.Click += SecretSettingsButton_Click;
             // 
             // SaveSlotsButton
@@ -270,31 +259,42 @@
             SaveSlotsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             SaveSlotsButton.Font = new System.Drawing.Font("Segoe UI", 14F);
             SaveSlotsButton.ForeColor = System.Drawing.Color.White;
-            SaveSlotsButton.Location = new System.Drawing.Point(280, 152);
+            SaveSlotsButton.Location = new System.Drawing.Point(146, 152);
             SaveSlotsButton.Name = "SaveSlotsButton";
             SaveSlotsButton.Size = new System.Drawing.Size(128, 64);
-            SaveSlotsButton.TabIndex = 7;
-            SaveSlotsButton.Text = "Save Slots";
+            SaveSlotsButton.TabIndex = 6;
+            SaveSlotsButton.Text = "Save\r\nSlots";
             ToolTipInformation.SetToolTip(SaveSlotsButton, "Save slots for your settings can be configured here");
             SaveSlotsButton.UseMnemonic = false;
             SaveSlotsButton.UseVisualStyleBackColor = false;
             SaveSlotsButton.Click += SaveSlotsButton_Click;
             // 
-            // ProhibitUsers
+            // SimpleModeButton
             // 
-            ProhibitUsers.Enabled = true;
-            ProhibitUsers.Interval = 5000;
-            ProhibitUsers.Tick += ProhibitUsers_Tick;
+            SimpleModeButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            SimpleModeButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            SimpleModeButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            SimpleModeButton.Font = new System.Drawing.Font("Segoe UI", 9F);
+            SimpleModeButton.ForeColor = System.Drawing.Color.White;
+            SimpleModeButton.Location = new System.Drawing.Point(12, 251);
+            SimpleModeButton.Name = "SimpleModeButton";
+            SimpleModeButton.Size = new System.Drawing.Size(262, 23);
+            SimpleModeButton.TabIndex = 10;
+            SimpleModeButton.Text = "Simple Mode";
+            ToolTipInformation.SetToolTip(SimpleModeButton, "Re-opens the window into a simplified view.");
+            SimpleModeButton.UseMnemonic = false;
+            SimpleModeButton.UseVisualStyleBackColor = false;
+            SimpleModeButton.Click += SimpleModeButton_Click;
             // 
             // ConfigurationForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
-            ClientSize = new System.Drawing.Size(420, 328);
+            ClientSize = new System.Drawing.Size(420, 332);
             ControlBox = false;
+            Controls.Add(SimpleModeButton);
             Controls.Add(SaveSlotsButton);
             Controls.Add(SecretSettingsButton);
-            Controls.Add(EnableDiscordRichPresenceBox);
             Controls.Add(EnableUpdatesBox);
             Controls.Add(MigrateSettingsButton);
             Controls.Add(ProgramCreditsButton);
@@ -336,10 +336,9 @@
         private System.Windows.Forms.Button SaveSettingsButton;
         private System.Windows.Forms.Button ProgramCreditsButton;
         private System.Windows.Forms.CheckBox EnableUpdatesBox;
-        private System.Windows.Forms.CheckBox EnableDiscordRichPresenceBox;
         private System.Windows.Forms.ToolTip ToolTipInformation;
         private System.Windows.Forms.Button SecretSettingsButton;
         private System.Windows.Forms.Button SaveSlotsButton;
-        private System.Windows.Forms.Timer ProhibitUsers;
+        private System.Windows.Forms.Button SimpleModeButton;
     }
 }

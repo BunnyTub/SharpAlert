@@ -70,6 +70,7 @@ namespace SharpAlert.ProgramWorker
 #pragma warning disable IDE1006 // Naming Styles
         // Info
         public string LastVersionOpened { get; set; } = "v0.0";
+        public string LanguageCode { get; set; } = "en";
         // Updating
         public bool AskedForAutomaticUpdates { get; set; } = false;
         public bool AllowPerformingUpdates { get; set; } = false;
@@ -122,6 +123,7 @@ namespace SharpAlert.ProgramWorker
         public bool discardFirstAlerts { get; set; } = true;
         public bool BypassAllFilters { get; set; } = false;
         // Dialogs
+        public bool UseAdvancedView { get; set; } = false;
         public int alertDisplayType { get; set; } = 0;
         public int WindowLocation { get; set; } = 0;
         public int alertTimeout { get; set; } = 5;

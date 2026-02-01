@@ -141,38 +141,40 @@ namespace SharpAlert.AlertComponents
             /// ...
             /// how the fuck do I code this
             /// </summary>
-            public SAME_CountyCode(int id, string name, SAME_StateCode state)
+            public SAME_CountyCode(int id, string name, SAME_StateCode state, bool statewide = false)
             {
                 Id = id;
                 Name = name;
                 State = state;
+                IsStatewide = statewide;
             }
 
             public int Id { private set; get; }
             public string Name { private set; get; }
             public SAME_StateCode State { private set; get; }
+            public bool IsStatewide { private set; get; }
             public string Value => Name;
         }
 
         public static readonly List<SAME_CountyCode> Counties = new List<SAME_CountyCode>
         {
             //National - 00
-            new SAME_CountyCode(000, "United States", new SAME_StateCode(00, "All of United States (Nationwide only)")),
+            new SAME_CountyCode(000, "United States", new SAME_StateCode(00, "All of United States"), true),
 
             //Mock - 999
             //new SAME_CountyCode(999, "Mock State", new SAME_StateCode(999, "Mock State")),
 
             //Delaware - 10
-            new SAME_CountyCode(000, "All of Delaware", new SAME_StateCode(10, "Delaware")),
+            new SAME_CountyCode(000, "All of Delaware", new SAME_StateCode(10, "Delaware"), true),
             new SAME_CountyCode(1, "Kent", new SAME_StateCode(10, "Delaware")),
             new SAME_CountyCode(3, "New Castle", new SAME_StateCode(10, "Delaware")),
             new SAME_CountyCode(5, "Sussex", new SAME_StateCode(10, "Delaware")),
 
             //District of Columbia - 11
-            new SAME_CountyCode(1, "District of Columbia", new SAME_StateCode(11, "District of Columbia")),
+            new SAME_CountyCode(1, "District of Columbia", new SAME_StateCode(11, "District of Columbia"), true),
 
             //Florida - 12
-            new SAME_CountyCode(000, "All of Florida", new SAME_StateCode(12, "Florida")),
+            new SAME_CountyCode(000, "All of Florida", new SAME_StateCode(12, "Florida"), true),
             new SAME_CountyCode(101, "Pasco", new SAME_StateCode(12, "Florida")),
             new SAME_CountyCode(103, "Pinellas", new SAME_StateCode(12, "Florida")),
             new SAME_CountyCode(105, "Polk", new SAME_StateCode(12, "Florida")),
@@ -242,7 +244,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Palm Beach", new SAME_StateCode(12, "Florida")),
 
             //Georgia - 13
-            new SAME_CountyCode(000, "All of Georgia", new SAME_StateCode(13, "Georgia")),
+            new SAME_CountyCode(000, "All of Georgia", new SAME_StateCode(13, "Georgia"), true),
             new SAME_CountyCode(101, "Echols", new SAME_StateCode(13, "Georgia")),
             new SAME_CountyCode(103, "Effingham", new SAME_StateCode(13, "Georgia")),
             new SAME_CountyCode(105, "Elbert", new SAME_StateCode(13, "Georgia")),
@@ -404,7 +406,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Early", new SAME_StateCode(13, "Georgia")),
 
             //Hawaii - 15
-            new SAME_CountyCode(000, "All of Hawaii", new SAME_StateCode(15, "Hawaii")),
+            new SAME_CountyCode(000, "All of Hawaii", new SAME_StateCode(15, "Hawaii"), true),
             new SAME_CountyCode(1, "Hawaii", new SAME_StateCode(15, "Hawaii")),
             new SAME_CountyCode(3, "Honolulu", new SAME_StateCode(15, "Hawaii")),
             new SAME_CountyCode(5, "Kalawao", new SAME_StateCode(15, "Hawaii")),
@@ -412,7 +414,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(9, "Maui", new SAME_StateCode(15, "Hawaii")),
 
             //Idaho - 16
-            new SAME_CountyCode(000, "All of Idaho", new SAME_StateCode(16, "Idaho")),
+            new SAME_CountyCode(000, "All of Idaho", new SAME_StateCode(16, "Idaho"), true),
             new SAME_CountyCode(1, "Ada", new SAME_StateCode(16, "Idaho")),
             new SAME_CountyCode(3, "Adams", new SAME_StateCode(16, "Idaho")),
             new SAME_CountyCode(5, "Bannock", new SAME_StateCode(16, "Idaho")),
@@ -459,7 +461,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(87, "Washington", new SAME_StateCode(16, "Idaho")),
 
             //Illinois - 17
-            new SAME_CountyCode(000, "All of Illinois", new SAME_StateCode(17, "Illinois")),
+            new SAME_CountyCode(000, "All of Illinois", new SAME_StateCode(17, "Illinois"), true),
             new SAME_CountyCode(101, "Lawrence", new SAME_StateCode(17, "Illinois")),
             new SAME_CountyCode(103, "Lee", new SAME_StateCode(17, "Illinois")),
             new SAME_CountyCode(105, "Livingston", new SAME_StateCode(17, "Illinois")),
@@ -563,9 +565,8 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(97, "Lake", new SAME_StateCode(17, "Illinois")),
             new SAME_CountyCode(99, "LaSalle", new SAME_StateCode(17, "Illinois")),
 
-
             //Indiana - 18
-            new SAME_CountyCode(000, "All of Indiana", new SAME_StateCode(18, "Indiana")),
+            new SAME_CountyCode(000, "All of Indiana", new SAME_StateCode(18, "Indiana"), true),
             new SAME_CountyCode(101, "Martin", new SAME_StateCode(18, "Indiana")),
             new SAME_CountyCode(103, "Miami", new SAME_StateCode(18, "Indiana")),
             new SAME_CountyCode(105, "Monroe", new SAME_StateCode(18, "Indiana")),
@@ -660,7 +661,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Marshall", new SAME_StateCode(18, "Indiana")),
 
             //Iowa - 19
-            new SAME_CountyCode(000, "All of Iowa", new SAME_StateCode(19, "Iowa")),
+            new SAME_CountyCode(000, "All of Iowa", new SAME_StateCode(19, "Iowa"), true),
             new SAME_CountyCode(101, "Jefferson", new SAME_StateCode(19, "Iowa")),
             new SAME_CountyCode(103, "Johnson", new SAME_StateCode(19, "Iowa")),
             new SAME_CountyCode(105, "Jones", new SAME_StateCode(19, "Iowa")),
@@ -762,7 +763,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Jasper", new SAME_StateCode(19, "Iowa")),
 
             //Kansas - 20
-            new SAME_CountyCode(000, "All of Kansas", new SAME_StateCode(20, "Kansas")),
+            new SAME_CountyCode(000, "All of Kansas", new SAME_StateCode(20, "Kansas"), true),
             new SAME_CountyCode(101, "Lane", new SAME_StateCode(20, "Kansas")),
             new SAME_CountyCode(103, "Leavenworth", new SAME_StateCode(20, "Kansas")),
             new SAME_CountyCode(105, "Lincoln", new SAME_StateCode(20, "Kansas")),
@@ -870,7 +871,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Labette", new SAME_StateCode(20, "Kansas")),
 
             //Kentucky - 21
-            new SAME_CountyCode(000, "All of Kentucky", new SAME_StateCode(21, "Kentucky")),
+            new SAME_CountyCode(000, "All of Kentucky", new SAME_StateCode(21, "Kentucky"), true),
             new SAME_CountyCode(101, "Henderson", new SAME_StateCode(21, "Kentucky")),
             new SAME_CountyCode(103, "Henry", new SAME_StateCode(21, "Kentucky")),
             new SAME_CountyCode(105, "Hickman", new SAME_StateCode(21, "Kentucky")),
@@ -993,7 +994,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Hart", new SAME_StateCode(21, "Kentucky")),
 
             //Louisiana - 22
-            new SAME_CountyCode(000, "All of Louisiana", new SAME_StateCode(22, "Louisiana")),
+            new SAME_CountyCode(000, "All of Louisiana", new SAME_StateCode(22, "Louisiana"), true),
             new SAME_CountyCode(101, "St. Mary Parish", new SAME_StateCode(22, "Louisiana")),
             new SAME_CountyCode(103, "St. Tammany Parish", new SAME_StateCode(22, "Louisiana")),
             new SAME_CountyCode(105, "Tangipahoa Parish", new SAME_StateCode(22, "Louisiana")),
@@ -1060,7 +1061,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "St. Martin Parish", new SAME_StateCode(22, "Louisiana")),
 
             //ME - 23
-            new SAME_CountyCode(000, "All of Maine", new SAME_StateCode(23, "Maine")),
+            new SAME_CountyCode(000, "All of Maine", new SAME_StateCode(23, "Maine"), true),
             new SAME_CountyCode(1, "Androscoggin", new SAME_StateCode(23, "Maine")),
             new SAME_CountyCode(3, "Aroostook", new SAME_StateCode(23, "Maine")),
             new SAME_CountyCode(5, "Cumberland", new SAME_StateCode(23, "Maine")),
@@ -1079,7 +1080,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(31, "York", new SAME_StateCode(23, "Maine")),
 
             //MD - 24
-            new SAME_CountyCode(000, "All of Maryland", new SAME_StateCode(24, "Maryland")),
+            new SAME_CountyCode(000, "All of Maryland", new SAME_StateCode(24, "Maryland"), true),
             new SAME_CountyCode(510, "Baltimore city", new SAME_StateCode(24, "Maryland")),
             new SAME_CountyCode(1, "Allegany", new SAME_StateCode(24, "Maryland")),
             new SAME_CountyCode(3, "Anne Arundel", new SAME_StateCode(24, "Maryland")),
@@ -1106,7 +1107,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(47, "Worcester", new SAME_StateCode(24, "Maryland")),
 
             //MA - 25
-            new SAME_CountyCode(000, "All of Massachusetts", new SAME_StateCode(25, "Massachusetts")),
+            new SAME_CountyCode(000, "All of Massachusetts", new SAME_StateCode(25, "Massachusetts"), true),
             new SAME_CountyCode(1, "Barnstable", new SAME_StateCode(25, "Massachusetts")),
             new SAME_CountyCode(3, "Berkshire", new SAME_StateCode(25, "Massachusetts")),
             new SAME_CountyCode(5, "Bristol", new SAME_StateCode(25, "Massachusetts")),
@@ -1123,7 +1124,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(27, "Worcester", new SAME_StateCode(25, "Massachusetts")),
 
             //MI - 26
-            new SAME_CountyCode(000, "All of Michigan", new SAME_StateCode(26, "Maryland")),
+            new SAME_CountyCode(000, "All of Michigan", new SAME_StateCode(26, "Maryland"), true),
             new SAME_CountyCode(101, "Manistee", new SAME_StateCode(26, "Michigan")),
             new SAME_CountyCode(103, "Marquette", new SAME_StateCode(26, "Michigan")),
             new SAME_CountyCode(105, "Mason", new SAME_StateCode(26, "Michigan")),
@@ -1208,9 +1209,8 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(97, "Mackinac", new SAME_StateCode(26, "Michigan")),
             new SAME_CountyCode(99, "Macomb", new SAME_StateCode(26, "Michigan")),
 
-
             //MN - 27
-            new SAME_CountyCode(000, "All of Minnesota", new SAME_StateCode(27, "Minnesota")),
+            new SAME_CountyCode(000, "All of Minnesota", new SAME_StateCode(27, "Minnesota"), true),
             new SAME_CountyCode(101, "Murray", new SAME_StateCode(27, "Minnesota")),
             new SAME_CountyCode(103, "Nicollet", new SAME_StateCode(27, "Minnesota")),
             new SAME_CountyCode(105, "Nobles", new SAME_StateCode(27, "Minnesota")),
@@ -1300,7 +1300,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Mower", new SAME_StateCode(27, "Minnesota")),
 
             //MS - 28
-            new SAME_CountyCode(000, "All of Mississippi", new SAME_StateCode(28, "Mississippi")),
+            new SAME_CountyCode(000, "All of Mississippi", new SAME_StateCode(28, "Mississippi"), true),
             new SAME_CountyCode(101, "Newton", new SAME_StateCode(28, "Mississippi")),
             new SAME_CountyCode(103, "Noxubee", new SAME_StateCode(28, "Mississippi")),
             new SAME_CountyCode(105, "Oktibbeha", new SAME_StateCode(28, "Mississippi")),
@@ -1385,7 +1385,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Neshoba", new SAME_StateCode(28, "Mississippi")),
 
             //MO - 29
-            new SAME_CountyCode(000, "All of Missouri", new SAME_StateCode(29, "Missouri")),
+            new SAME_CountyCode(000, "All of Missouri", new SAME_StateCode(29, "Missouri"), true),
             new SAME_CountyCode(101, "Johnson", new SAME_StateCode(29, "Missouri")),
             new SAME_CountyCode(103, "Knox", new SAME_StateCode(29, "Missouri")),
             new SAME_CountyCode(105, "Laclede", new SAME_StateCode(29, "Missouri")),
@@ -1503,7 +1503,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Jefferson", new SAME_StateCode(29, "Missouri")),
 
             //MT - 30
-            new SAME_CountyCode(000, "All of Montana", new SAME_StateCode(30, "Montana")),
+            new SAME_CountyCode(000, "All of Montana", new SAME_StateCode(30, "Montana"), true),
             new SAME_CountyCode(101, "Toole", new SAME_StateCode(30, "Montana")),
             new SAME_CountyCode(103, "Treasure", new SAME_StateCode(30, "Montana")),
             new SAME_CountyCode(105, "Valley", new SAME_StateCode(30, "Montana")),
@@ -1562,7 +1562,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Teton", new SAME_StateCode(30, "Montana")),
 
             //NE - 31
-            new SAME_CountyCode(000, "All of Nebraska", new SAME_StateCode(31, "Nebraska")),
+            new SAME_CountyCode(000, "All of Nebraska", new SAME_StateCode(31, "Nebraska"), true),
             new SAME_CountyCode(101, "Keith", new SAME_StateCode(31, "Nebraska")),
             new SAME_CountyCode(103, "Keya Paha", new SAME_StateCode(31, "Nebraska")),
             new SAME_CountyCode(105, "Kimball", new SAME_StateCode(31, "Nebraska")),
@@ -1658,7 +1658,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Kearney", new SAME_StateCode(31, "Nebraska")),
 
             //NV - 32
-            new SAME_CountyCode(000, "All of Nevada", new SAME_StateCode(32, "Nevada")),
+            new SAME_CountyCode(000, "All of Nevada", new SAME_StateCode(32, "Nevada"), true),
             new SAME_CountyCode(510, "Carson City", new SAME_StateCode(32, "Nevada")),
             new SAME_CountyCode(1, "Churchill", new SAME_StateCode(32, "Nevada")),
             new SAME_CountyCode(3, "Clark", new SAME_StateCode(32, "Nevada")),
@@ -1678,7 +1678,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(33, "White Pine", new SAME_StateCode(32, "Nevada")),
 
             //NH - 33
-            new SAME_CountyCode(000, "All of New Hampshire", new SAME_StateCode(33, "New Hampshire")),
+            new SAME_CountyCode(000, "All of New Hampshire", new SAME_StateCode(33, "New Hampshire"), true),
             new SAME_CountyCode(1, "Belknap", new SAME_StateCode(33, "New Hampshire")),
             new SAME_CountyCode(3, "Carroll", new SAME_StateCode(33, "New Hampshire")),
             new SAME_CountyCode(5, "Cheshire", new SAME_StateCode(33, "New Hampshire")),
@@ -1691,7 +1691,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(19, "Sullivan", new SAME_StateCode(33, "New Hampshire")),
 
             //NJ - 34
-            new SAME_CountyCode(000, "All of New Jersey", new SAME_StateCode(34, "New Jersey")),
+            new SAME_CountyCode(000, "All of New Jersey", new SAME_StateCode(34, "New Jersey"), true),
             new SAME_CountyCode(1, "Atlantic", new SAME_StateCode(34, "New Jersey")),
             new SAME_CountyCode(3, "Bergen", new SAME_StateCode(34, "New Jersey")),
             new SAME_CountyCode(5, "Burlington", new SAME_StateCode(34, "New Jersey")),
@@ -1715,7 +1715,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(41, "Warren", new SAME_StateCode(34, "New Jersey")),
 
             //NM - 35
-            new SAME_CountyCode(000, "All of New Mexico", new SAME_StateCode(35, "New Mexico")),
+            new SAME_CountyCode(000, "All of New Mexico", new SAME_StateCode(35, "New Mexico"), true),
             new SAME_CountyCode(1, "Bernalillo", new SAME_StateCode(35, "New Mexico")),
             new SAME_CountyCode(3, "Catron", new SAME_StateCode(35, "New Mexico")),
             new SAME_CountyCode(5, "Chaves", new SAME_StateCode(35, "New Mexico")),
@@ -1751,7 +1751,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(61, "Valencia", new SAME_StateCode(35, "New Mexico")),
 
             //NY - 36
-            new SAME_CountyCode(000, "All of New York", new SAME_StateCode(36, "New York")),
+            new SAME_CountyCode(000, "All of New York", new SAME_StateCode(36, "New York"), true),
             new SAME_CountyCode(101, "Steuben", new SAME_StateCode(36, "New York")),
             new SAME_CountyCode(103, "Suffolk", new SAME_StateCode(36, "New York")),
             new SAME_CountyCode(105, "Sullivan", new SAME_StateCode(36, "New York")),
@@ -1816,7 +1816,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Seneca", new SAME_StateCode(36, "New York")),
 
             //NC - 37
-            new SAME_CountyCode(000, "All of North Carolina", new SAME_StateCode(37, "North Carolina")),
+            new SAME_CountyCode(000, "All of North Carolina", new SAME_StateCode(37, "North Carolina"), true),
             new SAME_CountyCode(101, "Johnston", new SAME_StateCode(37, "North Carolina")),
             new SAME_CountyCode(103, "Jones", new SAME_StateCode(37, "North Carolina")),
             new SAME_CountyCode(105, "Lee", new SAME_StateCode(37, "North Carolina")),
@@ -1919,7 +1919,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Jackson", new SAME_StateCode(37, "North Carolina")),
 
             //ND - 38
-            new SAME_CountyCode(000, "All of North Dakota", new SAME_StateCode(38, "North Dakota")),
+            new SAME_CountyCode(000, "All of North Dakota", new SAME_StateCode(38, "North Dakota"), true),
             new SAME_CountyCode(101, "Ward", new SAME_StateCode(38, "North Dakota")),
             new SAME_CountyCode(103, "Wells", new SAME_StateCode(38, "North Dakota")),
             new SAME_CountyCode(105, "Williams", new SAME_StateCode(38, "North Dakota")),
@@ -1975,7 +1975,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Walsh", new SAME_StateCode(38, "North Dakota")),
 
             //OH - 39
-            new SAME_CountyCode(000, "All of Ohio", new SAME_StateCode(39, "Ohio")),
+            new SAME_CountyCode(000, "All of Ohio", new SAME_StateCode(39, "Ohio"), true),
             new SAME_CountyCode(101, "Marion", new SAME_StateCode(39, "Ohio")),
             new SAME_CountyCode(103, "Medina", new SAME_StateCode(39, "Ohio")),
             new SAME_CountyCode(105, "Meigs", new SAME_StateCode(39, "Ohio")),
@@ -2066,7 +2066,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Mahoning", new SAME_StateCode(39, "Ohio")),
 
             //OK - 40
-            new SAME_CountyCode(000, "All of Oklahoma", new SAME_StateCode(40, "Oklahoma")),
+            new SAME_CountyCode(000, "All of Oklahoma", new SAME_StateCode(40, "Oklahoma"), true),
             new SAME_CountyCode(101, "Muskogee", new SAME_StateCode(40, "Oklahoma")),
             new SAME_CountyCode(103, "Noble", new SAME_StateCode(40, "Oklahoma")),
             new SAME_CountyCode(105, "Nowata", new SAME_StateCode(40, "Oklahoma")),
@@ -2146,7 +2146,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Murray", new SAME_StateCode(40, "Oklahoma")),
 
             //OR - 41
-            new SAME_CountyCode(000, "All of Oregon", new SAME_StateCode(41, "Oregon")),
+            new SAME_CountyCode(000, "All of Oregon", new SAME_StateCode(41, "Oregon"), true),
             new SAME_CountyCode(1, "Baker", new SAME_StateCode(41, "Oregon")),
             new SAME_CountyCode(3, "Benton", new SAME_StateCode(41, "Oregon")),
             new SAME_CountyCode(5, "Clackamas", new SAME_StateCode(41, "Oregon")),
@@ -2185,7 +2185,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(71, "Yamhill", new SAME_StateCode(41, "Oregon")),
 
             //PA - 42
-            new SAME_CountyCode(000, "All of Pennsylvania", new SAME_StateCode(42, "Pennsylvania")),
+            new SAME_CountyCode(000, "All of Pennsylvania", new SAME_StateCode(42, "Pennsylvania"), true),
             new SAME_CountyCode(101, "Philadelphia", new SAME_StateCode(42, "Pennsylvania")),
             new SAME_CountyCode(103, "Pike", new SAME_StateCode(42, "Pennsylvania")),
             new SAME_CountyCode(105, "Potter", new SAME_StateCode(42, "Pennsylvania")),
@@ -2255,7 +2255,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Perry", new SAME_StateCode(42, "Pennsylvania")),
 
             //RI - 44
-            new SAME_CountyCode(000, "All of Rhode Island", new SAME_StateCode(44, "Rhode Island")),
+            new SAME_CountyCode(000, "All of Rhode Island", new SAME_StateCode(44, "Rhode Island"), true),
             new SAME_CountyCode(1, "Bristol", new SAME_StateCode(44, "Rhode Island")),
             new SAME_CountyCode(3, "Kent", new SAME_StateCode(44, "Rhode Island")),
             new SAME_CountyCode(5, "Newport", new SAME_StateCode(44, "Rhode Island")),
@@ -2263,7 +2263,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(9, "Washington", new SAME_StateCode(44, "Rhode Island")),
 
             //SC - 45
-            new SAME_CountyCode(000, "All of South Carolina", new SAME_StateCode(45, "South Carolina")),
+            new SAME_CountyCode(000, "All of South Carolina", new SAME_StateCode(45, "South Carolina"), true),
             new SAME_CountyCode(1, "Abbeville", new SAME_StateCode(45, "South Carolina")),
             new SAME_CountyCode(3, "Aiken", new SAME_StateCode(45, "South Carolina")),
             new SAME_CountyCode(5, "Allendale", new SAME_StateCode(45, "South Carolina")),
@@ -2312,7 +2312,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(91, "York", new SAME_StateCode(45, "South Carolina")),
 
             //SD - 46
-            new SAME_CountyCode(000, "All of South Dakota", new SAME_StateCode(46, "South Dakota")),
+            new SAME_CountyCode(000, "All of South Dakota", new SAME_StateCode(46, "South Dakota"), true),
             new SAME_CountyCode(101, "Moody", new SAME_StateCode(46, "South Dakota")),
             new SAME_CountyCode(103, "Pennington", new SAME_StateCode(46, "South Dakota")),
             new SAME_CountyCode(105, "Perkins", new SAME_StateCode(46, "South Dakota")),
@@ -2381,7 +2381,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Minnehaha", new SAME_StateCode(46, "South Dakota")),
 
             //TN - 47
-            new SAME_CountyCode(000, "All of Tennessee", new SAME_StateCode(47, "Tennessee")),
+            new SAME_CountyCode(000, "All of Tennessee", new SAME_StateCode(47, "Tennessee"), true),
             new SAME_CountyCode(101, "Lewis", new SAME_StateCode(47, "Tennessee")),
             new SAME_CountyCode(103, "Lincoln", new SAME_StateCode(47, "Tennessee")),
             new SAME_CountyCode(105, "Loudon", new SAME_StateCode(47, "Tennessee")),
@@ -2479,7 +2479,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Lawrence", new SAME_StateCode(47, "Tennessee")),
 
             //TX - 48
-            new SAME_CountyCode(000, "All of Texas", new SAME_StateCode(48, "Texas")),
+            new SAME_CountyCode(000, "All of Texas", new SAME_StateCode(48, "Texas"), true),
             new SAME_CountyCode(101, "Cottle", new SAME_StateCode(48, "Texas")),
             new SAME_CountyCode(103, "Crane", new SAME_StateCode(48, "Texas")),
             new SAME_CountyCode(105, "Crockett", new SAME_StateCode(48, "Texas")),
@@ -2736,7 +2736,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Coryell", new SAME_StateCode(48, "Texas")),
 
             //UT - 49
-            new SAME_CountyCode(000, "All of Utah", new SAME_StateCode(49, "Utah")),
+            new SAME_CountyCode(000, "All of Utah", new SAME_StateCode(49, "Utah"), true),
             new SAME_CountyCode(1, "Beaver", new SAME_StateCode(49, "Utah")),
             new SAME_CountyCode(3, "Box Elder", new SAME_StateCode(49, "Utah")),
             new SAME_CountyCode(5, "Cache", new SAME_StateCode(49, "Utah")),
@@ -2768,7 +2768,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(57, "Weber", new SAME_StateCode(49, "Utah")),
 
             //VT - 50
-            new SAME_CountyCode(000, "All of Virginia", new SAME_StateCode(50, "Vermont")),
+            new SAME_CountyCode(000, "All of Virginia", new SAME_StateCode(50, "Vermont"), true),
             new SAME_CountyCode(1, "Addison", new SAME_StateCode(50, "Vermont")),
             new SAME_CountyCode(3, "Bennington", new SAME_StateCode(50, "Vermont")),
             new SAME_CountyCode(5, "Caledonia", new SAME_StateCode(50, "Vermont")),
@@ -2785,7 +2785,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(27, "Windsor", new SAME_StateCode(50, "Vermont")),
 
             //VA - 51
-            new SAME_CountyCode(000, "All of Virginia", new SAME_StateCode(51, "Virginia")),
+            new SAME_CountyCode(000, "All of Virginia", new SAME_StateCode(51, "Virginia"), true),
             new SAME_CountyCode(101, "King William", new SAME_StateCode(51, "Virginia")),
             new SAME_CountyCode(103, "Lancaster", new SAME_StateCode(51, "Virginia")),
             new SAME_CountyCode(105, "Lee", new SAME_StateCode(51, "Virginia")),
@@ -2922,7 +2922,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "King George", new SAME_StateCode(51, "Virginia")),
 
             //WA - 53
-            new SAME_CountyCode(000, "All of Washington", new SAME_StateCode(53, "Washington")),
+            new SAME_CountyCode(000, "All of Washington", new SAME_StateCode(53, "Washington"), true),
             new SAME_CountyCode(1, "Adams", new SAME_StateCode(53, "Washington")),
             new SAME_CountyCode(3, "Asotin", new SAME_StateCode(53, "Washington")),
             new SAME_CountyCode(5, "Benton", new SAME_StateCode(53, "Washington")),
@@ -2964,7 +2964,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(77, "Yakima", new SAME_StateCode(53, "Washington")),
 
             //WV - 54
-            new SAME_CountyCode(000, "All of West Virginia", new SAME_StateCode(54, "West Virginia")),
+            new SAME_CountyCode(000, "All of West Virginia", new SAME_StateCode(54, "West Virginia"), true),
             new SAME_CountyCode(101, "Webster", new SAME_StateCode(54, "West Virginia")),
             new SAME_CountyCode(103, "Wetzel", new SAME_StateCode(54, "West Virginia")),
             new SAME_CountyCode(105, "Wirt", new SAME_StateCode(54, "West Virginia")),
@@ -3022,7 +3022,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Wayne", new SAME_StateCode(54, "West Virginia")),
 
             //WI - 55
-            new SAME_CountyCode(000, "All of Wisconsin", new SAME_StateCode(55, "Wisconsin")),
+            new SAME_CountyCode(000, "All of Wisconsin", new SAME_StateCode(55, "Wisconsin"), true),
             new SAME_CountyCode(101, "Racine", new SAME_StateCode(55, "Wisconsin")),
             new SAME_CountyCode(103, "Richland", new SAME_StateCode(55, "Wisconsin")),
             new SAME_CountyCode(105, "Rock", new SAME_StateCode(55, "Wisconsin")),
@@ -3097,7 +3097,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Price", new SAME_StateCode(55, "Wisconsin")),
 
             //WY - 56
-            new SAME_CountyCode(000, "All of Wyoming", new SAME_StateCode(56, "Wyoming")),
+            new SAME_CountyCode(000, "All of Wyoming", new SAME_StateCode(56, "Wyoming"), true),
             new SAME_CountyCode(1, "Albany", new SAME_StateCode(56, "Wyoming")),
             new SAME_CountyCode(3, "Big Horn", new SAME_StateCode(56, "Wyoming")),
             new SAME_CountyCode(5, "Campbell", new SAME_StateCode(56, "Wyoming")),
@@ -3123,7 +3123,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(45, "Weston", new SAME_StateCode(56, "Wyoming")),
 
             //AS - 60
-            new SAME_CountyCode(000, "All of American Samoa", new SAME_StateCode(60, "American Samoa")),
+            new SAME_CountyCode(000, "All of American Samoa", new SAME_StateCode(60, "American Samoa"), true),
             new SAME_CountyCode(10, "Eastern District", new SAME_StateCode(60, "American Samoa")),
             new SAME_CountyCode(20, "Manu'a District", new SAME_StateCode(60, "American Samoa")),
             new SAME_CountyCode(30, "Rose Island", new SAME_StateCode(60, "American Samoa")),
@@ -3131,17 +3131,17 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(50, "Western District", new SAME_StateCode(60, "American Samoa")),
 
             //GU - 66
-            new SAME_CountyCode(10, "Guam", new SAME_StateCode(66, "Guam")),
+            new SAME_CountyCode(10, "Guam", new SAME_StateCode(66, "Guam"), true),
 
             //MP - 69
-            new SAME_CountyCode(000, "All of Northern Mariana Islands", new SAME_StateCode(69, "Northern Mariana Islands")),
+            new SAME_CountyCode(000, "All of Northern Mariana Islands", new SAME_StateCode(69, "Northern Mariana Islands"), true),
             new SAME_CountyCode(100, "Rota Municipality", new SAME_StateCode(69, "Northern Mariana Islands")),
             new SAME_CountyCode(110, "Saipan Municipality", new SAME_StateCode(69, "Northern Mariana Islands")),
             new SAME_CountyCode(120, "Tinian Municipality", new SAME_StateCode(69, "Northern Mariana Islands")),
             new SAME_CountyCode(85, "Northern Islands Municipality", new SAME_StateCode(69, "Northern Mariana Islands")),
 
             //PR - 72
-            new SAME_CountyCode(000, "All of Puerto Rico", new SAME_StateCode(72, "Puerto Rico")),
+            new SAME_CountyCode(000, "All of Puerto Rico", new SAME_StateCode(72, "Puerto Rico"), true),
             new SAME_CountyCode(101, "Morovis Municipio", new SAME_StateCode(72, "Puerto Rico")),
             new SAME_CountyCode(103, "Naguabo Municipio", new SAME_StateCode(72, "Puerto Rico")),
             new SAME_CountyCode(105, "Naranjito Municipio", new SAME_StateCode(72, "Puerto Rico")),
@@ -3222,16 +3222,16 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Moca Municipio", new SAME_StateCode(72, "Puerto Rico")),
 
             //UM - 74
-            new SAME_CountyCode(300, "Midway Islands", new SAME_StateCode(74, "U.S. Minor Outlying Islands")),
+            new SAME_CountyCode(300, "Midway Islands", new SAME_StateCode(74, "U.S. Minor Outlying Islands"), true),
 
             //VI - 78
-            new SAME_CountyCode(000, "All of U.S. Virgin Islands", new SAME_StateCode(78, "U.S. Virgin Islands")),
+            new SAME_CountyCode(000, "All of U.S. Virgin Islands", new SAME_StateCode(78, "U.S. Virgin Islands"), true),
             new SAME_CountyCode(10, "St. Croix Island", new SAME_StateCode(78, "U.S. Virgin Islands")),
             new SAME_CountyCode(20, "St. John Island", new SAME_StateCode(78, "U.S. Virgin Islands")),
             new SAME_CountyCode(30, "St. Thomas Island", new SAME_StateCode(78, "U.S. Virgin Islands")),
 
             //AL - 1
-            new SAME_CountyCode(000, "All of Alabama", new SAME_StateCode(1, "Alabama")),
+            new SAME_CountyCode(000, "All of Alabama", new SAME_StateCode(1, "Alabama"), true),
             new SAME_CountyCode(101, "Montgomery", new SAME_StateCode(1, "Alabama")),
             new SAME_CountyCode(103, "Morgan", new SAME_StateCode(1, "Alabama")),
             new SAME_CountyCode(105, "Perry", new SAME_StateCode(1, "Alabama")),
@@ -3301,7 +3301,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Monroe", new SAME_StateCode(1, "Alabama")),
 
             //AK - 2
-            new SAME_CountyCode(000, "All of Alaska", new SAME_StateCode(2, "Alaska")),
+            new SAME_CountyCode(000, "All of Alaska", new SAME_StateCode(2, "Alaska"), true),
             new SAME_CountyCode(100, "Haines Borough", new SAME_StateCode(2, "Alaska")),
             new SAME_CountyCode(105, "Hoonah-Angoon Census Area", new SAME_StateCode(2, "Alaska")),
             new SAME_CountyCode(110, "Juneau City and Borough", new SAME_StateCode(2, "Alaska")),
@@ -3333,7 +3333,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(90, "Fairbanks North Star Borough", new SAME_StateCode(2, "Alaska")),
 
             //AZ - 4
-            new SAME_CountyCode(000, "All of Arizona", new SAME_StateCode(4, "Arizona")),
+            new SAME_CountyCode(000, "All of Arizona", new SAME_StateCode(4, "Arizona"), true),
             new SAME_CountyCode(1, "Apache", new SAME_StateCode(4, "Arizona")),
             new SAME_CountyCode(3, "Cochise", new SAME_StateCode(4, "Arizona")),
             new SAME_CountyCode(5, "Coconino", new SAME_StateCode(4, "Arizona")),
@@ -3351,7 +3351,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(27, "Yuma", new SAME_StateCode(4, "Arizona")),
 
             //AR - 5
-            new SAME_CountyCode(000, "All of Arkansas", new SAME_StateCode(5, "Arkansas")),
+            new SAME_CountyCode(000, "All of Arkansas", new SAME_StateCode(5, "Arkansas"), true),
             new SAME_CountyCode(101, "Newton", new SAME_StateCode(5, "Arkansas")),
             new SAME_CountyCode(103, "Ouachita", new SAME_StateCode(5, "Arkansas")),
             new SAME_CountyCode(105, "Perry", new SAME_StateCode(5, "Arkansas")),
@@ -3429,7 +3429,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Nevada", new SAME_StateCode(5, "Arkansas")),
 
             //CA - 6
-            new SAME_CountyCode(000, "All of California", new SAME_StateCode(6, "California")),
+            new SAME_CountyCode(000, "All of California", new SAME_StateCode(6, "California"), true),
             new SAME_CountyCode(101, "Sutter", new SAME_StateCode(6, "California")),
             new SAME_CountyCode(103, "Tehama", new SAME_StateCode(6, "California")),
             new SAME_CountyCode(105, "Trinity", new SAME_StateCode(6, "California")),
@@ -3490,7 +3490,7 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(99, "Stanislaus", new SAME_StateCode(6, "California")),
 
             //CO - 8
-            new SAME_CountyCode(000, "All of Colorado", new SAME_StateCode(8, "Colorado")),
+            new SAME_CountyCode(000, "All of Colorado", new SAME_StateCode(8, "Colorado"), true),
             new SAME_CountyCode(101, "Pueblo", new SAME_StateCode(8, "Colorado")),
             new SAME_CountyCode(103, "Rio Blanco", new SAME_StateCode(8, "Colorado")),
             new SAME_CountyCode(105, "Rio Grande", new SAME_StateCode(8, "Colorado")),
@@ -3556,9 +3556,8 @@ namespace SharpAlert.AlertComponents
             new SAME_CountyCode(97, "Pitkin", new SAME_StateCode(8, "Colorado")),
             new SAME_CountyCode(99, "Prowers", new SAME_StateCode(8, "Colorado")),
 
-
             //CT - 9
-            new SAME_CountyCode(000, "All of Connecticut", new SAME_StateCode(9, "Connecticut")),
+            new SAME_CountyCode(000, "All of Connecticut", new SAME_StateCode(9, "Connecticut"), true),
             new SAME_CountyCode(1, "Fairfield", new SAME_StateCode(9, "Connecticut")),
             new SAME_CountyCode(3, "Hartford", new SAME_StateCode(9, "Connecticut")),
             new SAME_CountyCode(5, "Litchfield", new SAME_StateCode(9, "Connecticut")),

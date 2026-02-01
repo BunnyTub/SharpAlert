@@ -10,11 +10,10 @@ using static SharpAlert.AlertComponents.AlertDisplayer;
 using static SharpAlert.AlertComponents.AlertDetails;
 using System.Drawing;
 using SharpAlert.ProgramWorker;
-using SharpAlert.SourceCapturing;
-using System.Text.Json;
 using System.Text;
 using SharpAlert.Properties;
-using System.Diagnostics;
+using SharpAlert.Languages;
+using static SharpAlertPluginBase.AlertContents;
 
 namespace SharpAlert.AlertComponents
 {
@@ -126,27 +125,6 @@ namespace SharpAlert.AlertComponents
                     AlertDiscardReason = "Processing of alerts is currently disabled."
                 };
             }
-        }
-
-        public class AlertInfo
-        {
-            public string AlertDiscardReason { get; set; } = string.Empty;
-            public string AlertSource { get; set; } = string.Empty;
-            public string AlertSender { get; set; } = string.Empty;
-            public string AlertID { get; set; } = string.Empty;
-            public string AlertSentDate { get; set; } = string.Empty;
-            public string AlertBeginDate { get; set; } = string.Empty;
-            public string AlertExpiryDate { get; set; } = string.Empty;
-            public List<string> AlertFriendlyLocations { get; set; } = [];
-            public string AlertEventType { get; set; } = string.Empty;
-            public string AlertMessageType { get; set; } = string.Empty;
-            public string AlertSeverity { get; set; } = string.Empty;
-            public string AlertIntroText { get; set; } = string.Empty;
-            public string AlertBodyText { get; set; } = string.Empty;
-            public string AlertURL { get; set; } = string.Empty;
-            public string AlertAudioURL { get; set; } = string.Empty;
-            public string AlertAudioDeref { get; set; } = string.Empty;
-            public string AlertImageURL { get; set; } = string.Empty;
         }
 
         /// <summary>
@@ -513,7 +491,7 @@ namespace SharpAlert.AlertComponents
                             Console.WriteLine($"[Alert Processor] Expiry check skipped because discards are being ignored.");
                         }
 
-                        bool EventBlacklisted = false;
+                        bool EventListed = false;
 
                         if (ProcessParameterX(AlertInfo) ||
                             BroadcastImmediatelyRegex.MatchOrDefault(AlertInfo, "no").ToLowerInvariant() == "yes" ||
@@ -538,7 +516,7 @@ namespace SharpAlert.AlertComponents
                                             }
                                         }
 
-                                        return builder.ToString().Normalize(NormalizationForm.FormC);
+                                        return builder.ToString().Normalize(NormalizationForm.FormC).Trim();
                                     }
 
                                     lock (QuickSettings.Instance.EnforceEventBlacklist)
@@ -547,7 +525,31 @@ namespace SharpAlert.AlertComponents
                                         {
                                             if (RemoveDiacritics(EventName.ToLowerInvariant()).Contains(RemoveDiacritics(Event.ToLowerInvariant())))
                                             {
-                                                EventBlacklisted = true;
+                                                EventListed = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    lock (QuickSettings.Instance.EnforceSAMEEventBlacklist)
+                                    {
+                                        //<eventCode>
+                                        //    <valueName>SAME</valueName>
+                                        //    <value>NWS</value>
+                                        //</eventCode>
+                                        //<eventCode>
+                                        //    <valueName>NationalWeatherService</valueName>
+                                        //    <value>GLA</value>
+                                        //</eventCode>
+
+                                        // https://vlab.noaa.gov/web/nws-common-alerting-protocol/cap-documentation#eventcode
+                                        // The NWS SAME event code isn't in FCC Part 11.31, sooooo, we should detect if the NWS code is being used in the future
+
+                                        foreach (string Event in QuickSettings.Instance.EnforceSAMEEventBlacklist)
+                                        {
+                                            if (RemoveDiacritics(EventType.ToLowerInvariant()) == RemoveDiacritics(Event.ToLowerInvariant()))
+                                            {
+                                                EventListed = true;
                                                 break;
                                             }
                                         }
@@ -567,7 +569,7 @@ namespace SharpAlert.AlertComponents
 
                                     if (QuickSettings.Instance.EventWhitelistMode)
                                     {
-                                        if (!EventBlacklisted)
+                                        if (!EventListed)
                                         {
                                             Console.WriteLine($"[Alert Processor] Info tag discarded because the event is not on the whitelist.");
                                             continue;
@@ -575,7 +577,7 @@ namespace SharpAlert.AlertComponents
                                     }
                                     else
                                     {
-                                        if (EventBlacklisted)
+                                        if (EventListed)
                                         {
                                             Console.WriteLine($"[Alert Processor] Info tag discarded because the event is on the blacklist.");
                                             continue;
@@ -1314,7 +1316,7 @@ namespace SharpAlert.AlertComponents
             {
                 if (AutoFillInfo)
                 {
-                    string TestIdentifier = $"TEST_{DateTime.UtcNow.Ticks}";
+                    string TestIdentifier = $"TEST_{DateTime.UtcNow.Ticks}_{Guid.NewGuid()}";
 
                     string CompiledMessage = $"Test Alert | Location(s): Test Location"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
                     if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + QuickSettings.Instance.DiscordWebhookAppend;
@@ -1355,10 +1357,27 @@ namespace SharpAlert.AlertComponents
                             Severity = "moderate";
                         }
 
-                        string TestIdentifier = $"TEST_{DateTime.UtcNow.Ticks}";
+                        string TestIdentifier = $"TEST_{DateTime.UtcNow.Ticks}_{Guid.NewGuid()}";
 
                         string CompiledMessage = $"{ctf.EventType} | Location(s): Test Location"; // \r\n-# Process Time: {(int)(DateTime.UtcNow - startProc).TotalMilliseconds} ms
                         if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhookAppend)) CompiledMessage += "\r\n" + QuickSettings.Instance.DiscordWebhookAppend;
+
+                        //lock (Alerts) Alerts.Add(new AlertDisplayerInfo
+                        //{
+                        //    Identifier = TestIdentifier,
+                        //    EventTypeFull = ctf.EventType,
+                        //    _AlertText = new AlertTextClass { Intro = "Test. Test. Test.", Body = ctf.EventDescription }
+                        //});
+
+                        //public string Identifier = string.Empty;
+                        //public string EventTypeFull = string.Empty;
+                        //public AlertTextClass _AlertText = null;
+                        //public string PrimaryURL = string.Empty;
+                        //public string MsgType = string.Empty;
+                        //public string Severity = string.Empty;
+                        //public List<string> AudioFiles = [];
+                        //public List<string> AudioDeref = [];
+                        //public List<string> ImageFiles = [];
 
                         DiscordWebhook.SendEmbeddedMessage(string.Empty,
                             CompiledMessage,
@@ -1418,7 +1437,7 @@ namespace SharpAlert.AlertComponents
         // checks against the user settings, then returns true if all checks pass successfully. hopefully.
         public static bool ProcessInfoX(string InfoX)
         {
-            Console.WriteLine("Processing InfoX.");
+            Console.WriteLine("[Alert Processor] Processing InfoX.");
             bool Final = false;
 
             try
@@ -2291,41 +2310,41 @@ namespace SharpAlert.AlertComponents
                 return codeValue.Item1;
             }
 
-            try
-            {
-                //if (string.IsNullOrWhiteSpace(CacheCapture.SAME_US_JSON)) MainEntryPoint.cache.ServiceRun(false);
-                if (!string.IsNullOrWhiteSpace(CacheCapture.SAME_US_JSON))
-                {
-                    using JsonDocument doc = JsonDocument.Parse(CacheCapture.SAME_US_JSON);
-                    JsonElement root = doc.RootElement;
-                    JsonElement same = root.GetProperty("SAME");
+            //try
+            //{
+            //    //if (string.IsNullOrWhiteSpace(CacheCapture.SAME_US_JSON)) MainEntryPoint.cache.ServiceRun(false);
+            //    if (!string.IsNullOrWhiteSpace(CacheCapture.SAME_US_JSON))
+            //    {
+            //        using JsonDocument doc = JsonDocument.Parse(CacheCapture.SAME_US_JSON);
+            //        JsonElement root = doc.RootElement;
+            //        JsonElement same = root.GetProperty("SAME");
 
-                    if (same.TryGetProperty(code, out JsonElement hereSAME))
-                    {
-                        return hereSAME.GetString();
-                    }
-                    else
-                    {
-                        if (code.Length == 6)
-                        {
-                            if (same.TryGetProperty(code.AsSpan(1), out JsonElement subSAME))
-                            {
-                                return subSAME.GetString();
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("[Alert Processor] The SAME location cache is unavailable.");
-                    return $"{code} (Cache Unavailable)";
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[Alert Processor] {ex.Message}");
-                return $"{code} (Unavailable For Translation)";
-            }
+            //        if (same.TryGetProperty(code, out JsonElement hereSAME))
+            //        {
+            //            return hereSAME.GetString();
+            //        }
+            //        else
+            //        {
+            //            if (code.Length == 6)
+            //            {
+            //                if (same.TryGetProperty(code.AsSpan(1), out JsonElement subSAME))
+            //                {
+            //                    return subSAME.GetString();
+            //                }
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("[Alert Processor] The SAME location cache is unavailable.");
+            //        return $"{code} (Cache Unavailable)";
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"[Alert Processor] {ex.Message}");
+            //    return $"{code} (Unavailable For Translation)";
+            //}
 
             return $"{code} (Unknown Location)";
         }
@@ -2423,8 +2442,17 @@ namespace SharpAlert.AlertComponents
                     // do we return true for partial matches? or return false?
                     return ($"{CountyCode}, {SavedState.Name} (Unknown County)", true);
                 }
-
-                return ($"{SavedCounty.Name}, {SavedCounty.State.Name}", true);
+                else
+                {
+                    if (SavedCounty.IsStatewide)
+                    {
+                        return ($"{SavedCounty.Name}", true);
+                    }
+                    else
+                    {
+                        return ($"{SavedCounty.Name}, {SavedCounty.State.Name}", true);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -2498,7 +2526,7 @@ namespace SharpAlert.AlertComponents
         {
             if (type.ToLowerInvariant() == "cancel")
             {
-                return ("ALERT CANCELLED", Color.FromArgb(0, 80, 200), Color.FromArgb(0, 50, 100));
+                return (Language.Get("AlertCancelled", "ALERT CANCELLED"), Color.FromArgb(0, 80, 200), Color.FromArgb(0, 50, 100));
             }
 
             //switch (type.ToLower())
@@ -2519,16 +2547,16 @@ namespace SharpAlert.AlertComponents
             switch (severity.ToLowerInvariant())
             {
                 case "extreme":
-                    return ("EXTREME ALERT", Color.MediumOrchid, Color.Purple);
+                    return (Language.Get("AlertSeverity_Extreme", "EXTREME ALERT"), Color.MediumOrchid, Color.Purple);
                 case "severe":
-                    return ("SEVERE ALERT", Color.Red, Color.FromArgb(160, 0, 0));
+                    return (Language.Get("AlertSeverity_Severe", "SEVERE ALERT"), Color.Red, Color.FromArgb(160, 0, 0));
                 case "moderate":
-                    return ("MODERATE ALERT", Color.FromArgb(255, 112, 0), Color.FromArgb(200, 82, 80));
+                    return (Language.Get("AlertSeverity_Moderate", "MODERATE ALERT"), Color.FromArgb(255, 112, 0), Color.FromArgb(200, 82, 80));
                 case "minor":
-                    return ("MINOR ALERT", Color.Green, Color.FromArgb(0, 80, 80));
+                    return (Language.Get("AlertSeverity_Minor", "MINOR ALERT"), Color.Green, Color.FromArgb(0, 80, 80));
                 case "unknown":
                 default:
-                    return ("UNKNOWN ALERT", Color.FromArgb(255, 112, 0), Color.FromArgb(200, 82, 80));
+                    return (Language.Get("AlertSeverity_Unknown", "UNKNOWN ALERT"), Color.FromArgb(255, 112, 0), Color.FromArgb(200, 82, 80));
             }
         }
     }

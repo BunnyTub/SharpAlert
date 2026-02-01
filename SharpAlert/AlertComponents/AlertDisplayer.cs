@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using SharpAlert.PrinterStuff;
 using SharpAlert.ProgramWorker;
 using SharpAlert.Properties;
-using SharpAlert.WebServer;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using static SharpAlert.AudioManager;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
@@ -24,7 +23,7 @@ namespace SharpAlert.AlertComponents
         //public static string DialogAlertImageURL = string.Empty;
         //public static string DialogAlertType = string.Empty;
         //public static string DialogAlertSeverity = string.Empty;
-        private static readonly List<AlertDisplayerInfo> Alerts = [];
+        public static readonly List<AlertDisplayerInfo> Alerts = [];
 
         public class AlertDisplayerInfo
         {
@@ -56,7 +55,20 @@ namespace SharpAlert.AlertComponents
 
             Alerts.Add(alert);
             Console.WriteLine($"[Alert Displayer] Queued message -> {Identifier}");
+
+            if (Alerts.Count > 1)
+            {
+                Console.WriteLine($"[Alert Displayer] There are more alerts. Remaining: {Alerts.Count}");
+                if (LastNotifiedOfAlerts.AddSeconds(10) <= DateTimeOffset.UtcNow)
+                {
+                    LastNotifiedOfAlerts = DateTimeOffset.UtcNow;
+                    Notify?.ShowNotification("There are more alerts. Dismiss the current one to see the next alert.", "You have unseen alerts", ToolTipIcon.Info);
+                }
+            }
+
         }
+
+        private static DateTimeOffset LastNotifiedOfAlerts = DateTimeOffset.MinValue;
 
         public static void StartDisplayerCallLoop()
         {
@@ -169,12 +181,9 @@ namespace SharpAlert.AlertComponents
             Console.WriteLine("[Alert Displayer] Relay released.");
         }
 
-        private static readonly object PopupLock = new object();
+        private static readonly object PopupLock = new();
 
-        /// <summary>
-        /// The time in seconds to wait until the next alert dialog can be shown.
-        /// </summary>
-        public static int DeadTimeOverride = 0;
+        internal static int DeadTimeOverride = 0;
 
         private static void ShowPopup(AlertDisplayerInfo alert)
         {
@@ -185,31 +194,34 @@ namespace SharpAlert.AlertComponents
 
                 // determine the dialog to use
 
-                //if (alert.PrimaryURL.Contains("sasmex.net"))
-                //{
-                //    Console.WriteLine("[Alert Displayer] Earthquake alert detected.");
-                //    if (shkPing)
-                //    {
-                //        try
-                //        {
-                //            shk.Invoke((Action)delegate
-                //            {
-                //                shk.UpdateFields(alert.Identifier,
-                //                    alert.EventTypeFull,
-                //                    alert._AlertText.Intro,
-                //                    alert._AlertText.Body,
-                //                    alert.PrimaryURL,
-                //                    alert.MsgType, 16.74151, -95.09448);
-                //            });
-                //        }
-                //        catch (Exception ex)
-                //        {
-                //            Console.WriteLine($"[Alert Displayer] {ex.Message}");
-                //        }
-                //    }
-                //    else shkPing = true;
-                //}
-                //else
+                if (alert.PrimaryURL.Contains("sasmex.net"))
+                {
+                    Console.WriteLine("[Alert Displayer] Earthquake alert detected.");
+                    
+                    shkPing = true;
+
+                    try
+                    {
+                        while (!shk.IsHandleCreated) Thread.Sleep(100);
+                        shk.Invoke(delegate
+                        {
+                            shk.UpdateFields(alert.Identifier,
+                                alert.EventTypeFull,
+                                alert._AlertText.Intro,
+                                alert._AlertText.Body,
+                                alert.PrimaryURL,
+                                alert.AudioFiles.FirstOrEmpty(),
+                                alert.ImageFiles.FirstOrEmpty(),
+                                alert.MsgType,
+                                alert.Severity);
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[Alert Displayer] {ex.Message}");
+                    }
+                }
+                else
                 {
                     AlertDisplaying = true;
 
@@ -414,7 +426,7 @@ namespace SharpAlert.AlertComponents
             }, true);
         }
 
-        private static ImmediateAlertForm shk = null;
+        private static EarthquakeAlertForm shk = null;
         private static bool shkPing = false;
 
         public static void StartShakeCallLoop()
@@ -423,14 +435,14 @@ namespace SharpAlert.AlertComponents
             {
                 Console.WriteLine($"[SHK Loop] Initializing call loop.");
                 Application.EnableVisualStyles();
-                shk = new ImmediateAlertForm();
+                shk = new();
                 while (true)
                 {
                     Console.WriteLine($"[SHK Loop] Waiting for the next ping.");
                     try
                     {
                         while (!shkPing) Thread.Sleep(100);
-                        if (shk == null || shk.IsDisposed) shk = new ImmediateAlertForm();
+                        if (shk == null || shk.IsDisposed) shk = new();
                         //shk.UpdateFields(alert.Identifier, DialogAlertTitle, DialogAlertText.Intro, DialogAlertText.Body, DialogAlertURL, DialogAlertType, 16.74151, -95.09448);
                         relayPing = true;
                         Notify.Icon = Resources.TrayAlertIcon;

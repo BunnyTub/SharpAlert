@@ -1,6 +1,7 @@
 ﻿using SharpAlert.AlertComponents;
 using SharpAlert.DataProcessing;
 using SharpAlert.DisplayDialogs;
+using SharpAlert.Languages;
 using SharpAlert.SourceCapturing;
 using SharpAlert.SourceCapturing.SystemSpecific;
 using SharpAlert.WebServer;
@@ -16,7 +17,6 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using static SharpAlert.AudioManager;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.ProgramWorker.NotificationWorker;
 
@@ -24,7 +24,6 @@ namespace SharpAlert.ProgramWorker
 {
     public class SharpDataItem(string name, string data)
     {
-        // public string FriendlyName { get; set; }
         public string Name { get; set; } = name;
         public string Data { get; set; } = data;
     }
@@ -53,7 +52,6 @@ namespace SharpAlert.ProgramWorker
         public static IDAPFeedCapture idapfeed;
         public static CacheCapture cache;
         public static DataProcessor dataproc;
-        public static HistoryProcessor historyproc;
         public static TeleIdleForm idle;
         public static StatusForm status;
         public static bool CloseIdleWindow = false;
@@ -103,8 +101,7 @@ namespace SharpAlert.ProgramWorker
                 "SharpAlert is stopping.",
                 ToolTipIcon.Info);
 
-
-            Thread.Sleep(5000);
+            Thread.Sleep(3000);
 
             if (restart) Environment.Exit(100);
             else Environment.Exit(0);
@@ -263,6 +260,8 @@ namespace SharpAlert.ProgramWorker
             set;
         } = 0;
 
+        public static readonly DateTimeOffset DateUpTime = DateTimeOffset.UtcNow;
+
         /// <summary>
         /// Starts everything.
         /// </summary>
@@ -283,9 +282,14 @@ namespace SharpAlert.ProgramWorker
                     Clipboard.SetText($"{ex.Message}\r\n{ex.StackTrace}");
                 }
             };
-
-            //AppDomain.CurrentDomain.ProcessExit += (s, e) =>
+            
+            //AppDomain.CurrentDomain.FirstChanceException += (s, e) =>
             //{
+            //    Console.WriteLine($"(First chance exception) {e.Exception.Message}\r\n{e.Exception.StackTrace}");
+            //    //if (MessageBox.Show($"{e.Exception.Message}\r\n{e.Exception.StackTrace}", "SharpAlert", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.Cancel)
+            //    //{
+            //    //    Environment.Exit(-1);
+            //    //}
             //};
 
             QuickSettings.Reload();
@@ -297,6 +301,8 @@ namespace SharpAlert.ProgramWorker
                 UnsafeFault(b.Exception, true);
             };
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+
+            Language.Load(QuickSettings.Instance.LanguageCode);
 
             //ThreadDrool.StartAndForget(() =>
             //{
@@ -478,7 +484,7 @@ namespace SharpAlert.ProgramWorker
                             $"{ex.Message}\r\n" +
                             $"Please report this.\r\n" +
                             $"If this is your first time running SharpAlert,\r\n" +
-                            $"make sure your operating system is officialy supported.\r\n" +
+                            $"make sure your operating system is officially supported.\r\n" +
                             $"Make sure no compatibility options are enabled.",
                             "SharpAlert",
                             MessageBoxButtons.OK,

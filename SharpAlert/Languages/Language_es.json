@@ -1,0 +1,29 @@
+{
+  "RecommendedFontChoice": "",
+  "PleaseWait": "Por favor espere un momento",
+  "LanguageRestartProgram": "Reiniciar Programa",
+  "LanguageChanged": "Se ha cambiado el idioma.\r\nVuelva a abrir SharpAlert para ver el nuevo idioma en todas partes.",
+
+  "AlertSeverity_Extreme": "ALERTA EXTREMA",
+  "AlertSeverity_Severe": "ALERTA SEVERA",
+  "AlertSeverity_Moderate": "ALERTA MODERADA",
+  "AlertSeverity_Minor": "ALERTA MENOR",
+  "AlertSeverity_Unknown": "ALERTA DESCONOCIDA",
+  "AlertCancelled": "ALERTA CANCELADA",
+
+  "WindowTitle_GlobalSettings": "Configuración Global",
+
+  "SettingsButton_AlertSettings": "Ajustes Alertas",
+  "SettingsButton_RegionSettings": "Ajustes Región",
+  "SettingsButton_AdvancedMode": "Modo Avanzado",
+  "SettingsButton_SimpleMode": "Modo Sencillo",
+  "SettingsButton_StylesAndMore": "Estilos &\r\nMás",
+  "SettingsButton_DiscordAndWebhooks": "Discord &\r\nWebhooks",
+  "SettingsButton_SoundsAndEffects": "Sonidos &\r\nEfectos",
+  "SettingsButton_ServerSettings": "Ajustes\r\nServidor",
+  "SettingsButton_SaveSlots": "Guardar\r\nRanuras",
+  "SettingsButton_EnableAutoUpdates": "Habilitar Actualizaciones Automáticas",
+  "SettingsButton_AboutButton": "Acerca SharpAlert",
+  "SettingsButton_CloseButton": "Cerca",
+  "AlertPanel_CloseButton": "Despedir"
+}

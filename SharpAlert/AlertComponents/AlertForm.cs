@@ -8,6 +8,7 @@ using static SharpAlert.AlertComponents.AlertProcessor;
 using static SharpAlert.AlertComponents.AlertDisplayer;
 using System.Runtime.InteropServices;
 using SharpAlert.ProgramWorker;
+using SharpAlert.Languages;
 
 namespace SharpAlert.AlertComponents
 {
@@ -26,6 +27,9 @@ namespace SharpAlert.AlertComponents
         public AlertForm()
         {
             InitializeComponent();
+            Language.ApplyFont(this);
+
+            DismissButton.Text = Language.Get("AlertPanel_CloseButton", "Dismiss");
         }
 
         protected override void OnResize(EventArgs e)
@@ -381,10 +385,10 @@ namespace SharpAlert.AlertComponents
                 TitleText.BackColor = ColorTitleAndBordersOne;
                 AlertIcon.BackColor = ColorTitleAndBordersOne;
                 SubtitlePanel.BackColor = ColorSubtitleOnlyOne;
-                if (AlertsQueued != 0)
-                {
-                    DismissButton.Text = "Continue";
-                }
+                //if (AlertsQueued != 0)
+                //{
+                //    DismissButton.Text = "Continue";
+                //}
             }
             else
             {
@@ -392,15 +396,15 @@ namespace SharpAlert.AlertComponents
                 TitleText.BackColor = ColorTitleAndBordersTwo;
                 AlertIcon.BackColor = ColorTitleAndBordersTwo;
                 SubtitlePanel.BackColor = ColorSubtitleOnlyTwo;
-                if (AlertsQueued != 0)
-                {
-                    //DismissButton.Text = $"{AlertsQueued} remain";
-                    DismissButton.Text = "Continue";
-                }
-                else
-                {
-                    DismissButton.Text = "Dismiss";
-                }
+                //if (AlertsQueued != 0)
+                //{
+                //    //DismissButton.Text = $"{AlertsQueued} remain";
+                //    DismissButton.Text = "Continue";
+                //}
+                //else
+                //{
+                //    DismissButton.Text = "Dismiss";
+                //}
             }
             FlashTwo = !FlashTwo;
         }

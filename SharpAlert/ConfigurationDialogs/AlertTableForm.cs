@@ -4,10 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using System.Drawing;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
-using static SharpAlert.ProgramWorker.HaidaWorker;
-using static SharpAlert.AlertComponents.AlertProcessor;
+using static SharpAlertPluginBase.AlertContents;
 using SharpAlert.ProgramWorker;
 using SharpAlert.AlertComponents;
 

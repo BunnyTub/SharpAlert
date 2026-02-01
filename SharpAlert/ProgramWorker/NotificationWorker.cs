@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using SharpAlert.AlertComponents;
 using SharpAlert.AlertComponents.Dashboard;
 using SharpAlert.ConfigurationDialogs;
+using SharpAlert.Languages;
 using SharpAlert.Properties;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
@@ -19,11 +20,12 @@ namespace SharpAlert.ProgramWorker
             else return false;
         }
 
-        public static NotifyIcon Notify = null;
+        internal static NotifyIcon Notify = null;
         private static ConfigurationForm mf = null;
+        private static SimpleConfigurationForm smf = null;
         //private static ShareAlertsForm saf = null;
         //private static bool NotifyIconCalled = false;
-        public static bool IgnoreRightClick = false;
+        internal static bool IgnoreRightClick = false;
 
         /// <summary>
         /// Creates a tray icon. Throws NotSupportedException if called more than once.
@@ -44,7 +46,7 @@ namespace SharpAlert.ProgramWorker
                 //Text = $"{VersionInfo.FriendlyVersion}"
             };
 
-            ContextMenuStrip contextMenu = new ContextMenuStrip();
+            ContextMenuStrip contextMenu = new();
 
             contextMenu.Opening += (a, b) =>
             {
@@ -208,7 +210,7 @@ namespace SharpAlert.ProgramWorker
                             if (int.Parse(RemoteVersionSplit[0]) < VersionInfo.MajorVersion ||
                                 int.Parse(RemoteVersionSplit[1]) < VersionInfo.MinorVersion)
                             {
-                                Notify.ShowNotification($"Your version is newer than the latest version. Check the website for more info.",
+                                Notify.ShowNotification($"Your version is newer than the latest version. You may be using a test build.",
                                     "SharpAlert found updates",
                                     ToolTipIcon.Info);
                             }
@@ -269,7 +271,7 @@ namespace SharpAlert.ProgramWorker
                 //MessageBox.Show("The dashboard lists recently relayed alerts. If you close and re-open the dashboard, the list will start from scratch!");
                 ThreadDrool.StartAndForget(() => new DashboardForm(false).ShowDialog());
             }));
-            
+
             //contextMenu.Items.Add(new ToolStripMenuItem("Open Alert Sharing", null, (sender, arg) =>
             //{
             //    IgnoreRightClick = true;
@@ -277,12 +279,29 @@ namespace SharpAlert.ProgramWorker
             //    saf.ShowDialog();
             //    IgnoreRightClick = false;
             //}));
-            
+
             contextMenu.Items.Add(new ToolStripMenuItem("Open Settings", null, (sender, arg) =>
             {
                 IgnoreRightClick = true;
-                if (mf == null || mf.IsDisposed) mf = new ConfigurationForm();
-                mf.ShowDialog();
+
+                open:
+                if (QuickSettings.Instance.UseAdvancedView)
+                {
+                    smf?.Close();
+                    if (mf == null || mf.IsDisposed) mf = new ConfigurationForm();
+                    mf.Swap = false;
+                    mf.ShowDialog();
+                    if (mf.Swap) goto open;
+                }
+                else
+                {
+                    mf?.Close();
+                    if (smf == null || smf.IsDisposed) smf = new SimpleConfigurationForm();
+                    smf.Swap = false;
+                    smf.ShowDialog();
+                    if (smf.Swap) goto open;
+                }
+
                 IgnoreRightClick = false;
             }));
 
@@ -302,20 +321,33 @@ namespace SharpAlert.ProgramWorker
 
             contextMenu.Items.Add(new ToolStripSeparator());
 
-//#if DEBUG
-//            contextMenu.Items.Add(new ToolStripMenuItem("Trigger Intentional Exception", null, (sender, arg) =>
-//            {
-//                string[] StringOfStrings = { "0", "1" };
-//                string StringNumberTwo = StringOfStrings[2].Trim();
-//            }));
-//#endif
+            contextMenu.Items.Add(new ToolStripMenuItem("Change Language", null, (sender, arg) =>
+            {
+                IgnoreRightClick = true;
+                LanguageSelectionForm lsf = new();
+                lsf.ShowDialog();
+                lsf.Dispose();
+                mf?.Dispose();
+                smf?.Dispose();
+                IgnoreRightClick = false;
+            }));
+
+            contextMenu.Items.Add(new ToolStripSeparator());
+
+            //#if DEBUG
+            //            contextMenu.Items.Add(new ToolStripMenuItem("Trigger Intentional Exception", null, (sender, arg) =>
+            //            {
+            //                string[] StringOfStrings = { "0", "1" };
+            //                string StringNumberTwo = StringOfStrings[2].Trim();
+            //            }));
+            //#endif
 
             //contextMenu.Items.Add(new ToolStripMenuItem("Export Logs", null, (sender, arg) =>
             //{
             //    string filepath = Path.GetTempFileName();
             //    File.WriteAllText(filepath, $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}\r\n\r\n{NotificationHistory}");
             //}));
-            
+
             contextMenu.Items.Add(new ToolStripMenuItem("Do Not Disturb", null, (sender, arg) =>
             {
                 IgnoreRightClick = true;
@@ -368,9 +400,6 @@ namespace SharpAlert.ProgramWorker
                 }
             }));
 
-            Notify.ContextMenuStrip = contextMenu;
-            Notify.BalloonTipClicked += Notify_BalloonTipClicked;
-
             if (!QuickSettings.Instance.AskedForAutomaticUpdates)
             {
                 DialogResult result = MessageBox.Show("Do you want to enable automatic updates in SharpAlert? This keeps the program up-to-date, and allows patches and bug fixes to be installed automatically.",
@@ -409,8 +438,21 @@ namespace SharpAlert.ProgramWorker
                 QuickSettings.Instance.AskedForDiscordRichPresence = true;
             }
 
+            switch (QuickSettings.Instance.LastVersionOpened)
+            {
+                case "15.0":
+                    MessageBox.Show("Simple dialogs have been introduced in multiple setting panels. Take a peek!",
+                        "SharpAlert - Simple Dialogs",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                    break;
+            }
+
             QuickSettings.Instance.LastVersionOpened = $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}";
             QuickSettings.Instance.Save();
+
+            Notify.ContextMenuStrip = contextMenu;
+            Notify.BalloonTipClicked += Notify_BalloonTipClicked;
         }
 
         private static void Notify_BalloonTipClicked(object sender, EventArgs e)

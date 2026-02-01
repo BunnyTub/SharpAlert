@@ -111,65 +111,6 @@ namespace SharpAlert.ConfigurationDialogs
 
             storedMaxSizeInput.Value = QuickSettings.Instance.storedMaxSize;
             storedMaxSizeInput.ValueChanged += (a, b) => QuickSettings.Instance.storedMaxSize = (int)((NumericUpDown)a).Value;
-
-            string Events = string.Empty;
-            foreach (string SAME_event in QuickSettings.Instance.EnforceEventBlacklist) Events += SAME_event + "\r\n";
-            Events = Events.Trim();
-            EventBlacklistOutput.Text = Events;
-
-            EventWhitelistModeBox.Checked = QuickSettings.Instance.EventWhitelistMode;
-            EventWhitelistModeBox.CheckedChanged += (a, b) => QuickSettings.Instance.EventWhitelistMode = ((CheckBox)a).Checked;
-        }
-
-        private void EventAddButton_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(EventBlacklistInput.Text))
-            {
-                if (QuickSettings.Instance.EnforceEventBlacklist.Contains(EventBlacklistInput.Text))
-                {
-                    var removal = MessageBox.Show("The event name is already in the list. Remove it?",
-                        Text,
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
-                    if (removal == DialogResult.Yes) QuickSettings.Instance.EnforceEventBlacklist.Remove(EventBlacklistInput.Text);
-                    EventBlacklistOutput.Clear();
-                    foreach (string area in QuickSettings.Instance.EnforceEventBlacklist)
-                    {
-                        EventBlacklistOutput.Text = $"{area}\r\n{EventBlacklistOutput.Text}";
-                    }
-                    EventBlacklistInput.Clear();
-                    return;
-                }
-                else
-                {
-                    QuickSettings.Instance.EnforceEventBlacklist.Add(EventBlacklistInput.Text);
-                    EventBlacklistOutput.Clear();
-                    foreach (string area in QuickSettings.Instance.EnforceEventBlacklist)
-                    {
-                        EventBlacklistOutput.Text = $"{area}\r\n{EventBlacklistOutput.Text}";
-                    }
-                    EventBlacklistInput.Clear();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Enter an event name to add it.",
-                    Text,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
-            }
-        }
-
-        private void EventClearButton_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Clear event blacklist data?",
-                Text,
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                QuickSettings.Instance.EnforceEventBlacklist.Clear();
-                EventBlacklistOutput.Text = string.Empty;
-            }
         }
 
         private void ListAreaSAMEOutput_Format(object sender, ListControlConvertEventArgs e)
@@ -247,21 +188,6 @@ namespace SharpAlert.ConfigurationDialogs
             alf.ShowDialog();
         }
 
-        private EventsAdditionForm eaf = null;
-
-        private void EventSelectButton_Click(object sender, EventArgs e)
-        {
-            if (eaf == null || eaf.IsDisposed) eaf = new EventsAdditionForm();
-            var result = eaf.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                EventBlacklistInput.Enabled = false;
-                EventBlacklistInput.Text = eaf.SelectedEvent.Name;
-                EventAddButton.PerformClick();
-                EventBlacklistInput.Enabled = true;
-            }
-        }
-
         private void CategoryInfoButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show("This area has controls for category filtering specifically.\r\n" +
@@ -304,18 +230,6 @@ namespace SharpAlert.ConfigurationDialogs
             }
 
             FlashOne = !FlashOne;
-        }
-
-        private void NamedEventsInfoButton_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("If the event of the alert matches any blacklisted events, it will be discarded. (case-insensitive)\r\n\r\n" +
-                "For example, if \"Practice\" is in the list, any event names with \"Practice\" inside are discarded.\r\n" +
-                "Another example, is using \"Required Weekly Test\", NOT \"RWT\" (it will match words with \"RWT\" inside).\r\n\r\n" +
-                "This feature was changed, because not all alerts will have the included SAME event codes required for matching to work properly.\r\n" +
-                "It is more flexible to name events by their full name, as even without the SAME event codes included, events can be named.",
-                Text,
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
         }
 
         private ArchiveConfigurationForm acf = null;
@@ -476,6 +390,14 @@ namespace SharpAlert.ConfigurationDialogs
                 }
             }
 
+        }
+
+        private EventConfigurationForm ecf = null;
+
+        private void EventsButton_Click(object sender, EventArgs e)
+        {
+            if (ecf == null || ecf.IsDisposed) ecf = new EventConfigurationForm();
+            ecf.ShowDialog();
         }
     }
 }

@@ -4,6 +4,7 @@ using SharpAlert.AlertComponents;
 using SharpAlert.ConfigurationDialogs;
 using SharpAlert.DataProcessing;
 using SharpAlert.DisplayDialogs;
+using SharpAlert.Languages;
 using SharpAlert.Properties;
 using SharpAlert.SourceCapturing;
 using SharpAlert.SourceCapturing.SystemSpecific;
@@ -11,6 +12,7 @@ using SharpAlert.WebServer;
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -30,10 +32,14 @@ namespace SharpAlert.ProgramWorker
 {
     public static class HaidaWorker
     {
-        public static readonly HttpClient client = new()
+        public static HttpClient Client { get; } = new(new HttpClientHandler { AllowAutoRedirect = true, MaxAutomaticRedirections = 5 })
         {
             Timeout = TimeSpan.FromMinutes(1)
         };
+
+        //public static readonly SemaphoreSlim clientGate = new(8);
+
+        public static int NetFailureCount { get; set; } = 0;
 
         public static readonly string SelfUserAgent = $"Mozilla/5.0 (compatible; SharpAlert/" +
             $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}; bunnytub@bunnytub.com)";
@@ -42,11 +48,11 @@ namespace SharpAlert.ProgramWorker
 
         public static void ServiceRun()
         {
-            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
-            {
-                Exception ex = (Exception)e.ExceptionObject;
-                UnsafeFaultSameThread(ex, true);
-            };
+            //AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            //{
+            //    Exception ex = (Exception)e.ExceptionObject;
+            //    UnsafeFaultSameThread(ex, true);
+            //};
 
             if (QuickSettings.Instance.alertNoGUI) AllocateTerminal(false);
 
@@ -59,7 +65,7 @@ namespace SharpAlert.ProgramWorker
             QuickSettings.Instance.BypassAllFilters = false;
             InternalUserID = QuickSettings.Instance.UserDiscordRichPresence;
 
-            client.DefaultRequestHeaders.UserAgent.ParseAdd(SelfUserAgent);
+            Client.DefaultRequestHeaders.UserAgent.ParseAdd(SelfUserAgent);
 
             try
             {
@@ -183,16 +189,19 @@ namespace SharpAlert.ProgramWorker
 
             Console.WriteLine("[Haida] Initializing Data Processor.");
             dataproc = new DataProcessor();
-
-            Console.WriteLine("[Haida] Initializing History Processor.");
-            historyproc = new HistoryProcessor();
             
             Console.WriteLine("[Haida] Initializing Discord Webhook Processor.");
             StartCatchAllThread("Discord Webhook Processor", DiscordWebhook.ServiceRun, true);
 
             Console.WriteLine("[Haida] Initializing Hyper Server.");
             hyper = new HyperServer();
-                
+
+            string PluginFolder = $"{QuickSettings.ConfigDirPath}\\Plugins";
+
+            Console.WriteLine($"[Haida] Initializing any plugins found in \"{PluginFolder}\".");
+            Directory.CreateDirectory(PluginFolder);
+            PluginManager.LoadPlugins(PluginFolder);
+
             Console.WriteLine("[Haida] Starting services momentarily.");
 
             bool AnyFeedAvailable = false;
@@ -201,6 +210,10 @@ namespace SharpAlert.ProgramWorker
             if (!QuickSettings.Instance.SetupExperienceComplete)
             {
                 Console.WriteLine("[Haida] Starting program setup experience.");
+
+                LanguageSelectionForm lsf = new();
+                lsf.ShowDialog();
+                lsf.Dispose();
 
                 SetupForm sf = new();
                 sf.ShowDialog();
@@ -246,7 +259,7 @@ namespace SharpAlert.ProgramWorker
 
             //Thread.Sleep(10000);
 
-            notificationThread = StartCatchAllThread("Notifications", () =>
+            NotificationThread = StartCatchAllThread("Notifications", () =>
             {
                 SystemEvents.PowerModeChanged += (a, b) =>
                 {
@@ -317,8 +330,66 @@ namespace SharpAlert.ProgramWorker
 
                 CreateIcon();
 
+                System.Windows.Forms.Timer timer = new()
+                {
+                    Interval = 60000,
+                    Enabled = true
+                };
+
+                timer.Tick += (a, b) =>
+                {
+                    if (NetFailureCount >= 1)
+                    {
+                        Console.WriteLine($"[Notification Worker] Network request failure count: {NetFailureCount}");
+
+                        if (Notify.ContextMenuStrip.Items["HideNetworkButton"] == null)
+                        {
+                            Notify.ContextMenuStrip.Items.Add(new ToolStripSeparator { Name = "HideNetworkSeparator" });
+
+                            Notify.ContextMenuStrip.Items.Add(new ToolStripButton("Hide Network Notifications", null, (sender, arg) =>
+                            {
+                                DialogResult result = MessageBox.Show(
+                                    "Do you want to hide connection issues for the rest of the time SharpAlert is open?",
+                                    "SharpAlert",
+                                    MessageBoxButtons.YesNo,
+                                    MessageBoxIcon.Question
+                                );
+
+                                if (result == DialogResult.Yes)
+                                {
+                                    NetFailureCount = int.MinValue;
+
+                                    var sep = Notify.ContextMenuStrip.Items["HideNetworkSeparator"];
+                                    if (sep != null) Notify.ContextMenuStrip.Items.Remove(sep);
+
+                                    var btn = Notify.ContextMenuStrip.Items["HideNetworkButton"];
+                                    if (btn != null) Notify.ContextMenuStrip.Items.Remove(btn);
+                                }
+                            }, "HideNetworkButton"));
+                        }
+
+                        Notify.ShowNotification("There was an issue connecting to some alert servers. Check your internet connection.",
+                            $"{NetFailureCount} failure(s) in 1 minute", ToolTipIcon.Warning);
+                    }
+
+                    if (NetFailureCount > 0) NetFailureCount = 0;
+                };
+
                 Application.Run();
             }, false);
+
+            //StartCatchAllThread("Network Monitor", async () =>
+            //{
+            //    while (AllowThreadRestarts)
+            //    {
+            //        if (!await InternetChecker.IsConnectedToInternetAsync())
+            //        {
+            //            Thread.Sleep(15000);
+            //            Notify?.ShowNotification("Ensure that you're connected to the internet to be able to receive alerts.", "Internet might be unavailable", ToolTipIcon.Warning);
+            //            Thread.Sleep(TimeSpan.FromSeconds(120));
+            //        }
+            //    }
+            //}, false);
 
             while (NotifyIconIsNull()) Thread.Sleep(100);
 
@@ -432,10 +503,10 @@ namespace SharpAlert.ProgramWorker
                 }
             });
 
-            cacheThread = StartCatchAllThread("Cache Capture", () => cache.ServiceRun(true), true);
-            dataProcThread = StartCatchAllThread("Data Processor", () => dataproc.ServiceRun(), true);
-            historyProcThread = StartCatchAllThread("History Processor", () => historyproc.ServiceRun(), true);
-            serverThread = StartCatchAllThread("Hyper Server", () => hyper.ServiceRun(), true);
+            CacheThread = StartCatchAllThread("Cache Capture", () => cache.ServiceRun(true), true);
+            DataProcThread = StartCatchAllThread("Data Processor", () => dataproc.ServiceRun(), true);
+            HistoryProcThread = StartCatchAllThread("History Processor", () => HistoryProcessor.ServiceRun(), true);
+            ServerThread = StartCatchAllThread("Hyper Server", () => hyper.ServiceRun(), true);
 
             RefreshAudioDevices();
 
@@ -451,7 +522,8 @@ namespace SharpAlert.ProgramWorker
                 IPAWSOrSASMEXAvailable = true;
             }
 
-            var SASMEXMain = new FeedCapture.ServerInfo { ServerName = "SASMEX", ServerPath = $"sasmex.net/rss/sasmex.xml" };
+            //var SASMEXMain = new FeedCapture.ServerInfo { ServerName = "SASMEX", ServerPath = $"sasmex.net/rss/sasmex.xml" };
+            var SASMEXMain = new FeedCapture.ServerInfo { ServerName = "SASMEX", ServerPath = $"rss.sasmex.net/api/v1/alerts/latest/cap/" };
 
             if (QuickSettings.Instance.RegionMexico)
             {
@@ -461,7 +533,7 @@ namespace SharpAlert.ProgramWorker
 
             if (IPAWSOrSASMEXAvailable || CustomServersAvailable)
             {
-                feedThread = StartCatchAllThread("Feed Capture", () => feed.ServiceRun(true), false);
+                FeedThread = StartCatchAllThread("Feed Capture", () => feed.ServiceRun(true), false);
             }
 
             var NWSAtom = new WeatherAtomCapture.ServerInfo { ServerName = "NWS Atom", ServerPath = $"api.weather.gov/alerts/active.atom" };
@@ -469,7 +541,7 @@ namespace SharpAlert.ProgramWorker
             if (QuickSettings.Instance.RegionUnitedStatesNWS)
             {
                 atomfeed.servers.Add(NWSAtom);
-                atomfeedThread = StartCatchAllThread("Atom Feed Capture", () => atomfeed.ServiceRun(true), false);
+                AtomfeedThread = StartCatchAllThread("Atom Feed Capture", () => atomfeed.ServiceRun(true), false);
             }
 
             var NAADSPrimary = new DirectFeedCapture.TCPServerInfo { ServerName = "NAADS Primary", ServerAddress = "streaming1.naad-adna.pelmorex.com", ServerPort = 8080 };
@@ -479,7 +551,7 @@ namespace SharpAlert.ProgramWorker
             {
                 directfeed.servers.Add(NAADSPrimary);
                 directfeed.servers.Add(NAADSBackup);
-                directfeedThread = StartCatchAllThread("Direct Feed Capture", () => directfeed.ServiceRun(), false);
+                DirectfeedThread = StartCatchAllThread("Direct Feed Capture", () => directfeed.ServiceRun(), false);
             }
 
             if (QuickSettings.Instance.RegionBrazil)
@@ -489,7 +561,7 @@ namespace SharpAlert.ProgramWorker
                 {
                     new IDAPNoticeForm().ShowDialog();
                 });
-                idapfeedThread = StartCatchAllThread("IDAP Feed Capture", () => idapfeed.ServiceRun(true), false);
+                IdapfeedThread = StartCatchAllThread("IDAP Feed Capture", () => idapfeed.ServiceRun(true), false);
                 // removed Brazil IDAP from being able to be used for now
             }
 
@@ -498,7 +570,7 @@ namespace SharpAlert.ProgramWorker
             StatusWindowVisible = QuickSettings.Instance.statusWindow;
             IdleWindowVisible = QuickSettings.Instance.alertFullscreenIdle;
 
-            heartbeatThread = StartCatchAllThread("Heartbeat Worker", () => HeartbeatWorker.ServiceRun(), true);
+            HeartbeatThread = StartCatchAllThread("Heartbeat Worker", () => HeartbeatWorker.ServiceRun(), true);
             DiscordWebhook.SendFormattedMessage("SharpAlert has started.");
             
             ServiceRunnerScheduled = true;
@@ -658,7 +730,7 @@ namespace SharpAlert.ProgramWorker
                             Assets = new Assets()
                             {
                                 LargeImageKey = "sharpalert_squaredicon_gray",
-                                LargeImageText = "SharpAlert"
+                                LargeImageText = "SharpAlert",
                             },
                             StatusDisplay = StatusDisplayType.Details,
                             //Party = party,
@@ -675,23 +747,129 @@ namespace SharpAlert.ProgramWorker
 
                         //client.SetSubscription(EventType.JoinRequest);
 
+                        int Page = 0;
+                        bool ShowURLImage = true;
+
+                        var (info, date) = DataProcessor.LastAlertToBeRelayed;
+
                         while (AllowThreadRestarts)
                         {
                             Thread.Sleep(5000);
 
-                            var (info, date) = DataProcessor.LastAlertToBeRelayed;
+                            var (infoB, dateB) = DataProcessor.LastAlertToBeRelayed;
 
-                            if (date > DateTimeOffset.UtcNow.AddMinutes(-15)) // the timing needs more consideration
+                            if (info != infoB && date != dateB)
                             {
-                                client.UpdateLargeAsset("sharpalert_squaredicon");
-                                client.UpdateDetails($"{info.AlertEventType}"); // max 128
-                                client.UpdateState($"Sent by {info.AlertSender}. {info.AlertURL}".Trim()); // max 128
+                                info = infoB;
+                                date = dateB;
+                            }
+
+                            if (info != null && date > DateTimeOffset.UtcNow.AddMinutes(-15)) // make user configurable someday
+                            {
+                                string Details = string.Empty;
+                                string State = string.Empty; // $"Sent by {info.AlertSender}. {info.AlertURL}".Trim(),
+
+                                if (Details.Length > 96) Details = Details[..96] + "...(truncated)";
+
+                                Page++;
+
+                                switcharea:
+
+                                switch (Page)
+                                {
+                                    case 1:
+                                        State = $"[1/2] Sent by {info.AlertSender}.";
+                                        if (!string.IsNullOrWhiteSpace(info.AlertURL)) State += "\x20This alert has a link attached. Click the icon to open it.";
+                                        if (State.Length > 96) State = State[..96] + "...(truncated)";
+                                        Details = $"{info.AlertSeverity.ToUpperInvariant()} ALERT";
+                                        break;
+                                    case 2:
+                                        string Locations = string.Empty;
+
+                                        foreach (string location in info.AlertFriendlyLocations)
+                                        {
+                                            Locations += location + ",\x20";
+                                        }
+
+                                        if (!string.IsNullOrWhiteSpace(Locations)) Locations = Locations.Trim().TrimEnd(',') + ".";
+                                        else Locations = "Unknown";
+
+                                        State = $"[2/2] Locations: {Locations}".Trim();
+                                        if (State.Length > 96) State = State[..96] + "...(truncated)";
+
+                                        Details = $"{info.AlertEventType}";
+                                        if (Details.Length > 32) Details = Details[..32] + "...(truncated)";
+                                        break;
+                                    default:
+                                        Page = 1;
+                                        goto switcharea;
+                                }
+
+                                DateTime End = date.AddMinutes(15).UtcDateTime;
+
+                                try
+                                {
+                                    End = DateTime.Parse(info.AlertExpiryDate, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+                                    date = End;
+                                }
+                                catch (Exception)
+                                {
+                                }
+
+                                string ImageKey = "sharpalert_squaredicon";
+                                string ImageText = "SharpAlert";
+
+                                if (!string.IsNullOrWhiteSpace(info.AlertURL))
+                                {
+                                    if (ShowURLImage) ImageKey = "sharpalert_squaredicon_link";
+                                    ImageText = $"Visit URL: {info.AlertURL}";
+                                    if (ImageText.Length > 64) ImageText = ImageText[..64] + "...(truncated)";
+                                }
+
+                                ShowURLImage = !ShowURLImage;
+
+                                client.SetPresence(new RichPresence()
+                                {
+                                    Details = Details,
+                                    //DetailsUrl = "https://bunnytub.com/SharpAlert",
+                                    State = State,
+                                    Type = ActivityType.Playing,
+                                    Assets = new Assets()
+                                    {
+                                        LargeImageKey = ImageKey,
+                                        LargeImageText = "SharpAlert",
+                                        LargeImageUrl = info.AlertURL,
+                                    },
+                                    StatusDisplay = StatusDisplayType.Details,
+                                    Timestamps = new Timestamps
+                                    {
+                                        Start = date.UtcDateTime,
+                                        End = End
+                                    },
+                                    StateUrl = info.AlertURL
+                                });
                             }
                             else
                             {
-                                client.UpdateLargeAsset("sharpalert_squaredicon_gray");
-                                client.UpdateDetails($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}");
-                                client.UpdateState($"Relayed {AlertProcessor.AlertsRelayed} alert(s).");
+                                Page = 0;
+
+                                client.SetPresence(new RichPresence()
+                                {
+                                    Details = $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
+                                    //DetailsUrl = "https://bunnytub.com/SharpAlert",
+                                    State = $"Relayed {AlertProcessor.AlertsRelayed} alert(s).",
+                                    Type = ActivityType.Playing,
+                                    Assets = new Assets()
+                                    {
+                                        LargeImageKey = "sharpalert_squaredicon_gray",
+                                        LargeImageText = "SharpAlert",
+                                    },
+                                    StatusDisplay = StatusDisplayType.Details,
+                                    Timestamps = new Timestamps
+                                    {
+                                        Start = DateUpTime.UtcDateTime
+                                    }
+                                });
                             }
 
                             //party.Size++;
@@ -739,7 +917,7 @@ namespace SharpAlert.ProgramWorker
                 }
             }, true);
 
-            StartCatchAllThread("Pipe Worker", () => PipeWorker.ServerServiceRun(), false, false);
+            //StartCatchAllThread("Pipe Worker", () => PipeWorker.ServerServiceRun(), false, false);
 
             QuickSettings.Instance.Save();
         }
@@ -872,7 +1050,7 @@ namespace SharpAlert.ProgramWorker
             }
         }
 
-        public static string LogFault(Exception ex)
+        public static string LogFault(Exception ex, bool LogToDiscord = true)
         {
             string ExceptionCompiled = $"SharpAlert encountered a problem. {DateTime.UtcNow:s}\r\n" +
                 $"{ex.Message}\r\n" +
@@ -891,9 +1069,12 @@ namespace SharpAlert.ProgramWorker
 
             try
             {
-                if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
+                if (LogToDiscord)
                 {
-                    DiscordWebhook.SendUnformattedMessage(ExceptionCompiled + "\r\n\r\nNeed help? Reach out! <@603429346736341013> (https://bunnytub.com/SharpAlert | bunnytub@bunnytub.com)");
+                    if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))
+                    {
+                        DiscordWebhook.SendUnformattedMessage(ExceptionCompiled + "\r\n\r\nNeed help? Reach out! <@603429346736341013> (https://bunnytub.com/SharpAlert | bunnytub@bunnytub.com)");
+                    }
                 }
             }
             catch (Exception)

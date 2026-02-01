@@ -31,7 +31,6 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AlertConfigurationForm));
             AlertFunctionalityGroup = new System.Windows.Forms.GroupBox();
-            RainbowText = new System.Windows.Forms.Label();
             label7 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
             AlertDeadIntervalInput = new System.Windows.Forms.NumericUpDown();
@@ -61,17 +60,8 @@
             statusExerciseBox = new System.Windows.Forms.CheckBox();
             statusActualBox = new System.Windows.Forms.CheckBox();
             statusTestBox = new System.Windows.Forms.CheckBox();
+            RainbowText = new System.Windows.Forms.Label();
             discardFirstAlertsBox = new System.Windows.Forms.CheckBox();
-            LocationsAndEventsGroup = new System.Windows.Forms.GroupBox();
-            groupBox9 = new System.Windows.Forms.GroupBox();
-            EventWhitelistModeBox = new System.Windows.Forms.CheckBox();
-            NamedEventsInfoButton = new System.Windows.Forms.Button();
-            EventSelectButton = new System.Windows.Forms.Button();
-            EventAddButton = new System.Windows.Forms.Button();
-            label3 = new System.Windows.Forms.Label();
-            EventBlacklistOutput = new System.Windows.Forms.TextBox();
-            EventBlacklistInput = new System.Windows.Forms.TextBox();
-            EventClearButton = new System.Windows.Forms.Button();
             LocationsClearButton = new System.Windows.Forms.Button();
             LocationsButton = new System.Windows.Forms.Button();
             LanguageButton = new System.Windows.Forms.Button();
@@ -101,7 +91,7 @@
             ArchiveSettingsButton = new System.Windows.Forms.Button();
             GeneralGroup = new System.Windows.Forms.GroupBox();
             RainbowColoring = new System.Windows.Forms.Timer(components);
-            SuperSecretEnabler = new System.Windows.Forms.Timer(components);
+            EventsButton = new System.Windows.Forms.Button();
             AlertFunctionalityGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)AlertDeadIntervalInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)AlertCheckIntervalInput).BeginInit();
@@ -110,8 +100,6 @@
             groupBox4.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox1.SuspendLayout();
-            LocationsAndEventsGroup.SuspendLayout();
-            groupBox9.SuspendLayout();
             MiscGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)storedMaxSizeInput).BeginInit();
             CategoryGroup.SuspendLayout();
@@ -137,49 +125,34 @@
             AlertFunctionalityGroup.TabStop = false;
             AlertFunctionalityGroup.Text = "Alert Filters";
             // 
-            // RainbowText
-            // 
-            RainbowText.Cursor = System.Windows.Forms.Cursors.Hand;
-            RainbowText.Font = new System.Drawing.Font("Segoe UI", 9F);
-            RainbowText.ForeColor = System.Drawing.Color.Red;
-            RainbowText.Location = new System.Drawing.Point(12, 317);
-            RainbowText.Name = "RainbowText";
-            RainbowText.Size = new System.Drawing.Size(342, 51);
-            RainbowText.TabIndex = 24;
-            RainbowText.Text = "Tell us about your requests on features or to report problems and bugs by clicking here to go to our website.";
-            RainbowText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            RainbowText.Click += RainbowText_Click;
-            // 
             // label7
             // 
-            label7.Location = new System.Drawing.Point(165, 198);
+            label7.Location = new System.Drawing.Point(160, 195);
             label7.Name = "label7";
-            label7.Size = new System.Drawing.Size(84, 21);
+            label7.Size = new System.Drawing.Size(176, 21);
             label7.TabIndex = 23;
-            label7.Text = "Check Time";
+            label7.Text = "Alert Check Spacing (seconds)";
             label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ToolTipInformation.SetToolTip(label7, ".");
             // 
             // label4
             // 
-            label4.Location = new System.Drawing.Point(165, 225);
+            label4.Location = new System.Drawing.Point(160, 245);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(84, 21);
+            label4.Size = new System.Drawing.Size(176, 21);
             label4.TabIndex = 10;
-            label4.Text = "Dead Time";
+            label4.Text = "Alert Shown Spacing (seconds)";
             label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            ToolTipInformation.SetToolTip(label4, ".");
             // 
             // AlertDeadIntervalInput
             // 
             AlertDeadIntervalInput.BackColor = System.Drawing.Color.Black;
             AlertDeadIntervalInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             AlertDeadIntervalInput.ForeColor = System.Drawing.Color.White;
-            AlertDeadIntervalInput.Location = new System.Drawing.Point(255, 225);
+            AlertDeadIntervalInput.Location = new System.Drawing.Point(160, 269);
             AlertDeadIntervalInput.Maximum = new decimal(new int[] { 15, 0, 0, 0 });
             AlertDeadIntervalInput.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             AlertDeadIntervalInput.Name = "AlertDeadIntervalInput";
-            AlertDeadIntervalInput.Size = new System.Drawing.Size(81, 23);
+            AlertDeadIntervalInput.Size = new System.Drawing.Size(176, 23);
             AlertDeadIntervalInput.TabIndex = 21;
             ToolTipInformation.SetToolTip(AlertDeadIntervalInput, "The amount of seconds to pause until the next alert can be shown.\r\nThis setting is ignored for earthquake alerts from SASMEX.");
             AlertDeadIntervalInput.Value = new decimal(new int[] { 1, 0, 0, 0 });
@@ -190,11 +163,11 @@
             AlertCheckIntervalInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             AlertCheckIntervalInput.ForeColor = System.Drawing.Color.White;
             AlertCheckIntervalInput.Increment = new decimal(new int[] { 5, 0, 0, 0 });
-            AlertCheckIntervalInput.Location = new System.Drawing.Point(255, 198);
+            AlertCheckIntervalInput.Location = new System.Drawing.Point(160, 219);
             AlertCheckIntervalInput.Maximum = new decimal(new int[] { 300, 0, 0, 0 });
             AlertCheckIntervalInput.Minimum = new decimal(new int[] { 5, 0, 0, 0 });
             AlertCheckIntervalInput.Name = "AlertCheckIntervalInput";
-            AlertCheckIntervalInput.Size = new System.Drawing.Size(81, 23);
+            AlertCheckIntervalInput.Size = new System.Drawing.Size(176, 23);
             AlertCheckIntervalInput.TabIndex = 20;
             ToolTipInformation.SetToolTip(AlertCheckIntervalInput, "The amount of seconds until the next server check.\r\n\r\nThis option only affects servers that can be polled from.\r\nTCP servers send data at their own specified intervals, and cannot be changed.");
             AlertCheckIntervalInput.Value = new decimal(new int[] { 30, 0, 0, 0 });
@@ -489,6 +462,19 @@
             ToolTipInformation.SetToolTip(statusTestBox, "Allow messages with this status.");
             statusTestBox.UseVisualStyleBackColor = true;
             // 
+            // RainbowText
+            // 
+            RainbowText.Cursor = System.Windows.Forms.Cursors.Hand;
+            RainbowText.Font = new System.Drawing.Font("Segoe UI", 9F);
+            RainbowText.ForeColor = System.Drawing.Color.Red;
+            RainbowText.Location = new System.Drawing.Point(360, 185);
+            RainbowText.Name = "RainbowText";
+            RainbowText.Size = new System.Drawing.Size(331, 52);
+            RainbowText.TabIndex = 24;
+            RainbowText.Text = "Tell us about your requests on features or to report problems and bugs by clicking here to go to our website.";
+            RainbowText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            RainbowText.Click += RainbowText_Click;
+            // 
             // discardFirstAlertsBox
             // 
             discardFirstAlertsBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -499,136 +485,6 @@
             discardFirstAlertsBox.Text = "Ignore first alerts";
             ToolTipInformation.SetToolTip(discardFirstAlertsBox, "Throw all alerts into the history instead of the queue on startup.");
             discardFirstAlertsBox.UseVisualStyleBackColor = true;
-            // 
-            // LocationsAndEventsGroup
-            // 
-            LocationsAndEventsGroup.Controls.Add(groupBox9);
-            LocationsAndEventsGroup.ForeColor = System.Drawing.Color.White;
-            LocationsAndEventsGroup.Location = new System.Drawing.Point(360, 142);
-            LocationsAndEventsGroup.Name = "LocationsAndEventsGroup";
-            LocationsAndEventsGroup.Size = new System.Drawing.Size(331, 120);
-            LocationsAndEventsGroup.TabIndex = 5;
-            LocationsAndEventsGroup.TabStop = false;
-            LocationsAndEventsGroup.Text = "Event Filters";
-            // 
-            // groupBox9
-            // 
-            groupBox9.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            groupBox9.Controls.Add(EventWhitelistModeBox);
-            groupBox9.Controls.Add(NamedEventsInfoButton);
-            groupBox9.Controls.Add(EventSelectButton);
-            groupBox9.Controls.Add(EventAddButton);
-            groupBox9.Controls.Add(label3);
-            groupBox9.Controls.Add(EventBlacklistOutput);
-            groupBox9.Controls.Add(EventBlacklistInput);
-            groupBox9.Controls.Add(EventClearButton);
-            groupBox9.ForeColor = System.Drawing.Color.White;
-            groupBox9.Location = new System.Drawing.Point(6, 20);
-            groupBox9.Name = "groupBox9";
-            groupBox9.Size = new System.Drawing.Size(319, 93);
-            groupBox9.TabIndex = 4;
-            groupBox9.TabStop = false;
-            groupBox9.Text = "Named Events";
-            // 
-            // EventWhitelistModeBox
-            // 
-            EventWhitelistModeBox.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            EventWhitelistModeBox.AutoSize = true;
-            EventWhitelistModeBox.Location = new System.Drawing.Point(171, 16);
-            EventWhitelistModeBox.Name = "EventWhitelistModeBox";
-            EventWhitelistModeBox.Size = new System.Drawing.Size(106, 19);
-            EventWhitelistModeBox.TabIndex = 54;
-            EventWhitelistModeBox.Text = "Whitelist mode";
-            ToolTipInformation.SetToolTip(EventWhitelistModeBox, "Treat this as a whitelist instead of a blacklist.");
-            EventWhitelistModeBox.UseVisualStyleBackColor = true;
-            // 
-            // NamedEventsInfoButton
-            // 
-            NamedEventsInfoButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            NamedEventsInfoButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
-            NamedEventsInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            NamedEventsInfoButton.ForeColor = System.Drawing.Color.Yellow;
-            NamedEventsInfoButton.Location = new System.Drawing.Point(290, 13);
-            NamedEventsInfoButton.Name = "NamedEventsInfoButton";
-            NamedEventsInfoButton.Size = new System.Drawing.Size(23, 23);
-            NamedEventsInfoButton.TabIndex = 53;
-            NamedEventsInfoButton.Text = "?";
-            NamedEventsInfoButton.UseVisualStyleBackColor = false;
-            NamedEventsInfoButton.Click += NamedEventsInfoButton_Click;
-            // 
-            // EventSelectButton
-            // 
-            EventSelectButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
-            EventSelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            EventSelectButton.Font = new System.Drawing.Font("Segoe UI", 8F);
-            EventSelectButton.Location = new System.Drawing.Point(102, 64);
-            EventSelectButton.Name = "EventSelectButton";
-            EventSelectButton.Size = new System.Drawing.Size(48, 23);
-            EventSelectButton.TabIndex = 36;
-            EventSelectButton.Text = "Select";
-            EventSelectButton.UseVisualStyleBackColor = false;
-            EventSelectButton.Click += EventSelectButton_Click;
-            // 
-            // EventAddButton
-            // 
-            EventAddButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
-            EventAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            EventAddButton.Font = new System.Drawing.Font("Segoe UI", 8F);
-            EventAddButton.Location = new System.Drawing.Point(54, 64);
-            EventAddButton.Name = "EventAddButton";
-            EventAddButton.Size = new System.Drawing.Size(42, 23);
-            EventAddButton.TabIndex = 35;
-            EventAddButton.Text = "Add";
-            EventAddButton.UseVisualStyleBackColor = false;
-            EventAddButton.Click += EventAddButton_Click;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(6, 17);
-            label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(138, 15);
-            label3.TabIndex = 6;
-            label3.Text = "You can add events here.";
-            // 
-            // EventBlacklistOutput
-            // 
-            EventBlacklistOutput.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            EventBlacklistOutput.BackColor = System.Drawing.Color.Black;
-            EventBlacklistOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            EventBlacklistOutput.Font = new System.Drawing.Font("Segoe UI", 12F);
-            EventBlacklistOutput.ForeColor = System.Drawing.Color.White;
-            EventBlacklistOutput.Location = new System.Drawing.Point(169, 37);
-            EventBlacklistOutput.Multiline = true;
-            EventBlacklistOutput.Name = "EventBlacklistOutput";
-            EventBlacklistOutput.ReadOnly = true;
-            EventBlacklistOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            EventBlacklistOutput.Size = new System.Drawing.Size(144, 50);
-            EventBlacklistOutput.TabIndex = 34;
-            EventBlacklistOutput.WordWrap = false;
-            // 
-            // EventBlacklistInput
-            // 
-            EventBlacklistInput.BackColor = System.Drawing.Color.Black;
-            EventBlacklistInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            EventBlacklistInput.ForeColor = System.Drawing.Color.White;
-            EventBlacklistInput.Location = new System.Drawing.Point(6, 37);
-            EventBlacklistInput.Name = "EventBlacklistInput";
-            EventBlacklistInput.Size = new System.Drawing.Size(144, 23);
-            EventBlacklistInput.TabIndex = 31;
-            // 
-            // EventClearButton
-            // 
-            EventClearButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
-            EventClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            EventClearButton.Font = new System.Drawing.Font("Segoe UI", 8F);
-            EventClearButton.Location = new System.Drawing.Point(6, 64);
-            EventClearButton.Name = "EventClearButton";
-            EventClearButton.Size = new System.Drawing.Size(42, 23);
-            EventClearButton.TabIndex = 32;
-            EventClearButton.Text = "Clear";
-            EventClearButton.UseVisualStyleBackColor = false;
-            EventClearButton.Click += EventClearButton_Click;
             // 
             // LocationsClearButton
             // 
@@ -654,7 +510,7 @@
             LocationsButton.Name = "LocationsButton";
             LocationsButton.Size = new System.Drawing.Size(331, 40);
             LocationsButton.TabIndex = 36;
-            LocationsButton.Text = "Location Manager";
+            LocationsButton.Text = "Manage Locations";
             LocationsButton.UseVisualStyleBackColor = false;
             LocationsButton.Click += LocationsButton_Click;
             // 
@@ -663,7 +519,7 @@
             LanguageButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             LanguageButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             LanguageButton.Font = new System.Drawing.Font("Segoe UI", 8.8F);
-            LanguageButton.Location = new System.Drawing.Point(534, 368);
+            LanguageButton.Location = new System.Drawing.Point(534, 317);
             LanguageButton.Margin = new System.Windows.Forms.Padding(0);
             LanguageButton.Name = "LanguageButton";
             LanguageButton.Size = new System.Drawing.Size(157, 23);
@@ -676,7 +532,7 @@
             // 
             StationButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             StationButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            StationButton.Location = new System.Drawing.Point(534, 394);
+            StationButton.Location = new System.Drawing.Point(534, 343);
             StationButton.Name = "StationButton";
             StationButton.Size = new System.Drawing.Size(157, 23);
             StationButton.TabIndex = 51;
@@ -691,22 +547,22 @@
             MiscGroup.Controls.Add(alertNoRelayBox);
             MiscGroup.Controls.Add(storedMaxSizeInput);
             MiscGroup.ForeColor = System.Drawing.Color.White;
-            MiscGroup.Location = new System.Drawing.Point(360, 268);
+            MiscGroup.Location = new System.Drawing.Point(360, 240);
             MiscGroup.Name = "MiscGroup";
-            MiscGroup.Size = new System.Drawing.Size(331, 97);
+            MiscGroup.Size = new System.Drawing.Size(331, 74);
             MiscGroup.TabIndex = 17;
             MiscGroup.TabStop = false;
             MiscGroup.Text = "Miscellaneous";
             // 
             // BypassAlertFilteringButton
             // 
-            BypassAlertFilteringButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            BypassAlertFilteringButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             BypassAlertFilteringButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             BypassAlertFilteringButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            BypassAlertFilteringButton.Font = new System.Drawing.Font("Segoe UI", 18F);
+            BypassAlertFilteringButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             BypassAlertFilteringButton.Location = new System.Drawing.Point(6, 45);
             BypassAlertFilteringButton.Name = "BypassAlertFilteringButton";
-            BypassAlertFilteringButton.Size = new System.Drawing.Size(319, 46);
+            BypassAlertFilteringButton.Size = new System.Drawing.Size(319, 23);
             BypassAlertFilteringButton.TabIndex = 38;
             BypassAlertFilteringButton.Text = "Bypass Alert Filtering";
             BypassAlertFilteringButton.UseVisualStyleBackColor = false;
@@ -764,7 +620,7 @@
             CategoryGroup.Controls.Add(categoryMetBox);
             CategoryGroup.Controls.Add(categoryGeoBox);
             CategoryGroup.ForeColor = System.Drawing.Color.White;
-            CategoryGroup.Location = new System.Drawing.Point(12, 371);
+            CategoryGroup.Location = new System.Drawing.Point(12, 320);
             CategoryGroup.Name = "CategoryGroup";
             CategoryGroup.Size = new System.Drawing.Size(516, 95);
             CategoryGroup.TabIndex = 17;
@@ -928,7 +784,7 @@
             AlertListButton.Name = "AlertListButton";
             AlertListButton.Size = new System.Drawing.Size(250, 40);
             AlertListButton.TabIndex = 34;
-            AlertListButton.Text = "Alert Manager";
+            AlertListButton.Text = "Manage Alerts";
             AlertListButton.UseVisualStyleBackColor = false;
             AlertListButton.Click += AlertListButton_Click;
             // 
@@ -958,7 +814,7 @@
             ArchiveSettingsButton.Name = "ArchiveSettingsButton";
             ArchiveSettingsButton.Size = new System.Drawing.Size(75, 40);
             ArchiveSettingsButton.TabIndex = 35;
-            ArchiveSettingsButton.Text = "Archive\r\nManager";
+            ArchiveSettingsButton.Text = "Manage\r\nArchives";
             ArchiveSettingsButton.UseVisualStyleBackColor = false;
             ArchiveSettingsButton.Click += ArchiveSettingsButton_Click;
             // 
@@ -966,7 +822,7 @@
             // 
             GeneralGroup.Controls.Add(discardFirstAlertsBox);
             GeneralGroup.ForeColor = System.Drawing.Color.White;
-            GeneralGroup.Location = new System.Drawing.Point(534, 423);
+            GeneralGroup.Location = new System.Drawing.Point(534, 372);
             GeneralGroup.Name = "GeneralGroup";
             GeneralGroup.Size = new System.Drawing.Size(157, 43);
             GeneralGroup.TabIndex = 53;
@@ -979,17 +835,26 @@
             RainbowColoring.Interval = 60;
             RainbowColoring.Tick += RainbowColoring_Tick;
             // 
-            // SuperSecretEnabler
+            // EventsButton
             // 
-            SuperSecretEnabler.Enabled = true;
-            SuperSecretEnabler.Interval = 5000;
-            SuperSecretEnabler.Tick += SuperSecretEnabler_Tick;
+            EventsButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            EventsButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            EventsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            EventsButton.Font = new System.Drawing.Font("Segoe UI", 18F);
+            EventsButton.Location = new System.Drawing.Point(360, 142);
+            EventsButton.Name = "EventsButton";
+            EventsButton.Size = new System.Drawing.Size(331, 40);
+            EventsButton.TabIndex = 54;
+            EventsButton.Text = "Manage Events";
+            EventsButton.UseVisualStyleBackColor = false;
+            EventsButton.Click += EventsButton_Click;
             // 
             // AlertConfigurationForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
-            ClientSize = new System.Drawing.Size(703, 477);
+            ClientSize = new System.Drawing.Size(703, 427);
+            Controls.Add(EventsButton);
             Controls.Add(RainbowText);
             Controls.Add(GeneralGroup);
             Controls.Add(LanguageButton);
@@ -1001,7 +866,6 @@
             Controls.Add(CategoryGroup);
             Controls.Add(AlertListButton);
             Controls.Add(LocationsClearButton);
-            Controls.Add(LocationsAndEventsGroup);
             Font = new System.Drawing.Font("Segoe UI", 9F);
             ForeColor = System.Drawing.Color.White;
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -1012,7 +876,7 @@
             MinimizeBox = false;
             Name = "AlertConfigurationForm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "SharpAlert - Alert Settings";
+            Text = "SharpAlert - Alert Settings (Advanced View)";
             HelpButtonClicked += AlertConfigurationForm_HelpButtonClicked;
             Load += AlertConfigurationForm_Load;
             AlertFunctionalityGroup.ResumeLayout(false);
@@ -1028,9 +892,6 @@
             groupBox2.PerformLayout();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
-            LocationsAndEventsGroup.ResumeLayout(false);
-            groupBox9.ResumeLayout(false);
-            groupBox9.PerformLayout();
             MiscGroup.ResumeLayout(false);
             MiscGroup.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)storedMaxSizeInput).EndInit();
@@ -1067,12 +928,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox statusActualBox;
         private System.Windows.Forms.CheckBox statusTestBox;
-        private System.Windows.Forms.GroupBox LocationsAndEventsGroup;
-        private System.Windows.Forms.GroupBox groupBox9;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox EventBlacklistOutput;
-        private System.Windows.Forms.Button EventClearButton;
-        private System.Windows.Forms.TextBox EventBlacklistInput;
         private System.Windows.Forms.ToolTip ToolTipInformation;
         private System.Windows.Forms.CheckBox statusExerciseBox;
         private System.Windows.Forms.GroupBox CategoryGroup;
@@ -1098,22 +953,18 @@
         private System.Windows.Forms.Button StationButton;
         private System.Windows.Forms.Button LocationsButton;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button EventAddButton;
         private System.Windows.Forms.CheckBox alertNoRelayBox;
         private System.Windows.Forms.Button LocationsClearButton;
         private System.Windows.Forms.Button AlertListButton;
-        private System.Windows.Forms.Button EventSelectButton;
         private System.Windows.Forms.Button CategoryInfoButton;
         private System.Windows.Forms.Button BypassAlertFilteringButton;
         private System.Windows.Forms.Timer BypassFilteringFlasher;
-        private System.Windows.Forms.Button NamedEventsInfoButton;
-        private System.Windows.Forms.CheckBox EventWhitelistModeBox;
         private System.Windows.Forms.Button ArchiveSettingsButton;
         private System.Windows.Forms.CheckBox PreferCMAMTextWhereAvailableBox;
         private System.Windows.Forms.GroupBox GeneralGroup;
         private System.Windows.Forms.CheckBox IgnoreKeepAliveBox;
         private System.Windows.Forms.Label RainbowText;
         private System.Windows.Forms.Timer RainbowColoring;
-        private System.Windows.Forms.Timer SuperSecretEnabler;
+        private System.Windows.Forms.Button EventsButton;
     }
 }

@@ -35,8 +35,6 @@ namespace SharpAlert.SourceCapturing
         private bool Stop = false;
         private bool StopCalled = false;
 
-        private static readonly WebClient atomclient = new();
-
         public void ServiceStop()
         {
             if (StopCalled)
@@ -74,7 +72,9 @@ namespace SharpAlert.SourceCapturing
                 return;
             }
 
-            while (true)
+            //atomclient.DefaultRequestHeaders.UserAgent.ParseAdd(SelfUserAgent);
+
+            while (AllowThreadRestarts)
             {
                 try
                 {
@@ -89,19 +89,28 @@ namespace SharpAlert.SourceCapturing
                             int count = servers.Count;
                             foreach (ServerInfo server in servers)
                             {
+                                string Result = string.Empty;
+
                                 try
                                 {
                                     count--;
                                     Console.WriteLine($"[Atom Feed Capture] Getting data from {server.ServerName}. URL -> {server.ServerPath}");
-                                    Task<HttpResponseMessage> message = client.GetAsync($"{URLPrefix}://{server.ServerPath}");
+
+                                    //clientGate.Wait();
+
+                                    Task<HttpResponseMessage> message = Client.GetAsync($"{URLPrefix}://{server.ServerPath}");
                                     message.Wait();
                                     message.Result.EnsureSuccessStatusCode();
 
                                     FeedSuccessfulCalls++;
 
-                                    string Result = message.Result.Content.ReadAsStringAsync().Result;
+                                    Result = message.Result.Content.ReadAsStringAsync().Result;
 
-                                    EnrollEntries(Result, server.ServerName);
+                                    Task enroller = EnrollEntries(Result, server.ServerName);
+                                    enroller.Wait();
+                                    enroller.Dispose();
+
+                                    Thread.Sleep(50);
                                 }
                                 catch (Exception ex)
                                 {
@@ -111,6 +120,11 @@ namespace SharpAlert.SourceCapturing
                                     if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. {ex.Message}",
                                         "SharpAlert source failed",
                                         ToolTipIcon.Warning);
+                                    NetFailureCount++;
+                                }
+                                finally
+                                {
+                                    //clientGate.Release();
                                 }
                             }
                         }
@@ -122,7 +136,7 @@ namespace SharpAlert.SourceCapturing
                     if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. Timed out from Atom.",
                         "SharpAlert source failed",
                         ToolTipIcon.Warning);
-
+                    NetFailureCount++;
                     Thread.Sleep(15 * 1000);
                 }
                 catch (Exception ex)
@@ -131,7 +145,7 @@ namespace SharpAlert.SourceCapturing
                     if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. {ex.Message}",
                         "SharpAlert source failed",
                         ToolTipIcon.Warning);
-
+                    NetFailureCount++;
                     Thread.Sleep(15 * 1000);
                 }
                 if (FirstRun) FirstRun = false;
@@ -163,7 +177,7 @@ namespace SharpAlert.SourceCapturing
 
         private readonly object EnrollObject = new();
 
-        public void EnrollEntries(string data, string name)
+        public async Task EnrollEntries(string data, string name)
         {
             MatchCollection entries = EntryRegex.Matches(data);
 
@@ -182,6 +196,9 @@ namespace SharpAlert.SourceCapturing
                 if (EntriesIndex.ToString().Last() == "0".ToCharArray()[0])
                 {
                     Console.WriteLine($"[Atom Feed Capture] {EntriesIndex} tag(s) processed out of {entries.Count}.");
+
+                    if (!string.IsNullOrWhiteSpace(AlertList)) EnrollAlerts(AlertList, name);
+                    AlertList = string.Empty;
                 }
                 else
                 {
@@ -231,12 +248,38 @@ namespace SharpAlert.SourceCapturing
                     {
                         //IdRegex.MatchOrDefault(EntryStr); // RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG RED FLAG 
                         // we'll optimize the pulling someday
-                        
-                        Console.WriteLine($"[Atom Feed Capture] Getting additional data from Atom. URL -> {link}");
-                        // This should help with accented characters hopefully
-                        atomclient.Headers.Set("User-Agent", SelfUserAgent);
-                        string value = Encoding.UTF8.GetString(atomclient.DownloadData(link));
-                        AlertList += $"{value}\r\n";
+
+                        bool HistoryMatchFound = false;
+
+                        string matchedFileName = UrnOidCapRegex.MatchOrDefault(link);
+
+                        if (!string.IsNullOrWhiteSpace(matchedFileName))
+                        {
+                            if (matchedFileName.ToLowerInvariant().EndsWith(".cap"))
+                            {
+                                matchedFileName = matchedFileName[..^4];
+                            }
+
+                            lock (SharpDataHistory)
+                            {
+                                if (SharpDataHistory.Any(item => item.Name == matchedFileName))
+                                {
+                                    HistoryMatchFound = true;
+                                }
+                            }
+                        }
+
+                        if (HistoryMatchFound)
+                        {
+                            Console.WriteLine($"[Atom Feed Capture] History match found, skipping request. URL -> {link}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"[Atom Feed Capture] Getting additional data from Atom. URL -> {link}");
+                            string value = await Client.GetStringAsync(link);
+                            AlertList += $"{value}\r\n";
+                        }
+
                     }
                     else
                     {
@@ -322,8 +365,6 @@ namespace SharpAlert.SourceCapturing
             }
 
             Console.WriteLine($"[Atom Feed Capture] {EntriesIndex} tag(s) saved, and {EntriesDiscardCount} tag(s) discarded. Tags remaining: {EntriesIndex - EntriesDiscardCount}");
-
-            EnrollAlerts(AlertList, name);
         }
 
         public void EnrollAlerts(string data, string name)

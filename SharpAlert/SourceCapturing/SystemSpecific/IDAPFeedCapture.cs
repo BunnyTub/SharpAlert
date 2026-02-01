@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using SharpAlert.ProgramWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
+using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.ProgramWorker.NotificationWorker;
 using static SharpAlert.RegexList;
 
@@ -79,7 +80,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                     if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. Timed out from IDAP.",
                         "SharpAlert source failed",
                         ToolTipIcon.Warning);
-
+                    NetFailureCount++;
                     Thread.Sleep(15 * 1000);
                 }
                 catch (ThreadAbortException)
@@ -92,7 +93,7 @@ namespace SharpAlert.SourceCapturing.SystemSpecific
                     if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. {ex.Message}",
                         "SharpAlert source failed",
                         ToolTipIcon.Warning);
-
+                    NetFailureCount++;
                     Thread.Sleep(15 * 1000);
                 }
                 if (FirstRun) FirstRun = false;

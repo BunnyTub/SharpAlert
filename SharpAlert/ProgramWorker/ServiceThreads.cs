@@ -10,16 +10,16 @@ namespace SharpAlert.ProgramWorker
             return new Thread(() => throw new Exception("Caller executed dummy thread. This may be unintended behavior."));
         } 
 
-        public static Thread feedThread = DummyThread();
-        public static Thread atomfeedThread = DummyThread();
-        public static Thread directfeedThread = DummyThread();
-        public static Thread idapfeedThread = DummyThread();
-        public static Thread cacheThread = DummyThread();
-        public static Thread dataProcThread = DummyThread();
-        public static Thread historyProcThread = DummyThread();
-        public static Thread notificationThread = DummyThread();
-        public static Thread serverThread = DummyThread();
-        public static Thread heartbeatThread = DummyThread();
+        internal static Thread FeedThread { get; set; } = DummyThread();
+        internal static Thread AtomfeedThread { get; set; } = DummyThread();
+        internal static Thread DirectfeedThread { get; set; } = DummyThread();
+        internal static Thread IdapfeedThread { get; set; } = DummyThread();
+        internal static Thread CacheThread { get; set; } = DummyThread();
+        internal static Thread DataProcThread { get; set; } = DummyThread();
+        internal static Thread HistoryProcThread { get; set; } = DummyThread();
+        internal static Thread NotificationThread { get; set; } = DummyThread();
+        internal static Thread ServerThread { get; set; } = DummyThread();
+        internal static Thread HeartbeatThread { get; set; } = DummyThread();
     }
 }
 

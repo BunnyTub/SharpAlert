@@ -1,0 +1,29 @@
+{
+  "RecommendedFontChoice": "Kosugi Maru",
+  "PleaseWait": "しばらくお待ちください",
+  "LanguageRestartProgram": "アプリを再起動",
+  "LanguageChanged": "言語が変更されました。\r\nSharpAlert を再度開くと、新しい言語がどこでも表示されます。",
+
+  "AlertSeverity_Extreme": "最重大警報",
+  "AlertSeverity_Severe": "重大警報",
+  "AlertSeverity_Moderate": "警報",
+  "AlertSeverity_Minor": "注意報",
+  "AlertSeverity_Unknown": "不明な警報",
+  "AlertCancelled": "警報解除",
+
+  "WindowTitle_GlobalSettings": "全体設定",
+
+  "SettingsButton_AlertSettings": "警報設定",
+  "SettingsButton_RegionSettings": "地域設定",
+  "SettingsButton_AdvancedMode": "アドバンスモード",
+  "SettingsButton_SimpleMode": "シンプルモード",
+  "SettingsButton_StylesAndMore": "スタイル+α",
+  "SettingsButton_DiscordAndWebhooks": "Discord＆\r\nフック",
+  "SettingsButton_SoundsAndEffects": "サウンド＆\r\n効果音",
+  "SettingsButton_ServerSettings": "サーバ\r\nー設定",
+  "SettingsButton_SaveSlots": "セーブ\r\nスロット",
+  "SettingsButton_EnableAutoUpdates": "自動アップデートをオンにする",
+  "SettingsButton_AboutButton": "SharpAlertについて",
+  "SettingsButton_CloseButton": "閉じる",
+  "AlertPanel_CloseButton": "閉じる"
+}

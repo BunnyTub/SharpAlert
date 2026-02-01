@@ -60,7 +60,7 @@ namespace SharpAlert.SourceCapturing
         {
             if (Stop) return;
 
-            if (!servers.Any())
+            if (servers.Count == 0)
             {
                 Console.WriteLine("[HTTP Feed Capture] No servers found.");
                 return;
@@ -74,7 +74,7 @@ namespace SharpAlert.SourceCapturing
 
                     lock (servers)
                     {
-                        if (servers.Any())
+                        if (servers.Count != 0)
                         {
                             int count = servers.Count;
 
@@ -82,7 +82,7 @@ namespace SharpAlert.SourceCapturing
 
                             lock (servers)
                             {
-                                localServers = servers.ToList();
+                                localServers = [.. servers];
                             }
 
                             foreach (ServerInfo server in localServers)
@@ -91,12 +91,21 @@ namespace SharpAlert.SourceCapturing
                                 {
                                     count--;
                                     Console.WriteLine($"[HTTP Feed Capture] Getting data from {server.ServerName}. URL -> {server.ServerPath}");
-                                    HttpResponseMessage message = client.GetAsync($"{URLPrefix}://{server.ServerPath}").Result;
-                                    message.EnsureSuccessStatusCode();
+                                    HttpResponseMessage message = Client.GetAsync($"{URLPrefix}://{server.ServerPath}").Result;
 
+                                    //if (message.StatusCode == System.Net.HttpStatusCode.PermanentRedirect || message.StatusCode == System.Net.HttpStatusCode.TemporaryRedirect)
+                                    //{
+                                    //    Console.WriteLine($"[HTTP Feed Capture] Getting data from {server.ServerName}. URL (Redirected) -> {message.RequestMessage.RequestUri}");
+                                    //}
+                                    //else
+                                    //{
+                                    //}
+
+                                    message.EnsureSuccessStatusCode();
                                     FeedSuccessfulCalls++;
 
                                     string Result = message.Content.ReadAsStringAsync().Result;
+
                                     EnrollAlerts(Result, server.ServerName);
                                     server.LastRunSuccess = true;
                                 }
@@ -104,7 +113,11 @@ namespace SharpAlert.SourceCapturing
                                 {
                                     count++;
                                     Console.WriteLine($"[HTTP Feed Capture] {ex.Message}");
+                                    NetFailureCount++;
                                     server.LastRunSuccess = false;
+                                    if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. Timed out from the feed.",
+                                        "SharpAlert source timed out",
+                                        ToolTipIcon.Warning);
                                 }
                             }
                         }
@@ -128,7 +141,7 @@ namespace SharpAlert.SourceCapturing
                     if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. Timed out from the feed.",
                         "SharpAlert source timed out",
                         ToolTipIcon.Warning);
-
+                    NetFailureCount++;
                     Thread.Sleep(15 * 1000);
                 }
                 catch (Exception ex)
@@ -137,7 +150,7 @@ namespace SharpAlert.SourceCapturing
                     if (!QuickSettings.Instance.HideNetworkErrors) Notify.ShowNotification($"Network error occurred. {ex.GetBaseException().Message}",
                         "SharpAlert source problem",
                         ToolTipIcon.Warning);
-
+                    NetFailureCount++;
                     Thread.Sleep(15 * 1000);
                 }
                 if (FirstRun) FirstRun = false;

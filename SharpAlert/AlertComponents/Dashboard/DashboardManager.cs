@@ -1,5 +1,5 @@
 ﻿using System;
-using static SharpAlert.AlertComponents.AlertProcessor;
+using static SharpAlertPluginBase.AlertContents;
 
 namespace SharpAlert.AlertComponents.Dashboard
 {

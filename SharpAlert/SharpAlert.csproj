@@ -24,7 +24,7 @@
 		<Title>SharpAlert</Title>
 		<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-		<BaseOutputPath>C:\Users\rivera\source\repos\SharpAlert\SharpAlert\bin\Release</BaseOutputPath>
+		<BaseOutputPath>C:\Users\rivera\source\repos\SharpAlert\SharpAlert\bin</BaseOutputPath>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -36,33 +36,46 @@
 	  <None Remove="SpeakingAssets\**" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Remove="Languages\Language_ja.json" />
+	  <None Remove="UpdateVersionInfo.ps1" />
+	</ItemGroup>
+
 	<!-- <ItemGroup>
 	  <Compile Include="Properties\AssemblyInfo.cs.old" />
 	</ItemGroup> -->
 
 	<!-- NuGet dependencies -->
 	<ItemGroup>
-		<PackageReference Include="ConfuserEx" Version="0.6.0" />
 		<PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="HidLibrary" Version="3.3.40" />
-		<PackageReference Include="Costura.Fody" Version="6.0.0" />
-		<PackageReference Include="Open.Nat" Version="2.1.0" />
-		<PackageReference Include="System.Resources.Extensions" Version="9.0.9" />
-		<PackageReference Include="System.Speech" Version="9.0.9" />
+		<PackageReference Include="SIPSorcery" Version="10.0.1" />
+		<PackageReference Include="SIPSorceryMedia.Windows" Version="8.0.14" />
+		<PackageReference Include="System.Resources.Extensions" Version="10.0.1" />
+		<PackageReference Include="System.Speech" Version="10.0.1" />
 	</ItemGroup>
 
 	<!-- Embedded resources -->
 	<ItemGroup>
+		<EmbeddedResource Include="Languages\Language_es.json" />
+		<EmbeddedResource Include="Languages\Language_en.json" />
+		<EmbeddedResource Include="Languages\Language_ja.json" />
 		<EmbeddedResource Include="WebServer\style.css" />
 		<EmbeddedResource Include="WebServer\index.html" />
 	</ItemGroup>
 
 	<!-- Windows Forms resources -->
 	<ItemGroup>
+		<EmbeddedResource Update="ConfigurationDialogs\SimpleAlertConfigurationForm.resx">
+		  <SubType>Designer</SubType>
+		</EmbeddedResource>
 		<EmbeddedResource Update="Form1.resx">
 			<DependentUpon>Form1.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Languages\LanguageSelectionForm.resx">
+		  <SubType>Designer</SubType>
 		</EmbeddedResource>
 		<EmbeddedResource Update="MainWindow.resx">
 			<DependentUpon>MainWindow.cs</DependentUpon>
@@ -75,7 +88,19 @@
 
 	<!-- Designer files (WinForms) -->
 	<ItemGroup>
+		<Compile Update="AlertComponents\EarthquakeAlertForm.cs">
+		  <SubType>Form</SubType>
+		</Compile>
+		<Compile Update="ConfigurationDialogs\SimpleAlertConfigurationForm.cs">
+		  <SubType>Form</SubType>
+		</Compile>
+		<Compile Update="ConfigurationDialogs\SimpleConfigurationForm.cs">
+		  <SubType>Form</SubType>
+		</Compile>
 		<Compile Update="ConfigurationDialogs\SaveSlotsConfigurationForm.cs">
+		  <SubType>Form</SubType>
+		</Compile>
+		<Compile Update="Languages\LanguageSelectionForm.cs">
 		  <SubType>Form</SubType>
 		</Compile>
 		<Compile Update="Properties\Resources.Designer.cs">
@@ -96,6 +121,12 @@
 			<Generator>SettingsSingleFileGenerator</Generator>
 			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
 		</None>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Plugin\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\SharpAlertPluginBase\SharpAlertPluginBase.csproj" />
 	</ItemGroup>
 
 </Project>

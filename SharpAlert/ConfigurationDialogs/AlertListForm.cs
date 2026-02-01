@@ -8,6 +8,7 @@ using System.Drawing;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.AlertComponents.AlertProcessor;
+using static SharpAlertPluginBase.AlertContents;
 using SharpAlert.ProgramWorker;
 using SharpAlert.AlertComponents;
 using System.Collections.Generic;

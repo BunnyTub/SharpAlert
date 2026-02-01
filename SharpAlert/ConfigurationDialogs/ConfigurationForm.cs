@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using SharpAlert.Languages;
 using SharpAlert.ProgramWorker;
 using SharpAlert.Properties;
 using static SharpAlert.ProgramWorker.HaidaWorker;
@@ -12,18 +13,39 @@ namespace SharpAlert.ConfigurationDialogs
         public ConfigurationForm()
         {
             InitializeComponent();
+            Language.ApplyFont(this);
+
+            Text = $"SharpAlert - {Language.Get("WindowTitle_GlobalSettings", "Global Settings")}";
+            CAPSettingsButton.Text = Language.Get("SettingsButton_AlertSettings", "Alert Settings");
+            RegionSettingsButton.Text = Language.Get("SettingsButton_RegionSettings", "Region Settings");
+            StyleSettingsButton.Text = Language.Get("SettingsButton_StylesAndMore", "Styles &\r\nMore");
+            DiscordSettingsButton.Text = Language.Get("SettingsButton_DiscordAndWebhooks", "Discord &\r\nWebhooks");
+            SoundSettingsButton.Text = Language.Get("SettingsButton_SoundsAndEffects", "Sounds &\r\nEffects");
+            SaveSlotsButton.Text = Language.Get("SettingsButton_SaveSlots", "Save\r\nSlots");
+            EnableUpdatesBox.Text = Language.Get("SettingsButton_EnableAutoUpdates", "Enable Automatic Updates");
+            ServerSettingsButton.Text = Language.Get("SettingsButton_ServerSettings", "Server Settings");
+            SimpleModeButton.Text = Language.Get("SettingsButton_SimpleMode", "Simple Mode");
+            ProgramCreditsButton.Text = Language.Get("SettingsButton_AboutButton", "About SharpAlert");
+            DoneButton.Text = Language.Get("SettingsButton_CloseButton", "Close");
         }
 
         private void ManagementForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //e.Cancel = true;
             QuickSettings.Instance.Save();
+            acf?.Close();
+            csf?.Close();
+            caf?.Close();
+            crf?.Close();
+            scf?.Close();
+            dcf?.Close();
+            cf?.Close();
+            slots?.Close();
             //this.Hide();
         }
 
         private void DoneButton_Click(object sender, EventArgs e)
         {
-            QuickSettings.Instance.Save();
             this.Close();
         }
 
@@ -50,7 +72,7 @@ namespace SharpAlert.ConfigurationDialogs
         private void SoundSettingsButton_Click(object sender, EventArgs e)
         {
             string OldTitle = this.Text;
-            this.Text = $"{OldTitle} (Please wait...)";
+            this.Text = $"{OldTitle} ({Language.Get("PleaseWait", "Please wait a moment")})";
             // added this stuff because the window freezes while waiting for the audio form to load
             if (caf == null || caf.IsDisposed) caf = new ChooseAudioForm(false);
             caf.Show();
@@ -166,7 +188,6 @@ namespace SharpAlert.ConfigurationDialogs
         private void ConfigurationForm_Load(object sender, EventArgs e)
         {
             EnableUpdatesBox.Checked = QuickSettings.Instance.AllowPerformingUpdates;
-            EnableDiscordRichPresenceBox.Checked = QuickSettings.Instance.AllowDiscordRichPresence;
             AllowNotifications = true;
             //ProhibitUsers_Tick(this, EventArgs.Empty);
             //if (IsUserLocked)
@@ -201,30 +222,7 @@ namespace SharpAlert.ConfigurationDialogs
             QuickSettings.Instance.AllowPerformingUpdates = EnableUpdatesBox.Checked;
         }
 
-        private void EnableDiscordRichPresenceBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!AllowNotifications) return;
-
-            if (EnableDiscordRichPresenceBox.Checked)
-            {
-                MessageBox.Show("SharpAlert will display an alert relay count on your profile, visible to any others who can see it. Restart the program to apply this change.",
-                    Text,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("SharpAlert will no longer display an alert relay count on your profile. Restart the program to apply this change.",
-                    Text,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-            }
-
-            QuickSettings.Instance.AskedForDiscordRichPresence = true;
-            QuickSettings.Instance.AllowDiscordRichPresence = EnableDiscordRichPresenceBox.Checked;
-        }
-
-        private SecretConfigurationForm secret = null;
+        //private SecretConfigurationForm secret = null;
 
         private void SecretSettingsButton_Click(object sender, EventArgs e)
         {
@@ -267,6 +265,15 @@ namespace SharpAlert.ConfigurationDialogs
             //    DiscordSettingsButton.Enabled = true;
             //    QuickSettings.Instance.DiscordWebhookFeaturesLocked = false;
             //}
+        }
+
+        public bool Swap = false;
+
+        private void SimpleModeButton_Click(object sender, EventArgs e)
+        {
+            QuickSettings.Instance.UseAdvancedView = false;
+            Swap = true;
+            this.Close();
         }
     }
 }

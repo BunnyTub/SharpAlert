@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IncludeSymbols>false</IncludeSymbols>
+		<PackageId>SharpAlert.PluginBase</PackageId>
+		<Version>1.0.3</Version>
+		<Authors>BunnyTub</Authors>
+		<Description>The interface package for creating SharpAlert plugins.</Description>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>SharpAlert Plugin Base Interface</Title>
+		<PackageProjectUrl>https://bunnytub.com/SharpAlert</PackageProjectUrl>
+		<PackageIcon>WarningLight.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <DebugType>none</DebugType>
+	  <IsAotCompatible>False</IsAotCompatible>
+	  <IsPublishable>False</IsPublishable>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <DebugType>none</DebugType>
+	  <IsAotCompatible>False</IsAotCompatible>
+	  <IsPublishable>False</IsPublishable>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="..\WarningLight.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+
+</Project>

@@ -386,7 +386,7 @@ namespace SharpAlert
                     Console.WriteLine("[Audio Manager] Queued remote audio.");
                     try
                     {
-                        PlayFromManagedSource(new MemoryStream(client.GetByteArrayAsync(url).Result), true);
+                        PlayFromManagedSource(new MemoryStream(Client.GetByteArrayAsync(url).Result), true);
                         //using (var mf = new AudioFileReader(url))
                         //{
                         //    lock (AudioOutputLock)

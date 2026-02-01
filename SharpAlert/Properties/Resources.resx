@@ -133,14 +133,8 @@
   <data name="minor_alert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\minor_alert.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="TrayLightIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TrayLightIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="AlertIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AlertIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TrayAlertIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TrayAlertIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="major_alert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\major_alert.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -156,5 +150,14 @@
   </data>
   <data name="cancelled_alert" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cancelled_alert.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TrayLightIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TrayLightIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TrayAlertIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TrayAlertIcon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="earthquake_alert" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\earthquake_alert.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -6,9 +6,9 @@ namespace SharpAlert
     public static class VersionInfo
     {
         // last build was 1891 before the upgrade to .NET 9
-        public static int MajorVersion { get; } = 15;
-        public static int MinorVersion { get; } = 1;
-        public static bool IsBetaVersion { get; } = false;
+        public static int MajorVersion { get; } = 16;
+        public static int MinorVersion { get; } = 0;
+        public static bool IsBetaVersion { get; } = true;
         public static string ShortFriendlyVersion
         {
             get
@@ -43,7 +43,7 @@ namespace SharpAlert
         }
 
         public static readonly DateTime BetaTimeEnd = DateTime.ParseExact(
-            "11/27/2025",
+            "01/13/2026",
             "M/d/yyyy",
             CultureInfo.InvariantCulture,
             DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal

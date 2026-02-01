@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using SharpAlert.ConfigurationDialogs.DiscordPanels;
 using SharpAlert.ProgramWorker;
-using static SharpAlert.ProgramWorker.MainEntryPoint;
 
 namespace SharpAlert.ConfigurationDialogs
 {
@@ -17,56 +17,10 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void ServerConfigurationForm_Load(object sender, EventArgs e)
         {
-            DropChangesButton.PerformClick();
+            SwapToRPCButton.PerformClick();
 
             if (Initialized) return;
             Initialized = true;
-
-            //DiscordWebhookURLInput.Text = QuickSettings.Instance.DiscordWebhook;
-            //DiscordWebhookAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend;
-
-            DiscordWebhookConfirmAlertsBox.Checked = QuickSettings.Instance.DiscordWebhookConfirmAlerts;
-            DiscordWebhookConfirmAlertsBox.CheckedChanged += (a, b) => QuickSettings.Instance.DiscordWebhookConfirmAlerts = ((CheckBox)a).Checked;
-            
-            DisableHeartbeatBox.Checked = QuickSettings.Instance.DiscordWebhookDisableHeartbeat;
-            DisableHeartbeatBox.CheckedChanged += (a, b) => QuickSettings.Instance.DiscordWebhookDisableHeartbeat = ((CheckBox)a).Checked;
-            
-            DiscordWebhookRelayLocallyBox.Checked = QuickSettings.Instance.DiscordWebhookRelayLocally;
-            DiscordWebhookRelayLocallyBox.CheckedChanged += (a, b) =>
-            {
-                QuickSettings.Instance.DiscordWebhookRelayLocally = ((CheckBox)a).Checked;
-                if (!((CheckBox)a).Checked)
-                {
-                    //if (string.IsNullOrWhiteSpace(DiscordWebhookURLInput.Text)) AlertAppearanceAndSoundsGroup.Enabled = true;
-                    //else AlertAppearanceAndSoundsGroup.Enabled = false;
-                }
-                else
-                {
-                    //AlertAppearanceAndSoundsGroup.Enabled = true;
-                }
-            };
-
-            //DiscordWebhookCombo.SelectedIndexChanged += (a, b) =>
-            //{
-            //    while (DiscordGroup.Controls.Count > 0)
-            //    {
-            //        DiscordGroup.Controls[0].Dispose();
-            //        //DiscordGroup.Controls.RemoveAt(0);
-            //    }
-
-            //    DiscordSubConfigurationForm sub = new DiscordSubConfigurationForm
-            //    {
-            //        TopLevel = false
-            //    };
-            //    DiscordGroup.Controls.Add(sub);
-            //    sub.Dock = DockStyle.Fill;
-            //    sub.Show();
-            //};
-
-            BatteryReportingCautionLevelInput.Value = QuickSettings.Instance.BatteryReportingCautionLevel;
-            BatteryReportingCautionLevelInput.ValueChanged += (a, b) => QuickSettings.Instance.BatteryReportingCautionLevel = (int)((NumericUpDown)a).Value;
-            BatteryReportingCriticalLevelInput.Value = QuickSettings.Instance.BatteryReportingCriticalLevel;
-            BatteryReportingCriticalLevelInput.ValueChanged += (a, b) => QuickSettings.Instance.BatteryReportingCriticalLevel = (int)((NumericUpDown)a).Value;
         }
 
         private void ServerConfigurationForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -75,58 +29,46 @@ namespace SharpAlert.ConfigurationDialogs
             //Environment.Exit(0);
         }
 
-        private void SaveDiscordSettingsButton_Click(object sender, EventArgs e)
+        private void SwapTabs(object sender, UserControl panel)
         {
-            QuickSettings.Instance.DiscordWebhook = DefaultURLInput.Text;
-            QuickSettings.Instance.DiscordWebhookAppend = DefaultAppendInput.Text;
+            SwappingText.BringToFront();
 
-            QuickSettings.Instance.DiscordWebhook_FEMA_IPAWS_EAS = EASURLInput.Text;
-            QuickSettings.Instance.DiscordWebhookAppend_FEMA_IPAWS_EAS = EASAppendInput.Text;
+            foreach (Control control in TabPanel.Controls)
+            {
+                if (control is Label label) if (label == SwappingText) continue;
+                control.Hide();
+                control.Dispose();
+            }
 
-            QuickSettings.Instance.DiscordWebhook_FEMA_IPAWS_WEA = WEAURLInput.Text;
-            QuickSettings.Instance.DiscordWebhookAppend_FEMA_IPAWS_WEA = WEAAppendInput.Text;
+            panel.Dock = DockStyle.Fill;
+            TabPanel.Controls.Add(panel);
 
-            QuickSettings.Instance.DiscordWebhook_NWS_ATOM = NWSAtomURLInput.Text;
-            QuickSettings.Instance.DiscordWebhookAppend_NWS_ATOM = NWSAtomAppendInput.Text;
+            foreach (Control control in Controls)
+            {
+                if (control.Tag is string tag)
+                {
+                    if (tag.Contains("SwapTabButton"))
+                    {
+                        if (control is Button u)
+                        {
+                            u.FlatAppearance.BorderColor = Color.White;
+                        }
+                    }
+                }
+            }
 
-            QuickSettings.Instance.DiscordWebhook_NAADS_PRIMARY = NAADSPrimaryURLInput.Text;
-            QuickSettings.Instance.DiscordWebhookAppend_NAADS_PRIMARY = NAADSPrimaryAppendInput.Text;
-
-            QuickSettings.Instance.DiscordWebhook_NAADS_BACKUP = NAADSBackupURLInput.Text;
-            QuickSettings.Instance.DiscordWebhookAppend_NAADS_BACKUP = NAADSBackupAppendInput.Text;
-            
-            QuickSettings.Instance.DiscordWebhook_SASMEX = SASMEXURLInput.Text;
-            QuickSettings.Instance.DiscordWebhookAppend_SASMEX = SASMEXAppendInput.Text;
-
-            QuickSettings.Instance.DiscordWebhook_IDAP = IDAPURLInput.Text;
-            QuickSettings.Instance.DiscordWebhookAppend_IDAP = IDAPAppendInput.Text;
+            SwappingText.SendToBack();
+            if (sender is Button b) b.FlatAppearance.BorderColor = Color.Green;
         }
 
-        private void DropChangesButton_Click(object sender, EventArgs e)
+        private void SwapToRPCButton_Click(object sender, EventArgs e)
         {
-            DefaultURLInput.Text = QuickSettings.Instance.DiscordWebhook;
-            DefaultAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend;
+            SwapTabs(sender, new DiscordRichPresenceUserControl());
+        }
 
-            EASURLInput.Text = QuickSettings.Instance.DiscordWebhook_FEMA_IPAWS_EAS;
-            EASAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend_FEMA_IPAWS_EAS;
-
-            WEAURLInput.Text = QuickSettings.Instance.DiscordWebhook_FEMA_IPAWS_WEA;
-            WEAAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend_FEMA_IPAWS_WEA;
-
-            NWSAtomURLInput.Text = QuickSettings.Instance.DiscordWebhook_NWS_ATOM;
-            NWSAtomAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend_NWS_ATOM;
-
-            NAADSPrimaryURLInput.Text = QuickSettings.Instance.DiscordWebhook_NAADS_PRIMARY;
-            NAADSPrimaryAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend_NAADS_PRIMARY;
-
-            NAADSBackupURLInput.Text = QuickSettings.Instance.DiscordWebhook_NAADS_BACKUP;
-            NAADSBackupAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend_NAADS_BACKUP;
-
-            SASMEXURLInput.Text = QuickSettings.Instance.DiscordWebhook_SASMEX;
-            SASMEXAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend_SASMEX;
-
-            IDAPURLInput.Text = QuickSettings.Instance.DiscordWebhook_IDAP;
-            IDAPAppendInput.Text = QuickSettings.Instance.DiscordWebhookAppend_IDAP;
+        private void SwapToDiscordWebhooksButton_Click(object sender, EventArgs e)
+        {
+            SwapTabs(sender, new DiscordWebhookUserControl());
         }
     }
 }
