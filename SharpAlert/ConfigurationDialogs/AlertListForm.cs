@@ -290,7 +290,9 @@ namespace SharpAlert.ConfigurationDialogs
                         {
                             if (result == DialogResult.No)
                             {
-                                string FullData = "<SharpAlertMassImport>true</SharpAlertMassImport>\r\n";
+                                //string FullData = "<SharpAlertMassImport>true</SharpAlertMassImport>\r\n";
+
+                                string FullData = string.Empty;
 
                                 foreach (var item in SharpDataHistory)
                                 {

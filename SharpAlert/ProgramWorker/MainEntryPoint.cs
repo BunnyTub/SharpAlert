@@ -369,6 +369,36 @@ namespace SharpAlert.ProgramWorker
 
             if (Args.Count >= 2)
             {
+                //if (Args.Contains("--uninstalling"))
+                //{
+                //    int currentId = Environment.ProcessId;
+
+                //    foreach (var proc in Process.GetProcesses())
+                //    {
+                //        try
+                //        {
+                //            if (proc.Id == currentId)
+                //                continue;
+
+                //            string procPath = proc.MainModule.FileName;
+                //            if (string.Equals(procPath, AssemblyFile, StringComparison.OrdinalIgnoreCase))
+                //            {
+                //                proc.Kill();
+                //            }
+                //        }
+                //        catch
+                //        {
+                //        }
+                //    }
+
+                //    UninstallingForm uf = new();
+                //    uf.ShowDialog();
+                //    uf.Dispose();
+
+                //    Environment.Exit(0);
+                //    return;
+                //}
+
                 if (Args.Contains("--wait-until-parent-closes"))
                 {
                     try

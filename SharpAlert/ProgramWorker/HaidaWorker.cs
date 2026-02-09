@@ -257,6 +257,14 @@ namespace SharpAlert.ProgramWorker
                 SetupExperienceOccurred = true;
             }
 
+            foreach (var plug in PluginManager.Plugins)
+            {
+                plug.AlertXMLOutbound += (xml) =>
+                {
+                    lock (SharpDataQueue) SharpDataQueue.Add(new SharpDataItem(DateTime.UtcNow.ToString("s"), xml));
+                };
+            }
+
             //Thread.Sleep(10000);
 
             NotificationThread = StartCatchAllThread("Notifications", () =>
@@ -342,34 +350,37 @@ namespace SharpAlert.ProgramWorker
                     {
                         Console.WriteLine($"[Notification Worker] Network request failure count: {NetFailureCount}");
 
-                        if (Notify.ContextMenuStrip.Items["HideNetworkButton"] == null)
+                        if (!QuickSettings.Instance.HideNetworkErrors)
                         {
-                            Notify.ContextMenuStrip.Items.Add(new ToolStripSeparator { Name = "HideNetworkSeparator" });
-
-                            Notify.ContextMenuStrip.Items.Add(new ToolStripButton("Hide Network Notifications", null, (sender, arg) =>
+                            if (Notify.ContextMenuStrip.Items["HideNetworkButton"] == null)
                             {
-                                DialogResult result = MessageBox.Show(
-                                    "Do you want to hide connection issues for the rest of the time SharpAlert is open?",
-                                    "SharpAlert",
-                                    MessageBoxButtons.YesNo,
-                                    MessageBoxIcon.Question
-                                );
+                                Notify.ContextMenuStrip.Items.Add(new ToolStripSeparator { Name = "HideNetworkSeparator" });
 
-                                if (result == DialogResult.Yes)
+                                Notify.ContextMenuStrip.Items.Add(new ToolStripButton("Hide Network Notifications", null, (sender, arg) =>
                                 {
-                                    NetFailureCount = int.MinValue;
+                                    DialogResult result = MessageBox.Show(
+                                        "Do you want to hide connection issues for the rest of the time SharpAlert is open?",
+                                        "SharpAlert",
+                                        MessageBoxButtons.YesNo,
+                                        MessageBoxIcon.Question
+                                    );
 
-                                    var sep = Notify.ContextMenuStrip.Items["HideNetworkSeparator"];
-                                    if (sep != null) Notify.ContextMenuStrip.Items.Remove(sep);
+                                    if (result == DialogResult.Yes)
+                                    {
+                                        NetFailureCount = int.MinValue;
 
-                                    var btn = Notify.ContextMenuStrip.Items["HideNetworkButton"];
-                                    if (btn != null) Notify.ContextMenuStrip.Items.Remove(btn);
-                                }
-                            }, "HideNetworkButton"));
+                                        var sep = Notify.ContextMenuStrip.Items["HideNetworkSeparator"];
+                                        if (sep != null) Notify.ContextMenuStrip.Items.Remove(sep);
+
+                                        var btn = Notify.ContextMenuStrip.Items["HideNetworkButton"];
+                                        if (btn != null) Notify.ContextMenuStrip.Items.Remove(btn);
+                                    }
+                                }, "HideNetworkButton"));
+                            }
+
+                            Notify.ShowNotification("There was an issue connecting to some alert servers. Check your internet connection.",
+                                $"{NetFailureCount} failure(s) in 1 minute", ToolTipIcon.Warning);
                         }
-
-                        Notify.ShowNotification("There was an issue connecting to some alert servers. Check your internet connection.",
-                            $"{NetFailureCount} failure(s) in 1 minute", ToolTipIcon.Warning);
                     }
 
                     if (NetFailureCount > 0) NetFailureCount = 0;
@@ -505,7 +516,7 @@ namespace SharpAlert.ProgramWorker
 
             CacheThread = StartCatchAllThread("Cache Capture", () => cache.ServiceRun(true), true);
             DataProcThread = StartCatchAllThread("Data Processor", () => dataproc.ServiceRun(), true);
-            HistoryProcThread = StartCatchAllThread("History Processor", () => HistoryProcessor.ServiceRun(), true);
+            HistoryProcThread = StartCatchAllThread("History Processor", HistoryProcessor.ServiceRun, true);
             ServerThread = StartCatchAllThread("Hyper Server", () => hyper.ServiceRun(), true);
 
             RefreshAudioDevices();
@@ -1329,13 +1340,13 @@ namespace SharpAlert.ProgramWorker
                         try
                         {
                             string data = File.ReadAllText(selectedPath);
-                            if (data.Contains("<SharpAlertMassImport>true</SharpAlertMassImport>"))
-                            {
-                                MessageBox.Show("You are importing a mass amount of alerts. Proceed with caution.",
-                                    "SharpAlert",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Exclamation);
-                            }
+                            //if (data.Contains("<SharpAlertMassImport>true</SharpAlertMassImport>"))
+                            //{
+                            //    MessageBox.Show("You are importing a mass amount of alerts. Proceed with caution.",
+                            //        "SharpAlert",
+                            //        MessageBoxButtons.OK,
+                            //        MessageBoxIcon.Exclamation);
+                            //}
                             EnrollAlerts(data, true);
                         }
                         catch (Exception ex)

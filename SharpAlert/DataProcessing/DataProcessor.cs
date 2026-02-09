@@ -9,7 +9,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using TinyJson;
 using static SharpAlert.AlertComponents.AlertDisplayer;
 using static SharpAlert.AlertComponents.AlertProcessor;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
@@ -226,7 +225,7 @@ namespace SharpAlert.DataProcessing
 
                                                     foreach (var plug in PluginManager.Plugins)
                                                     {
-                                                        if (!plug.AlertTBR(info.ToJson()))
+                                                        if (!plug.AlertTBR(info))
                                                         {
                                                             throw new Exception($"The plugin \"{plug.FriendlyName}\" declined the relay request for \"{relayItem.Name}\".");
                                                         }
@@ -243,6 +242,11 @@ namespace SharpAlert.DataProcessing
                                                         Notify.ShowNotification("This alert has been sent again via replay mode.",
                                                             info.AlertEventType,
                                                             ToolTipIcon.Info);
+                                                    }
+
+                                                    foreach (var plug in PluginManager.Plugins)
+                                                    {
+                                                        plug.AlertWBR(info);
                                                     }
 
                                                     if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.DiscordWebhook))

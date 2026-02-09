@@ -40,7 +40,9 @@
             EnableUpdatesBox = new System.Windows.Forms.CheckBox();
             ToolTipInformation = new System.Windows.Forms.ToolTip(components);
             AdvancedModeButton = new System.Windows.Forms.Button();
-            ProhibitUsers = new System.Windows.Forms.Timer(components);
+            SlidesBox = new System.Windows.Forms.PictureBox();
+            Reloader = new System.Windows.Forms.Timer(components);
+            ((System.ComponentModel.ISupportInitialize)SlidesBox).BeginInit();
             SuspendLayout();
             // 
             // DoneButton
@@ -50,9 +52,9 @@
             DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             DoneButton.Font = new System.Drawing.Font("Segoe UI", 16F);
             DoneButton.ForeColor = System.Drawing.Color.White;
-            DoneButton.Location = new System.Drawing.Point(12, 251);
+            DoneButton.Location = new System.Drawing.Point(280, 251);
             DoneButton.Name = "DoneButton";
-            DoneButton.Size = new System.Drawing.Size(396, 40);
+            DoneButton.Size = new System.Drawing.Size(128, 40);
             DoneButton.TabIndex = 13;
             DoneButton.Text = "Close";
             DoneButton.UseMnemonic = false;
@@ -196,11 +198,26 @@
             AdvancedModeButton.UseVisualStyleBackColor = false;
             AdvancedModeButton.Click += AdvancedModeButton_Click;
             // 
-            // ProhibitUsers
+            // SlidesBox
             // 
-            ProhibitUsers.Enabled = true;
-            ProhibitUsers.Interval = 5000;
-            ProhibitUsers.Tick += ProhibitUsers_Tick;
+            SlidesBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            SlidesBox.ErrorImage = Properties.Resources.announce;
+            SlidesBox.ImageLocation = "https://bunnytub.com/SharpAlert-Slides/Announcement.png";
+            SlidesBox.InitialImage = Properties.Resources.announce;
+            SlidesBox.Location = new System.Drawing.Point(12, 251);
+            SlidesBox.Name = "SlidesBox";
+            SlidesBox.Size = new System.Drawing.Size(262, 40);
+            SlidesBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            SlidesBox.TabIndex = 15;
+            SlidesBox.TabStop = false;
+            ToolTipInformation.SetToolTip(SlidesBox, "Click here to go to the website associated with this slide.");
+            SlidesBox.Click += SlidesBox_Click;
+            // 
+            // Reloader
+            // 
+            Reloader.Enabled = true;
+            Reloader.Interval = 60000;
+            Reloader.Tick += Reloader_Tick;
             // 
             // SimpleConfigurationForm
             // 
@@ -208,6 +225,7 @@
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(420, 303);
             ControlBox = false;
+            Controls.Add(SlidesBox);
             Controls.Add(AdvancedModeButton);
             Controls.Add(EnableUpdatesBox);
             Controls.Add(ProgramCreditsButton);
@@ -229,6 +247,7 @@
             Text = "SharpAlert - Global Settings";
             FormClosing += ManagementForm_FormClosing;
             Load += ConfigurationForm_Load;
+            ((System.ComponentModel.ISupportInitialize)SlidesBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
 
@@ -245,7 +264,8 @@
         private System.Windows.Forms.Button ProgramCreditsButton;
         private System.Windows.Forms.CheckBox EnableUpdatesBox;
         private System.Windows.Forms.ToolTip ToolTipInformation;
-        private System.Windows.Forms.Timer ProhibitUsers;
         private System.Windows.Forms.Button AdvancedModeButton;
+        private System.Windows.Forms.PictureBox SlidesBox;
+        private System.Windows.Forms.Timer Reloader;
     }
 }

@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<IncludeSymbols>false</IncludeSymbols>
 		<PackageId>SharpAlert.PluginBase</PackageId>
-		<Version>1.0.3</Version>
+		<Version>1.0.4</Version>
 		<Authors>BunnyTub</Authors>
 		<Description>The interface package for creating SharpAlert plugins.</Description>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>

@@ -29,10 +29,13 @@
 
 	<ItemGroup>
 	  <Compile Remove="bin\**" />
+	  <Compile Remove="Debug-Remote\**" />
 	  <Compile Remove="SpeakingAssets\**" />
 	  <EmbeddedResource Remove="bin\**" />
+	  <EmbeddedResource Remove="Debug-Remote\**" />
 	  <EmbeddedResource Remove="SpeakingAssets\**" />
 	  <None Remove="bin\**" />
+	  <None Remove="Debug-Remote\**" />
 	  <None Remove="SpeakingAssets\**" />
 	</ItemGroup>
 
@@ -101,6 +104,9 @@
 		  <SubType>Form</SubType>
 		</Compile>
 		<Compile Update="Languages\LanguageSelectionForm.cs">
+		  <SubType>Form</SubType>
+		</Compile>
+		<Compile Update="ProgramWorker\UninstallingForm.cs">
 		  <SubType>Form</SubType>
 		</Compile>
 		<Compile Update="Properties\Resources.Designer.cs">

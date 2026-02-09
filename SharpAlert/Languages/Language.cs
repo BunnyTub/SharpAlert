@@ -43,16 +43,20 @@ namespace SharpAlert.Languages
             {
                 if (langCode == "en")
                 {
-                    MessageBox.Show("There was a problem processing language data.\r\n" +
-                        "You may have a corrupted copy of SharpAlert.", "SharpAlert - Language Processing",
+                    MessageBox.Show("The language data is invalid or corrupt.\r\n" +
+                        "There may be more corrupted data.", "SharpAlert",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                     return;
                 }
 
-                MessageBox.Show("There was a problem processing language data.\r\n" +
-                    "The language data may be corrupted.", "SharpAlert - Language Processing",
+                MessageBox.Show("The language data is invalid or corrupt.\r\n" +
+                    "The current language will be reset.", "SharpAlert",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                LanguageSelectionForm lsf = new();
+                lsf.ShowDialog();
+                lsf.Dispose();
                 
                 return;
                 //throw new FileNotFoundException($"No such 'Language_{langCode}.json' file exists.");
@@ -142,6 +146,7 @@ namespace SharpAlert.Languages
 
                 if (!string.IsNullOrWhiteSpace(fallback)) return fallback;
                 else return $"{key}...?";
+                
                 //throw new FileNotFoundException($"No such 'Language_{langCode}.json' file exists.");
             }
 

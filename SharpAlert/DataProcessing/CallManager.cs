@@ -17,7 +17,7 @@ namespace SharpAlert.DataProcessing
     {
         public static void MakeAlertCall(AlertInfo info)
         {
-            //return;
+            return;
             try
             {
                 //string callTo = "0@192.168.1.35";

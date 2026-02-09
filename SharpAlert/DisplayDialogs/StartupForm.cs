@@ -153,7 +153,7 @@ namespace SharpAlert.DisplayDialogs
 
         private void AutoClose_Tick(object sender, EventArgs e)
         {
-            if (HaidaWorker.ServiceRunnerScheduled)
+            //if (HaidaWorker.ServiceRunnerScheduled)
             {
                 // introduce fade-in and fade-out animation if I ever figure out how to use the Windows API
                 this.Close();

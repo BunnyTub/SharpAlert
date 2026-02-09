@@ -36,7 +36,7 @@
             ExampleBarBox = new System.Windows.Forms.PictureBox();
             TitleText = new System.Windows.Forms.Label();
             LogoBox = new System.Windows.Forms.PictureBox();
-            label2 = new System.Windows.Forms.Label();
+            BottomText = new System.Windows.Forms.Label();
             DescriptionText = new System.Windows.Forms.Label();
             FadeInAnimation = new System.Windows.Forms.Timer(components);
             SkipButton = new System.Windows.Forms.Button();
@@ -116,17 +116,17 @@
             LogoBox.TabIndex = 22;
             LogoBox.TabStop = false;
             // 
-            // label2
+            // BottomText
             // 
-            label2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            label2.Font = new System.Drawing.Font("Segoe UI", 9F);
-            label2.Location = new System.Drawing.Point(9, 239);
-            label2.Margin = new System.Windows.Forms.Padding(0);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(342, 41);
-            label2.TabIndex = 26;
-            label2.Text = "To go through the setup more than once, reset the program.\r\nCreated by BunnyTub. More credits can be found in Settings.";
-            label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            BottomText.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            BottomText.Font = new System.Drawing.Font("Segoe UI", 9F);
+            BottomText.Location = new System.Drawing.Point(9, 239);
+            BottomText.Margin = new System.Windows.Forms.Padding(0);
+            BottomText.Name = "BottomText";
+            BottomText.Size = new System.Drawing.Size(342, 41);
+            BottomText.TabIndex = 26;
+            BottomText.Text = "To go through the setup more than once, reset the program.\r\nCreated by BunnyTub. More credits can be found in Settings.";
+            BottomText.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // DescriptionText
             // 
@@ -167,7 +167,7 @@
             Controls.Add(ExampleBarBox);
             Controls.Add(DescriptionText);
             Controls.Add(TitleText);
-            Controls.Add(label2);
+            Controls.Add(BottomText);
             Controls.Add(DoneButton);
             Controls.Add(LogoBox);
             Controls.Add(SideLogoBox);
@@ -196,7 +196,7 @@
         private System.Windows.Forms.Button DoneButton;
         private System.Windows.Forms.Label TitleText;
         private System.Windows.Forms.PictureBox LogoBox;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label BottomText;
         private System.Windows.Forms.Label DescriptionText;
         private System.Windows.Forms.Timer FadeInAnimation;
         private System.Windows.Forms.PictureBox SideLogoBox;

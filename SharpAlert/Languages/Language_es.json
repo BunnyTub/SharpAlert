@@ -4,6 +4,24 @@
   "LanguageRestartProgram": "Reiniciar Programa",
   "LanguageChanged": "Se ha cambiado el idioma.\r\nVuelva a abrir SharpAlert para ver el nuevo idioma en todas partes.",
 
+  "PathText": "Ruta:",
+  "ResetCache": "Limpiar caché",
+  "ResetHistory": "Limpiar historial",
+  "ShowDashboard": "Abrir panel",
+  "ShowSettings": "Abrir configuración",
+  "ResetSettings": "Restablecer configuración",
+  "ChangeLanguage": "Cambiar idioma",
+  "ToggleDNDMode": "Alternar No molestar",
+  "QuitApp": "Salir",
+  "QuitAppMessage": "¿Está seguro de que desea salir?",
+
+  "SetupWelcome_Title": "¡Bienvenido a SharpAlert!",
+  "SetupWelcome_Description": "Obtenga alertas fácilmente con SharpAlert.\r\n\r\nEsta configuración le guiará para configurar rápidamente el programa. Puede encontrar más opciones de personalización haciendo clic derecho en el icono de notificación y seleccionando el botón \"Open Settings\".",
+  "SetupWelcome_BottomText": "Para realizar la configuración más de una vez, reinicie el programa.\r\nCreado por BunnyTub. Se pueden encontrar más créditos en Configuración.",
+  "SetupButton_Skip": "Skip",
+  "SetupButton_Next": "Next",
+  "SetupWelcome_SkipQuestion": "¿Desea omitir el asistente de configuración y comenzar a usar SharpAlert sin preguntas adicionales?",
+
   "AlertSeverity_Extreme": "ALERTA EXTREMA",
   "AlertSeverity_Severe": "ALERTA SEVERA",
   "AlertSeverity_Moderate": "ALERTA MODERADA",
@@ -11,6 +29,7 @@
   "AlertSeverity_Unknown": "ALERTA DESCONOCIDA",
   "AlertCancelled": "ALERTA CANCELADA",
 
+  "WindowTitle_Setup": "Configuración inicial",
   "WindowTitle_GlobalSettings": "Configuración Global",
 
   "SettingsButton_AlertSettings": "Ajustes Alertas",

@@ -30,14 +30,31 @@
         /// <summary>
         /// This method is called right before SharpAlert tries to relay an alert.
         /// </summary>
-        /// <param name="AlertInfoJSON">Contains a JSONified AlertInfo class.</param>
+        /// <param name="info">Contains a class with alert data.</param>
         /// <returns><c>True</c> if the alert should be relayed. <c>False</c> if the alert should not be relayed.</returns>
-        bool AlertTBR(string AlertInfoJSON); // alert TO BE RELAYED
+        bool AlertTBR(AlertContents.AlertInfo info) // TO BE RELAYED
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// This method is called right after SharpAlert tries to relay an alert.
+        /// </summary>
+        /// <param name="info">Contains a class with alert data.</param>
+        void AlertWBR(AlertContents.AlertInfo info) // WILL BE RELAYED
+        {
+        }
 
         /// <summary>
         /// Invoke this event to relay an alert through SharpAlert.
         /// </summary>
         /// <remarks>SharpAlert will be listening for this event, but it will never invoke it. This event should not be subscribed to.</remarks>
         event Action<AlertContents.AlertInfo>? AlertOutbound;
+        
+        /// <summary>
+        /// Invoke this event to relay an alert based on CAP (XML) through SharpAlert.
+        /// </summary>
+        /// <remarks>SharpAlert will be listening for this event, but it will never invoke it. This event should not be subscribed to.</remarks>
+        event Action<string>? AlertXMLOutbound;
     }
 }

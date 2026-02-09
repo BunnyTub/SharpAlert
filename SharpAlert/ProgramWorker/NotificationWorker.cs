@@ -7,7 +7,6 @@ using SharpAlert.AlertComponents.Dashboard;
 using SharpAlert.ConfigurationDialogs;
 using SharpAlert.Languages;
 using SharpAlert.Properties;
-using static SharpAlert.ProgramWorker.HaidaWorker;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 
 namespace SharpAlert.ProgramWorker
@@ -105,80 +104,6 @@ namespace SharpAlert.ProgramWorker
                 }
             };
 
-            contextMenu.Items.Add(new ToolStripMenuItem("Show Console", null, (sender, arg) =>
-            {
-                IgnoreRightClick = true;
-                if (MessageBox.Show("Do you want to show the console?\r\n" +
-                    "Closing the console may terminate the program.",
-                    "SharpAlert",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    AllocateTerminal();
-                }
-                IgnoreRightClick = false;
-            }));
-
-            contextMenu.Items.Add(new ToolStripSeparator());
-
-            contextMenu.Items.Add(new ToolStripLabel($"Using {Path.GetFileName(QuickSettings.ConfigPath)}"));
-            
-            contextMenu.Items.Add(new ToolStripMenuItem("Clear Cache", null, (sender, arg) =>
-            {
-                IgnoreRightClick = true;
-                if (MessageBox.Show("Clear (and reset) the cache?\r\n" +
-                    "This may take a few seconds.",
-                    "SharpAlert",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    cache.ServiceRun(false);
-                }
-                IgnoreRightClick = false;
-            }));
-            
-            contextMenu.Items.Add(new ToolStripMenuItem("Clear History", null, (sender, arg) =>
-            {
-                IgnoreRightClick = true;
-                if (MessageBox.Show("Clear the alert history?\r\n" +
-                    "(Any previous alerts may be relayed again!)",
-                    "SharpAlert",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    lock (SharpDataHistory)
-                    {
-                        lock (SharpDataRelayedNamesHistory)
-                        {
-                            SharpDataHistory.Clear();
-                            SharpDataRelayedNamesHistory.Clear();
-                        }
-                    }
-                }
-                IgnoreRightClick = false;
-            }));
-            
-            //contextMenu.Items.Add(new ToolStripMenuItem("Clear Garbage", null, (sender, arg) =>
-            //{
-            //    IgnoreRightClick = true;
-            //    if (MessageBox.Show("Forcefully clear garbage (by calling the Garbage Collector)?",
-            //        "SharpAlert",
-            //        MessageBoxButtons.YesNo,
-            //        MessageBoxIcon.Question) == DialogResult.Yes)
-            //    {
-            //        GC.Collect();
-            //    }
-            //    IgnoreRightClick = false;
-            //}));
-
-            //IgnoreRightClick = true;
-            //IgnoreRightClick = false;
-
-            //contextMenu.Items.Add(new ToolStripButton("Update SharpAlert", null, (sender, arg) => { }));
-            //contextMenu.Items.Add(new ToolStripSeparator());
-
-            //bool UpdatesAvailable = false;
-
             SpeakingManager.ProgramRunning();
 
             if (RemoteVersion == "service")
@@ -240,14 +165,84 @@ namespace SharpAlert.ProgramWorker
             string home = "https://bunnytub.com/SharpAlert";
             //string update = "https://bunnytub.com/SharpAlert?update=1";
 
-            contextMenu.Items.Add(new ToolStripLabel($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}",
-                Resources.AlertIcon, true, (obj, args) =>
-                {
-                    HackyWorkarounds.OpenURL(home);
-                })
+            contextMenu.Items.Add(new ToolStripLabel($"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}", Resources.AlertIcon, true, (obj, args) =>
             {
-                ToolTipText = "Very mindful, very demure."
-            });
+                HackyWorkarounds.OpenURL(home);
+            }));
+
+            contextMenu.Items.Add(new ToolStripLabel($"{Language.Get("PathText", "Path:")} {Path.GetFileName(QuickSettings.ConfigPath)}"));
+
+            contextMenu.Items.Add(new ToolStripSeparator());
+
+            //contextMenu.Items.Add(new ToolStripMenuItem("Show Console", null, (sender, arg) =>
+            //{
+            //    IgnoreRightClick = true;
+            //    if (MessageBox.Show("Do you want to show the console?\r\n" +
+            //        "Closing the console may terminate the program.",
+            //        "SharpAlert",
+            //        MessageBoxButtons.YesNo,
+            //        MessageBoxIcon.Question) == DialogResult.Yes)
+            //    {
+            //        AllocateTerminal();
+            //    }
+            //    IgnoreRightClick = false;
+            //}));
+
+            //contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ResetCache", "Clear Cache"), null, (sender, arg) =>
+            //{
+            //    IgnoreRightClick = true;
+            //    if (MessageBox.Show("Clear (and reset) the cache?\r\n" +
+            //        "This may take a few seconds.",
+            //        "SharpAlert",
+            //        MessageBoxButtons.YesNo,
+            //        MessageBoxIcon.Question) == DialogResult.Yes)
+            //    {
+            //        cache.ServiceRun(false);
+            //    }
+            //    IgnoreRightClick = false;
+            //}));
+            
+            //contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ResetHistory", "Clear History"), null, (sender, arg) =>
+            //{
+            //    IgnoreRightClick = true;
+            //    if (MessageBox.Show("Clear the alert history?\r\n" +
+            //        "(Any previous alerts may be relayed again!)",
+            //        "SharpAlert",
+            //        MessageBoxButtons.YesNo,
+            //        MessageBoxIcon.Question) == DialogResult.Yes)
+            //    {
+            //        lock (SharpDataHistory)
+            //        {
+            //            lock (SharpDataRelayedNamesHistory)
+            //            {
+            //                SharpDataHistory.Clear();
+            //                SharpDataRelayedNamesHistory.Clear();
+            //            }
+            //        }
+            //    }
+            //    IgnoreRightClick = false;
+            //}));
+            
+            //contextMenu.Items.Add(new ToolStripMenuItem("Clear Garbage", null, (sender, arg) =>
+            //{
+            //    IgnoreRightClick = true;
+            //    if (MessageBox.Show("Forcefully clear garbage (by calling the Garbage Collector)?",
+            //        "SharpAlert",
+            //        MessageBoxButtons.YesNo,
+            //        MessageBoxIcon.Question) == DialogResult.Yes)
+            //    {
+            //        GC.Collect();
+            //    }
+            //    IgnoreRightClick = false;
+            //}));
+
+            //IgnoreRightClick = true;
+            //IgnoreRightClick = false;
+
+            //contextMenu.Items.Add(new ToolStripButton("Update SharpAlert", null, (sender, arg) => { }));
+            //contextMenu.Items.Add(new ToolStripSeparator());
+
+            //bool UpdatesAvailable = false;
 
             //if (UpdatesAvailable)
             //{
@@ -266,11 +261,13 @@ namespace SharpAlert.ProgramWorker
                 ThreadDrool.StartAndForget(() => new DashboardForm(false).ShowDialog());
             }
 
-            contextMenu.Items.Add(new ToolStripMenuItem("Open Dashboard", null, (sender, arg) =>
+            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ShowDashboard", "Open Dashboard"), null, (sender, arg) =>
             {
                 //MessageBox.Show("The dashboard lists recently relayed alerts. If you close and re-open the dashboard, the list will start from scratch!");
                 ThreadDrool.StartAndForget(() => new DashboardForm(false).ShowDialog());
             }));
+
+            contextMenu.Items.Add(new ToolStripSeparator());
 
             //contextMenu.Items.Add(new ToolStripMenuItem("Open Alert Sharing", null, (sender, arg) =>
             //{
@@ -280,7 +277,7 @@ namespace SharpAlert.ProgramWorker
             //    IgnoreRightClick = false;
             //}));
 
-            contextMenu.Items.Add(new ToolStripMenuItem("Open Settings", null, (sender, arg) =>
+            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ShowSettings", "Open Settings"), null, (sender, arg) =>
             {
                 IgnoreRightClick = true;
 
@@ -305,7 +302,7 @@ namespace SharpAlert.ProgramWorker
                 IgnoreRightClick = false;
             }));
 
-            contextMenu.Items.Add(new ToolStripMenuItem("Reset Settings", null, (sender, arg) =>
+            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ResetSettings", "Reset Settings"), null, (sender, arg) =>
             {
                 if (MessageBox.Show("Reset everything to factory defaults now?\r\n" +
                     "SharpAlert will immediately close if you continue.",
@@ -321,7 +318,7 @@ namespace SharpAlert.ProgramWorker
 
             contextMenu.Items.Add(new ToolStripSeparator());
 
-            contextMenu.Items.Add(new ToolStripMenuItem("Change Language", null, (sender, arg) =>
+            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ChangeLanguage", "Change Language"), null, (sender, arg) =>
             {
                 IgnoreRightClick = true;
                 LanguageSelectionForm lsf = new();
@@ -348,7 +345,7 @@ namespace SharpAlert.ProgramWorker
             //    File.WriteAllText(filepath, $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}\r\n\r\n{NotificationHistory}");
             //}));
 
-            contextMenu.Items.Add(new ToolStripMenuItem("Do Not Disturb", null, (sender, arg) =>
+            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ToggleDNDMode", "Toggle Do Not Disturb"), null, (sender, arg) =>
             {
                 IgnoreRightClick = true;
                 if (QuickSettings.Instance.DisableAlertProcessing)
@@ -386,9 +383,9 @@ namespace SharpAlert.ProgramWorker
                 IgnoreRightClick = false;
             }));
             
-            contextMenu.Items.Add(new ToolStripMenuItem("Quit", null, (sender, arg) =>
+            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("QuitApp", "Quit"), null, (sender, arg) =>
             {
-                DialogResult result = MessageBox.Show("Are you sure you want to quit?",
+                DialogResult result = MessageBox.Show(Language.Get("QuitAppMessage", "Are you sure you want to quit?"),
                     "SharpAlert",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);

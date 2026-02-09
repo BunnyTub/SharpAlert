@@ -41,6 +41,11 @@
             RegionUnitedStatesNWSBox = new System.Windows.Forms.CheckBox();
             RegionBrazilBox = new System.Windows.Forms.CheckBox();
             ChangeLaterText = new System.Windows.Forms.LinkLabel();
+            IPAWSInfoButton = new System.Windows.Forms.Button();
+            NWSInfoButton = new System.Windows.Forms.Button();
+            NAADSInfoButton = new System.Windows.Forms.Button();
+            SASMEXInfoButton = new System.Windows.Forms.Button();
+            IDAPInfoButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
             SuspendLayout();
             // 
@@ -86,7 +91,7 @@
             RegionUnitedStatesBox.Location = new System.Drawing.Point(111, 42);
             RegionUnitedStatesBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             RegionUnitedStatesBox.Name = "RegionUnitedStatesBox";
-            RegionUnitedStatesBox.Size = new System.Drawing.Size(184, 22);
+            RegionUnitedStatesBox.Size = new System.Drawing.Size(179, 25);
             RegionUnitedStatesBox.TabIndex = 11;
             RegionUnitedStatesBox.Text = "United States (IPAWS)";
             ToolTipInformation.SetToolTip(RegionUnitedStatesBox, "You can receive alerts from the United States via IPAWS (EAS & WEA).");
@@ -99,7 +104,7 @@
             RegionCanadaBox.Location = new System.Drawing.Point(111, 98);
             RegionCanadaBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             RegionCanadaBox.Name = "RegionCanadaBox";
-            RegionCanadaBox.Size = new System.Drawing.Size(153, 22);
+            RegionCanadaBox.Size = new System.Drawing.Size(147, 25);
             RegionCanadaBox.TabIndex = 13;
             RegionCanadaBox.Text = "Canada (NAADS)";
             ToolTipInformation.SetToolTip(RegionCanadaBox, "You can receive alerts from Canada via NAADS (National Alert Aggregation and Dissemination System).");
@@ -123,7 +128,7 @@
             RegionMexicoBox.Location = new System.Drawing.Point(111, 126);
             RegionMexicoBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             RegionMexicoBox.Name = "RegionMexicoBox";
-            RegionMexicoBox.Size = new System.Drawing.Size(159, 22);
+            RegionMexicoBox.Size = new System.Drawing.Size(151, 25);
             RegionMexicoBox.TabIndex = 14;
             RegionMexicoBox.Text = "Mexico (SASMEX)";
             ToolTipInformation.SetToolTip(RegionMexicoBox, "You can receive alerts from Mexico via SASMEX (Sistema de Alerta Sísmica Mexicano).");
@@ -151,7 +156,7 @@
             RegionUnitedStatesNWSBox.Location = new System.Drawing.Point(111, 70);
             RegionUnitedStatesNWSBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             RegionUnitedStatesNWSBox.Name = "RegionUnitedStatesNWSBox";
-            RegionUnitedStatesNWSBox.Size = new System.Drawing.Size(172, 22);
+            RegionUnitedStatesNWSBox.Size = new System.Drawing.Size(170, 25);
             RegionUnitedStatesNWSBox.TabIndex = 12;
             RegionUnitedStatesNWSBox.Text = "United States (NWS)";
             ToolTipInformation.SetToolTip(RegionUnitedStatesNWSBox, "You can receive alerts from the United States via NWS (National Weather Service).");
@@ -164,7 +169,7 @@
             RegionBrazilBox.Location = new System.Drawing.Point(111, 154);
             RegionBrazilBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             RegionBrazilBox.Name = "RegionBrazilBox";
-            RegionBrazilBox.Size = new System.Drawing.Size(117, 22);
+            RegionBrazilBox.Size = new System.Drawing.Size(115, 25);
             RegionBrazilBox.TabIndex = 15;
             RegionBrazilBox.Text = "Brazil (IDAP)";
             ToolTipInformation.SetToolTip(RegionBrazilBox, "You can receive alerts from Brazil via IDAP (Divulgação de Alertas Públicos).");
@@ -177,10 +182,10 @@
             ChangeLaterText.ForeColor = System.Drawing.Color.Yellow;
             ChangeLaterText.LinkArea = new System.Windows.Forms.LinkArea(0, 96);
             ChangeLaterText.LinkColor = System.Drawing.Color.Yellow;
-            ChangeLaterText.Location = new System.Drawing.Point(9, 179);
+            ChangeLaterText.Location = new System.Drawing.Point(9, 182);
             ChangeLaterText.Margin = new System.Windows.Forms.Padding(0);
             ChangeLaterText.Name = "ChangeLaterText";
-            ChangeLaterText.Size = new System.Drawing.Size(442, 73);
+            ChangeLaterText.Size = new System.Drawing.Size(442, 70);
             ChangeLaterText.TabIndex = 13;
             ChangeLaterText.TabStop = true;
             ChangeLaterText.Text = "Some networks may have trouble accessing Brazil (IDAP).\r\nClick here to perform a connection test.\r\n\r\nTo change these options later, go to Settings.";
@@ -188,12 +193,87 @@
             ChangeLaterText.UseCompatibleTextRendering = true;
             ChangeLaterText.LinkClicked += ChangeLaterText_LinkClicked;
             // 
+            // IPAWSInfoButton
+            // 
+            IPAWSInfoButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            IPAWSInfoButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            IPAWSInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            IPAWSInfoButton.ForeColor = System.Drawing.Color.Yellow;
+            IPAWSInfoButton.Location = new System.Drawing.Point(296, 44);
+            IPAWSInfoButton.Name = "IPAWSInfoButton";
+            IPAWSInfoButton.Size = new System.Drawing.Size(23, 23);
+            IPAWSInfoButton.TabIndex = 53;
+            IPAWSInfoButton.Text = "?";
+            IPAWSInfoButton.UseVisualStyleBackColor = false;
+            IPAWSInfoButton.Click += IPAWSInfoButton_Click;
+            // 
+            // NWSInfoButton
+            // 
+            NWSInfoButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            NWSInfoButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            NWSInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            NWSInfoButton.ForeColor = System.Drawing.Color.Yellow;
+            NWSInfoButton.Location = new System.Drawing.Point(287, 72);
+            NWSInfoButton.Name = "NWSInfoButton";
+            NWSInfoButton.Size = new System.Drawing.Size(23, 23);
+            NWSInfoButton.TabIndex = 54;
+            NWSInfoButton.Text = "?";
+            NWSInfoButton.UseVisualStyleBackColor = false;
+            NWSInfoButton.Click += NWSInfoButton_Click;
+            // 
+            // NAADSInfoButton
+            // 
+            NAADSInfoButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            NAADSInfoButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            NAADSInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            NAADSInfoButton.ForeColor = System.Drawing.Color.Yellow;
+            NAADSInfoButton.Location = new System.Drawing.Point(264, 100);
+            NAADSInfoButton.Name = "NAADSInfoButton";
+            NAADSInfoButton.Size = new System.Drawing.Size(23, 23);
+            NAADSInfoButton.TabIndex = 55;
+            NAADSInfoButton.Text = "?";
+            NAADSInfoButton.UseVisualStyleBackColor = false;
+            NAADSInfoButton.Click += NAADSInfoButton_Click;
+            // 
+            // SASMEXInfoButton
+            // 
+            SASMEXInfoButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            SASMEXInfoButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            SASMEXInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            SASMEXInfoButton.ForeColor = System.Drawing.Color.Yellow;
+            SASMEXInfoButton.Location = new System.Drawing.Point(268, 128);
+            SASMEXInfoButton.Name = "SASMEXInfoButton";
+            SASMEXInfoButton.Size = new System.Drawing.Size(23, 23);
+            SASMEXInfoButton.TabIndex = 56;
+            SASMEXInfoButton.Text = "?";
+            SASMEXInfoButton.UseVisualStyleBackColor = false;
+            SASMEXInfoButton.Click += SASMEXInfoButton_Click;
+            // 
+            // IDAPInfoButton
+            // 
+            IDAPInfoButton.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            IDAPInfoButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            IDAPInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            IDAPInfoButton.ForeColor = System.Drawing.Color.Yellow;
+            IDAPInfoButton.Location = new System.Drawing.Point(232, 156);
+            IDAPInfoButton.Name = "IDAPInfoButton";
+            IDAPInfoButton.Size = new System.Drawing.Size(23, 23);
+            IDAPInfoButton.TabIndex = 57;
+            IDAPInfoButton.Text = "?";
+            IDAPInfoButton.UseVisualStyleBackColor = false;
+            IDAPInfoButton.Click += IDAPInfoButton_Click;
+            // 
             // ChooseRegionForm
             // 
             AcceptButton = DoneButton;
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(532, 261);
+            Controls.Add(IDAPInfoButton);
+            Controls.Add(SASMEXInfoButton);
+            Controls.Add(NAADSInfoButton);
+            Controls.Add(NWSInfoButton);
+            Controls.Add(IPAWSInfoButton);
             Controls.Add(RegionBrazilBox);
             Controls.Add(RegionUnitedStatesNWSBox);
             Controls.Add(LinkButton);
@@ -237,5 +317,10 @@
         private System.Windows.Forms.Button LinkButton;
         private System.Windows.Forms.CheckBox RegionUnitedStatesNWSBox;
         private System.Windows.Forms.CheckBox RegionBrazilBox;
+        private System.Windows.Forms.Button IPAWSInfoButton;
+        private System.Windows.Forms.Button NWSInfoButton;
+        private System.Windows.Forms.Button NAADSInfoButton;
+        private System.Windows.Forms.Button SASMEXInfoButton;
+        private System.Windows.Forms.Button IDAPInfoButton;
     }
 }

@@ -27,17 +27,17 @@ namespace SharpAlert
             get;
             private set;
         } = QuickSettings.Instance.LegacyAudioPlayer;
-        private static readonly SoundPlayer LegacyAudioPlayer = new SoundPlayer(); 
-        private static readonly List<WasapiOut> Outputs = new List<WasapiOut>();
-        private static readonly List<WasapiOut> TTSOutputs = new List<WasapiOut>();
-        public static readonly SpeechSynthesizer engine = new SpeechSynthesizer();
+        private static readonly SoundPlayer LegacyAudioPlayer = new(); 
+        private static readonly List<WasapiOut> Outputs = [];
+        private static readonly List<WasapiOut> TTSOutputs = [];
+        public static readonly SpeechSynthesizer engine = new();
         private static bool HoldIt = false;
         private static bool TTSHoldIt = false;
         private static bool DeviceTreeFetched = false;
 
-        public static readonly List<MMDevice> AudioDevicesList = new List<MMDevice>();
+        public static readonly List<MMDevice> AudioDevicesList = [];
 
-        private static readonly object DeviceLock = new object();
+        private static readonly object DeviceLock = new();
 
         private static MMDevice _CurrentAudioDevice = null;
         //private static bool _Refresh = false;
@@ -54,10 +54,10 @@ namespace SharpAlert
                         return _CurrentAudioDevice;
                     }
 
-                    var devices = RefreshAudioDevices(); // Will set CurrentAudioDevice if needed
+                    var devices = RefreshAudioDevices();
                     //_Refresh = true;
 
-                    return _CurrentAudioDevice; // Return after refresh
+                    return _CurrentAudioDevice;
                 }
             }
             set
@@ -69,11 +69,6 @@ namespace SharpAlert
                 }
             }
         }
-
-
-        //public static void RefreshCallLoop()
-        //{
-        //}
 
         public static void StopAllAudio(bool NoEOM)
         {
@@ -152,7 +147,7 @@ namespace SharpAlert
                     HoldIt = true;
                     TTSHoldIt = true;
 
-                    List<WasapiOut> Outs = new List<WasapiOut>();
+                    List<WasapiOut> Outs = [];
                     lock (Outputs)
                     {
                         foreach (WasapiOut output in Outputs)
@@ -212,7 +207,7 @@ namespace SharpAlert
                 {
                     TTSHoldIt = true;
 
-                    List<WasapiOut> Outs = new List<WasapiOut>();
+                    List<WasapiOut> Outs = [];
                     lock (Outputs)
                     {
                         foreach (WasapiOut output in TTSOutputs)
@@ -276,49 +271,47 @@ namespace SharpAlert
                 DeviceTreeFetched = true;
                 AudioDevicesList.Clear();
 
-                using (var enumerator = new MMDeviceEnumerator())
+                using var enumerator = new MMDeviceEnumerator();
+                var devices = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
+
+                bool deviceConnected = _CurrentAudioDevice?.State == DeviceState.Active;
+
+                foreach (var device in devices)
                 {
-                    var devices = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
+                    Console.WriteLine($"[Audio Manager] Found audio device: {device.FriendlyName}");
+                    AudioDevicesList.Add(device);
+                }
 
-                    bool deviceConnected = _CurrentAudioDevice?.State == DeviceState.Active;
-
-                    foreach (var device in devices)
+                if (!deviceConnected && devices.Count > 0)
+                {
+                    if (_CurrentAudioDevice != null)
                     {
-                        Console.WriteLine($"[Audio Manager] Found audio device: {device.FriendlyName}");
-                        AudioDevicesList.Add(device);
+                        Console.WriteLine("[Audio Manager] The audio device object will be reset, because the previous one wasn't found.");
                     }
+                    CurrentAudioDevice = devices[0];
+                }
 
-                    if (!deviceConnected && devices.Count > 0)
-                    {
-                        if (_CurrentAudioDevice != null)
-                        {
-                            Console.WriteLine("[Audio Manager] The audio device object will be reset, because the previous one wasn't found.");
-                        }
-                        CurrentAudioDevice = devices[0];
-                    }
-
-                    if (devices.Count == 0)
-                    {
-                        Console.WriteLine("[Audio Manager] No audio device found.");
-                        CurrentAudioDevice = null;
-                        return devices;
-                    }
-
-                    MMDevice cad = AudioDevicesList.FirstOrDefault(device =>
-                        string.Equals(device.FriendlyName, QuickSettings.Instance.ProgramAudioOutput, StringComparison.OrdinalIgnoreCase));
-
-                    if (cad == null)
-                    {
-                        Console.WriteLine("[Audio Manager] The specified device name in the app configuration was not found.");
-                    }
-                    else
-                    {
-                        CurrentAudioDevice = cad;
-                    }
-
-                    Console.WriteLine("[Audio Manager] Finished audio device tree refresh.");
+                if (devices.Count == 0)
+                {
+                    Console.WriteLine("[Audio Manager] No audio device found.");
+                    CurrentAudioDevice = null;
                     return devices;
                 }
+
+                MMDevice cad = AudioDevicesList.FirstOrDefault(device =>
+                    string.Equals(device.FriendlyName, QuickSettings.Instance.ProgramAudioOutput, StringComparison.OrdinalIgnoreCase));
+
+                if (cad == null)
+                {
+                    Console.WriteLine("[Audio Manager] The specified device name in the app configuration was not found.");
+                }
+                else
+                {
+                    CurrentAudioDevice = cad;
+                }
+
+                Console.WriteLine("[Audio Manager] Finished audio device tree refresh.");
+                return devices;
             }
         }
 

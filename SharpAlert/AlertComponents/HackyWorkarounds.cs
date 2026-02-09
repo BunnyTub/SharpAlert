@@ -18,41 +18,56 @@ namespace SharpAlert.AlertComponents
         /// <param name="URL">The URL to open in the system's default web browser.</param>
         public static void OpenURL(string URL)
         {
-            try
-            {
-                Process.Start(new ProcessStartInfo { FileName = URL, UseShellExecute = true });
-            }
-            catch (Exception)
+            bool ValidURL = Uri.TryCreate(URL, UriKind.Absolute, out Uri uriResult)
+                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+            if (ValidURL)
             {
                 try
                 {
-                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                    {
-                        URL = URL.Replace("&", "^&");
-                        Process.Start(new ProcessStartInfo("cmd", $"/c start {URL}") { CreateNoWindow = true });
-                    }
-                    else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                    {
-                        Process.Start("xdg-open", URL);
-                    }
-                    else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-                    {
-                        Process.Start("open", URL);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Unable to open the browser.\r\n" +
-                            "Your system may not support the methods used.\r\n" +
-                            "Here's the URL:\r\n" +
-                            $"{URL}");
-                    }
+                    Process.Start(new ProcessStartInfo { FileName = URL, UseShellExecute = true });
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Unable to open the web browser.\r\n" +
-                        "Here's the URL:\r\n" +
-                        $"{URL}");
+                    try
+                    {
+                        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        {
+                            URL = URL.Replace("&", "^&");
+                            Process.Start(new ProcessStartInfo("cmd", $"/c start {URL}") { CreateNoWindow = true });
+                        }
+                        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                        {
+                            Process.Start("xdg-open", URL);
+                        }
+                        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                        {
+                            Process.Start("open", URL);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Unable to open the browser.\r\n" +
+                                "Your system may not support the methods used.\r\n" +
+                                "Here's the URL:\r\n" +
+                                $"{URL}",
+                                "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Unable to open the web browser.\r\n" +
+                            "Here's the URL:\r\n" +
+                            $"{URL}",
+                            "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
                 }
+            }
+            else
+            {
+                MessageBox.Show("The URL might pose a security risk, so it was not opened.\r\n" +
+                    "Here's the URL:\r\n" +
+                    $"{URL}",
+                    "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 

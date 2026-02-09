@@ -4,6 +4,24 @@
   "LanguageRestartProgram": "アプリを再起動",
   "LanguageChanged": "言語が変更されました。\r\nSharpAlert を再度開くと、新しい言語がどこでも表示されます。",
 
+  "PathText": "パス:",
+  "ResetCache": "キャッシュをクリア",
+  "ResetHistory": "履歴をクリア",
+  "ShowDashboard": "ダッシュボードを開く",
+  "ShowSettings": "設定を開く",
+  "ResetSettings": "設定をリセット",
+  "ChangeLanguage": "言語を変更",
+  "ToggleDNDMode": "通知をオフにする",
+  "QuitApp": "終了",
+  "QuitAppMessage": "終了してもよろしいですか？",
+
+  "SetupWelcome_Title": "ようこそSharpAlertへ!",
+  "SetupWelcome_Description": "SharpAlertで警報を簡単に受け取れます。\r\n\r\n ここでは、プログラムを素早くセットアップすることをお手伝いします。通知アイコンを右クリックし、「設定を開く」ボタンをクリックすると、さらに多くのカスタマイズオプションが利用できます。",
+  "SetupWelcome_BottomText": "セットアップを再実行するには、リセットが必要です。\r\n作者: BunnyTub | クレジットは設定にあります。",
+  "SetupButton_Skip": "スキップ",
+  "SetupButton_Next": "次へ",
+  "SetupWelcome_SkipQuestion": "セットアップウィザードをスキップして、SharpAlertをすぐに使い始めますか?",
+
   "AlertSeverity_Extreme": "最重大警報",
   "AlertSeverity_Severe": "重大警報",
   "AlertSeverity_Moderate": "警報",
@@ -11,6 +29,7 @@
   "AlertSeverity_Unknown": "不明な警報",
   "AlertCancelled": "警報解除",
 
+  "WindowTitle_Setup": "セットアップ",
   "WindowTitle_GlobalSettings": "全体設定",
 
   "SettingsButton_AlertSettings": "警報設定",

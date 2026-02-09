@@ -144,6 +144,58 @@ namespace SharpAlert.ConfigurationDialogs
             inf.ShowDialog();
             inf.Dispose();
         }
+
+        private void IPAWSInfoButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("IPAWS (Integrated Public Alert & Warning System) OPEN EAS (Emergency Alert System) Service\r\n" +
+                "Region(s): United States\r\n" +
+                "URL 1: https://apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/eas/recent/2019-12-31T11:59:59Z/\r\n" +
+                "URL 2: https://apps.fema.gov/IPAWSOPEN_EAS_SERVICE/rest/PublicWEA/recent/2019-12-31T11:59:59Z/ (for Wireless Emergency Alerts)",
+                Text,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+        private void NWSInfoButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("NWS (National Weather Service) Atom\r\n" +
+                "Region(s): United States\r\n" +
+                "URL: https://api.weather.gov/alerts/active.atom/",
+                Text,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+        private void NAADSInfoButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("NAADS (National Alert Aggregation and Dissemination System) | Alert Ready\r\n" +
+                "Region(s): Canada\r\n" +
+                "Raw TCP 1: streaming1.naad-adna.pelmorex.com:8080\r\n" +
+                "Raw TCP 2: streaming2.naad-adna.pelmorex.com:8080",
+                Text,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+        private void SASMEXInfoButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("SASMEX (Sistema de Alerta Sísmica Mexicano)\r\n" +
+                "Region(s): Mexico\r\n" +
+                "URL: https://rss.sasmex.net/api/v1/alerts/latest/cap/",
+                Text,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+        private void IDAPInfoButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("IDAP (Divulgação de Alertas Públicos)\r\n" +
+                "Region(s): Brazil\r\n" +
+                "URL: https://idapcap.mdr.gov.br/",
+                Text,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
     }
 }
 

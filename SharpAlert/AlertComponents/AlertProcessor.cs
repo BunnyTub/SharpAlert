@@ -131,7 +131,7 @@ namespace SharpAlert.AlertComponents
         /// Processes and relays the alert item.
         /// </summary>
         /// <param name="relayItem">The item to be processed.</param>
-        private AlertInfo SubProcessAlertItem(SharpDataItem relayItem, bool ReplayMode, bool IgnoreDiscards)
+        private static AlertInfo SubProcessAlertItem(SharpDataItem relayItem, bool ReplayMode, bool IgnoreDiscards)
         {
             lock (AlertLock)
             {

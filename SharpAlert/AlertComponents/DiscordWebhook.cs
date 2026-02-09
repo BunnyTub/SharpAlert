@@ -540,8 +540,8 @@ namespace SharpAlert.AlertComponents
                     {
                         var sbFile = new StringBuilder();
                         sbFile.Append("\r\n--").Append(boundary).Append("\r\n");
-                        sbFile.Append("Content-Disposition: form-data; name=\"file\"; filename=\"Audio_Attachment.wav\"").Append("\r\n"); // just give up
-                        sbFile.Append("Content-Type: audio/wav").Append("\r\n");
+                        sbFile.Append("Content-Disposition: form-data; name=\"file\"; filename=\"Audio_Attachment.mp3\"").Append("\r\n"); // just give up
+                        sbFile.Append("Content-Type: audio/mpeg").Append("\r\n");
                         sbFile.Append("\r\n");
                         AudioFileHeaderBytes = Encoding.UTF8.GetBytes(sbFile.ToString());
 

@@ -1,9 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Windows.Forms;
+﻿using SharpAlert.AlertComponents;
 using SharpAlert.Languages;
 using SharpAlert.ProgramWorker;
 using SharpAlert.Properties;
+using System;
+using System.Linq;
+using System.Windows.Forms;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 
 namespace SharpAlert.ConfigurationDialogs
@@ -246,25 +247,6 @@ namespace SharpAlert.ConfigurationDialogs
             slots.Activate();
         }
 
-        //private bool IsUserLocked = false;
-
-        private void ProhibitUsers_Tick(object sender, EventArgs e)
-        {
-            //if (MainEntryPoint.IsUserLocked())
-            //{
-            //    IsUserLocked = true;
-            //    DiscordSettingsButton.Enabled = false;
-            //    try { if (dcf != null && !dcf.IsDisposed) dcf.Close(); } catch (Exception) { }
-            //    QuickSettings.Instance.DiscordWebhookFeaturesLocked = true;
-            //}
-            //else
-            //{
-            //    IsUserLocked = false;
-            //    DiscordSettingsButton.Enabled = true;
-            //    QuickSettings.Instance.DiscordWebhookFeaturesLocked = false;
-            //}
-        }
-
         public bool Swap = false;
 
         private void AdvancedModeButton_Click(object sender, EventArgs e)
@@ -272,6 +254,22 @@ namespace SharpAlert.ConfigurationDialogs
             QuickSettings.Instance.UseAdvancedView = true;
             Swap = true;
             this.Close();
+        }
+
+        private void Reloader_Tick(object sender, EventArgs e)
+        {
+            SlidesBox.LoadAsync("https://bunnytub.com/SharpAlert-Slides/Announcement.png");
+        }
+
+        private void SlidesBox_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                HackyWorkarounds.OpenURL(Client.GetStringAsync("https://bunnytub.com/SharpAlert-Slides/Announcement.txt").Result);
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

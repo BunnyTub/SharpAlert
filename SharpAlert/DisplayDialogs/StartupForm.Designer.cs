@@ -28,96 +28,94 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StartupForm));
-            this.IconBox = new System.Windows.Forms.PictureBox();
-            this.TitleText = new System.Windows.Forms.Label();
-            this.AutoClose = new System.Windows.Forms.Timer(this.components);
-            this.MainContentsPanel = new System.Windows.Forms.Panel();
-            this.FadeInAnimation = new System.Windows.Forms.Timer(this.components);
-            this.FadeOutAnimation = new System.Windows.Forms.Timer(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.IconBox)).BeginInit();
-            this.MainContentsPanel.SuspendLayout();
-            this.SuspendLayout();
+            IconBox = new System.Windows.Forms.PictureBox();
+            TitleText = new System.Windows.Forms.Label();
+            AutoClose = new System.Windows.Forms.Timer(components);
+            MainContentsPanel = new System.Windows.Forms.Panel();
+            FadeInAnimation = new System.Windows.Forms.Timer(components);
+            FadeOutAnimation = new System.Windows.Forms.Timer(components);
+            ((System.ComponentModel.ISupportInitialize)IconBox).BeginInit();
+            MainContentsPanel.SuspendLayout();
+            SuspendLayout();
             // 
             // IconBox
             // 
-            this.IconBox.Image = global::SharpAlert.Properties.Resources.WarningApp;
-            this.IconBox.Location = new System.Drawing.Point(8, 8);
-            this.IconBox.Margin = new System.Windows.Forms.Padding(0);
-            this.IconBox.Name = "IconBox";
-            this.IconBox.Size = new System.Drawing.Size(128, 128);
-            this.IconBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.IconBox.TabIndex = 0;
-            this.IconBox.TabStop = false;
-            this.IconBox.Click += new System.EventHandler(this.IconBox_Click);
+            IconBox.Image = Properties.Resources.WarningApp;
+            IconBox.Location = new System.Drawing.Point(8, 8);
+            IconBox.Margin = new System.Windows.Forms.Padding(0);
+            IconBox.Name = "IconBox";
+            IconBox.Size = new System.Drawing.Size(128, 128);
+            IconBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            IconBox.TabIndex = 0;
+            IconBox.TabStop = false;
+            IconBox.Click += IconBox_Click;
             // 
             // TitleText
             // 
-            this.TitleText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TitleText.Font = new System.Drawing.Font("Segoe UI", 62F, System.Drawing.FontStyle.Bold);
-            this.TitleText.Location = new System.Drawing.Point(139, 8);
-            this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(468, 128);
-            this.TitleText.TabIndex = 1;
-            this.TitleText.Text = "SharpAlert";
-            this.TitleText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            TitleText.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            TitleText.Font = new System.Drawing.Font("Segoe UI", 62F, System.Drawing.FontStyle.Bold);
+            TitleText.Location = new System.Drawing.Point(139, 8);
+            TitleText.Name = "TitleText";
+            TitleText.Size = new System.Drawing.Size(468, 128);
+            TitleText.TabIndex = 1;
+            TitleText.Text = "SharpAlert";
+            TitleText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // AutoClose
             // 
-            this.AutoClose.Interval = 2000;
-            this.AutoClose.Tick += new System.EventHandler(this.AutoClose_Tick);
+            AutoClose.Interval = 1200;
+            AutoClose.Tick += AutoClose_Tick;
             // 
             // MainContentsPanel
             // 
-            this.MainContentsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.MainContentsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MainContentsPanel.Controls.Add(this.TitleText);
-            this.MainContentsPanel.Controls.Add(this.IconBox);
-            this.MainContentsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainContentsPanel.Location = new System.Drawing.Point(0, 0);
-            this.MainContentsPanel.Name = "MainContentsPanel";
-            this.MainContentsPanel.Size = new System.Drawing.Size(620, 146);
-            this.MainContentsPanel.TabIndex = 3;
-            this.MainContentsPanel.Visible = false;
+            MainContentsPanel.BackColor = System.Drawing.Color.FromArgb(50, 0, 0);
+            MainContentsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            MainContentsPanel.Controls.Add(TitleText);
+            MainContentsPanel.Controls.Add(IconBox);
+            MainContentsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            MainContentsPanel.Location = new System.Drawing.Point(0, 0);
+            MainContentsPanel.Name = "MainContentsPanel";
+            MainContentsPanel.Size = new System.Drawing.Size(620, 146);
+            MainContentsPanel.TabIndex = 3;
+            MainContentsPanel.Visible = false;
             // 
             // FadeInAnimation
             // 
-            this.FadeInAnimation.Interval = 2;
-            this.FadeInAnimation.Tick += new System.EventHandler(this.FadeInAnimation_Tick);
+            FadeInAnimation.Interval = 2;
+            FadeInAnimation.Tick += FadeInAnimation_Tick;
             // 
             // FadeOutAnimation
             // 
-            this.FadeOutAnimation.Interval = 2;
-            this.FadeOutAnimation.Tick += new System.EventHandler(this.FadeOutAnimation_Tick);
+            FadeOutAnimation.Interval = 2;
+            FadeOutAnimation.Tick += FadeOutAnimation_Tick;
             // 
             // StartupForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.Red;
-            this.ClientSize = new System.Drawing.Size(620, 146);
-            this.ControlBox = false;
-            this.Controls.Add(this.MainContentsPanel);
-            this.DoubleBuffered = true;
-            this.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "StartupForm";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SharpAlert Splash Window";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.StartupForm_FormClosing);
-            this.Load += new System.EventHandler(this.StartupForm_Load);
-            this.Shown += new System.EventHandler(this.StartupForm_Shown);
-            ((System.ComponentModel.ISupportInitialize)(this.IconBox)).EndInit();
-            this.MainContentsPanel.ResumeLayout(false);
-            this.ResumeLayout(false);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            BackColor = System.Drawing.Color.Red;
+            ClientSize = new System.Drawing.Size(620, 146);
+            ControlBox = false;
+            Controls.Add(MainContentsPanel);
+            DoubleBuffered = true;
+            Font = new System.Drawing.Font("Segoe UI", 9F);
+            ForeColor = System.Drawing.Color.White;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "StartupForm";
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "SharpAlert Splash Window";
+            FormClosing += StartupForm_FormClosing;
+            Load += StartupForm_Load;
+            Shown += StartupForm_Shown;
+            ((System.ComponentModel.ISupportInitialize)IconBox).EndInit();
+            MainContentsPanel.ResumeLayout(false);
+            ResumeLayout(false);
 
         }
 

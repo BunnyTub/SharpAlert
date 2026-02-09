@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using SharpAlert.Properties;
+using SharpAlert.Languages;
 
 namespace SharpAlert.ProgramWorker
 {
@@ -9,6 +10,12 @@ namespace SharpAlert.ProgramWorker
         public SetupForm()
         {
             InitializeComponent();
+            Text = $"SharpAlert - {Language.Get("WindowTitle_Setup", "Setup")}";
+            TitleText.Text = Language.Get("SetupWelcome_Title", "Welcome to SharpAlert!");
+            DescriptionText.Text = Language.Get("SetupWelcome_Description", "Get alerts easily with SharpAlert.\r\n\r\nThis setup will guide you through quickly setting up the program. You can find more customization options by right-clicking the notification icon, and clicking the \"Open Settings\" button.");
+            SkipButton.Text = Language.Get("SetupButton_Skip", "Skip");
+            DoneButton.Text = Language.Get("SetupButton_Next", "Next");
+            BottomText.Text = Language.Get("SetupWelcome_BottomText", "To go through the setup more than once, reset the program.\r\nCreated by BunnyTub. More credits can be found in Settings.");
         }
 
         private void DoneButton_Click(object sender, EventArgs e)
@@ -22,7 +29,7 @@ namespace SharpAlert.ProgramWorker
             FadeInAnimation.Enabled = true;
         }
 
-        private readonly object FadeObject = new object();
+        private readonly object FadeObject = new();
 
         private void FadeInAnimation_Tick(object sender, EventArgs e)
         {
@@ -55,7 +62,7 @@ namespace SharpAlert.ProgramWorker
 
         private void SkipButton_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Do you want to skip the setup wizard and start using SharpAlert with no additional questions?",
+            if (MessageBox.Show(Language.Get("SetupWelcome_SkipQuestion", "Do you want to skip the setup wizard and start using SharpAlert with no additional questions?"),
                 this.Text,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question) == DialogResult.Yes)

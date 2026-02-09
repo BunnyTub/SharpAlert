@@ -1,9 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Windows.Forms;
+﻿using SharpAlert.AlertComponents;
 using SharpAlert.Languages;
 using SharpAlert.ProgramWorker;
 using SharpAlert.Properties;
+using System;
+using System.Linq;
+using System.Windows.Forms;
 using static SharpAlert.ProgramWorker.HaidaWorker;
 
 namespace SharpAlert.ConfigurationDialogs
@@ -274,6 +275,22 @@ namespace SharpAlert.ConfigurationDialogs
             QuickSettings.Instance.UseAdvancedView = false;
             Swap = true;
             this.Close();
+        }
+
+        private void Reloader_Tick(object sender, EventArgs e)
+        {
+            SlidesBox.LoadAsync("https://bunnytub.com/SharpAlert-Slides/Announcement.png");
+        }
+
+        private void SlidesBox_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                HackyWorkarounds.OpenURL(Client.GetStringAsync("https://bunnytub.com/SharpAlert-Slides/Announcement.txt").Result);
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

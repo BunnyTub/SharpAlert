@@ -53,6 +53,7 @@ namespace SharpAlert.AlertComponents
                 ImageFiles = ImageFiles
             };
 
+            // earthquake alerts should be prioritized here
             Alerts.Add(alert);
             Console.WriteLine($"[Alert Displayer] Queued message -> {Identifier}");
 
@@ -109,19 +110,22 @@ namespace SharpAlert.AlertComponents
         {
             Console.WriteLine("[Alert Displayer] Relay queued.");
 
-            lock (AlertValuesLock)
+            //if (!alert.PrimaryURL.Contains("sasmex.net"))
             {
-                Console.WriteLine("[Alert Displayer] Relay queue locked.");
-                AlertsQueued++;
-                while (AlertDisplaying)
+                lock (AlertValuesLock)
                 {
-                    Monitor.Wait(AlertValuesLock);
+                    Console.WriteLine("[Alert Displayer] Relay queue locked.");
+                    AlertsQueued++;
+                    while (AlertDisplaying)
+                    {
+                        Monitor.Wait(AlertValuesLock);
+                    }
+                    Console.WriteLine("[Alert Displayer] Relay queue unlocked.");
                 }
-                Console.WriteLine("[Alert Displayer] Relay queue unlocked.");
+
+                AlertsQueued--;
             }
-
-            AlertsQueued--;
-
+            
             if (QuickSettings.Instance.DisableDialogs)
             {
                 Console.WriteLine("[Alert Displayer] Relay dialogs are disabled. Pausing for 5 seconds.");
@@ -194,34 +198,34 @@ namespace SharpAlert.AlertComponents
 
                 // determine the dialog to use
 
-                if (alert.PrimaryURL.Contains("sasmex.net"))
-                {
-                    Console.WriteLine("[Alert Displayer] Earthquake alert detected.");
+                //if (alert.PrimaryURL.Contains("sasmex.net"))
+                //{
+                //    Console.WriteLine("[Alert Displayer] Earthquake alert detected.");
                     
-                    shkPing = true;
+                //    shkPing = true;
 
-                    try
-                    {
-                        while (!shk.IsHandleCreated) Thread.Sleep(100);
-                        shk.Invoke(delegate
-                        {
-                            shk.UpdateFields(alert.Identifier,
-                                alert.EventTypeFull,
-                                alert._AlertText.Intro,
-                                alert._AlertText.Body,
-                                alert.PrimaryURL,
-                                alert.AudioFiles.FirstOrEmpty(),
-                                alert.ImageFiles.FirstOrEmpty(),
-                                alert.MsgType,
-                                alert.Severity);
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"[Alert Displayer] {ex.Message}");
-                    }
-                }
-                else
+                //    try
+                //    {
+                //        while (!shk.IsHandleCreated) Thread.Sleep(100);
+                //        shk.Invoke(delegate
+                //        {
+                //            shk.UpdateFields(alert.Identifier,
+                //                alert.EventTypeFull,
+                //                alert._AlertText.Intro,
+                //                alert._AlertText.Body,
+                //                alert.PrimaryURL,
+                //                alert.AudioFiles.FirstOrEmpty(),
+                //                alert.ImageFiles.FirstOrEmpty(),
+                //                alert.MsgType,
+                //                alert.Severity);
+                //        });
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        Console.WriteLine($"[Alert Displayer] {ex.Message}");
+                //    }
+                //}
+                //else
                 {
                     AlertDisplaying = true;
 
@@ -229,16 +233,16 @@ namespace SharpAlert.AlertComponents
 
                     relayPing = true;
 
-                    switch (alert.Severity.ToLowerInvariant())
-                    {
-                        case "extreme":
-                        case "severe":
-                            SpeakingManager.SevereOrHigher();
-                            break;
-                        default:
-                            SpeakingManager.ModerateOrLower();
-                            break;
-                    }
+                    //switch (alert.Severity.ToLowerInvariant())
+                    //{
+                    //    case "extreme":
+                    //    case "severe":
+                    //        SpeakingManager.SevereOrHigher();
+                    //        break;
+                    //    default:
+                    //        SpeakingManager.ModerateOrLower();
+                    //        break;
+                    //}
 
                     // don't forget to implement audio deref...
 
