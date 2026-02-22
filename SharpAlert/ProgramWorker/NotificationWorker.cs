@@ -170,7 +170,10 @@ namespace SharpAlert.ProgramWorker
                 HackyWorkarounds.OpenURL(home);
             }));
 
-            contextMenu.Items.Add(new ToolStripLabel($"{Language.Get("PathText", "Path:")} {Path.GetFileName(QuickSettings.ConfigPath)}"));
+            contextMenu.Items.Add(new ToolStripButton($"{Language.Get("PathText", "Path:")} {Path.GetFileName(QuickSettings.ConfigPath)}", null, (obj, args) =>
+            {
+                HackyWorkarounds.OpenPathAndHighlight(QuickSettings.ConfigPath);
+            }));
 
             contextMenu.Items.Add(new ToolStripSeparator());
 
@@ -261,7 +264,7 @@ namespace SharpAlert.ProgramWorker
                 ThreadDrool.StartAndForget(() => new DashboardForm(false).ShowDialog());
             }
 
-            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ShowDashboard", "Open Dashboard"), null, (sender, arg) =>
+            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ShowDashboard", "Open Dashboard"), Resources.inbox_solid, (sender, arg) =>
             {
                 //MessageBox.Show("The dashboard lists recently relayed alerts. If you close and re-open the dashboard, the list will start from scratch!");
                 ThreadDrool.StartAndForget(() => new DashboardForm(false).ShowDialog());
@@ -277,7 +280,7 @@ namespace SharpAlert.ProgramWorker
             //    IgnoreRightClick = false;
             //}));
 
-            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ShowSettings", "Open Settings"), null, (sender, arg) =>
+            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ShowSettings", "Open Settings"), Resources.gear_solid, (sender, arg) =>
             {
                 IgnoreRightClick = true;
 
@@ -302,7 +305,7 @@ namespace SharpAlert.ProgramWorker
                 IgnoreRightClick = false;
             }));
 
-            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ResetSettings", "Reset Settings"), null, (sender, arg) =>
+            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ResetSettings", "Reset Settings"), Resources.trash_can_solid, (sender, arg) =>
             {
                 if (MessageBox.Show("Reset everything to factory defaults now?\r\n" +
                     "SharpAlert will immediately close if you continue.",
@@ -318,7 +321,7 @@ namespace SharpAlert.ProgramWorker
 
             contextMenu.Items.Add(new ToolStripSeparator());
 
-            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ChangeLanguage", "Change Language"), null, (sender, arg) =>
+            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ChangeLanguage", "Change Language"), Resources.language_solid, (sender, arg) =>
             {
                 IgnoreRightClick = true;
                 LanguageSelectionForm lsf = new();
@@ -345,7 +348,7 @@ namespace SharpAlert.ProgramWorker
             //    File.WriteAllText(filepath, $"SharpAlert v{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}\r\n\r\n{NotificationHistory}");
             //}));
 
-            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ToggleDNDMode", "Toggle Do Not Disturb"), null, (sender, arg) =>
+            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ToggleDNDMode", "Toggle Do Not Disturb"), Resources.bell_slash_solid, (sender, arg) =>
             {
                 IgnoreRightClick = true;
                 if (QuickSettings.Instance.DisableAlertProcessing)
@@ -383,7 +386,7 @@ namespace SharpAlert.ProgramWorker
                 IgnoreRightClick = false;
             }));
             
-            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("QuitApp", "Quit"), null, (sender, arg) =>
+            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("QuitApp", "Quit"), Resources.right_from_bracket_solid, (sender, arg) =>
             {
                 DialogResult result = MessageBox.Show(Language.Get("QuitAppMessage", "Are you sure you want to quit?"),
                     "SharpAlert",

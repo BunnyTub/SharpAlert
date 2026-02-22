@@ -163,4 +163,28 @@
   <data name="announce" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\announce.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="gear-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gear-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bell-slash-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bell-slash-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="right-from-bracket-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\right-from-bracket-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="language-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\language-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="trash-can-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\trash-can-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="inbox-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\inbox-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="square-xmark-solid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\square-xmark-solid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="awoken" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\awoken.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

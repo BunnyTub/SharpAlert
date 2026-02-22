@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using SharpAlert.AlertComponents;
 using SharpAlert.DataProcessing;
 using SharpAlert.ProgramWorker;
 
@@ -95,7 +96,7 @@ namespace SharpAlert.ConfigurationDialogs
 
         private void OpenArchiveButton_Click(object sender, EventArgs e)
         {
-            Process.Start("explorer.exe", DataProcessor.ArchivePath);
+            HackyWorkarounds.OpenFilePath(DataProcessor.ArchivePath);
         }
     }
 }

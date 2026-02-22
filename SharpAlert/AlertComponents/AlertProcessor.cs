@@ -1819,7 +1819,7 @@ namespace SharpAlert.AlertComponents
                 "update" => "This alert has been updated.",
                 "cancel" => "This alert has been cancelled.",
                 _ => string.Empty,
-            };
+            };  
 
             Console.WriteLine("[Alert Processor] Parsing sent date.");
 

@@ -83,6 +83,25 @@ namespace SharpAlert.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream awoken {
+            get {
+                return ResourceManager.GetStream("awoken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap bell_slash_solid {
+            get {
+                object obj = ResourceManager.GetObject("bell-slash-solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream cancelled_alert {
             get {
                 return ResourceManager.GetStream("cancelled_alert", resourceCulture);
@@ -95,6 +114,36 @@ namespace SharpAlert.Properties {
         internal static System.IO.UnmanagedMemoryStream earthquake_alert {
             get {
                 return ResourceManager.GetStream("earthquake_alert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap gear_solid {
+            get {
+                object obj = ResourceManager.GetObject("gear-solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap inbox_solid {
+            get {
+                object obj = ResourceManager.GetObject("inbox-solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap language_solid {
+            get {
+                object obj = ResourceManager.GetObject("language-solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -119,6 +168,26 @@ namespace SharpAlert.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap right_from_bracket_solid {
+            get {
+                object obj = ResourceManager.GetObject("right-from-bracket-solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap square_xmark_solid {
+            get {
+                object obj = ResourceManager.GetObject("square-xmark-solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap TaskBarExample {
             get {
                 object obj = ResourceManager.GetObject("TaskBarExample", resourceCulture);
@@ -132,6 +201,16 @@ namespace SharpAlert.Properties {
         internal static string TestScript {
             get {
                 return ResourceManager.GetString("TestScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap trash_can_solid {
+            get {
+                object obj = ResourceManager.GetObject("trash-can-solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

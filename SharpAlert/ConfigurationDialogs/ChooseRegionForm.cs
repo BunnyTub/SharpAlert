@@ -1,9 +1,13 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Windows.Forms;
-using SharpAlert.ProgramWorker;
+﻿using SharpAlert.ProgramWorker;
 using SharpAlert.SourceCapturing.SystemSpecific;
+using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 
 namespace SharpAlert.ConfigurationDialogs
@@ -195,6 +199,34 @@ namespace SharpAlert.ConfigurationDialogs
                 Text,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
+        }
+
+        private void ChooseRegionForm_Shown(object sender, EventArgs e)
+        {
+            if (ShowNextInsteadOfDone)
+            {
+
+                var region = new RegionInfo(CultureInfo.CurrentCulture.Name);
+
+                switch (region.TwoLetterISORegionName)
+                {
+                    case "US":
+                        RegionUnitedStatesBox.Checked = true;
+                        RegionUnitedStatesNWSBox.Checked = true;
+                        break;
+                    case "CA":
+                        RegionCanadaBox.Checked = true;
+                        break;
+                    case "MX":
+                        RegionMexicoBox.Checked = true;
+                        break;
+                    case "BR":
+                        RegionBrazilBox.Checked = true;
+                        break;
+                }
+
+                MessageBox.Show($"We've set a region ({region.TwoLetterISORegionName}) for you.\r\nIf the selected region isn't right, you can always change it.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

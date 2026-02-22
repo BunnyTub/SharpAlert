@@ -298,6 +298,7 @@
             HelpButtonClicked += ChooseRegionForm_HelpButtonClicked;
             FormClosing += ChooseRegionForm_FormClosing;
             Load += ChooseRegionForm_Load;
+            Shown += ChooseRegionForm_Shown;
             ((System.ComponentModel.ISupportInitialize)LogoBox).EndInit();
             ResumeLayout(false);
             PerformLayout();

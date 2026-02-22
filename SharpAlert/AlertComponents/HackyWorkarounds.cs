@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Windows.Forms;
 
 namespace SharpAlert.AlertComponents
@@ -68,6 +69,32 @@ namespace SharpAlert.AlertComponents
                     "Here's the URL:\r\n" +
                     $"{URL}",
                     "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        /// <param name="Path">The path to open.</param>
+        public static void OpenFilePath(string Path)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo { FileName = Path, UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+        
+        /// <param name="Path">The path to highlight in File Explorer.</param>
+        public static void OpenPathAndHighlight(string Path)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo { FileName = "explorer.exe", Arguments = $"/select,{Path}", UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

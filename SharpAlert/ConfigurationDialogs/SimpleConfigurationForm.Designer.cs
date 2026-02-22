@@ -52,6 +52,7 @@
             DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             DoneButton.Font = new System.Drawing.Font("Segoe UI", 16F);
             DoneButton.ForeColor = System.Drawing.Color.White;
+            DoneButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             DoneButton.Location = new System.Drawing.Point(280, 251);
             DoneButton.Name = "DoneButton";
             DoneButton.Size = new System.Drawing.Size(128, 40);

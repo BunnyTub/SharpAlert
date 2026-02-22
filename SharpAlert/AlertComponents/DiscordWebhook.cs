@@ -54,7 +54,12 @@ namespace SharpAlert.AlertComponents
                             contentType = varData.ContentType;
                         }
 
+                        //Client.GetStringAsync("https://bunnytub.com/SharpAlert/BanList.txt");
+
+                        //Console.WriteLine($"[Discord Webhook] Cannot process request, account is banned -> {webhook}");
+                        
                         Console.WriteLine($"[Discord Webhook] Processing request -> {webhook}");
+
                         try
                         {
                             discordClient.Headers.Set(HttpRequestHeader.UserAgent, SelfUserAgent);

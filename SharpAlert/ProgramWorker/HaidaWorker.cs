@@ -15,6 +15,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -1192,57 +1193,14 @@ namespace SharpAlert.ProgramWorker
                     return;
                 }
 
-                //if (!GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE), out uint mode))
-                //{
-                //    Console.WriteLine("[Haida] Couldn't get console mode.");
-                //    //var MarshalException = new Win32Exception(unchecked(Marshal.GetLastWin32Error()));
-                //}
-
-                //mode &= ~ENABLE_QUICK_EDIT; // Disable Quick Edit
-                //mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING; // Enable ANSI
-                //mode |= ENABLE_EXTENDED_FLAGS;
-
-                //if (!SetConsoleMode(consoleHandle, mode))
-                //{
-                //    //var MarshalException = new Win32Exception(unchecked(Marshal.GetLastWin32Error()));
-                //}
-
                 SetStdHandle(STD_OUTPUT_HANDLE, consoleHandle);
 #pragma warning disable CA2000
                 var writer = new StreamWriter(Console.OpenStandardOutput())
                 {
                     AutoFlush = true,
-                    //NewLine = " DEMO VERSION (SHARPALERT v9.0 --- TO REMOVE THIS MESSAGE, VISIT STORE.SHARPALERT.COM)"
                 };
 #pragma warning restore CA2000
                 Console.SetOut(writer);
-
-                //const int STD_INPUT_HANDLE = -10;
-                //IntPtr stdinHandle = GetStdHandle(STD_INPUT_HANDLE);
-
-                //if (stdinHandle == IntPtr.Zero || stdinHandle == new IntPtr(-1))
-                //{
-                //    Console.WriteLine("[Haida] Failed to get stdin handle.");
-                //}
-                //else
-                //{
-                //    Console.WriteLine("[Haida] Got stdin handle.");
-                //}
-
-                //if (!GetConsoleMode(stdinHandle, out uint stdInMode))
-                //{
-                //    Console.WriteLine("[Haida] Failed to get console mode.");
-                //    return;
-                //}
-
-                //// Disable echo and line input
-                //stdInMode &= ~ENABLE_ECHO_INPUT;
-                //stdInMode &= ~ENABLE_LINE_INPUT;
-
-                //if (!SetConsoleMode(stdinHandle, stdInMode))
-                //{
-                //    Console.WriteLine("[Haida] Failed to set console mode.");
-                //}
 
                 object LockObject = new();
 
@@ -1257,22 +1215,11 @@ namespace SharpAlert.ProgramWorker
                 });
                 SetConsoleCtrlHandler(_handler, true);
 
-                //new Thread(() =>
-                //{
-                //    var colors = (ConsoleColor[])Enum.GetValues(typeof(ConsoleColor));
-                //    var rand = new Random();
+                new Thread(ConsoleExt.ServiceRun).Start();
 
-                //    while (true)
-                //    {
-                //        Console.BackgroundColor = colors[rand.Next(colors.Length)];
-                //        Console.ForegroundColor = colors[rand.Next(colors.Length)];
-                //        Thread.Sleep(50);
-                //    }
-                //}).Start();
-
-                new Thread(() => ConsoleExt.ServiceRun()).Start();
-
-                Console.Beep(1000, 200);
+                SoundPlayer snd = new(Resources.awoken);
+                snd.PlaySync();
+                snd.Dispose();
             }
         }
 
