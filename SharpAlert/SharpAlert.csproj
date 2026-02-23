@@ -51,14 +51,15 @@
 
 	<!-- NuGet dependencies -->
 	<ItemGroup>
+		<PackageReference Include="AwokenNotifications" Version="1.0.4" />
 		<PackageReference Include="DiscordRichPresence" Version="1.6.1.70" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="HidLibrary" Version="3.3.40" />
-		<PackageReference Include="SIPSorcery" Version="10.0.1" />
+		<PackageReference Include="SIPSorcery" Version="10.0.3" />
 		<PackageReference Include="SIPSorceryMedia.Windows" Version="8.0.14" />
-		<PackageReference Include="System.Resources.Extensions" Version="10.0.1" />
-		<PackageReference Include="System.Speech" Version="10.0.1" />
+		<PackageReference Include="System.Resources.Extensions" Version="10.0.3" />
+		<PackageReference Include="System.Speech" Version="10.0.3" />
 	</ItemGroup>
 
 	<!-- Embedded resources -->

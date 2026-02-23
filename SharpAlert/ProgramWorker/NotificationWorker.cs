@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
 using System.Windows.Forms;
 using SharpAlert.AlertComponents;
 using SharpAlert.AlertComponents.Dashboard;
@@ -204,28 +203,7 @@ namespace SharpAlert.ProgramWorker
             //    }
             //    IgnoreRightClick = false;
             //}));
-            
-            //contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ResetHistory", "Clear History"), null, (sender, arg) =>
-            //{
-            //    IgnoreRightClick = true;
-            //    if (MessageBox.Show("Clear the alert history?\r\n" +
-            //        "(Any previous alerts may be relayed again!)",
-            //        "SharpAlert",
-            //        MessageBoxButtons.YesNo,
-            //        MessageBoxIcon.Question) == DialogResult.Yes)
-            //    {
-            //        lock (SharpDataHistory)
-            //        {
-            //            lock (SharpDataRelayedNamesHistory)
-            //            {
-            //                SharpDataHistory.Clear();
-            //                SharpDataRelayedNamesHistory.Clear();
-            //            }
-            //        }
-            //    }
-            //    IgnoreRightClick = false;
-            //}));
-            
+
             //contextMenu.Items.Add(new ToolStripMenuItem("Clear Garbage", null, (sender, arg) =>
             //{
             //    IgnoreRightClick = true;
@@ -319,6 +297,29 @@ namespace SharpAlert.ProgramWorker
                 }
             }));
 
+            contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ResetHistory", "Clear History"), Resources.broom_solid, (sender, arg) =>
+            {
+                IgnoreRightClick = true;
+                if (MessageBox.Show("Clear the alert history?\r\n" +
+                    "(Any old/previous alerts may be relayed again!)",
+                    "SharpAlert",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    lock (SharpDataHistory)
+                    {
+                        lock (SharpDataRelayedNamesHistory)
+                        {
+                            SharpDataHistory.Clear();
+                            SharpDataRelayedNamesHistory.Clear();
+                        }
+                    }
+
+                    AwokenNotifier.ShowBasicText("The alert history was destroyed.");
+                }
+                IgnoreRightClick = false;
+            }));
+
             contextMenu.Items.Add(new ToolStripSeparator());
 
             contextMenu.Items.Add(new ToolStripMenuItem(Language.Get("ChangeLanguage", "Change Language"), Resources.language_solid, (sender, arg) =>
@@ -381,7 +382,7 @@ namespace SharpAlert.ProgramWorker
                     }
                 }
 
-                ((ToolStripMenuItem)sender).Checked = QuickSettings.Instance.DisableAlertProcessing;
+                //((ToolStripMenuItem)sender).Checked = QuickSettings.Instance.DisableAlertProcessing;
 
                 IgnoreRightClick = false;
             }));
@@ -396,7 +397,8 @@ namespace SharpAlert.ProgramWorker
                 if (result == DialogResult.Yes)
                 {
                     QuickSettings.Instance.Save();
-                    new Thread(() => SafeExit()).Start();
+                    SafeExit();
+                    //new Thread(() => SafeExit()).Start();
                 }
             }));
 
@@ -466,8 +468,9 @@ namespace SharpAlert.ProgramWorker
         }
 
         //private static string NotificationHistory = string.Empty;
-        private static string PreviousNotification = string.Empty;
-        private static int PreviousCount = 0;
+
+        //private static string PreviousNotification = string.Empty;
+        //private static int PreviousCount = 0;
 
         public static void ShowNotification(this NotifyIcon notify, string text, string title, ToolTipIcon icon)
         {
@@ -475,14 +478,14 @@ namespace SharpAlert.ProgramWorker
             {
                 lock (notify)
                 {
-                    if (PreviousNotification.Contains(text))
-                    {
-                        PreviousCount++;
-                    }
-                    else
-                    {
-                        PreviousCount = 0;
-                    }
+                    //if (PreviousNotification.Contains(text))
+                    //{
+                    //    PreviousCount++;
+                    //}
+                    //else
+                    //{
+                    //    PreviousCount = 0;
+                    //}
 
                     //NotificationHistory += $"[{DateTime.UtcNow:R}]\r\nIcon: {icon}\r\nTitle: {title.Trim()}\r\nText: {text.Trim()}\r\n\r\n";
 
@@ -494,13 +497,14 @@ namespace SharpAlert.ProgramWorker
                     //}
                     //else
                     //{
-                    PreviousNotification = text;
+                    //PreviousNotification = text;
                     notify.BalloonTipText = text;
                     notify.BalloonTipTitle = title;
                     notify.BalloonTipIcon = icon;
                     //}
 
-                    if (!(PreviousCount > 2)) notify.ShowBalloonTip(15000);
+                    //if (!(PreviousCount > 2))
+                    notify.ShowBalloonTip(15000);
                 }
             }
         }

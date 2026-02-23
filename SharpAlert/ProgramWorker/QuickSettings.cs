@@ -82,6 +82,7 @@ namespace SharpAlert.ProgramWorker
         public bool OpenDashboardAutomatically { get; set; } = false;
         // System
         public bool NoSystemSleep { get; set; } = false;
+        public bool PlayChimeOnRun { get; set; } = false;
         // Migration
         public bool MigrationOccurred { get; set; } = false;
         // Status

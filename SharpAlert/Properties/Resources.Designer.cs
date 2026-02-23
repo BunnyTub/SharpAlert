@@ -100,6 +100,16 @@ namespace SharpAlert.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap broom_solid {
+            get {
+                object obj = ResourceManager.GetObject("broom-solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream cancelled_alert {
@@ -123,6 +133,16 @@ namespace SharpAlert.Properties {
         internal static System.Drawing.Bitmap gear_solid {
             get {
                 object obj = ResourceManager.GetObject("gear-solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap id_card_regular {
+            get {
+                object obj = ResourceManager.GetObject("id-card-regular", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

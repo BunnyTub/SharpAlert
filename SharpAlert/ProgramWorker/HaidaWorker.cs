@@ -1,4 +1,5 @@
-﻿using DiscordRPC;
+﻿using AwokenNotifications;
+using DiscordRPC;
 using Microsoft.Win32;
 using SharpAlert.AlertComponents;
 using SharpAlert.ConfigurationDialogs;
@@ -15,7 +16,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Media;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -932,6 +932,8 @@ namespace SharpAlert.ProgramWorker
             //StartCatchAllThread("Pipe Worker", () => PipeWorker.ServerServiceRun(), false, false);
 
             QuickSettings.Instance.Save();
+
+            if (QuickSettings.Instance.PlayChimeOnRun) AwokenNotifier.ShowBasicText("SharpAlert has started.");
         }
 
         //[DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
@@ -1217,9 +1219,10 @@ namespace SharpAlert.ProgramWorker
 
                 new Thread(ConsoleExt.ServiceRun).Start();
 
-                SoundPlayer snd = new(Resources.awoken);
-                snd.PlaySync();
-                snd.Dispose();
+                Console.Beep(1000, 250);
+                //SoundPlayer snd = new(Resources.awoken);
+                //snd.PlaySync();
+                //snd.Dispose();
             }
         }
 

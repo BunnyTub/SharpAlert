@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using SharpAlert.ProgramWorker;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
 
 namespace SharpAlert.ConfigurationDialogs
 {
@@ -24,7 +25,14 @@ namespace SharpAlert.ConfigurationDialogs
             WebServerPasswordInput.Text = QuickSettings.Instance.ServerPassword;
             WebServerPasswordInput.TextChanged += (a, b) => QuickSettings.Instance.ServerPassword = ((TextBox)a).Text.Trim();
             DisableDialogsBox.Checked = QuickSettings.Instance.DisableDialogs;
-            DisableDialogsBox.CheckedChanged += (a, b) => QuickSettings.Instance.DisableDialogs = ((CheckBox)a).Checked;
+            DisableDialogsBox.CheckedChanged += (a, b) =>
+            {
+                QuickSettings.Instance.DisableDialogs = ((CheckBox)a).Checked;
+                if (((CheckBox)a).Checked) AwokenNotifier.ShowBasicText("Future alert dialogs will no longer be shown.");
+                else AwokenNotifier.ShowBasicText("Future alert dialogs will now be shown.");
+            };
+            
+            
             EnableServerBox.Checked = QuickSettings.Instance.EnableServer;
             EnableServerBox.CheckedChanged += (a, b) =>
             {

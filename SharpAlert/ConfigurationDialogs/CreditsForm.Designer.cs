@@ -69,7 +69,7 @@
             label2.Location = new System.Drawing.Point(9, 54);
             label2.Margin = new System.Windows.Forms.Padding(0);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(564, 120);
+            label2.Size = new System.Drawing.Size(564, 147);
             label2.TabIndex = 9;
             label2.Text = resources.GetString("label2.Text");
             // 
@@ -78,7 +78,7 @@
             linkLabel1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             linkLabel1.AutoSize = true;
             linkLabel1.LinkColor = System.Drawing.Color.Pink;
-            linkLabel1.Location = new System.Drawing.Point(9, 212);
+            linkLabel1.Location = new System.Drawing.Point(9, 252);
             linkLabel1.Margin = new System.Windows.Forms.Padding(0);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new System.Drawing.Size(208, 15);
@@ -92,7 +92,7 @@
             linkLabel2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             linkLabel2.AutoSize = true;
             linkLabel2.LinkColor = System.Drawing.Color.Pink;
-            linkLabel2.Location = new System.Drawing.Point(9, 227);
+            linkLabel2.Location = new System.Drawing.Point(9, 267);
             linkLabel2.Margin = new System.Windows.Forms.Padding(0);
             linkLabel2.Name = "linkLabel2";
             linkLabel2.Size = new System.Drawing.Size(260, 15);
@@ -106,7 +106,7 @@
             linkLabel3.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             linkLabel3.AutoSize = true;
             linkLabel3.LinkColor = System.Drawing.Color.Pink;
-            linkLabel3.Location = new System.Drawing.Point(9, 174);
+            linkLabel3.Location = new System.Drawing.Point(9, 214);
             linkLabel3.Margin = new System.Windows.Forms.Padding(0);
             linkLabel3.Name = "linkLabel3";
             linkLabel3.Size = new System.Drawing.Size(338, 15);
@@ -120,7 +120,7 @@
             linkLabel4.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             linkLabel4.AutoSize = true;
             linkLabel4.LinkColor = System.Drawing.Color.Pink;
-            linkLabel4.Location = new System.Drawing.Point(9, 197);
+            linkLabel4.Location = new System.Drawing.Point(9, 237);
             linkLabel4.Margin = new System.Windows.Forms.Padding(0);
             linkLabel4.Name = "linkLabel4";
             linkLabel4.Size = new System.Drawing.Size(520, 15);
@@ -133,7 +133,7 @@
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
-            ClientSize = new System.Drawing.Size(582, 251);
+            ClientSize = new System.Drawing.Size(582, 291);
             Controls.Add(linkLabel4);
             Controls.Add(linkLabel3);
             Controls.Add(linkLabel2);

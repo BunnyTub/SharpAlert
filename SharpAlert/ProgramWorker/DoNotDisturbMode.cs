@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Timers;
-using System.Windows.Forms;
-using Timer = System.Timers.Timer;
+using static SharpAlert.ProgramWorker.MainEntryPoint;
 
 namespace SharpAlert.ProgramWorker
 {
@@ -37,12 +36,14 @@ namespace SharpAlert.ProgramWorker
                     DNDSubtractionTimer.Elapsed += DNDSubtractionTimer_Elapsed;
                     DNDSubtractionTimer.Start();
                     Console.WriteLine($"[Do Not Disturb] DND started with a remaining time of {RemainingTimeInMinutes} minute(s).");
-                    NotificationWorker.Notify.ShowNotification($"You cannot receive alerts for {RemainingTimeInMinutes} minute(s).", "DND has been enabled", ToolTipIcon.Info);
+                    AwokenNotifier.ShowBasicText($"Do Not Disturb has been enabled for {RemainingTimeInMinutes} minute(s).");
+                    //NotificationWorker.Notify.ShowNotification($"You cannot receive alerts for {RemainingTimeInMinutes} minute(s).", "DND has been enabled", ToolTipIcon.Info);
                 }
                 else
                 {
                     Console.WriteLine($"[Do Not Disturb] DND started.");
-                    NotificationWorker.Notify.ShowNotification($"You cannot receive alerts. You'll need to manually disable DND to start receive alerts again.", "DND has been enabled", ToolTipIcon.Info);
+                    AwokenNotifier.ShowBasicText("Do Not Disturb has been enabled.");
+                    //NotificationWorker.Notify.ShowNotification($"You cannot receive alerts. You'll need to manually disable DND to start receive alerts again.", "DND has been enabled", ToolTipIcon.Info);
                 }
 
                 SpeakingManager.EnabledDoNotDisturb();
@@ -57,7 +58,8 @@ namespace SharpAlert.ProgramWorker
                 QuickSettings.Instance.DisableAlertProcessing = false;
                 QuickSettings.Instance.PauseDataProcessing = false;
                 Console.WriteLine($"[Do Not Disturb] DND stopped.");
-                NotificationWorker.Notify.ShowNotification("You can now receive alerts.", "DND has been disabled", ToolTipIcon.Info);
+                AwokenNotifier.ShowBasicText("Do Not Disturb has been disabled.");
+                //NotificationWorker.Notify.ShowNotification("You can now receive alerts.", "DND has been disabled", ToolTipIcon.Info);
                 SpeakingManager.DisabledDoNotDisturb();
             }
         }

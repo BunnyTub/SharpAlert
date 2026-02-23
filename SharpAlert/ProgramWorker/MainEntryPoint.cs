@@ -1,4 +1,5 @@
-﻿using SharpAlert.AlertComponents;
+﻿using AwokenNotifications;
+using SharpAlert.AlertComponents;
 using SharpAlert.DataProcessing;
 using SharpAlert.DisplayDialogs;
 using SharpAlert.Languages;
@@ -97,7 +98,7 @@ namespace SharpAlert.ProgramWorker
 
             DiscordWebhook.SendFormattedMessage($"SharpAlert is stopping.");
 
-            Notify.ShowNotification("Closing everything down now.",
+            Notify?.ShowNotification("Closing everything down now.",
                 "SharpAlert is stopping.",
                 ToolTipIcon.Info);
 
@@ -261,6 +262,7 @@ namespace SharpAlert.ProgramWorker
         } = 0;
 
         public static readonly DateTimeOffset DateUpTime = DateTimeOffset.UtcNow;
+        public static Awoken AwokenNotifier;
 
         /// <summary>
         /// Starts everything.
@@ -274,6 +276,7 @@ namespace SharpAlert.ProgramWorker
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
                 Exception ex = e.ExceptionObject as Exception;
+
                 if (MessageBox.Show($"{ex.Message}\r\n{ex.StackTrace}" +
                     $"\r\n\r\n" +
                     $"Click OK to close the app.\r\n" +
@@ -282,7 +285,7 @@ namespace SharpAlert.ProgramWorker
                     Clipboard.SetText($"{ex.Message}\r\n{ex.StackTrace}");
                 }
             };
-            
+
             //AppDomain.CurrentDomain.FirstChanceException += (s, e) =>
             //{
             //    Console.WriteLine($"(First chance exception) {e.Exception.Message}\r\n{e.Exception.StackTrace}");
@@ -295,13 +298,15 @@ namespace SharpAlert.ProgramWorker
             QuickSettings.Reload();
             Application.SetHighDpiMode(HighDpiMode.DpiUnaware);
             Application.EnableVisualStyles();
-            //System.Windows.Forms.Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
+            //Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
             Application.SetCompatibleTextRenderingDefault(false);
             Application.ThreadException += (a, b) =>
             {
                 UnsafeFault(b.Exception, true);
             };
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+
+            AwokenNotifier = new(true);
 
             Language.Load(QuickSettings.Instance.LanguageCode);
 
