@@ -120,15 +120,6 @@
   <metadata name="ToolTipInformation.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="AddIntroTextBox.ToolTip" xml:space="preserve">
-    <value>Intro text contains issuer info, date times, event names, locations, and other metadata of an alert.
-
-Disabling this box will prevent "Effective/Ending" and "Issued by" options from doing anything,
-and may cause alert text formatting to occur in unintended ways.</value>
-  </data>
-  <metadata name="UpdateTextField.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>172, 17</value>
-  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

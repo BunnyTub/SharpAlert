@@ -420,8 +420,12 @@ namespace SharpAlert.AlertComponents
 
         private void EnsureTopWindow_Tick(object sender, EventArgs e)
         {
-            this.BringToFront();
-            this.Activate();
+            if (QuickSettings.Instance.TryForceWindowFocus)
+            {
+                this.BringToFront();
+                this.Activate();
+            }
+
             EnsureForTick--;
 
             if (EnsureForTick == 0)

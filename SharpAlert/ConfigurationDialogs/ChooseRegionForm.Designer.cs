@@ -54,7 +54,7 @@
             DoneButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             DoneButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            DoneButton.Location = new System.Drawing.Point(451, 229);
+            DoneButton.Location = new System.Drawing.Point(451, 205);
             DoneButton.Margin = new System.Windows.Forms.Padding(0);
             DoneButton.Name = "DoneButton";
             DoneButton.Size = new System.Drawing.Size(72, 23);
@@ -80,7 +80,7 @@
             TitleText.Location = new System.Drawing.Point(105, 9);
             TitleText.Margin = new System.Windows.Forms.Padding(0);
             TitleText.Name = "TitleText";
-            TitleText.Size = new System.Drawing.Size(400, 30);
+            TitleText.Size = new System.Drawing.Size(418, 30);
             TitleText.TabIndex = 3;
             TitleText.Text = "Choose your region settings.";
             // 
@@ -88,7 +88,7 @@
             // 
             RegionUnitedStatesBox.AutoSize = true;
             RegionUnitedStatesBox.Font = new System.Drawing.Font("Segoe UI", 12F);
-            RegionUnitedStatesBox.Location = new System.Drawing.Point(111, 42);
+            RegionUnitedStatesBox.Location = new System.Drawing.Point(143, 44);
             RegionUnitedStatesBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             RegionUnitedStatesBox.Name = "RegionUnitedStatesBox";
             RegionUnitedStatesBox.Size = new System.Drawing.Size(179, 25);
@@ -101,7 +101,7 @@
             // 
             RegionCanadaBox.AutoSize = true;
             RegionCanadaBox.Font = new System.Drawing.Font("Segoe UI", 12F);
-            RegionCanadaBox.Location = new System.Drawing.Point(111, 98);
+            RegionCanadaBox.Location = new System.Drawing.Point(143, 100);
             RegionCanadaBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             RegionCanadaBox.Name = "RegionCanadaBox";
             RegionCanadaBox.Size = new System.Drawing.Size(147, 25);
@@ -125,7 +125,7 @@
             // 
             RegionMexicoBox.AutoSize = true;
             RegionMexicoBox.Font = new System.Drawing.Font("Segoe UI", 12F);
-            RegionMexicoBox.Location = new System.Drawing.Point(111, 126);
+            RegionMexicoBox.Location = new System.Drawing.Point(143, 128);
             RegionMexicoBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             RegionMexicoBox.Name = "RegionMexicoBox";
             RegionMexicoBox.Size = new System.Drawing.Size(151, 25);
@@ -139,12 +139,12 @@
             LinkButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             LinkButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             LinkButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            LinkButton.Location = new System.Drawing.Point(451, 203);
+            LinkButton.Location = new System.Drawing.Point(451, 156);
             LinkButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             LinkButton.Name = "LinkButton";
-            LinkButton.Size = new System.Drawing.Size(72, 23);
+            LinkButton.Size = new System.Drawing.Size(72, 46);
             LinkButton.TabIndex = 16;
-            LinkButton.Text = "Custom";
+            LinkButton.Text = "Custom\r\nCAP";
             ToolTipInformation.SetToolTip(LinkButton, "Click this button if you have custom servers (XML feed only).");
             LinkButton.UseVisualStyleBackColor = false;
             LinkButton.Click += LinkButton_Click;
@@ -153,7 +153,7 @@
             // 
             RegionUnitedStatesNWSBox.AutoSize = true;
             RegionUnitedStatesNWSBox.Font = new System.Drawing.Font("Segoe UI", 12F);
-            RegionUnitedStatesNWSBox.Location = new System.Drawing.Point(111, 70);
+            RegionUnitedStatesNWSBox.Location = new System.Drawing.Point(143, 72);
             RegionUnitedStatesNWSBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             RegionUnitedStatesNWSBox.Name = "RegionUnitedStatesNWSBox";
             RegionUnitedStatesNWSBox.Size = new System.Drawing.Size(170, 25);
@@ -166,7 +166,7 @@
             // 
             RegionBrazilBox.AutoSize = true;
             RegionBrazilBox.Font = new System.Drawing.Font("Segoe UI", 12F);
-            RegionBrazilBox.Location = new System.Drawing.Point(111, 154);
+            RegionBrazilBox.Location = new System.Drawing.Point(143, 156);
             RegionBrazilBox.Margin = new System.Windows.Forms.Padding(6, 3, 3, 3);
             RegionBrazilBox.Name = "RegionBrazilBox";
             RegionBrazilBox.Size = new System.Drawing.Size(115, 25);
@@ -178,17 +178,18 @@
             // ChangeLaterText
             // 
             ChangeLaterText.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            ChangeLaterText.Font = new System.Drawing.Font("Segoe UI", 9F);
-            ChangeLaterText.ForeColor = System.Drawing.Color.Yellow;
-            ChangeLaterText.LinkArea = new System.Windows.Forms.LinkArea(0, 96);
+            ChangeLaterText.Font = new System.Drawing.Font("Segoe UI", 10F);
+            ChangeLaterText.ForeColor = System.Drawing.Color.White;
+            ChangeLaterText.LinkArea = new System.Windows.Forms.LinkArea(0, 1000);
+            ChangeLaterText.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             ChangeLaterText.LinkColor = System.Drawing.Color.Yellow;
-            ChangeLaterText.Location = new System.Drawing.Point(9, 182);
+            ChangeLaterText.Location = new System.Drawing.Point(9, 184);
             ChangeLaterText.Margin = new System.Windows.Forms.Padding(0);
             ChangeLaterText.Name = "ChangeLaterText";
-            ChangeLaterText.Size = new System.Drawing.Size(442, 70);
+            ChangeLaterText.Size = new System.Drawing.Size(442, 44);
             ChangeLaterText.TabIndex = 13;
             ChangeLaterText.TabStop = true;
-            ChangeLaterText.Text = "Some networks may have trouble accessing Brazil (IDAP).\r\nClick here to perform a connection test.\r\n\r\nTo change these options later, go to Settings.";
+            ChangeLaterText.Text = "Having trouble with Brazil (IDAP)? Try a connection test.\r\nTo change these options later, go to Settings.";
             ChangeLaterText.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             ChangeLaterText.UseCompatibleTextRendering = true;
             ChangeLaterText.LinkClicked += ChangeLaterText_LinkClicked;
@@ -199,7 +200,7 @@
             IPAWSInfoButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             IPAWSInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             IPAWSInfoButton.ForeColor = System.Drawing.Color.Yellow;
-            IPAWSInfoButton.Location = new System.Drawing.Point(296, 44);
+            IPAWSInfoButton.Location = new System.Drawing.Point(111, 44);
             IPAWSInfoButton.Name = "IPAWSInfoButton";
             IPAWSInfoButton.Size = new System.Drawing.Size(23, 23);
             IPAWSInfoButton.TabIndex = 53;
@@ -213,7 +214,7 @@
             NWSInfoButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             NWSInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             NWSInfoButton.ForeColor = System.Drawing.Color.Yellow;
-            NWSInfoButton.Location = new System.Drawing.Point(287, 72);
+            NWSInfoButton.Location = new System.Drawing.Point(111, 72);
             NWSInfoButton.Name = "NWSInfoButton";
             NWSInfoButton.Size = new System.Drawing.Size(23, 23);
             NWSInfoButton.TabIndex = 54;
@@ -227,7 +228,7 @@
             NAADSInfoButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             NAADSInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             NAADSInfoButton.ForeColor = System.Drawing.Color.Yellow;
-            NAADSInfoButton.Location = new System.Drawing.Point(264, 100);
+            NAADSInfoButton.Location = new System.Drawing.Point(111, 100);
             NAADSInfoButton.Name = "NAADSInfoButton";
             NAADSInfoButton.Size = new System.Drawing.Size(23, 23);
             NAADSInfoButton.TabIndex = 55;
@@ -241,7 +242,7 @@
             SASMEXInfoButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             SASMEXInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             SASMEXInfoButton.ForeColor = System.Drawing.Color.Yellow;
-            SASMEXInfoButton.Location = new System.Drawing.Point(268, 128);
+            SASMEXInfoButton.Location = new System.Drawing.Point(111, 128);
             SASMEXInfoButton.Name = "SASMEXInfoButton";
             SASMEXInfoButton.Size = new System.Drawing.Size(23, 23);
             SASMEXInfoButton.TabIndex = 56;
@@ -255,7 +256,7 @@
             IDAPInfoButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             IDAPInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             IDAPInfoButton.ForeColor = System.Drawing.Color.Yellow;
-            IDAPInfoButton.Location = new System.Drawing.Point(232, 156);
+            IDAPInfoButton.Location = new System.Drawing.Point(111, 156);
             IDAPInfoButton.Name = "IDAPInfoButton";
             IDAPInfoButton.Size = new System.Drawing.Size(23, 23);
             IDAPInfoButton.TabIndex = 57;
@@ -268,7 +269,7 @@
             AcceptButton = DoneButton;
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
-            ClientSize = new System.Drawing.Size(532, 261);
+            ClientSize = new System.Drawing.Size(532, 237);
             Controls.Add(IDAPInfoButton);
             Controls.Add(SASMEXInfoButton);
             Controls.Add(NAADSInfoButton);
@@ -294,7 +295,7 @@
             MinimizeBox = false;
             Name = "ChooseRegionForm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "SharpAlert - Region Selection";
+            Text = "SharpAlert - Region Settings";
             HelpButtonClicked += ChooseRegionForm_HelpButtonClicked;
             FormClosing += ChooseRegionForm_FormClosing;
             Load += ChooseRegionForm_Load;

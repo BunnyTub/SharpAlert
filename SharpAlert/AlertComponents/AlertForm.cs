@@ -144,64 +144,7 @@ namespace SharpAlert.AlertComponents
                 this.FormBorderStyle = FormBorderStyle.None;
             }
 
-            int LocationMargin = 10;
-
-            switch (QuickSettings.Instance.WindowLocation)
-            {
-                default:
-                    if (!(QuickSettings.Instance.alertFullscreenDisplay >= Screen.AllScreens.Length))
-                    {
-                        this.Location = new Point(
-                            (Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].WorkingArea.Width - this.Width) / 2,
-                            (Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].WorkingArea.Height - this.Height) / 2
-                        );
-                    }
-                    else
-                    {
-                        this.Location = new Point(
-                            (Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2,
-                            (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2
-                        );
-                    }
-                    break;
-                case 1:
-                    if (!(QuickSettings.Instance.alertFullscreenDisplay >= Screen.AllScreens.Length))
-                    {
-                        this.Location = new Point(
-                            Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].WorkingArea.Location.X + LocationMargin,
-                            Screen.AllScreens[QuickSettings.Instance.alertFullscreenDisplay].WorkingArea.Location.Y + LocationMargin
-                        );
-                    }
-                    else
-                    {
-                        this.Location = new Point(
-                            LocationMargin,
-                            LocationMargin
-                        );
-                    }
-                    break;
-                case 2:
-                    // unfinished
-                    this.Location = new Point(
-                        Screen.PrimaryScreen.WorkingArea.Width - this.Width - LocationMargin,
-                        LocationMargin
-                    );
-                    break;
-                case 3:
-                    // unfinished
-                    this.Location = new Point(
-                        LocationMargin,
-                        Screen.PrimaryScreen.WorkingArea.Height - this.Height - LocationMargin
-                    );
-                    break;
-                case 4:
-                    // unfinished
-                    this.Location = new Point(
-                        Screen.PrimaryScreen.WorkingArea.Width - this.Width - LocationMargin,
-                        Screen.PrimaryScreen.WorkingArea.Height - this.Height - LocationMargin
-                    );
-                    break;
-            }
+            MonitorWindowAligner.AlignWindow(this);
 
             if (QuickSettings.Instance.alertIncreaseSize)
             {
@@ -221,7 +164,8 @@ namespace SharpAlert.AlertComponents
 
             if (!QuickSettings.Instance.alertCompatibilityMode)
             {
-                WindowFlash.Start();
+                //WindowFlash.Start();
+                WindowFlashSmooth.Start();
             }
 
             if (!string.IsNullOrWhiteSpace(AlertImageUrlStr))
@@ -278,7 +222,8 @@ namespace SharpAlert.AlertComponents
             }
             else
             {
-                WindowFlash.Stop();
+                //WindowFlash.Stop();
+                WindowFlashSmooth.Stop();
                 if (!ExitToneCalled) PlayEndToneFile(true);
                 ExitToneCalled = true;
             }
@@ -291,8 +236,12 @@ namespace SharpAlert.AlertComponents
 
         private void EnsureTopWindow_Tick(object sender, EventArgs e)
         {
-            this.BringToFront();
-            this.Activate();
+            if (QuickSettings.Instance.TryForceWindowFocus)
+            {
+                this.BringToFront();
+                this.Activate();
+            }
+            
             EnsureForTick--;
 
             if (EnsureForTick == 0)
@@ -348,7 +297,8 @@ namespace SharpAlert.AlertComponents
             {
                 FadeOutAnimation.Stop();
                 FadeOutExitReady = true;
-                WindowFlash.Stop();
+                //WindowFlash.Stop();
+                WindowFlashSmooth.Stop();
                 this.Hide();
                 this.Close();
             }
@@ -396,15 +346,6 @@ namespace SharpAlert.AlertComponents
                 TitleText.BackColor = ColorTitleAndBordersTwo;
                 AlertIcon.BackColor = ColorTitleAndBordersTwo;
                 SubtitlePanel.BackColor = ColorSubtitleOnlyTwo;
-                //if (AlertsQueued != 0)
-                //{
-                //    //DismissButton.Text = $"{AlertsQueued} remain";
-                //    DismissButton.Text = "Continue";
-                //}
-                //else
-                //{
-                //    DismissButton.Text = "Dismiss";
-                //}
             }
             FlashTwo = !FlashTwo;
         }
@@ -553,6 +494,45 @@ namespace SharpAlert.AlertComponents
 
         private void AlertIcon_Click(object sender, EventArgs e)
         {
+        }
+
+        private float FadeProgress = 0f;
+        private bool FadeForward = true;
+
+        private static Color LerpColor(Color a, Color b, float t)
+        {
+            int r = (int)(a.R + (b.R - a.R) * t);
+            int g = (int)(a.G + (b.G - a.G) * t);
+            int bVal = (int)(a.B + (b.B - a.B) * t);
+
+            return Color.FromArgb(r, g, bVal);
+        }
+
+        private void WindowFlashSmooth_Tick(object sender, EventArgs e)
+        {
+            float speed = 0.05f;
+
+            if (FadeForward) FadeProgress += speed;
+            else FadeProgress -= speed;
+
+            if (FadeProgress >= 1f)
+            {
+                FadeProgress = 1f;
+                FadeForward = false;
+            }
+            else if (FadeProgress <= 0f)
+            {
+                FadeProgress = 0f;
+                FadeForward = true;
+            }
+
+            var borderColor = LerpColor(ColorTitleAndBordersOne, ColorTitleAndBordersTwo, FadeProgress);
+            var subtitleColor = LerpColor(ColorSubtitleOnlyOne, ColorSubtitleOnlyTwo, FadeProgress);
+
+            OutlineContainerPanel.BorderColor = borderColor;
+            TitleText.BackColor = borderColor;
+            AlertIcon.BackColor = borderColor;
+            SubtitlePanel.BackColor = subtitleColor;
         }
     }
 }

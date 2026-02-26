@@ -34,23 +34,17 @@
             LogoBox = new System.Windows.Forms.PictureBox();
             TitleText = new System.Windows.Forms.Label();
             ToolTipInformation = new System.Windows.Forms.ToolTip(components);
-            alertTimeZoneUTCBox = new System.Windows.Forms.CheckBox();
-            alertCompatibilityModeBox = new System.Windows.Forms.CheckBox();
             alertTimeoutInput = new System.Windows.Forms.NumericUpDown();
             alertFullscreenDisplayInput = new System.Windows.Forms.NumericUpDown();
-            alertFullscreenIdleBox = new System.Windows.Forms.CheckBox();
             alertFullscreenWindowedBox = new System.Windows.Forms.CheckBox();
             alertIncreaseSizeBox = new System.Windows.Forms.CheckBox();
             alertNoGUIBox = new System.Windows.Forms.CheckBox();
             AlertFullscreenCombo = new System.Windows.Forms.ComboBox();
             WindowLocationCombo = new System.Windows.Forms.ComboBox();
-            statusWindowBox = new System.Windows.Forms.CheckBox();
-            NoSystemSleepBox = new System.Windows.Forms.CheckBox();
-            alertAutoPrintingEnabledBox = new System.Windows.Forms.CheckBox();
             ScrollSpeedBar = new System.Windows.Forms.TrackBar();
-            HideNetworkErrorsBox = new System.Windows.Forms.CheckBox();
-            OpenDashboardAutomaticallyBox = new System.Windows.Forms.CheckBox();
             alertFadeTimeBar = new System.Windows.Forms.TrackBar();
+            PreviewPicture = new System.Windows.Forms.PictureBox();
+            TryForceWindowFocusBox = new System.Windows.Forms.CheckBox();
             label1 = new System.Windows.Forms.Label();
             label9 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -59,25 +53,16 @@
             AlertTextButton = new System.Windows.Forms.Button();
             label3 = new System.Windows.Forms.Label();
             DisplayStyleInfoButton = new System.Windows.Forms.Button();
-            DisplayPanelsGroup = new System.Windows.Forms.GroupBox();
-            TimeDisplayGroup = new System.Windows.Forms.GroupBox();
-            SystemControlsGroup = new System.Windows.Forms.GroupBox();
             TextDisplayGroup = new System.Windows.Forms.GroupBox();
-            PrintingGroup = new System.Windows.Forms.GroupBox();
-            NotificationsGroup = new System.Windows.Forms.GroupBox();
-            DisplayWhereInfoButton = new System.Windows.Forms.Button();
             label4 = new System.Windows.Forms.Label();
+            DisplayWhereInfoButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)alertTimeoutInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)alertFullscreenDisplayInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ScrollSpeedBar).BeginInit();
             ((System.ComponentModel.ISupportInitialize)alertFadeTimeBar).BeginInit();
-            DisplayPanelsGroup.SuspendLayout();
-            TimeDisplayGroup.SuspendLayout();
-            SystemControlsGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)PreviewPicture).BeginInit();
             TextDisplayGroup.SuspendLayout();
-            PrintingGroup.SuspendLayout();
-            NotificationsGroup.SuspendLayout();
             SuspendLayout();
             // 
             // DoneButton
@@ -85,7 +70,7 @@
             DoneButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             DoneButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            DoneButton.Location = new System.Drawing.Point(578, 329);
+            DoneButton.Location = new System.Drawing.Point(578, 364);
             DoneButton.Margin = new System.Windows.Forms.Padding(0);
             DoneButton.Name = "DoneButton";
             DoneButton.Size = new System.Drawing.Size(72, 23);
@@ -104,7 +89,6 @@
             LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             LogoBox.TabIndex = 1;
             LogoBox.TabStop = false;
-            LogoBox.DoubleClick += LogoBox_DoubleClick;
             // 
             // TitleText
             // 
@@ -128,31 +112,9 @@
             ToolTipInformation.ReshowDelay = 50;
             ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
-            // alertTimeZoneUTCBox
-            // 
-            alertTimeZoneUTCBox.AutoSize = true;
-            alertTimeZoneUTCBox.Location = new System.Drawing.Point(6, 20);
-            alertTimeZoneUTCBox.Name = "alertTimeZoneUTCBox";
-            alertTimeZoneUTCBox.Size = new System.Drawing.Size(69, 19);
-            alertTimeZoneUTCBox.TabIndex = 7;
-            alertTimeZoneUTCBox.Text = "Use UTC";
-            ToolTipInformation.SetToolTip(alertTimeZoneUTCBox, "Uses UTC visually everywhere instead of the system time zone.\r\nAlert text may not be affected by this setting.");
-            alertTimeZoneUTCBox.UseVisualStyleBackColor = true;
-            // 
-            // alertCompatibilityModeBox
-            // 
-            alertCompatibilityModeBox.AutoSize = true;
-            alertCompatibilityModeBox.Location = new System.Drawing.Point(6, 20);
-            alertCompatibilityModeBox.Name = "alertCompatibilityModeBox";
-            alertCompatibilityModeBox.Size = new System.Drawing.Size(132, 19);
-            alertCompatibilityModeBox.TabIndex = 8;
-            alertCompatibilityModeBox.Text = "Compatibility mode";
-            ToolTipInformation.SetToolTip(alertCompatibilityModeBox, "Disables most animations and some background stuff. May help performance on older systems.");
-            alertCompatibilityModeBox.UseVisualStyleBackColor = true;
-            // 
             // alertTimeoutInput
             // 
-            alertTimeoutInput.Location = new System.Drawing.Point(168, 113);
+            alertTimeoutInput.Location = new System.Drawing.Point(194, 66);
             alertTimeoutInput.Maximum = new decimal(new int[] { 60, 0, 0, 0 });
             alertTimeoutInput.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             alertTimeoutInput.Name = "alertTimeoutInput";
@@ -163,7 +125,7 @@
             // 
             // alertFullscreenDisplayInput
             // 
-            alertFullscreenDisplayInput.Location = new System.Drawing.Point(168, 86);
+            alertFullscreenDisplayInput.Location = new System.Drawing.Point(64, 66);
             alertFullscreenDisplayInput.Maximum = new decimal(new int[] { 16, 0, 0, 0 });
             alertFullscreenDisplayInput.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             alertFullscreenDisplayInput.Name = "alertFullscreenDisplayInput";
@@ -172,24 +134,13 @@
             ToolTipInformation.SetToolTip(alertFullscreenDisplayInput, "The screen to display the alert and idle panels on.");
             alertFullscreenDisplayInput.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
-            // alertFullscreenIdleBox
-            // 
-            alertFullscreenIdleBox.AutoSize = true;
-            alertFullscreenIdleBox.Location = new System.Drawing.Point(6, 20);
-            alertFullscreenIdleBox.Name = "alertFullscreenIdleBox";
-            alertFullscreenIdleBox.Size = new System.Drawing.Size(77, 19);
-            alertFullscreenIdleBox.TabIndex = 5;
-            alertFullscreenIdleBox.Text = "Idle panel";
-            ToolTipInformation.SetToolTip(alertFullscreenIdleBox, "Shows an idle panel on top of all content.");
-            alertFullscreenIdleBox.UseVisualStyleBackColor = true;
-            // 
             // alertFullscreenWindowedBox
             // 
             alertFullscreenWindowedBox.AutoSize = true;
-            alertFullscreenWindowedBox.Location = new System.Drawing.Point(6, 45);
+            alertFullscreenWindowedBox.Location = new System.Drawing.Point(374, 40);
             alertFullscreenWindowedBox.Name = "alertFullscreenWindowedBox";
             alertFullscreenWindowedBox.Size = new System.Drawing.Size(147, 19);
-            alertFullscreenWindowedBox.TabIndex = 12;
+            alertFullscreenWindowedBox.TabIndex = 13;
             alertFullscreenWindowedBox.Text = "Enable titlebar controls";
             ToolTipInformation.SetToolTip(alertFullscreenWindowedBox, "Enables titlebar window controls for alert panels.");
             alertFullscreenWindowedBox.UseVisualStyleBackColor = true;
@@ -197,10 +148,10 @@
             // alertIncreaseSizeBox
             // 
             alertIncreaseSizeBox.AutoSize = true;
-            alertIncreaseSizeBox.Location = new System.Drawing.Point(6, 20);
+            alertIncreaseSizeBox.Location = new System.Drawing.Point(266, 40);
             alertIncreaseSizeBox.Name = "alertIncreaseSizeBox";
             alertIncreaseSizeBox.Size = new System.Drawing.Size(102, 19);
-            alertIncreaseSizeBox.TabIndex = 11;
+            alertIncreaseSizeBox.TabIndex = 12;
             alertIncreaseSizeBox.Text = "Large font size";
             ToolTipInformation.SetToolTip(alertIncreaseSizeBox, "Increases the font size of alert text.");
             alertIncreaseSizeBox.UseVisualStyleBackColor = true;
@@ -208,10 +159,10 @@
             // alertNoGUIBox
             // 
             alertNoGUIBox.AutoSize = true;
-            alertNoGUIBox.Location = new System.Drawing.Point(6, 70);
+            alertNoGUIBox.Location = new System.Drawing.Point(110, 341);
             alertNoGUIBox.Name = "alertNoGUIBox";
             alertNoGUIBox.Size = new System.Drawing.Size(95, 19);
-            alertNoGUIBox.TabIndex = 10;
+            alertNoGUIBox.TabIndex = 11;
             alertNoGUIBox.Text = "Console only";
             ToolTipInformation.SetToolTip(alertNoGUIBox, "All alert functions are done through the console, and no dialogs are shown.\r\nAlerts cannot be interrupted or cancelled when this option is enabled.");
             alertNoGUIBox.UseVisualStyleBackColor = true;
@@ -223,7 +174,7 @@
             AlertFullscreenCombo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             AlertFullscreenCombo.ForeColor = System.Drawing.Color.White;
             AlertFullscreenCombo.FormattingEnabled = true;
-            AlertFullscreenCombo.Location = new System.Drawing.Point(110, 57);
+            AlertFullscreenCombo.Location = new System.Drawing.Point(6, 37);
             AlertFullscreenCombo.Name = "AlertFullscreenCombo";
             AlertFullscreenCombo.Size = new System.Drawing.Size(95, 23);
             AlertFullscreenCombo.TabIndex = 1;
@@ -236,48 +187,15 @@
             WindowLocationCombo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             WindowLocationCombo.ForeColor = System.Drawing.Color.White;
             WindowLocationCombo.FormattingEnabled = true;
-            WindowLocationCombo.Location = new System.Drawing.Point(110, 162);
+            WindowLocationCombo.Location = new System.Drawing.Point(136, 37);
             WindowLocationCombo.Name = "WindowLocationCombo";
             WindowLocationCombo.Size = new System.Drawing.Size(95, 23);
             WindowLocationCombo.TabIndex = 4;
             ToolTipInformation.SetToolTip(WindowLocationCombo, "Choose where on the screen alerts are displayed.\r\nThis option only affects some display styles.");
             // 
-            // statusWindowBox
-            // 
-            statusWindowBox.AutoSize = true;
-            statusWindowBox.Location = new System.Drawing.Point(6, 45);
-            statusWindowBox.Name = "statusWindowBox";
-            statusWindowBox.Size = new System.Drawing.Size(90, 19);
-            statusWindowBox.TabIndex = 6;
-            statusWindowBox.Text = "Status panel";
-            ToolTipInformation.SetToolTip(statusWindowBox, "Shows the status window.");
-            statusWindowBox.UseVisualStyleBackColor = true;
-            // 
-            // NoSystemSleepBox
-            // 
-            NoSystemSleepBox.AutoSize = true;
-            NoSystemSleepBox.Location = new System.Drawing.Point(6, 45);
-            NoSystemSleepBox.Name = "NoSystemSleepBox";
-            NoSystemSleepBox.Size = new System.Drawing.Size(130, 19);
-            NoSystemSleepBox.TabIndex = 9;
-            NoSystemSleepBox.Text = "Prevent sleep mode";
-            ToolTipInformation.SetToolTip(NoSystemSleepBox, "Prevents the system from entering sleep mode at all times.");
-            NoSystemSleepBox.UseVisualStyleBackColor = true;
-            // 
-            // alertAutoPrintingEnabledBox
-            // 
-            alertAutoPrintingEnabledBox.AutoSize = true;
-            alertAutoPrintingEnabledBox.Location = new System.Drawing.Point(6, 20);
-            alertAutoPrintingEnabledBox.Name = "alertAutoPrintingEnabledBox";
-            alertAutoPrintingEnabledBox.Size = new System.Drawing.Size(123, 19);
-            alertAutoPrintingEnabledBox.TabIndex = 13;
-            alertAutoPrintingEnabledBox.Text = "Print relayed alerts";
-            ToolTipInformation.SetToolTip(alertAutoPrintingEnabledBox, "Prints relayed alerts. This feature is only available if dialogs are enabled.");
-            alertAutoPrintingEnabledBox.UseVisualStyleBackColor = true;
-            // 
             // ScrollSpeedBar
             // 
-            ScrollSpeedBar.Location = new System.Drawing.Point(107, 230);
+            ScrollSpeedBar.Location = new System.Drawing.Point(3, 204);
             ScrollSpeedBar.Maximum = 20;
             ScrollSpeedBar.Name = "ScrollSpeedBar";
             ScrollSpeedBar.Size = new System.Drawing.Size(127, 45);
@@ -285,97 +203,98 @@
             ToolTipInformation.SetToolTip(ScrollSpeedBar, "Controls the scroll speed on panels with scrolling text. This cannot control the idle panel scroll speed.");
             ScrollSpeedBar.Value = 5;
             // 
-            // HideNetworkErrorsBox
-            // 
-            HideNetworkErrorsBox.AutoSize = true;
-            HideNetworkErrorsBox.Location = new System.Drawing.Point(6, 20);
-            HideNetworkErrorsBox.Name = "HideNetworkErrorsBox";
-            HideNetworkErrorsBox.Size = new System.Drawing.Size(130, 19);
-            HideNetworkErrorsBox.TabIndex = 14;
-            HideNetworkErrorsBox.Text = "Hide network errors";
-            ToolTipInformation.SetToolTip(HideNetworkErrorsBox, "Hides network error notifications from appearing.\r\nThey'll still appear in the console.");
-            HideNetworkErrorsBox.UseVisualStyleBackColor = true;
-            // 
-            // OpenDashboardAutomaticallyBox
-            // 
-            OpenDashboardAutomaticallyBox.AutoSize = true;
-            OpenDashboardAutomaticallyBox.Location = new System.Drawing.Point(6, 70);
-            OpenDashboardAutomaticallyBox.Name = "OpenDashboardAutomaticallyBox";
-            OpenDashboardAutomaticallyBox.Size = new System.Drawing.Size(126, 19);
-            OpenDashboardAutomaticallyBox.TabIndex = 7;
-            OpenDashboardAutomaticallyBox.Text = "Dashboard on start";
-            ToolTipInformation.SetToolTip(OpenDashboardAutomaticallyBox, "Shows the status window.");
-            OpenDashboardAutomaticallyBox.UseVisualStyleBackColor = true;
-            // 
             // alertFadeTimeBar
             // 
             alertFadeTimeBar.LargeChange = 1;
-            alertFadeTimeBar.Location = new System.Drawing.Point(107, 296);
+            alertFadeTimeBar.Location = new System.Drawing.Point(3, 120);
             alertFadeTimeBar.Maximum = 20;
             alertFadeTimeBar.Minimum = 1;
             alertFadeTimeBar.Name = "alertFadeTimeBar";
             alertFadeTimeBar.Size = new System.Drawing.Size(127, 45);
             alertFadeTimeBar.TabIndex = 63;
-            ToolTipInformation.SetToolTip(alertFadeTimeBar, "Controls the fade speed on alert panels with the ability to fade.\r\nMoving this slider lower increases the speed. Higher is slower.\r\nThis does nothing if compatibility mode is turned on.");
+            ToolTipInformation.SetToolTip(alertFadeTimeBar, "Controls the fade speed on alert panels.\r\nMoving this slider lower increases the speed. Higher is slower.\r\n\r\nThis does nothing if compatibility mode is turned on.");
             alertFadeTimeBar.Value = 3;
+            // 
+            // PreviewPicture
+            // 
+            PreviewPicture.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            PreviewPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            PreviewPicture.Location = new System.Drawing.Point(136, 95);
+            PreviewPicture.Name = "PreviewPicture";
+            PreviewPicture.Size = new System.Drawing.Size(395, 192);
+            PreviewPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            PreviewPicture.TabIndex = 64;
+            PreviewPicture.TabStop = false;
+            ToolTipInformation.SetToolTip(PreviewPicture, "This is a preview of the alert display style currently selected. This is not affected by any other settings, except display style.");
+            // 
+            // TryForceWindowFocusBox
+            // 
+            TryForceWindowFocusBox.AutoSize = true;
+            TryForceWindowFocusBox.Location = new System.Drawing.Point(6, 255);
+            TryForceWindowFocusBox.Name = "TryForceWindowFocusBox";
+            TryForceWindowFocusBox.Size = new System.Drawing.Size(130, 34);
+            TryForceWindowFocusBox.TabIndex = 65;
+            TryForceWindowFocusBox.Text = "Try forcefully taking\r\nwindow focus";
+            ToolTipInformation.SetToolTip(TryForceWindowFocusBox, "Tries to take window focus by forcing the window's Z-order to be the highest for up to 5 seconds.");
+            TryForceWindowFocusBox.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
             label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            label1.Location = new System.Drawing.Point(9, 326);
+            label1.Location = new System.Drawing.Point(9, 361);
             label1.Margin = new System.Windows.Forms.Padding(0);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(332, 26);
+            label1.Size = new System.Drawing.Size(258, 26);
             label1.TabIndex = 13;
             label1.Text = "To change these options later, go to Settings.";
             label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // label9
             // 
-            label9.AutoSize = true;
-            label9.Location = new System.Drawing.Point(107, 115);
+            label9.Location = new System.Drawing.Point(136, 66);
             label9.Name = "label9";
-            label9.Size = new System.Drawing.Size(51, 15);
+            label9.Size = new System.Drawing.Size(52, 23);
             label9.TabIndex = 34;
             label9.Text = "Timeout";
+            label9.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new System.Drawing.Font("Segoe UI", 9F);
-            label2.Location = new System.Drawing.Point(107, 39);
+            label2.Location = new System.Drawing.Point(3, 19);
             label2.Margin = new System.Windows.Forms.Padding(0);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(72, 15);
+            label2.Size = new System.Drawing.Size(99, 15);
             label2.TabIndex = 36;
-            label2.Text = "Display style";
+            label2.Text = "Alert display style";
             label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // label8
             // 
-            label8.AutoSize = true;
-            label8.Location = new System.Drawing.Point(107, 88);
+            label8.Location = new System.Drawing.Point(6, 66);
             label8.Name = "label8";
-            label8.Size = new System.Drawing.Size(42, 15);
+            label8.Size = new System.Drawing.Size(52, 23);
             label8.TabIndex = 37;
             label8.Text = "Screen";
+            label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new System.Drawing.Point(107, 144);
+            label11.Location = new System.Drawing.Point(133, 19);
             label11.Name = "label11";
-            label11.Size = new System.Drawing.Size(80, 15);
+            label11.Size = new System.Drawing.Size(134, 15);
             label11.TabIndex = 39;
-            label11.Text = "Display where";
+            label11.Text = "Alert window alignment";
             // 
             // AlertTextButton
             // 
             AlertTextButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             AlertTextButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             AlertTextButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            AlertTextButton.Location = new System.Drawing.Point(578, 303);
+            AlertTextButton.Location = new System.Drawing.Point(578, 338);
             AlertTextButton.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
             AlertTextButton.Name = "AlertTextButton";
             AlertTextButton.Size = new System.Drawing.Size(72, 23);
@@ -387,7 +306,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(107, 194);
+            label3.Location = new System.Drawing.Point(3, 168);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(118, 30);
             label3.TabIndex = 43;
@@ -398,7 +317,7 @@
             DisplayStyleInfoButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             DisplayStyleInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             DisplayStyleInfoButton.ForeColor = System.Drawing.Color.Yellow;
-            DisplayStyleInfoButton.Location = new System.Drawing.Point(211, 57);
+            DisplayStyleInfoButton.Location = new System.Drawing.Point(107, 37);
             DisplayStyleInfoButton.Name = "DisplayStyleInfoButton";
             DisplayStyleInfoButton.Size = new System.Drawing.Size(23, 23);
             DisplayStyleInfoButton.TabIndex = 53;
@@ -406,83 +325,50 @@
             DisplayStyleInfoButton.UseVisualStyleBackColor = false;
             DisplayStyleInfoButton.Click += DisplayStyleInfoButton_Click;
             // 
-            // DisplayPanelsGroup
-            // 
-            DisplayPanelsGroup.Controls.Add(OpenDashboardAutomaticallyBox);
-            DisplayPanelsGroup.Controls.Add(alertFullscreenIdleBox);
-            DisplayPanelsGroup.Controls.Add(statusWindowBox);
-            DisplayPanelsGroup.ForeColor = System.Drawing.Color.White;
-            DisplayPanelsGroup.Location = new System.Drawing.Point(240, 42);
-            DisplayPanelsGroup.Name = "DisplayPanelsGroup";
-            DisplayPanelsGroup.Size = new System.Drawing.Size(163, 122);
-            DisplayPanelsGroup.TabIndex = 54;
-            DisplayPanelsGroup.TabStop = false;
-            DisplayPanelsGroup.Text = "Display Panels";
-            // 
-            // TimeDisplayGroup
-            // 
-            TimeDisplayGroup.Controls.Add(alertTimeZoneUTCBox);
-            TimeDisplayGroup.ForeColor = System.Drawing.Color.White;
-            TimeDisplayGroup.Location = new System.Drawing.Point(409, 223);
-            TimeDisplayGroup.Name = "TimeDisplayGroup";
-            TimeDisplayGroup.Size = new System.Drawing.Size(163, 46);
-            TimeDisplayGroup.TabIndex = 55;
-            TimeDisplayGroup.TabStop = false;
-            TimeDisplayGroup.Text = "Time Display";
-            // 
-            // SystemControlsGroup
-            // 
-            SystemControlsGroup.Controls.Add(alertCompatibilityModeBox);
-            SystemControlsGroup.Controls.Add(NoSystemSleepBox);
-            SystemControlsGroup.Controls.Add(alertNoGUIBox);
-            SystemControlsGroup.ForeColor = System.Drawing.Color.White;
-            SystemControlsGroup.Location = new System.Drawing.Point(240, 170);
-            SystemControlsGroup.Name = "SystemControlsGroup";
-            SystemControlsGroup.Size = new System.Drawing.Size(163, 99);
-            SystemControlsGroup.TabIndex = 57;
-            SystemControlsGroup.TabStop = false;
-            SystemControlsGroup.Text = "System Controls";
-            // 
             // TextDisplayGroup
             // 
+            TextDisplayGroup.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            TextDisplayGroup.Controls.Add(TryForceWindowFocusBox);
+            TextDisplayGroup.Controls.Add(PreviewPicture);
             TextDisplayGroup.Controls.Add(alertIncreaseSizeBox);
             TextDisplayGroup.Controls.Add(alertFullscreenWindowedBox);
+            TextDisplayGroup.Controls.Add(label4);
+            TextDisplayGroup.Controls.Add(label2);
+            TextDisplayGroup.Controls.Add(DisplayWhereInfoButton);
+            TextDisplayGroup.Controls.Add(alertFadeTimeBar);
+            TextDisplayGroup.Controls.Add(alertFullscreenDisplayInput);
+            TextDisplayGroup.Controls.Add(alertTimeoutInput);
+            TextDisplayGroup.Controls.Add(label9);
+            TextDisplayGroup.Controls.Add(DisplayStyleInfoButton);
+            TextDisplayGroup.Controls.Add(AlertFullscreenCombo);
+            TextDisplayGroup.Controls.Add(ScrollSpeedBar);
+            TextDisplayGroup.Controls.Add(label8);
+            TextDisplayGroup.Controls.Add(label3);
+            TextDisplayGroup.Controls.Add(WindowLocationCombo);
+            TextDisplayGroup.Controls.Add(label11);
             TextDisplayGroup.ForeColor = System.Drawing.Color.White;
-            TextDisplayGroup.Location = new System.Drawing.Point(409, 42);
+            TextDisplayGroup.Location = new System.Drawing.Point(110, 42);
             TextDisplayGroup.Name = "TextDisplayGroup";
-            TextDisplayGroup.Size = new System.Drawing.Size(163, 69);
+            TextDisplayGroup.Size = new System.Drawing.Size(537, 293);
             TextDisplayGroup.TabIndex = 58;
             TextDisplayGroup.TabStop = false;
-            TextDisplayGroup.Text = "Alert Display";
+            TextDisplayGroup.Text = "Alert Window";
             // 
-            // PrintingGroup
+            // label4
             // 
-            PrintingGroup.Controls.Add(alertAutoPrintingEnabledBox);
-            PrintingGroup.ForeColor = System.Drawing.Color.White;
-            PrintingGroup.Location = new System.Drawing.Point(409, 117);
-            PrintingGroup.Name = "PrintingGroup";
-            PrintingGroup.Size = new System.Drawing.Size(163, 47);
-            PrintingGroup.TabIndex = 59;
-            PrintingGroup.TabStop = false;
-            PrintingGroup.Text = "Printing";
-            // 
-            // NotificationsGroup
-            // 
-            NotificationsGroup.Controls.Add(HideNetworkErrorsBox);
-            NotificationsGroup.ForeColor = System.Drawing.Color.White;
-            NotificationsGroup.Location = new System.Drawing.Point(409, 170);
-            NotificationsGroup.Name = "NotificationsGroup";
-            NotificationsGroup.Size = new System.Drawing.Size(163, 47);
-            NotificationsGroup.TabIndex = 60;
-            NotificationsGroup.TabStop = false;
-            NotificationsGroup.Text = "Notifications";
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(3, 102);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(119, 15);
+            label4.TabIndex = 62;
+            label4.Text = "Fade transition speed";
             // 
             // DisplayWhereInfoButton
             // 
             DisplayWhereInfoButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             DisplayWhereInfoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             DisplayWhereInfoButton.ForeColor = System.Drawing.Color.Yellow;
-            DisplayWhereInfoButton.Location = new System.Drawing.Point(211, 162);
+            DisplayWhereInfoButton.Location = new System.Drawing.Point(237, 37);
             DisplayWhereInfoButton.Name = "DisplayWhereInfoButton";
             DisplayWhereInfoButton.Size = new System.Drawing.Size(23, 23);
             DisplayWhereInfoButton.TabIndex = 61;
@@ -490,46 +376,19 @@
             DisplayWhereInfoButton.UseVisualStyleBackColor = false;
             DisplayWhereInfoButton.Click += DisplayWhereInfoButton_Click;
             // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new System.Drawing.Point(107, 278);
-            label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(119, 15);
-            label4.TabIndex = 62;
-            label4.Text = "Fade transition speed";
-            // 
             // StyleConfigurationForm
             // 
             AcceptButton = DoneButton;
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
-            ClientSize = new System.Drawing.Size(659, 361);
-            Controls.Add(label4);
-            Controls.Add(DisplayWhereInfoButton);
-            Controls.Add(NotificationsGroup);
-            Controls.Add(PrintingGroup);
-            Controls.Add(SystemControlsGroup);
-            Controls.Add(TimeDisplayGroup);
-            Controls.Add(DisplayStyleInfoButton);
-            Controls.Add(ScrollSpeedBar);
-            Controls.Add(label3);
+            ClientSize = new System.Drawing.Size(659, 396);
             Controls.Add(AlertTextButton);
-            Controls.Add(label11);
-            Controls.Add(WindowLocationCombo);
-            Controls.Add(label8);
-            Controls.Add(label2);
-            Controls.Add(AlertFullscreenCombo);
-            Controls.Add(label9);
-            Controls.Add(alertTimeoutInput);
-            Controls.Add(alertFullscreenDisplayInput);
+            Controls.Add(alertNoGUIBox);
             Controls.Add(label1);
             Controls.Add(TitleText);
             Controls.Add(LogoBox);
             Controls.Add(DoneButton);
-            Controls.Add(DisplayPanelsGroup);
             Controls.Add(TextDisplayGroup);
-            Controls.Add(alertFadeTimeBar);
             Font = new System.Drawing.Font("Segoe UI", 9F);
             ForeColor = System.Drawing.Color.White;
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -540,7 +399,7 @@
             MinimizeBox = false;
             Name = "StyleConfigurationForm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "SharpAlert - Style Selection";
+            Text = "SharpAlert - Style Settings";
             HelpButtonClicked += ChooseRegionForm_HelpButtonClicked;
             FormClosing += ChooseRegionForm_FormClosing;
             Load += ChooseRegionForm_Load;
@@ -549,18 +408,9 @@
             ((System.ComponentModel.ISupportInitialize)alertFullscreenDisplayInput).EndInit();
             ((System.ComponentModel.ISupportInitialize)ScrollSpeedBar).EndInit();
             ((System.ComponentModel.ISupportInitialize)alertFadeTimeBar).EndInit();
-            DisplayPanelsGroup.ResumeLayout(false);
-            DisplayPanelsGroup.PerformLayout();
-            TimeDisplayGroup.ResumeLayout(false);
-            TimeDisplayGroup.PerformLayout();
-            SystemControlsGroup.ResumeLayout(false);
-            SystemControlsGroup.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)PreviewPicture).EndInit();
             TextDisplayGroup.ResumeLayout(false);
             TextDisplayGroup.PerformLayout();
-            PrintingGroup.ResumeLayout(false);
-            PrintingGroup.PerformLayout();
-            NotificationsGroup.ResumeLayout(false);
-            NotificationsGroup.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
 
@@ -574,12 +424,9 @@
         private System.Windows.Forms.ToolTip ToolTipInformation;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox AlertFullscreenCombo;
-        private System.Windows.Forms.CheckBox alertTimeZoneUTCBox;
-        private System.Windows.Forms.CheckBox alertCompatibilityModeBox;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.NumericUpDown alertTimeoutInput;
         private System.Windows.Forms.NumericUpDown alertFullscreenDisplayInput;
-        private System.Windows.Forms.CheckBox alertFullscreenIdleBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox alertFullscreenWindowedBox;
@@ -587,23 +434,15 @@
         private System.Windows.Forms.CheckBox alertNoGUIBox;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox WindowLocationCombo;
-        private System.Windows.Forms.CheckBox statusWindowBox;
-        private System.Windows.Forms.CheckBox NoSystemSleepBox;
         private System.Windows.Forms.Button AlertTextButton;
-        private System.Windows.Forms.CheckBox alertAutoPrintingEnabledBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TrackBar ScrollSpeedBar;
         private System.Windows.Forms.Button DisplayStyleInfoButton;
-        private System.Windows.Forms.GroupBox DisplayPanelsGroup;
-        private System.Windows.Forms.GroupBox TimeDisplayGroup;
-        private System.Windows.Forms.CheckBox HideNetworkErrorsBox;
-        private System.Windows.Forms.GroupBox SystemControlsGroup;
         private System.Windows.Forms.GroupBox TextDisplayGroup;
-        private System.Windows.Forms.GroupBox PrintingGroup;
-        private System.Windows.Forms.GroupBox NotificationsGroup;
         private System.Windows.Forms.Button DisplayWhereInfoButton;
-        private System.Windows.Forms.CheckBox OpenDashboardAutomaticallyBox;
         private System.Windows.Forms.TrackBar alertFadeTimeBar;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.PictureBox PreviewPicture;
+        private System.Windows.Forms.CheckBox TryForceWindowFocusBox;
     }
 }

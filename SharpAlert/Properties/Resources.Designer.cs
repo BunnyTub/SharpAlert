@@ -121,6 +121,15 @@ namespace SharpAlert.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream despacito {
+            get {
+                return ResourceManager.GetStream("despacito", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream earthquake_alert {
             get {
                 return ResourceManager.GetStream("earthquake_alert", resourceCulture);
@@ -201,6 +210,56 @@ namespace SharpAlert.Properties {
         internal static System.Drawing.Bitmap square_xmark_solid {
             get {
                 object obj = ResourceManager.GetObject("square-xmark-solid", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StyleFullboard {
+            get {
+                object obj = ResourceManager.GetObject("StyleFullboard", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StyleFullscreen {
+            get {
+                object obj = ResourceManager.GetObject("StyleFullscreen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StyleFullscroll {
+            get {
+                object obj = ResourceManager.GetObject("StyleFullscroll", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StyleMinified {
+            get {
+                object obj = ResourceManager.GetObject("StyleMinified", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap StyleWindowed {
+            get {
+                object obj = ResourceManager.GetObject("StyleWindowed", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

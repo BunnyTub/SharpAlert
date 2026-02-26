@@ -51,6 +51,7 @@
             WindowFlash = new System.Windows.Forms.Timer(components);
             TerminateSelf = new System.Windows.Forms.Timer(components);
             ChildFollowsParent = new System.Windows.Forms.Timer(components);
+            WindowFlashSmooth = new System.Windows.Forms.Timer(components);
             ButtonOptionsStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)AlertIcon).BeginInit();
             SubtitlePanel.SuspendLayout();
@@ -289,6 +290,11 @@
             ChildFollowsParent.Interval = 75;
             ChildFollowsParent.Tick += ChildFollowsParent_Tick;
             // 
+            // WindowFlashSmooth
+            // 
+            WindowFlashSmooth.Interval = 60;
+            WindowFlashSmooth.Tick += WindowFlashSmooth_Tick;
+            // 
             // AlertForm
             // 
             AcceptButton = DismissButton;
@@ -347,6 +353,7 @@
         private System.Windows.Forms.Timer ChildFollowsParent;
         private System.Windows.Forms.ContextMenuStrip ButtonOptionsStrip;
         private System.Windows.Forms.ToolStripMenuItem dismissAllAlertsFor30SecondsToolStripMenuItem;
+        private System.Windows.Forms.Timer WindowFlashSmooth;
     }
 }
 

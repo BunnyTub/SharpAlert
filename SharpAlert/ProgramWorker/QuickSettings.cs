@@ -150,6 +150,7 @@ namespace SharpAlert.ProgramWorker
         public bool alertPlayStartToneTwice { get; set; } = false;
         public bool alertPlayEndTone { get; set; } = false;
         public bool alertAutoPrintingEnabled { get; set; } = false;
+        public bool TryForceWindowFocus { get; set; } = true;
         public bool LegacyAudioPlayer { get; set; } = false;
         public bool EnableBasicSpeaking { get; set; } = false;
         public int alertVolume { get; set; } = 8;

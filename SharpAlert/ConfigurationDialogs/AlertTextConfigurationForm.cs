@@ -52,6 +52,9 @@ namespace SharpAlert.ConfigurationDialogs
 
             Use24HrTimeBox.Checked = QuickSettings.Instance.Use24HrTime;
             Use24HrTimeBox.CheckedChanged += (a, b) => QuickSettings.Instance.Use24HrTime = ((CheckBox)a).Checked;
+
+            alertTimeZoneUTCBox.Checked = QuickSettings.Instance.alertTimeZoneUTC;
+            alertTimeZoneUTCBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertTimeZoneUTC = ((CheckBox)a).Checked;
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)

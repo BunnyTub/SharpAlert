@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Windows.Forms;
-using SharpAlert.PrinterStuff;
+using SharpAlert.Languages;
 using SharpAlert.ProgramWorker;
 using SharpAlert.Properties;
-using static SharpAlert.ProgramWorker.MainEntryPoint;
 
 namespace SharpAlert.ConfigurationDialogs
 {
@@ -15,12 +13,12 @@ namespace SharpAlert.ConfigurationDialogs
             InitializeComponent();
             if (ShowNextInsteadOfDone)
             {
-                DoneButton.Text = "Next";
+                DoneButton.Text = Language.Get("Button_Next", "Next");
                 TitleText.Text = "How do you want everything to look?";
             }
             else
             {
-                DoneButton.Text = "Done";
+                DoneButton.Text = Language.Get("Button_Done", "Done");
                 TitleText.Text = "Choose your style settings.";
             }
         }
@@ -74,8 +72,39 @@ namespace SharpAlert.ConfigurationDialogs
                     FriendlyName = "Full board"
                 },
             };
+
             AlertFullscreenCombo.SelectedIndex = QuickSettings.Instance.alertDisplayType;
-            AlertFullscreenCombo.SelectedIndexChanged += (a, b) => QuickSettings.Instance.alertDisplayType = (byte)((ComboBox)a).SelectedIndex;
+
+            void ChangePreview()
+            {
+                switch (AlertFullscreenCombo.SelectedIndex)
+                {
+                    default:
+                    case 0:
+                        PreviewPicture.Image = Resources.StyleWindowed;
+                        break;
+                    case 1:
+                        PreviewPicture.Image = Resources.StyleMinified;
+                        break;
+                    case 2:
+                        PreviewPicture.Image = Resources.StyleFullscreen;
+                        break;
+                    case 3:
+                        PreviewPicture.Image = Resources.StyleFullscroll;
+                        break;
+                    case 4:
+                        PreviewPicture.Image = Resources.StyleFullboard;
+                        break;
+                }
+            }
+
+            ChangePreview();
+
+            AlertFullscreenCombo.SelectedIndexChanged += (a, b) =>
+            {
+                QuickSettings.Instance.alertDisplayType = (byte)((ComboBox)a).SelectedIndex;
+                ChangePreview();
+            };
 
             WindowLocationCombo.DataSource = new ComboItem[] {
                 new ComboItem
@@ -112,26 +141,6 @@ namespace SharpAlert.ConfigurationDialogs
 
             alertTimeoutInput.Value = QuickSettings.Instance.alertTimeout;
             alertTimeoutInput.ValueChanged += (a, b) => QuickSettings.Instance.alertTimeout = (int)((NumericUpDown)a).Value;
-
-            alertFullscreenIdleBox.Checked = QuickSettings.Instance.alertFullscreenIdle;
-            alertFullscreenIdleBox.CheckedChanged += (a, b) =>
-            {
-                IdleWindowVisible = ((CheckBox)a).Checked;
-                this.BringToFront();
-            };
-
-            statusWindowBox.Checked = QuickSettings.Instance.statusWindow;
-            statusWindowBox.CheckedChanged += (a, b) =>
-            {
-                StatusWindowVisible = ((CheckBox)a).Checked;
-                this.BringToFront();
-            };
-
-            OpenDashboardAutomaticallyBox.Checked = QuickSettings.Instance.OpenDashboardAutomatically;
-            OpenDashboardAutomaticallyBox.CheckedChanged += (a, b) => QuickSettings.Instance.OpenDashboardAutomatically = ((CheckBox)a).Checked;
-            
-            alertTimeZoneUTCBox.Checked = QuickSettings.Instance.alertTimeZoneUTC;
-            alertTimeZoneUTCBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertTimeZoneUTC = ((CheckBox)a).Checked;
 
             bool alertFullscreenDisplayIgnoreInput = false;
             alertFullscreenDisplayInput.Value = QuickSettings.Instance.alertFullscreenDisplay + 1;
@@ -180,13 +189,11 @@ namespace SharpAlert.ConfigurationDialogs
                 }
             };
 
-            alertCompatibilityModeBox.Checked = QuickSettings.Instance.alertCompatibilityMode;
-            alertCompatibilityModeBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertCompatibilityMode = ((CheckBox)a).Checked;
-
             alertNoGUIBox.Checked = QuickSettings.Instance.alertNoGUI;
             alertNoGUIBox.CheckedChanged += (a, b) =>
             {
                 QuickSettings.Instance.alertNoGUI = ((CheckBox)a).Checked;
+                TextDisplayGroup.Enabled = !((CheckBox)a).Checked;
                 if (((CheckBox)a).Checked)
                 {
                     MessageBox.Show("The console will now be opened.",
@@ -203,24 +210,24 @@ namespace SharpAlert.ConfigurationDialogs
                         MessageBoxIcon.Information);
                 }
             };
+            TextDisplayGroup.Enabled = !alertNoGUIBox.Checked;
 
             alertIncreaseSizeBox.Checked = QuickSettings.Instance.alertIncreaseSize;
             alertIncreaseSizeBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertIncreaseSize = ((CheckBox)a).Checked;
-            
-            NoSystemSleepBox.Checked = QuickSettings.Instance.NoSystemSleep;
-            NoSystemSleepBox.CheckedChanged += (a, b) => QuickSettings.Instance.NoSystemSleep = ((CheckBox)a).Checked;
-            
-            alertAutoPrintingEnabledBox.Checked = QuickSettings.Instance.alertAutoPrintingEnabled;
-            alertAutoPrintingEnabledBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertAutoPrintingEnabled = ((CheckBox)a).Checked;
 
-            HideNetworkErrorsBox.Checked = QuickSettings.Instance.HideNetworkErrors;
-            HideNetworkErrorsBox.CheckedChanged += (a, b) => QuickSettings.Instance.HideNetworkErrors = ((CheckBox)a).Checked;
+            //alertAutoPrintingEnabledBox.Checked = QuickSettings.Instance.alertAutoPrintingEnabled;
+            //alertAutoPrintingEnabledBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertAutoPrintingEnabled = ((CheckBox)a).Checked;
+
+            QuickSettings.Instance.alertAutoPrintingEnabled = false;
 
             ScrollSpeedBar.Value = QuickSettings.Instance.ScrollSpeed;
             ScrollSpeedBar.ValueChanged += (a, b) => QuickSettings.Instance.ScrollSpeed = ((TrackBar)a).Value;
-            
+
             alertFadeTimeBar.Value = QuickSettings.Instance.alertFadeTime;
             alertFadeTimeBar.ValueChanged += (a, b) => QuickSettings.Instance.alertFadeTime = ((TrackBar)a).Value;
+
+            TryForceWindowFocusBox.Checked = QuickSettings.Instance.TryForceWindowFocus;
+            TryForceWindowFocusBox.CheckedChanged += (a, b) => QuickSettings.Instance.TryForceWindowFocus = ((CheckBox)a).Checked;
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -244,11 +251,6 @@ namespace SharpAlert.ConfigurationDialogs
             atcf.ShowDialog();
         }
 
-        private void LogoBox_DoubleClick(object sender, EventArgs e)
-        {
-            PrinterController.Print("Test Message", $"This is a test to ensure the function of your printer and its current settings. {Resources.TestScript}");
-        }
-
         private void TitleText_Click(object sender, EventArgs e)
         {
             //throw new OutOfMemoryException();
@@ -261,12 +263,12 @@ namespace SharpAlert.ConfigurationDialogs
                 "Minified - Displays the alert in a notification like window.\r\n" +
                 "Full screen - Displays the alert in full screen, and TTS is spoken automatically.\r\n" +
                 "Full scroll - Displays the alert in a scrolling bar, and TTS is spoken automatically.\r\n" +
-                "Full board - Like full screen, but for digital signage. Removes fade animations.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                "Full board - Like full screen, but for digital signage. Instantly appears.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void DisplayWhereInfoButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This option only affects the windowed style.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("This option changes where the window appears on the screen.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

@@ -1,12 +1,10 @@
-﻿using SharpAlert.ProgramWorker;
+﻿using SharpAlert.Languages;
+using SharpAlert.ProgramWorker;
 using SharpAlert.SourceCapturing.SystemSpecific;
 using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 using static SharpAlert.ProgramWorker.MainEntryPoint;
 
@@ -20,16 +18,26 @@ namespace SharpAlert.ConfigurationDialogs
         {
             InitializeComponent();
             ShowNextInsteadOfDone = ShowNextInsteadOfDone_;
+
+            Language.ApplyFont(this);
+
+            Text = $"SharpAlert - {Language.Get("WindowTitle_RegionSettings", "Region Settings")}";
+
+            ChangeLaterText.Text = $"{Language.Get("RegionSettings_IDAPCornerMessage", "Having trouble with Brazil (IDAP)? Try a connection test.")}\r\n{Language.Get("GoToSettings", "To change these options later, go to Settings.")}";
+            LinkButton.Text = Language.Get("RegionSettings_CustomCAPButton", "Custom\r\nCAP");
+
             if (ShowNextInsteadOfDone)
             {
-                TitleText.Text = "Where do you want alerts from?";
-                DoneButton.Text = "Next";
+                TitleText.Text = Language.Get("RegionSettings_SetupTitle", "Where do you want alerts from?");
+                DoneButton.Text = Language.Get("Button_Next", "Next");
             }
             else
             {
-                TitleText.Text = "Choose your region settings.";
-                DoneButton.Text = "Done";
+                TitleText.Text = Language.Get("RegionSettings_Title", "Choose your region settings.");
+                DoneButton.Text = Language.Get("Button_Done", "Done");
             }
+            
+            ChangeLaterText.Visible = ShowNextInsteadOfDone;
         }
 
         private void DoneButton_Click(object sender, EventArgs e)
@@ -205,8 +213,8 @@ namespace SharpAlert.ConfigurationDialogs
         {
             if (ShowNextInsteadOfDone)
             {
-
-                var region = new RegionInfo(CultureInfo.CurrentCulture.Name);
+                bool RegionChanged = true;
+                RegionInfo region = new(CultureInfo.CurrentCulture.Name);
 
                 switch (region.TwoLetterISORegionName)
                 {
@@ -223,9 +231,12 @@ namespace SharpAlert.ConfigurationDialogs
                     case "BR":
                         RegionBrazilBox.Checked = true;
                         break;
+                    default:
+                        RegionChanged = false;
+                        break;
                 }
 
-                MessageBox.Show($"We've set a region ({region.TwoLetterISORegionName}) for you.\r\nIf the selected region isn't right, you can always change it.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (RegionChanged) MessageBox.Show($"We've set a region ({region.TwoLetterISORegionName}) for you.\r\nIf the selected region isn't right, you can always change it.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }

@@ -18,9 +18,17 @@
   "SetupWelcome_Title": "Welcome to SharpAlert!",
   "SetupWelcome_Description": "Get alerts easily with SharpAlert.\r\n\r\nThis setup will guide you through quickly setting up the program. You can find more customization options by right-clicking the notification icon, and clicking the \"Open Settings\" button.",
   "SetupWelcome_BottomText": "To go through the setup more than once, reset the program.\r\nCreated by BunnyTub. More credits can be found in Settings.",
-  "SetupButton_Skip": "Skip",
-  "SetupButton_Next": "Next",
+  "Button_Skip": "Skip",
+  "Button_Next": "Next",
+  "Button_Done": "Done",
   "SetupWelcome_SkipQuestion": "Do you want to skip the setup wizard and start using SharpAlert with no additional questions?",
+
+  "RegionSettings_Title": "Choose your region settings.",
+  "RegionSettings_SetupTitle": "Where do you want alerts from?",
+  "RegionSettings_IDAPCornerMessage": "Having trouble with Brazil (IDAP)? Try a connection test.",
+  "RegionSettings_CustomCAPButton": "Custom\r\nCAP",
+
+  "GoToSettings": "To change these options later, go to Settings.",
 
   "AlertSeverity_Extreme": "EXTREME ALERT",
   "AlertSeverity_Severe": "SEVERE ALERT",
@@ -31,6 +39,8 @@
 
   "WindowTitle_Setup": "Setup",
   "WindowTitle_GlobalSettings": "Global Settings",
+  "WindowTitle_RegionSettings": "Region Settings",
+  "WindowTitle_ExtraSettings": "Extra Settings",
 
   "SettingsButton_AlertSettings": "Alert Settings",
   "SettingsButton_RegionSettings": "Region Settings",
@@ -40,7 +50,7 @@
   "SettingsButton_DiscordAndWebhooks": "Discord &\r\nWebhooks",
   "SettingsButton_SoundsAndEffects": "Sounds &\r\nEffects",
   "SettingsButton_ServerSettings": "Server\r\nSettings",
-  "SettingsButton_SaveSlots": "Save\r\nSlots",
+  "SettingsButton_SaveSlots": "Save Slots",
   "SettingsButton_EnableAutoUpdates": "Enable Automatic Updates",
   "SettingsButton_AboutButton": "About SharpAlert",
   "SettingsButton_CloseButton": "Close",

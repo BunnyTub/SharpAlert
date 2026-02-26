@@ -47,8 +47,6 @@
             label1 = new System.Windows.Forms.Label();
             AudioOutputLabel = new System.Windows.Forms.Label();
             GlobalVolumeLabel = new System.Windows.Forms.Label();
-            ApplicationTypeGroup = new System.Windows.Forms.GroupBox();
-            label3 = new System.Windows.Forms.Label();
             groupBox10 = new System.Windows.Forms.GroupBox();
             ChangeStartLowButton = new System.Windows.Forms.Button();
             ChangeEndButton = new System.Windows.Forms.Button();
@@ -57,7 +55,6 @@
             ShowRefreshTip = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)volumeBar).BeginInit();
-            ApplicationTypeGroup.SuspendLayout();
             groupBox10.SuspendLayout();
             SuspendLayout();
             // 
@@ -66,7 +63,7 @@
             DoneButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             DoneButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            DoneButton.Location = new System.Drawing.Point(506, 350);
+            DoneButton.Location = new System.Drawing.Point(506, 293);
             DoneButton.Margin = new System.Windows.Forms.Padding(0);
             DoneButton.Name = "DoneButton";
             DoneButton.Size = new System.Drawing.Size(72, 23);
@@ -195,7 +192,7 @@
             TTSButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             TTSButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
             TTSButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            TTSButton.Location = new System.Drawing.Point(403, 350);
+            TTSButton.Location = new System.Drawing.Point(403, 293);
             TTSButton.Name = "TTSButton";
             TTSButton.Size = new System.Drawing.Size(100, 23);
             TTSButton.TabIndex = 48;
@@ -242,7 +239,7 @@
             // 
             label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            label1.Location = new System.Drawing.Point(9, 347);
+            label1.Location = new System.Drawing.Point(9, 290);
             label1.Margin = new System.Windows.Forms.Padding(0);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(332, 26);
@@ -271,26 +268,6 @@
             GlobalVolumeLabel.Text = "Global\r\nVolume";
             GlobalVolumeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // ApplicationTypeGroup
-            // 
-            ApplicationTypeGroup.Controls.Add(label3);
-            ApplicationTypeGroup.ForeColor = System.Drawing.Color.White;
-            ApplicationTypeGroup.Location = new System.Drawing.Point(110, 184);
-            ApplicationTypeGroup.Name = "ApplicationTypeGroup";
-            ApplicationTypeGroup.Size = new System.Drawing.Size(468, 56);
-            ApplicationTypeGroup.TabIndex = 49;
-            ApplicationTypeGroup.TabStop = false;
-            ApplicationTypeGroup.Text = "Basic Speaking";
-            // 
-            // label3
-            // 
-            label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            label3.Location = new System.Drawing.Point(3, 19);
-            label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(462, 34);
-            label3.TabIndex = 6;
-            label3.Text = "All Basic Speaking functions have been deprecated due to the lack of need and usage for such a feature to exist in the first place.";
-            // 
             // groupBox10
             // 
             groupBox10.Controls.Add(ChangeStartLowButton);
@@ -298,7 +275,7 @@
             groupBox10.Controls.Add(ChangeEndButton);
             groupBox10.Controls.Add(ChangeStartButton);
             groupBox10.ForeColor = System.Drawing.Color.White;
-            groupBox10.Location = new System.Drawing.Point(110, 246);
+            groupBox10.Location = new System.Drawing.Point(110, 184);
             groupBox10.Name = "groupBox10";
             groupBox10.Size = new System.Drawing.Size(468, 95);
             groupBox10.TabIndex = 50;
@@ -352,11 +329,10 @@
             AcceptButton = DoneButton;
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
-            ClientSize = new System.Drawing.Size(587, 382);
+            ClientSize = new System.Drawing.Size(587, 325);
             Controls.Add(alertPlayStartToneTwiceBox);
             Controls.Add(alertTTSonlyBox);
             Controls.Add(groupBox10);
-            Controls.Add(ApplicationTypeGroup);
             Controls.Add(TTSButton);
             Controls.Add(AudioOutputClearLink);
             Controls.Add(alertPlayEndToneBox);
@@ -386,7 +362,6 @@
             Load += ChooseRegionForm_Load;
             ((System.ComponentModel.ISupportInitialize)LogoBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)volumeBar).EndInit();
-            ApplicationTypeGroup.ResumeLayout(false);
             groupBox10.ResumeLayout(false);
             groupBox10.PerformLayout();
             ResumeLayout(false);
@@ -410,8 +385,6 @@
         private System.Windows.Forms.CheckBox alertPlayEndToneBox;
         private System.Windows.Forms.LinkLabel AudioOutputClearLink;
         private System.Windows.Forms.Button TTSButton;
-        private System.Windows.Forms.GroupBox ApplicationTypeGroup;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox10;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button ChangeEndButton;

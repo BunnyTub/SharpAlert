@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using SharpAlert.Properties;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Media;
 using System.Windows.Forms;
 
 namespace SharpAlert
 {
     public partial class BadgeVerifyForm : Form
     {
+        private readonly SoundPlayer snd = new(Resources.despacito);
+
         public BadgeVerifyForm()
         {
             InitializeComponent();
@@ -30,10 +28,12 @@ namespace SharpAlert
                 }
             }
             IDIconBox.Image = pic;
+            snd.Play();
         }
 
         private void DoneButton_Click(object sender, EventArgs e)
         {
+            snd.Stop();
             Close();
         }
     }

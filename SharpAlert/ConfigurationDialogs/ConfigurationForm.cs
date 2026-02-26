@@ -22,7 +22,7 @@ namespace SharpAlert.ConfigurationDialogs
             StyleSettingsButton.Text = Language.Get("SettingsButton_StylesAndMore", "Styles &\r\nMore");
             DiscordSettingsButton.Text = Language.Get("SettingsButton_DiscordAndWebhooks", "Discord &\r\nWebhooks");
             SoundSettingsButton.Text = Language.Get("SettingsButton_SoundsAndEffects", "Sounds &\r\nEffects");
-            SaveSlotsButton.Text = Language.Get("SettingsButton_SaveSlots", "Save\r\nSlots");
+            ExtraOptionsButton.Text = Language.Get("SettingsButton_ExtraOptions", "Extra\r\nOptions");
             EnableUpdatesBox.Text = Language.Get("SettingsButton_EnableAutoUpdates", "Enable Automatic Updates");
             ServerSettingsButton.Text = Language.Get("SettingsButton_ServerSettings", "Server Settings");
             SimpleModeButton.Text = Language.Get("SettingsButton_SimpleMode", "Simple Mode");
@@ -40,8 +40,8 @@ namespace SharpAlert.ConfigurationDialogs
             crf?.Close();
             scf?.Close();
             dcf?.Close();
+            ecf?.Close();
             cf?.Close();
-            slots?.Close();
             //this.Hide();
         }
 
@@ -240,15 +240,6 @@ namespace SharpAlert.ConfigurationDialogs
             }
         }
 
-        private SaveSlotsConfigurationForm slots = null;
-
-        private void SaveSlotsButton_Click(object sender, EventArgs e)
-        {
-            if (slots == null || slots.IsDisposed) slots = new SaveSlotsConfigurationForm();
-            slots.Show();
-            slots.Activate();
-        }
-
         //private bool IsUserLocked = false;
 
         private void ProhibitUsers_Tick(object sender, EventArgs e)
@@ -291,6 +282,15 @@ namespace SharpAlert.ConfigurationDialogs
             catch (Exception)
             {
             }
+        }
+
+        private ExtraConfigurationForm ecf = null;
+
+        private void ExtraOptionsButton_Click(object sender, EventArgs e)
+        {
+            if (ecf == null || ecf.IsDisposed) ecf = new ExtraConfigurationForm(false);
+            ecf.Show();
+            ecf.Activate();
         }
     }
 }

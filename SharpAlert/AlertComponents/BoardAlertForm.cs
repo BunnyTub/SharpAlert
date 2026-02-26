@@ -258,7 +258,7 @@ namespace SharpAlert.AlertComponents
             MouseMoving.Start();
 
             FlashTwo = false;
-            WindowFlash.Start();
+            WindowFlashSmooth.Start();
 
             Console.WriteLine("[Alert GUI] Window shown.");
         }
@@ -275,7 +275,7 @@ namespace SharpAlert.AlertComponents
             UnlockButtons(false);
             AutoExit.Stop();
             StopAllAudioSilently();
-            WindowFlash.Stop();
+            WindowFlashSmooth.Stop();
             PlayEndToneFile(true);
         }
 
@@ -310,7 +310,7 @@ namespace SharpAlert.AlertComponents
             DismissButton.Enabled = unlocked;
             LinkButton.Enabled = unlocked;
         }
-        
+
         private void ShowButtons(bool shown)
         {
             DismissButton.Visible = shown;
@@ -434,8 +434,12 @@ namespace SharpAlert.AlertComponents
 
         private void EnsureTopWindow_Tick(object sender, EventArgs e)
         {
-            this.BringToFront();
-            this.Activate();
+            if (QuickSettings.Instance.TryForceWindowFocus)
+            {
+                this.BringToFront();
+                this.Activate();
+            }
+
             EnsureForTick--;
 
             if (EnsureForTick == 0)
@@ -443,6 +447,44 @@ namespace SharpAlert.AlertComponents
                 EnsureTopWindow.Stop();
                 return;
             }
+        }
+
+        private float FadeProgress = 0f;
+        private bool FadeForward = true;
+
+        private static Color LerpColor(Color a, Color b, float t)
+        {
+            int r = (int)(a.R + (b.R - a.R) * t);
+            int g = (int)(a.G + (b.G - a.G) * t);
+            int bVal = (int)(a.B + (b.B - a.B) * t);
+
+            return Color.FromArgb(r, g, bVal);
+        }
+
+        private void WindowFlashSmooth_Tick(object sender, EventArgs e)
+        {
+            float speed = 0.05f;
+
+            if (FadeForward) FadeProgress += speed;
+            else FadeProgress -= speed;
+
+            if (FadeProgress >= 1f)
+            {
+                FadeProgress = 1f;
+                FadeForward = false;
+            }
+            else if (FadeProgress <= 0f)
+            {
+                FadeProgress = 0f;
+                FadeForward = true;
+            }
+
+            var borderColor = LerpColor(ColorTitleAndBordersOne, ColorTitleAndBordersTwo, FadeProgress);
+
+            TitleText.BackColor = borderColor;
+            LeftOutlinePanel.BackColor = borderColor;
+            RightOutlinePanel.BackColor = borderColor;
+            BottomOutlinePanel.BackColor = borderColor;
         }
     }
 }

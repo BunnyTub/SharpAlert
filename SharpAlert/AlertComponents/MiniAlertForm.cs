@@ -202,12 +202,7 @@ namespace SharpAlert.AlertComponents
                 this.FormBorderStyle = FormBorderStyle.None;
             }
 
-            int LocationMargin = 10;
-
-            this.Location = new Point(
-                Screen.PrimaryScreen.WorkingArea.Width - this.Width - LocationMargin,
-                Screen.PrimaryScreen.WorkingArea.Height - this.Height - LocationMargin
-            );
+            MonitorWindowAligner.AlignWindow(this);
 
             Console.WriteLine("[Alert GUI] Window shown.");
         }
@@ -262,8 +257,12 @@ namespace SharpAlert.AlertComponents
 
         private void EnsureTopWindow_Tick(object sender, EventArgs e)
         {
-            this.BringToFront();
-            this.Activate();
+            if (QuickSettings.Instance.TryForceWindowFocus)
+            {
+                this.BringToFront();
+                this.Activate();
+            }
+
             EnsureForTick--;
 
             if (EnsureForTick == 0)

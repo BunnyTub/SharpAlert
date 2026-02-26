@@ -7,6 +7,8 @@ namespace SharpAlert.PrinterStuff
     {
         public static void Print(string alert, string text)
         {
+            return;
+
             PrintDocument doc = new();
 
             var printData = new PrintData

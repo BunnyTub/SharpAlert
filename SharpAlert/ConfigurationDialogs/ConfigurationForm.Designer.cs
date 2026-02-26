@@ -43,7 +43,7 @@
             EnableUpdatesBox = new System.Windows.Forms.CheckBox();
             ToolTipInformation = new System.Windows.Forms.ToolTip(components);
             SecretSettingsButton = new System.Windows.Forms.Button();
-            SaveSlotsButton = new System.Windows.Forms.Button();
+            ExtraOptionsButton = new System.Windows.Forms.Button();
             SimpleModeButton = new System.Windows.Forms.Button();
             SlidesBox = new System.Windows.Forms.PictureBox();
             Reloader = new System.Windows.Forms.Timer(components);
@@ -256,21 +256,21 @@
             SecretSettingsButton.Visible = false;
             SecretSettingsButton.Click += SecretSettingsButton_Click;
             // 
-            // SaveSlotsButton
+            // ExtraOptionsButton
             // 
-            SaveSlotsButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
-            SaveSlotsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            SaveSlotsButton.Font = new System.Drawing.Font("Segoe UI", 14F);
-            SaveSlotsButton.ForeColor = System.Drawing.Color.White;
-            SaveSlotsButton.Location = new System.Drawing.Point(146, 152);
-            SaveSlotsButton.Name = "SaveSlotsButton";
-            SaveSlotsButton.Size = new System.Drawing.Size(128, 64);
-            SaveSlotsButton.TabIndex = 6;
-            SaveSlotsButton.Text = "Save\r\nSlots";
-            ToolTipInformation.SetToolTip(SaveSlotsButton, "Save slots for your settings can be configured here");
-            SaveSlotsButton.UseMnemonic = false;
-            SaveSlotsButton.UseVisualStyleBackColor = false;
-            SaveSlotsButton.Click += SaveSlotsButton_Click;
+            ExtraOptionsButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            ExtraOptionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            ExtraOptionsButton.Font = new System.Drawing.Font("Segoe UI", 14F);
+            ExtraOptionsButton.ForeColor = System.Drawing.Color.White;
+            ExtraOptionsButton.Location = new System.Drawing.Point(146, 152);
+            ExtraOptionsButton.Name = "ExtraOptionsButton";
+            ExtraOptionsButton.Size = new System.Drawing.Size(128, 64);
+            ExtraOptionsButton.TabIndex = 6;
+            ExtraOptionsButton.Text = "Extra\r\nOptions";
+            ToolTipInformation.SetToolTip(ExtraOptionsButton, "Save slots for your settings can be configured here");
+            ExtraOptionsButton.UseMnemonic = false;
+            ExtraOptionsButton.UseVisualStyleBackColor = false;
+            ExtraOptionsButton.Click += ExtraOptionsButton_Click;
             // 
             // SimpleModeButton
             // 
@@ -318,7 +318,7 @@
             ControlBox = false;
             Controls.Add(SlidesBox);
             Controls.Add(SimpleModeButton);
-            Controls.Add(SaveSlotsButton);
+            Controls.Add(ExtraOptionsButton);
             Controls.Add(SecretSettingsButton);
             Controls.Add(EnableUpdatesBox);
             Controls.Add(MigrateSettingsButton);
@@ -364,7 +364,7 @@
         private System.Windows.Forms.CheckBox EnableUpdatesBox;
         private System.Windows.Forms.ToolTip ToolTipInformation;
         private System.Windows.Forms.Button SecretSettingsButton;
-        private System.Windows.Forms.Button SaveSlotsButton;
+        private System.Windows.Forms.Button ExtraOptionsButton;
         private System.Windows.Forms.Button SimpleModeButton;
         private System.Windows.Forms.PictureBox SlidesBox;
         private System.Windows.Forms.Timer Reloader;
