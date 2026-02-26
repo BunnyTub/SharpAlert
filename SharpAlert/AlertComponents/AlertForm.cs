@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using static SharpAlert.AudioManager;
@@ -420,9 +419,8 @@ namespace SharpAlert.AlertComponents
 
         private void AlertIcon_MouseDown(object sender, MouseEventArgs e)
         {
-            Console.WriteLine("window movement is unavailable");
-            //ReleaseCapture();
-            //SendMessage(this.Handle, 0x112, 0xf012, 0);
+            ReleaseCapture();
+            SendMessage(this.Handle, 0x112, 0xf012, 0);
         }
 
         private void AlertLinkText_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -530,6 +528,7 @@ namespace SharpAlert.AlertComponents
             var subtitleColor = LerpColor(ColorSubtitleOnlyOne, ColorSubtitleOnlyTwo, FadeProgress);
 
             OutlineContainerPanel.BorderColor = borderColor;
+            ResizeBottomRight.BackColor = borderColor;
             TitleText.BackColor = borderColor;
             AlertIcon.BackColor = borderColor;
             SubtitlePanel.BackColor = subtitleColor;
