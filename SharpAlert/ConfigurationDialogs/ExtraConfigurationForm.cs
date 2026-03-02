@@ -53,19 +53,23 @@ namespace SharpAlert.ConfigurationDialogs
             if (Initialized) return;
             Initialized = true;
 
-            alertFullscreenIdleBox.Checked = QuickSettings.Instance.alertFullscreenIdle;
-            alertFullscreenIdleBox.CheckedChanged += (a, b) =>
+            if (QuickSettings.Instance.alertFullscreenIdle)
             {
-                IdleWindowVisible = ((CheckBox)a).Checked;
-                this.BringToFront();
-            };
+                QuickSettings.Instance.alertFullscreenIdle = false;
+                MessageBox.Show("The idle panel has been deprecated.\r\nConsider using the new dashboard!", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            
+            if (QuickSettings.Instance.statusWindow)
+            {
+                QuickSettings.Instance.statusWindow = false;
+                MessageBox.Show("The status panel has been deprecated.\r\nConsider using the new dashboard!", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
 
-            statusWindowBox.Checked = QuickSettings.Instance.statusWindow;
-            statusWindowBox.CheckedChanged += (a, b) =>
-            {
-                StatusWindowVisible = ((CheckBox)a).Checked;
-                this.BringToFront();
-            };
+            alertFullscreenIdleBox.Checked = false;
+            alertFullscreenIdleBox.Enabled = false;
+
+            statusWindowBox.Checked = false;
+            statusWindowBox.Enabled = false;
 
             OpenDashboardAutomaticallyBox.Checked = QuickSettings.Instance.OpenDashboardAutomatically;
             OpenDashboardAutomaticallyBox.CheckedChanged += (a, b) => QuickSettings.Instance.OpenDashboardAutomatically = ((CheckBox)a).Checked;

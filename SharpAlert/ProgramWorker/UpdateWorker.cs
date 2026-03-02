@@ -165,7 +165,7 @@ namespace SharpAlert.ProgramWorker
                         {
                             // check arguments just in case we get into a loop
                             // I'll do that later
-                            
+
                             //if (!IsAdministrator)
                             //{
                             //    Process proc = new();
@@ -290,11 +290,30 @@ namespace SharpAlert.ProgramWorker
                         catch (Exception ex)
                         {
                             DiscordWebhook.SendFormattedMessage("Updating SharpAlert failed.");
-                            CurrentStatus = $"The update has failed. More info in the error message.";
-                            if (MessageBox.Show($"Update failed.\r\n\r\n" +
-                                    $"{ex.GetBaseException().Message}", "SharpAlert - Update Worker",
+
+                            string interfail;
+                            string message;
+                            MessageBoxIcon icon;
+
+                            if (ex is UnauthorizedAccessException uaex)
+                            {
+                                interfail = "interrupted";
+                                CurrentStatus = $"The update has been interrupted.";
+                                message = "SharpAlert needs administrator permissions to update. Click \"Retry\" to request administrator permissions, or you can cancel this update instead by clicking \"Cancel\".";
+                                icon = MessageBoxIcon.Exclamation;
+                            }
+                            else
+                            {
+                                interfail = "failed";
+                                CurrentStatus = $"The update has failed. More info in the error message.";
+                                message = ex.GetBaseException().Message;
+                                icon = MessageBoxIcon.Error;
+                            }
+
+                            if (MessageBox.Show($"Update {interfail}.\r\n\r\n" +
+                                    $"{message}", "SharpAlert - Update Worker",
                                     MessageBoxButtons.RetryCancel,
-                                    MessageBoxIcon.Error) == DialogResult.Retry)
+                                    icon) == DialogResult.Retry)
                             {
                                 try
                                 {

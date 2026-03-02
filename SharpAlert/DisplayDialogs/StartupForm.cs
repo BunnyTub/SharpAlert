@@ -141,13 +141,11 @@ namespace SharpAlert.DisplayDialogs
 
         protected override void WndProc(ref Message m)
         {
+            base.WndProc(ref m);
+
             if (m.Msg == WM_NCHIT)
             {
                 m.Result = (IntPtr)HTCAPTION;
-            }
-            else
-            {
-                base.WndProc(ref m);
             }
         }
 
@@ -156,21 +154,21 @@ namespace SharpAlert.DisplayDialogs
             //if (HaidaWorker.ServiceRunnerScheduled)
             {
                 // introduce fade-in and fade-out animation if I ever figure out how to use the Windows API
-                this.Close();
+                AutoClose.Enabled = false;
+                FadeOutAnimation.Enabled = true;
             }
         }
 
-        private bool AllowClose = false;
+        //private bool AllowClose = false;
 
         private void StartupForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = !AllowClose;
-            if (!AllowClose) FadeOutAnimation.Enabled = true;
+            //e.Cancel = !AllowClose;
+            //if (!AllowClose) FadeOutAnimation.Enabled = true;
         }
 
         private void IconBox_Click(object sender, EventArgs e)
         {
-            HaidaWorker.UnsafeFault(new Exception("User initiated failure manually."), true);
         }
 
         private void StartupForm_Shown(object sender, EventArgs e)
@@ -206,7 +204,7 @@ namespace SharpAlert.DisplayDialogs
                 if (newOpacity == 0)
                 {
                     FadeInAnimation.Stop();
-                    AllowClose = true;
+                    //AllowClose = true;
                     this.Close();
                     return;
                 }

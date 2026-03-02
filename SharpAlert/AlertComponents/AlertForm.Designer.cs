@@ -265,9 +265,9 @@
             ResizeBottomRight.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             ResizeBottomRight.BackColor = System.Drawing.Color.Transparent;
             ResizeBottomRight.Cursor = System.Windows.Forms.Cursors.SizeNWSE;
-            ResizeBottomRight.Location = new System.Drawing.Point(704, 354);
+            ResizeBottomRight.Location = new System.Drawing.Point(716, 366);
             ResizeBottomRight.Name = "ResizeBottomRight";
-            ResizeBottomRight.Size = new System.Drawing.Size(16, 16);
+            ResizeBottomRight.Size = new System.Drawing.Size(4, 4);
             ResizeBottomRight.TabIndex = 10;
             ResizeBottomRight.MouseDown += ResizableThingPanel_MouseDown;
             ResizeBottomRight.MouseMove += ResizableThingPanel_MouseMove;

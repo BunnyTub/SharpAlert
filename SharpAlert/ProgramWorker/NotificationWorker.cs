@@ -84,17 +84,19 @@ namespace SharpAlert.ProgramWorker
                     Notify.ShowNotification("Please close open windows before opening the tray menu again. Try using ALT+TAB to find them!",
                         "Before you right-click again...", ToolTipIcon.Info);
 
-                    FormCollection fc = Application.OpenForms;
+                    FormCollection forms = Application.OpenForms;
 
-                    try
+                    foreach (Form form in forms)
                     {
-                        foreach (Form form in fc)
+                        try
                         {
                             form.BringToFront();
                             form.Activate();
                         }
+                        catch (Exception)
+                        {
+                        }
                     }
-                    catch (Exception) { }
                     //MessageBox.Show("Please close all windows before opening the menu.",
                     //    "SharpAlert",
                     //    MessageBoxButtons.OK,
@@ -398,7 +400,6 @@ namespace SharpAlert.ProgramWorker
                 {
                     QuickSettings.Instance.Save();
                     SafeExit();
-                    //new Thread(() => SafeExit()).Start();
                 }
             }));
 

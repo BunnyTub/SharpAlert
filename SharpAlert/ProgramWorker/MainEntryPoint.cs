@@ -53,8 +53,8 @@ namespace SharpAlert.ProgramWorker
         public static IDAPFeedCapture idapfeed;
         public static CacheCapture cache;
         public static DataProcessor dataproc;
-        public static TeleIdleForm idle;
-        public static StatusForm status;
+        //public static TeleIdleForm idle;
+        //public static StatusForm status;
         public static bool CloseIdleWindow = false;
         public static bool CloseStatusWindow = false;
         public static object IdleWindowLock = new();
@@ -90,7 +90,7 @@ namespace SharpAlert.ProgramWorker
         public static readonly string CustomURLsFileName = "feeds.txt";
 
         /// <summary>
-        /// Stops everything safely. Hopefully.
+        /// Stops everything. Maybe.
         /// </summary>
         public static void SafeExit(bool restart = false)
         {
@@ -102,7 +102,30 @@ namespace SharpAlert.ProgramWorker
                 "SharpAlert is stopping.",
                 ToolTipIcon.Info);
 
-            Thread.Sleep(3000);
+            Thread.Sleep(500);
+
+            try
+            {
+                Notify?.Dispose();
+            }
+            catch (ObjectDisposedException)
+            {
+            }
+
+            new Thread(() =>
+            {
+                Thread.Sleep(3000);
+                Process curProc = Process.GetCurrentProcess();
+                if (restart) Environment.ExitCode = 100;
+                curProc.Kill();
+            }).Start();
+
+            FormCollection forms = Application.OpenForms;
+
+            foreach (Form form in forms)
+            {
+                form?.Dispose();
+            }
 
             if (restart) Environment.Exit(100);
             else Environment.Exit(0);
@@ -479,10 +502,28 @@ namespace SharpAlert.ProgramWorker
                                         Thread.Sleep(1000 * 15);
                                         Environment.Exit(0);
                                     }).Start();
-                                    MessageBox.Show("SharpAlert is already running.\r\nCheck the notification tray area on the taskbar!",
-                                        "SharpAlert",
-                                        MessageBoxButtons.OK,
-                                        MessageBoxIcon.Exclamation);
+
+                                    if (MessageBox.Show("SharpAlert is already running.\r\nDo you want to forcibly close it?",
+                                            "SharpAlert",
+                                            MessageBoxButtons.YesNo,
+                                            MessageBoxIcon.Question) == DialogResult.Yes)
+                                    {
+                                        Process curProc = Process.GetCurrentProcess();
+
+                                        try
+                                        {
+                                            foreach (Process proc in Process.GetProcessesByName(Path.GetFileNameWithoutExtension(AssemblyFile)))
+                                            {
+                                                if (proc.MainModule.FileName.Equals(AssemblyFile, StringComparison.InvariantCultureIgnoreCase))
+                                                {
+                                                    if (proc != curProc) proc.Kill();
+                                                }
+                                            }
+                                        }
+                                        catch (Exception)
+                                        {
+                                        }
+                                    }
                                     Environment.Exit(0);
                                 }
                             }
@@ -729,77 +770,77 @@ namespace SharpAlert.ProgramWorker
             return sb.ToString();
         }
 
-        private static object IdleWindowVisible_ = false;
-        public static bool IdleWindowVisible
-        {
-            get => (bool)IdleWindowVisible_;
-            set
-            {
-                lock (IdleWindowVisible_)
-                {
-                    if (value)
-                    {
-                        ThreadDrool.StartAndForget(() =>
-                        {
-                            if (idle != null && !idle.IsDisposed)
-                            {
-                                idle.Invoke(new MethodInvoker(() => idle.Dispose()));
-                            }
-                            else
-                            {
-                                idle = new TeleIdleForm();
-                            }
-                            idle?.ShowDialog();
-                        });
-                    }
-                    else
-                    {
-                        if (idle != null && !idle.IsDisposed)
-                        {
-                            idle.Invoke(new MethodInvoker(() => idle.Dispose()));
-                        }
-                    }
+        //private static object IdleWindowVisible_ = false;
+        //public static bool IdleWindowVisible
+        //{
+        //    get => (bool)IdleWindowVisible_;
+        //    set
+        //    {
+        //        lock (IdleWindowVisible_)
+        //        {
+        //            if (value)
+        //            {
+        //                ThreadDrool.StartAndForget(() =>
+        //                {
+        //                    if (idle != null && !idle.IsDisposed)
+        //                    {
+        //                        idle.Invoke(new MethodInvoker(() => idle.Dispose()));
+        //                    }
+        //                    else
+        //                    {
+        //                        idle = new TeleIdleForm();
+        //                    }
+        //                    idle?.ShowDialog();
+        //                });
+        //            }
+        //            else
+        //            {
+        //                if (idle != null && !idle.IsDisposed)
+        //                {
+        //                    idle.Invoke(new MethodInvoker(() => idle.Dispose()));
+        //                }
+        //            }
 
-                    IdleWindowVisible_ = value;
-                }
-            }
-        }
+        //            IdleWindowVisible_ = value;
+        //        }
+        //    }
+        //}
 
-        private static object StatusWindowVisible_ = false;
-        public static bool StatusWindowVisible
-        {
-            get => (bool)StatusWindowVisible_;
-            set
-            {
-                lock (StatusWindowVisible_)
-                {
-                    if (value)
-                    {
-                        ThreadDrool.StartAndForget(() =>
-                        {
-                            if (status != null && !status.IsDisposed)
-                            {
-                                status.Invoke(new MethodInvoker(() => status.Dispose()));
-                            }
-                            else
-                            {
-                                status = new StatusForm();
-                            }
-                            status?.ShowDialog();
-                        });
-                    }
-                    else
-                    {
-                        if (status != null && !status.IsDisposed)
-                        {
-                            status.Invoke(new MethodInvoker(() => status.Dispose()));
-                        }
-                    }
+        //private static object StatusWindowVisible_ = false;
+        //public static bool StatusWindowVisible
+        //{
+        //    get => (bool)StatusWindowVisible_;
+        //    set
+        //    {
+        //        lock (StatusWindowVisible_)
+        //        {
+        //            if (value)
+        //            {
+        //                ThreadDrool.StartAndForget(() =>
+        //                {
+        //                    if (status != null && !status.IsDisposed)
+        //                    {
+        //                        status.Invoke(new MethodInvoker(() => status.Dispose()));
+        //                    }
+        //                    else
+        //                    {
+        //                        status = new StatusForm();
+        //                    }
+        //                    status?.ShowDialog();
+        //                });
+        //            }
+        //            else
+        //            {
+        //                if (status != null && !status.IsDisposed)
+        //                {
+        //                    status.Invoke(new MethodInvoker(() => status.Dispose()));
+        //                }
+        //            }
 
-                    StatusWindowVisible_ = value;
-                }
-            }
-        }
+        //            StatusWindowVisible_ = value;
+        //        }
+        //    }
+        //}
     }
 }
 

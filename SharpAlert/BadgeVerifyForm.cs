@@ -8,7 +8,7 @@ namespace SharpAlert
 {
     public partial class BadgeVerifyForm : Form
     {
-        private readonly SoundPlayer snd = new(Resources.despacito);
+        //private readonly SoundPlayer snd = new(Resources.despacito);
 
         public BadgeVerifyForm()
         {
@@ -28,12 +28,12 @@ namespace SharpAlert
                 }
             }
             IDIconBox.Image = pic;
-            snd.Play();
+            //snd.Play();
         }
 
         private void DoneButton_Click(object sender, EventArgs e)
         {
-            snd.Stop();
+            //snd.Stop();
             Close();
         }
     }

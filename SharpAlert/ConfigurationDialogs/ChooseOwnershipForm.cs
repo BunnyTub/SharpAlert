@@ -38,17 +38,17 @@ namespace SharpAlert.ConfigurationDialogs
                 return;
             }
 
-            if (string.IsNullOrEmpty(StationIdentifierInput.Text) ||
-                string.IsNullOrEmpty(StationNameInput.Text))
-            {
-                MessageBox.Show("You must enter all values if you want to use station info.\r\n" +
-                    "If you do not want this feature, leave all fields blank.",
-                    "SharpAlert",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
-                e.Cancel = true;
-                return;
-            }
+            //if (string.IsNullOrEmpty(StationIdentifierInput.Text) ||
+            //    string.IsNullOrEmpty(StationNameInput.Text))
+            //{
+            //    //MessageBox.Show("You must enter all values if you want to use station info.\r\n" +
+            //    //    "If you do not want this feature, leave all fields blank.",
+            //    //    "SharpAlert",
+            //    //    MessageBoxButtons.OK,
+            //    //    MessageBoxIcon.Exclamation);
+            //    //e.Cancel = true;
+            //    return;
+            //}
 
             QuickSettings.Instance.StationIdentifier = StationIdentifierInput.Text;
             QuickSettings.Instance.StationName = StationNameInput.Text;

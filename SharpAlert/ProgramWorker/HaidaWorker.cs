@@ -577,11 +577,6 @@ namespace SharpAlert.ProgramWorker
                 // removed Brazil IDAP from being able to be used for now
             }
 
-            // just assign statusWindow to the boolean... dumb fuck
-
-            StatusWindowVisible = QuickSettings.Instance.statusWindow;
-            IdleWindowVisible = QuickSettings.Instance.alertFullscreenIdle;
-
             HeartbeatThread = StartCatchAllThread("Heartbeat Worker", () => HeartbeatWorker.ServiceRun(), true);
             DiscordWebhook.SendFormattedMessage("SharpAlert has started.");
             

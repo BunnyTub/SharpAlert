@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 using SharpAlert.ProgramWorker;
-using SharpAlert.Properties;
 
 namespace SharpAlert.Languages
 {
@@ -16,8 +15,6 @@ namespace SharpAlert.Languages
 
         private void AlertConfigurationForm_Load(object sender, EventArgs e)
         {
-            MessageBox.Show("Translations are not complete, and there are many places without proper translations from English. You are still able to change languages.", "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
             if (Initialized) return;
             Initialized = true;
 
@@ -136,6 +133,11 @@ namespace SharpAlert.Languages
         private void LanguageProgress_Click(object sender, EventArgs e)
         {
             RotateLanguages_Tick(null, null);
+        }
+
+        private void LanguageSelectionForm_Shown(object sender, EventArgs e)
+        {
+            MessageBox.Show("Translations are not complete, and there are many places without proper translations from English. You are still able to change languages.", "SharpAlert", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

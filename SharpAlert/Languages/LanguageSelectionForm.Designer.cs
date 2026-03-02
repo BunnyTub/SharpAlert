@@ -142,6 +142,7 @@
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "SharpAlert - Language Selector";
             Load += AlertConfigurationForm_Load;
+            Shown += LanguageSelectionForm_Shown;
             LanguagesGroup.ResumeLayout(false);
             LanguagesGroup.PerformLayout();
             ResumeLayout(false);

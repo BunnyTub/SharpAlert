@@ -267,7 +267,7 @@
             ExtraOptionsButton.Size = new System.Drawing.Size(128, 64);
             ExtraOptionsButton.TabIndex = 6;
             ExtraOptionsButton.Text = "Extra\r\nOptions";
-            ToolTipInformation.SetToolTip(ExtraOptionsButton, "Save slots for your settings can be configured here");
+            ToolTipInformation.SetToolTip(ExtraOptionsButton, "These are miscellaneous options for startup tasks, system, and networking notifications.");
             ExtraOptionsButton.UseMnemonic = false;
             ExtraOptionsButton.UseVisualStyleBackColor = false;
             ExtraOptionsButton.Click += ExtraOptionsButton_Click;

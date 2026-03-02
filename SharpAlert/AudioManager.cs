@@ -330,7 +330,7 @@ namespace SharpAlert
                     RefreshAudioDevices();
                 }
                 MMDevice selectedDevice = CurrentAudioDevice;
-                return new WasapiOut(selectedDevice, AudioClientShareMode.Shared, false, 20);
+                return new WasapiOut(selectedDevice, AudioClientShareMode.Shared, false, 100);
             }
         }
 

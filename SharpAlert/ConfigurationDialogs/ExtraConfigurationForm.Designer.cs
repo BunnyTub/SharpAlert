@@ -113,24 +113,26 @@
             // alertFullscreenIdleBox
             // 
             alertFullscreenIdleBox.AutoSize = true;
+            alertFullscreenIdleBox.BackColor = System.Drawing.Color.FromArgb(120, 20, 20);
             alertFullscreenIdleBox.Location = new System.Drawing.Point(6, 20);
             alertFullscreenIdleBox.Name = "alertFullscreenIdleBox";
             alertFullscreenIdleBox.Size = new System.Drawing.Size(120, 19);
             alertFullscreenIdleBox.TabIndex = 5;
             alertFullscreenIdleBox.Text = "Idle panel on start";
             ToolTipInformation.SetToolTip(alertFullscreenIdleBox, "Shows an idle panel on top of all content.");
-            alertFullscreenIdleBox.UseVisualStyleBackColor = true;
+            alertFullscreenIdleBox.UseVisualStyleBackColor = false;
             // 
             // statusWindowBox
             // 
             statusWindowBox.AutoSize = true;
+            statusWindowBox.BackColor = System.Drawing.Color.FromArgb(120, 20, 20);
             statusWindowBox.Location = new System.Drawing.Point(6, 45);
             statusWindowBox.Name = "statusWindowBox";
             statusWindowBox.Size = new System.Drawing.Size(133, 19);
             statusWindowBox.TabIndex = 6;
             statusWindowBox.Text = "Status panel on start";
             ToolTipInformation.SetToolTip(statusWindowBox, "Shows the status window.");
-            statusWindowBox.UseVisualStyleBackColor = true;
+            statusWindowBox.UseVisualStyleBackColor = false;
             // 
             // NoSystemSleepBox
             // 
