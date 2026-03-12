@@ -371,8 +371,11 @@ namespace SharpAlert.AlertComponents
             if (ToneDone)
             {
                 AutoTTS.Stop();
-                PlayFromTTSEngine(AlertIntroTextStr, false);
-                PlayWithFailoverToTTS(AlertAudioUrlStr, AlertTextStr);
+                if (!QuickSettings.Instance.DisableSomeStyleAutoplay)
+                {
+                    PlayFromTTSEngine(AlertIntroTextStr, false);
+                    PlayWithFailoverToTTS(AlertAudioUrlStr, AlertTextStr);
+                }
             }
         }
 

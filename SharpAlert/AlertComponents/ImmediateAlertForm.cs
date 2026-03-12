@@ -269,9 +269,9 @@ namespace SharpAlert.AlertComponents
 
         private void AutoTTS_Tick(object sender, EventArgs e)
         {
+            AutoTTS.Stop();
             //if (ToneDone)
             //{
-            //    AutoTTS.Stop();
             //    PlayFromTTSEngine(AlertIntroTextStr, false);
             //    PlayFromTTSEngine(AlertTextStr, false);
             //}

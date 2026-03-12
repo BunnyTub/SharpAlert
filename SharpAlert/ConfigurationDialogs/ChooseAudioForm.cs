@@ -80,6 +80,9 @@ namespace SharpAlert.ConfigurationDialogs
             
             alertPlayStartToneTwiceBox.Checked = QuickSettings.Instance.alertPlayStartToneTwice;
             alertPlayStartToneTwiceBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertPlayStartToneTwice = ((CheckBox)a).Checked;
+            
+            DisableSomeStyleAutoplayBox.Checked = QuickSettings.Instance.DisableSomeStyleAutoplay;
+            DisableSomeStyleAutoplayBox.CheckedChanged += (a, b) => QuickSettings.Instance.DisableSomeStyleAutoplay = ((CheckBox)a).Checked;
 
             LegacyAudioPlayerBox.Checked = QuickSettings.Instance.LegacyAudioPlayer;
             LegacyAudioPlayerBox.CheckedChanged += (a, b) =>

@@ -785,27 +785,34 @@ namespace SharpAlert.ProgramWorker
                                 switch (Page)
                                 {
                                     case 1:
-                                        State = $"[1/2] Sent by {info.AlertSender}.";
-                                        if (!string.IsNullOrWhiteSpace(info.AlertURL)) State += "\x20This alert has a link attached. Click the icon to open it.";
+                                        State = $"[1/3] This is a {info.AlertSeverity.ToUpperInvariant()} alert. Sent by {info.AlertSender}.";
+                                        if (!string.IsNullOrWhiteSpace(info.AlertURL)) State += "\x20This alert has a link attached.";
                                         if (State.Length > 96) State = State[..96] + "...(truncated)";
                                         Details = $"{info.AlertSeverity.ToUpperInvariant()} ALERT";
                                         break;
                                     case 2:
-                                        string Locations = string.Empty;
-
-                                        foreach (string location in info.AlertFriendlyLocations)
-                                        {
-                                            Locations += location + ",\x20";
-                                        }
-
-                                        if (!string.IsNullOrWhiteSpace(Locations)) Locations = Locations.Trim().TrimEnd(',') + ".";
-                                        else Locations = "Unknown";
-
-                                        State = $"[2/2] Locations: {Locations}".Trim();
+                                        State = $"[2/2] Event type is {info.AlertEventType}.";
                                         if (State.Length > 96) State = State[..96] + "...(truncated)";
 
                                         Details = $"{info.AlertEventType}";
                                         if (Details.Length > 32) Details = Details[..32] + "...(truncated)";
+                                        break;
+                                    case 3:
+                                        string XLocations = string.Empty;
+
+                                        foreach (string location in info.AlertFriendlyLocations)
+                                        {
+                                            XLocations += location + ",\x20";
+                                        }
+
+                                        if (!string.IsNullOrWhiteSpace(XLocations)) XLocations = XLocations.Trim().TrimEnd(',') + ".";
+                                        else XLocations = "Unknown";
+
+                                        State = $"[3/3] Locations: {XLocations}".Trim();
+                                        if (State.Length > 96) State = State[..96] + "...(truncated)";
+
+                                        Details = $"{XLocations}";
+                                        if (Details.Length > 96) Details = Details[..96] + "...(truncated)";
                                         break;
                                     default:
                                         Page = 1;

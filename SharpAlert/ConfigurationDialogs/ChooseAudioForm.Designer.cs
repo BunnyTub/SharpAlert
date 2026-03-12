@@ -53,6 +53,7 @@
             ChangeStartButton = new System.Windows.Forms.Button();
             AudioTinkeringFileDialog = new System.Windows.Forms.OpenFileDialog();
             ShowRefreshTip = new System.Windows.Forms.Timer(components);
+            DisableSomeStyleAutoplayBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)volumeBar).BeginInit();
             groupBox10.SuspendLayout();
@@ -324,12 +325,24 @@
             ShowRefreshTip.Interval = 1000;
             ShowRefreshTip.Tick += ShowRefreshTip_Tick;
             // 
+            // DisableSomeStyleAutoplayBox
+            // 
+            DisableSomeStyleAutoplayBox.AutoSize = true;
+            DisableSomeStyleAutoplayBox.Location = new System.Drawing.Point(434, 159);
+            DisableSomeStyleAutoplayBox.Name = "DisableSomeStyleAutoplayBox";
+            DisableSomeStyleAutoplayBox.Size = new System.Drawing.Size(113, 19);
+            DisableSomeStyleAutoplayBox.TabIndex = 53;
+            DisableSomeStyleAutoplayBox.Text = "Disable autoplay";
+            ToolTipInformation.SetToolTip(DisableSomeStyleAutoplayBox, "Disables autoplay of TTS and remote audio in styles where they are played automatically without user interaction.");
+            DisableSomeStyleAutoplayBox.UseVisualStyleBackColor = true;
+            // 
             // ChooseAudioForm
             // 
             AcceptButton = DoneButton;
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(587, 325);
+            Controls.Add(DisableSomeStyleAutoplayBox);
             Controls.Add(alertPlayStartToneTwiceBox);
             Controls.Add(alertTTSonlyBox);
             Controls.Add(groupBox10);
@@ -394,5 +407,6 @@
         private System.Windows.Forms.CheckBox alertTTSonlyBox;
         private System.Windows.Forms.CheckBox alertPlayStartToneTwiceBox;
         private System.Windows.Forms.Button ChangeStartLowButton;
+        private System.Windows.Forms.CheckBox DisableSomeStyleAutoplayBox;
     }
 }

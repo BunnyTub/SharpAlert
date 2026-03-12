@@ -245,7 +245,6 @@ namespace SharpAlert.ProgramWorker
                                         return false;
                                     }
 
-                                    // SharpAlert string check
                                     string exeContent = Encoding.ASCII.GetString(fileBytes);
                                     if (!exeContent.Contains("SharpAlert"))
                                     {
