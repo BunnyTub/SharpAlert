@@ -69,7 +69,7 @@
             ProblemDetailsText.Name = "ProblemDetailsText";
             ProblemDetailsText.ReadOnly = true;
             ProblemDetailsText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            ProblemDetailsText.Size = new System.Drawing.Size(549, 254);
+            ProblemDetailsText.Size = new System.Drawing.Size(387, 254);
             ProblemDetailsText.TabIndex = 3;
             ProblemDetailsText.Text = "We're gathering information about the problem.";
             // 
@@ -147,10 +147,11 @@
             // pictureBox2
             // 
             pictureBox2.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            pictureBox2.Location = new System.Drawing.Point(232, 54);
+            pictureBox2.Image = Properties.Resources.TrippingBunny;
+            pictureBox2.Location = new System.Drawing.Point(405, 54);
             pictureBox2.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new System.Drawing.Size(404, 290);
+            pictureBox2.Size = new System.Drawing.Size(222, 290);
             pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             pictureBox2.TabIndex = 11;
             pictureBox2.TabStop = false;
