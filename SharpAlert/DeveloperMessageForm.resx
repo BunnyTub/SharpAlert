@@ -120,6 +120,13 @@
   <data name="textBox1.Text" xml:space="preserve">
     <value>I am BunnyTub, the (mostly) sole developer of SharpAlert. Find additional contributors in credits. SharpAlert has been open-sourced! Source code for it can be found at https://github.com/BunnyTub/SharpAlert.
 
+Update v17.1 adds the following:
+- Discord webhook notifications (alert sending notifications) can now be turned off.
+- Autoplay of Text-To-Speech in full screen styles can be disabled in audio settings.
+- Discord Rich Presence now displays the alert type, location, and alert severity in the main contents of your Discord profile.
+- Other random changes and fixes I have forgotten about over time.
+- My favorite child is now SharpWX. Check it out on https://bunnytub.com/SharpWX.
+
 This software is provided free of charge. If you paid for this software, or it came inside of a software package of which you paid for, you should probably try getting your money back immediately.</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />

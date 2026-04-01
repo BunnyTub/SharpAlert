@@ -101,7 +101,7 @@
             textBox1.TabIndex = 15;
             textBox1.Text = resources.GetString("textBox1.Text");
             // 
-            // ChangelogsForm
+            // DeveloperMessageForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
@@ -116,7 +116,7 @@
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "ChangelogsForm";
+            Name = "DeveloperMessageForm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "SharpAlert - Developer Message";
             TopMost = true;
