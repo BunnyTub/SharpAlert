@@ -207,6 +207,7 @@ namespace SharpAlert.ProgramWorker
         #endregion
         // Discord Settings
         public bool DiscordWebhookFeaturesLocked { get; set; } = false;
+        public bool DiscordWebhookNotifications { get; set; } = true;
         public bool DiscordWebhookConfirmAlerts { get; set; } = true;
         public bool DiscordWebhookRelayLocally { get; set; } = false;
         public bool DiscordWebhookDisableHeartbeat { get; set; } = false;

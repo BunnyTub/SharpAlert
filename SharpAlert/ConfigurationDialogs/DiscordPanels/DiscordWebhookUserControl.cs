@@ -29,6 +29,9 @@ namespace SharpAlert.ConfigurationDialogs.DiscordPanels
             DisableHeartbeatBox.Checked = QuickSettings.Instance.DiscordWebhookDisableHeartbeat;
             DisableHeartbeatBox.CheckedChanged += (a, b) => QuickSettings.Instance.DiscordWebhookDisableHeartbeat = ((CheckBox)a).Checked;
 
+            DiscordWebhookNotificationsBox.Checked = QuickSettings.Instance.DiscordWebhookNotifications;
+            DiscordWebhookNotificationsBox.CheckedChanged += (a, b) => QuickSettings.Instance.DiscordWebhookNotifications = ((CheckBox)a).Checked;
+
             DiscordWebhookRelayLocallyBox.Checked = QuickSettings.Instance.DiscordWebhookRelayLocally;
             DiscordWebhookRelayLocallyBox.CheckedChanged += (a, b) =>
             {

@@ -451,12 +451,19 @@ namespace SharpAlert.ProgramWorker
                     break;
             }
 
+            if (QuickSettings.Instance.LastVersionOpened != $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}")
+            {
+                dmf.Show();
+            }
+
             QuickSettings.Instance.LastVersionOpened = $"{VersionInfo.MajorVersion}.{VersionInfo.MinorVersion}";
             QuickSettings.Instance.Save();
 
             Notify.ContextMenuStrip = contextMenu;
             Notify.BalloonTipClicked += Notify_BalloonTipClicked;
         }
+
+        private static readonly DeveloperMessageForm dmf = new();
 
         private static void Notify_BalloonTipClicked(object sender, EventArgs e)
         {

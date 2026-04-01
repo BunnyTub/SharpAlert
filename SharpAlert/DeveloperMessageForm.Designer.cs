@@ -1,6 +1,6 @@
 ﻿namespace SharpAlert
 {
-    partial class BadgeVerifyForm
+    partial class DeveloperMessageForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,17 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BadgeVerifyForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DeveloperMessageForm));
             IDIconBox = new System.Windows.Forms.PictureBox();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             DoneButton = new System.Windows.Forms.Button();
+            textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)IDIconBox).BeginInit();
             SuspendLayout();
             // 
             // IDIconBox
             // 
-            IDIconBox.Image = Properties.Resources.id_card_regular;
+            IDIconBox.Image = Properties.Resources.inbox_solid;
             IDIconBox.Location = new System.Drawing.Point(12, 12);
             IDIconBox.Name = "IDIconBox";
             IDIconBox.Size = new System.Drawing.Size(128, 128);
@@ -48,25 +49,24 @@
             // 
             // label1
             // 
-            label1.AutoSize = true;
             label1.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
-            label1.Location = new System.Drawing.Point(143, 12);
+            label1.Location = new System.Drawing.Point(144, 12);
             label1.Margin = new System.Windows.Forms.Padding(0);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(539, 37);
+            label1.Size = new System.Drawing.Size(501, 37);
             label1.TabIndex = 1;
-            label1.Text = "You're not old enough to use this feature";
+            label1.Text = "SharpAlert was recently updated";
             // 
             // label2
             // 
-            label2.AutoSize = true;
             label2.Font = new System.Drawing.Font("Segoe UI", 16F);
-            label2.Location = new System.Drawing.Point(148, 49);
+            label2.Location = new System.Drawing.Point(144, 49);
             label2.Margin = new System.Windows.Forms.Padding(0);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(605, 90);
+            label2.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
+            label2.Size = new System.Drawing.Size(505, 32);
             label2.TabIndex = 2;
-            label2.Text = "We couldn't verify that you're 18 or older, so you cannot\r\nuse this feature right now. To continue, verify your age\r\nusing a government ID, social security number, or credit card.";
+            label2.Text = "This is a message from the developers.";
             // 
             // DoneButton
             // 
@@ -76,7 +76,7 @@
             DoneButton.Font = new System.Drawing.Font("Segoe UI", 16F);
             DoneButton.ForeColor = System.Drawing.Color.White;
             DoneButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            DoneButton.Location = new System.Drawing.Point(660, 155);
+            DoneButton.Location = new System.Drawing.Point(521, 282);
             DoneButton.Name = "DoneButton";
             DoneButton.Size = new System.Drawing.Size(128, 40);
             DoneButton.TabIndex = 14;
@@ -85,11 +85,28 @@
             DoneButton.UseVisualStyleBackColor = false;
             DoneButton.Click += DoneButton_Click;
             // 
-            // BadgeVerifyForm
+            // textBox1
+            // 
+            textBox1.BackColor = System.Drawing.Color.Black;
+            textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            textBox1.Font = new System.Drawing.Font("Segoe UI", 12F);
+            textBox1.ForeColor = System.Drawing.Color.White;
+            textBox1.Location = new System.Drawing.Point(148, 87);
+            textBox1.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
+            textBox1.Multiline = true;
+            textBox1.Name = "textBox1";
+            textBox1.ReadOnly = true;
+            textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            textBox1.Size = new System.Drawing.Size(501, 189);
+            textBox1.TabIndex = 15;
+            textBox1.Text = resources.GetString("textBox1.Text");
+            // 
+            // ChangelogsForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
-            ClientSize = new System.Drawing.Size(800, 207);
+            ClientSize = new System.Drawing.Size(661, 334);
+            Controls.Add(textBox1);
             Controls.Add(DoneButton);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -99,8 +116,10 @@
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "BadgeVerifyForm";
-            Text = "SharpAlert - You're not old enough to use this feature";
+            Name = "ChangelogsForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "SharpAlert - Developer Message";
+            TopMost = true;
             Load += BadgeVerifyForm_Load;
             ((System.ComponentModel.ISupportInitialize)IDIconBox).EndInit();
             ResumeLayout(false);
@@ -113,5 +132,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button DoneButton;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

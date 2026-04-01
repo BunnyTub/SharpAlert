@@ -80,6 +80,7 @@
             EASAppendInput = new System.Windows.Forms.TextBox();
             DropChangesButton = new System.Windows.Forms.Button();
             DiscordWebhookRelayLocallyBox = new System.Windows.Forms.CheckBox();
+            DiscordWebhookNotificationsBox = new System.Windows.Forms.CheckBox();
             groupBox7.SuspendLayout();
             groupBox5.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -640,11 +641,22 @@
             DiscordWebhookRelayLocallyBox.Text = "Relay locally";
             DiscordWebhookRelayLocallyBox.UseVisualStyleBackColor = true;
             // 
+            // DiscordWebhookNotificationsBox
+            // 
+            DiscordWebhookNotificationsBox.AutoSize = true;
+            DiscordWebhookNotificationsBox.Location = new System.Drawing.Point(442, 28);
+            DiscordWebhookNotificationsBox.Name = "DiscordWebhookNotificationsBox";
+            DiscordWebhookNotificationsBox.Size = new System.Drawing.Size(138, 34);
+            DiscordWebhookNotificationsBox.TabIndex = 52;
+            DiscordWebhookNotificationsBox.Text = "When an alert is sent,\r\ndisplay notification";
+            DiscordWebhookNotificationsBox.UseVisualStyleBackColor = true;
+            // 
             // DiscordWebhookUserControl
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
+            Controls.Add(DiscordWebhookNotificationsBox);
             Controls.Add(TitleText);
             Controls.Add(groupBox7);
             Controls.Add(groupBox5);
@@ -741,5 +753,6 @@
         private System.Windows.Forms.TextBox EASAppendInput;
         private System.Windows.Forms.Button DropChangesButton;
         private System.Windows.Forms.CheckBox DiscordWebhookRelayLocallyBox;
+        private System.Windows.Forms.CheckBox DiscordWebhookNotificationsBox;
     }
 }

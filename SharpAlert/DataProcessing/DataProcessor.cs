@@ -357,9 +357,12 @@ namespace SharpAlert.DataProcessing
                                                                 [info.AlertImageURL],
                                                                 color);
 
-                                                            Notify.ShowNotification($"The alert was sent {sentDate:g}. The alert expires {expiresDate:g}.",
-                                                                info.AlertEventType,
-                                                                ToolTipIcon.Info);
+                                                            if (QuickSettings.Instance.DiscordWebhookNotifications)
+                                                            {
+                                                                Notify.ShowNotification($"The alert was sent {sentDate:g}. The alert expires {expiresDate:g}.",
+                                                                    info.AlertEventType,
+                                                                    ToolTipIcon.Info);
+                                                            }
 
                                                             //if (DiscordWebhook.SendEmbeddedMessage(CompiledMessage,
                                                             //    $"{info.AlertSeverity} Emergency {info.AlertMessageType.First().ToString().ToUpper() + info.AlertMessageType.Substring(1)}",

@@ -1,16 +1,14 @@
-﻿using SharpAlert.Properties;
-using System;
+﻿using System;
 using System.Drawing;
-using System.Media;
 using System.Windows.Forms;
 
 namespace SharpAlert
 {
-    public partial class BadgeVerifyForm : Form
+    public partial class DeveloperMessageForm : Form
     {
         //private readonly SoundPlayer snd = new(Resources.despacito);
 
-        public BadgeVerifyForm()
+        public DeveloperMessageForm()
         {
             InitializeComponent();
         }
