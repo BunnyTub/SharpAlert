@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -97,6 +98,25 @@ namespace SharpAlert.ConfigurationDialogs
         private void OpenArchiveButton_Click(object sender, EventArgs e)
         {
             HackyWorkarounds.OpenFilePath(DataProcessor.ArchivePath);
+        }
+
+        private bool UpDown = true;
+
+        private void WindowShake_Tick(object sender, EventArgs e)
+        {
+            if (AprilFools.IsAprilFoolsNow)
+            {
+                if (UpDown)
+                {
+                    Location = new Point(Location.X, Location.Y + 10);
+                }
+                else
+                {
+                    Location = new Point(Location.X, Location.Y - 10);
+                }
+
+                UpDown = !UpDown;
+            }
         }
     }
 }

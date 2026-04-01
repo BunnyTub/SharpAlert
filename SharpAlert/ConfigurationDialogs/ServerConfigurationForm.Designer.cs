@@ -42,6 +42,7 @@
             label1 = new System.Windows.Forms.Label();
             ConfigurationPanel = new System.Windows.Forms.Panel();
             ToolTipInformation = new System.Windows.Forms.ToolTip(components);
+            WindowShake = new System.Windows.Forms.Timer(components);
             ApplicationTypeGroup.SuspendLayout();
             ConfigurationPanel.SuspendLayout();
             SuspendLayout();
@@ -197,6 +198,12 @@
             ToolTipInformation.ReshowDelay = 50;
             ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
             // ServerConfigurationForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -234,5 +241,6 @@
         private System.Windows.Forms.TextBox WebServerUsernameInput;
         private System.Windows.Forms.Button SaveServerSettingsButton;
         private System.Windows.Forms.CheckBox EnableServerBox;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

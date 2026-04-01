@@ -73,6 +73,7 @@
             PreferMinorButton = new System.Windows.Forms.Button();
             ChangeToInfoButton = new System.Windows.Forms.Button();
             PreferMagicButton = new System.Windows.Forms.Button();
+            WindowShake = new System.Windows.Forms.Timer(components);
             AlertFunctionalityGroup.SuspendLayout();
             GeneralGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)AlertCheckIntervalInput).BeginInit();
@@ -610,6 +611,12 @@
             PreferMagicButton.UseVisualStyleBackColor = false;
             PreferMagicButton.Click += PreferMagicButton_Click;
             // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
             // SimpleAlertConfigurationForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -702,5 +709,6 @@
         private System.Windows.Forms.Button PreferMinorButton;
         private System.Windows.Forms.Button ChangeToInfoButton;
         private System.Windows.Forms.Button PreferMagicButton;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

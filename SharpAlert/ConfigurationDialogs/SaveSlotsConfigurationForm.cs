@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace SharpAlert.ConfigurationDialogs
@@ -59,6 +60,25 @@ namespace SharpAlert.ConfigurationDialogs
         private void CheckTimer_Tick(object sender, EventArgs e)
         {
             TitleText.Text = $"You are currently using save slot {QuickSettings.CurrentSaveSlot}. (0 = Primary)";
+        }
+
+        private bool UpDown = true;
+
+        private void WindowShake_Tick(object sender, EventArgs e)
+        {
+            if (AprilFools.IsAprilFoolsNow)
+            {
+                if (UpDown)
+                {
+                    Location = new Point(Location.X, Location.Y + 10);
+                }
+                else
+                {
+                    Location = new Point(Location.X, Location.Y - 10);
+                }
+
+                UpDown = !UpDown;
+            }
         }
     }
 }

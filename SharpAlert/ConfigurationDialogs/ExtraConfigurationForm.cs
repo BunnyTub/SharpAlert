@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using SharpAlert.Languages;
 using SharpAlert.ProgramWorker;
@@ -58,7 +59,7 @@ namespace SharpAlert.ConfigurationDialogs
                 QuickSettings.Instance.alertFullscreenIdle = false;
                 MessageBox.Show("The idle panel has been deprecated.\r\nConsider using the new dashboard!", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            
+
             if (QuickSettings.Instance.statusWindow)
             {
                 QuickSettings.Instance.statusWindow = false;
@@ -128,6 +129,25 @@ namespace SharpAlert.ConfigurationDialogs
             if (slots == null || slots.IsDisposed) slots = new SaveSlotsConfigurationForm();
             slots.Show();
             slots.Activate();
+        }
+
+        private bool UpDown = true;
+
+        private void WindowShake_Tick(object sender, EventArgs e)
+        {
+            if (AprilFools.IsAprilFoolsNow)
+            {
+                if (UpDown)
+                {
+                    Location = new Point(Location.X, Location.Y + 10);
+                }
+                else
+                {
+                    Location = new Point(Location.X, Location.Y - 10);
+                }
+
+                UpDown = !UpDown;
+            }
         }
     }
 }

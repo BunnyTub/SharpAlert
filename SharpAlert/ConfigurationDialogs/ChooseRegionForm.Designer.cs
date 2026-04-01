@@ -46,6 +46,7 @@
             NAADSInfoButton = new System.Windows.Forms.Button();
             SASMEXInfoButton = new System.Windows.Forms.Button();
             IDAPInfoButton = new System.Windows.Forms.Button();
+            WindowShake = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
             SuspendLayout();
             // 
@@ -264,6 +265,12 @@
             IDAPInfoButton.UseVisualStyleBackColor = false;
             IDAPInfoButton.Click += IDAPInfoButton_Click;
             // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
             // ChooseRegionForm
             // 
             AcceptButton = DoneButton;
@@ -324,5 +331,6 @@
         private System.Windows.Forms.Button NAADSInfoButton;
         private System.Windows.Forms.Button SASMEXInfoButton;
         private System.Windows.Forms.Button IDAPInfoButton;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

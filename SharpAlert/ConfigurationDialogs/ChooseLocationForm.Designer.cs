@@ -28,447 +28,441 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChooseLocationForm));
-            this.DoneButton = new System.Windows.Forms.Button();
-            this.LogoBox = new System.Windows.Forms.PictureBox();
-            this.TitleText = new System.Windows.Forms.Label();
-            this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
-            this.label8 = new System.Windows.Forms.Label();
-            this.AreaCAPCPInput = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.AreaSAMEInput = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.AreaCustomNameInput = new System.Windows.Forms.TextBox();
-            this.AreaCustomInput = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.ListAreaCAPCPOutput = new System.Windows.Forms.TextBox();
-            this.UGCClearButton = new System.Windows.Forms.Button();
-            this.UGCAddButton = new System.Windows.Forms.Button();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.ListAreaSAMEOutput = new System.Windows.Forms.TextBox();
-            this.SAMESelectButton = new System.Windows.Forms.Button();
-            this.SAMEClearButton = new System.Windows.Forms.Button();
-            this.SAMEAddButton = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.ListAreaCustomOutput = new System.Windows.Forms.TextBox();
-            this.CustomClearButton = new System.Windows.Forms.Button();
-            this.CustomAddButton = new System.Windows.Forms.Button();
-            this.SkipButton = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
-            this.groupBox8.SuspendLayout();
-            this.groupBox7.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.SuspendLayout();
+            DoneButton = new System.Windows.Forms.Button();
+            LogoBox = new System.Windows.Forms.PictureBox();
+            TitleText = new System.Windows.Forms.Label();
+            ToolTipInformation = new System.Windows.Forms.ToolTip(components);
+            label8 = new System.Windows.Forms.Label();
+            AreaCAPCPInput = new System.Windows.Forms.TextBox();
+            label7 = new System.Windows.Forms.Label();
+            AreaSAMEInput = new System.Windows.Forms.TextBox();
+            label2 = new System.Windows.Forms.Label();
+            AreaCustomNameInput = new System.Windows.Forms.TextBox();
+            AreaCustomInput = new System.Windows.Forms.TextBox();
+            label1 = new System.Windows.Forms.Label();
+            groupBox8 = new System.Windows.Forms.GroupBox();
+            ListAreaCAPCPOutput = new System.Windows.Forms.TextBox();
+            UGCClearButton = new System.Windows.Forms.Button();
+            UGCAddButton = new System.Windows.Forms.Button();
+            groupBox7 = new System.Windows.Forms.GroupBox();
+            ListAreaSAMEOutput = new System.Windows.Forms.TextBox();
+            SAMESelectButton = new System.Windows.Forms.Button();
+            SAMEClearButton = new System.Windows.Forms.Button();
+            SAMEAddButton = new System.Windows.Forms.Button();
+            groupBox1 = new System.Windows.Forms.GroupBox();
+            label4 = new System.Windows.Forms.Label();
+            label3 = new System.Windows.Forms.Label();
+            ListAreaCustomOutput = new System.Windows.Forms.TextBox();
+            CustomClearButton = new System.Windows.Forms.Button();
+            CustomAddButton = new System.Windows.Forms.Button();
+            SkipButton = new System.Windows.Forms.Button();
+            WindowShake = new System.Windows.Forms.Timer(components);
+            ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
+            groupBox8.SuspendLayout();
+            groupBox7.SuspendLayout();
+            groupBox1.SuspendLayout();
+            SuspendLayout();
             // 
             // DoneButton
             // 
-            this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.DoneButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DoneButton.Location = new System.Drawing.Point(647, 309);
-            this.DoneButton.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.DoneButton.Name = "DoneButton";
-            this.DoneButton.Size = new System.Drawing.Size(72, 23);
-            this.DoneButton.TabIndex = 0;
-            this.DoneButton.Text = "Done";
-            this.DoneButton.UseVisualStyleBackColor = false;
-            this.DoneButton.Click += new System.EventHandler(this.DoneButton_Click);
+            DoneButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            DoneButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            DoneButton.Location = new System.Drawing.Point(647, 309);
+            DoneButton.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            DoneButton.Name = "DoneButton";
+            DoneButton.Size = new System.Drawing.Size(72, 23);
+            DoneButton.TabIndex = 0;
+            DoneButton.Text = "Done";
+            DoneButton.UseVisualStyleBackColor = false;
+            DoneButton.Click += DoneButton_Click;
             // 
             // LogoBox
             // 
-            this.LogoBox.Image = global::SharpAlert.Properties.Resources.WarningApp;
-            this.LogoBox.Location = new System.Drawing.Point(9, 9);
-            this.LogoBox.Margin = new System.Windows.Forms.Padding(0);
-            this.LogoBox.Name = "LogoBox";
-            this.LogoBox.Size = new System.Drawing.Size(96, 96);
-            this.LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.LogoBox.TabIndex = 1;
-            this.LogoBox.TabStop = false;
+            LogoBox.Image = Properties.Resources.WarningApp;
+            LogoBox.Location = new System.Drawing.Point(9, 9);
+            LogoBox.Margin = new System.Windows.Forms.Padding(0);
+            LogoBox.Name = "LogoBox";
+            LogoBox.Size = new System.Drawing.Size(96, 96);
+            LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            LogoBox.TabIndex = 1;
+            LogoBox.TabStop = false;
             // 
             // TitleText
             // 
-            this.TitleText.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.TitleText.Location = new System.Drawing.Point(105, 9);
-            this.TitleText.Margin = new System.Windows.Forms.Padding(0);
-            this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(614, 30);
-            this.TitleText.TabIndex = 3;
-            this.TitleText.Text = "Receive alerts for only some locations?";
+            TitleText.Font = new System.Drawing.Font("Segoe UI", 16F);
+            TitleText.Location = new System.Drawing.Point(105, 9);
+            TitleText.Margin = new System.Windows.Forms.Padding(0);
+            TitleText.Name = "TitleText";
+            TitleText.Size = new System.Drawing.Size(614, 30);
+            TitleText.TabIndex = 3;
+            TitleText.Text = "Receive alerts for only some locations?";
             // 
             // ToolTipInformation
             // 
-            this.ToolTipInformation.AutomaticDelay = 250;
-            this.ToolTipInformation.AutoPopDelay = 15000;
-            this.ToolTipInformation.BackColor = System.Drawing.Color.White;
-            this.ToolTipInformation.ForeColor = System.Drawing.Color.Black;
-            this.ToolTipInformation.InitialDelay = 250;
-            this.ToolTipInformation.IsBalloon = true;
-            this.ToolTipInformation.ReshowDelay = 50;
-            this.ToolTipInformation.ToolTipTitle = "What does this do?";
+            ToolTipInformation.AutomaticDelay = 250;
+            ToolTipInformation.AutoPopDelay = 15000;
+            ToolTipInformation.BackColor = System.Drawing.Color.White;
+            ToolTipInformation.ForeColor = System.Drawing.Color.Black;
+            ToolTipInformation.InitialDelay = 250;
+            ToolTipInformation.IsBalloon = true;
+            ToolTipInformation.ReshowDelay = 50;
+            ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.ForeColor = System.Drawing.Color.Yellow;
-            this.label8.Location = new System.Drawing.Point(136, 22);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(14, 15);
-            this.label8.TabIndex = 8;
-            this.label8.Text = "?";
-            this.ToolTipInformation.SetToolTip(this.label8, "CAP-CP location restrictions are applied ONLY to alerts that arrive from NAADS.\r\n" +
-        "\r\nTrying to remove a specific location?\r\nType the location\'s code, then click \"A" +
-        "dd\". You\'ll be prompted to remove it.");
+            label8.AutoSize = true;
+            label8.ForeColor = System.Drawing.Color.Yellow;
+            label8.Location = new System.Drawing.Point(136, 22);
+            label8.Name = "label8";
+            label8.Size = new System.Drawing.Size(12, 15);
+            label8.TabIndex = 8;
+            label8.Text = "?";
+            ToolTipInformation.SetToolTip(label8, "CAP-CP location restrictions are applied ONLY to alerts that arrive from NAADS.\r\n\r\nTrying to remove a specific location?\r\nType the location's code, then click \"Add\". You'll be prompted to remove it.");
             // 
             // AreaCAPCPInput
             // 
-            this.AreaCAPCPInput.BackColor = System.Drawing.Color.Black;
-            this.AreaCAPCPInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AreaCAPCPInput.ForeColor = System.Drawing.Color.White;
-            this.AreaCAPCPInput.Location = new System.Drawing.Point(6, 20);
-            this.AreaCAPCPInput.Name = "AreaCAPCPInput";
-            this.AreaCAPCPInput.Size = new System.Drawing.Size(124, 21);
-            this.AreaCAPCPInput.TabIndex = 27;
-            this.ToolTipInformation.SetToolTip(this.AreaCAPCPInput, "Enter a CAP-CP code here.");
+            AreaCAPCPInput.BackColor = System.Drawing.Color.Black;
+            AreaCAPCPInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            AreaCAPCPInput.ForeColor = System.Drawing.Color.White;
+            AreaCAPCPInput.Location = new System.Drawing.Point(6, 20);
+            AreaCAPCPInput.Name = "AreaCAPCPInput";
+            AreaCAPCPInput.Size = new System.Drawing.Size(124, 23);
+            AreaCAPCPInput.TabIndex = 27;
+            ToolTipInformation.SetToolTip(AreaCAPCPInput, "Enter a CAP-CP code here.");
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.ForeColor = System.Drawing.Color.Yellow;
-            this.label7.Location = new System.Drawing.Point(136, 22);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(14, 15);
-            this.label7.TabIndex = 8;
-            this.label7.Text = "?";
-            this.ToolTipInformation.SetToolTip(this.label7, resources.GetString("label7.ToolTip"));
+            label7.AutoSize = true;
+            label7.ForeColor = System.Drawing.Color.Yellow;
+            label7.Location = new System.Drawing.Point(136, 22);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(12, 15);
+            label7.TabIndex = 8;
+            label7.Text = "?";
+            ToolTipInformation.SetToolTip(label7, resources.GetString("label7.ToolTip"));
             // 
             // AreaSAMEInput
             // 
-            this.AreaSAMEInput.BackColor = System.Drawing.Color.Black;
-            this.AreaSAMEInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AreaSAMEInput.ForeColor = System.Drawing.Color.White;
-            this.AreaSAMEInput.Location = new System.Drawing.Point(6, 20);
-            this.AreaSAMEInput.Name = "AreaSAMEInput";
-            this.AreaSAMEInput.Size = new System.Drawing.Size(124, 21);
-            this.AreaSAMEInput.TabIndex = 22;
-            this.ToolTipInformation.SetToolTip(this.AreaSAMEInput, "Enter a SAME code here.\r\nSAME codes are 6 digits long, but the first digit is cur" +
-        "rently ignored. You can input the first digit anyway.");
+            AreaSAMEInput.BackColor = System.Drawing.Color.Black;
+            AreaSAMEInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            AreaSAMEInput.ForeColor = System.Drawing.Color.White;
+            AreaSAMEInput.Location = new System.Drawing.Point(6, 20);
+            AreaSAMEInput.Name = "AreaSAMEInput";
+            AreaSAMEInput.Size = new System.Drawing.Size(124, 23);
+            AreaSAMEInput.TabIndex = 22;
+            ToolTipInformation.SetToolTip(AreaSAMEInput, "Enter a SAME code here.\r\nSAME codes are 6 digits long, but the first digit is currently ignored. You can input the first digit anyway.");
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.Yellow;
-            this.label2.Location = new System.Drawing.Point(264, 22);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(14, 15);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "?";
-            this.ToolTipInformation.SetToolTip(this.label2, resources.GetString("label2.ToolTip"));
+            label2.AutoSize = true;
+            label2.ForeColor = System.Drawing.Color.Yellow;
+            label2.Location = new System.Drawing.Point(264, 22);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(12, 15);
+            label2.TabIndex = 8;
+            label2.Text = "?";
+            ToolTipInformation.SetToolTip(label2, resources.GetString("label2.ToolTip"));
             // 
             // AreaCustomNameInput
             // 
-            this.AreaCustomNameInput.BackColor = System.Drawing.Color.Black;
-            this.AreaCustomNameInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AreaCustomNameInput.ForeColor = System.Drawing.Color.White;
-            this.AreaCustomNameInput.Location = new System.Drawing.Point(104, 20);
-            this.AreaCustomNameInput.Name = "AreaCustomNameInput";
-            this.AreaCustomNameInput.Size = new System.Drawing.Size(154, 21);
-            this.AreaCustomNameInput.TabIndex = 27;
-            this.ToolTipInformation.SetToolTip(this.AreaCustomNameInput, "Enter a CAP-CP code here.");
+            AreaCustomNameInput.BackColor = System.Drawing.Color.Black;
+            AreaCustomNameInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            AreaCustomNameInput.ForeColor = System.Drawing.Color.White;
+            AreaCustomNameInput.Location = new System.Drawing.Point(104, 20);
+            AreaCustomNameInput.Name = "AreaCustomNameInput";
+            AreaCustomNameInput.Size = new System.Drawing.Size(154, 23);
+            AreaCustomNameInput.TabIndex = 27;
+            ToolTipInformation.SetToolTip(AreaCustomNameInput, "Enter a CAP-CP code here.");
             // 
             // AreaCustomInput
             // 
-            this.AreaCustomInput.BackColor = System.Drawing.Color.Black;
-            this.AreaCustomInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AreaCustomInput.ForeColor = System.Drawing.Color.White;
-            this.AreaCustomInput.Location = new System.Drawing.Point(104, 47);
-            this.AreaCustomInput.Name = "AreaCustomInput";
-            this.AreaCustomInput.Size = new System.Drawing.Size(174, 21);
-            this.AreaCustomInput.TabIndex = 37;
-            this.ToolTipInformation.SetToolTip(this.AreaCustomInput, "Enter a CAP-CP code here.");
+            AreaCustomInput.BackColor = System.Drawing.Color.Black;
+            AreaCustomInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            AreaCustomInput.ForeColor = System.Drawing.Color.White;
+            AreaCustomInput.Location = new System.Drawing.Point(104, 47);
+            AreaCustomInput.Name = "AreaCustomInput";
+            AreaCustomInput.Size = new System.Drawing.Size(174, 23);
+            AreaCustomInput.TabIndex = 37;
+            ToolTipInformation.SetToolTip(AreaCustomInput, "Enter a CAP-CP code here.");
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label1.Location = new System.Drawing.Point(9, 291);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(342, 41);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "To relay any location, leave everything blank.\r\nTo change these options later, go" +
-    " to Settings.";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            label1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            label1.Location = new System.Drawing.Point(9, 291);
+            label1.Margin = new System.Windows.Forms.Padding(0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(342, 41);
+            label1.TabIndex = 13;
+            label1.Text = "To relay any location, leave everything blank.\r\nTo change these options later, go to Settings.";
+            label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // groupBox8
             // 
-            this.groupBox8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.groupBox8.Controls.Add(this.ListAreaCAPCPOutput);
-            this.groupBox8.Controls.Add(this.label8);
-            this.groupBox8.Controls.Add(this.UGCClearButton);
-            this.groupBox8.Controls.Add(this.UGCAddButton);
-            this.groupBox8.Controls.Add(this.AreaCAPCPInput);
-            this.groupBox8.ForeColor = System.Drawing.Color.White;
-            this.groupBox8.Location = new System.Drawing.Point(273, 42);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(156, 246);
-            this.groupBox8.TabIndex = 15;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "CAP-CP (Canada)";
+            groupBox8.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            groupBox8.Controls.Add(ListAreaCAPCPOutput);
+            groupBox8.Controls.Add(label8);
+            groupBox8.Controls.Add(UGCClearButton);
+            groupBox8.Controls.Add(UGCAddButton);
+            groupBox8.Controls.Add(AreaCAPCPInput);
+            groupBox8.ForeColor = System.Drawing.Color.White;
+            groupBox8.Location = new System.Drawing.Point(273, 42);
+            groupBox8.Name = "groupBox8";
+            groupBox8.Size = new System.Drawing.Size(156, 246);
+            groupBox8.TabIndex = 15;
+            groupBox8.TabStop = false;
+            groupBox8.Text = "CAP-CP (Canada)";
             // 
             // ListAreaCAPCPOutput
             // 
-            this.ListAreaCAPCPOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ListAreaCAPCPOutput.BackColor = System.Drawing.Color.Black;
-            this.ListAreaCAPCPOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ListAreaCAPCPOutput.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.ListAreaCAPCPOutput.ForeColor = System.Drawing.Color.White;
-            this.ListAreaCAPCPOutput.Location = new System.Drawing.Point(6, 76);
-            this.ListAreaCAPCPOutput.Multiline = true;
-            this.ListAreaCAPCPOutput.Name = "ListAreaCAPCPOutput";
-            this.ListAreaCAPCPOutput.ReadOnly = true;
-            this.ListAreaCAPCPOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ListAreaCAPCPOutput.Size = new System.Drawing.Size(144, 164);
-            this.ListAreaCAPCPOutput.TabIndex = 36;
-            this.ListAreaCAPCPOutput.WordWrap = false;
+            ListAreaCAPCPOutput.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            ListAreaCAPCPOutput.BackColor = System.Drawing.Color.Black;
+            ListAreaCAPCPOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            ListAreaCAPCPOutput.Font = new System.Drawing.Font("Segoe UI", 12F);
+            ListAreaCAPCPOutput.ForeColor = System.Drawing.Color.White;
+            ListAreaCAPCPOutput.Location = new System.Drawing.Point(6, 76);
+            ListAreaCAPCPOutput.Multiline = true;
+            ListAreaCAPCPOutput.Name = "ListAreaCAPCPOutput";
+            ListAreaCAPCPOutput.ReadOnly = true;
+            ListAreaCAPCPOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            ListAreaCAPCPOutput.Size = new System.Drawing.Size(144, 164);
+            ListAreaCAPCPOutput.TabIndex = 36;
+            ListAreaCAPCPOutput.WordWrap = false;
             // 
             // UGCClearButton
             // 
-            this.UGCClearButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.UGCClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.UGCClearButton.Location = new System.Drawing.Point(6, 47);
-            this.UGCClearButton.Name = "UGCClearButton";
-            this.UGCClearButton.Size = new System.Drawing.Size(94, 23);
-            this.UGCClearButton.TabIndex = 28;
-            this.UGCClearButton.Text = "Clear";
-            this.UGCClearButton.UseVisualStyleBackColor = false;
-            this.UGCClearButton.Click += new System.EventHandler(this.UGCClearButton_Click);
+            UGCClearButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            UGCClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            UGCClearButton.Location = new System.Drawing.Point(6, 47);
+            UGCClearButton.Name = "UGCClearButton";
+            UGCClearButton.Size = new System.Drawing.Size(94, 23);
+            UGCClearButton.TabIndex = 28;
+            UGCClearButton.Text = "Clear";
+            UGCClearButton.UseVisualStyleBackColor = false;
+            UGCClearButton.Click += UGCClearButton_Click;
             // 
             // UGCAddButton
             // 
-            this.UGCAddButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.UGCAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.UGCAddButton.Location = new System.Drawing.Point(106, 47);
-            this.UGCAddButton.Name = "UGCAddButton";
-            this.UGCAddButton.Size = new System.Drawing.Size(44, 23);
-            this.UGCAddButton.TabIndex = 29;
-            this.UGCAddButton.Text = "Add";
-            this.UGCAddButton.UseVisualStyleBackColor = false;
-            this.UGCAddButton.Click += new System.EventHandler(this.UGCAddButton_Click);
+            UGCAddButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            UGCAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            UGCAddButton.Location = new System.Drawing.Point(106, 47);
+            UGCAddButton.Name = "UGCAddButton";
+            UGCAddButton.Size = new System.Drawing.Size(44, 23);
+            UGCAddButton.TabIndex = 29;
+            UGCAddButton.Text = "Add";
+            UGCAddButton.UseVisualStyleBackColor = false;
+            UGCAddButton.Click += UGCAddButton_Click;
             // 
             // groupBox7
             // 
-            this.groupBox7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.groupBox7.Controls.Add(this.ListAreaSAMEOutput);
-            this.groupBox7.Controls.Add(this.label7);
-            this.groupBox7.Controls.Add(this.SAMESelectButton);
-            this.groupBox7.Controls.Add(this.SAMEClearButton);
-            this.groupBox7.Controls.Add(this.SAMEAddButton);
-            this.groupBox7.Controls.Add(this.AreaSAMEInput);
-            this.groupBox7.ForeColor = System.Drawing.Color.White;
-            this.groupBox7.Location = new System.Drawing.Point(110, 42);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(156, 246);
-            this.groupBox7.TabIndex = 14;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "SAME (United States)";
+            groupBox7.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            groupBox7.Controls.Add(ListAreaSAMEOutput);
+            groupBox7.Controls.Add(label7);
+            groupBox7.Controls.Add(SAMESelectButton);
+            groupBox7.Controls.Add(SAMEClearButton);
+            groupBox7.Controls.Add(SAMEAddButton);
+            groupBox7.Controls.Add(AreaSAMEInput);
+            groupBox7.ForeColor = System.Drawing.Color.White;
+            groupBox7.Location = new System.Drawing.Point(110, 42);
+            groupBox7.Name = "groupBox7";
+            groupBox7.Size = new System.Drawing.Size(156, 246);
+            groupBox7.TabIndex = 14;
+            groupBox7.TabStop = false;
+            groupBox7.Text = "SAME (United States)";
             // 
             // ListAreaSAMEOutput
             // 
-            this.ListAreaSAMEOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ListAreaSAMEOutput.BackColor = System.Drawing.Color.Black;
-            this.ListAreaSAMEOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ListAreaSAMEOutput.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.ListAreaSAMEOutput.ForeColor = System.Drawing.Color.White;
-            this.ListAreaSAMEOutput.Location = new System.Drawing.Point(6, 76);
-            this.ListAreaSAMEOutput.Multiline = true;
-            this.ListAreaSAMEOutput.Name = "ListAreaSAMEOutput";
-            this.ListAreaSAMEOutput.ReadOnly = true;
-            this.ListAreaSAMEOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ListAreaSAMEOutput.Size = new System.Drawing.Size(144, 164);
-            this.ListAreaSAMEOutput.TabIndex = 35;
-            this.ListAreaSAMEOutput.WordWrap = false;
+            ListAreaSAMEOutput.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            ListAreaSAMEOutput.BackColor = System.Drawing.Color.Black;
+            ListAreaSAMEOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            ListAreaSAMEOutput.Font = new System.Drawing.Font("Segoe UI", 12F);
+            ListAreaSAMEOutput.ForeColor = System.Drawing.Color.White;
+            ListAreaSAMEOutput.Location = new System.Drawing.Point(6, 76);
+            ListAreaSAMEOutput.Multiline = true;
+            ListAreaSAMEOutput.Name = "ListAreaSAMEOutput";
+            ListAreaSAMEOutput.ReadOnly = true;
+            ListAreaSAMEOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            ListAreaSAMEOutput.Size = new System.Drawing.Size(144, 164);
+            ListAreaSAMEOutput.TabIndex = 35;
+            ListAreaSAMEOutput.WordWrap = false;
             // 
             // SAMESelectButton
             // 
-            this.SAMESelectButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.SAMESelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SAMESelectButton.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.SAMESelectButton.Location = new System.Drawing.Point(102, 47);
-            this.SAMESelectButton.Name = "SAMESelectButton";
-            this.SAMESelectButton.Size = new System.Drawing.Size(48, 23);
-            this.SAMESelectButton.TabIndex = 25;
-            this.SAMESelectButton.Text = "Select";
-            this.SAMESelectButton.UseVisualStyleBackColor = false;
-            this.SAMESelectButton.Click += new System.EventHandler(this.SAMESelectButton_Click);
+            SAMESelectButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            SAMESelectButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            SAMESelectButton.Font = new System.Drawing.Font("Segoe UI", 8F);
+            SAMESelectButton.Location = new System.Drawing.Point(102, 47);
+            SAMESelectButton.Name = "SAMESelectButton";
+            SAMESelectButton.Size = new System.Drawing.Size(48, 23);
+            SAMESelectButton.TabIndex = 25;
+            SAMESelectButton.Text = "Select";
+            SAMESelectButton.UseVisualStyleBackColor = false;
+            SAMESelectButton.Click += SAMESelectButton_Click;
             // 
             // SAMEClearButton
             // 
-            this.SAMEClearButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.SAMEClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SAMEClearButton.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.SAMEClearButton.Location = new System.Drawing.Point(6, 47);
-            this.SAMEClearButton.Name = "SAMEClearButton";
-            this.SAMEClearButton.Size = new System.Drawing.Size(42, 23);
-            this.SAMEClearButton.TabIndex = 23;
-            this.SAMEClearButton.Text = "Clear";
-            this.SAMEClearButton.UseVisualStyleBackColor = false;
-            this.SAMEClearButton.Click += new System.EventHandler(this.SAMEClearButton_Click);
+            SAMEClearButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            SAMEClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            SAMEClearButton.Font = new System.Drawing.Font("Segoe UI", 8F);
+            SAMEClearButton.Location = new System.Drawing.Point(6, 47);
+            SAMEClearButton.Name = "SAMEClearButton";
+            SAMEClearButton.Size = new System.Drawing.Size(42, 23);
+            SAMEClearButton.TabIndex = 23;
+            SAMEClearButton.Text = "Clear";
+            SAMEClearButton.UseVisualStyleBackColor = false;
+            SAMEClearButton.Click += SAMEClearButton_Click;
             // 
             // SAMEAddButton
             // 
-            this.SAMEAddButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.SAMEAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SAMEAddButton.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.SAMEAddButton.Location = new System.Drawing.Point(54, 47);
-            this.SAMEAddButton.Name = "SAMEAddButton";
-            this.SAMEAddButton.Size = new System.Drawing.Size(42, 23);
-            this.SAMEAddButton.TabIndex = 24;
-            this.SAMEAddButton.Text = "Add";
-            this.SAMEAddButton.UseVisualStyleBackColor = false;
-            this.SAMEAddButton.Click += new System.EventHandler(this.SAMEAddButton_Click);
+            SAMEAddButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            SAMEAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            SAMEAddButton.Font = new System.Drawing.Font("Segoe UI", 8F);
+            SAMEAddButton.Location = new System.Drawing.Point(54, 47);
+            SAMEAddButton.Name = "SAMEAddButton";
+            SAMEAddButton.Size = new System.Drawing.Size(42, 23);
+            SAMEAddButton.TabIndex = 24;
+            SAMEAddButton.Text = "Add";
+            SAMEAddButton.UseVisualStyleBackColor = false;
+            SAMEAddButton.Click += SAMEAddButton_Click;
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.AreaCustomInput);
-            this.groupBox1.Controls.Add(this.ListAreaCustomOutput);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.CustomClearButton);
-            this.groupBox1.Controls.Add(this.CustomAddButton);
-            this.groupBox1.Controls.Add(this.AreaCustomNameInput);
-            this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(435, 42);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(284, 246);
-            this.groupBox1.TabIndex = 16;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Custom Locations";
+            groupBox1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            groupBox1.Controls.Add(label4);
+            groupBox1.Controls.Add(label3);
+            groupBox1.Controls.Add(AreaCustomInput);
+            groupBox1.Controls.Add(ListAreaCustomOutput);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(CustomClearButton);
+            groupBox1.Controls.Add(CustomAddButton);
+            groupBox1.Controls.Add(AreaCustomNameInput);
+            groupBox1.ForeColor = System.Drawing.Color.White;
+            groupBox1.Location = new System.Drawing.Point(435, 42);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new System.Drawing.Size(284, 246);
+            groupBox1.TabIndex = 16;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Custom Locations";
             // 
             // label4
             // 
-            this.label4.Location = new System.Drawing.Point(3, 46);
-            this.label4.Margin = new System.Windows.Forms.Padding(0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(98, 21);
-            this.label4.TabIndex = 39;
-            this.label4.Text = "Value";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            label4.Location = new System.Drawing.Point(3, 46);
+            label4.Margin = new System.Windows.Forms.Padding(0);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(98, 21);
+            label4.TabIndex = 39;
+            label4.Text = "Value";
+            label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(3, 20);
-            this.label3.Margin = new System.Windows.Forms.Padding(0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(98, 21);
-            this.label3.TabIndex = 38;
-            this.label3.Text = "ValueName";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            label3.Location = new System.Drawing.Point(3, 20);
+            label3.Margin = new System.Windows.Forms.Padding(0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(98, 21);
+            label3.TabIndex = 38;
+            label3.Text = "ValueName";
+            label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ListAreaCustomOutput
             // 
-            this.ListAreaCustomOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ListAreaCustomOutput.BackColor = System.Drawing.Color.Black;
-            this.ListAreaCustomOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ListAreaCustomOutput.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.ListAreaCustomOutput.ForeColor = System.Drawing.Color.White;
-            this.ListAreaCustomOutput.Location = new System.Drawing.Point(6, 103);
-            this.ListAreaCustomOutput.Multiline = true;
-            this.ListAreaCustomOutput.Name = "ListAreaCustomOutput";
-            this.ListAreaCustomOutput.ReadOnly = true;
-            this.ListAreaCustomOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ListAreaCustomOutput.Size = new System.Drawing.Size(272, 137);
-            this.ListAreaCustomOutput.TabIndex = 36;
-            this.ListAreaCustomOutput.WordWrap = false;
+            ListAreaCustomOutput.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            ListAreaCustomOutput.BackColor = System.Drawing.Color.Black;
+            ListAreaCustomOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            ListAreaCustomOutput.Font = new System.Drawing.Font("Segoe UI", 12F);
+            ListAreaCustomOutput.ForeColor = System.Drawing.Color.White;
+            ListAreaCustomOutput.Location = new System.Drawing.Point(6, 103);
+            ListAreaCustomOutput.Multiline = true;
+            ListAreaCustomOutput.Name = "ListAreaCustomOutput";
+            ListAreaCustomOutput.ReadOnly = true;
+            ListAreaCustomOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            ListAreaCustomOutput.Size = new System.Drawing.Size(272, 137);
+            ListAreaCustomOutput.TabIndex = 36;
+            ListAreaCustomOutput.WordWrap = false;
             // 
             // CustomClearButton
             // 
-            this.CustomClearButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.CustomClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.CustomClearButton.Location = new System.Drawing.Point(104, 74);
-            this.CustomClearButton.Name = "CustomClearButton";
-            this.CustomClearButton.Size = new System.Drawing.Size(124, 23);
-            this.CustomClearButton.TabIndex = 28;
-            this.CustomClearButton.Text = "Clear";
-            this.CustomClearButton.UseVisualStyleBackColor = false;
-            this.CustomClearButton.Click += new System.EventHandler(this.CustomClearButton_Click);
+            CustomClearButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            CustomClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            CustomClearButton.Location = new System.Drawing.Point(104, 74);
+            CustomClearButton.Name = "CustomClearButton";
+            CustomClearButton.Size = new System.Drawing.Size(124, 23);
+            CustomClearButton.TabIndex = 28;
+            CustomClearButton.Text = "Clear";
+            CustomClearButton.UseVisualStyleBackColor = false;
+            CustomClearButton.Click += CustomClearButton_Click;
             // 
             // CustomAddButton
             // 
-            this.CustomAddButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.CustomAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.CustomAddButton.Location = new System.Drawing.Point(234, 74);
-            this.CustomAddButton.Name = "CustomAddButton";
-            this.CustomAddButton.Size = new System.Drawing.Size(44, 23);
-            this.CustomAddButton.TabIndex = 29;
-            this.CustomAddButton.Text = "Add";
-            this.CustomAddButton.UseVisualStyleBackColor = false;
-            this.CustomAddButton.Click += new System.EventHandler(this.CustomAddButton_Click);
+            CustomAddButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            CustomAddButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            CustomAddButton.Location = new System.Drawing.Point(234, 74);
+            CustomAddButton.Name = "CustomAddButton";
+            CustomAddButton.Size = new System.Drawing.Size(44, 23);
+            CustomAddButton.TabIndex = 29;
+            CustomAddButton.Text = "Add";
+            CustomAddButton.UseVisualStyleBackColor = false;
+            CustomAddButton.Click += CustomAddButton_Click;
             // 
             // SkipButton
             // 
-            this.SkipButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.SkipButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.SkipButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SkipButton.Location = new System.Drawing.Point(435, 309);
-            this.SkipButton.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.SkipButton.Name = "SkipButton";
-            this.SkipButton.Size = new System.Drawing.Size(209, 23);
-            this.SkipButton.TabIndex = 17;
-            this.SkipButton.Text = "I don\'t want to add locations now.";
-            this.SkipButton.UseVisualStyleBackColor = false;
-            this.SkipButton.Click += new System.EventHandler(this.SkipButton_Click);
+            SkipButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            SkipButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            SkipButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            SkipButton.Location = new System.Drawing.Point(435, 309);
+            SkipButton.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+            SkipButton.Name = "SkipButton";
+            SkipButton.Size = new System.Drawing.Size(209, 23);
+            SkipButton.TabIndex = 17;
+            SkipButton.Text = "I don't want to add locations now.";
+            SkipButton.UseVisualStyleBackColor = false;
+            SkipButton.Click += SkipButton_Click;
+            // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
             // 
             // ChooseLocationForm
             // 
-            this.AcceptButton = this.DoneButton;
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(728, 341);
-            this.Controls.Add(this.SkipButton);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.groupBox8);
-            this.Controls.Add(this.groupBox7);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.TitleText);
-            this.Controls.Add(this.LogoBox);
-            this.Controls.Add(this.DoneButton);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.HelpButton = true;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "ChooseLocationForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SharpAlert - Location Selection";
-            this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.ChooseRegionForm_HelpButtonClicked);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChooseRegionForm_FormClosing);
-            this.Load += new System.EventHandler(this.ChooseRegionForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.ResumeLayout(false);
+            AcceptButton = DoneButton;
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
+            ClientSize = new System.Drawing.Size(728, 341);
+            Controls.Add(SkipButton);
+            Controls.Add(groupBox1);
+            Controls.Add(groupBox8);
+            Controls.Add(groupBox7);
+            Controls.Add(label1);
+            Controls.Add(TitleText);
+            Controls.Add(LogoBox);
+            Controls.Add(DoneButton);
+            Font = new System.Drawing.Font("Segoe UI", 9F);
+            ForeColor = System.Drawing.Color.White;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            HelpButton = true;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "ChooseLocationForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "SharpAlert - Location Selection";
+            HelpButtonClicked += ChooseRegionForm_HelpButtonClicked;
+            FormClosing += ChooseRegionForm_FormClosing;
+            Load += ChooseRegionForm_Load;
+            ((System.ComponentModel.ISupportInitialize)LogoBox).EndInit();
+            groupBox8.ResumeLayout(false);
+            groupBox8.PerformLayout();
+            groupBox7.ResumeLayout(false);
+            groupBox7.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            ResumeLayout(false);
 
         }
 
@@ -502,5 +496,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox ListAreaCustomOutput;
         private System.Windows.Forms.Button SkipButton;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

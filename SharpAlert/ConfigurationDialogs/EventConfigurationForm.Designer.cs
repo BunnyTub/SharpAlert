@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EventConfigurationForm));
             groupBox9 = new System.Windows.Forms.GroupBox();
             NamedEventsInfoButton = new System.Windows.Forms.Button();
@@ -49,6 +50,7 @@
             EventSAMEBlacklistOutput = new System.Windows.Forms.TextBox();
             EventSAMEBlacklistInput = new System.Windows.Forms.TextBox();
             EventSAMEClearButton = new System.Windows.Forms.Button();
+            WindowShake = new System.Windows.Forms.Timer(components);
             groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
             groupBox1.SuspendLayout();
@@ -315,6 +317,12 @@
             EventSAMEClearButton.UseVisualStyleBackColor = false;
             EventSAMEClearButton.Click += EventSAMEClearButton_Click;
             // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
             // EventConfigurationForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -366,5 +374,6 @@
         private System.Windows.Forms.TextBox EventSAMEBlacklistOutput;
         private System.Windows.Forms.TextBox EventSAMEBlacklistInput;
         private System.Windows.Forms.Button EventSAMEClearButton;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

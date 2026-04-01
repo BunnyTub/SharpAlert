@@ -28,185 +28,191 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChooseOwnershipForm));
-            this.DoneButton = new System.Windows.Forms.Button();
-            this.LogoBox = new System.Windows.Forms.PictureBox();
-            this.TitleText = new System.Windows.Forms.Label();
-            this.ToolTipInformation = new System.Windows.Forms.ToolTip(this.components);
-            this.StationIdentifierInput = new System.Windows.Forms.TextBox();
-            this.StationNameInput = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.SkipButton = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).BeginInit();
-            this.SuspendLayout();
+            DoneButton = new System.Windows.Forms.Button();
+            LogoBox = new System.Windows.Forms.PictureBox();
+            TitleText = new System.Windows.Forms.Label();
+            ToolTipInformation = new System.Windows.Forms.ToolTip(components);
+            StationIdentifierInput = new System.Windows.Forms.TextBox();
+            StationNameInput = new System.Windows.Forms.TextBox();
+            label1 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
+            label3 = new System.Windows.Forms.Label();
+            label4 = new System.Windows.Forms.Label();
+            SkipButton = new System.Windows.Forms.Button();
+            WindowShake = new System.Windows.Forms.Timer(components);
+            ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
+            SuspendLayout();
             // 
             // DoneButton
             // 
-            this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.DoneButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DoneButton.Location = new System.Drawing.Point(451, 193);
-            this.DoneButton.Margin = new System.Windows.Forms.Padding(0);
-            this.DoneButton.Name = "DoneButton";
-            this.DoneButton.Size = new System.Drawing.Size(72, 23);
-            this.DoneButton.TabIndex = 0;
-            this.DoneButton.Text = "Done";
-            this.DoneButton.UseVisualStyleBackColor = false;
-            this.DoneButton.Click += new System.EventHandler(this.DoneButton_Click);
+            DoneButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            DoneButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            DoneButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            DoneButton.Location = new System.Drawing.Point(451, 193);
+            DoneButton.Margin = new System.Windows.Forms.Padding(0);
+            DoneButton.Name = "DoneButton";
+            DoneButton.Size = new System.Drawing.Size(72, 23);
+            DoneButton.TabIndex = 0;
+            DoneButton.Text = "Done";
+            DoneButton.UseVisualStyleBackColor = false;
+            DoneButton.Click += DoneButton_Click;
             // 
             // LogoBox
             // 
-            this.LogoBox.Image = global::SharpAlert.Properties.Resources.WarningApp;
-            this.LogoBox.Location = new System.Drawing.Point(9, 9);
-            this.LogoBox.Margin = new System.Windows.Forms.Padding(0);
-            this.LogoBox.Name = "LogoBox";
-            this.LogoBox.Size = new System.Drawing.Size(96, 96);
-            this.LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.LogoBox.TabIndex = 1;
-            this.LogoBox.TabStop = false;
+            LogoBox.Image = Properties.Resources.WarningApp;
+            LogoBox.Location = new System.Drawing.Point(9, 9);
+            LogoBox.Margin = new System.Windows.Forms.Padding(0);
+            LogoBox.Name = "LogoBox";
+            LogoBox.Size = new System.Drawing.Size(96, 96);
+            LogoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            LogoBox.TabIndex = 1;
+            LogoBox.TabStop = false;
             // 
             // TitleText
             // 
-            this.TitleText.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.TitleText.Location = new System.Drawing.Point(105, 9);
-            this.TitleText.Margin = new System.Windows.Forms.Padding(0);
-            this.TitleText.Name = "TitleText";
-            this.TitleText.Size = new System.Drawing.Size(400, 30);
-            this.TitleText.TabIndex = 3;
-            this.TitleText.Text = "Make yourself the owner.";
+            TitleText.Font = new System.Drawing.Font("Segoe UI", 16F);
+            TitleText.Location = new System.Drawing.Point(105, 9);
+            TitleText.Margin = new System.Windows.Forms.Padding(0);
+            TitleText.Name = "TitleText";
+            TitleText.Size = new System.Drawing.Size(400, 30);
+            TitleText.TabIndex = 3;
+            TitleText.Text = "Make yourself the owner.";
             // 
             // ToolTipInformation
             // 
-            this.ToolTipInformation.AutomaticDelay = 250;
-            this.ToolTipInformation.AutoPopDelay = 15000;
-            this.ToolTipInformation.BackColor = System.Drawing.Color.White;
-            this.ToolTipInformation.ForeColor = System.Drawing.Color.Black;
-            this.ToolTipInformation.InitialDelay = 250;
-            this.ToolTipInformation.IsBalloon = true;
-            this.ToolTipInformation.ReshowDelay = 50;
-            this.ToolTipInformation.ToolTipTitle = "What does this do?";
+            ToolTipInformation.AutomaticDelay = 250;
+            ToolTipInformation.AutoPopDelay = 15000;
+            ToolTipInformation.BackColor = System.Drawing.Color.White;
+            ToolTipInformation.ForeColor = System.Drawing.Color.Black;
+            ToolTipInformation.InitialDelay = 250;
+            ToolTipInformation.IsBalloon = true;
+            ToolTipInformation.ReshowDelay = 50;
+            ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
             // StationIdentifierInput
             // 
-            this.StationIdentifierInput.BackColor = System.Drawing.Color.Black;
-            this.StationIdentifierInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.StationIdentifierInput.ForeColor = System.Drawing.Color.White;
-            this.StationIdentifierInput.Location = new System.Drawing.Point(108, 92);
-            this.StationIdentifierInput.Name = "StationIdentifierInput";
-            this.StationIdentifierInput.Size = new System.Drawing.Size(170, 21);
-            this.StationIdentifierInput.TabIndex = 37;
-            this.ToolTipInformation.SetToolTip(this.StationIdentifierInput, "This is your station ID.");
+            StationIdentifierInput.BackColor = System.Drawing.Color.Black;
+            StationIdentifierInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            StationIdentifierInput.ForeColor = System.Drawing.Color.White;
+            StationIdentifierInput.Location = new System.Drawing.Point(108, 92);
+            StationIdentifierInput.Name = "StationIdentifierInput";
+            StationIdentifierInput.Size = new System.Drawing.Size(170, 23);
+            StationIdentifierInput.TabIndex = 37;
+            ToolTipInformation.SetToolTip(StationIdentifierInput, "This is your station ID.");
             // 
             // StationNameInput
             // 
-            this.StationNameInput.BackColor = System.Drawing.Color.Black;
-            this.StationNameInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.StationNameInput.ForeColor = System.Drawing.Color.White;
-            this.StationNameInput.Location = new System.Drawing.Point(108, 134);
-            this.StationNameInput.Name = "StationNameInput";
-            this.StationNameInput.Size = new System.Drawing.Size(170, 21);
-            this.StationNameInput.TabIndex = 39;
-            this.ToolTipInformation.SetToolTip(this.StationNameInput, "This is your station\'s friendly name.");
+            StationNameInput.BackColor = System.Drawing.Color.Black;
+            StationNameInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            StationNameInput.ForeColor = System.Drawing.Color.White;
+            StationNameInput.Location = new System.Drawing.Point(108, 134);
+            StationNameInput.Name = "StationNameInput";
+            StationNameInput.Size = new System.Drawing.Size(170, 23);
+            StationNameInput.TabIndex = 39;
+            ToolTipInformation.SetToolTip(StationNameInput, "This is your station's friendly name.");
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label1.Location = new System.Drawing.Point(9, 175);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(342, 41);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "To change these options later, go to Settings.";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            label1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            label1.Location = new System.Drawing.Point(9, 175);
+            label1.Margin = new System.Windows.Forms.Padding(0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(342, 41);
+            label1.TabIndex = 13;
+            label1.Text = "To change these options later, go to Settings.";
+            label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label2.Location = new System.Drawing.Point(107, 74);
-            this.label2.Margin = new System.Windows.Forms.Padding(0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(95, 15);
-            this.label2.TabIndex = 36;
-            this.label2.Text = "Station Identifier";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            label2.AutoSize = true;
+            label2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            label2.Location = new System.Drawing.Point(107, 74);
+            label2.Margin = new System.Windows.Forms.Padding(0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(94, 15);
+            label2.TabIndex = 36;
+            label2.Text = "Station Identifier";
+            label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label3.Location = new System.Drawing.Point(107, 116);
-            this.label3.Margin = new System.Windows.Forms.Padding(0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(82, 15);
-            this.label3.TabIndex = 38;
-            this.label3.Text = "Station Name";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            label3.AutoSize = true;
+            label3.Font = new System.Drawing.Font("Segoe UI", 9F);
+            label3.Location = new System.Drawing.Point(107, 116);
+            label3.Margin = new System.Windows.Forms.Padding(0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(79, 15);
+            label3.TabIndex = 38;
+            label3.Text = "Station Name";
+            label3.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // label4
             // 
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label4.Location = new System.Drawing.Point(108, 39);
-            this.label4.Margin = new System.Windows.Forms.Padding(0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(397, 30);
-            this.label4.TabIndex = 40;
-            this.label4.Text = "If you intend to use SharpAlert for hosting purposes, such as forwarding alerts t" +
-    "o a Discord webhook, you can stylize your alerts here.";
+            label4.Font = new System.Drawing.Font("Segoe UI", 9F);
+            label4.Location = new System.Drawing.Point(108, 39);
+            label4.Margin = new System.Windows.Forms.Padding(0);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(397, 30);
+            label4.TabIndex = 40;
+            label4.Text = "If you intend to use SharpAlert for hosting purposes, such as forwarding alerts to a Discord webhook, you can stylize your alerts here.";
             // 
             // SkipButton
             // 
-            this.SkipButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.SkipButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.SkipButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.SkipButton.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.SkipButton.Location = new System.Drawing.Point(302, 92);
-            this.SkipButton.Margin = new System.Windows.Forms.Padding(0);
-            this.SkipButton.Name = "SkipButton";
-            this.SkipButton.Size = new System.Drawing.Size(221, 101);
-            this.SkipButton.TabIndex = 41;
-            this.SkipButton.Text = "I do not use SharpAlert\r\nfor hosting purposes\r\nat the moment.";
-            this.SkipButton.UseVisualStyleBackColor = false;
-            this.SkipButton.Click += new System.EventHandler(this.SkipButton_Click);
+            SkipButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            SkipButton.BackColor = System.Drawing.Color.FromArgb(60, 60, 60);
+            SkipButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            SkipButton.Font = new System.Drawing.Font("Segoe UI", 14F);
+            SkipButton.Location = new System.Drawing.Point(302, 92);
+            SkipButton.Margin = new System.Windows.Forms.Padding(0);
+            SkipButton.Name = "SkipButton";
+            SkipButton.Size = new System.Drawing.Size(221, 101);
+            SkipButton.TabIndex = 41;
+            SkipButton.Text = "I do not use SharpAlert\r\nfor hosting purposes\r\nat the moment.";
+            SkipButton.UseVisualStyleBackColor = false;
+            SkipButton.Click += SkipButton_Click;
+            // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
             // 
             // ChooseOwnershipForm
             // 
-            this.AcceptButton = this.DoneButton;
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
-            this.ClientSize = new System.Drawing.Size(532, 225);
-            this.Controls.Add(this.SkipButton);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.StationNameInput);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.StationIdentifierInput);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.TitleText);
-            this.Controls.Add(this.LogoBox);
-            this.Controls.Add(this.DoneButton);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.HelpButton = true;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "ChooseOwnershipForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SharpAlert - Ownership Selection";
-            this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.ChooseRegionForm_HelpButtonClicked);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChooseRegionForm_FormClosing);
-            this.Load += new System.EventHandler(this.ChooseRegionForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.LogoBox)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AcceptButton = DoneButton;
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
+            ClientSize = new System.Drawing.Size(532, 225);
+            Controls.Add(SkipButton);
+            Controls.Add(label4);
+            Controls.Add(StationNameInput);
+            Controls.Add(label3);
+            Controls.Add(StationIdentifierInput);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(TitleText);
+            Controls.Add(LogoBox);
+            Controls.Add(DoneButton);
+            Font = new System.Drawing.Font("Segoe UI", 9F);
+            ForeColor = System.Drawing.Color.White;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            HelpButton = true;
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "ChooseOwnershipForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "SharpAlert - Ownership Selection";
+            HelpButtonClicked += ChooseRegionForm_HelpButtonClicked;
+            FormClosing += ChooseRegionForm_FormClosing;
+            Load += ChooseRegionForm_Load;
+            ((System.ComponentModel.ISupportInitialize)LogoBox).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
@@ -223,5 +229,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button SkipButton;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

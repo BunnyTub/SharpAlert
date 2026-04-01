@@ -240,7 +240,7 @@ namespace SharpAlert.AlertComponents
                 this.BringToFront();
                 this.Activate();
             }
-            
+
             EnsureForTick--;
 
             if (EnsureForTick == 0)
@@ -532,6 +532,25 @@ namespace SharpAlert.AlertComponents
             TitleText.BackColor = borderColor;
             AlertIcon.BackColor = borderColor;
             SubtitlePanel.BackColor = subtitleColor;
+        }
+
+        private bool UpDown = true;
+
+        private void WindowShake_Tick(object sender, EventArgs e)
+        {
+            if (AprilFools.IsAprilFoolsNow)
+            {
+                if (UpDown)
+                {
+                    Location = new Point(Location.X, Location.Y + 10);
+                }
+                else
+                {
+                    Location = new Point(Location.X, Location.Y - 10);
+                }
+
+                UpDown = !UpDown;
+            }
         }
     }
 }

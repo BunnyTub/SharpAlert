@@ -3,6 +3,7 @@ using SharpAlert.Languages;
 using SharpAlert.ProgramWorker;
 using SharpAlert.Properties;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using static SharpAlert.ProgramWorker.HaidaWorker;
@@ -291,6 +292,25 @@ namespace SharpAlert.ConfigurationDialogs
             if (ecf == null || ecf.IsDisposed) ecf = new ExtraConfigurationForm(false);
             ecf.Show();
             ecf.Activate();
+        }
+
+        private bool UpDown = true;
+
+        private void WindowShake_Tick(object sender, EventArgs e)
+        {
+            if (AprilFools.IsAprilFoolsNow)
+            {
+                if (UpDown)
+                {
+                    Location = new Point(Location.X, Location.Y + 10);
+                }
+                else
+                {
+                    Location = new Point(Location.X, Location.Y - 10);
+                }
+
+                UpDown = !UpDown;
+            }
         }
     }
 }

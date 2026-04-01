@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using SharpAlert.ProgramWorker;
@@ -74,13 +75,13 @@ namespace SharpAlert.ConfigurationDialogs
 
             alertPlayEndToneBox.Checked = QuickSettings.Instance.alertPlayEndTone;
             alertPlayEndToneBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertPlayEndTone = ((CheckBox)a).Checked;
-            
+
             alertTTSonlyBox.Checked = QuickSettings.Instance.alertTTSonly;
             alertTTSonlyBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertTTSonly = ((CheckBox)a).Checked;
-            
+
             alertPlayStartToneTwiceBox.Checked = QuickSettings.Instance.alertPlayStartToneTwice;
             alertPlayStartToneTwiceBox.CheckedChanged += (a, b) => QuickSettings.Instance.alertPlayStartToneTwice = ((CheckBox)a).Checked;
-            
+
             DisableSomeStyleAutoplayBox.Checked = QuickSettings.Instance.DisableSomeStyleAutoplay;
             DisableSomeStyleAutoplayBox.CheckedChanged += (a, b) => QuickSettings.Instance.DisableSomeStyleAutoplay = ((CheckBox)a).Checked;
 
@@ -96,7 +97,7 @@ namespace SharpAlert.ConfigurationDialogs
                     MessageBoxIcon.Information);
                 Environment.Exit(100);
             };
-            
+
             //EnableBasicSpeakingBox.Checked = QuickSettings.Instance.EnableBasicSpeaking;
             //EnableBasicSpeakingBox.CheckedChanged += (a, b) =>
             //{
@@ -373,6 +374,25 @@ namespace SharpAlert.ConfigurationDialogs
         {
             ShowRefreshTip.Stop();
             //ToolTipInformation.Show("Click here to repopulate the audio outputs list.", this, 5000, 552, 57);
+        }
+
+        private bool UpDown = true;
+
+        private void WindowShake_Tick(object sender, EventArgs e)
+        {
+            if (AprilFools.IsAprilFoolsNow)
+            {
+                if (UpDown)
+                {
+                    Location = new Point(Location.X, Location.Y + 10);
+                }
+                else
+                {
+                    Location = new Point(Location.X, Location.Y - 10);
+                }
+
+                UpDown = !UpDown;
+            }
         }
     }
 }

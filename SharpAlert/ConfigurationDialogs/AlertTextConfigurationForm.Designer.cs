@@ -40,8 +40,9 @@
             AddSourcedFromBox = new System.Windows.Forms.CheckBox();
             AddEventNameBox = new System.Windows.Forms.CheckBox();
             Use24HrTimeBox = new System.Windows.Forms.CheckBox();
-            UpdateTextField = new System.Windows.Forms.Timer(components);
             alertTimeZoneUTCBox = new System.Windows.Forms.CheckBox();
+            UpdateTextField = new System.Windows.Forms.Timer(components);
+            WindowShake = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
             SuspendLayout();
             // 
@@ -157,12 +158,6 @@
             ToolTipInformation.SetToolTip(Use24HrTimeBox, "The event of the current alert.");
             Use24HrTimeBox.UseVisualStyleBackColor = true;
             // 
-            // UpdateTextField
-            // 
-            UpdateTextField.Enabled = true;
-            UpdateTextField.Interval = 1000;
-            UpdateTextField.Tick += UpdateTextField_Tick;
-            // 
             // alertTimeZoneUTCBox
             // 
             alertTimeZoneUTCBox.AutoSize = true;
@@ -173,6 +168,18 @@
             alertTimeZoneUTCBox.Text = "Use UTC (Coordinated Universal Time)";
             ToolTipInformation.SetToolTip(alertTimeZoneUTCBox, "Uses UTC visually everywhere instead of the system time zone.\r\nAlert text may not be affected by this setting.");
             alertTimeZoneUTCBox.UseVisualStyleBackColor = true;
+            // 
+            // UpdateTextField
+            // 
+            UpdateTextField.Enabled = true;
+            UpdateTextField.Interval = 1000;
+            UpdateTextField.Tick += UpdateTextField_Tick;
+            // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
             // 
             // AlertTextConfigurationForm
             // 
@@ -224,5 +231,6 @@
         private System.Windows.Forms.CheckBox AddEventNameBox;
         private System.Windows.Forms.CheckBox Use24HrTimeBox;
         private System.Windows.Forms.CheckBox alertTimeZoneUTCBox;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

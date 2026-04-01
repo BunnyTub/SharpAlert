@@ -40,6 +40,7 @@
             DefaultButton = new System.Windows.Forms.Button();
             CheckTimer = new System.Windows.Forms.Timer(components);
             label1 = new System.Windows.Forms.Label();
+            WindowShake = new System.Windows.Forms.Timer(components);
             SuspendLayout();
             // 
             // TitleText
@@ -163,6 +164,12 @@
             label1.TabIndex = 35;
             label1.Text = "This feature is experimental. Your save slots are not deleted when the program restarts, but the current slot reverts to primary every time.";
             // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
             // SaveSlotsConfigurationForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -200,5 +207,6 @@
         private System.Windows.Forms.Button DefaultButton;
         private System.Windows.Forms.Timer CheckTimer;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

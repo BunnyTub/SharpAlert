@@ -31,8 +31,8 @@ namespace SharpAlert.ConfigurationDialogs
                 if (((CheckBox)a).Checked) AwokenNotifier.ShowBasicText("Future alert dialogs will no longer be shown.");
                 else AwokenNotifier.ShowBasicText("Future alert dialogs will now be shown.");
             };
-            
-            
+
+
             EnableServerBox.Checked = QuickSettings.Instance.EnableServer;
             EnableServerBox.CheckedChanged += (a, b) =>
             {
@@ -63,6 +63,25 @@ namespace SharpAlert.ConfigurationDialogs
         private void WebServerPasswordInput_KeyDown(object sender, KeyEventArgs e)
         {
             SaveServerSettingsButton.BackColor = Color.FromArgb(200, 60, 60);
+        }
+
+        private bool UpDown = true;
+
+        private void WindowShake_Tick(object sender, EventArgs e)
+        {
+            if (AprilFools.IsAprilFoolsNow)
+            {
+                if (UpDown)
+                {
+                    Location = new Point(Location.X, Location.Y + 10);
+                }
+                else
+                {
+                    Location = new Point(Location.X, Location.Y - 10);
+                }
+
+                UpDown = !UpDown;
+            }
         }
     }
 }

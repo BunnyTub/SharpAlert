@@ -28,12 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DeveloperMessageForm));
             IDIconBox = new System.Windows.Forms.PictureBox();
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             DoneButton = new System.Windows.Forms.Button();
             textBox1 = new System.Windows.Forms.TextBox();
+            WindowShake = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)IDIconBox).BeginInit();
             SuspendLayout();
             // 
@@ -101,6 +103,12 @@
             textBox1.TabIndex = 15;
             textBox1.Text = resources.GetString("textBox1.Text");
             // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
             // DeveloperMessageForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -133,5 +141,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button DoneButton;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

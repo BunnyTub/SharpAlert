@@ -3,6 +3,7 @@ using SharpAlert.ProgramWorker;
 using SharpAlert.SourceCapturing.SystemSpecific;
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
@@ -36,7 +37,7 @@ namespace SharpAlert.ConfigurationDialogs
                 TitleText.Text = Language.Get("RegionSettings_Title", "Choose your region settings.");
                 DoneButton.Text = Language.Get("Button_Done", "Done");
             }
-            
+
             ChangeLaterText.Visible = ShowNextInsteadOfDone;
         }
 
@@ -237,6 +238,25 @@ namespace SharpAlert.ConfigurationDialogs
                 }
 
                 if (RegionChanged) MessageBox.Show($"We've set a region ({region.TwoLetterISORegionName}) for you.\r\nIf the selected region isn't right, you can always change it.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private bool UpDown = true;
+
+        private void WindowShake_Tick(object sender, EventArgs e)
+        {
+            if (AprilFools.IsAprilFoolsNow)
+            {
+                if (UpDown)
+                {
+                    Location = new Point(Location.X, Location.Y + 10);
+                }
+                else
+                {
+                    Location = new Point(Location.X, Location.Y - 10);
+                }
+
+                UpDown = !UpDown;
             }
         }
     }

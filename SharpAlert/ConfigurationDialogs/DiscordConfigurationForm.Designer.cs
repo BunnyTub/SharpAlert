@@ -35,6 +35,7 @@
             SwapToDiscordWebhooksButton = new System.Windows.Forms.Button();
             TabPanel = new System.Windows.Forms.Panel();
             SwappingText = new System.Windows.Forms.Label();
+            WindowShake = new System.Windows.Forms.Timer(components);
             TabPanel.SuspendLayout();
             SuspendLayout();
             // 
@@ -105,6 +106,12 @@
             SwappingText.Text = "Loading...";
             SwappingText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
             // DiscordConfigurationForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -135,5 +142,6 @@
         private System.Windows.Forms.Button SwapToDiscordWebhooksButton;
         private System.Windows.Forms.Panel TabPanel;
         private System.Windows.Forms.Label SwappingText;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

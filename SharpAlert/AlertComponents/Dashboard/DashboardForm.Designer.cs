@@ -47,6 +47,7 @@
             CycleBetweenInfoAndClockTimer = new System.Windows.Forms.Timer(components);
             DetectAlertActivity = new System.Windows.Forms.Timer(components);
             ToolTipInformation = new System.Windows.Forms.ToolTip(components);
+            WindowShake = new System.Windows.Forms.Timer(components);
             TitlePanel.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
@@ -223,6 +224,12 @@
             ToolTipInformation.ReshowDelay = 50;
             ToolTipInformation.ToolTipTitle = "What does this do?";
             // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
             // DashboardForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -268,5 +275,6 @@
         private System.Windows.Forms.Label BrandText;
         private System.Windows.Forms.Timer DetectAlertActivity;
         private System.Windows.Forms.ToolTip ToolTipInformation;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

@@ -70,6 +70,25 @@ namespace SharpAlert.ConfigurationDialogs
         {
             SwapTabs(sender, new DiscordWebhookUserControl());
         }
+
+        private bool UpDown = true;
+
+        private void WindowShake_Tick(object sender, EventArgs e)
+        {
+            if (AprilFools.IsAprilFoolsNow)
+            {
+                if (UpDown)
+                {
+                    Location = new Point(Location.X, Location.Y + 10);
+                }
+                else
+                {
+                    Location = new Point(Location.X, Location.Y - 10);
+                }
+
+                UpDown = !UpDown;
+            }
+        }
     }
 }
 

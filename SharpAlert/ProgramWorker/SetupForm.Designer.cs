@@ -40,6 +40,7 @@
             DescriptionText = new System.Windows.Forms.Label();
             FadeInAnimation = new System.Windows.Forms.Timer(components);
             SkipButton = new System.Windows.Forms.Button();
+            WindowShake = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)SideLogoBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ExampleBarBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
@@ -157,6 +158,12 @@
             SkipButton.UseVisualStyleBackColor = false;
             SkipButton.Click += SkipButton_Click;
             // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
             // SetupForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -202,5 +209,6 @@
         private System.Windows.Forms.PictureBox SideLogoBox;
         private System.Windows.Forms.PictureBox ExampleBarBox;
         private System.Windows.Forms.Button SkipButton;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

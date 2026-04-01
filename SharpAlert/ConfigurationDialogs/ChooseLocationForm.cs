@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using SharpAlert.ProgramWorker;
 
@@ -203,7 +204,7 @@ namespace SharpAlert.ConfigurationDialogs
                 {
                     righted = $"{laf.SelectedCounty.Id.ToString().PadLeft(3, '0')}";
                 }
-                
+
                 AreaSAMEInput.Enabled = false;
                 AreaSAMEInput.Text = lefted + righted;
                 SAMEAddButton.PerformClick();
@@ -279,6 +280,25 @@ namespace SharpAlert.ConfigurationDialogs
         private void SkipButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private bool UpDown = true;
+
+        private void WindowShake_Tick(object sender, EventArgs e)
+        {
+            if (AprilFools.IsAprilFoolsNow)
+            {
+                if (UpDown)
+                {
+                    Location = new Point(Location.X, Location.Y + 10);
+                }
+                else
+                {
+                    Location = new Point(Location.X, Location.Y - 10);
+                }
+
+                UpDown = !UpDown;
+            }
         }
     }
 }

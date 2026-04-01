@@ -44,6 +44,7 @@
             label2 = new System.Windows.Forms.Label();
             alertTTSonlyBox = new System.Windows.Forms.CheckBox();
             alertPlayStartToneTwiceBox = new System.Windows.Forms.CheckBox();
+            DisableSomeStyleAutoplayBox = new System.Windows.Forms.CheckBox();
             label1 = new System.Windows.Forms.Label();
             AudioOutputLabel = new System.Windows.Forms.Label();
             GlobalVolumeLabel = new System.Windows.Forms.Label();
@@ -53,7 +54,7 @@
             ChangeStartButton = new System.Windows.Forms.Button();
             AudioTinkeringFileDialog = new System.Windows.Forms.OpenFileDialog();
             ShowRefreshTip = new System.Windows.Forms.Timer(components);
-            DisableSomeStyleAutoplayBox = new System.Windows.Forms.CheckBox();
+            WindowShake = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)volumeBar).BeginInit();
             groupBox10.SuspendLayout();
@@ -236,6 +237,17 @@
             ToolTipInformation.SetToolTip(alertPlayStartToneTwiceBox, "Extends the start tone by instructing the audio stack to play it twice.");
             alertPlayStartToneTwiceBox.UseVisualStyleBackColor = true;
             // 
+            // DisableSomeStyleAutoplayBox
+            // 
+            DisableSomeStyleAutoplayBox.AutoSize = true;
+            DisableSomeStyleAutoplayBox.Location = new System.Drawing.Point(434, 159);
+            DisableSomeStyleAutoplayBox.Name = "DisableSomeStyleAutoplayBox";
+            DisableSomeStyleAutoplayBox.Size = new System.Drawing.Size(113, 19);
+            DisableSomeStyleAutoplayBox.TabIndex = 53;
+            DisableSomeStyleAutoplayBox.Text = "Disable autoplay";
+            ToolTipInformation.SetToolTip(DisableSomeStyleAutoplayBox, "Disables autoplay of TTS and remote audio in styles where they are played automatically without user interaction.");
+            DisableSomeStyleAutoplayBox.UseVisualStyleBackColor = true;
+            // 
             // label1
             // 
             label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
@@ -325,16 +337,11 @@
             ShowRefreshTip.Interval = 1000;
             ShowRefreshTip.Tick += ShowRefreshTip_Tick;
             // 
-            // DisableSomeStyleAutoplayBox
+            // WindowShake
             // 
-            DisableSomeStyleAutoplayBox.AutoSize = true;
-            DisableSomeStyleAutoplayBox.Location = new System.Drawing.Point(434, 159);
-            DisableSomeStyleAutoplayBox.Name = "DisableSomeStyleAutoplayBox";
-            DisableSomeStyleAutoplayBox.Size = new System.Drawing.Size(113, 19);
-            DisableSomeStyleAutoplayBox.TabIndex = 53;
-            DisableSomeStyleAutoplayBox.Text = "Disable autoplay";
-            ToolTipInformation.SetToolTip(DisableSomeStyleAutoplayBox, "Disables autoplay of TTS and remote audio in styles where they are played automatically without user interaction.");
-            DisableSomeStyleAutoplayBox.UseVisualStyleBackColor = true;
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
             // 
             // ChooseAudioForm
             // 
@@ -408,5 +415,6 @@
         private System.Windows.Forms.CheckBox alertPlayStartToneTwiceBox;
         private System.Windows.Forms.Button ChangeStartLowButton;
         private System.Windows.Forms.CheckBox DisableSomeStyleAutoplayBox;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

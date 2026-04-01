@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChoosePresetForm));
             LogoBox = new System.Windows.Forms.PictureBox();
             TitleText = new System.Windows.Forms.Label();
@@ -36,6 +37,7 @@
             PreferSevereButton = new System.Windows.Forms.Button();
             SkipButton = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
+            WindowShake = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
             SuspendLayout();
             // 
@@ -132,6 +134,12 @@
             label1.Text = "To change these options later, go to Settings (under Alert Settings).";
             label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
             // ChoosePresetForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -168,5 +176,6 @@
         private System.Windows.Forms.Button PreferSevereButton;
         private System.Windows.Forms.Button SkipButton;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

@@ -2203,6 +2203,9 @@ namespace SharpAlert.AlertComponents
 
             // It should not be this painful to fix text formatting.
 
+            IntroText = AprilFools.OwOify(IntroText); // APRIL FOOLS
+            BroadcastText = AprilFools.OwOify(BroadcastText); // APRIL FOOLS
+
             Console.WriteLine("[Alert Processor] Finished compiling body text.");
             return (IntroText, BroadcastText);
         }

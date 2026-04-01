@@ -47,6 +47,7 @@
             SimpleModeButton = new System.Windows.Forms.Button();
             SlidesBox = new System.Windows.Forms.PictureBox();
             Reloader = new System.Windows.Forms.Timer(components);
+            WindowShake = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)SlidesBox).BeginInit();
             SuspendLayout();
             // 
@@ -310,6 +311,12 @@
             Reloader.Interval = 60000;
             Reloader.Tick += Reloader_Tick;
             // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
             // ConfigurationForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -368,5 +375,6 @@
         private System.Windows.Forms.Button SimpleModeButton;
         private System.Windows.Forms.PictureBox SlidesBox;
         private System.Windows.Forms.Timer Reloader;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

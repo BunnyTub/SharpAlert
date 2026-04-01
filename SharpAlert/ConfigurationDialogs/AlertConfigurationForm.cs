@@ -399,6 +399,25 @@ namespace SharpAlert.ConfigurationDialogs
             if (ecf == null || ecf.IsDisposed) ecf = new EventConfigurationForm();
             ecf.ShowDialog();
         }
+
+        private bool UpDown = true;
+
+        private void WindowShake_Tick(object sender, EventArgs e)
+        {
+            if (AprilFools.IsAprilFoolsNow)
+            {
+                if (UpDown)
+                {
+                    Location = new Point(Location.X, Location.Y + 10);
+                }
+                else
+                {
+                    Location = new Point(Location.X, Location.Y - 10);
+                }
+
+                UpDown = !UpDown;
+            }
+        }
     }
 }
 

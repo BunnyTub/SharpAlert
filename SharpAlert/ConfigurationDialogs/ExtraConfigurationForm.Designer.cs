@@ -46,6 +46,7 @@
             SystemControlsGroup = new System.Windows.Forms.GroupBox();
             NotificationsGroup = new System.Windows.Forms.GroupBox();
             SaveSlotsButton = new System.Windows.Forms.Button();
+            WindowShake = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
             DisplayPanelsGroup.SuspendLayout();
             SystemControlsGroup.SuspendLayout();
@@ -241,6 +242,12 @@
             SaveSlotsButton.UseVisualStyleBackColor = false;
             SaveSlotsButton.Click += SaveSlotsButton_Click;
             // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
             // ExtraConfigurationForm
             // 
             AcceptButton = DoneButton;
@@ -298,5 +305,6 @@
         private System.Windows.Forms.CheckBox OpenDashboardAutomaticallyBox;
         private System.Windows.Forms.CheckBox PlayChimeOnRunBox;
         private System.Windows.Forms.Button SaveSlotsButton;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

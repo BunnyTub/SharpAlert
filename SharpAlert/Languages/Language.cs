@@ -174,7 +174,11 @@ namespace SharpAlert.Languages
         {
             //if (string.IsNullOrEmpty(CurrentLang)) return "";
 
-            if (_data.TryGetValue(key, out string val)) return val;
+            if (_data.TryGetValue(key, out string val))
+            {
+                if (AprilFools.IsAprilFoolsNow) val = AprilFools.OwOify(val); // APRIL FOOLS
+                return val;
+            }
             else
             {
                 if (!string.IsNullOrWhiteSpace(fallback)) return fallback;

@@ -56,6 +56,7 @@
             TextDisplayGroup = new System.Windows.Forms.GroupBox();
             label4 = new System.Windows.Forms.Label();
             DisplayWhereInfoButton = new System.Windows.Forms.Button();
+            WindowShake = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)LogoBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)alertTimeoutInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)alertFullscreenDisplayInput).BeginInit();
@@ -376,6 +377,12 @@
             DisplayWhereInfoButton.UseVisualStyleBackColor = false;
             DisplayWhereInfoButton.Click += DisplayWhereInfoButton_Click;
             // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
             // StyleConfigurationForm
             // 
             AcceptButton = DoneButton;
@@ -444,5 +451,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.PictureBox PreviewPicture;
         private System.Windows.Forms.CheckBox TryForceWindowFocusBox;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

@@ -92,6 +92,7 @@
             GeneralGroup = new System.Windows.Forms.GroupBox();
             RainbowColoring = new System.Windows.Forms.Timer(components);
             EventsButton = new System.Windows.Forms.Button();
+            WindowShake = new System.Windows.Forms.Timer(components);
             AlertFunctionalityGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)AlertDeadIntervalInput).BeginInit();
             ((System.ComponentModel.ISupportInitialize)AlertCheckIntervalInput).BeginInit();
@@ -849,6 +850,12 @@
             EventsButton.UseVisualStyleBackColor = false;
             EventsButton.Click += EventsButton_Click;
             // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
             // AlertConfigurationForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -966,5 +973,6 @@
         private System.Windows.Forms.Label RainbowText;
         private System.Windows.Forms.Timer RainbowColoring;
         private System.Windows.Forms.Button EventsButton;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

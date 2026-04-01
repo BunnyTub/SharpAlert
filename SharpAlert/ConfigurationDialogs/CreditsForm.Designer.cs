@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreditsForm));
             label5 = new System.Windows.Forms.Label();
             label1 = new System.Windows.Forms.Label();
@@ -36,6 +37,7 @@
             linkLabel2 = new System.Windows.Forms.LinkLabel();
             linkLabel3 = new System.Windows.Forms.LinkLabel();
             linkLabel4 = new System.Windows.Forms.LinkLabel();
+            WindowShake = new System.Windows.Forms.Timer(components);
             SuspendLayout();
             // 
             // label5
@@ -129,6 +131,12 @@
             linkLabel4.Text = "Credit to SkewerKing for webhook icons. (as of Nov 16, 2025. Icons are stored on a remote server.)";
             linkLabel4.LinkClicked += linkLabel4_LinkClicked;
             // 
+            // WindowShake
+            // 
+            WindowShake.Enabled = true;
+            WindowShake.Interval = 500;
+            WindowShake.Tick += WindowShake_Tick;
+            // 
             // CreditsForm
             // 
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -167,5 +175,6 @@
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.LinkLabel linkLabel3;
         private System.Windows.Forms.LinkLabel linkLabel4;
+        private System.Windows.Forms.Timer WindowShake;
     }
 }

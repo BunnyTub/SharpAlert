@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using SharpAlert.Properties;
 using SharpAlert.Languages;
+using System.Drawing;
 
 namespace SharpAlert.ProgramWorker
 {
@@ -48,8 +49,8 @@ namespace SharpAlert.ProgramWorker
         {
             //if (!MainEntryPoint.Args.Contains("--show-art"))
             //{
-                LogoBox.Visible = false;
-                SideLogoBox.Image = Resources.WarningApp;
+            LogoBox.Visible = false;
+            SideLogoBox.Image = Resources.WarningApp;
             //}
         }
 
@@ -69,6 +70,25 @@ namespace SharpAlert.ProgramWorker
             {
                 QuickSettings.Instance.SetupExperienceComplete = true;
                 this.Close();
+            }
+        }
+
+        private bool UpDown = true;
+
+        private void WindowShake_Tick(object sender, EventArgs e)
+        {
+            if (AprilFools.IsAprilFoolsNow)
+            {
+                if (UpDown)
+                {
+                    Location = new Point(Location.X, Location.Y + 10);
+                }
+                else
+                {
+                    Location = new Point(Location.X, Location.Y - 10);
+                }
+
+                UpDown = !UpDown;
             }
         }
     }
