@@ -85,7 +85,7 @@ namespace SharpAlert.ProgramWorker
         // System
         public bool NoSystemSleep { get; set; } = false;
         public bool PlayChimeOnRun { get; set; } = false;
-        public bool SimpleChildLock { get; set; } = false;
+        public bool ChildLock { get; set; } = false;
         // Migration
         public bool MigrationOccurred { get; set; } = false;
         // Status

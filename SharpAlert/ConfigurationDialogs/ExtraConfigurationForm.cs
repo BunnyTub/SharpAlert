@@ -86,6 +86,9 @@ namespace SharpAlert.ConfigurationDialogs
 
             PlayChimeOnRunBox.Checked = QuickSettings.Instance.PlayChimeOnRun;
             PlayChimeOnRunBox.CheckedChanged += (a, b) => QuickSettings.Instance.PlayChimeOnRun = ((CheckBox)a).Checked;
+
+            ChildLockBox.Checked = QuickSettings.Instance.ChildLock;
+            ChildLockBox.CheckedChanged += (a, b) => QuickSettings.Instance.ChildLock = ((CheckBox)a).Checked;
         }
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)

@@ -265,7 +265,7 @@ namespace SharpAlert.ProgramWorker
             {
                 IgnoreRightClick = true;
 
-                if (QuickSettings.Instance.SimpleChildLock)
+                if (QuickSettings.Instance.ChildLock)
                 {
                     int Random1 = rnd.Next(2, 18);
                     int Random2 = rnd.Next(2, 34);
@@ -278,7 +278,7 @@ namespace SharpAlert.ProgramWorker
 
                     if (RandomCombined2 == RandomCombined3)
                     {
-                        RandomCombined3 = RandomCombined3 - 1;
+                        RandomCombined3--;
                     }
 
                     int[] combined = { RandomCombined1, RandomCombined2, RandomCombined3 };

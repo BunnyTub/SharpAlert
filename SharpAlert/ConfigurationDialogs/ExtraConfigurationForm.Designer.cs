@@ -41,6 +41,7 @@
             HideNetworkErrorsBox = new System.Windows.Forms.CheckBox();
             OpenDashboardAutomaticallyBox = new System.Windows.Forms.CheckBox();
             PlayChimeOnRunBox = new System.Windows.Forms.CheckBox();
+            ChildLockBox = new System.Windows.Forms.CheckBox();
             ChangeLaterText = new System.Windows.Forms.Label();
             DisplayPanelsGroup = new System.Windows.Forms.GroupBox();
             SystemControlsGroup = new System.Windows.Forms.GroupBox();
@@ -179,6 +180,17 @@
             ToolTipInformation.SetToolTip(PlayChimeOnRunBox, "Shows a notification that covers the screen when the program is fully started.");
             PlayChimeOnRunBox.UseVisualStyleBackColor = true;
             // 
+            // ChildLockBox
+            // 
+            ChildLockBox.AutoSize = true;
+            ChildLockBox.Location = new System.Drawing.Point(108, 183);
+            ChildLockBox.Name = "ChildLockBox";
+            ChildLockBox.Size = new System.Drawing.Size(156, 19);
+            ChildLockBox.TabIndex = 11;
+            ChildLockBox.Text = "Math problem child lock";
+            ToolTipInformation.SetToolTip(ChildLockBox, "Displays a question each time the settings window is opened.\r\nIf the answer to the question is wrong, the settings window will not open.");
+            ChildLockBox.UseVisualStyleBackColor = true;
+            // 
             // ChangeLaterText
             // 
             ChangeLaterText.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
@@ -254,6 +266,7 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(487, 241);
+            Controls.Add(ChildLockBox);
             Controls.Add(SaveSlotsButton);
             Controls.Add(DisplayPanelsGroup);
             Controls.Add(NotificationsGroup);
@@ -284,6 +297,7 @@
             NotificationsGroup.ResumeLayout(false);
             NotificationsGroup.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
 
         }
 
@@ -306,5 +320,6 @@
         private System.Windows.Forms.CheckBox PlayChimeOnRunBox;
         private System.Windows.Forms.Button SaveSlotsButton;
         private System.Windows.Forms.Timer WindowShake;
+        private System.Windows.Forms.CheckBox ChildLockBox;
     }
 }
