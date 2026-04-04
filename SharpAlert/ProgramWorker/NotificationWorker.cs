@@ -265,7 +265,7 @@ namespace SharpAlert.ProgramWorker
             {
                 IgnoreRightClick = true;
 
-                if (true)
+                if (QuickSettings.Instance.SimpleChildLock)
                 {
                     int Random1 = rnd.Next(2, 18);
                     int Random2 = rnd.Next(2, 34);
