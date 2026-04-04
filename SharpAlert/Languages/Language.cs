@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpAlert.ProgramWorker;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
@@ -73,6 +74,15 @@ namespace SharpAlert.Languages
             CurrentLang = langCode;
 
             string font = Get("RecommendedFontChoice", "none");
+
+            if (QuickSettings.Instance.ForceCustomFont)
+            {
+                if (!string.IsNullOrWhiteSpace(QuickSettings.Instance.CustomFont))
+                {
+                    font = QuickSettings.Instance.CustomFont;
+                }
+            }
+
             string link = Get("FontChoiceURLDownload", "No download URL available.");
 
             if (!string.IsNullOrWhiteSpace(font))

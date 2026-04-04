@@ -24,6 +24,7 @@ namespace SharpAlert.ProgramWorker
         //private static ShareAlertsForm saf = null;
         //private static bool NotifyIconCalled = false;
         internal static bool IgnoreRightClick = false;
+        private static readonly Random rnd = new();
 
         /// <summary>
         /// Creates a tray icon. Throws NotSupportedException if called more than once.
@@ -264,11 +265,73 @@ namespace SharpAlert.ProgramWorker
             {
                 IgnoreRightClick = true;
 
+                if (true)
+                {
+                    int Random1 = rnd.Next(2, 18);
+                    int Random2 = rnd.Next(2, 34);
+
+                    string Item1 = $"Jenny has {Random1} apples, and he gives Adam {Random2} of them.";
+
+                    int RandomCombined1 = Random1 + Random2;
+                    int RandomCombined2 = RandomCombined1 + rnd.Next(-3, 3);
+                    int RandomCombined3 = RandomCombined1 + rnd.Next(-2, 2);
+
+                    if (RandomCombined2 == RandomCombined3)
+                    {
+                        RandomCombined3 = RandomCombined3 - 1;
+                    }
+
+                    int[] combined = { RandomCombined1, RandomCombined2, RandomCombined3 };
+
+                    for (int i = combined.Length - 1; i > 0; i--)
+                    {
+                        int j = rnd.Next(i + 1);
+                        (combined[i], combined[j]) = (combined[j], combined[i]);
+                    }
+
+                    int SwapCombined1 = combined[0];
+                    int SwapCombined2 = combined[1];
+                    int SwapCombined3 = combined[2];
+
+                    DialogResult question = MessageBox.Show($"{Item1} How many remain?\r\n\r\n" +
+                        $"ABORT. {SwapCombined1}\r\n" +
+                        $"RETRY. {SwapCombined2}\r\n" +
+                        $"IGNORE. {SwapCombined3}", "SharpAlert - Child Lock", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Information);
+
+                    switch (question)
+                    {
+                        case DialogResult.Abort:
+                            if ((Random1 + Random2) != SwapCombined1)
+                            {
+                                MessageBox.Show($"Sorry, that answer wasn't correct.", "SharpAlert - Child Lock", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                IgnoreRightClick = false;
+                                return;
+                            }
+                            break;
+                        case DialogResult.Retry:
+                            if ((Random1 + Random2) != SwapCombined2)
+                            {
+                                MessageBox.Show($"Sorry, that answer wasn't correct.", "SharpAlert - Child Lock", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                IgnoreRightClick = false;
+                                return;
+                            }
+                            break;
+                        case DialogResult.Ignore:
+                            if ((Random1 + Random2) != SwapCombined3)
+                            {
+                                MessageBox.Show($"Sorry, that answer wasn't correct.", "SharpAlert - Child Lock", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                IgnoreRightClick = false;
+                                return;
+                            }
+                            break;
+                    }
+                }
+
                 open:
                 if (QuickSettings.Instance.UseAdvancedView)
                 {
                     smf?.Close();
-                    if (mf == null || mf.IsDisposed) mf = new ConfigurationForm();
+                    if (mf == null || mf.IsDisposed) mf = new();
                     mf.Swap = false;
                     mf.ShowDialog();
                     if (mf.Swap) goto open;
@@ -276,7 +339,7 @@ namespace SharpAlert.ProgramWorker
                 else
                 {
                     mf?.Close();
-                    if (smf == null || smf.IsDisposed) smf = new SimpleConfigurationForm();
+                    if (smf == null || smf.IsDisposed) smf = new();
                     smf.Swap = false;
                     smf.ShowDialog();
                     if (smf.Swap) goto open;

@@ -71,6 +71,8 @@ namespace SharpAlert.ProgramWorker
         // Info
         public string LastVersionOpened { get; set; } = "v0.0";
         public string LanguageCode { get; set; } = "en";
+        public bool ForceCustomFont { get; set; } = false;
+        public string CustomFont { get; set; } = "";
         // Updating
         public bool AskedForAutomaticUpdates { get; set; } = false;
         public bool AllowPerformingUpdates { get; set; } = false;

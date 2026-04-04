@@ -45,6 +45,8 @@
             alertFadeTimeBar = new System.Windows.Forms.TrackBar();
             PreviewPicture = new System.Windows.Forms.PictureBox();
             TryForceWindowFocusBox = new System.Windows.Forms.CheckBox();
+            ForceCustomFontBox = new System.Windows.Forms.CheckBox();
+            CustomFontCombo = new System.Windows.Forms.ComboBox();
             label1 = new System.Windows.Forms.Label();
             label9 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
@@ -239,6 +241,30 @@
             ToolTipInformation.SetToolTip(TryForceWindowFocusBox, "Tries to take window focus by forcing the window's Z-order to be the highest for up to 5 seconds.");
             TryForceWindowFocusBox.UseVisualStyleBackColor = true;
             // 
+            // ForceCustomFontBox
+            // 
+            ForceCustomFontBox.AutoSize = true;
+            ForceCustomFontBox.Location = new System.Drawing.Point(213, 341);
+            ForceCustomFontBox.Name = "ForceCustomFontBox";
+            ForceCustomFontBox.Size = new System.Drawing.Size(123, 19);
+            ForceCustomFontBox.TabIndex = 60;
+            ForceCustomFontBox.Text = "Force custom font";
+            ToolTipInformation.SetToolTip(ForceCustomFontBox, "Forces a specific font of your choice on all windows.\r\nRequires a program restart.");
+            ForceCustomFontBox.UseVisualStyleBackColor = true;
+            // 
+            // CustomFontCombo
+            // 
+            CustomFontCombo.BackColor = System.Drawing.Color.Black;
+            CustomFontCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            CustomFontCombo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            CustomFontCombo.ForeColor = System.Drawing.Color.White;
+            CustomFontCombo.FormattingEnabled = true;
+            CustomFontCombo.Location = new System.Drawing.Point(342, 338);
+            CustomFontCombo.Name = "CustomFontCombo";
+            CustomFontCombo.Size = new System.Drawing.Size(233, 23);
+            CustomFontCombo.TabIndex = 61;
+            ToolTipInformation.SetToolTip(CustomFontCombo, "Choose a font to force everywhere possiible.\r\nThis is ignored if \"Force custom font\" is off.");
+            // 
             // label1
             // 
             label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
@@ -389,6 +415,8 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(659, 396);
+            Controls.Add(CustomFontCombo);
+            Controls.Add(ForceCustomFontBox);
             Controls.Add(AlertTextButton);
             Controls.Add(alertNoGUIBox);
             Controls.Add(label1);
@@ -452,5 +480,8 @@
         private System.Windows.Forms.PictureBox PreviewPicture;
         private System.Windows.Forms.CheckBox TryForceWindowFocusBox;
         private System.Windows.Forms.Timer WindowShake;
+        private System.Windows.Forms.TextBox AreaSAMEInput;
+        private System.Windows.Forms.CheckBox ForceCustomFontBox;
+        private System.Windows.Forms.ComboBox CustomFontCombo;
     }
 }

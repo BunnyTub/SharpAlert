@@ -1,9 +1,10 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using SharpAlert.Languages;
+﻿using SharpAlert.Languages;
 using SharpAlert.ProgramWorker;
 using SharpAlert.Properties;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace SharpAlert.ConfigurationDialogs
 {
@@ -229,7 +230,29 @@ namespace SharpAlert.ConfigurationDialogs
 
             TryForceWindowFocusBox.Checked = QuickSettings.Instance.TryForceWindowFocus;
             TryForceWindowFocusBox.CheckedChanged += (a, b) => QuickSettings.Instance.TryForceWindowFocus = ((CheckBox)a).Checked;
+
+            ForceCustomFontBox.Checked = QuickSettings.Instance.ForceCustomFont;
+            ForceCustomFontBox.CheckedChanged += (a, b) => QuickSettings.Instance.ForceCustomFont = ((CheckBox)a).Checked;
+
+
+            CustomFonts.Clear();
+            CustomFontCombo.Items.Clear();
+
+            foreach (FontFamily font in FontFamily.Families)
+            {
+                CustomFonts.Add(font.Name);
+                CustomFontCombo.Items.Add(font.Name);
+            }
+
+            CustomFontCombo.SelectedItem = QuickSettings.Instance.CustomFont;
+            CustomFontCombo.SelectedIndexChanged += (a, b) =>
+            {
+                QuickSettings.Instance.CustomFont = (string)((ComboBox)a).SelectedItem;
+                MessageBox.Show($"The font \"{(string)((ComboBox)a).SelectedItem}\" has been selected. It will be used the next time you start SharpAlert.", Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            };
         }
+
+        private readonly List<string> CustomFonts = [];
 
         private void ChooseRegionForm_FormClosing(object sender, FormClosingEventArgs e)
         {

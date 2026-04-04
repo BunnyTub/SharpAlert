@@ -34,7 +34,7 @@
             label1 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             DoneButton = new System.Windows.Forms.Button();
-            textBox1 = new System.Windows.Forms.TextBox();
+            LogOutput = new System.Windows.Forms.TextBox();
             WindowShake = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)IDIconBox).BeginInit();
             SuspendLayout();
@@ -68,7 +68,7 @@
             label2.Padding = new System.Windows.Forms.Padding(2, 0, 0, 0);
             label2.Size = new System.Drawing.Size(505, 32);
             label2.TabIndex = 2;
-            label2.Text = "This is a message from the developers.";
+            label2.Text = "Here are some changes in this version.";
             // 
             // DoneButton
             // 
@@ -87,21 +87,21 @@
             DoneButton.UseVisualStyleBackColor = false;
             DoneButton.Click += DoneButton_Click;
             // 
-            // textBox1
+            // LogOutput
             // 
-            textBox1.BackColor = System.Drawing.Color.Black;
-            textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            textBox1.Font = new System.Drawing.Font("Segoe UI", 12F);
-            textBox1.ForeColor = System.Drawing.Color.White;
-            textBox1.Location = new System.Drawing.Point(148, 87);
-            textBox1.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.ReadOnly = true;
-            textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            textBox1.Size = new System.Drawing.Size(501, 189);
-            textBox1.TabIndex = 15;
-            textBox1.Text = resources.GetString("textBox1.Text");
+            LogOutput.BackColor = System.Drawing.Color.Black;
+            LogOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            LogOutput.Font = new System.Drawing.Font("Segoe UI", 12F);
+            LogOutput.ForeColor = System.Drawing.Color.White;
+            LogOutput.Location = new System.Drawing.Point(148, 87);
+            LogOutput.Margin = new System.Windows.Forms.Padding(3, 6, 3, 3);
+            LogOutput.Multiline = true;
+            LogOutput.Name = "LogOutput";
+            LogOutput.ReadOnly = true;
+            LogOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            LogOutput.Size = new System.Drawing.Size(501, 189);
+            LogOutput.TabIndex = 15;
+            LogOutput.Text = resources.GetString("LogOutput.Text");
             // 
             // WindowShake
             // 
@@ -114,7 +114,7 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             BackColor = System.Drawing.Color.FromArgb(20, 20, 20);
             ClientSize = new System.Drawing.Size(661, 334);
-            Controls.Add(textBox1);
+            Controls.Add(LogOutput);
             Controls.Add(DoneButton);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -126,7 +126,7 @@
             MinimizeBox = false;
             Name = "DeveloperMessageForm";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "SharpAlert - Developer Message";
+            Text = "SharpAlert - Changelogs";
             TopMost = true;
             Load += BadgeVerifyForm_Load;
             ((System.ComponentModel.ISupportInitialize)IDIconBox).EndInit();
@@ -140,7 +140,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button DoneButton;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox LogOutput;
         private System.Windows.Forms.Timer WindowShake;
     }
 }
