@@ -69,7 +69,7 @@ namespace SharpAlert.ProgramWorker
 
 #pragma warning disable IDE1006 // Naming Styles
         // Info
-        public string LastVersionOpened { get; set; } = "v0.0";
+        public string LastVersionOpened { get; set; } = "0.0";
         public string LanguageCode { get; set; } = "en";
         public bool ForceCustomFont { get; set; } = false;
         public string CustomFont { get; set; } = "";

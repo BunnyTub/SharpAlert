@@ -294,9 +294,9 @@ namespace SharpAlert.ProgramWorker
                     int SwapCombined3 = combined[2];
 
                     DialogResult question = MessageBox.Show($"{Item1} How many remain?\r\n\r\n" +
-                        $"ABORT. {SwapCombined1}\r\n" +
-                        $"RETRY. {SwapCombined2}\r\n" +
-                        $"IGNORE. {SwapCombined3}", "SharpAlert - Child Lock", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Information);
+                        $"If you think it's {SwapCombined1}, click ABORT.\r\n" +
+                        $"If you think it's {SwapCombined2}, click RETRY.\r\n" +
+                        $"If you think it's {SwapCombined3}, click IGNORE.", "SharpAlert - Child Lock", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Information);
 
                     switch (question)
                     {
