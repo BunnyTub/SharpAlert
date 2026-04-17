@@ -791,7 +791,7 @@ namespace SharpAlert.ProgramWorker
                                         Details = $"{info.AlertSeverity.ToUpperInvariant()} ALERT";
                                         break;
                                     case 2:
-                                        State = $"[2/2] Event type is {info.AlertEventType}.";
+                                        State = $"[2/3] Event type is {info.AlertEventType}.";
                                         if (State.Length > 96) State = State[..96] + "...(truncated)";
 
                                         Details = $"{info.AlertEventType}";
